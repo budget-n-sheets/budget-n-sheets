@@ -29,7 +29,7 @@ function showSetupAddon_() {
       Ui.ButtonSet.OK);
     return;
 
-  } else if( getPropertiesService_('document', 'boolean', 'is_installed') ) {
+  } else if( getPropertiesService_('document', 'boolean', 'LazyNotesExtras') ) {
     Ui.alert(
       "Activation complete",
       "Reopen the spreadsheet to apply pending changes.",
@@ -91,7 +91,7 @@ function askDeactivation() {
 }
 
 function askReinstall() {
-  if(getPropertiesService_('document', 'boolean', 'is_installed')) return;
+  if(getPropertiesService_('document', 'boolean', 'LazyNotesExtras')) return;
 
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
   var dateToday = getSpreadsheetDate();
@@ -146,7 +146,7 @@ function uninstallAddon_() {
 
 
 function setupAddon(addonSettings, listAccountName) {
-  if(getPropertiesService_('document', 'boolean', 'is_installed')) return 0;
+  if(getPropertiesService_('document', 'boolean', 'LazyNotesExtras')) return 0;
 
   var lock = LockService.getDocumentLock();
   try {
@@ -201,7 +201,7 @@ function setupAddon(addonSettings, listAccountName) {
   setPropertiesService_('document', 'number', 'LNE_VERSION', AppsScriptGlobal.AddonVersion());
 
 
-  setPropertiesService_('document', 'boolean', 'is_installed', true);
+  setPropertiesService_('document', 'boolean', 'LazyNotesExtras', true);
   onOpen();
   console.timeEnd("add-on/Install");
 

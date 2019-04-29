@@ -89,7 +89,7 @@ function seamlessUpdate_() {
 
 
 function update_ExecutePatial_() {
-  if(!getPropertiesService_('document', 'boolean', 'is_installed')) return 1;
+  if(!getPropertiesService_('document', 'boolean', 'LazyNotesExtras')) return 1;
   console.time("add-on/Update");
   var lock, chk;
 
