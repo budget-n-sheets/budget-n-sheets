@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+  p {
+    text-indent: 13px;
+    text-align: justify;
+  }
+  td.name {
+    font-weight: bold;
+  }
+
+  .panel {
+    display: none;
+  }
+  .panel.active {
+    display: block;
+  }
+
+  .material-icons {
+    vertical-align: middle;
+  }
+  .md-18 { font-size: 18px; }
+  .md-24 { font-size: 24px; }
+
+  .md-click {
+    color: #a4c2f4;
+    cursor: pointer;
+  }
+  .md-click:hover {
+    color: #4a86e8;
+    cursor: pointer;
+  }
+
+  #MainPanel_wrapper {
+    min-height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  #MainPanel_content {
+    margin: 0 7px;
+    padding: 5px 0;
+  }
+  #MainPanel_footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  #panel_WaitLoad {
+    width: 223px;
+    margin: 93px auto;
+  }
+
+  .animation_WaitLoad_wrapper {
+    width: 211px;
+    height: 5px;
+    background-color: #efefef;
+    position: relative;
+    overflow: hidden;
+  }
+  .animation_WaitLoad_bar {
+    width: 93px;
+    height: 5px;
+    background-color: #4a86e8;
+    position: absolute;
+    animation-name: animateProgressBar;
+    animation-duration: 1709ms;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  @keyframes animateProgressBar {
+    from {left: -211px;}
+    to {left: 211px;}
+  }
+</style>

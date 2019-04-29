@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <?!= htmlInclude('htmlStyles'); ?>
+    <style>
+      p {
+        margin-bottom: 1em;
+        text-indent: 0;
+        font-size: 1.3em;
+      }
+      .animation_WaitLoad_wrapper {
+        margin: 0 0 1.7em 0;
+        width: 137px;
+      }
+      .animation_WaitLoad_bar {
+        width: 79px;
+        animation-name: animate;
+        animation-duration: 1201ms;
+      }
+      @keyframes animate {
+        from {left: -137px;}
+        to {left: 137px;}
+      }
+    </style>
+  </head>
+  <body>
+    <p style="text-indent: 0;font-size: 1.3em">
+      <?= text ?>
+    </p>
+
+    <? if(bar) { ?>
+      <div class="animation_WaitLoad_wrapper">
+        <div class="animation_WaitLoad_bar"></div>
+      </div>
+    <? } ?>
+
+    <? if(button) { ?>
+      <button onclick="google.script.host.close()">Ok</button>
+    <? } ?>
+  </body>
+</html>
