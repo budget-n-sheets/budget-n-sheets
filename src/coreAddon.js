@@ -129,8 +129,13 @@ function showDialogAboutAddon() {
     onlineUpdate_();
   }
 
-  var htmlDialog = HtmlService.createTemplateFromFile('htmlAboutAddon')
-    .evaluate()
+  var htmlDialog, htmlTemplate;
+
+  htmlTemplate = HtmlService.createTemplateFromFile('htmlAboutAddon')
+
+  htmlTemplate.version = AppsScriptGlobal.AddonVersionName();
+
+  htmlDialog = htmlTemplate.evaluate()
     .setWidth(281)
     .setHeight(359);
   SpreadsheetApp.getUi()
