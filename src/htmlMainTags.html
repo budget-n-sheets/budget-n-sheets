@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <?!= htmlInclude('htmlStyles'); ?>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      google.charts.load('current', {'packages':['corechart'], 'language': 'en-us'});
+    </script>
+		<style>
+	    #tab_book { color: #b4a7d6; }
+      #tab_book:hover { color: #9900ff; }
+      #tab_book.active { color: #9900ff;border-bottom: solid 2px; }
+
+      #tab_view-list { color: #f9cb9c; }
+      #tab_view-list:hover { color: #ff9900; }
+      #tab_view-list.active { color: #ff9900;border-bottom: solid 2px; }
+
+      .m-tool { color: #a4c2f4; cursor: pointer; }
+      .m-tool:hover { color: #4a86e8; cursor: pointer; }
+
+      #MainPanel_header {
+	      height: 3.7em;
+	      width: 100%;
+	      background-color: #efefef;
+        border-bottom: 2px solid #d9d9d9;
+	    }
+
+	    .MainMenu-top_title {
+        display: table;
+        width: inherit;
+        height: inherit;
+        border-collapse: separate;
+        border-spacing: 13px 7px;
+      }
+      .MainMenu-bot_title {
+        display: table;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 7px;
+        background-color: #efefef;
+        border-top: 2px solid #d9d9d9;
+      }
+      .MainMenu_row {
+        display: table-row;
+      }
+      .m-tab {
+	      cursor: pointer;
+	      display: table-cell;
+	      vertical-align:middle;
+	      color: #7a7a7a;
+	      font-size: 24px;
+	    }
+      .m-footer {
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+      #p-Book_WaitLoad {
+        width: 223px;
+        margin: 93px auto;
+      }
+
+
+      .Tags-title {
+        font-weight: bold;
+        font-size: 19px;
+      }
+      .Tags-table {
+        display: table;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 3px 2px;
+
+        counter-reset: tag-index;
+      }
+      .Tag-row {
+        cursor: pointer;
+        display: table-row;
+      }
+      .Tag-row::before {
+        display: table-cell;
+        padding: 3px 7px;
+        font-weight: bold;
+        background-color: #b4a7d6;
+
+        counter-increment: tag-index;
+        content: counter(tag-index);
+      }
+      .Tag-name {
+        width: 100%;
+        display: table-cell;
+        padding: 2px 3px;
+        font-weight: bold;
+        background-color: #d9d9d9;
+      }
+      .Tag-name:hover {
+        background-color: #efefef;
+      }
+
+
+      table.StdTags-table {
+        width: 100%;
+        margin-bottom: 13px;
+        border-spacing: 3px 2px;
+        background-color: #efefef;
+      }
+      td.StdTags-index {
+        padding: 3px 7px;
+        font-weight: bold;
+        background-color: #f6b26b;
+      }
+      td.StdTags-name {
+        width: 100%;
+        padding: 2px 3px;
+        font-weight: bold;
+        background-color: #d9d9d9;
+      }
+      td.StdTags-text {
+        padding: 2px 3px;
+        text-align: justify;
+      }
+		</style>
+	</head>
+	<body>
+    <div id="MainPanel_wrapper">
+      <div class="panel active" id="MainPanel_header" align="center">
+        <div class="MainMenu-top_title"><div class="MainMenu_row">
+            <div class="m-tab active" id="tab_book">
+              <i class="material-icons" title="Custom tags">book</i>
+            </div>
+            <div class="m-tab" id="tab_view-list">
+              <i class="material-icons" title="Standard tags">view_list</i>
+            </div>
+        </div></div>
+      </div>
+
+
+	    <div id="MainPanel_content" style="margin-bottom:4.7em;">
+        <div class="panel active" id="panel_Book">
+          <div class="panel active" id="p-Book_WaitLoad">
+            <div class="animation_WaitLoad_wrapper">
+              <div class="animation_WaitLoad_bar"></div>
+            </div>
+          </div>
+
+          <div class="panel" id="p-Book_ListTags">
+            <div id="p-Book_BoxListTags">
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="panel_ViewList">
+          <table class="StdTags-table">
+            <tr class="StdTags-row">
+              <td class="StdTags-name">Withdrawal</td>
+              <td class="StdTags-index">#wd</td>
+            </tr>
+            <tr>
+              <td class="StdTags-text" colspan="2">
+                Mark withdrawals from your bank account. For example, from an ATM.
+              </td>
+            </tr>
+          </table>
+          <table class="StdTags-table">
+            <tr class="StdTags-row">
+              <td class="StdTags-name">Deposit</td>
+              <td class="StdTags-index">#dp</td>
+            </tr>
+            <tr>
+              <td class="StdTags-text" colspan="2">
+                Mark deposits to your bank account. It works just like the <b>Transfer #trf</b> tag, but it can be useful to discrimate the banking operations.
+              </td>
+            </tr>
+          </table>
+          <table class="StdTags-table">
+            <tr class="StdTags-row">
+              <td class="StdTags-name">Transfer</td>
+              <td class="StdTags-index">#trf</td>
+            </tr>
+            <tr>
+              <td class="StdTags-text" colspan="2">
+                Mark value transfer to/from your account.<br/>
+                <ul>
+                  <li>If a transfer is <b>to</b> your account, use a <b>positive</b> value as it is being credit to your account.</li>
+                  <li>If a transfer is <b>from</b> your account, use a <b>negative</b> value as it is flowing out of your account.</li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+          <table class="StdTags-table">
+            <tr class="StdTags-row">
+              <td class="StdTags-name">Income</td>
+              <td class="StdTags-index">#rct</td>
+            </tr>
+            <tr>
+              <td class="StdTags-text" colspan="2">
+                Mark your income. The subtotal is displayed in the header of each bank table, and the total is displayed in <b>Summary</b> sheet.
+              </td>
+            </tr>
+          </table>
+          <table class="StdTags-table">
+            <tr class="StdTags-row">
+              <td class="StdTags-name">Payment of credit card bill</td>
+              <td class="StdTags-index">#qcc</td>
+            </tr>
+            <tr>
+              <td class="StdTags-text" colspan="2">
+              </td>
+            </tr>
+          </table>
+          <table class="StdTags-table">
+            <tr class="StdTags-row">
+              <td class="StdTags-name">Ignore</td>
+              <td class="StdTags-index">#ign</td>
+            </tr>
+            <tr>
+              <td class="StdTags-text" colspan="2">
+                Mark events which values are to be ignored and not accounted in the total of expenses.
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="panel" id="panel_AddEditTag">
+          <h2 id="AddEditTag-Title"></h2>
+          <form id="Form-AddEditTag" onSubmit="AddEditTag_opt()" accept-charset="UTF-8">
+            <table style="width:100%;">
+              <tr>
+                <td class="name"><label for="Form-AddEditTag_Name">Name</label></td>
+                <td><input class="Form-AddEditTag_lock" type="text" id="Form-AddEditTag_Name" maxlength="179" style="width:13em;" required></td>
+              </tr>
+              <tr>
+                <td class="name"><label for="Form-AddEditTag_Description">Description</label></td>
+                <td><textarea class="Form-AddEditTag_lock" id="Form-AddEditTag_Description" rows="4" maxlength="523" style="width:13em;"></textarea></td>
+              </tr>
+              <tr>
+                <td class="name"><label for="Form-AddEditTag_Tag">Code</label></td>
+                <td><input class="Form-AddEditTag_lock" type="text" pattern="[a-zA-Z][\w]+" id="Form-AddEditTag_Tag" style="width:13em;" required></td>
+              </tr>
+              <tr>
+                <td class="name"><label for="Form-AddEditTag_C">Category</label></td>
+                <td>
+                  <select class="Form-AddEditTag_lock" id="Form-AddEditTag_C">
+                    <option value="0">Food and supply</option>
+                    <option value="1">Shopping and clothing</option>
+                    <option value="2">Hobby</option>
+                    <option value="3">Leisure time</option>
+                    <option value="4">Home</option>
+                    <option value="5" selected>Other</option>
+                    <option value="6">Health and insurance</option>
+                    <option value="7">Services</option>
+                    <option value="8">Transport</option>
+                    <option value="9">Traveling</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+            <input id="Form-AddEditTag_submit" style="display:none;" type="submit">
+          </form>
+        </div>
+
+        <div class="panel" id="panel_TagDetails">
+          <h2 id="p-TagDetails_head"></h2>
+          <table style="width:100%;">
+            <tr>
+              <td class="name"><label>Category</label></td>
+              <td id="TagDetails_category"></td>
+            </tr>
+            <tr>
+              <td class="name"><label>Description</label></td>
+              <td id="TagDetails_description" style="font-style:italic;"></td>
+            </tr>
+            <tr>
+              <td class="name"><label>Code</label></td>
+              <td id="TagDetails_tag"></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <i class="md-24 m-tool material-icons" id="b-EditTag" title="Edit tag">edit</i> <i class="md-24 m-tool material-icons" id="b-RemoveTag" title="Remove tag">delete</i>
+              </td>
+            </tr>
+          </table>
+
+          <table id="TagDetails_bad-romance" style="width:100%;margin-top:1.7em;">
+            <tr>
+              <th><span style="font-size:1.2em;">Statistics</span></th>
+            </tr>
+            <tr>
+              <td class="gray" id="TagDetails_tell-me" style="font-size:17px;"></td>
+            </tr>
+          </table>
+
+          <table id="TagDetails_extras" style="width:100%;margin-top:1.7em;">
+            <tr>
+              <th colspan="2"><span style="font-size:1.2em;">Statistics</span></th>
+            </tr>
+
+            <tr>
+              <td class="name"><label>Period</label></td>
+              <td><span id="TagDetails_interval"></span></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div style="width:100%;margin:0 auto;">
+                  <div style="padding:0 3px;">
+                    <span style="font-weight:bold;">MINIMUM</span>
+                    <span style="float:right;" id="TagDetails_min"></span>
+                  </div>
+                  <div style="padding:0 3px;">
+                    <span style="font-weight:bold;">MAXIMUM</span>
+                    <span style="float:right;" id="TagDetails_max"></span>
+                  </div>
+                  <div style="padding:0 3px;">
+                    <span style="font-weight:bold;">AVERAGE</span>
+                    <span style="float:right;" id="TagDetails_average"></span>
+                  </div>
+                  <div style="padding:0 3px;">
+                    <span style="font-weight:bold;">TOTAL</span>
+                    <span style="float:right;" id="TagDetails_total"></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div id="TagDetails_chart"></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="panel" id="panel_WaitLoad">
+          <div class="animation_WaitLoad_wrapper">
+            <div class="animation_WaitLoad_bar"></div>
+          </div>
+        </div>
+	    </div>
+
+      <div id="MainPanel_footer">
+        <div class="current" id="p-footer_FastResponse" style="padding:0 7px;"></div>
+        <div class="MainMenu-bot_title"><div class="MainMenu_row">
+            <div class="m-footer left" style="width:100%;">
+              <button class="create" onclick="NewTag_Panel()">New tag</button>
+            </div>
+            <div class="m-footer right">
+              <a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18" title="Help">help</i></a>
+            </div>
+        </div></div>
+      </div>
+	  </div>
+	  <?!= htmlInclude('htmlJavaScript'); ?>
+  <script>
+    var htmlVarGlobal = {
+      Panel: "",
+      Tag: ""
+    };
+
+    $(document).ready(function() {
+      $('#b-EditTag').click(EditTag_Post);
+      $('#b-RemoveTag').click(RemoveTag_Confirm);
+
+      google.script.run
+        .withSuccessHandler(ListTags_Merge)
+        .withFailureHandler(showError)
+        .optMainTags('GetList');
+    });
+
+    $(document).on('click', '.m-tab', function() {
+      if( $(this).hasClass('active') || $(this).attr('id') == '' ) return;
+
+      window.scrollTo(0, 0);
+			$(this).addClass('active').siblings().removeClass('active');
+
+      switch( $(this).attr('id') ) {
+      case 'tab_book':
+        goBackToPanel('p-Book');
+        break;
+      case 'tab_view-list':
+        goBackToPanel('p-ViewList');
+        break;
+      default:
+        showError();
+        break;
+      }
+    });
+
+    $(document).on('click', '.m-li', function() {
+      goBackToPanel('o-WaitLoad');
+      htmlVarGlobal.Tag = $(this).attr('id');
+			google.script.run
+        .withSuccessHandler(TagDetails_Info)
+        .withFailureHandler(showError)
+        .optMainTags('GetInfo', htmlVarGlobal.Tag);
+    });
+
+    function RemoveTag_Confirm() {
+      if( confirm("Click OK to confirm and remove tag "+$('#p-TagDetails_head').text().toUpperCase()+".") ) {
+        $('#panel_WaitLoad').fadeIn('fast')
+          .siblings()
+          .hide();
+        google.script.run
+          .withSuccessHandler(RemoveTag_Aftermath)
+          .withFailureHandler(showError)
+          .optMainTags('Remove', htmlVarGlobal.Tag);
+      }
+    }
+
+    function EditTag_Post() {
+      $('#panel_WaitLoad').fadeIn('fast')
+        .siblings()
+        .hide();
+      google.script.run
+        .withSuccessHandler(EditTag_Panel)
+        .withFailureHandler(showError)
+        .optMainTags('GetInfo', htmlVarGlobal.Tag);
+    }
+
+		function TagDetails_Info(input) {
+			if(input == null) {
+        showError();
+        return;
+      }
+
+      var listTagCategories = [ 'Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling' ];
+
+			$('#p-TagDetails_head').empty().append(input.Name);
+			$('#TagDetails_category').empty().append(listTagCategories[input.C]);
+			$('#TagDetails_description').empty().append(input.Description);
+			$('#TagDetails_tag').empty().append(input.Tag);
+
+			$('#TagDetails_interval').empty();
+			$('#TagDetails_total').empty();
+			$('#TagDetails_average').empty();
+			$('#TagDetails_min').empty();
+			$('#TagDetails_max').empty();
+			$('#TagDetails_chart').empty();
+
+			$('#TagDetails_extras').hide();
+			$('#TagDetails_bad-romance').hide();
+
+      htmlVarGlobal.Panel = 'ne';
+			$('#panel_TagDetails').fadeIn('fast').siblings().hide();
+
+			google.script.run
+        .withSuccessHandler(TagDetails_Stat)
+        .withFailureHandler(showError)
+        .optMainTags('GetStat', htmlVarGlobal.Tag);
+		}
+
+    function TagDetails_Stat(input) {
+      if(input == null) {
+        showError();
+        return;
+      }
+
+      var chartBuilder, chartData, chartOptions;
+      var i, p;
+			p = Number(<?= ScreenResolution ?>);
+
+      $('#TagDetails_extras').show();
+      $('#TagDetails_bad-romance').hide();
+
+      $('#TagDetails_interval').append(input.Interval);
+      $('#TagDetails_total').append(input.Total);
+      $('#TagDetails_average').append(input.Average);
+      $('#TagDetails_min').append(input.Min);
+      $('#TagDetails_max').append(input.Max);
+
+      chartOptions = {
+        'width':607*p,
+        'height':293,
+        'isStacked':true,
+        'seriesType':'bars',
+        'legend':{ 'position':'none' },
+        'theme':'maximized',
+        'focusTarget':'category',
+        'vAxis':{'format':'#,##0.00;(#,##0.00)'}
+      };
+
+      chartData = new google.visualization.arrayToDataTable(input.Data);
+
+      <? if(!isInitiated) { ?>
+        chartOptions['series'] = { 0:{ color:'#cccccc' } };
+        chartData.removeColumn(3);
+        chartData.removeColumn(2);
+
+      <? } else { ?>
+        chartOptions['series'] = { 0:{ color:'#cccccc' }, 1:{ color:'#6d9eeb' }, 2:{ 'type':'line', color:'#e06666' } };
+      <? } ?>
+
+      chartBuilder = new google.visualization.ComboChart( document.getElementById('TagDetails_chart') );
+      chartBuilder.draw(chartData, chartOptions);
+    }
+
+    function EditTag_Panel(input) {
+      if(!input) {
+        showError();
+        return;
+
+      } else if(input === 2) {
+        alert('There was a problem...\nThe selected Tag does not exist or has been deleted.');
+        google.script.run
+          .withSuccessHandler(ListTags_Merge)
+          .withFailureHandler(showError)
+          .optMainTags('GetList');
+        goBackToPanel('p-Book');
+        return;
+
+      } else if(input === -1) {
+        $('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
+        return;
+      }
+
+      $('#AddEditTag-Title').empty().append('Edit tag');
+
+      $('#Form-AddEditTag_Name').val(input.Name);
+      $('#Form-AddEditTag_Description').val(input.Description);
+      $('#Form-AddEditTag_Tag').val(input.Tag);
+      $('#Form-AddEditTag_C').val(input.C);
+      $('.Form-AddEditTag_lock').prop('disabled', false);
+
+      $('#p-footer_FastResponse').empty();
+      $('.MainMenu-bot_title button').remove();
+      $('.m-footer.left').append('<button class="action Form-AddEditTag_lock" onclick="$(\'#Form-AddEditTag_submit\').click()">Save</button>');
+      $('.m-footer.left').append('<button class="Form-AddEditTag_lock" onclick="goBackToPanel(\'o-Cancel\')">Cancel</button>');
+      htmlVarGlobal.Panel = 'de';
+
+      $('#panel_AddEditTag').fadeIn('fast').siblings().hide();
+    }
+
+    function EditTag_Save() {
+      var auxTag = $('#Form-AddEditTag_Tag').val();
+      if(auxTag == 'wd' || auxTag == 'dp' || auxTag == 'trf' || auxTag == 'qcc' || auxTag == 'ign' || auxTag == 'rct') {
+        $('#p-footer_FastResponse').empty().append('Choose a different code.');
+        return false;
+      }
+
+      $('#p-footer_FastResponse').empty();
+      $('.Form-AddEditTag_lock').prop('disabled', true);
+
+      var output = {
+        Name: $('#Form-AddEditTag_Name').val(),
+        Description: $('#Form-AddEditTag_Description').val(),
+        Tag: $('#Form-AddEditTag_Tag').val(),
+        C: $('#Form-AddEditTag_C').val(),
+        refTag: htmlVarGlobal.Tag
+      };
+
+      google.script.run
+        .withSuccessHandler(EditTag_Aftermath)
+        .withFailureHandler(showError)
+        .optMainTags('Update', output);
+      return false;
+    }
+
+    function EditTag_Aftermath(input) {
+      if(input === 10) {
+        $('.Form-AddEditTag_lock').prop('disabled', false);
+        $('#p-footer_FastResponse').empty().append('The code is already in use. Choose a different one.');
+        return;
+
+      } else if(input === 0) {
+        $('.Form-AddEditTag_lock').prop('disabled', false);
+        $('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
+        return;
+
+      } else if(!isNaN(input)  &&  input > 0) {
+        showError();
+        return;
+      }
+
+      htmlVarGlobal.Tag = $('#Form-AddEditTag_Tag').val();
+
+      goBackToPanel('p-TagDetails');
+      $('#p-footer_FastResponse').empty().append('Saved.');
+      google.script.run
+        .withSuccessHandler(ListTags_Merge)
+        .withFailureHandler(showError)
+        .optMainTags('GetList');
+    }
+
+    function RemoveTag_Aftermath(p) {
+      if(!p) {
+        showError();
+        return;
+
+      } else if(p === 0) {
+        $('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
+        return;
+      }
+
+      $('#p-Book_WaitLoad').fadeIn('fast').siblings().hide();
+      goBackToPanel('p-Book');
+      $('#p-footer_FastResponse').append('Tag removed.');
+      google.script.run
+        .withSuccessHandler(ListTags_Merge)
+        .withFailureHandler(showError)
+        .optMainTags('GetList');
+    }
+
+    function NewTag_Panel() {
+      $('#AddEditTag-Title').empty().append('New tag');
+
+      $('#Form-AddEditTag_Name').val('');
+      $('#Form-AddEditTag_Description').val('');
+      $('#Form-AddEditTag_Tag').val('');
+      $('#Form-AddEditTag_C').val(5);
+      $('.Form-AddEditTag_lock').prop('disabled', false);
+
+      $('#p-footer_FastResponse').empty();
+      $('.MainMenu-bot_title button').remove();
+      $('.m-footer.left').append('<button class="create Form-AddEditTag_lock" onclick="$(\'#Form-AddEditTag_submit\').click()">Add</button>');
+      $('.m-footer.left').append('<button class="Form-AddEditTag_lock" onclick="goBackToPanel(\'p-Book\')">Cancel</button>');
+      htmlVarGlobal.Panel = 'ae';
+
+      $('.m-tab').removeClass('active');
+      $('#panel_AddEditTag').fadeIn('fast').siblings().hide();
+    }
+
+    function NewTag_Add() {
+      var auxTag = $('#Form-AddEditTag_Tag').val();
+      if(auxTag == 'wd' || auxTag == 'dp' || auxTag == 'trf' || auxTag == 'qcc' || auxTag == 'ign' || auxTag == 'rct') {
+        $('#p-footer_FastResponse').empty().append('Choose a different code.');
+        return false;
+      }
+
+      $('#p-footer_FastResponse').empty();
+      $('.Form-AddEditTag_lock').prop('disabled', true);
+
+      var output = {
+        Name: $('#Form-AddEditTag_Name').val(),
+        Description: $('#Form-AddEditTag_Description').val(),
+        Tag: $('#Form-AddEditTag_Tag').val(),
+        C: $('#Form-AddEditTag_C').val()
+      }
+
+      google.script.run
+        .withSuccessHandler(NewTag_Aftermath)
+        .withFailureHandler(showError)
+        .optMainTags('Add', output);
+      return false;
+    }
+
+    function NewTag_Aftermath(input) {
+      if(input === 10) {
+        $('.Form-AddEditTag_lock').prop('disabled', false);
+        $('#p-footer_FastResponse').empty().append('The code is already in use. Choose a different one.');
+        return;
+
+      } else if(input === 0) {
+        $('.Form-AddEditTag_lock').prop('disabled', false);
+        $('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
+        return;
+
+      } else if(!isNaN(input)  &&  input > 0) {
+        showError();
+        return;
+      }
+
+      $('#p-Book_WaitLoad').fadeIn('fast').siblings().hide();
+      goBackToPanel('p-Book');
+      $('#p-footer_FastResponse').append('New tag added.');
+      google.script.run
+        .withSuccessHandler(ListTags_Merge)
+        .withFailureHandler(showError)
+        .optMainTags('GetList');
+    }
+
+    function AddEditTag_opt() {
+      if(htmlVarGlobal.Panel == 'ae') NewTag_Add();
+      else if(htmlVarGlobal.Panel == 'de') EditTag_Save();
+      else showError();
+    }
+
+    function goBackToPanel(input) {
+      $('.m-tab').removeClass('active');
+      $('#p-footer_FastResponse').empty();
+      $('.MainMenu-bot_title button').remove();
+
+      switch(input) {
+        case 'p-Book':
+          $('#tab_book').addClass('active');
+          $('.m-footer.left').append('<button class="create" onclick="NewTag_Panel()">New tag</button>');
+          htmlVarGlobal.Panel = 'e';
+          htmlVarGlobal.Tag = 'e';
+          $('#panel_Book').fadeIn('fast').siblings().hide();
+          break;
+
+        case 'p-ViewList':
+          $('#tab_view-list').addClass('active');
+          htmlVarGlobal.Panel = 'e';
+          htmlVarGlobal.Tag = 'e';
+          $('#panel_ViewList').fadeIn('fast').siblings().hide();
+          break;
+
+        case 'p-TagDetails':
+          htmlVarGlobal.Panel = 'ne';
+          $('#panel_WaitLoad').fadeIn('fast').siblings().hide();
+  				google.script.run
+            .withSuccessHandler(TagDetails_Info)
+            .withFailureHandler(showError)
+            .optMainTags('GetInfo', htmlVarGlobal.Tag);
+          break;
+
+        case 'o-WaitLoad':
+          $('#panel_WaitLoad').fadeIn('fast').siblings().hide();
+          break;
+
+        case 'o-Cancel':
+          htmlVarGlobal.Panel = 'ne';
+          $('#panel_TagDetails').fadeIn('fast').siblings().hide();
+          break;
+
+        default:
+          showError();
+          break;
+      }
+    }
+
+    function ListTags_Merge(input) {
+      if(input === 0) {
+        google.script.run.withFailureHandler(showError)
+          .showDialogQuickMessage('The add-on is busy. Try again a moment.', true);
+        return;
+
+      } else if( !isNaN(input) ) {
+        showError();
+        return;
+      }
+
+      var list = [
+        [ 'A', 'D', 'E', 'F', 'G', 'K', 'L', 'S', 'T', 'U' ],
+        [ 'Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling' ]
+      ];
+      var string;
+      var i, j;
+
+      $('#p-Book_BoxListTags').empty();
+
+
+      for(i = 0;  i < 10;  i++) {
+        if(input[i][0] === 0) continue;
+
+        $('#p-Book_BoxListTags').append('<span class="Tags-title">'+list[1][i]+'</span><div class="Tags-table" id="TagCategory-'+list[0][i]+'"></div><hr>');
+
+        string = '#TagCategory-'+list[0][i];
+        for(j = 0;  j < input[i][0];  j++) {
+          $(string).append('<div class="Tag-row m-li" id="'+input[i][j+1].Tag+'"><div class="Tag-name">'+input[i][j+1].Name+'</div></div>');
+        }
+      }
+
+      $('#p-Book_ListTags').fadeIn('fast')
+        .siblings()
+        .hide();
+    }
+  </script>
+  </body>
+</html>
