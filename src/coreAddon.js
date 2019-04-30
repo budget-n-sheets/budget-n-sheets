@@ -520,7 +520,8 @@ function optTool_FormatRegistry_(mm_) {
     foo_FormatRegistry_(c);
 
   } else if(sheet.getSheetName() === 'Cards') {
-    foo_FormatCreditCard_(mm_ - 12);
+    mm_ = mm_ ? mm_ - 12 : null;
+    foo_FormatCreditCard_(mm_);
 
   } else {
     SpreadsheetApp.getUi().alert(
