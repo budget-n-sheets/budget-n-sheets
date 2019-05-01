@@ -130,11 +130,11 @@ function LNEREPORT(range, sum_range) {
   * @return The credit card report.
   * @customfunction
   */
-function LNECARD(code, range) {
-  if(!code || !range) return 0;
+function LNECARD(range) {
+  if(!range) return 0;
 
   var SUM;
-  var n1, n2, i;
+  var n, i;
 
   SUM = [
     [ 0 ], // Credit
@@ -144,28 +144,15 @@ function LNECARD(code, range) {
     [ 0 ]  // Partial
   ];
 
+  i = 0;
+  n = range.length;
 
-  n1 = range.length;  i = 0;
-  n2 = n1 - 1;
-  while(i < n1  &&  range[i][2] !== '') {
-
-    while(range[i][1] !== code  &&  i < n2) { i++; }
-
-  if(range[i][1] === code) {
-    //if( /#ign/.test(range[i][3])  &&  range[i][2] <= 0 ) SUM[2][0] += range[i][2];
+  while(i < n) {
     if(range[i][2] >= 0) SUM[0][0] += range[i][2];
     else if(range[i][2] < 0) {
       SUM[1][0] += range[i][2];
       if(! /#ign/.test(range[i][3])) SUM[2][0] += range[i][2];
     }
-
-    /*match = range[i][0].match(/(\d)+\/(\d)+/);
-    if(match  &&  range[i][2] < 0) {
-      if(match[1] > 1) {
-        SUM[4][0] += range[i][2] * (match[2] - match[1] + 1);
-      }
-    }*/
-  }
 
     i++;
   }
