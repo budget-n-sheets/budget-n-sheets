@@ -150,10 +150,10 @@ function update_ExecutePatial_() {
 
 
 /**
-  * Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  *
-  * X.XX.X
-  *
+ * Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ *
+ * X.XX.X
+ *
 function update0packXX_() {
   console.time("update/pack-XX");
   try {
@@ -165,6 +165,38 @@ function update0packXX_() {
   console.timeEnd("update/pack-XX");
 }*/
 
+/**
+ * Initialize property 'is_installed'.
+ * Reinstall all cards.
+ *
+ *
+ * 0.16.1
+ */
+function update0pack48_() {
+  console.time("update/pack-48");
+  try {
+    var DB_CARD, i;
+
+    PropertiesService.getDocumentProperties().setProperty("is_installed", "[ ]");
+
+    DB_CARD = getPropertiesService_("document", "json", "DB_CARD");
+
+    for(i = 0; i < DB_CARD.length; i++) {
+      optMainTables("RemoveCard", DB_CARD[i].Id);
+      SpreadsheetApp.flush();
+      Utilities.sleep(200);
+
+      optMainTables("AddCard", DB_CARD[i]);
+      SpreadsheetApp.flush();
+      Utilities.sleep(200);
+    }
+  } catch(err) {
+    Logger.log('update0pack48_() : ' + err.message);
+    console.warn("update0pack48_()", err);
+    return true;
+  }
+  console.timeEnd("update/pack-48");
+}
 
 /**
   * Reinstall triggers.
