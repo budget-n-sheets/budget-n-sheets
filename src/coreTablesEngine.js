@@ -121,7 +121,7 @@ function optCard_SetCard_(input) {
 
   col = 3 + number_accounts*3 + 2 + 1;
   maxRows = sheetBackstage.getMaxRows();
-  ref = 'LNECARD(' + rollA1Notation(1, col) + '; \'Cards\'!';
+  ref = 'LNECARD(FILTER(\'Cards\'!';
 
 
   try {
@@ -132,7 +132,12 @@ function optCard_SetCard_(input) {
 
     for(i = 0;  i < 12;  i++) {
       formula = ref;
-      formula += rollA1Notation(6,2+i*6, -1,4) + ')';
+      formula += rollA1Notation(6,2+i*6, -1,4);
+      formula += "; \'Cards\'!" + rollA1Notation(6,3+i*6, -1,1);
+      formula += "=" + rollA1Notation(1, col);
+      formula += "; \'Cards\'!" + rollA1Notation(6,4+i*6, -1,1);
+      formula += "<>\"\"";
+      formula += "))";
 
       sheetBackstage.getRange(3+i*6, col).setFormula(formula); // LNECARD
     }
