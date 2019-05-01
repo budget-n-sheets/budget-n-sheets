@@ -202,6 +202,7 @@ function setupAddon(addonSettings, listAccountName) {
 
 
   setPropertiesService_('document', 'boolean', 'LazyNotesExtras', true);
+  setPropertiesService_("document", "string", "is_installed", "[ ]");
   onOpen();
   console.timeEnd("add-on/Install");
 
