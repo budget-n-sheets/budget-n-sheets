@@ -213,7 +213,7 @@ function setupAddon(addonSettings, listAccountName) {
 
 function setup_FormatSpreadsheet_(timer) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var listEssentialSheets = [ '_Backstage', 'Summary', 'Jan', 'Dec', '_Settings', 'Quickstart' ];
+  var listEssentialSheets = [ '_Backstage', 'Summary', 'Jan', 'Dec', '_Settings' ];
   var thisSheet;
   var i, k;
 
@@ -252,8 +252,7 @@ function setup_FormatSpreadsheet_(timer) {
 
   sortSheetOrder_(spreadsheet);
 
-  spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Quickstart') );
-  spreadsheet.moveActiveSheet(3);
+  spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Summary') );
 
   return true;
 }
