@@ -135,21 +135,41 @@ function uninstall_() {
 }
 
 
-function setupAddon(addonSettings, listAccountName) {
-  if( documentPropertiesService_.getProperty("is_installed") ) return 0;
+function setup_ui(settings, list) {
+  if(PropertiesService.getDocumentProperties().getProperty("is_installed")) return 0;
 
   var lock = LockService.getDocumentLock();
   try {
-    lock.waitLock(100);
+    lock.waitLock(200);
   } catch(err) {
     SpreadsheetApp.getUi().alert(
-      "Add-on is busy",
-      "The add-on is busy. Try again a moment.",
+      "Add-on is installing",
+      "The add-on is installing. Try again a moment.",
       SpreadsheetApp.getUi().ButtonSet.OK);
     return 0;
   }
 
+  try {
+    var s = setup_(settings, list);
+  } catch(err) {
+    console.error("setup_ui()", err);
+    uninstall_();
+  }
 
+  if(!s) {
+    showDialogErrorMessage();
+    return 0;
+  }
+
+  setPropertiesService_("document", "string", "is_installed", "[ ]");
+  onOpen();
+
+  Logger.log("add-on/Install: Success.");
+  console.info("add-on/Install: Success.");
+  return -1;
+}
+
+function setup_(addonSettings, listAccountName) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var dateToday = getSpreadsheetDate();
   var timer, chk;
@@ -167,7 +187,6 @@ function setupAddon(addonSettings, listAccountName) {
 
   console.time("add-on/Install");
 
-
   spreadsheet.rename(addonSettings.SpreadsheetName);
 
   purgeScriptAppTriggers_();
@@ -177,26 +196,21 @@ function setupAddon(addonSettings, listAccountName) {
   if(!chk) {
     console.error("Function setup_FormatSpreadsheet_() failed.");
     showDialogErrorMessage();
-    return 2;
+    return;
   }
 
   chk = setup_ExecutePatial_(timer, addonSettings, listAccountName, dateToday);
   if(!chk) {
     console.error("Function setup_ExecutePatial_() failed.");
     showDialogErrorMessage();
-    return 2;
+    return;
   }
 
   setPropertiesService_('document', 'string', 'authorizationStatus', '');
   setPropertiesService_('document', 'number', 'LNE_VERSION', AppsScriptGlobal.AddonVersion());
 
-  setPropertiesService_("document", "string", "is_installed", "[ ]");
-  onOpen();
   console.timeEnd("add-on/Install");
-
-  Logger.log('addon/Install : Success.');
-  console.info("add-on/Install : Success.");
-  return -1;
+  return true;
 }
 
 

@@ -266,7 +266,7 @@
       google.script.run
         .withSuccessHandler(clickNext)
         .withFailureHandler(showError)
-        .setupAddon(addonSettings, listAccountName);
+        .setup_ui(addonSettings, listAccountName);
       return;
     }
   </script>
