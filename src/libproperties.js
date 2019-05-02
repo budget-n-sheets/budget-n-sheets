@@ -1,4 +1,10 @@
 /**
+ * Copyright (c) 2019 Guilherme T Maeoka
+ * This code is licensed under MIT license.
+ * <https://github.com/guimspace/gas-common>
+ */
+
+/**
  * Gets the value associated with the given key in the current Properties store, or null if no such key exists.
  * @param  {String} method The method to get a property store
  * @param  {String} key    The key for the property
@@ -11,14 +17,14 @@ function getPropertiesService_(method, type, key) {
 
   switch(method) {
     case 'document':
-      m_Properties = PropertiesService.getDocumentProperties();
+      m_Properties = documentPropertiesService_;
       break;
     case 'script':
-      m_Properties = PropertiesService.getScriptProperties();
+      m_Properties = scriptPropertiesService_;
       break;
     case 'user':
     default:
-      m_Properties = PropertiesService.getUserProperties();
+      m_Properties = userPropertiesService_;
       break;
   }
 
@@ -52,14 +58,14 @@ function setPropertiesService_(method, type, key, value) {
 
   switch(method) {
     case 'document':
-      m_Properties = PropertiesService.getDocumentProperties();
+      m_Properties = documentPropertiesService_;
       break;
     case 'script':
-      m_Properties = PropertiesService.getScriptProperties();
+      m_Properties = scriptPropertiesService_;
       break;
     case 'user':
     default:
-      m_Properties = PropertiesService.getUserProperties();
+      m_Properties = userPropertiesService_;
       break;
   }
 
@@ -88,18 +94,18 @@ function setPropertiesService_(method, type, key, value) {
 function purgePropertiesService_(method) {
   switch(method) {
     case 'document':
-      PropertiesService.getDocumentProperties().deleteAllProperties();
+      documentPropertiesService_.deleteAllProperties();
       break;
     case 'script':
-      PropertiesService.getScriptProperties().deleteAllProperties();
+      scriptPropertiesService_.deleteAllProperties();
       break;
     case 'user':
-      PropertiesService.getUserProperties().deleteAllProperties();
+      userPropertiesService_.deleteAllProperties();
       break;
     default:
-      PropertiesService.getDocumentProperties().deleteAllProperties();
-      PropertiesService.getScriptProperties().deleteAllProperties();
-      PropertiesService.getUserProperties().deleteAllProperties();
+      documentPropertiesService_.deleteAllProperties();
+      scriptPropertiesService_.deleteAllProperties();
+      userPropertiesService_.deleteAllProperties();
       break;
   }
 }
