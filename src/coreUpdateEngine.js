@@ -37,7 +37,7 @@ function onlineUpdate_(f) {
 
     b = update_ExecutePatial_();
     if(b === 1) {
-      uninstallAddon_();
+      uninstall_();
       showDialogErrorMessage();
       onOpen();
     } else if(b === -1) {
@@ -77,7 +77,7 @@ function seamlessUpdate_() {
   else {
     b = update_ExecutePatial_();
     if(b === 1) {
-      uninstallAddon_();
+      uninstall_();
     } else if(b === -1) {
       return;
     }

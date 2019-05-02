@@ -83,7 +83,7 @@ function askDeactivation() {
   var button = result.getSelectedButton();
   var text = result.getResponseText();
   if (button == Ui.Button.OK  &&  text === s) {
-    uninstallAddon_();
+    uninstall_();
     onOpen();
     console.info("add-on/Deactivate : Success.");
     return true;
@@ -122,26 +122,16 @@ function askReinstall() {
 }
 
 
+function uninstall_() {
+  var list = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
 
-function uninstallAddon_() {
-  var list, i;
-
-  try {
-    list = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
-    for(i = 0;  i < list.length;  i++) {
-      ScriptApp.deleteTrigger(list[i]);
-    }
-
-    PropertiesService.getDocumentProperties().deleteAllProperties();
-    PropertiesService.getScriptProperties().deleteAllProperties();
-    PropertiesService.getUserProperties().deleteAllProperties();
-  } catch(err) {
-    Logger.log('uninstallAddon_(): ' + err.message);
-    console.error("uninstallAddon_()", err);
-    return;
+  for(var i = 0; i < list.length; i++) {
+    ScriptApp.deleteTrigger(list[i]);
   }
 
-  return true;
+  PropertiesService.getDocumentProperties().deleteAllProperties();
+  PropertiesService.getScriptProperties().deleteAllProperties();
+  PropertiesService.getUserProperties().deleteAllProperties();
 }
 
 
