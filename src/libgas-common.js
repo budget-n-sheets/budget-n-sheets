@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2019 Guilherme T Maeoka
+ * This code is licensed under MIT license.
+ * <https://github.com/guimspace/gas-common>
+ */
+
 function htmlInclude(fileName) {
   return HtmlService.createHtmlOutputFromFile(fileName)
     .getContent();
@@ -26,34 +32,38 @@ function bin2String(b) {
 
 
 /**
-  * @param  {Boolean} s False to send email requesting re-authorization.
-  * @return {Boolean} True if authorization is required.
-  */
-function testAuthorizationRequired_(s) {
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+ * Sends an email requesting re-authorization of the script.
+ * The property "authorization_status" ensures the recipient receives the email
+ * only once (for every new re-authorization needed), otherwise the function
+ * would send an email in every call.
+ *
+ * @return {Boolean} True if re-authorization is required.
+ */
+function isReAuthorizationRequired_() {
   var documentProperties = PropertiesService.getDocumentProperties();
   var authInfoLevel = ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL);
   var htmlTemplate, htmlMessage;
 
-  if(authInfoLevel.getAuthorizationStatus() == ScriptApp.AuthorizationStatus.REQUIRED) {
-    if(documentProperties.getProperty('authorizationStatus') === ''  &&  MailApp.getRemainingDailyQuota() > 0  &&  !s) {
-      htmlTemplate = HtmlService.createTemplateFromFile('htmlAuthorizationEmail');
-      htmlTemplate.spreadsheetUrl = spreadsheet.getUrl();
-      htmlTemplate.spreadsheetName = spreadsheet.getName();
-      htmlTemplate.authorizationUrl = authInfoLevel.getAuthorizationUrl();
-      htmlMessage = htmlTemplate.evaluate();
-      MailApp.sendEmail(Session.getEffectiveUser().getEmail(),
-          'Authorization Required',
-          htmlMessage.getContent(), {
-            name: 'Add-on Budget n Sheets',
-            htmlBody: htmlMessage.getContent(),
-            noReply: true
-          });
-      documentProperties.setProperty('authorizationStatus', 'true');
-    }
-  } else {
-    documentProperties.setProperty('authorizationStatus', '');
+  if(authInfoLevel.getAuthorizationStatus() == ScriptApp.AuthorizationStatus.NOT_REQUIRED) {
+    documentProperties.setProperty("authorization_status", "");
     return false;
+  }
+
+  if(documentProperties.getProperty("authorization_status") === "" && MailApp.getRemainingDailyQuota() > 0) {
+    htmlTemplate = HtmlService.createTemplateFromFile("html");
+
+    htmlTemplate.url = authInfoLevel.getAuthorizationUrl();
+
+    htmlMessage = htmlTemplate.evaluate();
+    MailApp.sendEmail(
+      Session.getEffectiveUser().getEmail(),
+      "",
+      htmlMessage.getContent(), {
+        name: "",
+        htmlBody: htmlMessage.getContent(),
+        noReply: true
+      });
+    documentProperties.setProperty("authorization_status", "[ ]");
   }
 
   return true;

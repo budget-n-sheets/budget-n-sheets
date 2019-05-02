@@ -57,7 +57,7 @@ function onEdit_Main_(e) {
 
 
 function daily_Main_(e) {
-  if(testAuthorizationRequired_()) return;
+  if(isReAuthorizationRequired_()) return;
   else if(isMissingSheet()) return;
 
   if(seamlessUpdate_()) return;
@@ -92,7 +92,7 @@ function daily_Main_(e) {
 
 
 function weekly_Main_(e) {
-  if(testAuthorizationRequired_()) return;
+  if(isReAuthorizationRequired_()) return;
   else if(isMissingSheet()) return;
 
   seamlessUpdate_();
