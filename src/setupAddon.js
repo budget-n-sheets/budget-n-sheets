@@ -29,11 +29,9 @@ function showSetupAddon_() {
       Ui.ButtonSet.OK);
     return;
 
-  } else if( documentPropertiesService_.getProperty("is_installed") ) {
-    Ui.alert(
-      "Activation complete",
-      "Reopen the spreadsheet to apply pending changes.",
-      Ui.ButtonSet.OK);
+  } else if(documentPropertiesService_.getProperty("is_installed")) {
+    showDialogSetupEnd();
+    onOpen();
     return;
 
   } else if(new Date().getTime() < AppsScriptGlobal.DateNextRelease()) {
@@ -121,6 +119,16 @@ function askReinstall() {
   }
 }
 
+function showDialogSetupEnd() {
+  var htmlDialog = HtmlService.createTemplateFromFile("htmlSetupEnd")
+    .evaluate()
+    .setWidth(353)
+    .setHeight(359);
+
+  SpreadsheetApp.getUi()
+    .showModalDialog(htmlDialog, "Add-on Budget n Sheets");
+}
+
 
 function uninstall_() {
   var list = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
@@ -136,17 +144,21 @@ function uninstall_() {
 
 
 function setup_ui(settings, list) {
-  if(PropertiesService.getDocumentProperties().getProperty("is_installed")) return 0;
+  if(documentPropertiesService_.getProperty("is_installed")) {
+    showDialogSetupEnd();
+    onOpen();
+    return;
+  }
 
   var lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
   } catch(err) {
     SpreadsheetApp.getUi().alert(
-      "Add-on is installing",
-      "The add-on is installing. Try again a moment.",
+      "Add-on is busy",
+      "A budget spreadsheet setup is in progress. Try again later.",
       SpreadsheetApp.getUi().ButtonSet.OK);
-    return 0;
+    return;
   }
 
   try {
@@ -158,15 +170,15 @@ function setup_ui(settings, list) {
 
   if(!s) {
     showDialogErrorMessage();
-    return 0;
+    return;
   }
 
   setPropertiesService_("document", "string", "is_installed", "[ ]");
+  showDialogSetupEnd();
   onOpen();
 
   Logger.log("add-on/Install: Success.");
   console.info("add-on/Install: Success.");
-  return -1;
 }
 
 function setup_(addonSettings, listAccountName) {

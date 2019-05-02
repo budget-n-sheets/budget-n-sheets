@@ -153,18 +153,6 @@
             <div class="animation_WaitLoad_bar"></div>
           </div>
         </div>
-
-        <div class="panel" id="end-panel">
-          <h2>Spreadsheet is ready!</h2>
-          <p>Your new budget spreadsheet is ready!</p>
-          <ul>
-            <li><a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>Step-by-step Introduction</b></a>: A guide with examples for important features.</li>
-            <li><a href="https://groups.google.com/d/forum/add-on-budget-n-sheets-forum" target="_blank"><b>Forum</b></a>: Post questions and discuss topics.</li>
-          </ul>
-
-          <a href="https://sites.google.com/view/guimspace/budget-n-sheets/support" target="_blank"><b>Support</b></a><br/>
-          <a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>Wiki</b></a>
-        </div>
       </div>
 
       <div id="MainPanel_footer" style="display:table;">
@@ -229,21 +217,13 @@
         case 'form':
           $('#form-p_submit').click();
           break;
-        case 'setup':
-          if(param !== -1) google.script.host.close();
-          else {
-            $('#setup-panel').hide();
-            $('#MainPanel_footer-left').append('<button onclick="google.script.host.close()">Close</button>');
-            $('#end-panel').fadeIn('fast');
-          }
-          break;
         default:
           showError();
           break;
       }
       return;
     }
-    function fireSetup() { /* ------------------- */
+    function fireSetup() {
       $('#form-panel').hide();
       $('#MainPanel_footer button').remove();
 
@@ -263,11 +243,10 @@
         return $(this).val();
       }).get();
 
-      google.script.run
-        .withSuccessHandler(clickNext)
-        .withFailureHandler(showError)
+      google.script.run.withSuccessHandler(function() {
+          google.script.host.close();
+        }).withFailureHandler(showError)
         .setup_ui(addonSettings, listAccountName);
-      return;
     }
   </script>
   </body>
