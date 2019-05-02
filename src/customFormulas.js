@@ -8,6 +8,8 @@
   * @customfunction
   */
 function LNEBALANCE(value, range, sum_range) {
+  Utilities.sleep(200);
+
   if(isNaN(value)) return '-';
   else if(value == null || range == null || sum_range == null) return 0;
   else if(sum_range.length != range.length) return 0;
@@ -42,6 +44,8 @@ function LNEBALANCE(value, range, sum_range) {
   * @customfunction
   */
 function LNESUBTOTAL(range, sum_range) {
+  Utilities.sleep(200);
+
   if(sum_range == null || range == null) return 0;
   else if(sum_range.length != range.length) return 0;
 
@@ -74,6 +78,8 @@ function LNESUBTOTAL(range, sum_range) {
   * @customfunction
   */
 function LNEREPORT(range, sum_range) {
+  Utilities.sleep(200);
+
   if(sum_range == null || range == null) return 0;
   else if(sum_range.length != range.length) return 0;
 
@@ -131,6 +137,8 @@ function LNEREPORT(range, sum_range) {
   * @customfunction
   */
 function LNECARD(range) {
+  Utilities.sleep(200);
+
   if(!range) return 0;
 
   var SUM;
@@ -171,6 +179,8 @@ function LNECARD(range) {
   * @customfunction
   */
 function LNESUMBYTAG(tag, range) {
+  Utilities.sleep(200);
+
   if(!tag  ||  !range) return 0;
 
   var thisRegExp, masterRegExp;
@@ -226,6 +236,8 @@ function LNESUMBYTAG(tag, range) {
   * @customfunction
   */
 function LNEINF(range) {
+  Utilities.sleep(200);
+
   if(!range) return "#ERROR!";
 
   var strINF = "";
@@ -254,6 +266,8 @@ function LNEINF(range) {
   * @customfunction
   */
 function LNEINFCARD(range) {
+  Utilities.sleep(200);
+
   if(!range) return '';
 
   var str = '';
