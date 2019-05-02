@@ -6,8 +6,8 @@ var AppsScriptGlobal = (function() {
     SpreadsheetTemplateVersion: '4.10',
     SpreadsheetTemplateListSheets: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '_Settings', 'Cash Flow', 'Tags', 'Quick Actions', '_Backstage', 'Statistics', 'Cards', 'Summary', 'About' ],
 
-    AddonVersion: 53,
-    AddonVersionName: "0.16.0",
+    AddonVersion: 54,
+    AddonVersionName: "0.16.1",
     DateNextRelease: 0,
 
     listNameMonth: [
@@ -16,7 +16,7 @@ var AppsScriptGlobal = (function() {
     ],
 
     requiredVersion: {
-      showPanelTables: 53,
+      showPanelTables: 54,
       showPanelTags: 53,
       showSidebarMainSettings: 53,
       toolUpdateCashFlow: 53
