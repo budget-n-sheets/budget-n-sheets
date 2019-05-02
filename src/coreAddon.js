@@ -37,7 +37,7 @@ function onOpen(e) {
       .addItem('About the add-on', 'showDialogAboutAddon')
       .addToUi();
   } else {
-    if(PropertiesService.getDocumentProperties().getProperty('LazyNotesExtras')) {
+    if(PropertiesService.getDocumentProperties().getProperty('is_installed')) {
       SpreadsheetApp.getUi()
         .createAddonMenu()
         .addItem('Add blank lines', 'toolAddBlankRows')
@@ -125,7 +125,7 @@ function showSidebarMainSettings() {
 
 
 function showDialogAboutAddon() {
-  if(getPropertiesService_('document', 'boolean', 'LazyNotesExtras')) {
+  if(documentPropertiesService_.getProperty("is_installed")) {
     onlineUpdate_();
   }
 
