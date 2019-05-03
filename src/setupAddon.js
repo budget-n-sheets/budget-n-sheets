@@ -191,7 +191,6 @@ function setup_(addonSettings, listAccountName) {
   chk = setup_ExecutePatial_(addonSettings, listAccountName);
   if(!chk) {
     console.error("Function setup_ExecutePatial_() failed.");
-    showDialogErrorMessage();
     return;
   }
 
