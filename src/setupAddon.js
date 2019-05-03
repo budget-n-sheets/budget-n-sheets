@@ -150,11 +150,11 @@ function setup_ui(settings, list) {
   try {
     var s = setup_(settings, list);
   } catch(err) {
-    console.error("setup_ui()", err);
-    uninstall_();
+    console.error("setup_()", err);
   }
 
   if(!s) {
+    uninstall_();
     showDialogErrorMessage();
     return;
   }
@@ -169,7 +169,6 @@ function setup_ui(settings, list) {
 
 function setup_(addonSettings, listAccountName) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var chk;
 
   addonSettings.FinancialYear = Number(addonSettings.FinancialYear);
   addonSettings.InitialMonth = Number(addonSettings.InitialMonth);
@@ -188,11 +187,13 @@ function setup_(addonSettings, listAccountName) {
 
   spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Summary') );
 
-  chk = setup_ExecutePatial_(addonSettings, listAccountName);
-  if(!chk) {
-    console.error("Function setup_ExecutePatial_() failed.");
-    return;
+  try {
+    var s = setup_ExecutePatial_(addonSettings, listAccountName);
+  } catch(err) {
+    console.error("setup_ExecutePatial_()", err);
   }
+
+  if(!s) return;
 
   setPropertiesService_('document', 'number', 'LNE_VERSION', AppsScriptGlobal.AddonVersion());
 
