@@ -169,17 +169,11 @@ function setup_ui(settings, list) {
 
 function setup_(addonSettings, listAccountName) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var dateToday = getSpreadsheetDate();
   var chk;
 
   addonSettings.FinancialYear = Number(addonSettings.FinancialYear);
   addonSettings.InitialMonth = Number(addonSettings.InitialMonth);
   addonSettings.number_accounts = Number(addonSettings.number_accounts);
-
-  dateToday = {
-    FullYear: dateToday.getFullYear(),
-    Month: dateToday.getMonth()
-  };
 
   console.time("add-on/Install");
 
@@ -194,7 +188,7 @@ function setup_(addonSettings, listAccountName) {
 
   spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Summary') );
 
-  chk = setup_ExecutePatial_(addonSettings, listAccountName, dateToday);
+  chk = setup_ExecutePatial_(addonSettings, listAccountName);
   if(!chk) {
     console.error("Function setup_ExecutePatial_() failed.");
     showDialogErrorMessage();
@@ -223,13 +217,12 @@ function sortSheetOrder_() {
 }
 
 
-
-function setup_ExecutePatial_(addonSettings, listAccountName, dateToday) {
+function setup_ExecutePatial_(addonSettings, listAccountName) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
       sheetFinances = spreadsheet.getSheetByName('Summary'),
       sheetBackstage = spreadsheet.getSheetByName('_Backstage'),
       sheetSettings = spreadsheet.getSheetByName('_Settings');
-  var number_accounts;
+  var dateToday, number_accounts;
   var chk;
 
   if(!sheetFinances) return;
@@ -238,6 +231,11 @@ function setup_ExecutePatial_(addonSettings, listAccountName, dateToday) {
 
   listNameMonths = AppsScriptGlobal.listNameMonth()[0];
   numberLneAccount = addonSettings.number_accounts;
+
+  dateToday = {
+    FullYear: dateToday.getFullYear(),
+    Month: dateToday.getMonth()
+  };
 
 
   chk = setupPart3_(spreadsheet, listNameMonths, numberLneAccount);
