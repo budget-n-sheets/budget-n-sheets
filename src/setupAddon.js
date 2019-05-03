@@ -218,7 +218,6 @@ function setup_(addonSettings, listAccountName) {
     return;
   }
 
-  setPropertiesService_('document', 'string', 'authorization_status', '');
   setPropertiesService_('document', 'number', 'LNE_VERSION', AppsScriptGlobal.AddonVersion());
 
   console.timeEnd("add-on/Install");

@@ -45,11 +45,11 @@ function isReAuthorizationRequired_() {
   var htmlTemplate, htmlMessage;
 
   if(authInfoLevel.getAuthorizationStatus() == ScriptApp.AuthorizationStatus.NOT_REQUIRED) {
-    documentProperties.setProperty("authorization_status", "");
+    documentProperties.deleteProperty("auth_request_sent");
     return false;
   }
 
-  if(documentProperties.getProperty("authorization_status") === "" && MailApp.getRemainingDailyQuota() > 0) {
+  if(!documentProperties.getProperty("auth_request_sent") && MailApp.getRemainingDailyQuota() > 0) {
     htmlTemplate = HtmlService.createTemplateFromFile("html");
 
     htmlTemplate.url = authInfoLevel.getAuthorizationUrl();
@@ -63,7 +63,8 @@ function isReAuthorizationRequired_() {
         htmlBody: htmlMessage.getContent(),
         noReply: true
       });
-    documentProperties.setProperty("authorization_status", "[ ]");
+
+    documentProperties.setProperty("auth_request_sent", "[ ]");
   }
 
   return true;

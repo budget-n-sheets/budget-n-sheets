@@ -136,14 +136,14 @@ function deleteScriptAppTriggers_(method, key) {
   }
 
   thisTriggerID = m_Properties.getProperty(key);
-  if(thisTriggerID == null) return;
+  if(!thisTriggerID) return;
 
   listTriggers = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
 
   for(i = 0;  i < listTriggers.length;  i++) {
     if(listTriggers[i].getUniqueId() === thisTriggerID) {
       ScriptApp.deleteTrigger(listTriggers[i]);
-      m_Properties.setProperty(key, '');
+      m_Properties.deleteProperty(key);
       break;
     }
   }
