@@ -221,7 +221,8 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
       sheetFinances = spreadsheet.getSheetByName('Summary'),
       sheetBackstage = spreadsheet.getSheetByName('_Backstage'),
       sheetSettings = spreadsheet.getSheetByName('_Settings');
-  var dateToday, number_accounts;
+  var dateToday = getSpreadsheetDate();
+  var number_accounts;
   var chk;
 
   if(!sheetFinances) return;
