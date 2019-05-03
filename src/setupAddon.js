@@ -27,19 +27,7 @@ function showSetupAddon_() {
       Ui.ButtonSet.OK);
     return;
 
-  }*/ else if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != 'en_US') {
-    var auxCell = Ui.alert(
-      "Locale",
-      "It is necessary to change the Locale of the spreadsheet. This affects formatting details such as functions, dates, and currency.\nClick OK to change now.",
-      Ui.ButtonSet.OK_CANCEL);
-
-    if(auxCell == Ui.Button.OK) {
-      SpreadsheetApp.getActiveSpreadsheet()
-        .setSpreadsheetLocale('en_US');
-    }
-    return;
-
-  } else if(SpreadsheetApp.getActiveSpreadsheet().getFormUrl() != null) {
+  }*/ else if(SpreadsheetApp.getActiveSpreadsheet().getFormUrl() != null) {
     Ui.alert(
       "Linked form",
       "The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.",
