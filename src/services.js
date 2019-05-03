@@ -65,6 +65,10 @@ function daily_Main_(e) {
   var date = getSpreadsheetDate();
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
 
+  if(date.getDay() == 2) {
+    weekly_DecimalSepartor_();
+  }
+
   if(FinancialYear < date.getFullYear()) {
     monthly_TreatLayout_(date);
     deleteScriptAppTriggers_('document', 'dailyMainId');

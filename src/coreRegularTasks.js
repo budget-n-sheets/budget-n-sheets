@@ -106,6 +106,29 @@ function daily_PostEvents_(date) {
 }
 
 
+function weekly_DecimalSepartor_() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
+  var cell;
+
+  if(!sheet) return;
+
+  cell = sheet.getRange(9, 2);
+
+  cell.setValue(0.1);
+  cell.setNumberFormat("0.0");
+  SpreadsheetApp.flush();
+
+  cell = cell.getDisplayValue();
+  if( /\./.test(cell) ) {
+    setPropertiesService_("document", "string", "decimal_separator", "[ ]");
+    DEC_P = ".";
+  } else {
+    deletePropertiesService_("document", "decimal_separator");
+    DEC_P = ",";
+  }
+}
+
+
 
 function monthly_TreatLayout_(date) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),

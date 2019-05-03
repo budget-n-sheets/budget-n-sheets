@@ -736,7 +736,21 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
   try {
     var cell;
 
+    {
+      cell = sheetSettings.getRange(9, 2);
 
+      cell.setValue(0.1);
+      cell.setNumberFormat("0.0");
+      SpreadsheetApp.flush();
+
+      cell = cell.getDisplayValue();
+      if( /\./.test(cell) ) {
+        setPropertiesService_("document", "string", "decimal_separator", "[ ]");
+        DEC_P = ".";
+      } else {
+        DEC_P = ",";
+      }
+    }
     {
       cell = [
         [ AddonSettings.FinancialYear ],
