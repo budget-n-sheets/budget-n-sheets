@@ -170,7 +170,7 @@ function setup_ui(settings, list) {
 function setup_(addonSettings, listAccountName) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var dateToday = getSpreadsheetDate();
-  var timer, chk;
+  var chk;
 
   addonSettings.FinancialYear = Number(addonSettings.FinancialYear);
   addonSettings.InitialMonth = Number(addonSettings.InitialMonth);
@@ -180,8 +180,6 @@ function setup_(addonSettings, listAccountName) {
     FullYear: dateToday.getFullYear(),
     Month: dateToday.getMonth()
   };
-
-  timer = 500;
 
   console.time("add-on/Install");
 
@@ -196,7 +194,7 @@ function setup_(addonSettings, listAccountName) {
 
   spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Summary') );
 
-  chk = setup_ExecutePatial_(timer, addonSettings, listAccountName, dateToday);
+  chk = setup_ExecutePatial_(addonSettings, listAccountName, dateToday);
   if(!chk) {
     console.error("Function setup_ExecutePatial_() failed.");
     showDialogErrorMessage();
@@ -226,7 +224,7 @@ function sortSheetOrder_() {
 
 
 
-function setup_ExecutePatial_(timer, addonSettings, listAccountName, dateToday) {
+function setup_ExecutePatial_(addonSettings, listAccountName, dateToday) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
       sheetFinances = spreadsheet.getSheetByName('Summary'),
       sheetBackstage = spreadsheet.getSheetByName('_Backstage'),
@@ -244,47 +242,37 @@ function setup_ExecutePatial_(timer, addonSettings, listAccountName, dateToday) 
 
   chk = setupPart3_(spreadsheet, listNameMonths, numberLneAccount);
   if(chk) return;
-  Utilities.sleep(timer);
 
   chk = setupPart1_(spreadsheet, sheetSettings, addonSettings, dateToday);
   if(chk) return;
-  Utilities.sleep(timer);
 
   chk = setupPart2_(sheetBackstage, listAccountName, addonSettings.InitialMonth, numberLneAccount);
   if(chk) return;
-  Utilities.sleep(timer);
 
 
   chk = setupPart4_(spreadsheet, listNameMonths, numberLneAccount);
   if(chk) return;
-  Utilities.sleep(timer);
 
 
   chk = setupPart5_(spreadsheet, sheetBackstage, numberLneAccount);
   if(chk) return;
-  Utilities.sleep(timer);
   chk = setupPart6_(spreadsheet, sheetBackstage, listNameMonths, numberLneAccount);
   if(chk) return;
-  Utilities.sleep(timer);
 
   chk = setupPart7_(spreadsheet, dateToday, addonSettings.FinancialYear, addonSettings.InitialMonth, listNameMonths, numberLneAccount);
   if(chk) return;
-  Utilities.sleep(timer);
 
 
   chk = setupPart9_(sheetFinances, addonSettings.InitialMonth);
   if(chk) return;
-  Utilities.sleep(timer);
 
 
   chk = setupPart10_(numberLneAccount, addonSettings.FinancialYear, addonSettings.InitialMonth);
   if(chk) return;
-  Utilities.sleep(timer);
 
 
   chk = setupPart11_(spreadsheet, listNameMonths, numberLneAccount);
   if(chk) return;
-  Utilities.sleep(timer);
 
   return true;
 }
