@@ -20,14 +20,14 @@ function showSetupAddon_() {
     onOpen();
     return;
 
-  } else if(new Date().getTime() < AppsScriptGlobal.DateNextRelease()) {
+  }/* else if(new Date().getTime() < AppsScriptGlobal.DateNextRelease()) {
     Ui.alert(
       "Budget n Sheets",
       "The add-on is updating. Try again later.",
       Ui.ButtonSet.OK);
     return;
 
-  } else if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != 'en_US') {
+  }*/ else if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != 'en_US') {
     var auxCell = Ui.alert(
       "Locale",
       "It is necessary to change the Locale of the spreadsheet. This affects formatting details such as functions, dates, and currency.\nClick OK to change now.",

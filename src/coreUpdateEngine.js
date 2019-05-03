@@ -20,9 +20,9 @@ function onlineUpdate_(f) {
   var b;
 
 
-  if(version === AppsScriptGlobal.AddonVersion()  &&  dateTodayValue >= AppsScriptGlobal.DateNextRelease()) {
+  if(version === AppsScriptGlobal.AddonVersion()/*  &&  dateTodayValue >= AppsScriptGlobal.DateNextRelease()*/) {
     return;
-  } else if(dateTodayValue < AppsScriptGlobal.DateNextRelease()) {
+  }/* else if(dateTodayValue < AppsScriptGlobal.DateNextRelease()) {
     if(f) {
       listRequiredVersion = AppsScriptGlobal.requiredVersion();
       if(version >= listRequiredVersion[f]) return;
@@ -32,7 +32,7 @@ function onlineUpdate_(f) {
       "Budget n Sheets",
       "The add-on is updating. Try again later.",
       Ui.ButtonSet.OK);
-  } else {
+  }*/ else {
     showDialogQuickMessage("Working on updates...", false, true);
 
     b = update_ExecutePatial_();
@@ -72,8 +72,8 @@ function seamlessUpdate_() {
   var b;
 
 
-  if(version === AppsScriptGlobal.AddonVersion() && dateTodayValue >= AppsScriptGlobal.DateNextRelease()) return;
-  else if(dateTodayValue < AppsScriptGlobal.DateNextRelease()) return true;
+  if(version === AppsScriptGlobal.AddonVersion()/* && dateTodayValue >= AppsScriptGlobal.DateNextRelease()*/) return;
+  // else if(dateTodayValue < AppsScriptGlobal.DateNextRelease()) return true;
   else {
     b = update_ExecutePatial_();
     if(b === 1) {
