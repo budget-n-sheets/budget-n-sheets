@@ -15,21 +15,7 @@ function showSetupAddon_() {
     return;
   }
 
-  if(Session.getActiveUser().getEmail() !== SpreadsheetApp.getActiveSpreadsheet().getOwner().getEmail()) {
-    Ui.alert(
-      "Permission required",
-      "You do not have enough permission to setup the add-on!",
-      Ui.ButtonSet.OK);
-    return;
-
-  } else if(Session.getActiveUser().getEmail() !== Session.getEffectiveUser().getEmail()) {
-    Ui.alert(
-      "Permission required",
-      "You do not have enough permission to setup the add-on!",
-      Ui.ButtonSet.OK);
-    return;
-
-  } else if(documentPropertiesService_.getProperty("is_installed")) {
+  if(documentPropertiesService_.getProperty("is_installed")) {
     showDialogSetupEnd();
     onOpen();
     return;
