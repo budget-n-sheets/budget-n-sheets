@@ -190,12 +190,11 @@ function setup_(addonSettings, listAccountName) {
   purgeScriptAppTriggers_();
   purgePropertiesService_();
 
-  chk = setup_FormatSpreadsheet_(timer);
-  if(!chk) {
-    console.error("Function setup_FormatSpreadsheet_() failed.");
-    showDialogErrorMessage();
-    return;
-  }
+  deleteAllSheets_();
+  copySheetsFromTemplate_();
+  sortSheetOrder_();
+
+  spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Summary') );
 
   chk = setup_ExecutePatial_(timer, addonSettings, listAccountName, dateToday);
   if(!chk) {
@@ -211,70 +210,17 @@ function setup_(addonSettings, listAccountName) {
 }
 
 
-function setup_FormatSpreadsheet_(timer) {
+function sortSheetOrder_() {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var listEssentialSheets = [ '_Backstage', 'Summary', 'Jan', 'Dec', '_Settings' ];
-  var thisSheet;
-  var i, k;
-
-
-  deleteAllSheets_();
-  copySheetsFromTemplate_();
-
-  for(i = 0;  i < listEssentialSheets.length;  i++) {
-    k = 0;
-    thisSheet = spreadsheet.getSheetByName( listEssentialSheets[i] );
-
-    while(!thisSheet  &&  k < 10) {
-      switch(k) {
-        case 0:
-          Utilities.sleep(401);
-          break;
-        case 1:
-          Utilities.sleep(1009);
-          break;
-        case 2:
-        case 3:
-        case 4:
-          Utilities.sleep(2003);
-          break;
-        case 5:
-          Utilities.sleep(3001);
-          break;
-        default:
-          return false;
-      }
-
-      k++;
-      thisSheet = spreadsheet.getSheetByName(listEssentialSheets[i]);
-    }
-  }
-
-  sortSheetOrder_(spreadsheet);
-
-  spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Summary') );
-
-  return true;
-}
-
-
-function sortSheetOrder_(spreadsheet) {
   var sheet;
   var list = [ "Summary", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ];
   var i;
 
-
-  i = 0;
-  while(i < list.length) {
+  for(var i = 0; i < list.length; i++) {
     sheet = spreadsheet.getSheetByName(list[i]);
-    if(!sheet) {
-      i++;
-      continue;
-    }
 
     spreadsheet.setActiveSheet(sheet);
     spreadsheet.moveActiveSheet(i + 1);
-    i++;
   }
 }
 
