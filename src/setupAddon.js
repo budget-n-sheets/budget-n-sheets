@@ -632,15 +632,15 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
 
 
     for(i = 0;  i < 12;  i++) {
-      formula = '{\"'+listNameMonthsFull[i]+'\"; IF(\'_Settings\'!$B$7 > 0,';
+      formula = '{\"'+listNameMonthsFull[i]+'\"; IF(\'_Settings\'!$B$7 > 0; ';
 
-      formula += 'LNESUMBYTAG($D1:$D;{';
+      formula += 'LNESUMBYTAG($D1:$D; {';
       formula += '\''+listNameMonths[i]+'\'!$C$5:$D';
-      formula += ';\'Cards\'!'+ranges2[i];
+      formula += '; \'Cards\'!'+ranges2[i];
       for(k = 0;  k < number_accounts;  k++) {
-        formula += ';\''+listNameMonths[i]+'\'!'+ranges1[k][0];
+        formula += '; \''+listNameMonths[i]+'\'!'+ranges1[k][0];
       }
-      formula += '}),)}';
+      formula += '});)}';
 
       vFormulas[0].push(formula);
       Utilities.sleep(137);
@@ -759,9 +759,9 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
         [ "=IF(YEAR(TODAY()) = $B2; MONTH(TODAY()); IF(YEAR(TODAY()) < $B2; 0; 12))" ],
         [ "="+(AddonSettings.InitialMonth + 1).formatLocaleSignal() ],
         [ "=IF($B4 > $B3; 0; $B3-$B4+1)" ],
-        [ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2), $B5, MAX($B5-1, 0))" ],
+        [ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5-1; 0))" ],
         [ "=ROWS(\'Tags\'!$D1:$D)-2" ],
-        [ "=COUNTIF(B12:B21,\"<>\")" ],
+        [ "=COUNTIF(B12:B21; \"<>\")" ],
         [ "=RAND()" ]
       ];
 
