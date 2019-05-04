@@ -6,7 +6,7 @@ Number.prototype.formatCurrency = function() {
   var s = n < 0 ? '-$ ' : '$ ';
   var i = parseInt(n = Math.abs(+n || 0).toFixed(2)) + '';
   var j = (j = i.length) > 3 ? j % 3 : 0;
-  return s + (j ? i.substr(0, j) + ',' : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + ',') + (2 ? '.' + Math.abs(n - i).toFixed(2).slice(2) : '');
+  return s + (j ? i.substr(0, j) + DEC_PS : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + DEC_PS) + (2 ? DEC_P + Math.abs(n - i).toFixed(2).slice(2) : '');
 };
 
 /**
@@ -17,12 +17,13 @@ Number.prototype.formatFinancial = function() {
   var s = n < 0 ? true : false;
   var i = parseInt(n = Math.abs(+n || 0).toFixed(2)) + '';
   var j = (j = i.length) > 3 ? j % 3 : 0;
+  var a = (j ? i.substr(0, j) + DEC_PS : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + DEC_PS) + (2 ? DEC_P + Math.abs(n - i).toFixed(2).slice(2) : '');
+
   if(s) {
-    return '(' + (j ? i.substr(0, j) + ',' : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + ',') + (2 ? '.' + Math.abs(n - i).toFixed(2).slice(2) : '') + ')';
+    a = '(' + a + ')';
   }
-  else {
-    return (j ? i.substr(0, j) + ',' : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + ',') + (2 ? '.' + Math.abs(n - i).toFixed(2).slice(2) : '');
-  }
+
+  return a;
 };
 
 /**
@@ -33,7 +34,7 @@ Number.prototype.formatLocaleSignal = function() {
   var s = n < 0 ? '-' : '+';
   var i = parseInt(n = Math.abs(n).toFixed(2)) + '';
   var j = i.length;
-  return s + i.substr(0, j) + '.' + Math.abs(n - i).toFixed(2).slice(2);
+  return s + i.substr(0, j) + DEC_P + Math.abs(n - i).toFixed(2).slice(2);
 };
 
 

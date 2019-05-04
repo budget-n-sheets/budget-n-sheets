@@ -3,6 +3,7 @@ var documentPropertiesService_ = PropertiesService.getDocumentProperties(),
     userPropertiesService_ = PropertiesService.getUserProperties();
 
 var DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
+var DEC_PS = (DEC_P === "." ? "," : ".");
 
 var AppsScriptGlobal = (function() {
   var o = {
