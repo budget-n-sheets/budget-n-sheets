@@ -65,8 +65,8 @@ function daily_Main_(e) {
   var date = getSpreadsheetDate();
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
 
-  if(date.getDay() == 2) {
-    weekly_DecimalSepartor_();
+  if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != optAddonSettings_Get_('SpreadsheetLocale')) {
+    update_DecimalSepartor_();
   }
 
   if(FinancialYear < date.getFullYear()) {

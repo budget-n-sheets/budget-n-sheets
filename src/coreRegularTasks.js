@@ -106,8 +106,9 @@ function daily_PostEvents_(date) {
 }
 
 
-function weekly_DecimalSepartor_() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
+function update_DecimalSepartor_() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getSheetByName("_Settings");
   var cell;
 
   if(!sheet) return;
@@ -126,6 +127,8 @@ function weekly_DecimalSepartor_() {
     deletePropertiesService_("document", "decimal_separator");
     DEC_P = ",";
   }
+
+  optAddonSettings_Set_('SpreadsheetLocale', spreadsheet.getSpreadsheetLocale());
 }
 
 
