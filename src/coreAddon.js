@@ -239,6 +239,7 @@ function optAddonSettings_Save(input) {
     }
     {
       user_settings = {
+        SpreadsheetLocale: spreadsheet.getSpreadsheetLocale(),
         FinancialYear: FinancialYear,
         InitialMonth: Number(input.InitialMonth),
         ScreenResolution: Number(input.ScreenResolution),
@@ -275,6 +276,8 @@ function optAddonSettings_Get_(select) {
       return spreadsheet.getName();
     case 'FinancialYear': // Number in YYYY format
       return user_settings.FinancialYear;
+    case 'SpreadsheetLocale':
+      return user_settings.SpreadsheetLocale;
     case 'FinancialCalendar':
       return user_settings.FinancialCalendar;
     case 'OnlyEventsOwned':
@@ -334,6 +337,9 @@ function optAddonSettings_Set_(select, value) {
   switch(select) {
     case 'InitialMonth':
       user_settings.InitialMonth = value;
+      break;
+    case 'SpreadsheetLocale':
+      user_settings.SpreadsheetLocale = value;
       break;
     case 'FinancialCalendar':
       user_settings.FinancialCalendar = value;
