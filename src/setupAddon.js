@@ -261,7 +261,7 @@ function setup_FormatSpreadsheet_(timer) {
 
 function sortSheetOrder_(spreadsheet) {
   var sheet;
-  var list = [ "Summary", "Statistics", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ];
+  var list = [ "Summary", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ];
   var i;
 
 
@@ -360,7 +360,6 @@ function setupPart11_(spreadsheet, listNameMonths, number_accounts) {
       spreadsheet.getSheetByName('_Settings').protect().setWarningOnly(true);
       spreadsheet.getSheetByName('About').protect().setWarningOnly(true);
       spreadsheet.getSheetByName('Summary').protect().setWarningOnly(true);
-      spreadsheet.getSheetByName('Statistics').protect().setWarningOnly(true);
     }
     {
       thisSheet = spreadsheet.getSheetByName('Cash Flow');
@@ -559,7 +558,6 @@ function setupPart7_(spreadsheet, dateToday, Y, m, listNameMonths, number_accoun
 
     {
       sheetSummary.setTabColor('#e69138');
-      spreadsheet.getSheetByName('Statistics').setTabColor('#e69138');
       foo_ColorTabs_();
       spreadsheet.getSheetByName('Cash Flow').setTabColor('#e69138');
       spreadsheet.getSheetByName('Cards').setTabColor('#e69138').hideSheet();

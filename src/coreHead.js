@@ -4,7 +4,7 @@ var AppsScriptGlobal = (function() {
 
     SpreadsheetTemplateId: '',
     SpreadsheetTemplateVersion: '4.10',
-    SpreadsheetTemplateListSheets: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '_Settings', 'Cash Flow', 'Tags', 'Quick Actions', '_Backstage', 'Statistics', 'Cards', 'Summary', 'About' ],
+    SpreadsheetTemplateListSheets: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '_Settings', 'Cash Flow', 'Tags', 'Quick Actions', '_Backstage', 'Cards', 'Summary', 'About' ],
 
     AddonVersion: 54,
     AddonVersionName: "0.16.1",
