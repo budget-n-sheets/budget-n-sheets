@@ -470,7 +470,7 @@ function optAccount_Update_(input) {
       .getRange(1, 6+k*5)
       .setValue(input.Name);
     sheet.getRange(1, 4+k*3).setValue(input.Name);
-    sheet.getRange(2+input.TimeA*6, 4+k*3).setFormula('='+input.Balance);
+    sheet.getRange(2+input.TimeA*6, 4+k*3).setFormula('='+Number(input.Balance).formatLocaleSignal());
 
     optAccount_UpdateTableRef_();
   } catch(err) {

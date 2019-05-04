@@ -69,7 +69,7 @@ function daily_PostEvents_(date) {
     else if(thisEvent.Card !== -1) k = thisEvent.Card;
     else continue;
 
-    if( !isNaN(thisEvent.Value) ) value = thisEvent.Value;
+    if( !isNaN(thisEvent.Value) ) value = Number(thisEvent.Value).formatLocaleSignal();
     else if(thisEvent.Tags.length > 0) value = 0;
     else continue;
 

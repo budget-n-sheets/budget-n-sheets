@@ -206,8 +206,8 @@ function optAddonSettings_Save(input) {
     list = AppsScriptGlobal.listNameMonth()[1];
 
     { // Set new settings values in Settings sheet
-      sheetSettings.getRange('B2').setValue( FinancialYear ); // Financial year
-      sheetSettings.getRange('B4').setValue(InitialMonth + 1); // Initial month
+      sheetSettings.getRange('B2').setValue( FinancialYear.formatLocaleSignal() ); // Financial year
+      sheetSettings.getRange('B4').setValue( (InitialMonth + 1).formatLocaleSignal() ); // Initial month
 
       sheetSettings = spreadsheet.getSheetByName('_Backstage');
       sheetSettings.getRange(2,1, sheetSettings.getMaxRows()-1,sheetSettings.getMaxColumns()).setFontColor('#000000');
