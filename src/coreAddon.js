@@ -205,9 +205,7 @@ function optAddonSettings_Save(input) {
 
     list = AppsScriptGlobal.listNameMonth()[1];
 
-    if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != optAddonSettings_Get_('SpreadsheetLocale')) {
-      update_DecimalSepartor_();
-    }
+    update_DecimalSepartor_();
 
     { // Set new settings values in Settings sheet
       sheetSettings.getRange('B2').setFormula( "="+FinancialYear.formatLocaleSignal() ); // Financial year
