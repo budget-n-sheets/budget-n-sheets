@@ -747,7 +747,6 @@ function setupPart3_(spreadsheet, listNameMonths, numberLneAccount) {
 
 
     if(numberLneAccount !== 5) { /* ----- Ajuste de linhas e colunas --- */
-      spreadsheet.getSheetByName('Statistics').deleteRows(7+numberLneAccount*17, 17*numberLneAccount_D);
       spreadsheet.getSheetByName('_Backstage').deleteColumns(4+numberLneAccount*3, 3*numberLneAccount_D);
 
       for(i = 0;  i < 12;  i++) {
