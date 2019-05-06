@@ -138,16 +138,6 @@
               </tr>
 
               <tr class="tr-hidden">
-                <td class="comment name"><label>Backup tags</label></td>
-              </tr>
-              <tr class="tr-hidden">
-                <td colspan="2">
-                  <button id="b-Backup" class="action b-Advanced b-TagsBackup" disabled>Backup</button>
-                  <button id="b-Restore" class="b-Advanced b-TagsBackup" disabled>Restore</button>
-                </td>
-              </tr>
-
-              <tr class="tr-hidden">
                 <td class="comment name"><label>Reinstall triggers</label></td>
                 <td class="comment"><button id="b-Reinstall" class="create b-Advanced" disabled>Reinstall</button></td>
               </tr>
@@ -200,8 +190,6 @@
       $('#b-ShowAdvanced').click(Show_Advanced);
       $('#b-Deactivate').click(Deactivate_Submit);
       $('#b-Reinstall').click(Reinstall_Submit);
-      $('#b-Backup').click(Backup_Submit);
-      $('#b-Restore').click(Restore_Submit);
 
       google.script.run
         .withSuccessHandler(Settings_Post)
@@ -282,48 +270,6 @@
           $('.b-Advanced').prop('disabled', false);
         }, 1567
       );
-    }
-
-    function Backup_Submit() {
-      $('.b-TagsBackup').prop('disabled', true);
-      google.script.run
-        .withSuccessHandler(Backup_Aftermath)
-        .withFailureHandler(showError)
-        .optMainTags('Backup');
-    }
-    function Backup_Aftermath(p) {
-      if(p === 0) {
-        $('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
-      } else if(p === -1) {
-        $('#p-footer_FastResponse').empty().append('Backup complete.');
-      } else {
-        showError();
-        return;
-      }
-
-      $('.b-TagsBackup').prop('disabled', false);
-    }
-
-    function Restore_Submit() {
-      $('.b-TagsBackup').prop('disabled', true);
-      google.script.run
-        .withSuccessHandler(Restore_Aftermath)
-        .withFailureHandler(showError)
-        .optMainTags('Restore');
-    }
-    function Restore_Aftermath(p) {
-      if(p === 0) {
-        $('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
-      } else if(p === -1) {
-        $('#p-footer_FastResponse').empty().append('Tags restored.');
-      } else if(p === 10) {
-        $('#p-footer_FastResponse').empty().append('Backup data is invalid.');
-      } else {
-        showError();
-        return;
-      }
-
-      $('.b-TagsBackup').prop('disabled', false);
     }
 
     function Deactivate_Submit() {

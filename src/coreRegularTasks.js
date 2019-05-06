@@ -1,17 +1,3 @@
-function daily_BackupTags_() {
-  var s = optMainTags('Export');
-
-  if(typeof s != 'string'  ||  s === "") return;
-
-  if(s.length < 5000) {
-    SpreadsheetApp.getActiveSpreadsheet()
-      .getSheetByName('_Settings')
-      .getRange(10, 2)
-      .setValue(s);
-  }
-}
-
-
 function daily_UpdateEvents_(date) {
   var calendarId = optAddonSettings_Get_('FinancialCalendar');
   var calendar = optCalendar_GetCalendarFromSHA1_(calendarId);
