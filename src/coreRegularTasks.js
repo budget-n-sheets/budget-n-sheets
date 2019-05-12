@@ -113,7 +113,7 @@ function update_DecimalSepartor_() {
 
   if(!sheet) return;
 
-  cell = sheet.getRange(9, 2);
+  cell = sheet.getRange(8, 2);
 
   cell.setValue(0.1);
   cell.setNumberFormat("0.0");

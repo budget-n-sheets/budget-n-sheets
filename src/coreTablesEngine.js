@@ -143,10 +143,10 @@ function optCard_SetCard_(input) {
     }
 
 
-    ref = sheetSettings.getRange("B12:B21").getValues();
+    ref = sheetSettings.getRange("B11:B20").getValues();
     for(i = 0;  i < 10;  i++) {
       if(ref[i][0] == "") {
-        sheetSettings.getRange(12+i, 2).setValue(input.Code);
+        sheetSettings.getRange(11+i, 2).setValue(input.Code);
         break;
       }
     }
@@ -185,13 +185,13 @@ function optCard_Load_() {
       sheetCards.getRange(2, 4+i*6).setFormula('LNEINFCARD(OFFSET(INDIRECT(ADDRESS(2; '+(3+number_accounts*3+1)+'+MATCH('+range.getA1Notation()+'; \'_Backstage\'!'+ref+'; 0); 4; true; "_Backstage")); '+(i*6)+'; 0; 6; 1))');
 
       sheetBackstage.getRange(3+i*6, maxColumns-1)
-        .setFormula('SUM(OFFSET('+rollA1Notation(3+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B8))'); // Credit
+        .setFormula('SUM(OFFSET('+rollA1Notation(3+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B9))'); // Credit
       sheetBackstage.getRange(4+i*6, maxColumns-1)
-        .setFormula('SUM(OFFSET('+rollA1Notation(4+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B8))'); // Expenses
+        .setFormula('SUM(OFFSET('+rollA1Notation(4+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B9))'); // Expenses
       sheetBackstage.getRange(5+i*6, maxColumns-1)
-        .setFormula('SUM(OFFSET('+rollA1Notation(5+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B8))'); // Expenses ^ign
+        .setFormula('SUM(OFFSET('+rollA1Notation(5+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B9))'); // Expenses ^ign
       sheetBackstage.getRange(6+i*6, maxColumns-1)
-        .setFormula('SUM(OFFSET('+rollA1Notation(6+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B8))'); // Balance
+        .setFormula('SUM(OFFSET('+rollA1Notation(6+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B9))'); // Balance
     }
   } catch(err) {
     console.error("optCard_Load_(): Spreadsheet update failed.", err);
@@ -226,10 +226,10 @@ function optCard_PurgeCard_(input, n) {
       }
     }
 
-    ref = sheetSettings.getRange("B12:B21").getValues();
+    ref = sheetSettings.getRange("B11:B20").getValues();
     for(i = 0;  i < 10;  i++) {
       if(ref[i][0] === input) {
-        sheetSettings.getRange(12+i, 2).setValue("");
+        sheetSettings.getRange(11+i, 2).setValue("");
         break;
       }
     }
@@ -341,10 +341,10 @@ function optCard_Update_(input) {
       }
     }
 
-    values = sheetSettings.getRange("B12:B21").getValues();
+    values = sheetSettings.getRange("B11:B20").getValues();
     for(i = 0;  i < 10;  i++) {
       if(values[i][0] === a) {
-        sheetSettings.getRange(12+i, 2).setValue(input.Code);
+        sheetSettings.getRange(11+i, 2).setValue(input.Code);
         break;
       }
     }

@@ -738,7 +738,7 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
     var cell;
 
     {
-      cell = sheetSettings.getRange(9, 2);
+      cell = sheetSettings.getRange(8, 2);
 
       cell.setValue(0.1);
       cell.setNumberFormat("0.0");
@@ -758,15 +758,11 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
         [ "=IF($B4 > $B3; 0; $B3-$B4+1)" ],
         [ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5-1; 0))" ],
         [ "=ROWS(\'Tags\'!$D1:$D)-2" ],
-        [ "=COUNTIF(B12:B21; \"<>\")" ],
-        [ "=RAND()" ]
+        [ "=RAND()" ],
+        [ "=COUNTIF(B12:B21; \"<>\")" ]
       ];
 
-      sheetSettings.getRange(2,2, 8,1)
-        .setFormulas(cell);
-
-      sheetSettings.getRange(12,2, 10)
-        .setValue("");
+      sheetSettings.getRange(2, 2, 8, 1).setFormulas(cell);
 
       setPropertiesService_('document', 'number', 'LNE_VERSION', 0);
       setPropertiesService_('document', 'string', 'LN_VERSION', AppsScriptGlobal.SpreadsheetTemplateVersion());
