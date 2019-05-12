@@ -648,6 +648,7 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
 
     spreadsheet.getSheetByName('Tags').getRange(1,18).setFormula('{\"Average\"; IF(\'_Settings\'!$B$7 > 0; ARRAYFORMULA($S$2:$S/\'_Settings\'!B6); )}');
     spreadsheet.getSheetByName('Tags').getRange(1,5, 1,12).setFormulas(vFormulas);
+    spreadsheet.getSheetByName("Tags").getRange(1, 19).setFormula("{\"Total\"; IF(\'_Settings\'!$B$7 > 0; ARRAYFORMULA(SUMIF(IF(COLUMN("+rollA1Notation(2, 5, -1, 12)+"); ROW("+rollA1Notation(2, 5, -1)+"));ROW("+rollA1Notation(2, 5, -1)+") ;"+rollA1Notation(2, 5)+")); )}");
 
     SpreadsheetApp.flush();
   } catch(err) {

@@ -303,9 +303,6 @@ function optTag_Add_(input) {
   ]);
   sheetTags.getRange(maxRows, 21).setValue( AppsScriptGlobal.listTagCategories()[0][a] );
 
-  sheetTags.getRange(1, 18).setFormula('={\"Average\"; IF(\'_Settings\'!$B$7 > 0; ARRAYFORMULA($S$2:$S/\'_Settings\'!B6);)}');
-  sheetTags.getRange(maxRows, 19).setFormula('=SUM(OFFSET($D'+maxRows+';0;\'_Settings\'!$B$4;1;\'_Settings\'!$B6))');
-
   SpreadsheetApp.flush();
   return -1;
 }
