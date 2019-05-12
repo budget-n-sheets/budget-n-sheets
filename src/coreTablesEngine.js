@@ -400,11 +400,12 @@ function optAccount_UpdateTableRef_() {
   var number_accounts = getPropertiesService_('document', 'number', 'number_accounts'),
       yyyy = optAddonSettings_Get_('FinancialYear');
   var range_, string, mm, dd,
-      i, k;
+      i, k, h_;
 
   if(!sheet) return 2;
-  range_ = [ 'D', 'G', 'J', 'M', 'P' ];
+  range_ = [ "G", "L", "Q", "V", "AA" ];
 
+  h_ = AppsScriptGlobal.TableDimensions()["height"];
 
   sheet.getRange(3, 3).setFormula('=0');
   for(i = 1;  i < 12;  i++) {
@@ -419,7 +420,7 @@ function optAccount_UpdateTableRef_() {
     mm = listTables[k].TimeA;
 
     string = sheet.getRange(3, 3+mm*4).getFormula();
-    string += '+\'_Backstage\'!' + range_[k] + (2 + mm*6);
+    string += "+\'_Backstage\'!" + range_[k] + (2 + h_*mm);
     sheet.getRange(3, 3+mm*4).setFormula(string);
     Utilities.sleep(137);
 
@@ -436,11 +437,13 @@ function optAccount_Update_(input) {
       sheet = spreadsheet.getSheetByName('_Backstage');
   var dbAccount;
   var auxCell, newCell;
-  var a, k;
+  var a, b, k, h_, w_;
 
   if(!sheet) return 2;
   dbAccount = getPropertiesService_('document', 'json', 'DB_ACCOUNT');
 
+  h_ = AppsScriptGlobal.TableDimensions()["height"];
+  w_ = AppsScriptGlobal.TableDimensions()["width"];
 
   for(k = 0;  k < dbAccount.length;  k++) {
     if(dbAccount[k].Id == input.Id) break;
@@ -458,19 +461,15 @@ function optAccount_Update_(input) {
 
 
   try {
-    if(a > 0) {
-      sheet.getRange(2+a*6, 4+k*3).setFormulaR1C1('=R[-5]C');
-      sheet.getRange(5+a*6, 4+k*3).setFormulaR1C1('=R[-6]C');
-    } else {
-      sheet.getRange(2+a*6, 4+k*3).setFormula('=0');
-      sheet.getRange(5+a*6, 4+k*3).setValue(null);
-    }
+    if(a > 0) b = "=R[-"+(h_-1)+"]C";
+    else b = "=0";
+    sheet.getRange(2+h_*a, 1+w_+1+w_*k).setFormulaR1C1(b);
 
     spreadsheet.getSheetByName('Jan')
       .getRange(1, 6+k*5)
       .setValue(input.Name);
-    sheet.getRange(1, 4+k*3).setValue(input.Name);
-    sheet.getRange(2+input.TimeA*6, 4+k*3).setFormula('='+Number(input.Balance).formatLocaleSignal());
+    sheet.getRange(1, 1+w_+1+w_*k).setValue(input.Name);
+    sheet.getRange(2+input.TimeA*h_, 1+w_+1+k*w_).setFormula('='+Number(input.Balance).formatLocaleSignal());
 
     optAccount_UpdateTableRef_();
   } catch(err) {

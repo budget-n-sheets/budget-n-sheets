@@ -251,7 +251,11 @@ function foo_UpdateCashFlow_(yyyy, mm) {
   var data, data_cards, registry, value, day, maxRows;
   var dd, n, p;
   var a, b, c, i, j, k, v, t, ma;
+  var h_, w_;
   var hasCards, hasTags;
+
+  h_ = AppsScriptGlobal.TableDimensions()["height"];
+  w_ = AppsScriptGlobal.TableDimensions()["width"];
 
   data = [ ];
   maxRows = sheetTarget.getMaxRows() - 4;
@@ -266,7 +270,10 @@ function foo_UpdateCashFlow_(yyyy, mm) {
   number_cards = number_cards.length;
   hasCards = number_cards > 0;
 
-  data_cards = sheetBackstage.getRange(1, 5+number_accounts*3, 73, 1+number_cards).getValues();
+  data_cards = sheetBackstage.getRange(
+      1, 1 + w_ + w_*number_accounts + 1,
+      1 + h_*12, w_ + w_*number_cards
+    ).getValues();
 
   if(optAddonSettings_Get_('CashFlowEvents')) {
     a = optAddonSettings_Get_('FinancialCalendar');
@@ -342,12 +349,12 @@ function foo_UpdateCashFlow_(yyyy, mm) {
     else if(item.hasQcc  &&  mm > 0) {
       if(item.Card !== -1) {
         j = 0;
-        while(j < data_cards[0].length  &&  data_cards[0][j] !== item.Card) { j++; }
+        while(j < data_cards[0].length  &&  data_cards[0][j] !== item.Card) { j += w_; }
 
-        if(data_cards[0][j] === item.Card) value = Number(data_cards[5 + 6 * (mm-1)][j].toFixed(2));
+        if(data_cards[0][j] === item.Card) value = Number(data_cards[5 + h_ * (mm-1)][j].toFixed(2));
         else continue;
       } else {
-        value = Number(data_cards[5 + 6 * (mm-1)][0].toFixed(2));
+        value = Number(data_cards[5 + h_ * (mm-1)][0].toFixed(2));
       }
     } else if(hasTags) {
       a = metaTags.Tags.indexOf(item.Tags[0]);

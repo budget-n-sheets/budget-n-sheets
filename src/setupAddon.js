@@ -472,9 +472,12 @@ function setupPart7_(spreadsheet, dateToday, Y, m, listNameMonths, number_accoun
   try {
     var sheetTags = spreadsheet.getSheetByName('Tags');
     var sheetCashFlow = spreadsheet.getSheetByName('Cash Flow'),
-        sheetSummary = spreadsheet.getSheetByName('Summary');
+        sheetSummary = spreadsheet.getSheetByName('Summary'),
+        sheetBackstage = spreadsheet.getSheetByName("_Backstage");
     var matrixFormulas;
-    var i;
+    var c, i, h_;
+
+    h_ = AppsScriptGlobal.TableDimensions()["height"];
 
     {
       sheetSummary.setTabColor('#e69138');
@@ -483,14 +486,16 @@ function setupPart7_(spreadsheet, dateToday, Y, m, listNameMonths, number_accoun
       spreadsheet.getSheetByName('Cards').setTabColor('#e69138').hideSheet();
       spreadsheet.getSheetByName('Tags').setTabColor('#e69138');
       spreadsheet.getSheetByName('Quick Actions').setTabColor('#6aa84f');
-      spreadsheet.getSheetByName('_Backstage').setTabColor('#cc0000').hideSheet();
+      sheetBackstage.setTabColor('#cc0000').hideSheet();
       spreadsheet.getSheetByName('_Settings').setTabColor('#cc0000').hideSheet();
       spreadsheet.getSheetByName('About').hideSheet();
     }
 
     sheetSummary.getRange('B2').setValue(Y+' | Year Summary');
     if(m > 0) {
-      spreadsheet.getSheetByName('_Backstage').getRange(2,1, 6*m,spreadsheet.getSheetByName('_Backstage').getMaxColumns()).setFontColor('#b7b7b7');
+      c = sheetBackstage.getMaxColumns();
+      sheetBackstage.getRange(2, 1, h_ * m, c)
+        .setFontColor('#b7b7b7');
       sheetSummary.getRange(11,2, m,8).setFontColor('#b7b7b7');
     }
 
@@ -532,21 +537,24 @@ function setupPart6_(spreadsheet, sheetBackstage, listNameMonths, number_account
   try {
     var thisSheet;
     var i, k;
+    var h_, w_;
 
+    h_ = AppsScriptGlobal.TableDimensions()["height"];
+    w_ = AppsScriptGlobal.TableDimensions()["width"];
 
     for(i = 0;  i < 12;  i++) {
       thisSheet = spreadsheet.getSheetByName(listNameMonths[i]);
 
-      thisSheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+6*i) + '))');
+      thisSheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
 
       for(k = 0;  k < number_accounts;  k++) {
-        thisSheet.getRange(1, 8+5*k).setFormula('=LNEINF(\'_Backstage\'!' + rollA1Notation(2+6*i,5+k*3, 6,2) + '; \'_Backstage\'!'+rollA1Notation(5+i*6, 4+k*3)+')');
+        thisSheet.getRange(1, 8+5*k).setFormula('=LNEINF(\'_Backstage\'!' + rollA1Notation(2+h_*i,8+w_*k, h_,2) + '; \'_Backstage\'!'+rollA1Notation(5+i*6, 4+k*3)+')');
         //thisSheet.getRange(1, 8+5*k).setFormula('=LNEINF(\'_Backstage\'!' + sheetBackstage.getRange(2+6*i,5+k*3, 6,2).getB1Notation() + '; \'_Backstage\'!'+sheetBackstage.getRange(5+i*6, 4+k*3).getB1Notation() + ')');
 
-        thisSheet.getRange(2, 6+5*k).setFormula('=CONCAT("Balance "; TO_TEXT(\'_Backstage\'!'+rollA1Notation(3+6*i, 4+k*3)+'))');
+        thisSheet.getRange(2, 6+5*k).setFormula('=CONCAT("Balance "; TO_TEXT(\'_Backstage\'!'+rollA1Notation(3+h_*i, 7+w_*k)+'))');
         //thisSheet.getRange(2, 6+5*k).setFormula('=CONCAT("Balance "; TO_TEXT(\'_Backstage\'!'+sheetBackstage.getRange(3+6*i, 4+k*3).getB1Notation()+'))');
 
-        thisSheet.getRange(3, 6+5*k).setFormula('=CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4+6*i, 4+3*k) + '))');
+        thisSheet.getRange(3, 6+5*k).setFormula('=CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4+h_*i, 7+w_*k) + '))');
         //thisSheet.getRange(3, 6+5*k).setFormula('=CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + sheetBackstage.getRange(4+6*i, 4+3*k).getB1Notation() + '))');
       }
     }
@@ -566,6 +574,10 @@ function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
   try {
     var formulaSumIncome, formulaSumExpenses;
     var i, k;
+    var h_, w_;
+
+    h_ = AppsScriptGlobal.TableDimensions()["height"];
+    w_ = AppsScriptGlobal.TableDimensions()["width"];
 
     for(i = 0;  i < 12;  i++) {
       formulaSumIncome = '=';
@@ -573,22 +585,22 @@ function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
 
       {
         k = 0;
-        formulaSumIncome += rollA1Notation(6+i*6,5+k*3); // Income
+        formulaSumIncome += rollA1Notation(6+h_*i,8+w_*k); // Income
         //formulaSumIncome += sheetBackstage.getRange(6+i*6,5+k*3).getB1Notation(); // Income
 
-        formulaSumExpenses += rollA1Notation(4+i*6,4+k*3); // Expenses
+        formulaSumExpenses += rollA1Notation(4+h_*i,7+w_*k); // Expenses
         //formulaSumExpenses += sheetBackstage.getRange(4+i*6,4+k*3).getB1Notation(); // Expenses
       }
       for(k = 1;  k < number_accounts;  k++) {
-        formulaSumIncome += '+'+rollA1Notation(6+i*6,5+k*3);
+        formulaSumIncome += '+'+rollA1Notation(6+h_*i,8+w_*k);
         //formulaSumIncome += '+'+sheetBackstage.getRange(6+i*6,5+k*3).getB1Notation();
 
-        formulaSumExpenses += '+'+rollA1Notation(4+i*6,4+k*3);
+        formulaSumExpenses += '+'+rollA1Notation(4+h_*i,4+w_*k);
         //formulaSumExpenses += '+'+sheetBackstage.getRange(4+i*6,4+k*3).getB1Notation();
       }
 
-      sheetBackstage.getRange(3+i*6, 2).setFormula(formulaSumIncome);
-      sheetBackstage.getRange(5+i*6, 2).setFormula(formulaSumExpenses);
+      sheetBackstage.getRange(3+h_*i, 2).setFormula(formulaSumIncome);
+      sheetBackstage.getRange(5+h_*i, 2).setFormula(formulaSumExpenses);
     }
 
     SpreadsheetApp.flush();
@@ -664,11 +676,13 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
 function setupPart3_(spreadsheet, listNameMonths, numberLneAccount) {
   try {
     var numberLneAccount_D = 5 - numberLneAccount;
-    var thisSheet, i;
+    var thisSheet, i, w_;
 
+    w_ = AppsScriptGlobal.TableDimensions()["width"];
 
     if(numberLneAccount !== 5) { /* ----- Ajuste de linhas e colunas --- */
-      spreadsheet.getSheetByName('_Backstage').deleteColumns(4+numberLneAccount*3, 3*numberLneAccount_D);
+      spreadsheet.getSheetByName('_Backstage')
+        .deleteColumns(7+w_*numberLneAccount, w_*numberLneAccount_D);
 
       for(i = 0;  i < 12;  i++) {
         thisSheet = spreadsheet.getSheetByName(listNameMonths[i]);
@@ -693,7 +707,9 @@ function setupPart2_(sheetBackstage, listAccountName, m, numberLneAccount) {
     var thisSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Jan');
     var dbAccountInfo;
     var newCell, auxString;
-    var n, k;
+    var n, k, w_;
+
+    w_ = AppsScriptGlobal.TableDimensions()["width"];
 
     dbAccountInfo = [ ];
     auxString = randomString(11, "word");
@@ -709,7 +725,7 @@ function setupPart2_(sheetBackstage, listAccountName, m, numberLneAccount) {
         Header: [true, true, true, true] // Header options
       };
 
-      sheetBackstage.getRange(1, 4+k*3).setValue(listAccountName[k]);
+      sheetBackstage.getRange(1, 7+w_*k).setValue(listAccountName[k]);
       thisSheet.getRange(1, 6+k*5).setValue(listAccountName[k]);
 
       dbAccountInfo.push(newCell);

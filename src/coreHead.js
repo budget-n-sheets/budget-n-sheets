@@ -25,7 +25,8 @@ var AppsScriptGlobal = (function() {
       [ 'A', 'D', 'E', 'F', 'G', 'K', 'L', 'S', 'T', 'U' ],
       [ 'Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling' ]
     ],
-    listScreenResolutionFactor: [ 1, 1.5, 2, 3 ]
+    listScreenResolutionFactor: [ 1, 1.5, 2, 3 ],
+  TableDimensions: { height:10, width:5 }
   };
 
   return {
@@ -43,6 +44,7 @@ var AppsScriptGlobal = (function() {
 
     requiredVersion: function() { return o.requiredVersion },
     listTagCategories: function() { return o.listTagCategories },
-    listScreenResolutionFactor: function() { return o.listScreenResolutionFactor }
+    listScreenResolutionFactor: function() { return o.listScreenResolutionFactor },
+    TableDimensions: function() { return o.TableDimensions }
   };
 })();

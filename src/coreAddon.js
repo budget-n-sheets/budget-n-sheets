@@ -201,7 +201,7 @@ function optAddonSettings_Save(input) {
     var sheetSummary = spreadsheet.getSheetByName('Summary');
     var FinancialYear = optAddonSettings_Get_('FinancialYear');
     var InitialMonth = Number(input.InitialMonth);
-    var list, user_settings, i;
+    var list, user_settings, h_, i;
 
     list = AppsScriptGlobal.listNameMonth()[1];
 
@@ -232,7 +232,8 @@ function optAddonSettings_Save(input) {
       }
 
       if(InitialMonth > 0) {
-        sheetSettings.getRange(2,1, 6*InitialMonth,sheetSettings.getMaxColumns()).setFontColor('#b7b7b7');
+        h_ = AppsScriptGlobal.TableDimensions()["height"];
+        sheetSettings.getRange(2,1, h_*InitialMonth,sheetSettings.getMaxColumns()).setFontColor('#b7b7b7');
         sheetSummary.getRange(11,2, input.InitialMonth,8).setFontColor('#b7b7b7');
       } else {
         sheetSummary.getRange(25, 4).setValue(0);
