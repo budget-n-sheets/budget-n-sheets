@@ -115,31 +115,35 @@ function optCard_SetCard_(input) {
   var col, maxRows;
   var formula,
       ref, i;
+  var h_, w_;
 
   if(!sheetBackstage) return 2;
   if(!sheetSettings) return 2;
 
-  col = 3 + number_accounts*3 + 2 + 1;
+  h_ = AppsScriptGlobal.TableDimensions()["height"];
+  w_ = AppsScriptGlobal.TableDimensions()["width"];
+
+  col = sheetBackstage.getMaxColumns() + 1;
   maxRows = sheetBackstage.getMaxRows();
   ref = 'LNECARD(FILTER(\'Cards\'!';
 
 
   try {
-    sheetBackstage.insertColumnAfter(col-1);
-    sheetBackstage.getRange(1,col-1, maxRows,1)
-      .copyTo(sheetBackstage.getRange(1,col, maxRows,1), {formatOnly:true});
+    sheetBackstage.insertColumnsAfter(col - 1, w_);
+    sheetBackstage.getRange(1, col - w_, maxRows, w_)
+      .copyTo(sheetBackstage.getRange(1, col, maxRows, w_), {formatOnly:true});
     sheetBackstage.getRange(1, col).setValue(input.Code);
 
     for(i = 0;  i < 12;  i++) {
       formula = ref;
-      formula += rollA1Notation(6,2+i*6, -1,4);
-      formula += "; \'Cards\'!" + rollA1Notation(6,3+i*6, -1,1);
+      formula += rollA1Notation(6, 2+i*6, -1, 4);
+      formula += "; \'Cards\'!" + rollA1Notation(6, 3+i*6, -1, 1);
       formula += "=" + rollA1Notation(1, col);
-      formula += "; \'Cards\'!" + rollA1Notation(6,4+i*6, -1,1);
+      formula += "; \'Cards\'!" + rollA1Notation(6, 4+i*6, -1, 1);
       formula += "<>\"\"";
       formula += "))";
 
-      sheetBackstage.getRange(3+i*6, col).setFormula(formula); // LNECARD
+      sheetBackstage.getRange(3 + h_*i, col).setFormula(formula); // LNECARD
     }
 
 
@@ -169,29 +173,23 @@ function optCard_Load_() {
   var maxColumns;
   var range,
       ref, i;
+  var h_, w_;
 
   if(!sheetBackstage) return 2;
   if(!sheetCards) return 2;
 
-  maxColumns = sheetBackstage.getMaxColumns();
-  ref = rollA1Notation(1,maxColumns-1, 1,2);
+  h_ = AppsScriptGlobal.TableDimensions()["height"];
+  w_ = AppsScriptGlobal.TableDimensions()["width"];
 
+  maxColumns = sheetBackstage.getMaxColumns() - 4;
+  ref = rollA1Notation(1, maxColumns - w_, 1, w_*2);
 
   try {
     for(i = 0;  i < 12;  i++) {
-      range = sheetCards.getRange(2,1+i*6);
+      range = sheetCards.getRange(2, 1+i*6);
       range.setValue('All');
 
-      sheetCards.getRange(2, 4+i*6).setFormula('LNEINFCARD(OFFSET(INDIRECT(ADDRESS(2; '+(3+number_accounts*3+1)+'+MATCH('+range.getA1Notation()+'; \'_Backstage\'!'+ref+'; 0); 4; true; "_Backstage")); '+(i*6)+'; 0; 6; 1))');
-
-      sheetBackstage.getRange(3+i*6, maxColumns-1)
-        .setFormula('SUM(OFFSET('+rollA1Notation(3+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B9))'); // Credit
-      sheetBackstage.getRange(4+i*6, maxColumns-1)
-        .setFormula('SUM(OFFSET('+rollA1Notation(4+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B9))'); // Expenses
-      sheetBackstage.getRange(5+i*6, maxColumns-1)
-        .setFormula('SUM(OFFSET('+rollA1Notation(5+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B9))'); // Expenses ^ign
-      sheetBackstage.getRange(6+i*6, maxColumns-1)
-        .setFormula('SUM(OFFSET('+rollA1Notation(6+i*6, maxColumns-1)+'; 0; 1; 1; \'_Settings\'!$B9))'); // Balance
+      sheetCards.getRange(2, 4+i*6).setFormula('LNEINFCARD(OFFSET(INDIRECT(ADDRESS(2; '+(1+w_+w_*number_accounts)+'+MATCH('+range.getA1Notation()+'; \'_Backstage\'!'+ref+'; 0); 4; true; "_Backstage")); '+(i*6)+'; 0; 6; 1))');
     }
   } catch(err) {
     console.error("optCard_Load_(): Spreadsheet update failed.", err);
@@ -209,19 +207,19 @@ function optCard_PurgeCard_(input, n) {
   var sheetBackstage = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage'),
       sheetSettings = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Settings');
   var maxColumns;
-  var ref, i;
+  var ref, i, w_;
 
   if(!sheetBackstage) return 2;
   if(!sheetSettings) return 2;
 
+  w_ = AppsScriptGlobal.TableDimensions()["width"];
   maxColumns = sheetBackstage.getMaxColumns();
 
-
   try {
-    ref = sheetBackstage.getRange(1,1, 1,maxColumns).getValues();
-    for(i = maxColumns-n;  i < maxColumns;  i++) {
+    ref = sheetBackstage.getRange(1, 1, 1, maxColumns).getValues();
+    for(i = maxColumns-4-w_*n-1;  i < maxColumns;  i += w_) {
       if(ref[0][i] === input) {
-        sheetBackstage.deleteColumn(1 + i);
+        sheetBackstage.deleteColumns(1+i, w_);
         break;
       }
     }
@@ -249,14 +247,15 @@ function optCard_Unload_() {
   var sheetBackstage = spreadsheet.getSheetByName('_Backstage'),
       sheetCards = spreadsheet.getSheetByName('Cards');
   var maxColumns;
-  var ref, n, i;
+  var ref, n, i, h_, w_;
 
   if(!sheetBackstage) return 2;
   if(!sheetCards) return 2;
 
+  h_ = AppsScriptGlobal.TableDimensions()["height"];
+  w_ = AppsScriptGlobal.TableDimensions()["width"];
   maxColumns = sheetBackstage.getMaxColumns();
   n = sheetCards.getMaxRows() - 5;
-
 
   try {
     for(i = 0;  i < 12;  i++) {
@@ -264,7 +263,7 @@ function optCard_Unload_() {
       sheetCards.getRange(2, 4+i*6).setValue(null);
     }
 
-    sheetBackstage.getRange(2, maxColumns, sheetBackstage.getMaxRows()-1, 1)
+    sheetBackstage.getRange(2, maxColumns-4, h_*12, w_)
       .setValue(null);
   } catch(err) {
     console.error("optCard_Unload_(): Spreadsheet update failed.", err);
@@ -306,16 +305,15 @@ function optCard_Update_(input) {
   var sheetBackstage = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage'),
       sheetSettings = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Settings');
   var dbCard, values;
-  var a, c, i, k, n;
+  var a, c, i, k, n, w_;
 
   if(!sheetBackstage) return 2;
   if(!sheetSettings) return 2;
   if( !/[A-Z][0-9A-Z]{1,13}/.test(input.Code) ) return 10;
 
-  c = sheetBackstage.getMaxColumns();
+  w_ = AppsScriptGlobal.TableDimensions()["width"];
   dbCard = getPropertiesService_('document', 'json', 'DB_CARD');
   n = dbCard.length;
-
 
   for(k = 0;  k < n;  k++) {
     if(dbCard[k].Id === input.Id) break;
@@ -331,12 +329,12 @@ function optCard_Update_(input) {
 
   setPropertiesService_('document', 'json', 'DB_CARD', dbCard);
 
-
   try {
+    c = sheetBackstage.getMaxColumns();
     values = sheetBackstage.getRange(1, 1, 1, c).getValues();
-    for(i = c-n;  i < c;  i++) {
+    for(i = c-4-w_*n-1;  i < c;  i += w_) {
       if(values[0][i] === a) {
-        sheetBackstage.getRange(1, i+1).setValue(input.Code);
+        sheetBackstage.getRange(1, 1+i).setValue(input.Code);
         break;
       }
     }
