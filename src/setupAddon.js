@@ -646,7 +646,7 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
       Utilities.sleep(137);
     }
 
-    spreadsheet.getSheetByName('Tags').getRange(1,18).setFormula('{\"Average\"; IF(\'_Settings\'!$B$7 > 0, ARRAYFORMULA($S$2:$S/\'_Settings\'!B6),)}');
+    spreadsheet.getSheetByName('Tags').getRange(1,18).setFormula('{\"Average\"; IF(\'_Settings\'!$B$7 > 0; ARRAYFORMULA($S$2:$S/\'_Settings\'!B6); )}');
     spreadsheet.getSheetByName('Tags').getRange(1,5, 1,12).setFormulas(vFormulas);
 
     SpreadsheetApp.flush();
