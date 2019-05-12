@@ -585,18 +585,12 @@ function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
 
       {
         k = 0;
-        formulaSumIncome += rollA1Notation(6+h_*i,8+w_*k); // Income
-        //formulaSumIncome += sheetBackstage.getRange(6+i*6,5+k*3).getB1Notation(); // Income
-
-        formulaSumExpenses += rollA1Notation(4+h_*i,7+w_*k); // Expenses
-        //formulaSumExpenses += sheetBackstage.getRange(4+i*6,4+k*3).getB1Notation(); // Expenses
+        formulaSumIncome += rollA1Notation(6+h_*i, 8+w_*k);
+        formulaSumExpenses += rollA1Notation(4+h_*i, 7+w_*k);
       }
       for(k = 1;  k < number_accounts;  k++) {
-        formulaSumIncome += '+'+rollA1Notation(6+h_*i,8+w_*k);
-        //formulaSumIncome += '+'+sheetBackstage.getRange(6+i*6,5+k*3).getB1Notation();
-
-        formulaSumExpenses += '+'+rollA1Notation(4+h_*i,4+w_*k);
-        //formulaSumExpenses += '+'+sheetBackstage.getRange(4+i*6,4+k*3).getB1Notation();
+        formulaSumIncome += '+'+rollA1Notation(6+h_*i, 8+w_*k);
+        formulaSumExpenses += '+'+rollA1Notation(4+h_*i, 7+w_*k);
       }
 
       sheetBackstage.getRange(3+h_*i, 2).setFormula(formulaSumIncome);
