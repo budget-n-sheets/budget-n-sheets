@@ -16,17 +16,19 @@ function createScriptAppTriggers_(method, key, type, name, param1, param2, param
   var m_Properties;
   var thisTrigger;
 
-  switch(method) {
-    case 'document':
-      m_Properties = documentPropertiesService_;
-      break;
-    case 'script':
-      m_Properties = scriptPropertiesService_;
-      break;
-    case 'user':
-    default:
-      m_Properties = userPropertiesService_;
-      break;
+  if(key !== "") {
+    switch(method) {
+      case 'document':
+        m_Properties = PropertiesService.getDocumentProperties();
+        break;
+      case 'script':
+        m_Properties = PropertiesService.getScriptProperties();
+        break;
+      case 'user':
+      default:
+        m_Properties = PropertiesService.getUserProperties();
+        break;
+    }
   }
 
   if(type === 'onOpen') {
@@ -108,15 +110,18 @@ function createScriptAppTriggers_(method, key, type, name, param1, param2, param
       .create();
   }
 
-  m_Properties.setProperty(key, thisTrigger.getUniqueId());
+  if(key !== "") {
+    m_Properties.setProperty(key, thisTrigger.getUniqueId());
+  }
 }
 
 /**
  * Deletes a trigger of id stored in a given key of property store.
  * @param  {String} method The method to get a property store
  * @param  {String} key    The key for the property
+ * @param  {String} name   The name of the function
  */
-function deleteScriptAppTriggers_(method, key) {
+function deleteScriptAppTriggers_(method, key, name) {
   var m_Properties;
   var listTriggers, thisTrigger, thisTriggerID;
   var i;
@@ -124,27 +129,36 @@ function deleteScriptAppTriggers_(method, key) {
 
   switch(method) {
     case 'document':
-      m_Properties = documentPropertiesService_;
+      m_Properties = PropertiesService.getDocumentProperties();
       break;
     case 'script':
-      m_Properties = scriptPropertiesService_;
+      m_Properties = PropertiesService.getScriptProperties();
       break;
     case 'user':
     default:
-      m_Properties = userPropertiesService_;
+      m_Properties = PropertiesService.getUserProperties();
       break;
   }
 
-  thisTriggerID = m_Properties.getProperty(key);
-  if(!thisTriggerID) return;
-
   listTriggers = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
 
-  for(i = 0;  i < listTriggers.length;  i++) {
-    if(listTriggers[i].getUniqueId() === thisTriggerID) {
-      ScriptApp.deleteTrigger(listTriggers[i]);
-      m_Properties.deleteProperty(key);
-      break;
+  if(key) {
+    thisTriggerID = m_Properties.getProperty(key);
+    if(!thisTriggerID) return;
+
+    for(i = 0;  i < listTriggers.length;  i++) {
+      if(listTriggers[i].getUniqueId() === thisTriggerID) {
+        ScriptApp.deleteTrigger(listTriggers[i]);
+        m_Properties.deleteProperty(key);
+        break;
+      }
+    }
+  } else {
+    for(i = 0;  i < listTriggers.length;  i++) {
+      if(listTriggers[i].getHandlerFunction() === name) {
+        ScriptApp.deleteTrigger(listTriggers[i]);
+        break;
+      }
     }
   }
 }

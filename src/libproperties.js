@@ -17,14 +17,14 @@ function getPropertiesService_(method, type, key) {
 
   switch(method) {
     case 'document':
-      m_Properties = documentPropertiesService_;
+      m_Properties = PropertiesService.getDocumentProperties();
       break;
     case 'script':
-      m_Properties = scriptPropertiesService_;
+      m_Properties = PropertiesService.getScriptProperties();
       break;
     case 'user':
     default:
-      m_Properties = userPropertiesService_;
+      m_Properties = PropertiesService.getUserProperties();
       break;
   }
 
@@ -41,7 +41,7 @@ function getPropertiesService_(method, type, key) {
       if(typeof p === 'string') return JSON.parse( p );
       else return;
     default:
-      return;
+      return m_Properties.getProperty(key);
   }
 }
 
@@ -58,14 +58,14 @@ function setPropertiesService_(method, type, key, value) {
 
   switch(method) {
     case 'document':
-      m_Properties = documentPropertiesService_;
+      m_Properties = PropertiesService.getDocumentProperties();
       break;
     case 'script':
-      m_Properties = scriptPropertiesService_;
+      m_Properties = PropertiesService.getScriptProperties();
       break;
     case 'user':
     default:
-      m_Properties = userPropertiesService_;
+      m_Properties = PropertiesService.getUserProperties();
       break;
   }
 
@@ -82,7 +82,9 @@ function setPropertiesService_(method, type, key, value) {
       break;
     case 'json':
       m_Properties.setProperty(key, JSON.stringify( value ));
+      break;
     default:
+      m_Properties.setProperty(key, value);
       break;
   }
 }
@@ -97,14 +99,14 @@ function deletePropertiesService_(method, key) {
 
   switch(method) {
     case 'document':
-      m_Properties = documentPropertiesService_;
+      m_Properties = PropertiesService.getDocumentProperties();
       break;
     case 'script':
-      m_Properties = scriptPropertiesService_;
+      m_Properties = PropertiesService.getScriptProperties();
       break;
     case 'user':
     default:
-      m_Properties = userPropertiesService_;
+      m_Properties = PropertiesService.getUserProperties();
       break;
   }
 
