@@ -7,7 +7,7 @@ var AppsScriptGlobal = (function() {
     SpreadsheetTemplateListSheets: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '_Settings', 'Cash Flow', 'Tags', 'Quick Actions', '_Backstage', 'Cards', 'Summary', 'About' ],
 
     AddonVersion: 54,
-    AddonVersionName: "0.16.2",
+    AddonVersionName: "0.17.0-beta",
     DateNextRelease: 0,
 
     listNameMonth: [
