@@ -15,7 +15,7 @@ function showSetupAddon_() {
     return;
   }
 
-  if(documentPropertiesService_.getProperty("is_installed")) {
+  if(getPropertiesService_("document", "is_installed")) {
     showDialogSetupEnd();
     onOpen();
     return;
@@ -63,7 +63,7 @@ function askDeactivation() {
 }
 
 function askReinstall() {
-  if( documentPropertiesService_.getProperty("is_installed") ) return;
+  if( getPropertiesService_("document", "is_installed") ) return;
 
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
   var dateToday = getSpreadsheetDate();
@@ -118,7 +118,7 @@ function uninstall_() {
 
 
 function setup_ui(settings, list) {
-  if(documentPropertiesService_.getProperty("is_installed")) {
+  if(getPropertiesService_("document", "is_installed")) {
     showDialogSetupEnd();
     onOpen();
     return;

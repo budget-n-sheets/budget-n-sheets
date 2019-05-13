@@ -125,7 +125,7 @@ function showSidebarMainSettings() {
 
 
 function showDialogAboutAddon() {
-  if(documentPropertiesService_.getProperty("is_installed")) {
+  if(getPropertiesService_("document", "is_installed")) {
     onlineUpdate_();
   }
 

@@ -1,7 +1,3 @@
-var documentPropertiesService_ = PropertiesService.getDocumentProperties(),
-    scriptPropertiesService_ = PropertiesService.getScriptProperties(),
-    userPropertiesService_ = PropertiesService.getUserProperties();
-
 var DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
 var DEC_PS = (DEC_P === "." ? "," : ".");
 
