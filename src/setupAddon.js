@@ -61,12 +61,6 @@ function askReinstall() {
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
   var dateToday = getSpreadsheetDate();
 
-
-  setPropertiesService_('document', 'string', 'onOpenMainId', '');
-  setPropertiesService_('document', 'string', 'onEditMainId', '');
-  setPropertiesService_('document', 'string', 'dailyMainId', '');
-  setPropertiesService_('document', 'string', 'weeklyMainId', '');
-
   purgeScriptAppTriggers_();
 
   createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
@@ -785,13 +779,6 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
       setPropertiesService_('document', 'json', 'user_settings', cell);
     }
     {
-      setPropertiesService_('document', 'string', 'onOpenMainId', '');
-      setPropertiesService_('document', 'string', 'onEditMainId', '');
-
-      setPropertiesService_('document', 'string', 'atDateMainId', '');
-      setPropertiesService_('document', 'string', 'dailyMainId', '');
-      setPropertiesService_('document', 'string', 'weeklyMainId', '');
-
       createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
 
       if(AddonSettings.FinancialYear < dateToday.FullYear) {
