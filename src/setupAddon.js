@@ -112,8 +112,6 @@ function uninstall_() {
   }
 
   PropertiesService.getDocumentProperties().deleteAllProperties();
-  PropertiesService.getScriptProperties().deleteAllProperties();
-  PropertiesService.getUserProperties().deleteAllProperties();
 }
 
 
