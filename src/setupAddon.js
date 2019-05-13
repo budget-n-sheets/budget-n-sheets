@@ -20,14 +20,7 @@ function showSetupAddon_() {
     onOpen();
     return;
 
-  }/* else if(new Date().getTime() < AppsScriptGlobal.DateNextRelease()) {
-    Ui.alert(
-      "Budget n Sheets",
-      "The add-on is updating. Try again later.",
-      Ui.ButtonSet.OK);
-    return;
-
-  }*/ else if(SpreadsheetApp.getActiveSpreadsheet().getFormUrl() != null) {
+  } else if(SpreadsheetApp.getActiveSpreadsheet().getFormUrl() != null) {
     Ui.alert(
       "Linked form",
       "The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.",

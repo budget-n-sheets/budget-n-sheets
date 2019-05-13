@@ -8,19 +8,12 @@ var AppsScriptGlobal = (function() {
 
     AddonVersion: 54,
     AddonVersionName: "0.17.0-beta",
-    DateNextRelease: 0,
 
     listNameMonth: [
       [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
       [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
     ],
 
-    requiredVersion: {
-      showPanelTables: 54,
-      showPanelTags: 53,
-      showSidebarMainSettings: 53,
-      toolUpdateCashFlow: 53
-    },
     listTagCategories: [
       [ 'A', 'D', 'E', 'F', 'G', 'K', 'L', 'S', 'T', 'U' ],
       [ 'Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling' ]
@@ -38,11 +31,9 @@ var AppsScriptGlobal = (function() {
 
     AddonVersion: function() { return o.AddonVersion },
     AddonVersionName: function() { return o.AddonVersionName },
-    DateNextRelease: function() { return o.DateNextRelease },
 
     listNameMonth: function() { return o.listNameMonth },
 
-    requiredVersion: function() { return o.requiredVersion },
     listTagCategories: function() { return o.listTagCategories },
     listScreenResolutionFactor: function() { return o.listScreenResolutionFactor },
     TableDimensions: function() { return o.TableDimensions }
