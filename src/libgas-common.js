@@ -57,9 +57,9 @@ function isReAuthorizationRequired_() {
     htmlMessage = htmlTemplate.evaluate();
     MailApp.sendEmail(
       Session.getEffectiveUser().getEmail(),
-      "",
+      "Authorization Required",
       htmlMessage.getContent(), {
-        name: "",
+        name: "Add-on Budget n Sheets",
         htmlBody: htmlMessage.getContent(),
         noReply: true
       });
