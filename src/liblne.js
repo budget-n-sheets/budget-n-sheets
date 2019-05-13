@@ -2,6 +2,9 @@
   * Number format $ x,xx0.00;-$ x,xx0.00
   */
 Number.prototype.formatCurrency = function() {
+  var DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
+  var DEC_PS = (DEC_P === "." ? "," : ".");
+
   var n = this;
   var s = n < 0 ? '-$ ' : '$ ';
   var i = parseInt(n = Math.abs(+n || 0).toFixed(2)) + '';
@@ -13,6 +16,9 @@ Number.prototype.formatCurrency = function() {
   * Number format x,xx0.00;(x,xx0.00)
   */
 Number.prototype.formatFinancial = function() {
+  var DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
+  var DEC_PS = (DEC_P === "." ? "," : ".");
+
   var n = this;
   var s = n < 0 ? true : false;
   var i = parseInt(n = Math.abs(+n || 0).toFixed(2)) + '';
@@ -30,6 +36,9 @@ Number.prototype.formatFinancial = function() {
   * Number format +0.00;-0.00
   */
 Number.prototype.formatLocaleSignal = function() {
+  var DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
+  var DEC_PS = (DEC_P === "." ? "," : ".");
+
   var n = this;
   var s = n < 0 ? '-' : '+';
   var i = parseInt(n = Math.abs(n).toFixed(2)) + '';

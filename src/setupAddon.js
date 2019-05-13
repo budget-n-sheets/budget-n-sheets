@@ -747,11 +747,7 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
       cell = cell.getDisplayValue();
       if( /\./.test(cell) ) {
         setPropertiesService_("document", "string", "decimal_separator", "[ ]");
-        DEC_P = ".";
-        DEC_PS = ",";
       } else {
-        DEC_P = ",";
-        DEC_PS = ".";
       }
     }
     {

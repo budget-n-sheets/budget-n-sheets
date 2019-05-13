@@ -121,13 +121,9 @@ function update_DecimalSepartor_() {
 
   cell = cell.getDisplayValue();
   if( /\./.test(cell) ) {
-    setPropertiesService_("document", "string", "decimal_separator", "[ ]");
-    DEC_P = ".";
-    DEC_PS = ",";
+    setPropertiesService_("document", "", "decimal_separator", "[ ]");
   } else {
     deletePropertiesService_("document", "decimal_separator");
-    DEC_P = ",";
-    DEC_PS = ".";
   }
 
   optAddonSettings_Set_('SpreadsheetLocale', spreadsheet.getSpreadsheetLocale());
