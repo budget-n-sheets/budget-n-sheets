@@ -596,7 +596,8 @@ function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
 function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
   try {
     var sheetCreditCard = spreadsheet.getSheetByName('Cards');
-    var formula, ranges1, ranges2;
+    var formula, ranges2, rg, cd;
+    var rgMonthTags, rgMonthCombo, rgCardsTags, rgCardsCombo;
     var listNameMonthsFull = AppsScriptGlobal.listNameMonth()[1];
     var vFormulas;
     var n1, n2, v;
@@ -607,34 +608,43 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
     vFormulas = [
       [ ]
     ];
-    ranges1 = [
-      ['$H$5:$I', '$H$5:$H'],
-      ['$M$5:$N', '$M$5:$M'],
-      ['$R$5:$S', '$R$5:$R'],
-      ['$W$5:$X', '$W$5:$W'],
-      ['$AB$5:$AC', '$AB$5:$AB']
-    ];
 
-    ranges2 = [ ];
-    for(i = 0;  i < 12;  i++) {
-      ranges2.push( rollA1Notation(6,4+i*6, -1,2) );
-      //ranges2.push(sheetCreditCard.getRange(6,4+i*6, n2,2).getB1Notation());
+    rgMonthTags = [ ];
+    rgMonthCombo = [ ];
+    for(k = 0; k < 1 + number_accounts; k++) {
+      rgMonthTags[k] = rollA1Notation(5, 4 + 5*k, -1, 1);
+      rgMonthCombo[k] = rollA1Notation(5, 3 + 5*k, -1, 2);
     }
 
+    rgCardsTags = [ ];
+    rgCardsCombo = [ ];
+    for(i = 0;  i < 12;  i++) {
+      rgCardsTags[i] = rollA1Notation(6, 5 + 6*i, -1, 1);
+      rgCardsCombo[i] = rollA1Notation(6, 4 + 6*i, -1, 2);
+    }
 
     for(i = 0;  i < 12;  i++) {
-      formula = '{\"'+listNameMonthsFull[i]+'\"; IF(\'_Settings\'!$B$7 > 0; ';
+      k = 0;
+      rg = "{\'" + listNameMonths[i] + "\'!" + rgMonthCombo[0];
+      cd = "{\'" + listNameMonths[i] + "\'!" + rgMonthTags[0];
 
-      formula += 'LNESUMBYTAG($D1:$D; {';
-      formula += '\''+listNameMonths[i]+'\'!$C$5:$D';
-      formula += '; \'Cards\'!'+ranges2[i];
-      for(k = 0;  k < number_accounts;  k++) {
-        formula += '; \''+listNameMonths[i]+'\'!'+ranges1[k][0];
+      for(k++;  k < 1 + number_accounts;  k++) {
+        rg += "; \'" + listNameMonths[i] + "\'!" + rgMonthCombo[k];
+        cd += "; \'" + listNameMonths[i] + "\'!" + rgMonthTags[k];
       }
-      formula += '});)}';
+
+      rg += "; \'Cards\'!" + rgCardsCombo[i];
+      rg += "}";
+
+      cd += "; \'Cards\'!" + rgCardsTags[i];
+      cd += "}";
+
+      formula = "{\"" + listNameMonthsFull[i] + "\"; ";
+      formula += "IF(\'_Settings\'!$B$7 > 0; ";
+      formula += "LNESUMBYTAG($D$1:$D; FILTER(" + rg + "; ";
+      formula += cd + " <> \"\")); )}";
 
       vFormulas[0].push(formula);
-      Utilities.sleep(137);
     }
 
     spreadsheet.getSheetByName('Tags').getRange(1,18).setFormula('{\"Average\"; IF(\'_Settings\'!$B$7 > 0; ARRAYFORMULA($S$2:$S/\'_Settings\'!B6); )}');
