@@ -649,23 +649,21 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
   }
 }
 
-/**
-  * Trim the spreadsheet by deleting columns and rows not in use. Hide some sheets.
-  */
+
 function setupPart3_(spreadsheet, listNameMonths, numberLneAccount) {
   try {
-    var numberLneAccount_D = 5 - numberLneAccount;
-    var thisSheet, i, w_;
+    var diff, w_;
 
+    diff = 5 - numberLneAccount;
     w_ = AppsScriptGlobal.TableDimensions()["width"];
 
-    if(numberLneAccount !== 5) { /* ----- Ajuste de linhas e colunas --- */
-      spreadsheet.getSheetByName('_Backstage')
-        .deleteColumns(7+w_*numberLneAccount, w_*numberLneAccount_D);
+    if(numberLneAccount !== 5) {
+      spreadsheet.getSheetByName("_Backstage")
+        .deleteColumns(7 + w_*numberLneAccount, w_*diff);
 
-      for(i = 0;  i < 12;  i++) {
-        thisSheet = spreadsheet.getSheetByName(listNameMonths[i]);
-        thisSheet.deleteColumns(6+numberLneAccount*5, 5*numberLneAccount_D);
+      for(var i = 0;  i < 12;  i++) {
+        spreadsheet.getSheetByName(listNameMonths[i])
+          .deleteColumns(6 + 5*numberLneAccount, 5*diff);
       }
     }
 
@@ -742,7 +740,6 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
       cell = cell.getDisplayValue();
       if( /\./.test(cell) ) {
         setPropertiesService_("document", "string", "decimal_separator", "[ ]");
-      } else {
       }
     }
     {
