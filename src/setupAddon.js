@@ -534,13 +534,10 @@ function setupPart6_(spreadsheet, sheetBackstage, listNameMonths, number_account
 
       for(k = 0;  k < number_accounts;  k++) {
         thisSheet.getRange(1, 8+5*k).setFormula('=LNEINF(\'_Backstage\'!' + rollA1Notation(2+h_*i,8+w_*k, h_,2) + '; \'_Backstage\'!'+rollA1Notation(5+i*6, 4+k*3)+')');
-        //thisSheet.getRange(1, 8+5*k).setFormula('=LNEINF(\'_Backstage\'!' + sheetBackstage.getRange(2+6*i,5+k*3, 6,2).getB1Notation() + '; \'_Backstage\'!'+sheetBackstage.getRange(5+i*6, 4+k*3).getB1Notation() + ')');
 
         thisSheet.getRange(2, 6+5*k).setFormula('=CONCAT("Balance "; TO_TEXT(\'_Backstage\'!'+rollA1Notation(3+h_*i, 7+w_*k)+'))');
-        //thisSheet.getRange(2, 6+5*k).setFormula('=CONCAT("Balance "; TO_TEXT(\'_Backstage\'!'+sheetBackstage.getRange(3+6*i, 4+k*3).getB1Notation()+'))');
 
         thisSheet.getRange(3, 6+5*k).setFormula('=CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4+h_*i, 7+w_*k) + '))');
-        //thisSheet.getRange(3, 6+5*k).setFormula('=CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + sheetBackstage.getRange(4+6*i, 4+3*k).getB1Notation() + '))');
       }
     }
 
