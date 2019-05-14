@@ -751,7 +751,7 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
         [ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5-1; 0))" ],
         [ "=ROWS(\'Tags\'!$D1:$D)-2" ],
         [ "=RAND()" ],
-        [ "=COUNTIF(B12:B21; \"<>\")" ]
+        [ "=COUNTIF(B11:B20; \"<>\")" ]
       ];
 
       sheetSettings.getRange(2, 2, 8, 1).setFormulas(cell);
