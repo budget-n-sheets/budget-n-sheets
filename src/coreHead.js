@@ -3,7 +3,7 @@ var AppsScriptGlobal = (function() {
     test_chamber: false,
 
     SpreadsheetTemplateId: '',
-    SpreadsheetTemplateVersion: "5.2",
+    SpreadsheetTemplateVersion: "5.3",
     SpreadsheetTemplateListSheets: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '_Settings', 'Cash Flow', 'Tags', 'Quick Actions', '_Backstage', 'Cards', 'Summary', 'About' ],
 
     AddonVersion: 54,
