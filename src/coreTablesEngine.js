@@ -112,7 +112,7 @@ function optCard_SetCard_(input) {
   var sheetBackstage = spreadsheet.getSheetByName('_Backstage'),
       sheetSettings = spreadsheet.getSheetByName('_Settings');
   var number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
-  var col, maxRows;
+  var header, col, maxRows;
   var formula,
       ref, i;
   var h_, w_;
@@ -127,23 +127,47 @@ function optCard_SetCard_(input) {
   maxRows = sheetBackstage.getMaxRows();
   ref = 'LNECARD(FILTER(\'Cards\'!';
 
-
   try {
     sheetBackstage.insertColumnsAfter(col - 1, w_);
     sheetBackstage.getRange(1, col - w_, maxRows, w_)
       .copyTo(sheetBackstage.getRange(1, col, maxRows, w_), {formatOnly:true});
     sheetBackstage.getRange(1, col).setValue(input.Code);
 
-    for(i = 0;  i < 12;  i++) {
-      formula = ref;
-      formula += rollA1Notation(6, 2+i*6, -1, 4);
-      formula += "; \'Cards\'!" + rollA1Notation(6, 3+i*6, -1, 1);
-      formula += "=" + rollA1Notation(1, col);
-      formula += "; \'Cards\'!" + rollA1Notation(6, 4+i*6, -1, 1);
-      formula += "<>\"\"";
-      formula += "))";
+    header = rollA1Notation(1, col);
 
-      sheetBackstage.getRange(3 + h_*i, col).setFormula(formula); // LNECARD
+    for(i = 0;  i < 12;  i++) {
+      formula = "IFERROR(SUM(FILTER(";
+      formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
+      formula += "\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + header + "; ";
+      formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+      formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " >= 0";
+      formula += ")); 0)"
+      sheetBackstage.getRange(3 + h_*i, col)
+        .setFormula(formula);
+
+      formula = "IFERROR(SUM(FILTER(";
+      formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
+      formula += "\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + header + "; ";
+      formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+      formula += "NOT(REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1) + "; ";
+      formula += "\"#ign\"))";
+      formula += ")); 0)"
+      formula += " - " + rollA1Notation(3 + h_*i, col);
+      sheetBackstage.getRange(4 + h_*i, col)
+        .setFormula(formula);
+
+      formula = rollA1Notation(3 + h_*i, col) + " + ";
+      formula = "IFERROR(SUM(FILTER(";
+      formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
+      formula += "\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + header + "; ";
+      formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "))";
+      formula += ")); 0)"
+      formula += " - " + rollA1Notation(3 + h_*i, col);
+      sheetBackstage.getRange(5 + h_*i, col)
+        .setFormula(formula);
+
+      sheetBackstage.getRange(6 + h_*i, col)
+        .setFormulaR1C1("R[-1]C+R[-3]C");
     }
 
 
@@ -297,6 +321,7 @@ function optCard_Remove_(input) {
   dbCard.splice(k, 1);
   setPropertiesService_('document', 'json', 'DB_CARD', dbCard);
 
+  optCard_Refresh_(dbCard.length);
   return -1;
 }
 
@@ -387,7 +412,36 @@ function optCard_Add_(input) {
   dbCard.push(cell);
   setPropertiesService_('document', 'json', 'DB_CARD', dbCard);
 
+  optCard_Refresh_(dbCard.length);
   return -1;
+}
+
+
+function optCard_Refresh_(numCards) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+  var str;
+  var c, i, k;
+  var h_, w_;
+
+  h_ = AppsScriptGlobal.TableDimensions()["height"];
+  w_ = AppsScriptGlobal.TableDimensions()["width"];
+
+  c = sheet.getMaxColumns() - 4 - w_*numCards;
+
+  if(numCards == 0) {
+    for(i = 0;  i < 12;  i++) {
+      sheet.getRange(4 + h_*i, c, 2, 1).setValue(0);
+    }
+    return;
+  }
+
+  for(i = 0;  i < 12;  i++) {
+    str = "RC[" + w_ + "]";
+    for(k = 2;  k <= numCards;  k++) {
+      str += "+RC[" + w_*k + "]";
+    }
+    sheet.getRange(4 + h_*i, c, 2, 1).setFormulaR1C1(str);
+  }
 }
 
 
