@@ -211,8 +211,7 @@ function LNESUMBYTAG(tag, range) {
   m1 = range.length;  i = 0;
   m2 = m1 - 1;
   while(i < m1) {
-
-    while(range[i][1] == ''  &&  i < m2) { i++; }
+    // while(range[i][1] == ''  &&  i < m2) { i++; }
 
     if(masterRegExp.test(range[i][1])) {
       for(j = 0;  j < n;  j++) {
