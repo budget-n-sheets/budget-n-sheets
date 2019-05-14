@@ -52,7 +52,9 @@ function isReAuthorizationRequired_() {
   if(!documentProperties.getProperty("auth_request_sent") && MailApp.getRemainingDailyQuota() > 0) {
     htmlTemplate = HtmlService.createTemplateFromFile("html");
 
-    htmlTemplate.url = authInfoLevel.getAuthorizationUrl();
+    htmlTemplate.spreadsheet_url = spreadsheet.getUrl();
+    htmlTemplate.spreadsheet_name = spreadsheet.getName();
+    htmlTemplate.auth_url = authInfoLevel.getAuthorizationUrl();
 
     htmlMessage = htmlTemplate.evaluate();
     MailApp.sendEmail(
