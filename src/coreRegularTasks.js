@@ -126,7 +126,8 @@ function update_DecimalSepartor_() {
     deletePropertiesService_("document", "decimal_separator");
   }
 
-  optAddonSettings_Set_('SpreadsheetLocale', spreadsheet.getSpreadsheetLocale());
+  optAddonSettings_Set_("SpreadsheetLocale", spreadsheet.getSpreadsheetLocale());
+  return true;
 }
 
 
