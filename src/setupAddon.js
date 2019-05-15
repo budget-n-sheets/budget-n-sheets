@@ -402,50 +402,46 @@ function setupPart10_(number_accounts, Y, m) {
 
 function setupPart9_(sheetSummary, mm) {
   try {
-    var list, cell, options, i;
+    var chart, options;
+    var list, i;
 
     list = AppsScriptGlobal.listNameMonth()[1];
     options = {
-      0:{color:'#b7b7b7', type:'bars', labelInLegend:'Income\''},
-      1:{color:'#cccccc', type:'bars', labelInLegend:'Expenses\''},
+      0:{color:'#b7b7b7', type:'bars', labelInLegend:'Income'},
+      1:{color:'#cccccc', type:'bars', labelInLegend:'Expenses'},
       2:{color:'#45818e', type:'bars', labelInLegend:'Income'},
-      3:{color:'#e69138', type:'bars', labelInLegend:'Expenses'},
-      4:{color:'#45818e', type:'line', labelInLegend:'Avg inc'},
-      5:{color:'#e69138', type:'line', labelInLegend:'Avg exp'}
+      3:{color:'#e69138', type:'bars', labelInLegend:'Expenses'}
     };
-
 
     sheetSummary.getRange(25, 3, 12, 7).setValue(null);
     for(i = 0;  i < mm;  i++) {
-      sheetSummary.getRange(25+i, 3).setValue(list[i]);
-      sheetSummary.getRange(25+i, 4).setFormulaR1C1('=R[-14]C');
-      sheetSummary.getRange(25+i, 5).setFormulaR1C1('=-R[-14]C[1]');
+      sheetSummary.getRange(25 + i, 3).setValue(list[i]);
+      sheetSummary.getRange(25 + i, 4).setFormulaR1C1('=R[-14]C');
+      sheetSummary.getRange(25 + i, 5).setFormulaR1C1('=-R[-14]C[1]');
     }
     for(;  i < 12;  i++) {
-      sheetSummary.getRange(25+i, 3).setValue(list[i]);
-      sheetSummary.getRange(25+i, 6).setFormulaR1C1('=R[-14]C[-2]');
-      sheetSummary.getRange(25+i, 7).setFormulaR1C1('=-R[-14]C[-1]');
-      sheetSummary.getRange(25+i, 8).setFormula('=D10');
-      sheetSummary.getRange(25+i, 9).setFormula('=-F10');
+      sheetSummary.getRange(25 + i, 3).setValue(list[i]);
+      sheetSummary.getRange(25 + i, 6).setFormulaR1C1('=R[-14]C[-2]');
+      sheetSummary.getRange(25 + i, 7).setFormulaR1C1('=-R[-14]C[-1]');
     }
+
     if(mm == 0) {
-      sheetSummary.getRange(25, 4).setValue(0);
-      sheetSummary.getRange(25, 5).setValue(0);
+      sheetSummary.getRange(25, 4, 1, 2).setValue(0);
     }
 
-    // Column chart builder
-    cell = sheetSummary.newChart()
-    .addRange(sheetSummary.getRange('C25:I36'))
-    .setChartType(Charts.ChartType.COMBO)
-    .setPosition(24, 2, 0, 0)
-    .setOption('mode', 'view')
-    .setOption('theme', 'maximized')
-    .setOption('focusTarget', 'category')
-    .setOption('series', options)
-    .setOption('height', 335)
-    .setOption('width', 886);
+    chart = sheetSummary.newChart()
+      .addRange( sheetSummary.getRange('C25:H36') )
+      .setChartType(Charts.ChartType.COMBO)
+      .setPosition(24, 2, 0, 0)
+      .setOption('mode', 'view')
+      .setOption('legend', 'none')
+      .setOption('theme', 'maximized')
+      .setOption('focusTarget', 'category')
+      .setOption('series', options)
+      .setOption('height', 335)
+      .setOption('width', 886);
 
-    sheetSummary.insertChart(cell.build());
+    sheetSummary.insertChart( chart.build() );
     SpreadsheetApp.flush();
   } catch(err) {
     Logger.log('setupSpreadsheet/part=9 : ' + err.message);

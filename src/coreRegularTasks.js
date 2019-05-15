@@ -491,10 +491,10 @@ function update_Layout() {
 
   var yyyy = optAddonSettings_Get_("FinancialYear");
   var init = optAddonSettings_Get_("InitialMonth");
-  var list, c, h_, i;
+  var c, i;
+  var h_;
 
   h_ = AppsScriptGlobal.TableDimensions()["height"];
-  list = AppsScriptGlobal.listNameMonth()[1];
 
   foo_ColorTabs_();
 
@@ -512,23 +512,21 @@ function update_Layout() {
   sheet.getRange(25, 3, 12, 7).setValue(null);
 
   for(i = 0;  i < init;  i++) {
-    sheet.getRange(25 + i, 3).setValue(list[i]);
     sheet.getRange(25 + i, 4).setFormulaR1C1('=R[-14]C');
     sheet.getRange(25 + i, 5).setFormulaR1C1('=-R[-14]C[1]');
   }
   for(;  i < 12;  i++) {
-    sheet.getRange(25 + i, 3).setValue(list[i]);
     sheet.getRange(25 + i, 6).setFormulaR1C1('=R[-14]C[-2]');
     sheet.getRange(25 + i, 7).setFormulaR1C1('=-R[-14]C[-1]');
-    sheet.getRange(25 + i, 8).setFormula('=D10');
-    sheet.getRange(25 + i, 9).setFormula('=-F10');
   }
 
   if(init > 0) {
-    spreadsheet.getSheetByName("_Backstage")
-      .getRange(2, 1, h_*init, c)
-      .setFontColor("#b7b7b7");
     sheet.getRange(11, 2, init, 8)
+      .setFontColor("#b7b7b7");
+
+    sheet = spreadsheet.getSheetByName("_Backstage");
+    if(!sheet) return 1;
+    sheet.getRange(2, 1, h_*init, c)
       .setFontColor("#b7b7b7");
   } else {
     sheet.getRange(25, 4, 1, 2).setValue(0);
