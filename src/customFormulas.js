@@ -267,15 +267,15 @@ function LNEINF(range) {
 function LNEINFCARD(range) {
   Utilities.sleep(200);
 
-  if(!range) return '';
+  if(!range) return "";
 
   var str = '';
 
   //str += 'P balance: ' + Number(range[0][0]).formatFinancial() + '\n';
   str += 'Credit: ' + Number(range[1][0]).formatFinancial() + '\n';
-  str += 'Expenses: ' + Number(range[2][0]).formatFinancial() + '\n';
+  str += 'Expenses: ' + Number(range[3][0]).formatFinancial() + '\n';
   str += '-----------\n';
-  str += 'N balance: ' + Number(range[4][0]).formatFinancial();
+  str += 'Balance: ' + Number(range[4][0]).formatFinancial();
 
   return str;
 }
