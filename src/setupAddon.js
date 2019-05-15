@@ -638,7 +638,7 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
 
       formula = "{\"" + listNameMonthsFull[i] + "\"; ";
       formula += "IF(\'_Settings\'!$B$7 > 0; ";
-      formula += "BSSUMBYTAG($D$1:$D; FILTER(" + rg + "; ";
+      formula += "BSSUMBYTAG(TRANSPOSE($D$1:$D); FILTER(" + rg + "; ";
       formula += "NOT(ISBLANK(" + cd + ")))); )}";
 
       vFormulas[0].push(formula);
