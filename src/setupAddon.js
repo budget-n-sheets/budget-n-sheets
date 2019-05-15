@@ -533,7 +533,7 @@ function setupPart6_(spreadsheet, sheetBackstage, listNameMonths, number_account
       thisSheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
 
       for(k = 0;  k < number_accounts;  k++) {
-        thisSheet.getRange(1, 8+5*k).setFormula('=LNEINF(\'_Backstage\'!' + rollA1Notation(2+h_*i,8+w_*k, h_,2) + '; \'_Backstage\'!'+rollA1Notation(5+i*6, 4+k*3)+')');
+        thisSheet.getRange(1, 8+5*k).setFormula('=BSINF(\'_Backstage\'!' + rollA1Notation(2+h_*i,8+w_*k, h_,2) + '; \'_Backstage\'!'+rollA1Notation(5+i*6, 4+k*3)+')');
 
         thisSheet.getRange(2, 6+5*k).setFormula('=CONCAT("Balance "; TO_TEXT(\'_Backstage\'!'+rollA1Notation(3+h_*i, 7+w_*k)+'))');
 
@@ -638,7 +638,7 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
 
       formula = "{\"" + listNameMonthsFull[i] + "\"; ";
       formula += "IF(\'_Settings\'!$B$7 > 0; ";
-      formula += "LNESUMBYTAG($D$1:$D; FILTER(" + rg + "; ";
+      formula += "BSSUMBYTAG($D$1:$D; FILTER(" + rg + "; ";
       formula += "NOT(ISBLANK(" + cd + ")))); )}";
 
       vFormulas[0].push(formula);
