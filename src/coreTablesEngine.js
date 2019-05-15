@@ -440,7 +440,7 @@ function optCard_Refresh_(numCards) {
     for(k = 2;  k <= numCards;  k++) {
       str += "+RC[" + w_*k + "]";
     }
-    sheet.getRange(4 + h_*i, c, 2, 1).setFormulaR1C1(str);
+    sheet.getRange(3 + h_*i, c, 3, 1).setFormulaR1C1(str);
   }
 }
 
