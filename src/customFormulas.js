@@ -6,7 +6,7 @@
   * @return The financial report.
   * @customfunction
   */
-function LNEREPORT(range, sum_range) {
+function BSREPORT(range, sum_range) {
   Utilities.sleep(200);
 
   if(sum_range == null || range == null) return 0;
@@ -66,7 +66,7 @@ function LNEREPORT(range, sum_range) {
   * @return The total tagged.
   * @customfunction
   */
-function LNESUMBYTAG(tag, range) {
+function BSSUMBYTAG(tag, range) {
   Utilities.sleep(200);
 
   if(!tag  ||  !range) return 0;
@@ -122,27 +122,26 @@ function LNESUMBYTAG(tag, range) {
   * @return The financial report.
   * @customfunction
   */
-function LNEINF(range) {
+function BSINF(range) {
   Utilities.sleep(200);
 
   if(!range) return "#ERROR!";
 
-  var strINF = "";
+  var inf = "";
 
+  inf += 'Withdrawal: (' + range[0][1] + ') ';
+  inf += Number(range[0][0]).formatFinancial() + '\n';
 
-  strINF += 'Withdrawal: (' + range[0][1] + ') ';
-  strINF += Number(range[0][0]).formatFinancial() + '\n';
+  inf += 'Deposit: (' + range[1][1] + ') ';
+  inf += Number(range[1][0]).formatFinancial() + '\n';
 
-  strINF += 'Deposit: (' + range[1][1] + ') ';
-  strINF += Number(range[1][0]).formatFinancial() + '\n';
+  inf += 'Trf. in: (' + range[2][1] + ') ';
+  inf += Number(range[2][0]).formatFinancial() + '\n';
 
-  strINF += 'Trf. in: (' + range[2][1] + ') ';
-  strINF += Number(range[2][0]).formatFinancial() + '\n';
+  inf += 'Trf. out: (' + range[3][1] + ') ';
+  inf += Number(range[3][0]).formatFinancial();
 
-  strINF += 'Trf. out: (' + range[3][1] + ') ';
-  strINF += Number(range[3][0]).formatFinancial();
-
-  return strINF;
+  return inf;
 }
 
 /**
