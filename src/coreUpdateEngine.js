@@ -13,7 +13,7 @@ function onlineUpdate_(f) {
   }
 
   var Ui = SpreadsheetApp.getUi();
-  var version = getPropertiesService_('document', 'number', 'LNE_VERSION');
+  var version = optGetClass_("AddonVersion");
   var dateTodayValue = new Date().getTime();
   var listRequiredVersion;
   var htmlDialog;
@@ -57,7 +57,7 @@ function seamlessUpdate_() {
     return true;
   }
 
-  var version = getPropertiesService_('document', 'number', 'LNE_VERSION');
+  var version = optGetClass_("AddonVersion");
   var dateTodayValue = new Date().getTime();
   var b;
 
@@ -87,7 +87,7 @@ function update_ExecutePatial_() {
   if(!chk) return 0;
 
 
-  var v0 = getPropertiesService_('document', 'number', 'LNE_VERSION'),
+  var v0 = optGetClass_("AddonVersion"),
       v1 = AppsScriptGlobal.AddonVersion();
 
   chk = false;
@@ -104,7 +104,7 @@ function update_ExecutePatial_() {
     return 1;
   }
 
-  setPropertiesService_('document', 'number', 'LNE_VERSION', v1);
+  optSetClass_("AddonVersion", v1);
   SpreadsheetApp.flush();
   lock.releaseLock();
 

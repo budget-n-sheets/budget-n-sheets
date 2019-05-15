@@ -374,6 +374,31 @@ function optAddonSettings_Set_(select, value) {
   return true;
 }
 
+function optGetClass_(a) {
+  if(typeof a != "string") return;
+
+  var b = getPropertiesService_("document", "json", "class_version");
+
+  return b[a];
+}
+
+function optSetClass_(a, b) {
+  if(typeof a != "string" || typeof b != "number") return;
+
+  var c = getPropertiesService_("document", "json", "class_version");
+
+  switch(a) {
+    case "AddonVersion":
+    case "AddonVersionName":
+    case "TemplateVersion":
+      c[a] = b;
+      break;
+    default:
+      console.error("optSetClass_(): Switch case is default", a, b);
+      break;
+  }
+}
+
 
 
 function toolAddBlankRows() {

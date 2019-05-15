@@ -168,8 +168,6 @@ function setup_(addonSettings, listAccountName) {
 
   if(!s) return;
 
-  setPropertiesService_('document', 'number', 'LNE_VERSION', AppsScriptGlobal.AddonVersion());
-
   console.timeEnd("add-on/Install");
   return true;
 }
@@ -762,10 +760,15 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
       ];
 
       sheetSettings.getRange(2, 2, 8, 1).setFormulas(cell);
+    }
+    {
+      cell = {
+        AddonVersion: AppsScriptGlobal.AddonVersion(),
+        AddonVersionName: AppsScriptGlobal.AddonVersionName(),
+        TemplateVersion: AppsScriptGlobal.TemplateVersion()
+      };
 
-      setPropertiesService_('document', 'number', 'LNE_VERSION', 0);
-      setPropertiesService_('document', 'string', 'LN_VERSION', AppsScriptGlobal.TemplateVersion());
-      setPropertiesService_('document', 'number', 'number_accounts', AddonSettings.number_accounts);
+      setPropertiesService_("document", "json", "class_version", cell);
     }
     {
       cell = {
@@ -781,6 +784,7 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
       };
 
       setPropertiesService_('document', 'json', 'user_settings', cell);
+      setPropertiesService_('document', 'number', 'number_accounts', AddonSettings.number_accounts);
     }
     {
       createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
