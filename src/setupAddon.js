@@ -168,6 +168,13 @@ function setup_(addonSettings, listAccountName) {
 
   if(!s) return;
 
+  s = {
+    AddonVersion: AppsScriptGlobal.AddonVersion(),
+    AddonVersionName: AppsScriptGlobal.AddonVersionName(),
+    TemplateVersion: AppsScriptGlobal.TemplateVersion()
+  };
+  setPropertiesService_("document", "json", "class_version", s);
+
   console.timeEnd("add-on/Install");
   return true;
 }
@@ -760,15 +767,6 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
       ];
 
       sheetSettings.getRange(2, 2, 8, 1).setFormulas(cell);
-    }
-    {
-      cell = {
-        AddonVersion: AppsScriptGlobal.AddonVersion(),
-        AddonVersionName: AppsScriptGlobal.AddonVersionName(),
-        TemplateVersion: AppsScriptGlobal.TemplateVersion()
-      };
-
-      setPropertiesService_("document", "json", "class_version", cell);
     }
     {
       cell = {
