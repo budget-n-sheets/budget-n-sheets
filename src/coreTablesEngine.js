@@ -149,10 +149,10 @@ function optCard_SetCard_(input) {
       formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
       formula += "\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + header + "; ";
       formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+      formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " < 0; ";
       formula += "NOT(REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1) + "; ";
       formula += "\"#ign\"))";
       formula += ")); 0)"
-      formula += " - " + rollA1Notation(3 + h_*i, col);
       sheetBackstage.getRange(4 + h_*i, col)
         .setFormula(formula);
 
@@ -160,9 +160,9 @@ function optCard_SetCard_(input) {
       formula = "IFERROR(SUM(FILTER(";
       formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
       formula += "\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + header + "; ";
-      formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "))";
+      formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+      formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " < 0";
       formula += ")); 0)"
-      formula += " - " + rollA1Notation(3 + h_*i, col);
       sheetBackstage.getRange(5 + h_*i, col)
         .setFormula(formula);
 
