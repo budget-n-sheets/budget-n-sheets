@@ -438,7 +438,7 @@ function setupPart9_(sheetSummary, mm) {
       .setOption('theme', 'maximized')
       .setOption('focusTarget', 'category')
       .setOption('series', options)
-      .setOption('height', 335)
+      .setOption('height', 482)
       .setOption('width', 886);
 
     sheetSummary.insertChart( chart.build() );
