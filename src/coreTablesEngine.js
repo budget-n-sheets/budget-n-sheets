@@ -125,7 +125,6 @@ function optCard_SetCard_(input) {
 
   col = sheetBackstage.getMaxColumns() + 1;
   maxRows = sheetBackstage.getMaxRows();
-  ref = 'LNECARD(FILTER(\'Cards\'!';
 
   try {
     sheetBackstage.insertColumnsAfter(col - 1, w_);
