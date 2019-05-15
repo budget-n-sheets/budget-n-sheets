@@ -77,6 +77,10 @@ function weekly_Foo_(e) {
   if(isReAuthorizationRequired_()) return;
   if(isMissingSheet()) return;
 
+  if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != optAddonSettings_Get_('SpreadsheetLocale')) {
+    if(!update_DecimalSepartor_()) return;
+  }
+
   seamlessUpdate_();
 }
 
@@ -84,6 +88,10 @@ function weekly_Foo_(e) {
 function weekly_Bar_(e) {
   if(isReAuthorizationRequired_()) return;
   if(isMissingSheet()) return;
+
+  if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != optAddonSettings_Get_('SpreadsheetLocale')) {
+    if(!update_DecimalSepartor_()) return;
+  }
 
   if(seamlessUpdate_()) return;
 
