@@ -98,6 +98,7 @@ function BSSUMBYTAG(tag, range) {
 
     for(j = 0; j < match.length; j++) {
       c = tag.indexOf(match[j].substr(1));
+      if(c === -1) continue;
       SUM[c][0] += Number(range[i][0]);
     }
   }
