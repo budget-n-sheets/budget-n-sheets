@@ -1,25 +1,3 @@
-function onOpen_Main_(e) {
-  var date = getSpreadsheetDate();
-  var FinancialYear = optAddonSettings_Get_('FinancialYear');
-
-  if(FinancialYear > date.getFullYear()) return;
-  else if(FinancialYear == date.getFullYear()) {
-    setPropertiesService_('document', 'string', 'OperationMode', 'active');
-
-    deleteScriptAppTriggers_('document', 'weeklyMainId');
-    deleteScriptAppTriggers_('document', 'onOpenMainId');
-    createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
-
-    monthly_TreatLayout_(date);
-
-    console.info("add-on/OperationMode: Active");
-
-  } else {
-    deleteScriptAppTriggers_('document', 'onOpenMainId');
-  }
-}
-
-
 function onEdit_Main_(e) {
   if(e.authMode != ScriptApp.AuthMode.FULL) return;
   else if(e.range.getSheet().getName() !== "Quick Actions") return;

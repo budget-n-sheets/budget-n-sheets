@@ -75,7 +75,6 @@ function askReinstall() {
 
   } else if(FinancialYear > dateToday.getFullYear()) {
     setPropertiesService_('document', 'string', 'OperationMode', 'passive');
-    createScriptAppTriggers_('document', 'onOpenMainId', 'onOpen', 'onOpen_Main_');
     createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", 2);
   }
 }
@@ -796,7 +795,6 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
         setPropertiesService_('document', 'string', 'OperationMode', "active");
 
       } else if(AddonSettings.FinancialYear > dateToday.FullYear) {
-        createScriptAppTriggers_('document', 'onOpenMainId', 'onOpen', 'onOpen_Main_');
         createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', 2);
         setPropertiesService_('document', 'string', 'OperationMode', "passive");
       }
