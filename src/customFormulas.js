@@ -87,6 +87,7 @@ function BSSUMBYTAG(tag, range) {
   for(i = 1; i < n; i++) {
     SUM[i] = [ 0 ];
   }
+  if(range === 0) return SUM;
 
   tag = tag.slice(1, n+1);
   if(n > 1) regex = tag.join('|');
