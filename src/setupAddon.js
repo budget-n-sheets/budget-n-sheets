@@ -2,7 +2,7 @@ function showSetupAddon_() {
   var Ui = SpreadsheetApp.getUi();
 
   try {
-    SpreadsheetApp.openById(AppsScriptGlobal.SpreadsheetTemplateId());
+    SpreadsheetApp.openById(AppsScriptGlobal.TemplateId());
   } catch(err) {
     Logger.log('showSetupAddon: ' + err.message);
     console.warn("showSetupAddon_()", err);
@@ -764,7 +764,7 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
       sheetSettings.getRange(2, 2, 8, 1).setFormulas(cell);
 
       setPropertiesService_('document', 'number', 'LNE_VERSION', 0);
-      setPropertiesService_('document', 'string', 'LN_VERSION', AppsScriptGlobal.SpreadsheetTemplateVersion());
+      setPropertiesService_('document', 'string', 'LN_VERSION', AppsScriptGlobal.TemplateVersion());
       setPropertiesService_('document', 'number', 'number_accounts', AddonSettings.number_accounts);
     }
     {

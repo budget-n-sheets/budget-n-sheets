@@ -1,6 +1,6 @@
 function onlineUpdate_(f) {
   try {
-    SpreadsheetApp.openById( AppsScriptGlobal.SpreadsheetTemplateId() );
+    SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
   } catch(err) {
     Logger.log('onlineUpdate: ' + err.message);
     console.warn("onlineUpdate_()", err);
@@ -50,7 +50,7 @@ function onlineUpdate_(f) {
 
 function seamlessUpdate_() {
   try {
-    SpreadsheetApp.openById(AppsScriptGlobal.SpreadsheetTemplateId());
+    SpreadsheetApp.openById(AppsScriptGlobal.TemplateId());
   } catch(err) {
     Logger.log('seamlessUpdate: ' + err.message);
     console.warn("seamlessUpdate_()", err);

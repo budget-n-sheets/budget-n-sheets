@@ -2,12 +2,12 @@ var AppsScriptGlobal = (function() {
   var o = {
     test_chamber: false,
 
-    SpreadsheetTemplateId: '',
-    SpreadsheetTemplateVersion: "5.3",
-    SpreadsheetTemplateListSheets: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '_Settings', 'Cash Flow', 'Tags', 'Quick Actions', '_Backstage', 'Cards', 'Summary', 'About' ],
-
     AddonVersion: 54,
     AddonVersionName: "0.17.0-beta1",
+
+    TemplateId: "",
+    TemplateVersion: "5.3",
+    TemplateSheets: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "_Settings", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "Cards", "Summary", "About" ],
 
     listNameMonth: [
       [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
@@ -25,12 +25,12 @@ var AppsScriptGlobal = (function() {
   return {
     test_chamber: function() { return o.test_chamber },
 
-    SpreadsheetTemplateId: function() { return o.SpreadsheetTemplateId },
-    SpreadsheetTemplateVersion: function() { return o.SpreadsheetTemplateVersion },
-    SpreadsheetTemplateListSheets: function() { return o.SpreadsheetTemplateListSheets },
-
     AddonVersion: function() { return o.AddonVersion },
     AddonVersionName: function() { return o.AddonVersionName },
+
+    TemplateId: function() { return o.TemplateId },
+    TemplateVersion: function() { return o.TemplateVersion },
+    TemplateSheets: function() { return o.TemplateSheets },
 
     listNameMonth: function() { return o.listNameMonth },
 
