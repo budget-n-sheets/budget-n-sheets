@@ -72,7 +72,7 @@ function daily_Main_(e) {
   if(FinancialYear < date.getFullYear()) {
     monthly_TreatLayout_(date);
     deleteScriptAppTriggers_('document', 'dailyMainId');
-    createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Main_', 2);
+    createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
     setPropertiesService_('document', 'string', 'OperationMode', "passive");
 
     console.info("add-on/OperationMode: Passive");
@@ -95,9 +95,32 @@ function daily_Main_(e) {
 }
 
 
-function weekly_Main_(e) {
+function weekly_Foo_(e) {
   if(isReAuthorizationRequired_()) return;
-  else if(isMissingSheet()) return;
+  if(isMissingSheet()) return;
 
   seamlessUpdate_();
+}
+
+
+function weekly_Bar_(e) {
+  if(isReAuthorizationRequired_()) return;
+  if(isMissingSheet()) return;
+
+  if(seamlessUpdate_()) return;
+
+  var date = getSpreadsheetDate();
+  var yyyy = optAddonSettings_Get_("FinancialYear");
+
+  if(date.getFullYear() > yyyy) return;
+
+  deleteScriptAppTriggers_("document", "weeklyMainId");
+
+  if(date.getFullYear() == yyyy) {
+    createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
+  } else {
+    createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
+  }
+
+  monthly_TreatLayout_(date);
 }
