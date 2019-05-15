@@ -265,6 +265,17 @@ function LNEINF(range) {
   * @customfunction
   */
 function LNEINFCARD(range) {
+  return BSINFCARD(range);
+}
+
+/**
+  * Returns credit card stats.
+  *
+  * @param {number} range The data to evaluate.
+  * @return The stats.
+  * @customfunction
+  */
+function BSINFCARD(range) {
   Utilities.sleep(200);
 
   if(!range) return "";

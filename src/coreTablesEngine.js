@@ -213,7 +213,7 @@ function optCard_Load_() {
       range = sheetCards.getRange(2, 1+i*6);
       range.setValue('All');
 
-      sheetCards.getRange(2, 4+i*6).setFormula('LNEINFCARD(OFFSET(INDIRECT(ADDRESS(2; '+(1+w_+w_*number_accounts)+'+MATCH('+range.getA1Notation()+'; \'_Backstage\'!'+ref+'; 0); 4; true; "_Backstage")); '+(i*6)+'; 0; 6; 1))');
+      sheetCards.getRange(2, 4+i*6).setFormula('BSINFCARD(OFFSET(INDIRECT(ADDRESS(2; '+(1+w_+w_*number_accounts)+'+MATCH('+range.getA1Notation()+'; \'_Backstage\'!'+ref+'; 0); 4; true; "_Backstage")); '+(i*6)+'; 0; 6; 1))');
     }
   } catch(err) {
     console.error("optCard_Load_(): Spreadsheet update failed.", err);
