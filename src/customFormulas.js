@@ -67,28 +67,24 @@ function BSREPORT(range, sum_range) {
   * @customfunction
   */
 function BSSUMBYTAG(tag, range) {
+  if(!tag || !range) return;
   Utilities.sleep(200);
-
-  if(!tag || !range) return 0;
 
   var SUM;
   var regex, match;
   var c, n, i, j;
 
-  SUM = [ ];
-  regex = "";
-  tag = tag[0];
-
-  n = tag.length;
-  if(n <= 2) return 0;
+  n = tag[0].length;
+  if(n <= 2) return;
   else n -= 2;
 
-  SUM[0] = [ 0 ];
-  for(i = 1; i < n; i++) {
-    SUM[i] = [ 0 ];
+  SUM = [ ];
+  for(i = 0;  i < n;  i++) {
+    SUM.push([ 0 ]);
   }
-  if(range === 0) return SUM;
+  if(range === "0") return SUM;
 
+  tag = tag[0];
   tag = tag.slice(1, n+1);
   if(n > 1) regex = tag.join('|');
   else regex = tag[0];
