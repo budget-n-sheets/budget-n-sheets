@@ -240,28 +240,6 @@
         .hide();
     }
 
-    function optSettings_Save() { /* -------------------- */
-      $('.Form-Settings_lock').prop('disabled', true);
-      $('#p-footer_FastResponse').empty().append('Saving...');
-
-      var output = {
-        InitialMonth: $('#InitialMonth').val(), // Mês inicial
-        BlankLines: $('#BlankLines').val(), // Blank lines
-        ScreenResolution: $('#ScreenResolution').val(), // Screen resolution
-
-        FinancialCalendar: $('#FinancialCalendar').val(), // Calendário financeiro
-        OnlyEventsOwned: $('#OnlyEventsOwned').prop('checked'),
-        PostDayEvents: $('#PostDayEvents').prop('checked'),
-        OverrideZero: $('#OverrideZero').prop('checked'),
-        CashFlowEvents: $('#CashFlowEvents').prop('checked')
-      };
-
-      google.script.run
-        .withSuccessHandler(optSettings_Aftermath)
-        .withFailureHandler(showError)
-        .optAddonSettings_Save(output);
-      return;
-    }
     function Show_Advanced() {
       $("#b-ShowAdvanced").remove();
       $(".tr-hidden").fadeIn();
@@ -297,22 +275,44 @@
       $('#p-footer_FastResponse').empty()
         .append('Triggers reinstalled.');
     }
-    function optSettings_Aftermath(p) { /* -------------------- */
+
+    function optSettings_Save() {
+      $('.Form-Settings_lock').prop('disabled', true);
+      $('#p-footer_FastResponse').empty().append('Saving...');
+
+      var settings = {
+        InitialMonth: $("#InitialMonth").val(),
+        BlankLines: $("#BlankLines").val(),
+        ScreenResolution: $("#ScreenResolution").val(),
+
+        FinancialCalendar: $("#FinancialCalendar").val(),
+        OnlyEventsOwned: $("#OnlyEventsOwned").prop("checked"),
+        PostDayEvents: $("#PostDayEvents").prop("checked"),
+        OverrideZero: $("#OverrideZero").prop("checked"),
+        CashFlowEvents: $("#CashFlowEvents").prop("checked")
+      };
+
+      google.script.run.withSuccessHandler(optSettings_Aftermath)
+        .withFailureHandler(showError)
+        .optAddonSettings_Save(settings);
+    }
+    function optSettings_Aftermath(p) {
       if(p === 1) {
         showError();
         return;
       } else if(p === 0) {
-        $('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
+        $("#p-footer_FastResponse").empty().append("Add-on is busy. Try again in a moment.");
         return;
       }
 
-      $('#p-footer_FastResponse').empty().append('Settings saved.');
-      $('.Form-Settings_lock').prop('disabled', false);
+      $("#p-footer_FastResponse").empty().append("Settings saved.");
+      $(".Form-Settings_lock").prop("disabled", false);
 
-      if($('#FinancialCalendar').val() == 'null_') {
-        $('.Form-Settings_calendar').prop('disabled', true);
+      if($("#FinancialCalendar").val() === "null_") {
+        $(".Form-Settings_calendar").prop("disabled", true);
       }
-      return;
+
+      google.script.run.update_Layout();
     }
   </script>
   </body>

@@ -187,90 +187,60 @@ function optAddonSettings_Retrieve() {
 }
 
 
-function optAddonSettings_Save(input) {
+function optAddonSettings_Save(settings) {
   var lock = LockService.getDocumentLock();
   try {
-    lock.waitLock(1000);
+    lock.waitLock(200);
   } catch(err) {
     return 0;
   }
 
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheet;
-  var FinancialYear = optAddonSettings_Get_('FinancialYear');
-  var InitialMonth = Number(input.InitialMonth);
-  var list, user_settings, c, h_, i;
+  var user_settings, yyyy, init;
 
-  h_ = AppsScriptGlobal.TableDimensions()["height"];
-  list = AppsScriptGlobal.listNameMonth()[1];
-
-  update_DecimalSepartor_();
-
-  {
-    sheet = spreadsheet.getSheetByName("_Settings");
-    if(!sheet) return 1;
-
-    sheet.getRange("B2")
-      .setFormula("=" + FinancialYear.formatLocaleSignal());
-    sheet.getRange("B4")
-      .setFormula("=" + (InitialMonth + 1).formatLocaleSignal());
+  try {
+    if(!update_DecimalSepartor_()) return 1;
+  } catch(err) {
+    console.error("update_DecimalSepartor_()", err);
+    Logger.log("update_DecimalSepartor_(): " + err.message);
+    return 1;
   }
-  {
-    sheet = spreadsheet.getSheetByName("_Backstage");
-    if(!sheet) return 1;
 
-    c = sheet.getMaxColumns();
-    sheet.getRange(2, 1, h_*12 - 1, c).setFontColor("#000000");
-  }
-  {
-    sheet = spreadsheet.getSheetByName("Summary");
-    if(!sheet) return 1;
+  yyyy = optAddonSettings_Get_("FinancialYear");
+  init = Number(settings.InitialMonth);
 
-    sheet.getRange("B11:I22").setFontColor("#000000");
-    sheet.getRange(25, 3, 12, 7).setValue(null);
+  sheet = spreadsheet.getSheetByName("_Settings");
+  if(!sheet) return 1;
 
-    for(i = 0;  i < InitialMonth;  i++) {
-      sheet.getRange(25 + i, 3).setValue(list[i]);
-      sheet.getRange(25 + i, 4).setFormulaR1C1('=R[-14]C');
-      sheet.getRange(25 + i, 5).setFormulaR1C1('=-R[-14]C[1]');
-    }
-    for(;  i < 12;  i++) {
-      sheet.getRange(25 + i, 3).setValue(list[i]);
-      sheet.getRange(25 + i, 6).setFormulaR1C1('=R[-14]C[-2]');
-      sheet.getRange(25 + i, 7).setFormulaR1C1('=-R[-14]C[-1]');
-      sheet.getRange(25 + i, 8).setFormula('=D10');
-      sheet.getRange(25 + i, 9).setFormula('=-F10');
-    }
+  sheet.getRange("B2")
+    .setFormula("=" + yyyy.formatLocaleSignal());
+  sheet.getRange("B4")
+    .setFormula("=" + (init + 1).formatLocaleSignal());
+  SpreadsheetApp.flush();
 
-    if(InitialMonth > 0) {
-      spreadsheet.getSheetByName("_Backstage")
-        .getRange(2, 1, h_*InitialMonth, c)
-        .setFontColor("#b7b7b7");
-      sheet.getRange(11, 2, input.InitialMonth, 8)
-        .setFontColor("#b7b7b7");
-    } else {
-      sheet.getRange(25, 4, 1, 2).setValue(0);
-    }
-  }
-  {
+  try {
     user_settings = {
       SpreadsheetLocale: spreadsheet.getSpreadsheetLocale(),
-      FinancialYear: FinancialYear,
-      InitialMonth: Number(input.InitialMonth),
-      ScreenResolution: Number(input.ScreenResolution),
+      FinancialYear: yyyy,
+      InitialMonth: init,
+      ScreenResolution: Number(settings.ScreenResolution),
 
-      FinancialCalendar: input.FinancialCalendar,
-      OnlyEventsOwned: input.OnlyEventsOwned,
-      PostDayEvents: input.PostDayEvents,
-      OverrideZero: input.OverrideZero,
-      CashFlowEvents: input.CashFlowEvents,
-      BlankLines: Number(input.BlankLines)
+      FinancialCalendar: settings.FinancialCalendar,
+      OnlyEventsOwned: settings.OnlyEventsOwned,
+      PostDayEvents: settings.PostDayEvents,
+      OverrideZero: settings.OverrideZero,
+      CashFlowEvents: settings.CashFlowEvents,
+      BlankLines: Number(settings.BlankLines)
     };
 
-    setPropertiesService_('document', 'json', 'user_settings', user_settings);
+    setPropertiesService_("document", "json", "user_settings", user_settings);
+  } catch(err) {
+    console.error("optAddonSettings_Save_()", err);
+    Logger.log("optAddonSettings_Save_(): " + err.message);
+    return 1;
   }
 
-  foo_ColorTabs_();
   return -1;
 }
 
