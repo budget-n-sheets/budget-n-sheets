@@ -1,75 +1,4 @@
 /**
-  * Returns the final balance depending on multiple criteria.
-  *
-  * @param {number} value The initial balance.
-  * @param {string} range The range which is tested against criterias.
-  * @param {number} sum_range The range to be accounted.
-  * @return The final balance.
-  * @customfunction
-  */
-function LNEBALANCE(value, range, sum_range) {
-  Utilities.sleep(200);
-
-  if(isNaN(value)) return '-';
-  else if(value == null || range == null || sum_range == null) return 0;
-  else if(sum_range.length != range.length) return 0;
-
-  var SUM;
-  var n, i, v;
-
-  SUM = Number(value);
-
-
-  n = sum_range.length;  i = 0;
-  while(i < n  &&  sum_range[i] != '') {
-    v = Number(sum_range[i]);
-
-    if( /#dp/.test(range[i])  &&  v >= 0 ) SUM += v;
-    else if( /#wd/.test(range[i])  &&  v <= 0 ) SUM += v;
-    else if( /#trf/.test(range[i]) ) SUM += v;
-    else SUM += v;
-
-    i++;
-  }
-
-  return SUM;
-}
-
-/**
-  * Returns the sum of a series of expenses.
-  *
-  * @param {string} range The range which is tested against criterias.
-  * @param {number} sum_range The range to be accounted.
-  * @return The total expenses.
-  * @customfunction
-  */
-function LNESUBTOTAL(range, sum_range) {
-  Utilities.sleep(200);
-
-  if(sum_range == null || range == null) return 0;
-  else if(sum_range.length != range.length) return 0;
-
-  var SUM = 0;
-  var n1, n2, i;
-
-  SUM = 0;
-
-
-  n1 = sum_range.length;  i = 0;
-  n2 = n1 - 1;
-  while(i < n1 && sum_range[i] != '') {
-
-    if(! /#(dp|wd|qcc|ign|rct|trf)/.test(range[i]) ) {
-      SUM += Number(sum_range[i]);
-    }
-
-    i++;
-  }
-
-  return SUM;
-}
-
-/**
   * Returns a financial report.
   *
   * @param {string} range The range which is tested against criterias.
@@ -125,47 +54,6 @@ function LNEREPORT(range, sum_range) {
     i++;
   }
 
-  return SUM;
-}
-
-/**
-  * Returns a financial report.
-  *
-  * @param {string} code The pattern or test to apply to range.
-  * @param {number} range The range with transaction, code, value and tags.
-  * @return The credit card report.
-  * @customfunction
-  */
-function LNECARD(range) {
-  Utilities.sleep(200);
-
-  if(!range) return 0;
-
-  var SUM;
-  var n, i;
-
-  SUM = [
-    [ 0 ], // Credit
-    [ 0 ], // Expenses
-    [ 0 ], // Expenses ign
-    [ 0 ], // Balance
-    [ 0 ]  // Partial
-  ];
-
-  i = 0;
-  n = range.length;
-
-  while(i < n) {
-    if(range[i][2] >= 0) SUM[0][0] += range[i][2];
-    else if(range[i][2] < 0) {
-      SUM[1][0] += range[i][2];
-      if(! /#ign/.test(range[i][3])) SUM[2][0] += range[i][2];
-    }
-
-    i++;
-  }
-
-  SUM[3][0] = SUM[0][0] + SUM[1][0];
   return SUM;
 }
 
@@ -255,17 +143,6 @@ function LNEINF(range) {
   strINF += Number(range[3][0]).formatFinancial();
 
   return strINF;
-}
-
-/**
-  * Returns credit card stats.
-  *
-  * @param {number} range The data to evaluate.
-  * @return The stats.
-  * @customfunction
-  */
-function LNEINFCARD(range) {
-  return BSINFCARD(range);
 }
 
 /**
