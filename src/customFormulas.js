@@ -69,47 +69,40 @@ function BSREPORT(range, sum_range) {
 function BSSUMBYTAG(tag, range) {
   Utilities.sleep(200);
 
-  if(!tag  ||  !range) return 0;
+  if(!tag || !range) return 0;
 
-  var thisRegExp, masterRegExp;
   var SUM;
-  var m1, n, m2, i, j;
-  var v;
+  var regex, match;
+  var c, n, i, j;
 
   SUM = [ ];
-  thisRegExp = [ ];
+  regex = "";
+  tag = tag[0];
 
   n = tag.length;
   if(n <= 2) return 0;
   else n -= 2;
 
-  v = tag.slice(1, n+1);
-  for(i = 0;  i < n;  i++) {
-    SUM.push([ 0 ]);
-    thisRegExp.push( new RegExp('#'+v[i]) );
+  SUM[0] = [ 0 ];
+  for(i = 1; i < n; i++) {
+    SUM[i] = [ 0 ];
   }
 
-  if(n > 1) masterRegExp = v.join('|');
-  else masterRegExp = v[0];
+  tag = tag.slice(1, n+1);
+  if(n > 1) regex = tag.join('|');
+  else regex = tag[0];
 
-  masterRegExp = '#(' + masterRegExp + ')';
-  masterRegExp = new RegExp(masterRegExp);
+  regex = '#(' + regex + ')';
+  regex = new RegExp(regex, "g");
 
+  for(i = 0; i < range.length; i++) {
+    match = range[i][1].match(regex);
+    if(!match) continue;
 
-  m1 = range.length;  i = 0;
-  m2 = m1 - 1;
-  while(i < m1) {
-    // while(range[i][1] == ''  &&  i < m2) { i++; }
-
-    if(masterRegExp.test(range[i][1])) {
-      for(j = 0;  j < n;  j++) {
-        if(thisRegExp[j].test(range[i][1])) {
-          SUM[j][0] += Number(range[i][0]);
-        }
-      }
+    for(j = 0; j < match.length; j++) {
+      c = tag.indexOf(match[j].substr(1));
+      SUM[c][0] += Number(range[i][0]);
     }
-
-    i++;
   }
 
   return SUM;
