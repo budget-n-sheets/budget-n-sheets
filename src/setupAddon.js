@@ -772,7 +772,6 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
         CashFlowEvents: false,
         OverrideZero: false,
         BlankLines: 100,
-        ScreenResolution: 1,
         SpreadsheetLocale: spreadsheet.getSpreadsheetLocale()
       };
 

@@ -94,20 +94,17 @@ function showPanelTags() {
   }
 
   var htmlTemplate, htmlDialog;
-  var InitialMonth, b;
+  var InitialMonth;
 
   InitialMonth = optAddonSettings_Get_('InitialMonth');
-  b = optAddonSettings_Get_('ScreenResolution');
-  b = AppsScriptGlobal.listScreenResolutionFactor()[b];
 
   htmlTemplate = HtmlService.createTemplateFromFile('htmlMainTags');
 
-  htmlTemplate.ScreenResolution = b;
   htmlTemplate.isInitiated = (optAddonSettings_Get_('ActualMonth') >= (InitialMonth+1));
 
   htmlDialog = htmlTemplate.evaluate()
-    .setWidth(640 * b)
-    .setHeight(380 * b);
+    .setWidth(640)
+    .setHeight(380);
   SpreadsheetApp.getUi()
     .showModalDialog(htmlDialog, 'Tags');
 }
@@ -224,7 +221,6 @@ function optAddonSettings_Save(settings) {
       SpreadsheetLocale: spreadsheet.getSpreadsheetLocale(),
       FinancialYear: yyyy,
       InitialMonth: init,
-      ScreenResolution: Number(settings.ScreenResolution),
 
       FinancialCalendar: settings.FinancialCalendar,
       OnlyEventsOwned: settings.OnlyEventsOwned,
@@ -264,8 +260,6 @@ function optAddonSettings_Get_(select) {
       return user_settings.OnlyEventsOwned;
     case 'PostDayEvents':
       return user_settings.PostDayEvents;
-    case 'ScreenResolution':
-      return user_settings.ScreenResolution;
     case 'OverrideZero':
       return user_settings.OverrideZero;
     case 'CashFlowEvents':
@@ -338,9 +332,6 @@ function optAddonSettings_Set_(select, value) {
       break;
     case 'BlankLines':
       user_settings.BlankLines = value;
-      break;
-    case 'ScreenResolution':
-      user_settings.ScreenResolution = value;
       break;
     default:
       console.error("optAddonSettings_Set_() : Switch case is default.", select);

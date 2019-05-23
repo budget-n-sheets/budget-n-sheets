@@ -456,8 +456,7 @@
       }
 
       var chartBuilder, chartData, chartOptions;
-      var i, p;
-			p = Number(<?= ScreenResolution ?>);
+      var i;
 
       $('#TagDetails_extras').show();
       $('#TagDetails_bad-romance').hide();
@@ -469,7 +468,7 @@
       $('#TagDetails_max').append(input.Max);
 
       chartOptions = {
-        'width':607*p,
+        'width':607,
         'height':293,
         'isStacked':true,
         'seriesType':'bars',

@@ -63,17 +63,6 @@
                     </select>
                   </td>
                 </tr>
-                <tr>
-                  <td class="name"><label for="ScreenResolution">Screen resolution</label></td>
-                  <td>
-                    <select class="Form-Settings_lock" id="ScreenResolution">
-                      <option value="0" selected>100%</option>
-                      <option value="1">150%</option>
-                      <option value="2">200%</option>
-                      <option value="3">300%</option>
-                    </select>
-                  </td>
-                </tr>
               </table>
             </div>
             <div style="margin-top:1.3em;">
@@ -219,7 +208,6 @@
         $('#FinancialYear').append(user_settings.FinancialYear+''); // Financial year
         $('#InitialMonth').val(user_settings.InitialMonth); // Initial month
         $('#BlankLines').val(user_settings.BlankLines); // Blank lines
-        $('#ScreenResolution').val(user_settings.ScreenResolution); // Screen resolution
 
         $('#FinancialCalendar').val(user_settings.FinancialCalendar);
         if(user_settings.OnlyEventsOwned) $('#OnlyEventsOwned').prop('checked', true);
@@ -283,7 +271,6 @@
       var settings = {
         InitialMonth: $("#InitialMonth").val(),
         BlankLines: $("#BlankLines").val(),
-        ScreenResolution: $("#ScreenResolution").val(),
 
         FinancialCalendar: $("#FinancialCalendar").val(),
         OnlyEventsOwned: $("#OnlyEventsOwned").prop("checked"),
