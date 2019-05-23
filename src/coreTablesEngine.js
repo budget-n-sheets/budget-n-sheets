@@ -193,7 +193,7 @@ function optCard_Load_() {
   var sheetBackstage = spreadsheet.getSheetByName('_Backstage'),
       sheetCards = spreadsheet.getSheetByName('Cards');
   var number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
-  var maxColumns;
+  var maxColumns, str;
   var range,
       ref, i;
   var h_, w_;
@@ -209,10 +209,14 @@ function optCard_Load_() {
 
   try {
     for(i = 0;  i < 12;  i++) {
-      range = sheetCards.getRange(2, 1+i*6);
-      range.setValue('All');
+      range = sheetCards.getRange(2, 1 + i*6);
+      range.setValue("All");
 
-      sheetCards.getRange(2, 4+i*6).setFormula('BSINFCARD(OFFSET(INDIRECT(ADDRESS(2; '+(1+w_+w_*number_accounts)+'+MATCH('+range.getA1Notation()+'; \'_Backstage\'!'+ref+'; 0); 4; true; "_Backstage")); '+(i*6)+'; 0; ' + h_ + '; 1))');
+      str = "BSINFCARD(OFFSET(INDIRECT(ADDRESS(2; ";
+      str += (1 + w_ + w_*number_accounts) + " + MATCH(" + rollA1Notation(2, 1 + 6*i) + "; ";
+      str += "\'_Backstage\'!" + ref + "; 0); 4; true; \"_Backstage\"));";
+      str += (h_*i) + "; 0; " + h_ + "; 1))";
+      sheetCards.getRange(2, 4+i*6).setFormula(str);
     }
   } catch(err) {
     console.error("optCard_Load_(): Spreadsheet update failed.", err);
