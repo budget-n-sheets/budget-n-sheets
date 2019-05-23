@@ -297,7 +297,7 @@ function optTag_Add_(input) {
   }
 
   a = Number(input.C);
-  sheetTags.insertRowBefore(maxRows);
+  sheetTags.insertRowAfter(maxRows);
   sheetTags.getRange(maxRows, 1, 1, 4).setValues([
     [ input.Name, AppsScriptGlobal.listTagCategories()[1][a], input.Description, input.Tag ]
   ]);
