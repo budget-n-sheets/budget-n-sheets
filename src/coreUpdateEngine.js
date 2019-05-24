@@ -78,7 +78,7 @@ function seamlessUpdate_() {
 
 
 function update_ExecutePatial_() {
-  if(!getPropertiesService_("", "", "is_installed")) return 1;
+  if(!getPropertiesService_("document", "", "is_installed")) return 1;
   console.time("add-on/Update");
 
   var lock = LockService.getDocumentLock();
