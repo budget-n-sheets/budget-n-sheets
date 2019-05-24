@@ -208,7 +208,7 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
   if(!sheetSettings) return;
 
   listNameMonths = AppsScriptGlobal.listNameMonth()[0];
-  numberLneAccount = addonSettings.number_accounts;
+  number_accounts = addonSettings.number_accounts;
 
   dateToday = {
     FullYear: dateToday.getFullYear(),
@@ -216,26 +216,26 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
   };
 
 
-  chk = setupPart3_(spreadsheet, listNameMonths, numberLneAccount);
+  chk = setupPart3_(spreadsheet, listNameMonths, number_accounts);
   if(chk) return;
 
   chk = setupPart1_(spreadsheet, sheetSettings, addonSettings, dateToday);
   if(chk) return;
 
-  chk = setupPart2_(sheetBackstage, listAccountName, addonSettings.InitialMonth, numberLneAccount);
+  chk = setupPart2_(sheetBackstage, listAccountName, addonSettings.InitialMonth, number_accounts);
   if(chk) return;
 
 
-  chk = setupPart4_(spreadsheet, listNameMonths, numberLneAccount);
+  chk = setupPart4_(spreadsheet, listNameMonths, number_accounts);
   if(chk) return;
 
 
-  chk = setupPart5_(spreadsheet, sheetBackstage, numberLneAccount);
+  chk = setupPart5_(spreadsheet, sheetBackstage, number_accounts);
   if(chk) return;
-  chk = setupPart6_(spreadsheet, sheetBackstage, listNameMonths, numberLneAccount);
+  chk = setupPart6_(spreadsheet, sheetBackstage, listNameMonths, number_accounts);
   if(chk) return;
 
-  chk = setupPart7_(spreadsheet, dateToday, addonSettings.FinancialYear, addonSettings.InitialMonth, listNameMonths, numberLneAccount);
+  chk = setupPart7_(spreadsheet, dateToday, addonSettings.FinancialYear, addonSettings.InitialMonth, listNameMonths, number_accounts);
   if(chk) return;
 
 
@@ -243,11 +243,11 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
   if(chk) return;
 
 
-  chk = setupPart10_(numberLneAccount, addonSettings.FinancialYear, addonSettings.InitialMonth);
+  chk = setupPart10_(number_accounts, addonSettings.FinancialYear, addonSettings.InitialMonth);
   if(chk) return;
 
 
-  chk = setupPart11_(spreadsheet, listNameMonths, numberLneAccount);
+  chk = setupPart11_(spreadsheet, listNameMonths, number_accounts);
   if(chk) return;
 
   return true;
@@ -656,20 +656,20 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
 }
 
 
-function setupPart3_(spreadsheet, listNameMonths, numberLneAccount) {
+function setupPart3_(spreadsheet, listNameMonths, number_accounts) {
   try {
     var diff, w_;
 
-    diff = 5 - numberLneAccount;
+    diff = 5 - number_accounts;
     w_ = AppsScriptGlobal.TableDimensions()["width"];
 
-    if(numberLneAccount !== 5) {
+    if(number_accounts !== 5) {
       spreadsheet.getSheetByName("_Backstage")
-        .deleteColumns(7 + w_*numberLneAccount, w_*diff);
+        .deleteColumns(7 + w_*number_accounts, w_*diff);
 
       for(var i = 0;  i < 12;  i++) {
         spreadsheet.getSheetByName(listNameMonths[i])
-          .deleteColumns(6 + 5*numberLneAccount, 5*diff);
+          .deleteColumns(6 + 5*number_accounts, 5*diff);
       }
     }
 
@@ -684,9 +684,9 @@ function setupPart3_(spreadsheet, listNameMonths, numberLneAccount) {
 /**
   *
   */
-function setupPart2_(sheetBackstage, listAccountName, m, numberLneAccount) {
+function setupPart2_(sheetBackstage, listAccountName, m, number_accounts) {
   try {
-    if(numberLneAccount !== listAccountName.length) throw "Number numberLneAccount and listAccountName length are different.";
+    if(number_accounts !== listAccountName.length) throw "Number number_accounts and listAccountName length are different.";
     var thisSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Jan');
     var dbAccountInfo;
     var newCell, auxString;
@@ -698,7 +698,7 @@ function setupPart2_(sheetBackstage, listAccountName, m, numberLneAccount) {
     auxString = randomString(11, "word");
 
 
-    for(k = 0;  k < numberLneAccount;  k++) {
+    for(k = 0;  k < number_accounts;  k++) {
       newCell = {
         Id: auxString, // Id
         Name: listAccountName[k], // Name
