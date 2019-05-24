@@ -104,7 +104,7 @@ function showPanelTags() {
 
   htmlDialog = htmlTemplate.evaluate()
     .setWidth(640)
-    .setHeight(380);
+    .setHeight(509);
   SpreadsheetApp.getUi()
     .showModalDialog(htmlDialog, 'Tags');
 }
