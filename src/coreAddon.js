@@ -246,26 +246,19 @@ function optAddonSettings_Get_(select) {
   var dateToday, dateTodayYear, dateTodayMonth;
   var tmp;
 
-
   switch(select) {
     case 'docName': // Spreadsheet file name
       return spreadsheet.getName();
     case 'FinancialYear': // Number in YYYY format
-      return user_settings.FinancialYear;
     case 'SpreadsheetLocale':
-      return user_settings.SpreadsheetLocale;
     case 'FinancialCalendar':
-      return user_settings.FinancialCalendar;
     case 'OnlyEventsOwned':
-      return user_settings.OnlyEventsOwned;
     case 'PostDayEvents':
-      return user_settings.PostDayEvents;
     case 'OverrideZero':
-      return user_settings.OverrideZero;
     case 'CashFlowEvents':
-      return user_settings.CashFlowEvents;
     case 'InitialMonth': // Number in 0-11 range
-      return user_settings.InitialMonth;
+    case "BlankLines":
+      return user_settings[select];
     case 'ActualMonth': // Number in 0-12 range
       dateToday = getSpreadsheetDate();
 
@@ -296,8 +289,6 @@ function optAddonSettings_Get_(select) {
       } else {
         return tmp;
       }
-    case 'BlankLines': // Number
-      return user_settings.BlankLines;
     default:
       console.error("optAddonSettings_Get_() : Switch case is default.", select);
       break;
@@ -310,28 +301,14 @@ function optAddonSettings_Set_(select, value) {
 
   switch(select) {
     case 'InitialMonth':
-      user_settings.InitialMonth = value;
-      break;
     case 'SpreadsheetLocale':
-      user_settings.SpreadsheetLocale = value;
-      break;
     case 'FinancialCalendar':
-      user_settings.FinancialCalendar = value;
-      break;
     case 'OnlyEventsOwned':
-      user_settings.OnlyEventsOwned = value;
-      break;
     case 'PostDayEvents':
-      user_settings.PostDayEvents = value;
-      break;
     case 'CashFlowEvents':
-      user_settings.CashFlowEvents = value;
-      break;
     case 'OverrideZero':
-      user_settings.OverrideZero = value;
-      break;
     case 'BlankLines':
-      user_settings.BlankLines = value;
+      user_settings[select] = value;
       break;
     default:
       console.error("optAddonSettings_Set_() : Switch case is default.", select);
