@@ -328,7 +328,7 @@ function optGetClass_(a) {
 }
 
 function optSetClass_(a, b) {
-  if(typeof a != "string" || typeof b != "number") return;
+  if(typeof a != "string") return;
 
   var c = getPropertiesService_("document", "json", "class_version");
 
