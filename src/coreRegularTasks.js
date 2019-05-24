@@ -14,7 +14,7 @@ function daily_UpdateEvents_(date) {
     description = list[i].getDescription();
     if( /@ign/.test(description) ) continue;
 
-    description += "\n\n@ign";
+    description += "\n\n\n@ign";
 
     list[i].setDescription(description);
   }
