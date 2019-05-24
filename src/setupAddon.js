@@ -472,7 +472,7 @@ function setupPart7_(spreadsheet, dateToday, Y, m, listNameMonths, number_accoun
       spreadsheet.getSheetByName('Quick Actions').setTabColor('#6aa84f');
       sheetBackstage.setTabColor('#cc0000').hideSheet();
       spreadsheet.getSheetByName('_Settings').setTabColor('#cc0000').hideSheet();
-      spreadsheet.getSheetByName('About').hideSheet();
+      spreadsheet.getSheetByName('About').setTabColor('#6aa84f').hideSheet();
     }
 
     sheetSummary.getRange('B2').setValue(Y+' | Year Summary');
