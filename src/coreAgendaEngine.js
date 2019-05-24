@@ -106,6 +106,11 @@ function optCalendar_GetListOwned() {
 
 
 function optCalendar_GetCalendarFromSHA1_(r) {
+  if(!r || typeof r != "string") {
+    console.warn("optCalendar_GetCalendarFromSHA1_(): Invalid parameter.", r);
+    return;
+  }
+
   var list = CalendarApp.getAllOwnedCalendars();
   var s, i;
 

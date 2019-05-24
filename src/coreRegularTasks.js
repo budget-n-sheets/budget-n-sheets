@@ -37,6 +37,7 @@ function daily_PostEvents_(date) {
 
   t = optAddonSettings_Get_('FinancialCalendar');
   t = optCalendar_GetCalendarFromSHA1_(t);
+  if(!t) return;
   listEvents = t.getEventsForDay(date);
   listEvents = optCalendar_ProcessRawEvents_(listEvents);
   if(listEvents.length === 0) return;
@@ -277,6 +278,8 @@ function foo_UpdateCashFlow_(yyyy, mm) {
   if(optAddonSettings_Get_('CashFlowEvents')) {
     a = optAddonSettings_Get_('FinancialCalendar');
     a = optCalendar_GetCalendarFromSHA1_(a);
+    if(!a) return;
+
     list = a.getEvents(new Date(yyyy, mm, 1), new Date(yyyy, mm+1, 1));
     if(!list) list = [ ];
     else list = optCalendar_ProcessRawEvents_(list);
