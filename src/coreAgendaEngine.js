@@ -37,13 +37,11 @@ function optCalendar_ProcessRawEvents_(listEvents) {
       Value: 0,
       Tags: [ ],
       hasAtIgn: true,
-      hasLneAt: false,
       hasQcc: false
     };
 
 
     cell.hasAtIgn = /@ign/.test(cell.Description);
-    cell.hasLneAt = /lne@/.test(cell.Description);
     cell.hasQcc = /#qcc/.test(cell.Description);
 
     cell.Value = cell.Description.match(/-?\$[\d]+\.[\d]{2}/);

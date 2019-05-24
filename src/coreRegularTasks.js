@@ -9,12 +9,13 @@ function daily_UpdateEvents_(date) {
 
 
   for(i = 0;  i < list.length;  i++) {
-    description = list[i].getDescription();
-
     if(OnlyEventsOwned  &&  !list[i].isOwnedByMe()) continue;
-    else if( /lne@ign/.test(description) ) continue;
 
-    description = description.replace("lne@", "lne@ign");
+    description = list[i].getDescription();
+    if( /@ign/.test(description) ) continue;
+
+    description += "\n\n@ign";
+
     list[i].setDescription(description);
   }
 }
