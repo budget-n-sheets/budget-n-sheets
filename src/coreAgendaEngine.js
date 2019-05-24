@@ -80,28 +80,28 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 
 
 function optCalendar_GetListOwned() {
-  var listCalendars = CalendarApp.getAllOwnedCalendars();
-  var output;
+  var list = CalendarApp.getAllOwnedCalendars();
+  var calendars;
   var b, s, i;
 
-  output = {
+  calendars = {
     Name: [ ],
     Id: [ ]
   };
 
+  for(i = 0;  i < list.length;  i++) {
+    calendars.Name.push( list[i].getName() );
 
-  for(i = 0;  i < listCalendars.length;  i++) {
-    output.Name.push( listCalendars[i].getName() );
-
-    b = Utilities.computeDigest(
+    s = Utilities.computeDigest(
       Utilities.DigestAlgorithm.SHA_1,
-      listCalendars[i].getId(),
+      list[i].getId(),
       Utilities.Charset.UTF_8);
-    s = bin2String(b);
-    output.Id.push(s);
+    s = bin2String(s);
+
+    calendars.Id.push(s);
   }
 
-  return output;
+  return calendars;
 }
 
 
