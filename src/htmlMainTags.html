@@ -232,10 +232,6 @@
                 <td><input class="Form-AddEditTag_lock" type="text" id="Form-AddEditTag_Name" maxlength="179" style="width:13em;" required></td>
               </tr>
               <tr>
-                <td class="name"><label for="Form-AddEditTag_Description">Description</label></td>
-                <td><textarea class="Form-AddEditTag_lock" id="Form-AddEditTag_Description" rows="4" maxlength="523" style="width:13em;"></textarea></td>
-              </tr>
-              <tr>
                 <td class="name"><label for="Form-AddEditTag_Tag">Code</label></td>
                 <td><input class="Form-AddEditTag_lock" type="text" pattern="[a-zA-Z][\w]+" id="Form-AddEditTag_Tag" style="width:13em;" required></td>
               </tr>
@@ -256,6 +252,10 @@
                   </select>
                 </td>
               </tr>
+              <tr>
+                <td class="name"><label for="Form-AddEditTag_Description">Description</label></td>
+                <td><textarea class="Form-AddEditTag_lock" id="Form-AddEditTag_Description" rows="4" maxlength="523" style="width:13em;"></textarea></td>
+              </tr>
             </table>
             <input id="Form-AddEditTag_submit" style="display:none;" type="submit">
           </form>
@@ -265,16 +265,16 @@
           <h2 id="p-TagDetails_head"></h2>
           <table style="width:100%;">
             <tr>
+              <td class="name"><label>Code</label></td>
+              <td id="TagDetails_tag"></td>
+            </tr>
+            <tr>
               <td class="name"><label>Category</label></td>
               <td id="TagDetails_category"></td>
             </tr>
             <tr>
               <td class="name"><label>Description</label></td>
               <td id="TagDetails_description" style="font-style:italic;"></td>
-            </tr>
-            <tr>
-              <td class="name"><label>Code</label></td>
-              <td id="TagDetails_tag"></td>
             </tr>
             <tr>
               <td colspan="2">
@@ -428,7 +428,7 @@
 			$('#p-TagDetails_head').empty().append(input.Name);
 			$('#TagDetails_category').empty().append(listTagCategories[input.C]);
 			$('#TagDetails_description').empty().append(input.Description);
-			$('#TagDetails_tag').empty().append(input.Tag);
+			$('#TagDetails_tag').empty().append("#" + input.Tag);
 
 			$('#TagDetails_interval').empty();
 			$('#TagDetails_total').empty();
