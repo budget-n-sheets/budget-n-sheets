@@ -66,7 +66,7 @@ function onOpen(e) {
 
 
 function showPanelTables() {
-  if(onlineUpdate_('showPanelTables')) return;
+  if(onlineUpdate_()) return;
   else if(optMainTables('isBusy') !== -1) {
     SpreadsheetApp.getUi().alert(
       "Add-on is busy",
@@ -84,7 +84,7 @@ function showPanelTables() {
 
 
 function showPanelTags() {
-  if(onlineUpdate_('showPanelTags')) return;
+  if(onlineUpdate_()) return;
   else if(optMainTags('isBusy') !== -1) {
     SpreadsheetApp.getUi().alert(
       "Add-on is busy",
@@ -111,7 +111,7 @@ function showPanelTags() {
 
 
 function showSidebarMainSettings() {
-  if(onlineUpdate_('showSidebarMainSettings')) return;
+  if(onlineUpdate_()) return;
 
   var htmlSidebar = HtmlService.createTemplateFromFile('htmlUserSettings')
     .evaluate()
@@ -439,7 +439,7 @@ function optTool_AddBlankRows_(mm_) {
 
 
 function optTool_UpdateCashFlow_(mm_) {
-  if(onlineUpdate_('toolUpdateCashFlow')) return;
+  if(onlineUpdate_()) return;
 
   var sheet, range;
   var yyyy, mm;

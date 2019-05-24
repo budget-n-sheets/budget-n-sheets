@@ -1,4 +1,4 @@
-function onlineUpdate_(f) {
+function onlineUpdate_() {
   try {
     SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
   } catch(err) {
