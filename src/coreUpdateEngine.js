@@ -1,47 +1,37 @@
 function onlineUpdate_() {
+  var ui = SpreadsheetApp.getUi();
   try {
     SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
   } catch(err) {
-    Logger.log('onlineUpdate: ' + err.message);
     console.warn("onlineUpdate_()", err);
 
-    SpreadsheetApp.getUi().alert(
-      "Budget n Sheets",
+    ui.alert("Budget n Sheets",
       "The add-on is updating. Try again later.",
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      ui.ButtonSet.OK);
     return true;
   }
 
-  var Ui = SpreadsheetApp.getUi();
   var version = optGetClass_("AddonVersion");
-  var dateTodayValue = new Date().getTime();
-  var listRequiredVersion;
-  var htmlDialog;
-  var b;
+  if(version === AppsScriptGlobal.AddonVersion()) return;
 
+  showDialogQuickMessage("Working on updates...", false, true);
 
-  if(version === AppsScriptGlobal.AddonVersion()) {
+  var b = update_ExecutePatial_();
+  if(b === -1) {
+    ui.alert("Budget n Sheets",
+      "Update completed.",
+      ui.ButtonSet.OK);
     return;
-  } else {
-    showDialogQuickMessage("Working on updates...", false, true);
+  }
 
-    b = update_ExecutePatial_();
-    if(b === 1) {
-      uninstall_();
-      showDialogErrorMessage();
-      onOpen();
-    } else if(b === -1) {
-      Ui.alert(
-        "Budget n Sheets",
-        "Update completed.",
-        Ui.ButtonSet.OK);
-      return;
-    } else {
-      Ui.alert(
-        "Budget n Sheets",
-        "The add-on is busy. Try again in a moment.",
-        Ui.ButtonSet.OK);
-    }
+  if(b === 1) {
+    uninstall_();
+    showDialogErrorMessage();
+    onOpen();
+  } else {
+    ui.alert("Budget n Sheets",
+      "The add-on is busy. Try again in a moment.",
+      ui.ButtonSet.OK);
   }
 
   return true;
@@ -50,31 +40,21 @@ function onlineUpdate_() {
 
 function seamlessUpdate_() {
   try {
-    SpreadsheetApp.openById(AppsScriptGlobal.TemplateId());
+    SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
   } catch(err) {
-    Logger.log('seamlessUpdate: ' + err.message);
     console.warn("seamlessUpdate_()", err);
     return true;
   }
 
   var version = optGetClass_("AddonVersion");
-  var dateTodayValue = new Date().getTime();
-  var b;
-
-
   if(version === AppsScriptGlobal.AddonVersion()) return;
-  else {
-    b = update_ExecutePatial_();
-    if(b === 1) {
-      uninstall_();
-    } else if(b === -1) {
-      return;
-    }
-  }
+
+  var b = update_ExecutePatial_();
+  if(b === -1) return;
+  if(b === 1) uninstall_();
 
   return true;
 }
-
 
 
 function update_ExecutePatial_() {
@@ -87,19 +67,18 @@ function update_ExecutePatial_() {
     return 0;
   }
 
-  var chk = false;
+  var c = false;
   var v0 = optGetClass_("AddonVersion"),
       v1 = AppsScriptGlobal.AddonVersion();
 
   switch(v0) {
   default:
-    console.warn("update_ExecutePatial_() : Switch case is default.", v0);
+    console.warn("update_ExecutePatial_(): Switch case is default.", v0);
     return 0;
   }
 
-  if(chk) {
-    Logger.log('addon/Update : Fail.');
-    console.info("add-on/Update : Fail.");
+  if(c) {
+    console.info("add-on/Update: Fail.");
     return 1;
   }
 
@@ -107,8 +86,7 @@ function update_ExecutePatial_() {
   SpreadsheetApp.flush();
   lock.releaseLock();
 
-  Logger.log('addon/Update : Success.');
-  console.info("add-on/Update : Success.");
+  console.info("add-on/Update: Success.");
   return -1;
 }
 
@@ -120,7 +98,6 @@ function update_ExecutePatial_() {
 function update0packXX_() {
   try {
   } catch(err) {
-    Logger.log('update0packXX_() : ' + err.message);
     console.warn("update0packXX_()", err);
     return true;
   }
