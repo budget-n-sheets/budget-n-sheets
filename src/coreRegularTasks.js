@@ -390,15 +390,14 @@ function foo_FormatRegistry_(mm) {
     .getSheetByName( AppsScriptGlobal.listNameMonth()[0][Number(mm)] );
   var number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
-  var dateToday = getSpreadsheetDate();
+  var dateToday;
   var table;
-  var dateToday, numNegativeDays;
+  var numNegativeDays;
   var c, n, i, k;
 
   c = 0;
   n = thisSheet.getMaxRows() - 4;
   if(n < 1) return;
-
 
   thisSheet.showRows(5, n);
 
@@ -434,6 +433,7 @@ function foo_FormatRegistry_(mm) {
     if(i > c) c = i;
   }
 
+  dateToday = getSpreadsheetDate();
   if(n - c <= 0) return;
   else if(FinancialYear < dateToday.getFullYear()  ||  (FinancialYear == dateToday.getFullYear()  &&  mm < dateToday.getMonth())) {
     if(n - c < n) thisSheet.hideRows(5+c, n-c);
