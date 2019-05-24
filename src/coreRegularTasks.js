@@ -12,7 +12,6 @@ function daily_UpdateEvents_(date) {
     description = list[i].getDescription();
 
     if(OnlyEventsOwned  &&  !list[i].isOwnedByMe()) continue;
-    if( !/lne@/.test(description) ) continue;
     else if( /lne@ign/.test(description) ) continue;
 
     description = description.replace("lne@", "lne@ign");
@@ -63,7 +62,6 @@ function daily_PostEvents_(date) {
     thisEvent = listEvents[i];
 
     if(thisEvent.Description === '') continue;
-    if(!thisEvent.hasLneAt) continue;
     if(thisEvent.hasAtIgn) continue;
     if(thisEvent.Table !== -1) k = thisEvent.Table;
     else if(thisEvent.Card !== -1) k = thisEvent.Card;
@@ -343,7 +341,6 @@ function foo_UpdateCashFlow_(yyyy, mm) {
     item = list[i];
 
     if(item.Description === '') continue;
-    if(!item.hasLneAt) continue;
     if(item.hasAtIgn) continue;
 
     if(!isNaN(item.Value)) value = item.Value;
