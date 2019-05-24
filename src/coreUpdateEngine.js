@@ -80,17 +80,17 @@ function seamlessUpdate_() {
 function update_ExecutePatial_() {
   if(!getPropertiesService_("", "", "is_installed")) return 1;
   console.time("add-on/Update");
-  var lock, chk;
 
-  lock = LockService.getDocumentLock();
-  chk = lock.tryLock(100);
-  if(!chk) return 0;
+  var lock = LockService.getDocumentLock();
+  try {
+    lock.waitLock(200);
+  } catch(err) {
+    return 0;
+  }
 
-
+  var chk = false;
   var v0 = optGetClass_("AddonVersion"),
       v1 = AppsScriptGlobal.AddonVersion();
-
-  chk = false;
 
   switch(v0) {
   default:
