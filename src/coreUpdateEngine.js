@@ -79,7 +79,6 @@ function seamlessUpdate_() {
 
 function update_ExecutePatial_() {
   if(!getPropertiesService_("document", "", "is_installed")) return 1;
-  console.time("add-on/Update");
 
   var lock = LockService.getDocumentLock();
   try {
@@ -108,7 +107,6 @@ function update_ExecutePatial_() {
   SpreadsheetApp.flush();
   lock.releaseLock();
 
-  console.timeEnd("add-on/Update");
   Logger.log('addon/Update : Success.');
   console.info("add-on/Update : Success.");
   return -1;
@@ -120,12 +118,10 @@ function update_ExecutePatial_() {
  * X.XX.X
  *
 function update0packXX_() {
-  console.time("update/pack-XX");
   try {
   } catch(err) {
     Logger.log('update0packXX_() : ' + err.message);
     console.warn("update0packXX_()", err);
     return true;
   }
-  console.timeEnd("update/pack-XX");
 }*/
