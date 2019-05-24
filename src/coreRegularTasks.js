@@ -132,13 +132,11 @@ function update_DecimalSepartor_() {
 
 
 
-function monthly_TreatLayout_(date) {
+function monthly_TreatLayout_(yyyy, mm) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
       sheetTags = spreadsheet.getSheetByName('Tags');
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
   var listNameMonths = AppsScriptGlobal.listNameMonth()[0];
-  var yyyy = date.getFullYear(),
-      mm = date.getMonth();
   var a, i;
 
   if(FinancialYear > yyyy) return; // Too soon to format the spreadsheet.

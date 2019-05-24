@@ -40,35 +40,41 @@ function onEdit_Main_(e) {
 
 function daily_Main_(e) {
   if(isReAuthorizationRequired_()) return;
-  else if(isMissingSheet()) return;
-
+  if(isMissingSheet()) return;
   if(seamlessUpdate_()) return;
 
-  var date = getSpreadsheetDate();
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
+  var date;
+
+  if(e) {
+    date = new Date(e["year"], e["month"], e["day-of-month"], e["hour"]);
+    date = getSpreadsheetDate(date);
+  } else {
+    date = getSpreadsheetDate();
+  }
 
   if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != optAddonSettings_Get_('SpreadsheetLocale')) {
     if(!update_DecimalSepartor_()) return;
   }
 
-  if(FinancialYear < date.getFullYear()) {
-    monthly_TreatLayout_(date);
+  if(FinancialYear < e["year"]) {
+    monthly_TreatLayout_(e["year"], e["month"]);
     deleteScriptAppTriggers_('document', 'dailyMainId');
     createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
     setPropertiesService_('document', 'string', 'OperationMode', "passive");
 
     console.info("add-on/OperationMode: Passive");
-
     return;
   }
 
-  if(date.getDate() == 1) {
-    monthly_TreatLayout_(date);
+  if(e["day-of-month"] == 1) {
+    monthly_TreatLayout_(e["year"], e["month"]);
   }
 
   if(optAddonSettings_Get_('PostDayEvents')) {
     daily_PostEvents_(date);
   }
+
   if(optAddonSettings_Get_('PostDayEvents')  ||  optAddonSettings_Get_('CashFlowEvents')) {
     daily_UpdateEvents_(date);
   }
@@ -102,15 +108,15 @@ function weekly_Bar_(e) {
   var date = getSpreadsheetDate();
   var yyyy = optAddonSettings_Get_("FinancialYear");
 
-  if(date.getFullYear() > yyyy) return;
+  if(e["year"] > yyyy) return;
 
   deleteScriptAppTriggers_("document", "weeklyMainId");
 
-  if(date.getFullYear() == yyyy) {
+  if(e["year"] == yyyy) {
     createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
   } else {
     createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
   }
 
-  monthly_TreatLayout_(date);
+  monthly_TreatLayout_(e["year"], e["month"]);
 }

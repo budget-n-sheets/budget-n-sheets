@@ -47,22 +47,21 @@ Number.prototype.formatLocaleSignal = function() {
 };
 
 
-
-function getSpreadsheetDate() {
+function getSpreadsheetDate(d) {
   var timezone, date;
 
+  if(d) date = d;
+  else date = new Date();
 
   try {
     timezone = SpreadsheetApp.getActiveSpreadsheet()
       .getSpreadsheetTimeZone();
   } catch(err) {
-    timezone = 'GMT';
-
-    Logger.log('getSpreadsheetDate() : ' + err.message);
+    timezone = "GMT";
+    Logger.log("getSpreadsheetDate(): " + err.message);
     console.error("getSpreadsheetDate()", err);
   }
 
-  date = Utilities.formatDate(new Date(), timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
-
+  date = Utilities.formatDate(date, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
   return new Date(date);
 }
