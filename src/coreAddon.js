@@ -342,6 +342,8 @@ function optSetClass_(a, b) {
       console.error("optSetClass_(): Switch case is default", a, b);
       break;
   }
+
+  setPropertiesService_("document", "json", "class_version", c);
 }
 
 
