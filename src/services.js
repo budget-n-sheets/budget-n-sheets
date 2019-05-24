@@ -3,8 +3,12 @@ function onEdit_Main_(e) {
   else if(e.range.getSheet().getName() !== "Quick Actions") return;
   else if(e.value == "") return;
 
-  var mm = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ].indexOf(e.value);
-
+  var mm = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+  ];
+  mm = mm.indexOf(e.value);
   if(mm === -1) return;
 
 
@@ -29,7 +33,7 @@ function onEdit_Main_(e) {
       break;
   }
 
-  e.range.setValue(null);
+  e.range.setValue("");
 }
 
 
