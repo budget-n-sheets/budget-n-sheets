@@ -121,12 +121,9 @@ function setup_ui(settings, list) {
 
   try {
     var s = setup_(settings, list);
+    if(!s) throw s;
   } catch(err) {
     console.error("setup_()", err);
-    s = false;
-  }
-
-  if(!s) {
     uninstall_();
     showDialogErrorMessage();
     return;
@@ -137,11 +134,11 @@ function setup_ui(settings, list) {
   onOpen();
 
   try {
-    var stats = {
+    s = {
       financial_year: optAddonSettings_Get_("FinancialYear"),
       number_accounts: getPropertiesService_("document", "number", "number_accounts")
     };
-    console.info("add-on/Stats", stats);
+    console.info("add-on/Stats", s);
   } catch(err) {
     console.error("setup_ui()/stats", err);
   }
@@ -172,12 +169,11 @@ function setup_(addonSettings, listAccountName) {
 
   try {
     var s = setup_ExecutePatial_(addonSettings, listAccountName);
+    if(!s) throw s;
   } catch(err) {
     console.error("setup_ExecutePatial_()", err);
-    s = false;
+    return;
   }
-
-  if(!s) return;
 
   s = {
     AddonVersion: AppsScriptGlobal.AddonVersion(),
@@ -187,7 +183,13 @@ function setup_(addonSettings, listAccountName) {
   };
   setPropertiesService_("document", "json", "class_version", s);
 
-  if(!nodeControl_("sign")) return;
+  try {
+    s = nodeControl_("sign");
+    if(typeof s != string) throw 1;
+  } catch(err) {
+    console.error("nodeControl_()/sign", err);
+    return;
+  }
 
   console.timeEnd("add-on/Install");
   return true;
