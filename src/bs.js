@@ -24,7 +24,10 @@ function signDoc_() {
   var key = PropertiesService.getScriptProperties().getProperty("inner_lock");
   var data, sig;
 
-  if(!key) return;
+  if(!key) {
+    console.warn("Key 'inner_lock' was not found!");
+    return;
+  }
   if(!sheet) return;
 
   data = {
@@ -57,6 +60,11 @@ function verifySig_(data) {
 
   var key = PropertiesService.getScriptProperties().getProperty("inner_lock");
   var sig;
+
+  if(!key) {
+    console.warn("Key 'inner_lock' was not found!");
+    return;
+  }
 
   data = data.split(":");
   if(data.length !== 2) return;
