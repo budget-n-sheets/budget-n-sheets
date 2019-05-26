@@ -170,7 +170,8 @@ function setup_(addonSettings, listAccountName) {
   s = {
     AddonVersion: AppsScriptGlobal.AddonVersion(),
     AddonVersionName: AppsScriptGlobal.AddonVersionName(),
-    TemplateVersion: AppsScriptGlobal.TemplateVersion()
+    TemplateVersion: AppsScriptGlobal.TemplateVersion(),
+    TemplateVersionName: AppsScriptGlobal.TemplateVersionName()
   };
   setPropertiesService_("document", "json", "class_version", s);
 

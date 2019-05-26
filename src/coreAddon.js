@@ -336,6 +336,7 @@ function optSetClass_(a, b) {
     case "AddonVersion":
     case "AddonVersionName":
     case "TemplateVersion":
+    case "TemplateVersionName":
       c[a] = b;
       break;
     default:

@@ -6,7 +6,8 @@ var AppsScriptGlobal = (function() {
     AddonVersionName: "0.17.0-beta3",
 
     TemplateId: "",
-    TemplateVersion: "5.4-beta1",
+    TemplateVersion: 50,
+    TemplateVersionName: "5.4-beta1",
     TemplateSheets: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "_Settings", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "Cards", "Summary", "About" ],
 
     listNameMonth: [
@@ -29,6 +30,7 @@ var AppsScriptGlobal = (function() {
 
     TemplateId: function() { return o.TemplateId },
     TemplateVersion: function() { return o.TemplateVersion },
+    TemplateVersionName: function() { return o.TemplateVersionName },
     TemplateSheets: function() { return o.TemplateSheets },
 
     listNameMonth: function() { return o.listNameMonth },
