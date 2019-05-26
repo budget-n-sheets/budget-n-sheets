@@ -158,7 +158,8 @@ function setup_(addonSettings, listAccountName) {
 
   spreadsheet.rename(addonSettings.SpreadsheetName);
 
-  uninstall_();
+  purgePropertiesService_("document");
+  purgeScriptAppTriggers_();
 
   deleteAllSheets_();
   copySheetsFromTemplate_();
