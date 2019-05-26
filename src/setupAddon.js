@@ -135,6 +135,16 @@ function setup_ui(settings, list) {
   showDialogSetupEnd();
   onOpen();
 
+  try {
+    var stats = {
+      financial_year: optAddonSettings_Get_("FinancialYear"),
+      number_accounts: getPropertiesService_("document", "number", "number_accounts")
+    };
+    console.info("add-on/Stats", stats);
+  } catch(err) {
+    console.error("setup_ui()/stats", err);
+  }
+
   Logger.log("add-on/Install: Success.");
   console.info("add-on/Install: Success.");
 }
