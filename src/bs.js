@@ -19,8 +19,13 @@ function nodeControl_(c, data) {
 
 
 function signDoc_() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getSheetByName("About");
   var key = PropertiesService.getScriptProperties().getProperty("inner_lock");
   var data, sig;
+
+  if(!key) return;
+  if(!sheet) return;
 
   data = {
     spreadsheet_id: spreadsheet.getId(),
@@ -39,6 +44,9 @@ function signDoc_() {
     data, key,
     Utilities.Charset.UTF_8);
   sig = bin2String(sig);
+
+  sheet.getRange(8, 2).setValue(data + ":" + sig);
+  SpreadsheetApp.flush();
 
   return data + ":" + sig;
 }

@@ -123,6 +123,7 @@ function setup_ui(settings, list) {
     var s = setup_(settings, list);
   } catch(err) {
     console.error("setup_()", err);
+    s = false;
   }
 
   if(!s) {
@@ -173,6 +174,7 @@ function setup_(addonSettings, listAccountName) {
     var s = setup_ExecutePatial_(addonSettings, listAccountName);
   } catch(err) {
     console.error("setup_ExecutePatial_()", err);
+    s = false;
   }
 
   if(!s) return;
@@ -184,6 +186,8 @@ function setup_(addonSettings, listAccountName) {
     TemplateVersionName: AppsScriptGlobal.TemplateVersionName()
   };
   setPropertiesService_("document", "json", "class_version", s);
+
+  if(!nodeControl_("sign")) return;
 
   console.timeEnd("add-on/Install");
   return true;
