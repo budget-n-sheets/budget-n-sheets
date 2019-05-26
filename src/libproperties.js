@@ -36,10 +36,10 @@ function getPropertiesService_(method, type, key) {
     case 'boolean':
       if(m_Properties.getProperty(key) === 'true') return true;
       else return false;
+    case 'obj':
     case 'json':
       var p = m_Properties.getProperty(key);
-      if(typeof p === 'string') return JSON.parse( p );
-      else return;
+      return JSON.parse( p );
     default:
       return m_Properties.getProperty(key);
   }
@@ -80,6 +80,7 @@ function setPropertiesService_(method, type, key, value) {
       if(value) m_Properties.setProperty(key, 'true');
       else m_Properties.setProperty(key, 'false');
       break;
+    case 'obj':
     case 'json':
       m_Properties.setProperty(key, JSON.stringify( value ));
       break;
