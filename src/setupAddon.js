@@ -184,7 +184,7 @@ function setup_(addonSettings, listAccountName) {
 
   try {
     s = nodeControl_("sign");
-    if(typeof s != string) throw 1;
+    if(typeof s != "string") throw 1;
   } catch(err) {
     console.error("nodeControl_()/sign", err);
     return;
