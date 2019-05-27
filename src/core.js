@@ -231,7 +231,7 @@ function optAddonSettings_Save(settings) {
       InitialMonth: init,
 
       FinancialCalendar: settings.FinancialCalendar,
-      OnlyEventsOwned: settings.OnlyEventsOwned,
+      OnlyEventsOwned: false,
       PostDayEvents: settings.PostDayEvents,
       OverrideZero: settings.OverrideZero,
       CashFlowEvents: settings.CashFlowEvents

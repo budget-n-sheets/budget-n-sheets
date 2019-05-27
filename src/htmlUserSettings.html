@@ -79,9 +79,6 @@
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="OnlyEventsOwned"><label for="OnlyEventsOwned">Access only calendar events owned by me</label></td>
-                </tr>
-                <tr>
                   <td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="PostDayEvents"><label for="PostDayEvents">Post calendar events in month-sheet</label></td>
                 </tr>
               </table>
@@ -191,7 +188,6 @@
         $('#InitialMonth').val(user_settings.InitialMonth); // Initial month
 
         $('#FinancialCalendar').val(user_settings.FinancialCalendar);
-        if(user_settings.OnlyEventsOwned) $('#OnlyEventsOwned').prop('checked', true);
         if(user_settings.PostDayEvents) $('#PostDayEvents').prop('checked', true);
         if(user_settings.OverrideZero) $('#OverrideZero').prop('checked', true);
         if(user_settings.CashFlowEvents) $('#CashFlowEvents').prop('checked', true);
@@ -253,7 +249,6 @@
         InitialMonth: $("#InitialMonth").val(),
 
         FinancialCalendar: $("#FinancialCalendar").val(),
-        OnlyEventsOwned: $("#OnlyEventsOwned").prop("checked"),
         PostDayEvents: $("#PostDayEvents").prop("checked"),
         OverrideZero: $("#OverrideZero").prop("checked"),
         CashFlowEvents: $("#CashFlowEvents").prop("checked")
