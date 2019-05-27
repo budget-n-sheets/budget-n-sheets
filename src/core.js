@@ -32,7 +32,7 @@ function onOpen(e) {
   if(e && e.authMode == ScriptApp.AuthMode.NONE) {
     SpreadsheetApp.getUi()
       .createAddonMenu()
-      .addItem('Start budget spreadsheet', 'showSetupAddon_')
+      .addItem('Start budget sheet', 'showSetupAddon_')
       .addSeparator()
       .addItem('About the add-on', 'showDialogAboutAddon')
       .addToUi();
@@ -51,15 +51,15 @@ function onOpen(e) {
         .addItem('Open Accounts & Cards panel', 'showPanelTables')
         .addItem('Open Tags panel', 'showPanelTags')
         .addSeparator()
-        .addItem('Edit settings', 'showSidebarMainSettings')
         .addItem('About the add-on', 'showDialogAboutAddon')
+        .addItem('Edit settings', 'showSidebarMainSettings')
         .addToUi();
 
       console.info("add-on/Open : Success.");
     } else {
       SpreadsheetApp.getUi()
         .createAddonMenu()
-        .addItem('Start budget spreadsheet', 'showSetupAddon_')
+        .addItem('Start budget sheet', 'showSetupAddon_')
         .addSeparator()
         .addItem('About the add-on', 'showDialogAboutAddon')
         .addToUi();
@@ -126,8 +126,12 @@ function showSidebarMainSettings() {
 
 
 function showDialogAboutAddon() {
-  if(getPropertiesService_("document", "", "is_installed")) {
-    onlineUpdate_();
+  try {
+    if(getPropertiesService_("document", "", "is_installed")) {
+      onlineUpdate_();
+    }
+  } catch(err) {
+    console.error("showDialogAboutAddon()", err);
   }
 
   var htmlDialog, htmlTemplate;
