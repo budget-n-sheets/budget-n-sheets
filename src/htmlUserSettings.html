@@ -68,24 +68,6 @@
             <div style="margin-top:1.3em;">
               <table style="width:100%;">
                 <tr>
-                  <th colspan="2"><span style="font-size:1.2em;">Tools</span></th>
-                </tr>
-                <tr>
-                  <td class="name"><label for="BlankLines">New blank lines at a time</label></td>
-                  <td>
-                    <select class="Form-Settings_lock" id="BlankLines">
-                      <option value="50" selected>50</option>
-                      <option value="100">100</option>
-                      <option value="200">200</option>
-                      <option value="3400">400</option>
-                    </select>
-                  </td>
-                </tr>
-              </table>
-            </div>
-            <div style="margin-top:1.3em;">
-              <table style="width:100%;">
-                <tr>
                   <th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
                 </tr>
                 <tr>
@@ -207,7 +189,6 @@
         $('.docName').append(user_settings.docName); // Spreadsheet title
         $('#FinancialYear').append(user_settings.FinancialYear+''); // Financial year
         $('#InitialMonth').val(user_settings.InitialMonth); // Initial month
-        $('#BlankLines').val(user_settings.BlankLines); // Blank lines
 
         $('#FinancialCalendar').val(user_settings.FinancialCalendar);
         if(user_settings.OnlyEventsOwned) $('#OnlyEventsOwned').prop('checked', true);
@@ -270,7 +251,6 @@
 
       var settings = {
         InitialMonth: $("#InitialMonth").val(),
-        BlankLines: $("#BlankLines").val(),
 
         FinancialCalendar: $("#FinancialCalendar").val(),
         OnlyEventsOwned: $("#OnlyEventsOwned").prop("checked"),

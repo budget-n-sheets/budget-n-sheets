@@ -787,7 +787,6 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
         PostDayEvents: false,
         CashFlowEvents: false,
         OverrideZero: false,
-        BlankLines: 100,
         SpreadsheetLocale: spreadsheet.getSpreadsheetLocale()
       };
 

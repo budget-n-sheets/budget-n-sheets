@@ -226,8 +226,7 @@ function optAddonSettings_Save(settings) {
       OnlyEventsOwned: settings.OnlyEventsOwned,
       PostDayEvents: settings.PostDayEvents,
       OverrideZero: settings.OverrideZero,
-      CashFlowEvents: settings.CashFlowEvents,
-      BlankLines: Number(settings.BlankLines)
+      CashFlowEvents: settings.CashFlowEvents
     };
 
     setPropertiesService_("document", "json", "user_settings", user_settings);
@@ -257,7 +256,6 @@ function optAddonSettings_Get_(select) {
     case 'OverrideZero':
     case 'CashFlowEvents':
     case 'InitialMonth': // Number in 0-11 range
-    case "BlankLines":
       return user_settings[select];
     case 'ActualMonth': // Number in 0-12 range
       dateToday = getSpreadsheetDate();
@@ -307,7 +305,6 @@ function optAddonSettings_Set_(select, value) {
     case 'PostDayEvents':
     case 'CashFlowEvents':
     case 'OverrideZero':
-    case 'BlankLines':
       user_settings[select] = value;
       break;
     default:
@@ -423,11 +420,10 @@ function optTool_AddBlankRows_(mm_) {
 
   var maxRows = sheet.getMaxRows(),
       maxCols = sheet.getMaxColumns();
-  var n = optAddonSettings_Get_('BlankLines');
+  var n = 400;
   var values;
 
   if(maxRows < c + 3) return;
-
 
   values = sheet.getRange(maxRows, 1, 1, maxCols).getValues();
   sheet.insertRowsBefore(maxRows, n);
