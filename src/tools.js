@@ -1,3 +1,37 @@
+function toolShowSheets() {
+  optNavTools_("show");
+}
+
+function toolHideSheets() {
+  optNavTools_("hide");
+}
+
+function optNavTools_(p) {
+  var lock = LockService.getDocumentLock();
+  try {
+    lock.waitLock(200);
+  } catch(err) {
+    SpreadsheetApp.getUi().alert(
+      "Add-on is busy",
+      "The add-on is busy. Try again in a moment.",
+      SpreadsheetApp.getUi().ButtonSet.OK);
+    return;
+  }
+
+  switch(p) {
+    case "show":
+      optTool_ShowSheets_();
+      break;
+    case "hide":
+      optTool_HideSheets_();
+      break;
+    default:
+      console.error("optNavTools_(): Switch case is default.", p);
+      break;
+  }
+}
+
+
 function toolAddBlankRows() {
   optMainTools_("AddBlankRows");
 }
@@ -9,7 +43,6 @@ function toolUpdateCashFlow() {
 function toolFormatRegistry() {
   optMainTools_("FormatRegistry");
 }
-
 
 function optMainTools_(p, mm) {
   var lock = LockService.getDocumentLock();
@@ -36,6 +69,43 @@ function optMainTools_(p, mm) {
     default:
       console.error("optMainTools_(): Switch case is default.", p);
       break;
+  }
+}
+
+
+function optTool_HideSheets_() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet;
+  var list = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+  var mm, i;
+
+  mm = getSpreadsheetDate();
+  mm = mm.getMonth();
+
+  for(i = 0;  i < 12;  i++) {
+    sheet = spreadsheet.getSheetByName(list[i]);
+    if(!sheet) continue;
+
+    if(i < mm - 1  ||  i > mm + 2) {
+      spreadsheet.getSheetByName(list[i]).hideSheet();
+    } else {
+      spreadsheet.getSheetByName(list[i]).showSheet();
+    }
+  }
+}
+
+
+function optTool_ShowSheets_() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet;
+  var list = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+  var i;
+
+  for(i = 0;  i < 12;  i++) {
+    sheet = spreadsheet.getSheetByName(list[i]);
+    if(!sheet) continue;
+
+    spreadsheet.getSheetByName(list[i]).showSheet();
   }
 }
 
