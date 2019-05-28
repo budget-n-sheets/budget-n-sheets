@@ -1,8 +1,8 @@
-function toolShowSheets() {
+function toolShowSheets_() {
   optNavTools_("show");
 }
 
-function toolHideSheets() {
+function toolHideSheets_() {
   optNavTools_("hide");
 }
 

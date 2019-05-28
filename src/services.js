@@ -34,8 +34,8 @@ function onEdit_Main_(e) {
       break;
 
     case 13:
-      if(e.value == "Collapse") toolHideSheets();
-      else if(e.value == "Expand") toolShowSheets();
+      if(e.value == "Collapse") toolHideSheets_();
+      else if(e.value == "Expand") toolShowSheets_();
       break;
     default:
       break;

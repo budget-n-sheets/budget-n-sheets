@@ -311,6 +311,7 @@ function setupPart11_(spreadsheet, listNameMonths, number_accounts) {
       vRange = [ ];
       vRange.push( thisSheet.getRange(4, 2, 3, 1) );
       vRange.push( thisSheet.getRange(9, 2, 2, 1) );
+      vRange.push( thisSheet.getRange(13, 1, 1, 2) );
 
       thisSheet.protect()
         .setUnprotectedRanges(vRange)
