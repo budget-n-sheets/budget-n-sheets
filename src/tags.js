@@ -241,6 +241,7 @@ function optTag_GetStat_(input) {
 function optTag_Add_(tag) {
   if(!tag) return 3;
   if( !/[a-zA-Z][\w]+/.test(tag.code) ) return 2;
+  if( /^(wd|dp|trf|qcc|ign|rct)$/.test(tag.code) ) return 2;
 
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
       sheet= spreadsheet.getSheetByName("Tags");
