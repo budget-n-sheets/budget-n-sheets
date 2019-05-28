@@ -480,13 +480,12 @@
 
       chartData = new google.visualization.arrayToDataTable(input.Data);
 
-      <? if(!isInitiated) { ?>
-        chartOptions['series'] = { 0:{ color:'#cccccc' } };
-        chartData.removeColumn(3);
-        chartData.removeColumn(2);
-
+      <? if(isInitiated) { ?>
+        chartOptions['series'] = { 0:{ color:'#cccccc' }, 1:{ color:'#a4c2f4' }, 2:{ color:'#6d9eeb' }, 3:{ 'type':'line', color:'#e06666' } };
       <? } else { ?>
-        chartOptions['series'] = { 0:{ color:'#cccccc' }, 1:{ color:'#6d9eeb' }, 2:{ 'type':'line', color:'#e06666' } };
+        chartOptions['series'] = { 0:{ color:'#cccccc' }, 1:{ color:'#a4c2f4' } };
+        chartData.removeColumn(4);
+        chartData.removeColumn(3);
       <? } ?>
 
       chartBuilder = new google.visualization.ComboChart( document.getElementById('TagDetails_chart') );

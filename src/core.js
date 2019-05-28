@@ -97,13 +97,10 @@ function showPanelTags() {
   }
 
   var htmlTemplate, htmlDialog;
-  var InitialMonth;
-
-  InitialMonth = optAddonSettings_Get_('InitialMonth');
 
   htmlTemplate = HtmlService.createTemplateFromFile('htmlMainTags');
 
-  htmlTemplate.isInitiated = (optAddonSettings_Get_('ActualMonth') >= (InitialMonth+1));
+  htmlTemplate.isInitiated = (optAddonSettings_Get_("MFactor") > 0);
 
   htmlDialog = htmlTemplate.evaluate()
     .setWidth(640)

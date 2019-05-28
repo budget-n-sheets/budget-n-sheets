@@ -157,111 +157,80 @@ function optTag_GetInfo_(input) {
 
 
 function optTag_GetStat_(input) {
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheetTags = spreadsheet.getSheetByName('Tags');
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+  if(!sheet) return 2;
 
-  var InitialMonth = optAddonSettings_Get_('InitialMonth');
+  var init = optAddonSettings_Get_("InitialMonth");
   var ActualMonth = optAddonSettings_Get_('ActualMonth');
-  var ActiveMonths = optAddonSettings_Get_('ActiveMonths');
   var MFactor = optAddonSettings_Get_('MFactor');
-  var AverageValue;
 
-  var data, output;
-  var ref, auxValue;
-  var maxRows = sheetTags.getMaxRows();
-  var a, i, n, t_, v;
+  var output;
+  var data, avgValue;
+  var value, auxValue;
+  var lastRow;
+  var a, i, v, ta;
 
-  if(!sheetTags) return 2;
-  SpreadsheetApp.flush();
-
-  ref = {
-    minValue:0,
-    maxValue:0
-  };
-
+  ta = MFactor > 0;
+  value = { min: 0, max: 0 };
   output = {
-    Data: [ ],
-
-    Analytics: false,
-    Interval: '',
-    BadStatistics: false,
-
-    hasStatistics: false,
-    Total: '',
-    Average: '',
-    Min: '',
-    Max: ''
+    Interval: "",
+    Total: "",
+    Average: "",
+    Min: "",
+    Max: "",
+    Data: [ ]
   };
 
-  data = sheetTags.getRange(2,4, maxRows-2).getValues();
+  lastRow = sheet.getLastRow();
+  if(lastRow <= 1) return 1;
 
+  data = sheet.getRange(2, 4, lastRow - 1, 1).getValues();
 
   for(i = 0;  i < data.length;  i++) {
     if(data[i][0] === input) break;
   }
-  if(i == n) return 1;
+  if(i == data.length) return 1;
 
-  a = sheetTags.getRange(2+i, 21).getValue();
-  a = TC_CODE_.indexOf(a);
-  if(a == -1) a = 5;
+  data = sheet.getRange(2 + i, 5, 1, 12).getValues();
+  data = data[0];
 
+  if(ta) {
+    avgValue = sheet.getRange(2 + i, 18).getValue().toFixed(2);
+    avgValue = +avgValue;
+    value.min = +data[init];
+    value.max = value.min;
 
-  data = sheetTags.getRange(2+i,5, 1,12).getValues();
-  if(MFactor > 0) {
-    output.Interval = MN_FULL_[InitialMonth] + ' - ' + MN_FULL_[ActualMonth-1];
-    output.Total = Number( sheetTags.getRange(2+i, 19).getValue() ).formatFinancial();
-    AverageValue = Number( sheetTags.getRange(2+i, 18).getValue().toFixed(2) );
-    output.Average = AverageValue.formatFinancial();
-
-    ref.minValue = Number(data[0][InitialMonth]); // min value
-    ref.maxValue = ref.minValue; // max value
-
-  } else {
-    output.Interval = '';
-    output.Total = '';
-    AverageValue = 0;
-    output.Average = '';
-
-    ref.minValue = 0; // min value
-    ref.maxValue = 0; // max value
+    output.Interval = MN_FULL_[init] + " - " + MN_FULL_[ActualMonth-1];
+    output.Total = sheet.getRange(2 + i, 19).getValue().formatFinancial();
+    output.Average = avgValue.formatFinancial();
   }
 
+  output.Data = [
+    ["Month", "Month", "Month", "Month", "Average"]
+  ];
 
-  v = ['Month', 'Month', 'Month', 'Average'];
-  output.Data.push(v);
-
-  for(i = 0;  i < InitialMonth  &&  i < 12;  i++) {
-    v = [ MN_SHORT_[i], Number(data[0][i].toFixed(2)), null, null ];
+  for(i = 0;  i < init  &&  i < 12;  i++) {
+    v = [ MN_SHORT_[i], +data[i].toFixed(2), null, null, null ];
     output.Data.push(v);
   }
 
-  for(;  i < InitialMonth+MFactor  &&  i < 12;  i++) {
-    v = [ MN_SHORT_[i], null, Number(data[0][i].toFixed(2)), AverageValue ];
+  for(;  i < init + MFactor  &&  i < 12;  i++) {
+    v = [ MN_SHORT_[i], null, null, +data[i].toFixed(2), avgValue ];
     output.Data.push(v);
 
-    auxValue = Number(data[0][i].toFixed(2));
-    if(auxValue < ref.minValue) ref.minValue = auxValue;
-    if(auxValue > ref.maxValue) ref.maxValue = auxValue;
-  }
-
-  for(;  i < ActualMonth  &&  i < 12;  i++) {
-    v = [ MN_SHORT_[i], null, Number(data[0][i].toFixed(2)), null ];
-    output.Data.push(v);
+    a = +data[i].toFixed(2);
+    if(a < value.min) value.min = a;
+    if(a > value.max) value.max = a;
   }
 
   for(;  i < 12;  i++) {
-    v = [ MN_SHORT_[i], Number(data[0][i].toFixed(2)), null, null ];
+    v = [ MN_SHORT_[i], null, +data[i].toFixed(2), null, null ];
     output.Data.push(v);
   }
 
-
-  if(MFactor > 0) {
-    output.Min = Number(ref.minValue).formatFinancial(); // append min value
-    output.Max = Number(ref.maxValue).formatFinancial(); // append max value
-
-  } else {
-    output.Min = '';
-    output.Max = '';
+  if(ta) {
+    output.Min = value.min.formatFinancial();
+    output.Max = value.max.formatFinancial();
   }
 
   return output;
