@@ -238,36 +238,23 @@ function optTag_GetStat_(input) {
 
 
 
-function optTag_Add_(input) {
-  if(input == null) return 3;
+function optTag_Add_(tag) {
+  if(!tag) return 3;
+  if( !/[a-zA-Z][\w]+/.test(tag.code) ) return 2;
 
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheetTags = spreadsheet.getSheetByName('Tags');
-  var number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
-  var maxRows, a;
-  var data;
-  var i;
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
+      sheet= spreadsheet.getSheetByName("Tags");
+  var c, n;
 
-  maxRows = sheetTags.getMaxRows();
+  c = Number(tag.category);
+  n = sheet.getMaxRows();
+  if(n < 2) return 3;
 
-
-  if( !/[a-zA-Z][\w]+/.test(input.Tag) ) return 2;
-  if(maxRows > 2) {
-    data = sheetTags.getRange(2, 4, maxRows-2, 1).getValues();
-
-    for(i = 0;  i < data.length;  i++) {
-      if(data[i][0] === input.Tag) {
-        return 10;
-      }
-    }
-  }
-
-  a = Number(input.C);
-  sheetTags.insertRowAfter(maxRows);
-  sheetTags.getRange(maxRows, 1, 1, 4).setValues([
-    [ input.Name, TC_NAME_[a], input.Description, input.Tag ]
+  sheet.insertRowAfter(n);
+  sheet.getRange(n, 1, 1, 4).setValues([
+    [ tag.name, TC_NAME_[c], tag.description, tag.code ]
   ]);
-  sheetTags.getRange(maxRows, 21).setValue( TC_CODE_[a] );
+  sheet.getRange(n, 21).setValue(TC_CODE_[c]);
 
   SpreadsheetApp.flush();
   return -1;

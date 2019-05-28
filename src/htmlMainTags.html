@@ -627,32 +627,25 @@
       $('#p-footer_FastResponse').empty();
       $('.Form-AddEditTag_lock').prop('disabled', true);
 
-      var output = {
-        Name: $('#Form-AddEditTag_Name').val(),
-        Description: $('#Form-AddEditTag_Description').val(),
-        Tag: $('#Form-AddEditTag_Tag').val(),
-        C: $('#Form-AddEditTag_C').val()
+      var tag = {
+        name: $('#Form-AddEditTag_Name').val(),
+        description: $('#Form-AddEditTag_Description').val(),
+        code: $('#Form-AddEditTag_Tag').val(),
+        category: $('#Form-AddEditTag_C').val()
       }
 
-      google.script.run
-        .withSuccessHandler(NewTag_Aftermath)
+      google.script.run.withSuccessHandler(NewTag_Aftermath)
         .withFailureHandler(showError)
-        .optMainTags('Add', output);
+        .optMainTags("Add", tag);
       return false;
     }
 
-    function NewTag_Aftermath(input) {
-      if(input === 10) {
-        $('.Form-AddEditTag_lock').prop('disabled', false);
-        $('#p-footer_FastResponse').empty().append('The code is already in use. Choose a different one.');
-        return;
-
-      } else if(input === 0) {
+    function NewTag_Aftermath(p) {
+      if(p === 0) {
         $('.Form-AddEditTag_lock').prop('disabled', false);
         $('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
         return;
-
-      } else if(!isNaN(input)  &&  input > 0) {
+      } else if(p !== -1) {
         showError();
         return;
       }
@@ -660,10 +653,9 @@
       $('#p-Book_WaitLoad').fadeIn('fast').siblings().hide();
       goBackToPanel('p-Book');
       $('#p-footer_FastResponse').append('New tag added.');
-      google.script.run
-        .withSuccessHandler(ListTags_Merge)
+      google.script.run.withSuccessHandler(ListTags_Merge)
         .withFailureHandler(showError)
-        .optMainTags('GetList');
+        .optMainTags("GetList");
     }
 
     function AddEditTag_opt() {
