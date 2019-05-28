@@ -3,16 +3,19 @@ function onEdit_Main_(e) {
   else if(e.range.getSheet().getName() !== "Quick Actions") return;
   else if(e.value == "") return;
 
+  var row = e.range.getRow();
   var mm = [
     "January", "February", "March", "April",
     "May", "June", "July", "August",
     "September", "October", "November", "December"
   ];
-  mm = mm.indexOf(e.value);
-  if(mm === -1) return;
 
+  if(row < 13) {
+    mm = mm.indexOf(e.value);
+    if(mm === -1) return;
+  }
 
-  switch( e.range.getRow() ) {
+  switch( row ) {
     case 4:
       optMainTools_("AddBlankRows", mm);
       break;
@@ -28,6 +31,11 @@ function onEdit_Main_(e) {
       break;
     case 10:
       optMainTools_("FormatRegistry", 12+mm);
+      break;
+
+    case 13:
+      if(e.value == "Collapse") toolHideSheets();
+      else if(e.value == "Expand") toolShowSheets();
       break;
     default:
       break;
