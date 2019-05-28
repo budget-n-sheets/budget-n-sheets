@@ -118,7 +118,7 @@ function optTool_AddBlankRows_(mm_) {
   if(isNaN(mm_)) {
     sheet = SpreadsheetApp.getActiveSheet();
   } else if(mm_ >= 0  &&  mm_ < 12) {
-    sheet = spreadsheet.getSheetByName(AppsScriptGlobal.listNameMonth()[0][mm_]);
+    sheet = spreadsheet.getSheetByName(MN_SHORT_[mm_]);
   } else if(mm_ === 12) {
     sheet = spreadsheet.getSheetByName("Cards");
   } else {
@@ -130,7 +130,7 @@ function optTool_AddBlankRows_(mm_) {
     showDialogErrorMessage();
     return;
   } else if(sheet.getSheetName() === "Cards") c = 5;
-  else if(AppsScriptGlobal.listNameMonth()[0].indexOf(sheet.getSheetName()) !== -1) c = 4;
+  else if(MN_SHORT_.indexOf(sheet.getSheetName()) !== -1) c = 4;
   else {
     SpreadsheetApp.getUi().alert(
       "Can't add rows",
@@ -168,8 +168,7 @@ function optTool_UpdateCashFlow_(mm_) {
     sheet = SpreadsheetApp.getActiveSheet();
     range = SpreadsheetApp.getActiveRange();
 
-    mm = AppsScriptGlobal.listNameMonth()[0]
-      .indexOf( sheet.getSheetName() );
+    mm = MN_SHORT_.indexOf( sheet.getSheetName() );
   } else if(mm_ >= 0  &&  mm_ < 12) {
     mm = mm_;
   } else {
@@ -202,8 +201,7 @@ function optTool_FormatRegistry_(mm_) {
 
   if( isNaN(mm_) ) {
     sheet = SpreadsheetApp.getActiveSheet();
-    c = AppsScriptGlobal.listNameMonth()[0]
-      .indexOf( sheet.getSheetName() );
+    c = MN_SHORT_.indexOf( sheet.getSheetName() );
   } else if(mm_ >= 0  &&  mm_ < 12) {
     c = mm_;
   } else if(mm_ >= 12  &&  mm_ < 24) {

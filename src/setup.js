@@ -224,7 +224,6 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
   if(!sheetBackstage) return;
   if(!sheetSettings) return;
 
-  listNameMonths = AppsScriptGlobal.listNameMonth()[0];
   number_accounts = addonSettings.number_accounts;
 
   dateToday = {
@@ -233,7 +232,7 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
   };
 
 
-  chk = setupPart3_(spreadsheet, listNameMonths, number_accounts);
+  chk = setupPart3_(spreadsheet, number_accounts);
   if(chk) return;
 
   chk = setupPart1_(spreadsheet, sheetSettings, addonSettings, dateToday);
@@ -243,16 +242,16 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
   if(chk) return;
 
 
-  chk = setupPart4_(spreadsheet, listNameMonths, number_accounts);
+  chk = setupPart4_(spreadsheet, number_accounts);
   if(chk) return;
 
 
   chk = setupPart5_(spreadsheet, sheetBackstage, number_accounts);
   if(chk) return;
-  chk = setupPart6_(spreadsheet, sheetBackstage, listNameMonths, number_accounts);
+  chk = setupPart6_(spreadsheet, sheetBackstage, number_accounts);
   if(chk) return;
 
-  chk = setupPart7_(spreadsheet, dateToday, addonSettings.FinancialYear, addonSettings.InitialMonth, listNameMonths, number_accounts);
+  chk = setupPart7_(spreadsheet, dateToday, addonSettings.FinancialYear, addonSettings.InitialMonth, number_accounts);
   if(chk) return;
 
 
@@ -264,7 +263,7 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
   if(chk) return;
 
 
-  chk = setupPart11_(spreadsheet, listNameMonths, number_accounts);
+  chk = setupPart11_(spreadsheet, number_accounts);
   if(chk) return;
 
   return true;
@@ -274,7 +273,7 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
 /**
   * Add protection to sheets and ranges so prevent users from messing up.
   */
-function setupPart11_(spreadsheet, listNameMonths, number_accounts) {
+function setupPart11_(spreadsheet, number_accounts) {
   var thisSheet;
   var vRange;
   var i, k;
@@ -320,7 +319,7 @@ function setupPart11_(spreadsheet, listNameMonths, number_accounts) {
     {
       i = 0;
       while(i < 12) {
-        thisSheet = spreadsheet.getSheetByName(listNameMonths[i]);
+        thisSheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
         vRange = [ ];
 
         for(k = 0;  k < 1+number_accounts;  k++) {
@@ -421,9 +420,8 @@ function setupPart10_(number_accounts, Y, m) {
 function setupPart9_(sheetSummary, mm) {
   try {
     var chart, options;
-    var list, i;
+    var i;
 
-    list = AppsScriptGlobal.listNameMonth()[1];
     options = {
       0:{color:'#b7b7b7', type:'bars', labelInLegend:'Income'},
       1:{color:'#cccccc', type:'bars', labelInLegend:'Expenses'},
@@ -433,12 +431,12 @@ function setupPart9_(sheetSummary, mm) {
 
     sheetSummary.getRange(25, 3, 12, 7).setValue(null);
     for(i = 0;  i < mm;  i++) {
-      sheetSummary.getRange(25 + i, 3).setValue(list[i]);
+      sheetSummary.getRange(25 + i, 3).setValue(MN_FULL_[i]);
       sheetSummary.getRange(25 + i, 4).setFormulaR1C1('=R[-14]C');
       sheetSummary.getRange(25 + i, 5).setFormulaR1C1('=-R[-14]C[1]');
     }
     for(;  i < 12;  i++) {
-      sheetSummary.getRange(25 + i, 3).setValue(list[i]);
+      sheetSummary.getRange(25 + i, 3).setValue(MN_FULL_[i]);
       sheetSummary.getRange(25 + i, 6).setFormulaR1C1('=R[-14]C[-2]');
       sheetSummary.getRange(25 + i, 7).setFormulaR1C1('=-R[-14]C[-1]');
     }
@@ -470,7 +468,7 @@ function setupPart9_(sheetSummary, mm) {
 /**
   * Ajustes finais.
   */
-function setupPart7_(spreadsheet, dateToday, Y, m, listNameMonths, number_accounts) {
+function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
   try {
     var sheetTags = spreadsheet.getSheetByName('Tags');
     var sheetCashFlow = spreadsheet.getSheetByName('Cash Flow'),
@@ -506,9 +504,9 @@ function setupPart7_(spreadsheet, dateToday, Y, m, listNameMonths, number_accoun
 
       for(i = 0;  i < 12;  i++) {
         if(i < dateToday.Month-1  ||  i > dateToday.Month+2) {
-          spreadsheet.getSheetByName(listNameMonths[i]).hideSheet();
+          spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
         } else {
-          spreadsheet.getSheetByName(listNameMonths[i]).showSheet();
+          spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
         }
       }
 
@@ -517,7 +515,7 @@ function setupPart7_(spreadsheet, dateToday, Y, m, listNameMonths, number_accoun
       } else {
 
         if(dateToday.Month == 11) {
-          spreadsheet.getSheetByName(listNameMonths[9]).showSheet();
+          spreadsheet.getSheetByName(MN_SHORT_[9]).showSheet();
           dateToday.Month--;
         }
         sheetTags.showColumns(3+dateToday.Month,4);
@@ -535,7 +533,7 @@ function setupPart7_(spreadsheet, dateToday, Y, m, listNameMonths, number_accoun
 /**
   * Install essential formulas; tables for banking account, sheet '_Backstage'.
   */
-function setupPart6_(spreadsheet, sheetBackstage, listNameMonths, number_accounts) {
+function setupPart6_(spreadsheet, sheetBackstage, number_accounts) {
   try {
     var thisSheet;
     var i, k;
@@ -545,7 +543,7 @@ function setupPart6_(spreadsheet, sheetBackstage, listNameMonths, number_account
     w_ = AppsScriptGlobal.TableDimensions()["width"];
 
     for(i = 0;  i < 12;  i++) {
-      thisSheet = spreadsheet.getSheetByName(listNameMonths[i]);
+      thisSheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
 
       thisSheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
 
@@ -607,17 +605,16 @@ function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
 /**
   * Insert formulas in Tags.
   */
-function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
+function setupPart4_(spreadsheet, number_accounts) {
   try {
     var sheetCreditCard = spreadsheet.getSheetByName('Cards');
     var formula, ranges2, rg, cd;
     var rgMonthTags, rgMonthCombo, rgCardsTags, rgCardsCombo;
-    var listNameMonthsFull = AppsScriptGlobal.listNameMonth()[1];
     var vFormulas;
     var n1, n2, v;
     var i, k;
 
-    n1 = spreadsheet.getSheetByName(listNameMonths[0]).getMaxRows();
+    n1 = spreadsheet.getSheetByName(MN_SHORT_[0]).getMaxRows();
     n2 = sheetCreditCard.getMaxRows() - 5;
     vFormulas = [
       [ ]
@@ -639,12 +636,12 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
 
     for(i = 0;  i < 12;  i++) {
       k = 0;
-      rg = "{\'" + listNameMonths[i] + "\'!" + rgMonthCombo[0];
-      cd = "{\'" + listNameMonths[i] + "\'!" + rgMonthTags[0];
+      rg = "{\'" + MN_SHORT_[i] + "\'!" + rgMonthCombo[0];
+      cd = "{\'" + MN_SHORT_[i] + "\'!" + rgMonthTags[0];
 
       for(k++;  k < 1 + number_accounts;  k++) {
-        rg += "; \'" + listNameMonths[i] + "\'!" + rgMonthCombo[k];
-        cd += "; \'" + listNameMonths[i] + "\'!" + rgMonthTags[k];
+        rg += "; \'" + MN_SHORT_[i] + "\'!" + rgMonthCombo[k];
+        cd += "; \'" + MN_SHORT_[i] + "\'!" + rgMonthTags[k];
       }
 
       rg += "; \'Cards\'!" + rgCardsCombo[i];
@@ -653,7 +650,7 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
       cd += "; \'Cards\'!" + rgCardsTags[i];
       cd += "}";
 
-      formula = "{\"" + listNameMonthsFull[i] + "\"; ";
+      formula = "{\"" + MN_FULL_[i] + "\"; ";
       formula += "IF(\'_Settings\'!$B$7 > 0; ";
       formula += "BSSUMBYTAG(TRANSPOSE($D$1:$D); IFERROR(FILTER(" + rg + "; ";
       formula += "NOT(ISBLANK(" + cd + "))); \"0\")); )}";
@@ -674,7 +671,7 @@ function setupPart4_(spreadsheet, listNameMonths, number_accounts) {
 }
 
 
-function setupPart3_(spreadsheet, listNameMonths, number_accounts) {
+function setupPart3_(spreadsheet, number_accounts) {
   try {
     var diff, w_;
 
@@ -686,7 +683,7 @@ function setupPart3_(spreadsheet, listNameMonths, number_accounts) {
         .deleteColumns(7 + w_*number_accounts, w_*diff);
 
       for(var i = 0;  i < 12;  i++) {
-        spreadsheet.getSheetByName(listNameMonths[i])
+        spreadsheet.getSheetByName(MN_SHORT_[i])
           .deleteColumns(6 + 5*number_accounts, 5*diff);
       }
     }

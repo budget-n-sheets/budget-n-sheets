@@ -29,7 +29,7 @@ function daily_PostEvents_(date) {
   var c, i, j, k, t;
 
   mm = date.getMonth();
-  t = AppsScriptGlobal.listNameMonth()[0][mm];
+  t = MN_SHORT_[mm];
   sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(t);
   if(!sheet) return;
   maxRows = sheet.getMaxRows() - 4;
@@ -136,7 +136,6 @@ function monthly_TreatLayout_(yyyy, mm) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
       sheetTags = spreadsheet.getSheetByName('Tags');
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
-  var listNameMonths = AppsScriptGlobal.listNameMonth()[0];
   var a, i;
 
   if(FinancialYear > yyyy) return; // Too soon to format the spreadsheet.
@@ -149,10 +148,10 @@ function monthly_TreatLayout_(yyyy, mm) {
   if(mm === 0) {
     if(yyyy === FinancialYear) {
       for(i = 0;  i < 3;  i++) {
-        spreadsheet.getSheetByName(listNameMonths[i]).showSheet();
+        spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
       }
       for(;  i < 12;  i++) {
-        spreadsheet.getSheetByName(listNameMonths[i]).hideSheet();
+        spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
       }
 
       sheetTags.hideColumns(5, 12);
@@ -160,7 +159,7 @@ function monthly_TreatLayout_(yyyy, mm) {
       return;
     } else {
       for(i = 0;  i < 12;  i++) {
-        spreadsheet.getSheetByName(listNameMonths[i]).showSheet();
+        spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
       }
 
       sheetTags.showColumns(5, 12);
@@ -170,9 +169,9 @@ function monthly_TreatLayout_(yyyy, mm) {
   } else {
     for(i = 0;  i < 12;  i++) {
       if(i < mm-1  ||  i > mm+2) {
-        spreadsheet.getSheetByName(listNameMonths[i]).hideSheet();
+        spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
       } else {
-        spreadsheet.getSheetByName(listNameMonths[i]).showSheet();
+        spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
       }
     }
 
@@ -184,7 +183,7 @@ function monthly_TreatLayout_(yyyy, mm) {
     } else {
 
       if(mm === 11) {
-        spreadsheet.getSheetByName(listNameMonths[9]).showSheet();
+        spreadsheet.getSheetByName(MN_SHORT_[9]).showSheet();
         mm--;
       }
       sheetTags.showColumns(3 + mm, 4);
@@ -202,7 +201,6 @@ function foo_ColorTabs_() {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var FinancialYear = optAddonSettings_Get_('FinancialYear'),
       InitialMonth = optAddonSettings_Get_('InitialMonth');
-  var list = AppsScriptGlobal.listNameMonth()[0];
   var date = getSpreadsheetDate();
   var mm, i;
 
@@ -211,24 +209,24 @@ function foo_ColorTabs_() {
 
   if(FinancialYear === date.getFullYear()) {
     for(i = 0;  i < InitialMonth;  i++) {
-      spreadsheet.getSheetByName(list[i]).setTabColor('#b7b7b7');
+      spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
     }
     for(;  i < 12;  i++) {
       if(i < mm-1  ||  i > mm+2) {
-        spreadsheet.getSheetByName(list[i]).setTabColor('#a4c2f4');
+        spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#a4c2f4');
       } else {
-        spreadsheet.getSheetByName(list[i]).setTabColor('#3c78d8');
+        spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#3c78d8');
       }
     }
 
-    spreadsheet.getSheetByName(list[mm]).setTabColor('#6aa84f');
+    spreadsheet.getSheetByName(MN_SHORT_[mm]).setTabColor('#6aa84f');
 
   } else {
     for(i = 0;  i < InitialMonth;  i++) {
-      spreadsheet.getSheetByName(list[i]).setTabColor('#b7b7b7');
+      spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
     }
     for(;  i < 12;  i++) {
-      spreadsheet.getSheetByName(list[i]).setTabColor('#a4c2f4');
+      spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#a4c2f4');
     }
   }
 }
@@ -237,7 +235,7 @@ function foo_ColorTabs_() {
 
 function foo_UpdateCashFlow_(yyyy, mm) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheetTarget = spreadsheet.getSheetByName( AppsScriptGlobal.listNameMonth()[0][mm] ),
+  var sheetTarget = spreadsheet.getSheetByName(MN_SHORT_[mm]),
       sheetCashFlow = spreadsheet.getSheetByName('Cash Flow'),
       sheetBackstage = spreadsheet.getSheetByName('_Backstage');
   if(!sheetTarget) return;
@@ -387,7 +385,7 @@ function foo_FormatRegistry_(mm) {
   if(isNaN(mm)) return;
 
   var thisSheet = SpreadsheetApp.getActiveSpreadsheet()
-    .getSheetByName( AppsScriptGlobal.listNameMonth()[0][Number(mm)] );
+    .getSheetByName( MN_SHORT_[Number(mm)] );
   var number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
   var dateToday;

@@ -72,11 +72,9 @@ function optTag_GetMeta_() {
 
 function optTag_GetList_() {
   var sheet;
-  var data, cell, output,
-      categories;
+  var data, cell, output;
   var a, n, i;
 
-  categories = AppsScriptGlobal.listTagCategories()[0];
   output = [
     [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 0 ],
     [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 0 ]
@@ -95,12 +93,12 @@ function optTag_GetList_() {
 
 
   for(i = 0;  i < data.length;  i++) {
-    a = categories.indexOf(data[i][20]);
+    a = TC_CODE_.indexOf(data[i][20]);
     if(a === -1) a = 5;
 
     cell = {
       Name: data[i][0],
-      C: categories[a],
+      C: TC_CODE_[a],
       Description: data[i][2],
       Tag: data[i][3]
     }
@@ -142,7 +140,7 @@ function optTag_GetInfo_(input) {
       output.Tag = listTags[i][3];
 
       a = sheetTags.getRange(2+i, 21).getValue();
-      a = AppsScriptGlobal.listTagCategories()[0].indexOf(a);
+      a = TC_CODE_.indexOf(a);
       if(a == -1) {
         output.C = 5;
       }
@@ -172,7 +170,6 @@ function optTag_GetStat_(input) {
   var ref, auxValue;
   var maxRows = sheetTags.getMaxRows();
   var a, i, n, t_, v;
-  var listNameMonth = AppsScriptGlobal.listNameMonth();
 
   if(!sheetTags) return 2;
   SpreadsheetApp.flush();
@@ -205,13 +202,13 @@ function optTag_GetStat_(input) {
   if(i == n) return 1;
 
   a = sheetTags.getRange(2+i, 21).getValue();
-  a = AppsScriptGlobal.listTagCategories()[0].indexOf(a);
+  a = TC_CODE_.indexOf(a);
   if(a == -1) a = 5;
 
 
   data = sheetTags.getRange(2+i,5, 1,12).getValues();
   if(MFactor > 0) {
-    output.Interval = listNameMonth[1][InitialMonth] + ' - ' + listNameMonth[1][ActualMonth-1];
+    output.Interval = MN_FULL_[InitialMonth] + ' - ' + MN_FULL_[ActualMonth-1];
     output.Total = Number( sheetTags.getRange(2+i, 19).getValue() ).formatFinancial();
     AverageValue = Number( sheetTags.getRange(2+i, 18).getValue().toFixed(2) );
     output.Average = AverageValue.formatFinancial();
@@ -234,12 +231,12 @@ function optTag_GetStat_(input) {
   output.Data.push(v);
 
   for(i = 0;  i < InitialMonth  &&  i < 12;  i++) {
-    v = [ listNameMonth[0][i], Number(data[0][i].toFixed(2)), null, null ];
+    v = [ MN_SHORT_[i], Number(data[0][i].toFixed(2)), null, null ];
     output.Data.push(v);
   }
 
   for(;  i < InitialMonth+MFactor  &&  i < 12;  i++) {
-    v = [ listNameMonth[0][i], null, Number(data[0][i].toFixed(2)), AverageValue ];
+    v = [ MN_SHORT_[i], null, Number(data[0][i].toFixed(2)), AverageValue ];
     output.Data.push(v);
 
     auxValue = Number(data[0][i].toFixed(2));
@@ -248,12 +245,12 @@ function optTag_GetStat_(input) {
   }
 
   for(;  i < ActualMonth  &&  i < 12;  i++) {
-    v = [ listNameMonth[0][i], null, Number(data[0][i].toFixed(2)), null ];
+    v = [ MN_SHORT_[i], null, Number(data[0][i].toFixed(2)), null ];
     output.Data.push(v);
   }
 
   for(;  i < 12;  i++) {
-    v = [ listNameMonth[0][i], Number(data[0][i].toFixed(2)), null, null ];
+    v = [ MN_SHORT_[i], Number(data[0][i].toFixed(2)), null, null ];
     output.Data.push(v);
   }
 
@@ -299,9 +296,9 @@ function optTag_Add_(input) {
   a = Number(input.C);
   sheetTags.insertRowAfter(maxRows);
   sheetTags.getRange(maxRows, 1, 1, 4).setValues([
-    [ input.Name, AppsScriptGlobal.listTagCategories()[1][a], input.Description, input.Tag ]
+    [ input.Name, TC_NAME_[a], input.Description, input.Tag ]
   ]);
-  sheetTags.getRange(maxRows, 21).setValue( AppsScriptGlobal.listTagCategories()[0][a] );
+  sheetTags.getRange(maxRows, 21).setValue( TC_CODE_[a] );
 
   SpreadsheetApp.flush();
   return -1;
@@ -333,8 +330,8 @@ function optTag_Update_(input) {
     if(vIndex[i][0] == input.refTag) {
       auxValue = Number(input.C);
 
-      sheetTags.getRange(2+i,1, 1,4).setValues([ [input.Name, AppsScriptGlobal.listTagCategories()[1][auxValue], input.Description, input.Tag] ]);
-      sheetTags.getRange(2+i, 21).setValue( AppsScriptGlobal.listTagCategories()[0][auxValue] );
+      sheetTags.getRange(2+i,1, 1,4).setValues([ [input.Name, TC_NAME_[auxValue], input.Description, input.Tag] ]);
+      sheetTags.getRange(2+i, 21).setValue( TC_CODE_[auxValue] );
 
       SpreadsheetApp.flush();
       return -1;

@@ -356,6 +356,8 @@
       Panel: "",
       Tag: ""
     };
+    var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
+        TC_NAME_ = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
 
     $(document).ready(function() {
       $('#b-EditTag').click(EditTag_Post);
@@ -423,10 +425,8 @@
         return;
       }
 
-      var listTagCategories = [ 'Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling' ];
-
 			$('#p-TagDetails_head').empty().append(input.Name);
-			$('#TagDetails_category').empty().append(listTagCategories[input.C]);
+			$('#TagDetails_category').empty().append(TC_NAME_[input.C]);
 			$('#TagDetails_description').empty().append(input.Description);
 			$('#TagDetails_tag').empty().append("#" + input.Tag);
 
@@ -729,10 +729,6 @@
         return;
       }
 
-      var list = [
-        [ 'A', 'D', 'E', 'F', 'G', 'K', 'L', 'S', 'T', 'U' ],
-        [ 'Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling' ]
-      ];
       var string;
       var i, j;
 
@@ -742,9 +738,9 @@
       for(i = 0;  i < 10;  i++) {
         if(input[i][0] === 0) continue;
 
-        $('#p-Book_BoxListTags').append('<span class="Tags-title">'+list[1][i]+'</span><div class="Tags-table" id="TagCategory-'+list[0][i]+'"></div><hr>');
+        $('#p-Book_BoxListTags').append('<span class="Tags-title">'+TC_NAME_[i]+'</span><div class="Tags-table" id="TagCategory-'+TC_CODE_[i]+'"></div><hr>');
 
-        string = '#TagCategory-'+list[0][i];
+        string = '#TagCategory-'+TC_CODE_[i];
         for(j = 0;  j < input[i][0];  j++) {
           $(string).append('<div class="Tag-row m-li" id="'+input[i][j+1].Tag+'"><div class="Tag-name">'+input[i][j+1].Name+'</div></div>');
         }

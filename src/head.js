@@ -1,3 +1,9 @@
+var MN_SHORT_ = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+    MN_FULL_ = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+
+var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
+    TC_NAME_ = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
+
 var AppsScriptGlobal = (function() {
   var o = {
     test_chamber: false,
@@ -10,15 +16,6 @@ var AppsScriptGlobal = (function() {
     TemplateVersionName: "5.4-beta1",
     TemplateSheets: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "_Settings", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "Cards", "Summary", "About" ],
 
-    listNameMonth: [
-      [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
-      [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
-    ],
-
-    listTagCategories: [
-      [ 'A', 'D', 'E', 'F', 'G', 'K', 'L', 'S', 'T', 'U' ],
-      [ 'Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling' ]
-    ],
     TableDimensions: { height:10, width:5 }
   };
 
@@ -33,9 +30,6 @@ var AppsScriptGlobal = (function() {
     TemplateVersionName: function() { return o.TemplateVersionName },
     TemplateSheets: function() { return o.TemplateSheets },
 
-    listNameMonth: function() { return o.listNameMonth },
-
-    listTagCategories: function() { return o.listTagCategories },
     TableDimensions: function() { return o.TableDimensions }
   };
 })();
