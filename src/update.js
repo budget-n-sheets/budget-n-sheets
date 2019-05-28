@@ -1,7 +1,7 @@
 function onlineUpdate_() {
   var ui = SpreadsheetApp.getUi();
   try {
-    SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+    SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("template_id"));
   } catch(err) {
     console.warn("onlineUpdate_()", err);
 
@@ -39,7 +39,7 @@ function onlineUpdate_() {
 
 function seamlessUpdate_() {
   try {
-    SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+    SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("template_id"));
   } catch(err) {
     console.warn("seamlessUpdate_()", err);
     return true;
