@@ -602,24 +602,15 @@ function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
   }
 }
 
-/**
-  * Insert formulas in Tags.
-  */
+
 function setupPart4_(spreadsheet, number_accounts) {
   try {
-    var sheetCreditCard = spreadsheet.getSheetByName('Cards');
-    var formula, ranges2, rg, cd;
-    var rgMonthTags, rgMonthCombo, rgCardsTags, rgCardsCombo;
-    var vFormulas;
-    var n1, n2, v;
+    var sheet = spreadsheet.getSheetByName("Tags");
+    var formula, formulas, rg, cd;
+    var rgMonthTags, rgMonthCombo;
     var i, k;
 
-    n1 = spreadsheet.getSheetByName(MN_SHORT_[0]).getMaxRows();
-    n2 = sheetCreditCard.getMaxRows() - 5;
-    vFormulas = [
-      [ ]
-    ];
-
+    formulas = [ [ ] ];
     rgMonthTags = [ ];
     rgMonthCombo = [ ];
     for(k = 0; k < 1 + number_accounts; k++) {
@@ -627,40 +618,40 @@ function setupPart4_(spreadsheet, number_accounts) {
       rgMonthCombo[k] = rollA1Notation(5, 3 + 5*k, -1, 2);
     }
 
-    rgCardsTags = [ ];
-    rgCardsCombo = [ ];
     for(i = 0;  i < 12;  i++) {
-      rgCardsTags[i] = rollA1Notation(6, 5 + 6*i, -1, 1);
-      rgCardsCombo[i] = rollA1Notation(6, 4 + 6*i, -1, 2);
-    }
-
-    for(i = 0;  i < 12;  i++) {
-      k = 0;
       rg = "{\'" + MN_SHORT_[i] + "\'!" + rgMonthCombo[0];
       cd = "{\'" + MN_SHORT_[i] + "\'!" + rgMonthTags[0];
 
-      for(k++;  k < 1 + number_accounts;  k++) {
+      for(k = 1;  k < 1 + number_accounts;  k++) {
         rg += "; \'" + MN_SHORT_[i] + "\'!" + rgMonthCombo[k];
         cd += "; \'" + MN_SHORT_[i] + "\'!" + rgMonthTags[k];
       }
 
-      rg += "; \'Cards\'!" + rgCardsCombo[i];
-      rg += "}";
-
-      cd += "; \'Cards\'!" + rgCardsTags[i];
-      cd += "}";
+      rg += "; \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1, 2) + "}";
+      cd += "; \'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1, 1) + "}";
 
       formula = "{\"" + MN_FULL_[i] + "\"; ";
       formula += "IF(\'_Settings\'!$B$7 > 0; ";
       formula += "BSSUMBYTAG(TRANSPOSE($D$1:$D); IFERROR(FILTER(" + rg + "; ";
       formula += "NOT(ISBLANK(" + cd + "))); \"0\")); )}";
 
-      vFormulas[0].push(formula);
+      formulas[0].push(formula);
     }
 
-    spreadsheet.getSheetByName('Tags').getRange(1,18).setFormula('{\"Average\"; IF(\'_Settings\'!$B$7 > 0; ARRAYFORMULA($S$2:$S/\'_Settings\'!B6); )}');
-    spreadsheet.getSheetByName('Tags').getRange(1,5, 1,12).setFormulas(vFormulas);
-    spreadsheet.getSheetByName("Tags").getRange(1, 19).setFormula("{\"Total\"; IF(\'_Settings\'!$B$7 > 0; ARRAYFORMULA(SUMIF(IF(COLUMN("+rollA1Notation(2, 5, -1, 12)+"); ROW("+rollA1Notation(2, 5, -1)+"));ROW("+rollA1Notation(2, 5, -1)+") ;"+rollA1Notation(2, 5)+")); )}");
+    sheet.getRange(1, 5, 1, 12).setFormulas(formulas);
+
+    formula = "{\"Average\"; ";
+    formula += "IF(\'_Settings\'!$B$7 > 0; ";
+    formula += "ARRAYFORMULA($S$2:$S/\'_Settings\'!B6); )}";
+    sheet.getRange(1, 18).setFormula(formula);
+
+    formula = "{\"Total\"; ";
+    formula += "IF(\'_Settings\'!$B$7 > 0; ";
+    formula += "ARRAYFORMULA(SUMIF(IF(COLUMN("+rollA1Notation(2, 5, -1, 12)+"); ";
+    formula += "ROW("+rollA1Notation(2, 5, -1)+")); ";
+    formula += "ROW("+rollA1Notation(2, 5, -1)+"); ";
+    formula += rollA1Notation(2, 5, -1)+")); )}";
+    sheet.getRange(1, 19).setFormula(formula);
 
     SpreadsheetApp.flush();
   } catch(err) {
