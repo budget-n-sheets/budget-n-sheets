@@ -620,7 +620,7 @@
     function NewTag_Add() {
       var code = $('#Form-AddEditTag_Tag').val();
       if(code == 'wd' || code == 'dp' || code == 'trf' || code == 'qcc' || code == 'ign' || code == 'rct') {
-        $('#p-footer_FastResponse').empty().append('Choose a different code.');
+        $('#p-footer_FastResponse').empty().append("The code is already in use.");
         return;
       }
 
@@ -645,7 +645,7 @@
         $('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
         return;
       } else if(p === 2) {
-        $('#p-footer_FastResponse').empty().append('Choose a different code.');
+        $('#p-footer_FastResponse').empty().append("The code is already in use.");
         return;
       } else if(p !== -1) {
         showError();

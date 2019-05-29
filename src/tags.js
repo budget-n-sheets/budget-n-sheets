@@ -244,12 +244,18 @@ function optTag_Add_(tag) {
   if( /^(wd|dp|trf|qcc|ign|rct)$/.test(tag.code) ) return 2;
 
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
-      sheet= spreadsheet.getSheetByName("Tags");
-  var c, n;
+      sheet = spreadsheet.getSheetByName("Tags");
+  var range;
+  var i, c, n;
 
   c = Number(tag.category);
   n = sheet.getMaxRows();
   if(n < 2) return 3;
+
+  range = sheet.getRange(2, 4, n - 2, 1).getValues();
+  for(i = 0;  i < range.length;  i++) {
+    if(range[i][0] === tag.code) return 2;
+  }
 
   sheet.insertRowAfter(n);
   sheet.getRange(n, 1, 1, 4).setValues([
