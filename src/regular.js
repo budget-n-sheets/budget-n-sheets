@@ -22,86 +22,77 @@ function daily_UpdateEvents_(date) {
 
 
 function daily_PostEvents_(date) {
-  var sheet;
-  var maxRows, maxColumns, limits;
-  var data, data_Cards, listEvents, thisEvent;
-  var number_accounts, mm, dd, value;
-  var c, i, j, k, t;
+  var sheet, lastRow;
+  var data, data_Cards, listEventos, evento;
+  var number_accounts, mm, dd, value, tags;
+  var i, j, k;
 
   mm = date.getMonth();
-  t = MN_SHORT_[mm];
-  sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(t);
-  if(!sheet) return;
-  maxRows = sheet.getMaxRows() - 4;
-  maxColumns = sheet.getMaxColumns();
-  if(maxRows <= 0) return;
-
-  t = optAddonSettings_Get_('FinancialCalendar');
-  t = optCalendar_GetCalendarFromSHA1_(t);
-  if(!t) return;
-  listEvents = t.getEventsForDay(date);
-  listEvents = optCalendar_ProcessRawEvents_(listEvents);
-  if(listEvents.length === 0) return;
-
   dd = date.getDate();
-  number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
 
-  limits = [ ];
+  sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT_[mm]);
+  if(!sheet) return;
+  if(sheet.getMaxRows() < 4) return;
+
+  value = optAddonSettings_Get_("FinancialCalendar");
+  value = optCalendar_GetCalendarFromSHA1_(value);
+  if(!value) return;
+
+  listEventos = value.getEventsForDay(date);
+  listEventos = optCalendar_ProcessRawEvents_(listEventos);
+  if(listEventos.length === 0) return;
+
   data = [ ];
   data_Cards = [ ];
-  t = sheet.getRange(5, 1, maxRows, maxColumns)
-    .getValues();
-  for(k = 0;  k < 1+number_accounts;  k++) {
-    data.push([ ]);
 
-    c = 0;
-    while(c < maxRows  &&  t[c][2+5*k] !== '') { c++; }
-    limits[k] = c;
-  }
+  for(i = 0;  i < listEventos.length;  i++) {
+    evento = listEventos[i];
 
+    if(evento.Description === "") continue;
+    if(evento.hasAtIgn) continue;
 
-  for(i = 0;  i < listEvents.length;  i++) {
-    thisEvent = listEvents[i];
-
-    if(thisEvent.Description === '') continue;
-    if(thisEvent.hasAtIgn) continue;
-    if(thisEvent.Table !== -1) k = thisEvent.Table;
-    else if(thisEvent.Card !== -1) k = thisEvent.Card;
+    if(evento.Table !== -1) k = evento.Table;
+    else if(evento.Card !== -1) k = evento.Card;
     else continue;
 
-    if( !isNaN(thisEvent.Value) ) value = Number(thisEvent.Value).formatLocaleSignal();
-    else if(thisEvent.Tags.length > 0) value = 0;
+    if( !isNaN(evento.Value) ) value = (evento.Value).formatLocaleSignal();
+    else if(evento.Tags.length > 0) value = 0;
     else continue;
 
-    for(j = 0;  j < thisEvent.Tags.length;  j++) {
-      thisEvent.Tags[j] = "#" + thisEvent.Tags[j];
+    tags = "";
+    for(j = 0;  j < evento.Tags.length;  j++) {
+      tags += "#" + event.Tags[j] + " ";
     }
-    t = thisEvent.Tags.join(' ');
 
     if(typeof k === "number") {
-      data[k].push([ dd, thisEvent.Title, value, t ]);
-    } else if(!thisEvent.hasQcc) {
-      data_Cards.push([ dd, thisEvent.Title, k, value, t ]);
+      data[k].push([ dd, evento.Title, value, tags ]);
+    } else if(!evento.hasQcc) {
+      data_Cards.push([ dd, evento.Title, k, value, tags ]);
     }
   }
 
-  for(k = 0;  k < 1+number_accounts;  k++) {
+  lastRow = sheet.getLastRow() + 1;
+  number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
+  for(k = 0;  k < 1 + number_accounts;  k++) {
     if(data[k].length === 0) continue;
 
-    sheet.getRange(5+limits[k], 1+5*k, data[k].length, 4)
+    sheet.getRange(
+        lastRow, 1 + 5*k,
+        data[k].length, 4)
       .setValues(data[k]);
   }
 
   if(data_Cards.length > 0) {
     sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
     if(!sheet) return;
-    c = sheet.getMaxRows() - 5;
-    if(c <= 0) return;
-    data = sheet.getRange(6, 1+mm*6, c, 5).getValues();
 
-    i = 0;
-    while(i < c  &&  data[i][3] !== "") { i++; }
-    sheet.getRange(6+i, 1+mm*6, data_Cards.length, 5).setValues(data_Cards);
+    lastRow = sheet.getLastRow() + 1;
+    if(lastRow < 6) return;
+
+    sheet.getRange(
+        lastRow, 1 + 6*mm,
+        data_Cards.length, 5)
+      .setValues(data_Cards);
   }
 }
 
