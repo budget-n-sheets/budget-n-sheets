@@ -299,8 +299,8 @@ function setupPart11_(spreadsheet, number_accounts) {
       thisSheet = spreadsheet.getSheetByName('Cards');
       vRange = [ ];
       for(i = 0;  i < 12;  i++) {
-        vRange.push( thisSheet.getRange(6,1+6*i, 100,5) );
-        vRange.push( thisSheet.getRange(2,1+6*i, 1,3) );
+        vRange.push( thisSheet.getRange(6, 1 + 6*i, 400, 5) );
+        vRange.push( thisSheet.getRange(2, 1 + 6*i, 1, 3) );
       }
       thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
     }
@@ -323,7 +323,7 @@ function setupPart11_(spreadsheet, number_accounts) {
         vRange = [ ];
 
         for(k = 0;  k < 1+number_accounts;  k++) {
-          vRange.push( thisSheet.getRange(5,1+5*k, 100,4) );
+          vRange.push( thisSheet.getRange(5, 1 + 5*k, 400, 4) );
         }
         thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
 
