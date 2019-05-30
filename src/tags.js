@@ -240,7 +240,7 @@ function optTag_GetStat_(input) {
 
 function optTag_Add_(tag) {
   if(!tag) return 3;
-  if( !/[a-zA-Z][\w]+/.test(tag.code) ) return 2;
+  if( !/[\w]+/.test(tag.code) ) return 2;
   if( /^(wd|dp|trf|qcc|ign|rct)$/.test(tag.code) ) return 2;
 
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
@@ -281,7 +281,7 @@ function optTag_Update_(input) {
   vIndex = sheetTags.getRange(2,4, maxRows-2).getValues();
 
 
-  if(!/[a-zA-Z][\w]+/.test(input.Tag)) return;
+  if(!/[\w]+/.test(input.Tag)) return;
   if(input.Tag != input.refTag) {
     for(i in vIndex) {
       if(vIndex[i][0] == input.Tag) {
