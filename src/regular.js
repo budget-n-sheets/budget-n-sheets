@@ -227,147 +227,155 @@ function foo_ColorTabs_() {
 function foo_UpdateCashFlow_(yyyy, mm) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheetTarget = spreadsheet.getSheetByName(MN_SHORT_[mm]),
-      sheetCashFlow = spreadsheet.getSheetByName('Cash Flow'),
-      sheetBackstage = spreadsheet.getSheetByName('_Backstage');
+      sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
+
   if(!sheetTarget) return;
   if(!sheetCashFlow) return;
-  if(!sheetBackstage) return;
 
+  var calendar, listEventos, evento, day, dd;
   var number_accounts, number_cards;
-  var OverrideZero = optAddonSettings_Get_('OverrideZero');
-  var list, metaTags, item;
-  var data, data_cards, registry, value, day, maxRows;
-  var dd, n, p;
-  var a, b, c, i, j, k, v, t, ma;
+  var metaTags, OverrideZero;
+  var data_cards, value, maxRows;
+  var table, hasCards, hasTags;
+  var cf_flow, cf_transaction;
+  var a, b, c, i, j, k, n, ma;
   var h_, w_;
-  var hasCards, hasTags;
 
   h_ = AppsScriptGlobal.TableDimensions()["height"];
   w_ = AppsScriptGlobal.TableDimensions()["width"];
 
-  data = [ ];
-  maxRows = sheetTarget.getMaxRows() - 4;
-  maxColumns = sheetTarget.getMaxColumns();
-  dd = new Date(yyyy, mm+1, 0).getDate();
+  dd = new Date(yyyy, mm + 1, 0).getDate();
+  OverrideZero = optAddonSettings_Get_("OverrideZero");
+  number_accounts = getPropertiesService_("document", "number", "number_accounts");
+
+  cf_flow = [ ];
+  cf_transaction = [ ];
   for(i = 0;  i < dd;  i++) {
-    data.push([ '', null, '' ]); // [ '=value1 [+valuen]', null, '@desc_1' [+' @descn'] ]
+    cf_flow[i] = [ "" ];
+    cf_transaction[i] = [ "" ];
   }
 
-  number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
-  number_cards = getPropertiesService_('document', 'json', 'DB_CARD');
-  number_cards = number_cards.length;
-  hasCards = number_cards > 0;
+  listEventos = [ ];
+  t = getSpreadsheetDate();
+  b = new Date(yyyy, mm + 1, 1);
+  if( optAddonSettings_Get_("CashFlowEvents")
+      && t.getTime() < b.getTime() ) {
+    calendar = optAddonSettings_Get_("FinancialCalendar");
+    calendar = optCalendar_GetCalendarFromSHA1_(calendar);
 
-  data_cards = sheetBackstage.getRange(
-      1, 1 + w_ + w_*number_accounts + 1,
-      1 + h_*12, w_ + w_*number_cards
-    ).getValues();
+    if(calendar) {
+      a = new Date(yyyy, mm, 1);
+      if(t.getTime() > a.getTime()  &&  t.getTime() < b.getTime()) {
+        a = new Date(yyyy, mm, t.getDate());
+      }
 
-  if(optAddonSettings_Get_('CashFlowEvents')) {
-    a = optAddonSettings_Get_('FinancialCalendar');
-    a = optCalendar_GetCalendarFromSHA1_(a);
-    if(!a) return;
-
-    list = a.getEvents(new Date(yyyy, mm, 1), new Date(yyyy, mm+1, 1));
-    if(!list) list = [ ];
-    else list = optCalendar_ProcessRawEvents_(list);
-  } else {
-    list = [ ];
+      listEventos = calendar.getEvents(a, b);
+      if(listEventos) listEventos = optCalendar_ProcessRawEvents_(listEventos);
+      else listEventos = [ ];
+    }
   }
 
-  if(OverrideZero  ||  list.length > 0) {
+  if(OverrideZero  ||  listEventos.length > 0) {
     metaTags = optTag_GetMeta_();
-    if( !isNaN(metaTags) ) hasTags = false;
+    if(typeof metaTags === "number") hasTags = false;
     else {
-      n = metaTags.Tags.length;
       hasTags = true;
     }
   }
 
+  maxRows = sheetTarget.getLastRow() - 4 ;
+  if(maxRows <= 0) return;
 
-
-  SpreadsheetApp.flush();
 
   k = 0;
-  i = 0;
-  registry = sheetTarget.getRange(5, 1, maxRows, maxColumns)
-    .getValues();
-  while(k < number_accounts) {
-    day = registry[i][5+5*k];
-    if(day <= 0  ||  day > dd) {
-      i++;
-      if(i >= maxRows  ||  registry[i][7+5*k] === '') {
-        k++;
-        i = 0;
-      }
+  table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
+  for(i = 0;  k < number_accounts;  i++) {
+    if(i >= maxRows  ||  table[i][2] === "") {
+      k++;
+      i = -1;
+      table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
       continue;
     }
 
-    value = registry[i][7+5*k];
+    day = table[i][0];
+    if(day <= 0  ||  day > dd) continue;
+
+    value = table[i][2];
     if(hasTags  &&  value === 0  &&  OverrideZero) {
-      ma = registry[i][8+5*k].match(/#[\w]{2,}/g);
+      n = metaTags.Tags.length;
+      ma = table[i][3].match(/#[\w]+/g);
       for(j = 0;  j < n;  j++) {
-        c = ma.indexOf('#'+metaTags.Tags[j]);
-        if(c !== -1) break;
+        c = ma.indexOf("#" + metaTags.Tags[j]);
+        if(c !== -1) {
+          value = metaTags.Meta[c].AvgValue;
+          break;
+        }
       }
-      if(j !== n) value = metaTags.Meta[c].AvgValue;
     }
 
-    if(data[day-1][0] === '') {
-      data[day-1][0] = '='+value.formatLocaleSignal();
-      data[day-1][2] = '@'+registry[i][6+5*k];
-    } else {
-      data[day-1][0] += value.formatLocaleSignal();
-      data[day-1][2] += ' @'+registry[i][6+5*k];
-    }
-
-    i++;
-    if(i >= maxRows  ||  registry[i][7+5*k] === '') {
-      k++;
-      i = 0;
-    }
+    day--;
+    cf_flow[day][0] += value.formatLocaleSignal();
+    cf_transaction[day][0] += "@" + table[i][1] + " ";
   }
 
-  for(i = 0;  i < list.length;  i++) {
-    item = list[i];
 
-    if(item.Description === '') continue;
-    if(item.hasAtIgn) continue;
+  if(mm > 0) {
+    sheetBackstage = spreadsheet.getSheetByName("_Backstage");
+  }
+  if(sheetBackstage) {
+    number_cards = getPropertiesService_("document", "ojb", "DB_CARD");
+    number_cards = number_cards.length;
+    hasCards = number_cards > 0;
+  }
+  if(hasCards) {
+    data_cards = sheetBackstage.getRange(
+      1, 1 + w_ + w_*number_accounts + 1,
+      1 + h_*12, w_ + w_*number_cards
+    ).getValues();
+  }
 
-    if(!isNaN(item.Value)) value = item.Value;
-    else if(item.hasQcc  &&  mm > 0) {
-      if(item.Card !== -1) {
+  for(i = 0;  i < listEventos.length;  i++) {
+    evento = listEventos[i];
+
+    if(evento.Description === "") continue;
+    if(evento.hasAtIgn) continue;
+
+    if( !isNaN(evento.Value) ) value = evento.Value;
+    else if(hasCards  &&  evento.hasQcc) {
+      value = NaN;
+      if(evento.Card !== -1) {
         j = 0;
-        while(j < data_cards[0].length  &&  data_cards[0][j] !== item.Card) { j += w_; }
+        while(j < data_cards[0].length  &&  data_cards[0][j] !== evento.Card) { j += w_; }
 
-        if(data_cards[0][j] === item.Card) value = Number(data_cards[5 + h_ * (mm-1)][j].toFixed(2));
+        if(data_cards[0][j] === evento.Card) value = Number(data_cards[5 + h_ * (mm-1)][j].toFixed(2));
         else continue;
       } else {
         value = Number(data_cards[5 + h_ * (mm-1)][0].toFixed(2));
       }
+      if(isNaN(value)) continue;
     } else if(hasTags) {
-      a = metaTags.Tags.indexOf(item.Tags[0]);
-      if(a === -1) continue;
-      value = metaTags.Meta[a].AvgValue;
+      n = evento.Tags.length;
+      for(j = 0; j < n; j++) {
+        c = metaTags.Tags.indexOf(evento.Tags[j]);
+        if(c !== -1) {
+          value = metaTags.Meta[c].AvgValue;
+          break;
+        }
+      }
+      if(c === -1) continue;
     } else {
       continue;
     }
 
-    day = list[i].Day;
-    if(data[day-1][0] == '') {
-      data[day-1][0] = '='+value.formatLocaleSignal();
-      data[day-1][2] = '@'+item.Title;
-    } else {
-      data[day-1][0] += value.formatLocaleSignal();
-      data[day-1][2] += ' @'+item.Title;
-    }
+    day = evento.Day - 1;
+    cf_flow[day][0] += value.formatLocaleSignal();
+    cf_transaction[day][0] += "@" + evento.Title + " ";
   }
 
-  v = sheetCashFlow.getRange(3, 3+mm*4, dd, 1).getFormulas();
-  sheetCashFlow.getRange(3, 2+mm*4, dd, 3).setValue(null);
-  sheetCashFlow.getRange(3, 2+mm*4, dd, 3).setValues(data);
+
+  sheetCashFlow.getRange(3, 2 + 4*mm, dd, 1).setFormulas(cf_flow);
+  sheetCashFlow.getRange(3, 4 + 4*mm, dd, 1).setValues(cf_transaction);
   SpreadsheetApp.flush();
-  sheetCashFlow.getRange(3, 3+mm*4, dd, 1).setFormulas(v);
 }
 
 

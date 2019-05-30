@@ -36,8 +36,8 @@ function optMainTags(opt, input) {
 
 function optTag_GetMeta_() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
-  var data, output, cell;
-  var a, n;
+  var data, output, cell, value;
+  var n;
 
   if(!sheet) return 2;
 
@@ -53,13 +53,13 @@ function optTag_GetMeta_() {
   data = sheet.getRange(2, 1, n, 21).getValues();
 
   for(i = 0;  i < n;  i++) {
-    if( isNaN(data[i][17]) ) a = 0;
-    else a = +Number(data[i][17]).toFixed(2);
+    value = +Number(data[i][17]).toFixed(2);
+    if(isNaN(value)) value = 0;
 
     cell = {
       Name: data[i][0],
       Tag: data[i][3],
-      AvgValue: a
+      AvgValue: value
     };
 
     output.Tags.push(data[i][3]);
