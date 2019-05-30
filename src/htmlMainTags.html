@@ -645,6 +645,7 @@
         $('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
         return;
       } else if(p === 2) {
+        $('.Form-AddEditTag_lock').prop('disabled', false);
         $('#p-footer_FastResponse').empty().append("The code is already in use.");
         return;
       } else if(p !== -1) {
