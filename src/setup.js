@@ -640,18 +640,18 @@ function setupPart4_(spreadsheet, number_accounts) {
 
     sheet.getRange(1, 5, 1, 12).setFormulas(formulas);
 
-    formula = "{\"Average\"; ";
-    formula += "IF(\'_Settings\'!$B$7 > 0; ";
-    formula += "IF(\'_Settings\'!$B$6 > 0; ";
-    formula += "ARRAYFORMULA($S$2:$S/\'_Settings\'!B6); 0); )}";
+    formula = "ARRAYFORMULA($S$2:$S/\'_Settings\'!B6)";
+    formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; 0)";
+    formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
+    formula = "{\"Average\"; " + formula + "}";
     sheet.getRange(1, 18).setFormula(formula);
 
-    formula = "{\"Total\"; ";
-    formula += "IF(\'_Settings\'!$B$7 > 0; ";
-    formula += "ARRAYFORMULA(SUMIF(IF(COLUMN("+rollA1Notation(2, 5, -1, 12)+"); ";
-    formula += "ROW("+rollA1Notation(2, 5, -1)+")); ";
-    formula += "ROW("+rollA1Notation(2, 5, -1)+"); ";
-    formula += rollA1Notation(2, 5, -1)+")); )}";
+    formula = "IF(COLUMN(" + rollA1Notation(2, 5, -1, 12) + ") - 4 < \'_Settings\'!$B$4 + \'_Settings\'!$B$6; ROW(" + rollA1Notation(2, 5, -1) + "); 0)";
+    formula = "IF(COLUMN(" + rollA1Notation(2, 5, -1, 12) + ") - 4 >= \'_Settings\'!$B$4; " + formula + "; 0)";
+    formula = "ARRAYFORMULA(SUMIF(" + formula + "; ROW(" + rollA1Notation(2, 5, -1) + "); " + rollA1Notation(2, 5, -1) + "))";
+    formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; 0)";
+    formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
+    formula = "{\"Total\"; " + formula + "}";
     sheet.getRange(1, 19).setFormula(formula);
 
     SpreadsheetApp.flush();
