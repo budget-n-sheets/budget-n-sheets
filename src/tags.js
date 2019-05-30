@@ -252,9 +252,11 @@ function optTag_Add_(tag) {
   n = sheet.getMaxRows();
   if(n < 2) return 3;
 
-  range = sheet.getRange(2, 4, n - 2, 1).getValues();
-  for(i = 0;  i < range.length;  i++) {
-    if(range[i][0] === tag.code) return 2;
+  if(n > 2) {
+    range = sheet.getRange(2, 4, n - 2, 1).getValues();
+    for(i = 0;  i < range.length;  i++) {
+      if(range[i][0] === tag.code) return 2;
+    }
   }
 
   sheet.insertRowAfter(n);
