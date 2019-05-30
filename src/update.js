@@ -100,9 +100,13 @@ function update_ExecutePatial_() {
       v1 = AppsScriptGlobal.AddonVersion();
 
   switch(v0) {
-  default:
-    console.warn("update_ExecutePatial_(): Switch case is default.", v0);
-    return 0;
+    case 54:
+      c = update0pack01_();
+      break;
+
+    default:
+      console.warn("update_ExecutePatial_(): Switch case is default.", v0);
+      return 0;
   }
 
   if(c) {
@@ -130,3 +134,32 @@ function update0packXX_() {
     return true;
   }
 }*/
+
+/**
+ * Filter range by initial month and M factor.
+ *
+ * 0.17.1
+ */
+function update0pack01_() {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+    var formula;
+
+    formula = "ARRAYFORMULA($S$2:$S/\'_Settings\'!B6)";
+    formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; 0)";
+    formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
+    formula = "{\"Average\"; " + formula + "}";
+    sheet.getRange(1, 18).setFormula(formula);
+
+    formula = "IF(COLUMN(" + rollA1Notation(2, 5, -1, 12) + ") - 4 < \'_Settings\'!$B$4 + \'_Settings\'!$B$6; ROW(" + rollA1Notation(2, 5, -1) + "); 0)";
+    formula = "IF(COLUMN(" + rollA1Notation(2, 5, -1, 12) + ") - 4 >= \'_Settings\'!$B$4; " + formula + "; 0)";
+    formula = "ARRAYFORMULA(SUMIF(" + formula + "; ROW(" + rollA1Notation(2, 5, -1) + "); " + rollA1Notation(2, 5, -1) + "))";
+    formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; 0)";
+    formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
+    formula = "{\"Total\"; " + formula + "}";
+    sheet.getRange(1, 19).setFormula(formula);
+  } catch(err) {
+    console.warn("update0pack01_()", err);
+    return true;
+  }
+}
