@@ -1,3 +1,4 @@
 appsscript.json
 .clasp.json
-trial_by_rampage.js
+clasp.sh
+trial_*.js
