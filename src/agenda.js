@@ -44,7 +44,11 @@ function optCalendar_ProcessRawEvents_(listEvents) {
     cell.hasAtIgn = /@ign/.test(cell.Description);
     cell.hasQcc = /#qcc/.test(cell.Description);
 
-    cell.Value = cell.Description.match(/-?\$[\d]+\.[\d]{2}/);
+    if(PropertiesService.getDocumentProperties().getProperty("decimal_separator")) {
+      cell.Value = cell.Description.match( /-?\$[\d]+\.[\d]{2}/ );
+    } else {
+      cell.Value = cell.Description.match( /-?\$[\d]+,[\d]{2}/ );
+    }
     if(cell.Value) cell.Value = Number(cell.Value[0].replace('\$', ''));
     else cell.Value = NaN;
 
