@@ -284,38 +284,38 @@ function foo_UpdateCashFlow_(yyyy, mm) {
   }
 
   maxRows = sheetTarget.getLastRow() - 4 ;
-  if(maxRows <= 0) return;
 
+  if(maxRows > 0) {
+    k = 0;
+    table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
+    for(i = 0;  k < number_accounts;  i++) {
+      if(i >= maxRows  ||  table[i][2] === "") {
+        k++;
+        i = -1;
+        table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
+        continue;
+      }
 
-  k = 0;
-  table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
-  for(i = 0;  k < number_accounts;  i++) {
-    if(i >= maxRows  ||  table[i][2] === "") {
-      k++;
-      i = -1;
-      table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
-      continue;
-    }
+      day = table[i][0];
+      if(day <= 0  ||  day > dd) continue;
 
-    day = table[i][0];
-    if(day <= 0  ||  day > dd) continue;
-
-    value = table[i][2];
-    if(hasTags  &&  value === 0  &&  OverrideZero) {
-      n = metaTags.Tags.length;
-      ma = table[i][3].match(/#[\w]+/g);
-      for(j = 0;  j < n;  j++) {
-        c = ma.indexOf("#" + metaTags.Tags[j]);
-        if(c !== -1) {
-          value = metaTags.Meta[c].AvgValue;
-          break;
+      value = table[i][2];
+      if(hasTags  &&  value === 0  &&  OverrideZero) {
+        n = metaTags.Tags.length;
+        ma = table[i][3].match(/#[\w]+/g);
+        for(j = 0;  j < n;  j++) {
+          c = ma.indexOf("#" + metaTags.Tags[j]);
+          if(c !== -1) {
+            value = metaTags.Meta[c].AvgValue;
+            break;
+          }
         }
       }
-    }
 
-    day--;
-    cf_flow[day][0] += value.formatLocaleSignal();
-    cf_transaction[day][0] += "@" + table[i][1] + " ";
+      day--;
+      cf_flow[day][0] += value.formatLocaleSignal();
+      cf_transaction[day][0] += "@" + table[i][1] + " ";
+    }
   }
 
 
@@ -353,7 +353,7 @@ function foo_UpdateCashFlow_(yyyy, mm) {
         value = Number(data_cards[5 + h_ * (mm-1)][0].toFixed(2));
       }
       if(isNaN(value)) continue;
-    } else if(hasTags) {
+    } else if(hasTags  &&  evento.Tags.length > 0) {
       n = evento.Tags.length;
       for(j = 0; j < n; j++) {
         c = metaTags.Tags.indexOf(evento.Tags[j]);
