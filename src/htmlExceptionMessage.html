@@ -3,17 +3,12 @@
   <head>
     <base target="_top">
     <meta charset="UTF-8">
-    <?!= htmlInclude('htmlStyles'); ?>
-    <style>
-      p {
-        font-size: 1.13em;
-        padding: 0;
-        margin: 0;
-      }
-    </style>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
   </head>
   <body>
-    <p>Something went wrong. Please try again. If the error persists, please report the problem in the <b><a href="https://groups.google.com/d/forum/add-on-budget-n-sheets-forum" target="_blank">forum</a></b> or <b><a href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank">send feedback</a></b>.</p>
+    <span style="font-size:1.3em">Sorry, something went wrong. Please try again.</span><br/>
+    <br/>
+    <b><a href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank">Send feedback</a></b><br/>
     <br />
     <button onclick="google.script.host.close()">OK</button>
   </body>
