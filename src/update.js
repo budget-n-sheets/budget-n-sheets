@@ -102,6 +102,9 @@ function update_ExecutePatial_() {
   switch(v0) {
     case 54:
       c = update0pack01_();
+
+    case 55:
+      update0pack02_();
       break;
 
     default:
@@ -134,6 +137,67 @@ function update0packXX_() {
     return true;
   }
 }*/
+
+/**
+ * Reset unprotected ranges of sheet Cards.
+ * Reset unprotected ranges of monthly sheets.
+ *
+ * 0.17.2
+ */
+function update0pack02_() {
+  try {
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet, ranges, protections;
+    var number_accounts;
+    var m, i, j, k;
+
+    number_accounts = getPropertiesService_("document", "number", "number_accounts");
+
+    sheet = spreadsheet.getSheetByName("Cards");
+    if(!sheet) return;
+
+    protections = sheet.getProtections(SpreadsheetApp.ProtectionType.RANGE);
+    for(i = 0; i < protections.length; i++) {
+      if( protections[i].canEdit() ) {
+        protections[i].remove();
+      }
+    }
+
+    ranges = [ ];
+    m = sheet.getMaxRows() - 5;
+    if(m <= 0) return;
+    for(i = 0;  i < 12;  i++) {
+      ranges.push( sheet.getRange(6, 1 + 6*i, m, 5) );
+      ranges.push( sheet.getRange(2, 1 + 6*i, 1, 3) );
+    }
+    sheet.protect().setUnprotectedRanges(ranges).setWarningOnly(true);
+
+
+    for(i = 0;  i < 12;  i++) {
+      sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+      if(!sheet) continue;
+
+      protections = sheet.getProtections(SpreadsheetApp.ProtectionType.RANGE);
+      for(j = 0;  j < protections.length;  j++) {
+        if( protections[j].canEdit() ) {
+          protections[j].remove();
+        }
+      }
+
+      m = sheet.getMaxRows() - 4;
+      if(m <= 0) continue;
+
+      ranges = [ ];
+      for(k = 0;  k < 1 + number_accounts;  k++) {
+        ranges.push( sheet.getRange(5, 1 + 5*k, m, 4) );
+      }
+      sheet.protect().setUnprotectedRanges(ranges).setWarningOnly(true);
+    }
+  } catch(err) {
+    console.error("update0pack02_()", err);
+    return true;
+  }
+}
 
 /**
  * Filter range by initial month and M factor.
