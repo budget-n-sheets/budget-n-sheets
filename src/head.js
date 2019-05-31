@@ -8,8 +8,8 @@ var AppsScriptGlobal = (function() {
   var o = {
     test_chamber: false,
 
-    AddonVersion: 55,
-    AddonVersionName: "0.17.1",
+    AddonVersion: 56,
+    AddonVersionName: "0.17.2",
 
     TemplateVersion: 50,
     TemplateVersionName: "5.4",
