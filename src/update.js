@@ -102,6 +102,7 @@ function update_ExecutePatial_() {
   switch(v0) {
     case 54:
       c = update0pack01_();
+      if(c) break;
 
     case 55:
       update0pack02_();
@@ -133,7 +134,7 @@ function update_ExecutePatial_() {
 function update0packXX_() {
   try {
   } catch(err) {
-    console.warn("update0packXX_()", err);
+    console.error("update0packXX_()", err);
     return true;
   }
 }*/
@@ -223,7 +224,7 @@ function update0pack01_() {
     formula = "{\"Total\"; " + formula + "}";
     sheet.getRange(1, 19).setFormula(formula);
   } catch(err) {
-    console.warn("update0pack01_()", err);
+    console.error("update0pack01_()", err);
     return true;
   }
 }
