@@ -48,8 +48,10 @@ function optCalendar_ProcessRawEvents_(listEvents) {
       cell.Value = cell.Description.match( /-?\$[\d]+\.[\d]{2}/ );
     } else {
       cell.Value = cell.Description.match( /-?\$[\d]+,[\d]{2}/ );
+      if(cell.Value) cell.Value[0] = cell.Value[0].replace(",", ".");
     }
-    if(cell.Value) cell.Value = Number(cell.Value[0].replace('\$', ''));
+
+    if(cell.Value) cell.Value = Number(cell.Value[0].replace("\$", ""));
     else cell.Value = NaN;
 
     for(j = 0;  j < regExp_Account.length;  j++) {
