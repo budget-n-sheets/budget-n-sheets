@@ -40,7 +40,13 @@ function bin2String(b) {
  * @return {Boolean} True if re-authorization is required.
  */
 function isReAuthorizationRequired_() {
-  var documentProperties = PropertiesService.getDocumentProperties();
+  try {
+    var documentProperties = PropertiesService.getDocumentProperties();
+  } catch(err) {
+    Logger.log(err.message);
+    return true;
+  }
+
   var authInfoLevel = ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL);
   var htmlTemplate, htmlMessage;
 
