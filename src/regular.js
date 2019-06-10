@@ -228,6 +228,7 @@ function foo_UpdateCashFlow_(yyyy, mm) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheetTarget = spreadsheet.getSheetByName(MN_SHORT_[mm]),
       sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
+  var sheetBackstage;
 
   if(!sheetTarget) return;
   if(!sheetCashFlow) return;
