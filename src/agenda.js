@@ -3,7 +3,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
       thisEvent;
   var OnlyEventsOwned = optAddonSettings_Get_('OnlyEventsOwned');
   var regExp_Account, regExp_Card, code_Card;
-  var output;
+  var output, translation;
   var s, i, j;
 
   output = [ ];
@@ -35,6 +35,8 @@ function optCalendar_ProcessRawEvents_(listEvents) {
       Table: -1,
       Card: -1,
       Value: 0,
+      TranslationType: "",
+      TranslationNumber: 0,
       Tags: [ ],
       hasAtIgn: true,
       hasQcc: false
@@ -49,6 +51,16 @@ function optCalendar_ProcessRawEvents_(listEvents) {
     } else {
       cell.Value = cell.Description.match( /-?\$[\d]+,[\d]{2}/ );
       if(cell.Value) cell.Value[0] = cell.Value[0].replace(",", ".");
+    }
+
+    translation = cell.Description.match( /@(M(\+|-)(\d+)|Avg|Total)/ );
+    if(translation) {
+      if(translation[1] == "Total"  || translation[1] == "Avg") {
+        cell.TranslationType = translation[1];
+      } else {
+        cell.TranslationType = "M";
+        cell.TranslationNumber = Number(translation[2] + translation[3]);
+      }
     }
 
     if(cell.Value) cell.Value = Number(cell.Value[0].replace("\$", ""));
