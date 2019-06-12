@@ -9,7 +9,7 @@ function daily_UpdateEvents_(date) {
 
 
   for(i = 0;  i < list.length;  i++) {
-    if(OnlyEventsOwned  &&  !list[i].isOwnedByMe()) continue;
+    // if(OnlyEventsOwned  &&  !list[i].isOwnedByMe()) continue;
 
     description = list[i].getDescription();
     if( /@ign/.test(description) ) continue;

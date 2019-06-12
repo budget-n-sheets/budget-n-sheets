@@ -1,7 +1,7 @@
 function optCalendar_ProcessRawEvents_(listEvents) {
   var list, cell,
       thisEvent;
-  var OnlyEventsOwned = optAddonSettings_Get_('OnlyEventsOwned');
+  // var OnlyEventsOwned = optAddonSettings_Get_('OnlyEventsOwned');
   var regExp_Account, regExp_Card, code_Card;
   var output, translation;
   var s, i, j;
@@ -25,7 +25,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 
 
   for(i = 0;  i < listEvents.length;  i++) {
-    if(OnlyEventsOwned  &&  !listEvents[i].isOwnedByMe()) continue;
+    // if(OnlyEventsOwned  &&  !listEvents[i].isOwnedByMe()) continue;
     thisEvent = listEvents[i];
 
     cell = {
