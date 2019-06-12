@@ -79,12 +79,8 @@ function daily_Main_(e) {
     monthly_TreatLayout_(e["year"], e["month"]);
   }
 
-  if(optAddonSettings_Get_('PostDayEvents')) {
+  if(optAddonSettings_Get_("PostDayEvents")) {
     daily_PostEvents_(date);
-  }
-
-  if(optAddonSettings_Get_('PostDayEvents')  ||  optAddonSettings_Get_('CashFlowEvents')) {
-    daily_UpdateEvents_(date);
   }
 
   return;

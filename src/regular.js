@@ -1,29 +1,7 @@
-function daily_UpdateEvents_(date) {
-  var calendarId = optAddonSettings_Get_('FinancialCalendar');
-  var calendar = optCalendar_GetCalendarFromSHA1_(calendarId);
-  if(!calendar) return;
-  var list = calendar.getEventsForDay(date);
-
-  var OnlyEventsOwned = optAddonSettings_Get_('OnlyEventsOwned');
-  var description, i;
-
-
-  for(i = 0;  i < list.length;  i++) {
-    // if(OnlyEventsOwned  &&  !list[i].isOwnedByMe()) continue;
-
-    description = list[i].getDescription();
-    if( /@ign/.test(description) ) continue;
-
-    description += "\n\n\n@ign";
-
-    list[i].setDescription(description);
-  }
-}
-
-
 function daily_PostEvents_(date) {
+  var calendar, listEventos, listIds, evento;
   var sheet, lastRow;
-  var data, data_Cards, listEventos, evento;
+  var data, data_Cards;
   var number_accounts, mm, dd, value, tags;
   var i, j, k;
 
@@ -34,16 +12,23 @@ function daily_PostEvents_(date) {
   if(!sheet) return;
   if(sheet.getMaxRows() < 4) return;
 
-  value = optAddonSettings_Get_("FinancialCalendar");
-  value = optCalendar_GetCalendarFromSHA1_(value);
-  if(!value) return;
+  calendar = optAddonSettings_Get_("FinancialCalendar");
+  calendar = optCalendar_GetCalendarFromSHA1_(calendar);
+  if(!calendar) return;
 
-  listEventos = value.getEventsForDay(date);
+  listEventos = calendar.getEventsForDay(date);
   listEventos = optCalendar_ProcessRawEvents_(listEventos);
   if(listEventos.length === 0) return;
 
+  number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
+
   data = [ ];
   data_Cards = [ ];
+  listIds = [ ];
+
+  for(k = 0;  k < 1 + number_accounts;  k++) {
+    data.push([ ]);
+  }
 
   for(i = 0;  i < listEventos.length;  i++) {
     evento = listEventos[i];
@@ -69,10 +54,11 @@ function daily_PostEvents_(date) {
     } else if(!evento.hasQcc) {
       data_Cards.push([ dd, evento.Title, k, value, tags ]);
     }
+
+    listIds.push(evento.Id);
   }
 
   lastRow = sheet.getLastRow() + 1;
-  number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
   for(k = 0;  k < 1 + number_accounts;  k++) {
     if(data[k].length === 0) continue;
 
@@ -94,6 +80,8 @@ function daily_PostEvents_(date) {
         data_Cards.length, 5)
       .setValues(data_Cards);
   }
+
+  calendarMuteEvents_(calendar, listIds);
 }
 
 

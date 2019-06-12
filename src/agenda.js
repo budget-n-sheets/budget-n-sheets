@@ -29,6 +29,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
     thisEvent = listEvents[i];
 
     cell = {
+      Id: thisEvent.getId(),
       Day: thisEvent.getStartTime().getDate(),
       Title: thisEvent.getTitle(),
       Description: thisEvent.getDescription(),
@@ -143,4 +144,23 @@ function optCalendar_GetCalendarFromSHA1_(r) {
   optAddonSettings_Set_('FinancialCalendar', 'null_');
   optAddonSettings_Set_('PostDayEvents', false);
   optAddonSettings_Set_('CashFlowEvents', false);
+}
+
+
+function calendarMuteEvents_(calendar, list) {
+  var evento, description;
+  // var OnlyEventsOwned = optAddonSettings_Get_("OnlyEventsOwned");
+  var i;
+
+
+  for(i = 0;  i < list.length;  i++) {
+    evento = calendar.getEventById(list[i]);
+
+    // if(OnlyEventsOwned  &&  !evento.isOwnedByMe()) continue;
+
+    description = evento.getDescription();
+    description += "\n\n\n@ign";
+
+    evento.setDescription(description);
+  }
 }
