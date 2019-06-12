@@ -9,6 +9,8 @@ function optMainTags(opt, input) {
   switch(opt) {
     case 'GetMeta':
       return optTag_GetMeta_();
+    case "GetData":
+      return tagGetData_();
     case 'GetList':
       return optTag_GetList_();
     case 'GetInfo':
@@ -31,6 +33,44 @@ function optMainTags(opt, input) {
       Logger.log(opt);
       return 3;
   }
+}
+
+
+function tagGetData_() {
+  var sheet, lastRow;
+  var output, data;
+  var n, i, j;
+
+  sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+  if(!sheet) return;
+
+  lastRow = sheet.getLastRow();
+  if(lastRow < 2) return;
+  if(sheet.getMaxColumns() < 19) return;
+
+  output = {
+    tags: [ ],
+    data: [ ]
+  };
+
+  data = sheet.getRange(2, 4, lastRow - 1, 16).getValues();
+
+  i = 0;
+  j = 0;
+  n = data.length;
+  while(i < data.length  &&  j < n) {
+    if( !/^[\w]+$/.test(data[i][0]) ) {
+      data.splice(i, 1);
+    } else {
+      output.tags.push(data[i][0]);
+      i++;
+    }
+
+    j++;
+  }
+
+  output.data = data;
+  return output;
 }
 
 
