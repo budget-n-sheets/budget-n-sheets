@@ -13,12 +13,13 @@ function daily_PostEvents_(date) {
   if(sheet.getMaxRows() < 4) return;
 
   calendar = optAddonSettings_Get_("FinancialCalendar");
+  if(calendar === "") return;
   calendar = optCalendar_GetCalendarFromSHA1_(calendar);
   if(!calendar) return;
 
   listEventos = calendar.getEventsForDay(date);
-  listEventos = optCalendar_ProcessRawEvents_(listEventos);
   if(listEventos.length === 0) return;
+  listEventos = optCalendar_ProcessRawEvents_(listEventos);
 
   number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
 

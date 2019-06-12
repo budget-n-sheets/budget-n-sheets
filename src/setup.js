@@ -773,7 +773,7 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
       cell = {
         FinancialYear: AddonSettings.FinancialYear,
         InitialMonth: AddonSettings.InitialMonth,
-        FinancialCalendar: 'null_',
+        FinancialCalendar: "",
         PostDayEvents: false,
         CashFlowEvents: false,
         OverrideZero: false,

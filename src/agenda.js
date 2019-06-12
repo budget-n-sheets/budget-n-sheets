@@ -122,9 +122,9 @@ function optCalendar_GetListOwned() {
 }
 
 
-function optCalendar_GetCalendarFromSHA1_(r) {
-  if(!r || typeof r != "string") {
-    console.warn("optCalendar_GetCalendarFromSHA1_(): Invalid parameter.", r);
+function optCalendar_GetCalendarFromSHA1_(sha1sum) {
+  if(typeof sha1sum != "string") {
+    console.warn("optCalendar_GetCalendarFromSHA1_(): Invalid parameter.", sha1sum);
     return;
   }
 
@@ -138,12 +138,12 @@ function optCalendar_GetCalendarFromSHA1_(r) {
       Utilities.Charset.UTF_8);
     s = bin2String(s);
 
-    if(s === r) return list[i];
+    if(s === sha1sum) return list[i];
   }
 
-  optAddonSettings_Set_('FinancialCalendar', 'null_');
-  optAddonSettings_Set_('PostDayEvents', false);
-  optAddonSettings_Set_('CashFlowEvents', false);
+  optAddonSettings_Set_("FinancialCalendar", "");
+  optAddonSettings_Set_("PostDayEvents", false);
+  optAddonSettings_Set_("CashFlowEvents", false);
 }
 
 

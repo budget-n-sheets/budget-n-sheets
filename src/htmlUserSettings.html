@@ -74,7 +74,7 @@
                   <td class="name" style="width:37%;"><label for="FinancialCalendar">Calendar</label></td>
                   <td>
                     <select class="Form-Settings_lock" id="FinancialCalendar">
-                      <option value="null_" selected>Disabled</option>
+                      <option value="" selected>Disabled</option>
                     </select>
                   </td>
                 </tr>
@@ -165,7 +165,7 @@
         .optAddonSettings_Retrieve();
     });
     $("#FinancialCalendar").change(function() {
-      if($(this).val() == 'null_') {
+      if($(this).val() === "") {
         $('.Form-Settings_calendar').prop('disabled', true);
         $('.Form-Settings_calendar').prop('checked', false);
       } else {
@@ -197,7 +197,7 @@
       }
 
       $('.Form-Settings_lock').prop('disabled', false);
-      if(user_settings.FinancialCalendar == 'null_') {
+      if(user_settings.FinancialCalendar === "") {
         $('.Form-Settings_calendar').prop('disabled', true);
       }
       $('#panel_Book').fadeIn('fast')
@@ -270,7 +270,7 @@
       $("#p-footer_FastResponse").empty().append("Settings saved.");
       $(".Form-Settings_lock").prop("disabled", false);
 
-      if($("#FinancialCalendar").val() === "null_") {
+      if($("#FinancialCalendar").val() === "") {
         $(".Form-Settings_calendar").prop("disabled", true);
       }
 
