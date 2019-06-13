@@ -315,10 +315,7 @@ function foo_UpdateCashFlow_(yyyy, mm) {
     hasCards = number_cards > 0;
   }
   if(hasCards) {
-    data_cards = sheetBackstage.getRange(
-      1, 1 + w_ + w_*number_accounts + 1,
-      1 + h_*12, w_ + w_*number_cards
-    ).getValues();
+    data_cards = cardsGetData_();
   }
 
   for(i = 0;  i < listEventos.length;  i++) {
@@ -329,32 +326,20 @@ function foo_UpdateCashFlow_(yyyy, mm) {
 
     if( !isNaN(evento.Value) ) value = evento.Value;
     else if(hasCards  &&  evento.hasQcc) {
-      value = NaN;
       if(evento.Card !== -1) {
-        j = 0;
-        while(j < data_cards[0].length  &&  data_cards[0][j] !== evento.Card) { j += w_; }
-
-        if(data_cards[0][j] === evento.Card) {
-          if(evento.TranslationType === "M") {
-            if(mm + evento.TranslationNumber < 0  ||  mm + evento.TranslationNumber > 11) continue;
-
-            value = Number(data_cards[5 + h_ * (mm + evento.TranslationNumber)][j].toFixed(2));
-          } else {
-            value = Number(data_cards[5 + h_ * (mm - 1)][j].toFixed(2));
-          }
-        } else {
-          continue;
-        }
+        c = data_cards.cards.indexOf(evento.Card);
+        if(c === -1) continue;
       } else {
-        if(evento.TranslationType === "M") {
-          if(mm + evento.TranslationNumber < 0  ||  mm + evento.TranslationNumber > 11) continue;
-
-          value = Number(data_cards[5 + h_ * (mm + evento.TranslationNumber)][j].toFixed(2));
-        } else {
-          value = Number(data_cards[5 + h_ * (mm - 1)][0].toFixed(2));
-        }
+        c = 0;
       }
-      if(isNaN(value)) continue;
+
+      if(evento.TranslationType === "M"
+          && mm + evento.TranslationNumber >= 0
+          && mm + evento.TranslationNumber <= 11) {
+        value = +data_cards.balance[c][mm + evento.TranslationNumber].toFixed(2);
+      } else {
+        value = +data_cards.balance[c][mm - 1].toFixed(2);
+      }
     } else if(hasTags  &&  evento.Tags.length > 0) {
       n = evento.Tags.length;
       for(j = 0; j < n; j++) {

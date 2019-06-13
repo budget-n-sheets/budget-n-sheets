@@ -37,6 +37,59 @@ function optMainTables(opt, param) {
 }
 
 
+function cardsGetData_() {
+  var sheet;
+  var output, data;
+  var c, n, v, i, k;
+  var h_, w_;
+
+  h_ = AppsScriptGlobal.TableDimensions()["height"];
+  w_ = AppsScriptGlobal.TableDimensions()["width"];
+  n = getPropertiesService_("document", "number", "number_accounts");
+
+  db_cards = getPropertiesService_("document", "obj", "DB_CARD");
+  if(!db_cards) return;
+  if(db_cards.length == 0) return;
+
+  sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+  if(!sheet) return;
+  if(sheet.getMaxRows() < 121) return;
+  if(sheet.getMaxColumns() < 1 + (w_ + w_*n) + (w_ + w_*db_cards)) return;
+
+  output = {
+    cards: [ "All" ],
+    balance: [
+      [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+    ]
+  };
+
+
+  data = sheet.getRange(
+    1, 1 + w_ + n*w_ + 1,
+    1 + 12*h_, w_
+  ).getValues();
+  for(i = 0;  i < 12;  i++) {
+    output.balance[0][i] = data[5 + h_*i][0];
+  }
+
+  data = sheet.getRange(
+    1, 1 + w_ + n*w_ + w_ + 1,
+    1 + 12*h_, w_*db_cards.length
+  ).getValues();
+  for(k = 0;  k < db_cards.length;  k++) {
+    c = data[0].indexOf(db_cards[k].Code);
+    if(c === -1) continue;
+
+    v = [ ];
+    for(i = 0;  i < 12;  i++) {
+      v[i] = data[5 + h_*i][c];
+    }
+    output.balance.push()
+  }
+
+  return output;
+}
+
 
 function optTable_GetInfo_(r) {
   var array, k;
