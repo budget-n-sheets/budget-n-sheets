@@ -225,7 +225,7 @@ function foo_UpdateCashFlow_(yyyy, mm) {
   var calendar, listEventos, evento, day, dd;
   var number_accounts, number_cards;
   var metaTags, OverrideZero;
-  var data_cards, value, maxRows;
+  var data_cards, data_tags, value, maxRows;
   var table, hasCards, hasTags;
   var cf_flow, cf_transaction;
   var a, b, c, i, j, k, n, ma;
@@ -266,11 +266,9 @@ function foo_UpdateCashFlow_(yyyy, mm) {
   }
 
   if(OverrideZero  ||  listEventos.length > 0) {
-    metaTags = optTag_GetMeta_();
-    if(typeof metaTags === "number") hasTags = false;
-    else {
-      hasTags = true;
-    }
+    data_tags = tagGetData_();
+    if(data_tags && data_tags.tags.length > 0) hasTags = true;
+    else hasTags = false;
   }
 
   maxRows = sheetTarget.getLastRow() - 4 ;
@@ -291,12 +289,11 @@ function foo_UpdateCashFlow_(yyyy, mm) {
 
       value = table[i][2];
       if(hasTags  &&  value === 0  &&  OverrideZero) {
-        n = metaTags.Tags.length;
         ma = table[i][3].match(/#[\w]+/g);
-        for(j = 0;  j < n;  j++) {
-          c = ma.indexOf("#" + metaTags.Tags[j]);
+        for(j = 0;  j < ma.length;  j++) {
+          c = data_tags.tags.indexOf(ma[j].substr(1));
           if(c !== -1) {
-            value = metaTags.Meta[c].AvgValue;
+            value = data_tags.data[c][14];
             break;
           }
         }
@@ -337,22 +334,52 @@ function foo_UpdateCashFlow_(yyyy, mm) {
         j = 0;
         while(j < data_cards[0].length  &&  data_cards[0][j] !== evento.Card) { j += w_; }
 
-        if(data_cards[0][j] === evento.Card) value = Number(data_cards[5 + h_ * (mm-1)][j].toFixed(2));
-        else continue;
+        if(data_cards[0][j] === evento.Card) {
+          if(evento.TranslationType === "M") {
+            if(mm + evento.TranslationNumber < 0  ||  mm + evento.TranslationNumber > 11) continue;
+
+            value = Number(data_cards[5 + h_ * (mm + evento.TranslationNumber)][j].toFixed(2));
+          } else {
+            value = Number(data_cards[5 + h_ * (mm - 1)][j].toFixed(2));
+          }
+        } else {
+          continue;
+        }
       } else {
-        value = Number(data_cards[5 + h_ * (mm-1)][0].toFixed(2));
+        if(evento.TranslationType === "M") {
+          if(mm + evento.TranslationNumber < 0  ||  mm + evento.TranslationNumber > 11) continue;
+
+          value = Number(data_cards[5 + h_ * (mm + evento.TranslationNumber)][j].toFixed(2));
+        } else {
+          value = Number(data_cards[5 + h_ * (mm - 1)][0].toFixed(2));
+        }
       }
       if(isNaN(value)) continue;
     } else if(hasTags  &&  evento.Tags.length > 0) {
       n = evento.Tags.length;
       for(j = 0; j < n; j++) {
-        c = metaTags.Tags.indexOf(evento.Tags[j]);
-        if(c !== -1) {
-          value = metaTags.Meta[c].AvgValue;
-          break;
-        }
+        c = data_tags.tags.indexOf(evento.Tags[j]);
+        if(c !== -1) break;
       }
+
       if(c === -1) continue;
+
+      switch(evento.TranslationType) {
+        default:
+          console.warn("foo_UpdateCashFlow_(): Switch case is default.", evento.TranslationType);
+        case "Avg":
+        case "":
+          value = data_tags.data[c][14];
+          break;
+        case "Total":
+          value = data_tags.data[c][15];
+          break;
+        case "M":
+          if(mm + evento.TranslationNumber < 0  ||  mm + evento.TranslationNumber > 11) continue;
+
+          value = data_tags.data[c][1 + mm + evento.TranslationNumber];
+          break;
+      }
     } else {
       continue;
     }
