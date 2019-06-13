@@ -7,8 +7,6 @@ function optMainTags(opt, input) {
   }
 
   switch(opt) {
-    case 'GetMeta':
-      return optTag_GetMeta_();
     case "GetData":
       return tagGetData_();
     case 'GetList':
@@ -70,42 +68,6 @@ function tagGetData_() {
   }
 
   output.data = data;
-  return output;
-}
-
-
-function optTag_GetMeta_() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
-  var data, output, cell, value;
-  var n;
-
-  if(!sheet) return 2;
-
-  output = {
-    Tags: [ ],
-    Meta: [ ]
-  };
-
-  n = sheet.getMaxRows() - 2;
-  if(n <= 0) return output;
-
-
-  data = sheet.getRange(2, 1, n, 21).getValues();
-
-  for(i = 0;  i < n;  i++) {
-    value = +Number(data[i][17]).toFixed(2);
-    if(isNaN(value)) value = 0;
-
-    cell = {
-      Name: data[i][0],
-      Tag: data[i][3],
-      AvgValue: value
-    };
-
-    output.Tags.push(data[i][3]);
-    output.Meta.push(cell);
-  }
-
   return output;
 }
 
