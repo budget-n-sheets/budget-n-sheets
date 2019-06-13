@@ -37,7 +37,7 @@ function optMainTags(opt, input) {
 function tagGetData_() {
   var sheet, lastRow;
   var output, data;
-  var n, i, j;
+  var n, i, j, k, v;
 
   sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
   if(!sheet) return;
@@ -48,20 +48,31 @@ function tagGetData_() {
 
   output = {
     tags: [ ],
-    data: [ ]
+    months: [ ],
+    average: [ ],
+    total: [ ]
   };
 
-  data = sheet.getRange(2, 4, lastRow - 1, 16).getValues();
+  n = lastRow - 1;
+  data = sheet.getRange(2, 4, n, 16).getValues();
 
   i = 0;
   j = 0;
-  n = data.length;
   while(i < data.length  &&  j < n) {
-    if( !/^[\w]+$/.test(data[i][0]) ) {
-      data.splice(i, 1);
-    } else {
+    if( /^[\w]+$/.test(data[i][0]) ) {
       output.tags.push(data[i][0]);
+
+      v = [ ];
+      for(k = 0; k < 12; k++) {
+        v[k] = data[i][1 + k];
+      }
+      output.months.push(v);
+
+      output.average.push(data[i][14]);
+      output.total.push(data[i][15]);
       i++;
+    } else {
+      data.splice(i, 1);
     }
 
     j++;

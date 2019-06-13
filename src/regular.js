@@ -293,7 +293,7 @@ function foo_UpdateCashFlow_(yyyy, mm) {
         for(j = 0;  j < ma.length;  j++) {
           c = data_tags.tags.indexOf(ma[j].substr(1));
           if(c !== -1) {
-            value = data_tags.data[c][14];
+            value = data_tags.average[c];
             break;
           }
         }
@@ -369,15 +369,15 @@ function foo_UpdateCashFlow_(yyyy, mm) {
           console.warn("foo_UpdateCashFlow_(): Switch case is default.", evento.TranslationType);
         case "Avg":
         case "":
-          value = data_tags.data[c][14];
+          value = data_tags.average[c];
           break;
         case "Total":
-          value = data_tags.data[c][15];
+          value = data_tags.total[c];
           break;
         case "M":
           if(mm + evento.TranslationNumber < 0  ||  mm + evento.TranslationNumber > 11) continue;
 
-          value = data_tags.data[c][1 + mm + evento.TranslationNumber];
+          value = data_tags.months[c][mm + evento.TranslationNumber];
           break;
       }
     } else {
