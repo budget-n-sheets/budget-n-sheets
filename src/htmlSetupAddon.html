@@ -11,10 +11,6 @@
       table {
         width: 100%;
       }
-      td.comment {
-        border: none;
-        padding-bottom: 2px;
-      }
 
       .animation_WaitLoad_wrapper {
         width: 257px;
@@ -61,19 +57,25 @@
           <div style="display:table;width:100%;">
             <div style="display:table-row;">
               <div style="width:100%;display:table-cell;vertical-align:middle;">
-                <h2>Specs</h2>
+                <h2>Budget sheet specs</h2>
               </div>
               <div align="right" style="display:table-cell;vertical-align:middle;">
                 <a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
               </div>
             </div>
           </div>
+
           <form accept-charset="UTF-8" onSubmit="fireSetup();">
-            <table style="width:100%;">
-              <tr>
-                <td class="name" style="width:50%;"><label for="Form_SpreadsheetName">Spreadsheet title</label></td>
-                <td><input type="text" id="Form_SpreadsheetName" maxlength="53" required></td>
-              </tr>
+						<table style="width: 100%;">
+							<tr>
+								<td class="name" style="width:50%;"><label for="Form_SpreadsheetName">Spreadsheet title</label></td>
+								<td><input type="text" id="Form_SpreadsheetName" maxlength="53" required></td>
+							</tr>
+						</table>
+            <table style="width: 100%; margin-top: 2em;">
+							<tr>
+								<th colspan="2" style="font-size:1.2em;"><i class="material-icons">calendar_today</i> Calendar</th>
+							</tr>
               <tr>
                 <td class="name" style="width:50%;"><label for="Form_FinancialYear">Financial year</label></td>
                 <td><input type="number" id="Form_FinancialYear" style="width:61px;" min="1889" max="2111" step="1" required></td>
@@ -97,9 +99,14 @@
                   </select>
                 </td>
               </tr>
+						</table>
+						<table style="width: 100%; margin-top: 2em;">
+							<tr>
+								<th colspan="2" style="font-size:1.2em;"><i class="material-icons">account_balance</i> Accounts</th>
+							</tr>
               <tr>
                 <td class="name comment" style="width:50%;"><label for="Form_NumberLneAccount">Accounts</label></td>
-                <td class="comment">
+                <td>
                   <select id="Form_NumberLneAccount" style="width:83px;">
                     <option value="1" selected>One</option>
                     <option value="2">Two</option>
@@ -110,28 +117,48 @@
                 </td>
               </tr>
               <tr class="tr_Account">
-                <td class="name comment" colspan="2">
-                  <label for="Form_AccountName">Account 1:</label> Name<br/><input type="text" class="Form_AccountName" style="width:173px;" required>
+                <td>
+                  <label style="font-weight: bold;">Account 1</label><br/>
+									<span class="gray">Name</span>
+                </td>
+								<td>
+                  <input type="text" placeholder="Bank A" class="Form_AccountName" style="width: 100%;" required>
                 </td>
               </tr>
-              <tr class="tr_Account">
-                <td class="name comment" colspan="2">
-                  <label for="Form_AccountName">Account 2:</label> Name<br/><input type="text" class="Form_AccountName" style="width:173px;">
+							<tr class="tr_Account">
+                <td>
+                  <label style="font-weight: bold;">Account 2</label><br/>
+									<span class="gray">Name</span>
+                </td>
+								<td>
+                  <input type="text" placeholder="Bank B" class="Form_AccountName" style="width: 100%;" required>
                 </td>
               </tr>
-              <tr  class="tr_Account">
-                <td class="name comment" colspan="2">
-                  <label for="Form_AccountName">Account 3:</label> Name<br/><input type="text" class="Form_AccountName" style="width:173px;">
+							<tr class="tr_Account">
+                <td>
+                  <label style="font-weight: bold;">Account 3</label><br/>
+									<span class="gray">Name</span>
+                </td>
+								<td>
+                  <input type="text" placeholder="Bank C" class="Form_AccountName" style="width: 100%;" required>
                 </td>
               </tr>
-              <tr  class="tr_Account">
-                <td class="name comment" colspan="2">
-                  <label for="Form_AccountName">Account 4:</label> Name<br/><input type="text" class="Form_AccountName" style="width:173px;">
+							<tr class="tr_Account">
+                <td>
+                  <label style="font-weight: bold;">Account 4</label><br/>
+									<span class="gray">Name</span>
+                </td>
+								<td>
+                  <input type="text" placeholder="Bank D" class="Form_AccountName" style="width: 100%;" required>
                 </td>
               </tr>
-              <tr  class="tr_Account">
-                <td class="name comment" colspan="2">
-                  <label for="Form_AccountName">Account 5:</label> Name<br/><input type="text" class="Form_AccountName" style="width:173px;">
+							<tr class="tr_Account">
+                <td>
+                  <label style="font-weight: bold;">Account 5</label><br/>
+									<span class="gray">Name</span>
+                </td>
+								<td>
+                  <input type="text" placeholder="Bank E" class="Form_AccountName" style="width: 100%;" required>
                 </td>
               </tr>
             </table>
