@@ -71,7 +71,7 @@ function BSSUMBYTAG(tag, range) {
   Utilities.sleep(200);
 
   var SUM;
-  var regex, match;
+  var match;
   var c, n, i, j;
 
   n = tag[0].length;
@@ -85,15 +85,10 @@ function BSSUMBYTAG(tag, range) {
   if(range === "0") return SUM;
 
   tag = tag[0];
-  tag = tag.slice(1, n+1);
-  if(n > 1) regex = tag.join('|');
-  else regex = tag[0];
-
-  regex = '#(' + regex + ')';
-  regex = new RegExp(regex, "g");
+  tag = tag.slice(1, n + 1);
 
   for(i = 0; i < range.length; i++) {
-    match = range[i][1].match(regex);
+    match = range[i][1].match(/(#[\w]+)/g);
     if(!match) continue;
 
     for(j = 0; j < match.length; j++) {
