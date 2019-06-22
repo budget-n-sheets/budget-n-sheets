@@ -7,7 +7,7 @@ function daily_PostEvents_(date) {
 
 	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
-	if(!dec_p) dec_p = "[ ]";
+	if(!dec_p) dec_p = "] [";
 
   mm = date.getMonth();
   dd = date.getDate();
@@ -237,7 +237,7 @@ function foo_UpdateCashFlow_(yyyy, mm) {
 
 	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
-	if(!dec_p) dec_p = "[ ]";
+	if(!dec_p) dec_p = "] [";
 
   h_ = AppsScriptGlobal.TableDimensions()["height"];
   w_ = AppsScriptGlobal.TableDimensions()["width"];

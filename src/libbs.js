@@ -19,7 +19,7 @@ Number.prototype.formatFinancial = function(p_dec_p) {
 	var DEC_P, DEC_PS;
 
 	if(p_dec_p) {
-	  DEC_P = p_dec_p === "[ ]" ? "," : ".";
+	  DEC_P = p_dec_p === "] [" ? "," : ".";
 	} else {
 		DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
 	}
@@ -46,7 +46,7 @@ Number.prototype.formatLocaleSignal = function(p_dec_p) {
 	var DEC_P, DEC_PS;
 
 	if(p_dec_p) {
-	  DEC_P = p_dec_p === "[ ]" ? "," : ".";
+	  DEC_P = p_dec_p === "] [" ? "," : ".";
 	} else {
 		DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
 	}

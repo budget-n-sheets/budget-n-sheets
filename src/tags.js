@@ -185,7 +185,7 @@ function optTag_GetStat_(input) {
 
 	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
-	if(!dec_p) dec_p = "[ ]";
+	if(!dec_p) dec_p = "] [";
 
   ta = MFactor > 0;
   value = { min: 0, max: 0 };
