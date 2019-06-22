@@ -9,7 +9,7 @@ var AppsScriptGlobal = (function() {
     test_chamber: false,
 
     AddonVersion: 56,
-    AddonVersionName: "0.17.4",
+    AddonVersionName: "0.17.5",
 
     TemplateVersion: 50,
     TemplateVersionName: "5.4",
