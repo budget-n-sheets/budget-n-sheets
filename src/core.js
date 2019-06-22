@@ -18,20 +18,8 @@ function onInstall(e) {
   * @param {Object} e The event parameter for a simple onOpen trigger.
   */
 function onOpen(e) {
-  if(AppsScriptGlobal.test_chamber()) {
-    SpreadsheetApp.getUi()
-			.createMenu('budget-n-sheets')
-			.addItem('A', 'trial_a')
-			.addItem('B', 'trial_b')
-			.addItem('C', 'trial_c')
-			.addSeparator()
-			.addItem('Add tags', 'trial_tags')
-			.addItem('Add cards', 'trial_cards')
-			.addSeparator()
-			.addItem('Clear', 'trial_clear')
-			.addItem('Setup', 'trial_setup')
-			.addToUi();
-  }
+
+  trial_onOpen();
 
   if(e && e.authMode == ScriptApp.AuthMode.NONE) {
     SpreadsheetApp.getUi()
