@@ -15,9 +15,16 @@ Number.prototype.formatCurrency = function() {
 /**
   * Number format x,xx0.00;(x,xx0.00)
   */
-Number.prototype.formatFinancial = function() {
-  var DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
-  var DEC_PS = (DEC_P === "." ? "," : ".");
+Number.prototype.formatFinancial = function(p_dec_p) {
+	var DEC_P, DEC_PS;
+
+	if(p_dec_p) {
+	  DEC_P = p_dec_p === "[ ]" ? "," : ".";
+	} else {
+		DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
+	}
+
+	DEC_PS = (DEC_P === "." ? "," : ".");
 
   var n = this;
   var s = n < 0 ? true : false;
@@ -35,9 +42,16 @@ Number.prototype.formatFinancial = function() {
 /**
   * Number format +0.00;-0.00
   */
-Number.prototype.formatLocaleSignal = function() {
-  var DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
-  var DEC_PS = (DEC_P === "." ? "," : ".");
+Number.prototype.formatLocaleSignal = function(p_dec_p) {
+	var DEC_P, DEC_PS;
+
+	if(p_dec_p) {
+	  DEC_P = p_dec_p === "[ ]" ? "," : ".";
+	} else {
+		DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
+	}
+
+	DEC_PS = (DEC_P === "." ? "," : ".");
 
   var n = this;
   var s = n < 0 ? '-' : '+';

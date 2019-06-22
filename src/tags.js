@@ -183,6 +183,10 @@ function optTag_GetStat_(input) {
   var lastRow;
   var a, i, v, ta;
 
+	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
+
+	if(!dec_p) dec_p = "[ ]";
+
   ta = MFactor > 0;
   value = { min: 0, max: 0 };
   output = {
@@ -214,8 +218,8 @@ function optTag_GetStat_(input) {
     value.max = value.min;
 
     output.Interval = MN_FULL_[init] + " - " + MN_FULL_[ActualMonth-1];
-    output.Total = sheet.getRange(2 + i, 19).getValue().formatFinancial();
-    output.Average = avgValue.formatFinancial();
+    output.Total = sheet.getRange(2 + i, 19).getValue().formatFinancial(dec_p);
+    output.Average = avgValue.formatFinancial(dec_p);
   }
 
   output.Data = [
@@ -242,8 +246,8 @@ function optTag_GetStat_(input) {
   }
 
   if(ta) {
-    output.Min = value.min.formatFinancial();
-    output.Max = value.max.formatFinancial();
+    output.Min = value.min.formatFinancial(dec_p);
+    output.Max = value.max.formatFinancial(dec_p);
   }
 
   return output;

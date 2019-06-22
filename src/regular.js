@@ -5,6 +5,10 @@ function daily_PostEvents_(date) {
   var number_accounts, mm, dd, value, tags;
   var i, j, k;
 
+	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
+
+	if(!dec_p) dec_p = "[ ]";
+
   mm = date.getMonth();
   dd = date.getDate();
 
@@ -41,7 +45,7 @@ function daily_PostEvents_(date) {
     else if(evento.Card !== -1) k = evento.Card;
     else continue;
 
-    if( !isNaN(evento.Value) ) value = (evento.Value).formatLocaleSignal();
+    if( !isNaN(evento.Value) ) value = (evento.Value).formatLocaleSignal(dec_p);
     else if(evento.Tags.length > 0) value = 0;
     else continue;
 
@@ -231,6 +235,10 @@ function foo_UpdateCashFlow_(yyyy, mm) {
   var a, b, c, i, j, k, n, ma;
   var h_, w_;
 
+	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
+
+	if(!dec_p) dec_p = "[ ]";
+
   h_ = AppsScriptGlobal.TableDimensions()["height"];
   w_ = AppsScriptGlobal.TableDimensions()["width"];
 
@@ -300,7 +308,7 @@ function foo_UpdateCashFlow_(yyyy, mm) {
       }
 
       day--;
-      cf_flow[day][0] += value.formatLocaleSignal();
+      cf_flow[day][0] += value.formatLocaleSignal(dec_p);
       cf_transaction[day][0] += "@" + table[i][1] + " ";
     }
   }
@@ -370,7 +378,7 @@ function foo_UpdateCashFlow_(yyyy, mm) {
     }
 
     day = evento.Day - 1;
-    cf_flow[day][0] += value.formatLocaleSignal();
+    cf_flow[day][0] += value.formatLocaleSignal(dec_p);
     cf_transaction[day][0] += "@" + evento.Title + " ";
   }
 
