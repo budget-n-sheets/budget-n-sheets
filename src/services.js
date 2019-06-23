@@ -75,6 +75,11 @@ function daily_Main_(e) {
     return;
   }
 
+	if(getPropertiesService_("document", "string", "update_layout")) {
+		update_Layout();
+		deletePropertiesService_("document", "update_layout");
+	}
+
   if(e["day-of-month"] == 1) {
     monthly_TreatLayout_(e["year"], e["month"]);
   }
@@ -96,6 +101,11 @@ function weekly_Foo_(e) {
   }
 
   seamlessUpdate_();
+
+	if(getPropertiesService_("document", "string", "update_layout")) {
+		update_Layout();
+		deletePropertiesService_("document", "update_layout");
+	}
 }
 
 
@@ -108,6 +118,11 @@ function weekly_Bar_(e) {
   }
 
   if(seamlessUpdate_()) return;
+
+	if(getPropertiesService_("document", "string", "update_layout")) {
+		update_Layout();
+		deletePropertiesService_("document", "update_layout");
+	}
 
   var date = getSpreadsheetDate();
   var yyyy = optAddonSettings_Get_("FinancialYear");

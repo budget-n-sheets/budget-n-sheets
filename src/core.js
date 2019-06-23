@@ -231,6 +231,7 @@ function optAddonSettings_Save(settings) {
     return 1;
   }
 
+	setPropertiesService_("document", "string", "update_layout", "[ ]");
   return -1;
 }
 
