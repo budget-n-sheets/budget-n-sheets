@@ -142,6 +142,7 @@ function optCard_Refresh_() {
 	db_card = getPropertiesService_("document", "obj", "DB_CARD");
 
 	c = 1 + 1 + w_ + w_*number_accounts;
+	sheetBackstage.getRange(1, c, 1, w_*11).setValue("");
 	sheetBackstage.getRange(1, c).setValue("All");
 
 	sheetSettings.getRange("B11:B20").setValue("");
