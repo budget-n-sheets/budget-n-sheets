@@ -60,7 +60,7 @@ function optCard_Remove_(input) {
   for(k = 0;  k < dbCard.length;  k++) {
     if(dbCard[k].Id === input) break;
   }
-  if(k >= dbCard.length || [k].Id !== input) return 1;
+  if(k >= dbCard.length || dbCard[k].Id !== input) return 1;
 
   dbCard.splice(k, 1);
   setPropertiesService_('document', 'json', 'DB_CARD', dbCard);
