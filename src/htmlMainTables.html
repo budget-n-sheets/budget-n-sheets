@@ -90,7 +90,7 @@
 			<div class="panel active" id="MainPanel_header" align="center">
 				<div class="MainMenu-top_title">
 					<div class="MainMenu_row">
-						<div class="m-tab" id="tab_accounts">
+						<div class="m-tab active" id="tab_accounts">
 							<i class="material-icons" title="Accounts">account_balance</i>
 						</div>
 						<div class="m-tab" id="tab_cards">
@@ -113,7 +113,7 @@
 					<div class="Table-head" id="b-CheckQuota" style="border: 1px dashed #d9d9d9;">
 						<div class="Table-row">
 							<div class="Table-name" style="height: 2.3em;vertical-align: middle;">
-								<a><i class="material-icons">add</i> Add card</a>
+								<a id="b-AddCard"><i class="material-icons">add</i> Add card</a>
 							</div>
 						</div>
 					</div>
@@ -200,7 +200,7 @@
 		};
 
 		$(document).ready(function() {
-			$("#b-CheckQuota").click(AddCard_Panel);
+			$("#b-AddCard").click(AddCard_Panel);
 
 			google.script.run.withSuccessHandler(ListTables_Post)
 				.withFailureHandler(showError)
