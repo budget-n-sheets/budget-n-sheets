@@ -535,12 +535,17 @@ function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
   */
 function setupPart6_(spreadsheet, sheetBackstage, number_accounts) {
   try {
+		var sheetCards = spreadsheet.getSheetByName("Cards");
     var thisSheet;
+		var header, str, c;
     var i, k;
     var h_, w_;
 
     h_ = AppsScriptGlobal.TableDimensions()["height"];
     w_ = AppsScriptGlobal.TableDimensions()["width"];
+
+		c = 1 + w_ + w_*number_accounts;
+		header = rollA1Notation(1, c + 1, 1, w_*11);
 
     for(i = 0;  i < 12;  i++) {
       thisSheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
@@ -554,6 +559,15 @@ function setupPart6_(spreadsheet, sheetBackstage, number_accounts) {
 
         thisSheet.getRange(3, 6+5*k).setFormula('=CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4+h_*i, 7+w_*k) + '))');
       }
+
+			sheetCards.getRange(2, 1 + 6*i).setValue("All");
+
+			str = "BSINFCARD(IF(" + rollA1Notation(2, 1 + 6*i) + " = \"\"; \"\"; ";
+			str += "OFFSET(INDIRECT(ADDRESS(2; ";
+			str += c + " + MATCH(" + rollA1Notation(2, 1 + 6*i) + "; ";
+			str += "\'_Backstage\'!" + header + "; 0); 4; true; \"_Backstage\")); ";
+			str += (h_*i) + "; 0; " + h_ + "; 1)))";
+			sheetCards.getRange(2, 4 + i*6).setFormula(str);
     }
 
     SpreadsheetApp.flush();
