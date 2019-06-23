@@ -106,6 +106,9 @@ function update_ExecutePatial_() {
 
     case 55:
       update0pack02_();
+
+		case 56:
+			c = update0pack03_();
       break;
 
     default:
@@ -138,6 +141,101 @@ function update0packXX_() {
     return true;
   }
 }*/
+
+
+/**
+ * Insert tables for 10 cards.
+ * Update functions for cards.
+ *
+ * 0.17.6
+ */
+function update0pack03_() {
+	try {
+		var sheetBackstage = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage"),
+				sheetCards = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+		var range, formula, header1, header2, r1c1;
+		var db_cards = getPropertiesService_("document", "obj", "DB_CARD");
+		var number_accounts = getPropertiesService_("document", "number", "number_accounts");
+		var c1, c2, c3, n, i, k;
+		var h_, w_;
+
+		h_ = AppsScriptGlobal.TableDimensions()["height"];
+		w_ = AppsScriptGlobal.TableDimensions()["width"];
+
+		n = 10 - db_cards.length;
+		if(n > 0) {
+			c1 = sheetBackstage.getMaxColumns();
+			sheetBackstage.insertColumnsAfter(c1, w_*n);
+			sheetBackstage.getRange(1, c1 - 4, sheetBackstage.getMaxRows(), 5)
+				.copyTo(
+					sheetBackstage.getRange(1, c1 + 1, sheetBackstage.getMaxRows(), w_*n),
+					{formatOnly:true}
+				);
+			SpreadsheetApp.flush();
+		}
+
+		c1 = 1 + w_ + w_*number_accounts;
+		c2 = c1 + 1;
+		c3 = c2 + w_;
+
+		header1 = rollA1Notation(1, c2, 1, w_*11);
+		r1c1 = "RC[" + w_ + "]";
+		header2 = [ rollA1Notation(1, c3) ];
+		for(k = 2; k <= 10; k++) {
+			r1c1 += " + RC[" + w_*k + "]";
+			header2[k - 1] = rollA1Notation(1, c3 + w_*(k - 1));
+		}
+
+		for(i = 0; i < 12; i++) {
+			sheetCards.getRange(2, 1 + 6*i).setValue("All");
+
+			formula = "BSINFCARD(IF(" + rollA1Notation(2, 1 + 6*i) + " = \"\"; \"\"; ";
+			formula += "OFFSET(INDIRECT(ADDRESS(2; ";
+			formula += c1 + " + MATCH(" + rollA1Notation(2, 1 + 6*i) + "; ";
+			formula += "\'_Backstage\'!" + header1 + "; 0); 4; true; \"_Backstage\")); ";
+			formula += (h_*i) + "; 0; " + h_ + "; 1)))";
+			sheetCards.getRange(2, 4 + i*6).setFormula(formula);
+
+			for(k = 0; k < 10; k++) {
+				formula = "IFERROR(IF(" + header2[k] + " = \"\"; \"\"; SUM(FILTER(";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
+				formula += "\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + header2[k] + "; ";
+				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " >= 0";
+				formula += "))); 0)"
+				sheetBackstage.getRange(3 + h_*i, c3 + w_*k).setFormula(formula);
+
+				formula = "IFERROR(IF(" + header2[k] + " = \"\"; \"\"; SUM(FILTER(";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
+				formula += "\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + header2[k] + "; ";
+				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " < 0; ";
+				formula += "NOT(REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1) + "; ";
+				formula += "\"#ign\"))";
+				formula += "))); 0)"
+				sheetBackstage.getRange(4 + h_*i, c3 + w_*k).setFormula(formula);
+
+				formula = "IFERROR(IF(" + header2[k] + " = \"\"; \"\"; SUM(FILTER(";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
+				formula += "\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + header2[k] + "; ";
+				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " < 0";
+				formula += "))); 0)"
+				sheetBackstage.getRange(5 + h_*i, c3 + w_*k).setFormula(formula);
+
+				sheetBackstage.getRange(6 + h_*i, c3 + w_*k).setFormulaR1C1("R[-1]C + R[-3]C");
+			}
+
+			sheetBackstage.getRange(3 + h_*i, c2, 4, 1).setFormulaR1C1(r1c1);
+		}
+
+		SpreadsheetApp.flush();
+		optCard_Refresh_();
+	} catch(err) {
+		console.error("update0pack03_()", err);
+		return true;
+	}
+}
 
 /**
  * Reset unprotected ranges of sheet Cards.
