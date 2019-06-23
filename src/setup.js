@@ -483,7 +483,7 @@ function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
       sheetSummary.setTabColor('#e69138');
       foo_ColorTabs_();
       spreadsheet.getSheetByName('Cash Flow').setTabColor('#e69138');
-      spreadsheet.getSheetByName('Cards').setTabColor('#e69138').hideSheet();
+      spreadsheet.getSheetByName('Cards').setTabColor('#e69138');
       spreadsheet.getSheetByName('Tags').setTabColor('#e69138');
       spreadsheet.getSheetByName('Quick Actions').setTabColor('#6aa84f');
       sheetBackstage.setTabColor('#cc0000').hideSheet();
