@@ -52,7 +52,7 @@ function daily_Main_(e) {
   if(seamlessUpdate_()) return;
 
   var FinancialYear = optAddonSettings_Get_('FinancialYear');
-  var date;
+  var date, a;
 
   if(e) {
     date = new Date(e["year"], e["month"], e["day-of-month"], e["hour"]);
@@ -61,12 +61,18 @@ function daily_Main_(e) {
     date = getSpreadsheetDate();
   }
 
+	a = {
+		"year": date.getFullYear(),
+		"month": date.getMonth(),
+		"date": date.getDate()
+	};
+
   if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != optAddonSettings_Get_('SpreadsheetLocale')) {
     if(!update_DecimalSepartor_()) return;
   }
 
-  if(FinancialYear < e["year"]) {
-    monthly_TreatLayout_(e["year"], e["month"]);
+  if(FinancialYear < a["year"]) {
+    monthly_TreatLayout_(a["year"], a["month"]);
     deleteScriptAppTriggers_('document', 'dailyMainId');
     createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
     setPropertiesService_('document', 'string', 'OperationMode', "passive");
@@ -80,8 +86,8 @@ function daily_Main_(e) {
 		deletePropertiesService_("document", "update_layout");
 	}
 
-  if(e["day-of-month"] == 1) {
-    monthly_TreatLayout_(e["year"], e["month"]);
+  if(a["date"] == 1) {
+    monthly_TreatLayout_(a["year"], a["month"]);
   }
 
   if(optAddonSettings_Get_("PostDayEvents")) {
