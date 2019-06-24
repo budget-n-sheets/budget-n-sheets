@@ -373,13 +373,15 @@
         return;
       }
 
+			var a = htmlVarGlobal.Action;
+
 			google.script.run.withSuccessHandler(ListTables_Post)
 				.withFailureHandler(showError)
 				.optMainTables('GetList');
 
-      g2("panel_Cards");
+      g2("panel_ClearCards");
 
-			if(htmlVarGlobal.Action == 'add') $('#p-footer_FastResponse').empty().append('Card added.');
+			if(a === 'add') $('#p-footer_FastResponse').empty().append('Card added.');
 			else $('#p-footer_FastResponse').empty().append('Changes saved.');
     }
     function RemoveCard_Aftermath(r) {
@@ -464,6 +466,8 @@
 						.hide();
 					break;
 
+				case 'panel_ClearCards':
+					$("#box_Cards").empty();
 				case 'panel_Cards':
 					htmlVarGlobal.Id = "";
 		      htmlVarGlobal.Action = "";
