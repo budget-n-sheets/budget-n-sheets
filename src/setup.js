@@ -163,7 +163,7 @@ function setup_(addonSettings, listAccountName) {
 
   deleteAllSheets_();
   copySheetsFromTemplate_();
-  sortSheetOrder_();
+  if(sortSheetOrder_() !== -1) return;
 
   spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Summary') );
 
@@ -202,12 +202,20 @@ function sortSheetOrder_() {
   var list = [ "Summary", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ];
   var i;
 
-  for(var i = 0; i < list.length; i++) {
-    sheet = spreadsheet.getSheetByName(list[i]);
+	i = 0;
+	sheet = spreadsheet.getSheetByName(list[i]);
+	if(!sheet) return;
+	spreadsheet.setActiveSheet(sheet);
+	spreadsheet.moveActiveSheet(i + 1);
 
+  for(i = 13; i < list.length; i++) {
+    sheet = spreadsheet.getSheetByName(list[i]);
+		if(!sheet) return;
     spreadsheet.setActiveSheet(sheet);
     spreadsheet.moveActiveSheet(i + 1);
   }
+
+	return -1;
 }
 
 
