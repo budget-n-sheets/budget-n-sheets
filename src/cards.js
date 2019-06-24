@@ -73,22 +73,21 @@ function optCard_Remove_(input) {
 
 function optCard_Update_(input) {
   var dbCard;
-  var c, k;
+  var k;
 
   if( !/[A-Z][0-9A-Z]{1,13}/.test(input.Code) ) return 10;
 
   dbCard = getPropertiesService_('document', 'json', 'DB_CARD');
 
-	c = -1;
   for(k = 0;  k < dbCard.length;  k++) {
     if(dbCard[k].Code === input.Code) return 20;
-		if(dbCard[k].Id === input.Id) c = k;
+		if(dbCard[k].Id === input.Id) break;
   }
-  if(k >= dbCard.length || c === -1) return 2;
+  if(k >= dbCard.length) return 2;
 
-  dbCard[c].Name = input.Name;
-  dbCard[c].Code = input.Code;
-  dbCard[c].Limit = 0;
+  dbCard[k].Name = input.Name;
+  dbCard[k].Code = input.Code;
+  dbCard[k].Limit = 0;
 
   setPropertiesService_('document', 'json', 'DB_CARD', dbCard);
 
