@@ -278,9 +278,6 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
 }
 
 
-/**
-  * Add protection to sheets and ranges so prevent users from messing up.
-  */
 function setupPart11_(spreadsheet, number_accounts) {
   var thisSheet;
   var vRange;
@@ -348,17 +345,13 @@ function setupPart11_(spreadsheet, number_accounts) {
   }
 }
 
-/**
-  * Setup the sheet 'Cash Flow'.
-  */
+
 function setupPart10_(number_accounts, Y, m) {
   try {
     var sheetCashFlow = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cash Flow');
     var d, s;
     var i, j, k;
 
-
-    /* ----- Mês 0 --- */
     i=0;
     sheetCashFlow.getRange(3,3+i*4).setFormula('=0');
 
@@ -385,7 +378,6 @@ function setupPart10_(number_accounts, Y, m) {
       }
     }
 
-    /* ----- Meses 1-11 --- */
     for(i = 1;  i < 12;  i++) {
       sheetCashFlow.getRange(3,3+i*4).setFormulaR1C1('=R['+(d-1)+']C[-4]+RC[-1]');
 
@@ -413,9 +405,7 @@ function setupPart10_(number_accounts, Y, m) {
       }
     }
 
-    /* ----- Ajustes finais --- */
     optMainTables('UpdateTableRef');
-
     SpreadsheetApp.flush();
   } catch(err) {
     Logger.log('setupSpreadsheet/part=10 : ' + err.message);
@@ -473,9 +463,7 @@ function setupPart9_(sheetSummary, mm) {
   }
 }
 
-/**
-  * Ajustes finais.
-  */
+
 function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
   try {
     var sheetTags = spreadsheet.getSheetByName('Tags');
@@ -538,9 +526,7 @@ function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
   }
 }
 
-/**
-  * Install essential formulas; tables for banking account, sheet '_Backstage'.
-  */
+
 function setupPart6_(spreadsheet, sheetBackstage, number_accounts) {
   try {
 		var sheetCards = spreadsheet.getSheetByName("Cards");
@@ -586,9 +572,7 @@ function setupPart6_(spreadsheet, sheetBackstage, number_accounts) {
   }
 }
 
-/**
-  * Install essential formulas; table 'Carteira', sheet '_Backstage'.
-  */
+
 function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
   try {
     var formulaSumIncome, formulaSumExpenses;
@@ -710,9 +694,7 @@ function setupPart3_(spreadsheet, number_accounts) {
   }
 }
 
-/**
-  *
-  */
+
 function setupPart2_(sheetBackstage, listAccountName, m, number_accounts) {
   try {
     if(number_accounts !== listAccountName.length) throw "Number number_accounts and listAccountName length are different.";
@@ -729,12 +711,12 @@ function setupPart2_(sheetBackstage, listAccountName, m, number_accounts) {
 
     for(k = 0;  k < number_accounts;  k++) {
       newCell = {
-        Id: auxString, // Id
-        Name: listAccountName[k], // Name
-        TimeA: m, // Time initial
-        TimeZ: 11, // Time final
-        Balance: 0, // Initial balance
-        Header: [true, true, true, true] // Header options
+        Id: auxString,
+        Name: listAccountName[k],
+        TimeA: m,
+        TimeZ: 11,
+        Balance: 0,
+        Header: [true, true, true, true]
       };
 
       sheetBackstage.getRange(1, 7+w_*k).setValue(listAccountName[k]);
