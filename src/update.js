@@ -147,7 +147,7 @@ function update0packXX_() {
  * Insert tables for 10 cards.
  * Update functions for cards.
  *
- * 0.17.6
+ * 0.18.0
  */
 function update0pack03_() {
 	try {
