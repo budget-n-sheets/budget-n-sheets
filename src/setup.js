@@ -715,8 +715,7 @@ function setupPart2_(sheetBackstage, listAccountName, m, number_accounts) {
         Name: listAccountName[k],
         TimeA: m,
         TimeZ: 11,
-        Balance: 0,
-        Header: [true, true, true, true]
+        Balance: 0
       };
 
       sheetBackstage.getRange(1, 7+w_*k).setValue(listAccountName[k]);

@@ -166,7 +166,6 @@ function optAccount_Update_(input) {
   dbAccount[k].Name = input.Name;
   dbAccount[k].TimeA = Number(input.TimeA);
   dbAccount[k].Balance = Number(input.Balance);
-  dbAccount[k].Header = [ true, true, true, true ];
 
   setPropertiesService_('document', 'json', 'DB_ACCOUNT', dbAccount);
 
