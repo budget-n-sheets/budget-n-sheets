@@ -109,6 +109,9 @@ function update_ExecutePatial_() {
 
 		case 56:
 			c = update0pack03_();
+
+		case 57:
+			update0pack04_();
       break;
 
     default:
@@ -141,6 +144,29 @@ function update0packXX_() {
     return true;
   }
 }*/
+
+
+/**
+ * Show sheet "Cards".
+ *
+ * 0.18.1
+ */
+function update0pack04_() {
+  try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+
+		if(!sheet) {
+			return true;
+		}
+
+		if(sheet.isSheetHidden()) {
+			sheet.showSheet()
+		}
+  } catch(err) {
+    console.error("update0pack04_()", err);
+    return true;
+  }
+}
 
 
 /**
