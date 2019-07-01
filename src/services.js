@@ -55,7 +55,7 @@ function daily_Main_(e) {
   var date, a;
 
   if(e) {
-    date = new Date(e["year"], e["month"], e["day-of-month"], e["hour"]);
+    date = new Date(e["year"], e["month"] - 1, e["day-of-month"], e["hour"]);
     date = getSpreadsheetDate(date);
   } else {
     date = getSpreadsheetDate();
@@ -72,7 +72,7 @@ function daily_Main_(e) {
   }
 
   if(FinancialYear < a["year"]) {
-    monthly_TreatLayout_(a["year"], a["month"]);
+    monthly_TreatLayout_(a["year"], a["month"] - 1);
     deleteScriptAppTriggers_('document', 'dailyMainId');
     createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
     setPropertiesService_('document', 'string', 'OperationMode', "passive");
@@ -87,7 +87,7 @@ function daily_Main_(e) {
 	}
 
   if(a["date"] == 1) {
-    monthly_TreatLayout_(a["year"], a["month"]);
+    monthly_TreatLayout_(a["year"], a["month"] - 1);
   }
 
   if(optAddonSettings_Get_("PostDayEvents")) {
@@ -143,5 +143,5 @@ function weekly_Bar_(e) {
     createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
   }
 
-  monthly_TreatLayout_(e["year"], e["month"]);
+  monthly_TreatLayout_(e["year"], e["month"] - 1);
 }
