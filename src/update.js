@@ -109,9 +109,13 @@ function update_ExecutePatial_() {
 
 		case 56:
 			c = update0pack03_();
+			if(c) break;
 
 		case 57:
 			update0pack04_();
+
+		case 58:
+			update0pack05_();
       break;
 
     default:
@@ -144,6 +148,25 @@ function update0packXX_() {
     return true;
   }
 }*/
+
+
+/**
+ * Call monthly_TreatLayout_().
+ *
+ * 0.18.2
+ */
+function update0pack05_() {
+  try {
+		var date = getSpreadsheetDate();
+
+		if(date.getFullYear() == optAddonSettings_Get_("FinancialYear")) {
+			monthly_TreatLayout_(date.getFullYear(), date.getMonth());
+		}
+  } catch(err) {
+    console.error("update0pack05_()", err);
+    return true;
+  }
+}
 
 
 /**
