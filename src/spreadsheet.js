@@ -1,5 +1,5 @@
 function copySheetsFromTemplate_() {
-  var spreadsheetTemplate = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("template_id")),
+  var spreadsheetTemplate = SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() ),
       spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var listSheetsTemplate = AppsScriptGlobal.TemplateSheets(),
       listSheets = spreadsheet.getSheets();

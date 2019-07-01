@@ -2,7 +2,7 @@ function showSetupAddon_() {
   var Ui = SpreadsheetApp.getUi();
 
   try {
-    SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("template_id"));
+    SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
   } catch(err) {
     Logger.log('showSetupAddon: ' + err.message);
     console.warn("showSetupAddon_()", err);
