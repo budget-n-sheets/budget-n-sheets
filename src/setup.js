@@ -646,7 +646,7 @@ function setupPart4_(spreadsheet, number_accounts) {
 
     sheet.getRange(1, 6, 1, 12).setFormulas(formulas);
 
-    formula = "ARRAYFORMULA($S$2:$S/\'_Settings\'!B6)";
+    formula = "ARRAYFORMULA($T$2:$T/\'_Settings\'!B6)";
     formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; 0)";
     formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
     formula = "{\"Average\"; " + formula + "}";
