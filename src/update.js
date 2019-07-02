@@ -119,6 +119,10 @@ function update_ExecutePatial_() {
 
 		case 59:
 			c = update0pack06_();
+			if(c) break;
+
+		case 60:
+			update0pack07_();
       break;
 
     default:
@@ -145,12 +149,30 @@ function update_ExecutePatial_() {
  * X.XX.X
  *
 function update0packXX_() {
-  try {
-  } catch(err) {
-    console.error("update0packXX_()", err);
-    return true;
-  }
+	try {
+	} catch(err) {
+		console.error("update0packXX_()", err);
+		return true;
+	}
 }*/
+
+/**
+ * Fix number format in Summary for SPARKLINE.
+ *
+ * 0.18.5
+ */
+function update0pack07_() {
+	try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Summary");
+
+		sheet.getRange(22, 11).setFormmula("ROUND(D9; 0)");
+		sheet.getRange(22, 12).setFormmula("ROUND(F9; 0)");
+		sheet.getRange(22, 11, 1, 2).setNumberFormat("#,##0;(#,##0)");
+	} catch(err) {
+		console.error("update0pack07_()", err);
+		return true;
+	}
+}
 
 
 /**
