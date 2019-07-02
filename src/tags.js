@@ -44,7 +44,7 @@ function tagGetData_() {
 
   lastRow = sheet.getLastRow();
   if(lastRow < 2) return;
-  if(sheet.getMaxColumns() < 19) return;
+  if(sheet.getMaxColumns() < 20) return;
 
   output = {
     tags: [ ],
@@ -54,7 +54,7 @@ function tagGetData_() {
   };
 
   n = lastRow - 1;
-  data = sheet.getRange(2, 4, n, 16).getValues();
+  data = sheet.getRange(2, 5, n, 16).getValues();
 
   i = 0;
   j = 0;
@@ -93,27 +93,25 @@ function optTag_GetList_() {
     [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 0 ]
   ];
 
-  sheet = SpreadsheetApp.getActiveSpreadsheet()
-    .getSheetByName('Tags');
+  sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
   if(!sheet) return 2;
-  else if(sheet.getMaxColumns() < 21) return 2;
+  if(sheet.getMaxColumns() < 22) return 2;
 
   n = sheet.getMaxRows();
   if(n <= 2) return output;
 
-  data = sheet.getRange(2, 1, n-2, 21)
-    .getValues();
+  data = sheet.getRange(2, 1, n - 2, 22).getValues();
 
 
   for(i = 0;  i < data.length;  i++) {
-    a = TC_CODE_.indexOf(data[i][20]);
+    a = TC_CODE_.indexOf(data[i][21]);
     if(a === -1) a = 5;
 
     cell = {
       Name: data[i][0],
       C: TC_CODE_[a],
       Description: data[i][2],
-      Tag: data[i][3]
+      Tag: data[i][4]
     }
     output[a].push(cell);
     output[a][0]++;
@@ -145,14 +143,14 @@ function optTag_GetInfo_(input) {
   }
 
 
-  listTags = sheetTags.getRange(2, 1, maxRows-2, 4).getValues();
+  listTags = sheetTags.getRange(2, 1, maxRows - 2, 5).getValues();
   for(i = 0;  i < listTags.length;  i++) {
-    if(listTags[i][3] == input) {
+    if(listTags[i][4] == input) {
       output.Name = listTags[i][0];
       output.Description = listTags[i][2];
-      output.Tag = listTags[i][3];
+      output.Tag = listTags[i][4];
 
-      a = sheetTags.getRange(2+i, 21).getValue();
+      a = sheetTags.getRange(2 + i, 22).getValue();
       a = TC_CODE_.indexOf(a);
       if(a == -1) {
         output.C = 5;
@@ -201,24 +199,24 @@ function optTag_GetStat_(input) {
   lastRow = sheet.getLastRow();
   if(lastRow <= 1) return 1;
 
-  data = sheet.getRange(2, 4, lastRow - 1, 1).getValues();
+  data = sheet.getRange(2, 5, lastRow - 1, 1).getValues();
 
   for(i = 0;  i < data.length;  i++) {
     if(data[i][0] === input) break;
   }
   if(i == data.length) return 1;
 
-  data = sheet.getRange(2 + i, 5, 1, 12).getValues();
+  data = sheet.getRange(2 + i, 6, 1, 12).getValues();
   data = data[0];
 
   if(ta) {
-    avgValue = sheet.getRange(2 + i, 18).getValue().toFixed(2);
+    avgValue = sheet.getRange(2 + i, 19).getValue().toFixed(2);
     avgValue = +avgValue;
     value.min = +data[init];
     value.max = value.min;
 
     output.Interval = MN_FULL_[init] + " - " + MN_FULL_[ActualMonth-1];
-    output.Total = sheet.getRange(2 + i, 19).getValue().formatFinancial(dec_p);
+    output.Total = sheet.getRange(2 + i, 20).getValue().formatFinancial(dec_p);
     output.Average = avgValue.formatFinancial(dec_p);
   }
 
@@ -270,7 +268,7 @@ function optTag_Add_(tag) {
   if(n < 2) return 3;
 
   if(n > 2) {
-    range = sheet.getRange(2, 4, n - 2, 1).getValues();
+    range = sheet.getRange(2, 5, n - 2, 1).getValues();
     for(i = 0;  i < range.length;  i++) {
       if(range[i][0] === tag.code) return 2;
     }
@@ -280,7 +278,7 @@ function optTag_Add_(tag) {
   sheet.getRange(n, 1, 1, 4).setValues([
     [ tag.name, TC_NAME_[c], tag.description, tag.code ]
   ]);
-  sheet.getRange(n, 21).setValue(TC_CODE_[c]);
+  sheet.getRange(n, 22).setValue(TC_CODE_[c]);
 
   SpreadsheetApp.flush();
   return -1;
@@ -295,7 +293,7 @@ function optTag_Update_(input) {
   var n, i;
 
   if(!sheetTags) return 2;
-  vIndex = sheetTags.getRange(2,4, maxRows-2).getValues();
+  vIndex = sheetTags.getRange(2, 5, maxRows - 2).getValues();
 
 
   if(!/[\w]+/.test(input.Tag)) return;
@@ -313,7 +311,7 @@ function optTag_Update_(input) {
       auxValue = Number(input.C);
 
       sheetTags.getRange(2+i,1, 1,4).setValues([ [input.Name, TC_NAME_[auxValue], input.Description, input.Tag] ]);
-      sheetTags.getRange(2+i, 21).setValue( TC_CODE_[auxValue] );
+      sheetTags.getRange(2 + i, 22).setValue( TC_CODE_[auxValue] );
 
       SpreadsheetApp.flush();
       return -1;
@@ -335,12 +333,12 @@ function optTag_Remove_(input) {
 
   if(!sheetTags) return 2;
   m = sheetTags.getMaxRows() - 2;
-  codes = sheetTags.getRange(2, 4, m, 1).getValues();
+  codes = sheetTags.getRange(2, 5, m, 1).getValues();
 
   i = 0;
   while(i < m) {
     if(codes[i][0] === input) {
-      sheetTags.deleteRow(2+i);
+      sheetTags.deleteRow(2 + i);
       SpreadsheetApp.flush();
       return -1;
     }
