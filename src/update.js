@@ -116,6 +116,9 @@ function update_ExecutePatial_() {
 
 		case 58:
 			update0pack05_();
+
+		case 59:
+			c = update0pack06_();
       break;
 
     default:
@@ -148,6 +151,34 @@ function update0packXX_() {
     return true;
   }
 }*/
+
+
+/**
+ * Add column Analytics to Tags.
+ *
+ * 0.18.4
+ */
+function update0pack06_() {
+  try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+		var n = sheet.getMaxRows();
+
+		sheet.insertColumnAfter(3);
+		sheet.setColumnWidth(4, 83);
+		sheet.getRange(1, 4).setValue("Analyitcs");
+
+		if(n <= 1) return;
+
+		sheet.getRange(2, 4, n - 1).setNumberFormat("0.###");
+
+		if(n > 2) {
+			sheet.getRange(2, 4, sheet.getMaxRows() - 2).setValue("TRUE");
+		}
+  } catch(err) {
+    console.error("update0pack06_()", err);
+    return true;
+  }
+}
 
 
 /**
