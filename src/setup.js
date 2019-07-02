@@ -496,7 +496,7 @@ function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
     }
 
     if(dateToday.FullYear == Y) {
-      sheetTags.hideColumns(5, 12);
+      sheetTags.hideColumns(6, 12);
 
       for(i = 0;  i < 12;  i++) {
         if(i < dateToday.Month-1  ||  i > dateToday.Month+2) {
@@ -507,14 +507,14 @@ function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
       }
 
       if(dateToday.Month < 2) {
-        sheetTags.showColumns(5,4);
+        sheetTags.showColumns(6, 4);
       } else {
 
         if(dateToday.Month == 11) {
           spreadsheet.getSheetByName(MN_SHORT_[9]).showSheet();
           dateToday.Month--;
         }
-        sheetTags.showColumns(3+dateToday.Month,4);
+        sheetTags.showColumns(4 + dateToday.Month, 4);
       }
     }
 
@@ -644,13 +644,13 @@ function setupPart4_(spreadsheet, number_accounts) {
       formulas[0].push(formula);
     }
 
-    sheet.getRange(1, 5, 1, 12).setFormulas(formulas);
+    sheet.getRange(1, 6, 1, 12).setFormulas(formulas);
 
     formula = "ARRAYFORMULA($S$2:$S/\'_Settings\'!B6)";
     formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; 0)";
     formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
     formula = "{\"Average\"; " + formula + "}";
-    sheet.getRange(1, 18).setFormula(formula);
+    sheet.getRange(1, 19).setFormula(formula);
 
     formula = "IF(COLUMN(" + rollA1Notation(2, 5, -1, 12) + ") - 4 < \'_Settings\'!$B$4 + \'_Settings\'!$B$6; ROW(" + rollA1Notation(2, 5, -1) + "); 0)";
     formula = "IF(COLUMN(" + rollA1Notation(2, 5, -1, 12) + ") - 4 >= \'_Settings\'!$B$4; " + formula + "; 0)";
@@ -658,7 +658,7 @@ function setupPart4_(spreadsheet, number_accounts) {
     formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; 0)";
     formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
     formula = "{\"Total\"; " + formula + "}";
-    sheet.getRange(1, 19).setFormula(formula);
+    sheet.getRange(1, 20).setFormula(formula);
 
     SpreadsheetApp.flush();
   } catch(err) {
@@ -763,9 +763,9 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
         [ "="+AddonSettings.FinancialYear.formatLocaleSignal() ],
         [ "=IF(YEAR(TODAY()) = $B2; MONTH(TODAY()); IF(YEAR(TODAY()) < $B2; 0; 12))" ],
         [ "="+(AddonSettings.InitialMonth + 1).formatLocaleSignal() ],
-        [ "=IF($B4 > $B3; 0; $B3-$B4+1)" ],
-        [ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5-1; 0))" ],
-        [ "=ROWS(\'Tags\'!$D1:$D)-2" ],
+        [ "=IF($B4 > $B3; 0; $B3 - $B4 + 1)" ],
+        [ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))" ],
+        [ "=ROWS(\'Tags\'!$E1:$E) - 2" ],
         [ "=RAND()" ],
         [ "=COUNTIF(B11:B20; \"<>\")" ]
       ];
