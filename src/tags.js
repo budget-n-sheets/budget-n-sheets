@@ -111,7 +111,8 @@ function optTag_GetList_() {
       Name: data[i][0],
       C: TC_CODE_[a],
       Description: data[i][2],
-      Tag: data[i][4]
+      Tag: data[i][4],
+			analytics: data[i][3]
     }
     output[a].push(cell);
     output[a][0]++;
@@ -139,7 +140,7 @@ function optTag_GetInfo_(input) {
     C: 5,
     Description: '',
     Tag: '',
-    Analytics: false
+    analytics: false
   }
 
 
@@ -149,6 +150,7 @@ function optTag_GetInfo_(input) {
       output.Name = listTags[i][0];
       output.Description = listTags[i][2];
       output.Tag = listTags[i][4];
+			output.analytics = listTags[i][3];
 
       a = sheetTags.getRange(2 + i, 22).getValue();
       a = TC_CODE_.indexOf(a);
@@ -275,8 +277,8 @@ function optTag_Add_(tag) {
   }
 
   sheet.insertRowAfter(n);
-  sheet.getRange(n, 1, 1, 4).setValues([
-    [ tag.name, TC_NAME_[c], tag.description, tag.code ]
+  sheet.getRange(n, 1, 1, 5).setValues([
+    [ tag.name, TC_NAME_[c], tag.description, tag.analytics, tag.code ]
   ]);
   sheet.getRange(n, 22).setValue(TC_CODE_[c]);
 
@@ -310,7 +312,7 @@ function optTag_Update_(input) {
     if(vIndex[i][0] == input.refTag) {
       auxValue = Number(input.C);
 
-      sheetTags.getRange(2+i,1, 1,4).setValues([ [input.Name, TC_NAME_[auxValue], input.Description, input.Tag] ]);
+      sheetTags.getRange(2 + i, 1, 1, 5).setValues([ [input.Name, TC_NAME_[auxValue], input.Description, input.analytics, input.Tag] ]);
       sheetTags.getRange(2 + i, 22).setValue( TC_CODE_[auxValue] );
 
       SpreadsheetApp.flush();

@@ -256,6 +256,15 @@
                 <td class="name"><label for="Form-AddEditTag_Description">Description</label></td>
                 <td><textarea class="Form-AddEditTag_lock" id="Form-AddEditTag_Description" rows="4" maxlength="523" style="width:13em;"></textarea></td>
               </tr>
+							<tr>
+								<td class="name">Analytics</td>
+								<td>
+									<select class="Form-AddEditTag_lock" id="AddEditTag_Analytics">
+										<option value="on" selected>On</option>
+										<option value="off">Off</option>
+									</select>
+								</td>
+							</tr>
             </table>
             <input id="Form-AddEditTag_submit" style="display:none;" type="submit">
           </form>
@@ -276,6 +285,10 @@
               <td class="name"><label>Description</label></td>
               <td id="TagDetails_description" style="font-style:italic;"></td>
             </tr>
+						<tr>
+							<td class="name">Analytics</td>
+							<td id="TagDetails_analytics"></td>
+						</tr>
             <tr>
               <td colspan="2">
                 <i class="md-24 m-tool material-icons" id="b-EditTag" title="Edit tag">edit</i> <i class="md-24 m-tool material-icons" id="b-RemoveTag" title="Remove tag">delete</i>
@@ -430,6 +443,9 @@
 			$('#TagDetails_description').empty().append(input.Description);
 			$('#TagDetails_tag').empty().append("#" + input.Tag);
 
+			if(input.analytics) $('#TagDetails_analytics').empty().append("On");
+			else $('#TagDetails_analytics').empty().append("Off");
+
 			$('#TagDetails_interval').empty();
 			$('#TagDetails_total').empty();
 			$('#TagDetails_average').empty();
@@ -517,6 +533,10 @@
       $('#Form-AddEditTag_Description').val(input.Description);
       $('#Form-AddEditTag_Tag').val(input.Tag);
       $('#Form-AddEditTag_C').val(input.C);
+
+			if(input.analytics) $('#AddEditTag_Analytics').val("on");
+			else $('#AddEditTag_Analytics').val("off");
+
       $('.Form-AddEditTag_lock').prop('disabled', false);
 
       $('#p-footer_FastResponse').empty();
@@ -543,6 +563,7 @@
         Description: $('#Form-AddEditTag_Description').val(),
         Tag: $('#Form-AddEditTag_Tag').val(),
         C: $('#Form-AddEditTag_C').val(),
+				analytics: $('#AddEditTag_Analytics').val() === "on",
         refTag: htmlVarGlobal.Tag
       };
 
@@ -605,6 +626,7 @@
       $('#Form-AddEditTag_Description').val('');
       $('#Form-AddEditTag_Tag').val('');
       $('#Form-AddEditTag_C').val(5);
+			$('#AddEditTag_Analytics').val("on");
       $('.Form-AddEditTag_lock').prop('disabled', false);
 
       $('#p-footer_FastResponse').empty();
@@ -631,6 +653,7 @@
         name: $('#Form-AddEditTag_Name').val(),
         description: $('#Form-AddEditTag_Description').val(),
         code: $('#Form-AddEditTag_Tag').val(),
+				analytics: $('#AddEditTag_Analytics').val() === "on",
         category: $('#Form-AddEditTag_C').val()
       }
 
