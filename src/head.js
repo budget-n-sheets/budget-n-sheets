@@ -6,11 +6,11 @@ var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 
 var AppsScriptGlobal = (function() {
 	var o = {
-		AddonVersion: 59,
-		AddonVersionName: "0.18.3",
+		AddonVersion: 60,
+		AddonVersionName: "0.18.4",
 
-		TemplateVersion: 52,
-		TemplateVersionName: "5.6",
+		TemplateVersion: 53,
+		TemplateVersionName: "5.7",
 		TemplateId: "",
 		TemplateSheets: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "_Settings", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "Summary", "About" ],
 
