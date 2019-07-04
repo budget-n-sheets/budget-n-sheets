@@ -165,8 +165,8 @@ function update0pack07_() {
 	try {
 		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Summary");
 
-		sheet.getRange(22, 11).setFormmula("ROUND(D9; 0)");
-		sheet.getRange(22, 12).setFormmula("ROUND(F9; 0)");
+		sheet.getRange(22, 11).setFormula("ROUND(D9; 0)");
+		sheet.getRange(22, 12).setFormula("ROUND(F9; 0)");
 		sheet.getRange(22, 11, 1, 2).setNumberFormat("#,##0;(#,##0)");
 	} catch(err) {
 		console.error("update0pack07_()", err);
