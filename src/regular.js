@@ -51,7 +51,7 @@ function daily_PostEvents_(date) {
 
     tags = "";
     for(j = 0;  j < evento.Tags.length;  j++) {
-      tags += "#" + event.Tags[j] + " ";
+      tags += "#" + evento.Tags[j] + " ";
     }
 
     if(typeof k === "number") {
