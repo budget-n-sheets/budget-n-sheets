@@ -72,9 +72,12 @@ function getSpreadsheetDate(d) {
       .getSpreadsheetTimeZone();
   } catch(err) {
     timezone = "GMT";
-    Logger.log("getSpreadsheetDate(): " + err.message);
     console.error("getSpreadsheetDate()", err);
   }
+
+	if(typeof timezone != "string") {
+		timezone = "GMT";
+	}
 
   date = Utilities.formatDate(date, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
   return new Date(date);
