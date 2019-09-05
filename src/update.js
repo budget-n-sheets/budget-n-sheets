@@ -158,6 +158,25 @@ function update0packXX_() {
 }*/
 
 /**
+ * Call monthly_TreatLayout_().
+ *
+ * 0.18.8
+ */
+function update0pack08_() {
+  try {
+		var date = getSpreadsheetDate();
+
+		if(date.getFullYear() == optAddonSettings_Get_("FinancialYear")) {
+			monthly_TreatLayout_(date.getFullYear(), date.getMonth());
+		}
+  } catch(err) {
+    console.error("update0pack08_()", err);
+    return true;
+  }
+}
+
+
+/**
  * Fix number format in Summary for SPARKLINE.
  *
  * 0.18.5
