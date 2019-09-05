@@ -72,7 +72,7 @@ function daily_Main_(e) {
   }
 
   if(FinancialYear < a["year"]) {
-    monthly_TreatLayout_(a["year"], a["month"] - 1);
+    monthly_TreatLayout_(a["year"], a["month"]);
     deleteScriptAppTriggers_('document', 'dailyMainId');
     createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
     setPropertiesService_('document', 'string', 'OperationMode', "passive");
@@ -87,7 +87,7 @@ function daily_Main_(e) {
 	}
 
   if(a["date"] == 1) {
-    monthly_TreatLayout_(a["year"], a["month"] - 1);
+    monthly_TreatLayout_(a["year"], a["month"]);
   }
 
   if(optAddonSettings_Get_("PostDayEvents")) {
