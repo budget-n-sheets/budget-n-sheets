@@ -75,7 +75,7 @@ function getSpreadsheetDate(d) {
     console.error("getSpreadsheetDate()", err);
   }
 
-	if(typeof timezone != "string") {
+	if(typeof timezone != "string" || timezone == "") {
 		timezone = "GMT";
 	}
 
