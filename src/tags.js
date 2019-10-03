@@ -27,8 +27,6 @@ function optMainTags(opt, input) {
       return -1;
     default:
       console.warn("optMainTags(): Switch case is default.", opt);
-      Logger.log("optMainTags(): Switch case is default.");
-      Logger.log(opt);
       return 3;
   }
 }

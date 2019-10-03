@@ -30,8 +30,6 @@ function optMainTables(opt, param) {
       return -1;
     default:
       console.warn("optMainTables(): Switch case is default.", opt);
-      Logger.log("optMainTables(): Switch case is default.");
-      Logger.log(opt);
       return 3;
   }
 }
@@ -184,8 +182,6 @@ function optAccount_Update_(input) {
     optAccount_UpdateTableRef_();
   } catch(err) {
     console.error("optAccount_Update_(): Spreadsheet update failed.", err);
-    Logger.log("optAccount_Update_(): Spreadsheet update failed.");
-    Logger.log(err.message);
     return 1;
   }
 

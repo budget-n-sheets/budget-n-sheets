@@ -199,7 +199,6 @@ function optAddonSettings_Save(settings) {
     if(!update_DecimalSepartor_()) return 1;
   } catch(err) {
     console.error("update_DecimalSepartor_()", err);
-    Logger.log("update_DecimalSepartor_(): " + err.message);
     return 1;
   }
 
@@ -231,7 +230,6 @@ function optAddonSettings_Save(settings) {
     setPropertiesService_("document", "json", "user_settings", user_settings);
   } catch(err) {
     console.error("optAddonSettings_Save_()", err);
-    Logger.log("optAddonSettings_Save_(): " + err.message);
     return 1;
   }
 

@@ -4,7 +4,6 @@ function showSetupAddon_() {
   try {
     SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
   } catch(err) {
-    Logger.log('showSetupAddon: ' + err.message);
     console.warn("showSetupAddon_()", err);
 
     Ui.alert(
@@ -143,7 +142,6 @@ function setup_ui(settings, list) {
     console.error("setup_ui()/stats", err);
   }
 
-  Logger.log("add-on/Install: Success.");
   console.info("add-on/Install: Success.");
 }
 
@@ -339,7 +337,6 @@ function setupPart11_(spreadsheet, number_accounts) {
 
     SpreadsheetApp.flush();
   } catch(err) {
-    Logger.log('setupSpreadsheet/part=11 : ' + err.message);
     console.error("setupPart11_()", err);
     return true;
   }
@@ -408,7 +405,6 @@ function setupPart10_(number_accounts, Y, m) {
     optMainTables('UpdateTableRef');
     SpreadsheetApp.flush();
   } catch(err) {
-    Logger.log('setupSpreadsheet/part=10 : ' + err.message);
     console.error("setupPart10_()", err);
     return true;
   }
@@ -457,7 +453,6 @@ function setupPart9_(sheetSummary, mm) {
     sheetSummary.insertChart( chart.build() );
     SpreadsheetApp.flush();
   } catch(err) {
-    Logger.log('setupSpreadsheet/part=9 : ' + err.message);
     console.error("setupPart9_()", err);
     return true;
   }
@@ -520,7 +515,6 @@ function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
 
     SpreadsheetApp.flush();
   } catch(err) {
-    Logger.log('setupSpreadsheet/part=7 : ' + err.message);
     console.error("setupPart7_()", err);
     return true;
   }
@@ -566,7 +560,6 @@ function setupPart6_(spreadsheet, sheetBackstage, number_accounts) {
 
     SpreadsheetApp.flush();
   } catch(err) {
-    Logger.log('setupSpreadsheet/part=6 : ' + err.message);
     console.error("setupPart6_()", err);
     return true;
   }
@@ -602,7 +595,6 @@ function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
 
     SpreadsheetApp.flush();
   } catch(err) {
-    Logger.log('setupSpreadsheet/part=5 : ' + err.message);
     console.error("setupPart5_()", err);
     return true;
   }
@@ -662,7 +654,6 @@ function setupPart4_(spreadsheet, number_accounts) {
 
     SpreadsheetApp.flush();
   } catch(err) {
-    Logger.log('setupSpreadsheet/part=4 : ' + err.message);
     console.error("setupPart4_()", err);
     return true;
   }
@@ -688,7 +679,6 @@ function setupPart3_(spreadsheet, number_accounts) {
 
     SpreadsheetApp.flush();
   } catch(err) {
-    Logger.log('setupSpreadsheet/part=3 : ' + err.message);
     console.error("setupPart3_()", err);
     return true;
   }
@@ -735,7 +725,6 @@ function setupPart2_(sheetBackstage, listAccountName, m, number_accounts) {
 
     setPropertiesService_('document', 'json', 'DB_ACCOUNT', dbAccountInfo);
   } catch(err) {
-    Logger.log('setupSpreadsheet/part=2 : ' + err.message);
     console.error("setupPart2_()", err);
     return true;
   }
@@ -805,7 +794,6 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
 
     SpreadsheetApp.flush();
   } catch(err) {
-    Logger.log('setupSpreadsheet/part=1 : ' + err.message);
     console.error("setupPart1_()", err);
     return true;
   }
