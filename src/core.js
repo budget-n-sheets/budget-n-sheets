@@ -19,7 +19,11 @@ function onInstall(e) {
   */
 function onOpen(e) {
 
-  trial_onOpen();
+	try {
+	  trial_onOpen();
+	} catch(err) {
+
+	}
 
   if(e && e.authMode == ScriptApp.AuthMode.NONE) {
     SpreadsheetApp.getUi()
