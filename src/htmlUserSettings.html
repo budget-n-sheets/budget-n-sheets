@@ -107,7 +107,7 @@
 
               <tr class="tr-hidden">
                 <td class="comment name"><label>Reinstall triggers</label></td>
-                <td class="comment"><button id="b-Reinstall" class="create b-Advanced" disabled>Reinstall</button></td>
+                <td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
               </tr>
               <tr class="tr-hidden">
                 <td colspan="2">
@@ -118,7 +118,7 @@
 
               <tr class="tr-hidden">
                 <td class="comment name"><label>Deactivate add-on</label></td>
-                <td class="comment"><button id="b-Deactivate" class="create b-Advanced" disabled>Deactivate</button></td>
+                <td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
               </tr>
               <tr class="tr-hidden">
                 <td colspan="2">
@@ -208,11 +208,6 @@
     function Show_Advanced() {
       $("#b-ShowAdvanced").remove();
       $(".tr-hidden").fadeIn();
-      setTimeout(
-        function() {
-          $('.b-Advanced').prop('disabled', false);
-        }, 1567
-      );
     }
 
     function Deactivate_Submit() {
