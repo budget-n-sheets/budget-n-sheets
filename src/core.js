@@ -9,7 +9,9 @@
   * @param {Object} e The event parameter for a simple onInstall trigger.
   */
 function onInstall(e) {
-  onOpen(e);
+	onOpen(e);
+
+	console.info("add-on/Purchase : Success.");
 }
 
 /**
