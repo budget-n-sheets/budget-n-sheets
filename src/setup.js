@@ -690,18 +690,18 @@ function setupPart2_(sheetBackstage, listAccountName, m, number_accounts) {
     if(number_accounts !== listAccountName.length) throw "Number number_accounts and listAccountName length are different.";
     var thisSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Jan');
     var dbAccountInfo;
-    var newCell, auxString;
-    var n, k, w_;
+    var newCell;
+    var r, n, k, w_;
 
     w_ = AppsScriptGlobal.TableDimensions()["width"];
 
     dbAccountInfo = [ ];
-    auxString = randomString(11, "word");
+    r = randomString(11, "word");
 
 
     for(k = 0;  k < number_accounts;  k++) {
       newCell = {
-        Id: auxString,
+        Id: r,
         Name: listAccountName[k],
         TimeA: m,
         TimeZ: 11,
@@ -717,11 +717,24 @@ function setupPart2_(sheetBackstage, listAccountName, m, number_accounts) {
     setPropertiesService_('document', 'json', 'DB_ACCOUNT', dbAccountInfo);
     setPropertiesService_('document', 'json', 'DB_CARD', [ ]);
 
-    for(k = 0;  k < dbAccountInfo.length;  k++) {
-      auxString = optMainTables('GenerateRandomId');
-      if(!auxString) throw "Error to update Id for tables."
-      dbAccountInfo[k].Id = auxString;
-    }
+		k = 0;
+		n = 0;
+		while (k < dbAccountInfo.length) {
+			r = optMainTables('GenerateRandomId');
+
+			if (!r) {
+				if (r === 0 && n < 3) {
+					n++;
+					Utilities.sleep(137);
+				} else {
+					throw "Error: could not set ID to tables."
+				}
+			} else {
+				dbAccountInfo[k].Id = r;
+				k++;
+				n = 0;
+			}
+		}
 
     setPropertiesService_('document', 'json', 'DB_ACCOUNT', dbAccountInfo);
   } catch(err) {
