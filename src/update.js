@@ -130,7 +130,12 @@ function update_ExecutePatial_() {
       break;
 
     default:
-      console.warn("update_ExecutePatial_(): Switch case is default.", v0);
+			var load = {
+				v0: v0,
+				type: typeof v0,
+				is_v1: v0 == v1
+			};
+			console.warn("update_ExecutePatial_(): Switch case is default.", load);
       return 0;
   }
 
