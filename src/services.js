@@ -10,19 +10,17 @@ function onEdit_Main_(e) {
     "September", "October", "November", "December"
   ];
 
-  if(row < 14) {
-    mm = mm.indexOf(e.value);
-    if(mm === -1) return;
-  }
-
   switch( row ) {
     case 4:
+			if(mm === -1) return;
       optMainTools_("AddBlankRows", mm);
       break;
     case 5:
+			if(mm === -1) return;
       optMainTools_("FormatRegistry", mm);
       break;
     case 6:
+			if(mm === -1) return;
       optMainTools_("UpdateCashFlow", mm);
       break;
 
@@ -30,6 +28,7 @@ function onEdit_Main_(e) {
       optMainTools_("AddBlankRows", 12);
       break;
     case 10:
+			if(mm === -1) return;
       optMainTools_("FormatRegistry", 12+mm);
       break;
 
