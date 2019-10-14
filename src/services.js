@@ -19,7 +19,7 @@ function onEdit_Main_(e) {
       break;
     case 5:
 			if(mm === -1) break;
-      optMainTools_("FormatRegistry", mm);
+      optMainTools_("FormatAccount", mm);
       break;
     case 6:
 			if(mm === -1) break;
@@ -31,7 +31,7 @@ function onEdit_Main_(e) {
       break;
     case 10:
 			if(mm === -1) break;
-      optMainTools_("FormatRegistry", 12+mm);
+      optMainTools_("FormatCards", mm);
       break;
 
     case 13:

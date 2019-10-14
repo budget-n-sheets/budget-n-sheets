@@ -65,7 +65,13 @@ function optMainTools_(p, mm) {
       break;
     case 'FormatRegistry':
       optTool_FormatRegistry_(mm);
-      break;
+			break;
+		case 'FormatAccount':
+			foo_FormatAccounts_(mm);
+			break;
+		case 'FormatCards':
+			foo_FormatCards_(mm);
+			break;
     default:
       console.error("optMainTools_(): Switch case is default.", p);
       break;
