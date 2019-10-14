@@ -10,6 +10,8 @@ function onEdit_Main_(e) {
     "September", "October", "November", "December"
   ];
 
+	mm = mm.indexOf(e.value);
+
   switch( row ) {
     case 4:
 			if(mm === -1) break;
