@@ -10,7 +10,7 @@ function onEdit_Main_(e) {
     "September", "October", "November", "December"
   ];
 
-  if(row < 13) {
+  if(row < 14) {
     mm = mm.indexOf(e.value);
     if(mm === -1) return;
   }
