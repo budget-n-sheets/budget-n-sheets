@@ -214,11 +214,11 @@ function optTool_FormatRegistry_(mm_) {
   }
 
   if(c !== -1) {
-    foo_FormatRegistry_(c);
+    foo_FormatAccounts_(c);
 
   } else if(sheet.getSheetName() === 'Cards') {
     mm_ = mm_ ? mm_ - 12 : null;
-    foo_FormatCreditCard_(mm_);
+    foo_FormatCards_(mm_);
 
   } else {
     SpreadsheetApp.getUi().alert(

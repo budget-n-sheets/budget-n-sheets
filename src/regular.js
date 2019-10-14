@@ -175,8 +175,8 @@ function monthly_TreatLayout_(yyyy, mm) {
   }
 
   foo_ColorTabs_();
-  foo_FormatRegistry_(a);
-  foo_FormatCreditCard_(a);
+  foo_FormatAccounts_(a);
+  foo_FormatCards_(a);
 }
 
 
@@ -390,7 +390,7 @@ function foo_UpdateCashFlow_(yyyy, mm) {
 
 
 
-function foo_FormatRegistry_(mm) {
+function foo_FormatAccounts_(mm) {
   if(isNaN(mm)) return;
 
   var thisSheet = SpreadsheetApp.getActiveSpreadsheet()
@@ -449,7 +449,7 @@ function foo_FormatRegistry_(mm) {
 }
 
 
-function foo_FormatCreditCard_(mm) {
+function foo_FormatCards_(mm) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheetCreditCard = spreadsheet.getSheetByName('Cards');
   var table, card;
