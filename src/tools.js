@@ -47,7 +47,7 @@ function toolFormatRegistry() {
 function optMainTools_(p, mm) {
   var lock = LockService.getDocumentLock();
   try {
-    lock.waitLock(1000);
+    lock.waitLock(200);
   } catch(err) {
     SpreadsheetApp.getUi().alert(
       "Add-on is busy",
