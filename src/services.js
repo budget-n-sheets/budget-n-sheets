@@ -12,15 +12,15 @@ function onEdit_Main_(e) {
 
   switch( row ) {
     case 4:
-			if(mm === -1) return;
+			if(mm === -1) break;
       optMainTools_("AddBlankRows", mm);
       break;
     case 5:
-			if(mm === -1) return;
+			if(mm === -1) break;
       optMainTools_("FormatRegistry", mm);
       break;
     case 6:
-			if(mm === -1) return;
+			if(mm === -1) break;
       optMainTools_("UpdateCashFlow", mm);
       break;
 
@@ -28,7 +28,7 @@ function onEdit_Main_(e) {
       optMainTools_("AddBlankRows", 12);
       break;
     case 10:
-			if(mm === -1) return;
+			if(mm === -1) break;
       optMainTools_("FormatRegistry", 12+mm);
       break;
 
@@ -37,7 +37,7 @@ function onEdit_Main_(e) {
       else if(e.value == "Expand") toolShowSheets_();
       break;
     default:
-      break;
+      return;
   }
 
   e.range.setValue("");
