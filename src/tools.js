@@ -64,7 +64,7 @@ function optMainTools_(p, mm) {
       optTool_UpdateCashFlow_(mm);
       break;
     case 'FormatRegistry':
-      optTool_FormatRegistry_(mm);
+      optTool_FormatRegistry_();
 			break;
 		case 'FormatAccount':
 			foo_FormatAccounts_(mm);
@@ -201,35 +201,22 @@ function optTool_UpdateCashFlow_(mm_) {
 }
 
 
-function optTool_FormatRegistry_(mm_) {
-  var sheet;
-  var c;
+function optTool_FormatRegistry_() {
+	var sheet, c;
 
-  if( isNaN(mm_) ) {
-    sheet = SpreadsheetApp.getActiveSheet();
-    c = MN_SHORT_.indexOf( sheet.getSheetName() );
-  } else if(mm_ >= 0  &&  mm_ < 12) {
-    c = mm_;
-  } else if(mm_ >= 12  &&  mm_ < 24) {
-    sheet = SpreadsheetApp.getActiveSpreadsheet()
-      .getSheetByName("Cards");
-    c = -1;
-  } else {
-    console.error("optTool_FormatRegistry_(): Internal error.", mm_);
-    return;
-  }
+	sheet = SpreadsheetApp.getActiveSheet();
+	c = MN_SHORT_.indexOf( sheet.getSheetName() );
 
-  if(c !== -1) {
-    foo_FormatAccounts_(c);
+	if(c !== -1) {
+		foo_FormatAccounts_(c);
 
-  } else if(sheet.getSheetName() === 'Cards') {
-    mm_ = mm_ ? mm_ - 12 : null;
-    foo_FormatCards_(mm_);
+	} else if(sheet.getSheetName() === 'Cards') {
+		foo_FormatCards_();
 
-  } else {
-    SpreadsheetApp.getUi().alert(
-      "Can't format registry",
-      "Select a month to format the registry.",
-      SpreadsheetApp.getUi().ButtonSet.OK);
-  }
+	} else {
+		SpreadsheetApp.getUi().alert(
+			"Can't format registry",
+			"Select a month to format the registry.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+	}
 }
