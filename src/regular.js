@@ -450,40 +450,40 @@ function foo_FormatAccounts_(mm) {
 
 
 function foo_FormatCards_(mm) {
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheetCreditCard = spreadsheet.getSheetByName('Cards');
+	if(typeof mm !== "number" || isNaN(mm)) {
+		showDialogErrorMessage();
+		console.warn("foo_FormatCards_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
+		return;
+	}
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
   var table, card;
   var a, c, n;
   var i, j;
 
-  n = sheetCreditCard.getMaxRows() - 5;
-  if(typeof mm === "number") a = Number(mm);
-  else {
-    a = spreadsheet.getActiveRange().getColumn();
-    a = (a - (a % 6)) / 6;
-  }
+  n = sheet.getMaxRows() - 5;
+	a = Number(mm);
 
-
-  sheetCreditCard.getRange(6,1+a*6, n,5).setBackground('#ffffff');
-  sheetCreditCard.getRange(6,1+a*6, n,5).setFontColor('#000000');
-  sheetCreditCard.getRange(6,1+a*6, n,5)
+  sheet.getRange(6,1+a*6, n,5).setBackground('#ffffff');
+  sheet.getRange(6,1+a*6, n,5).setFontColor('#000000');
+  sheet.getRange(6,1+a*6, n,5)
     .sort([{column:(3+a*6), ascending:true}, {column:(1+a*6), ascending:true}]);
 
   i = 0;  j = 0;
-  table = sheetCreditCard.getRange(6,1+a*6, n,5).getValues();
+  table = sheet.getRange(6,1+a*6, n,5).getValues();
   while(i < n  &&  table[i][3] !== '') {
     card = table[i][2];  c = 0;
     while(j < n  &&  table[j][3] !== ''  &&  table[j][2] === card) {
       if(table[j][0] < 0) c++;
       if( /#ign/.test(table[j][4]) ) {
-        sheetCreditCard.getRange(6+j,1+a*6, 1,5)
+        sheet.getRange(6+j,1+a*6, 1,5)
           .setFontColor('#999999');
       }
       j++;
     }
 
     if(c > 1) {
-      sheetCreditCard.getRange(6+i,1+a*6, c,5)
+      sheet.getRange(6+i,1+a*6, c,5)
         .sort({column:1+a*6, ascending:false});
     }
     i = j;

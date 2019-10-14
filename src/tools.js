@@ -202,16 +202,19 @@ function optTool_UpdateCashFlow_(mm_) {
 
 
 function optTool_FormatRegistry_() {
-	var sheet, c;
+	var sheet, mm;
 
 	sheet = SpreadsheetApp.getActiveSheet();
-	c = MN_SHORT_.indexOf( sheet.getSheetName() );
+	mm = MN_SHORT_.indexOf( sheet.getSheetName() );
 
-	if(c !== -1) {
-		foo_FormatAccounts_(c);
+	if(mm !== -1) {
+		foo_FormatAccounts_(mm);
 
 	} else if(sheet.getSheetName() === 'Cards') {
-		foo_FormatCards_();
+		mm = sheet.getActiveRange().getColumn();
+		mm = (mm - (mm % 6)) / 6;
+
+		foo_FormatCards_(mm);
 
 	} else {
 		SpreadsheetApp.getUi().alert(
