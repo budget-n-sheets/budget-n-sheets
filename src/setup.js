@@ -414,7 +414,6 @@ function setupPart10_(number_accounts, Y, m) {
 function setupPart9_(sheetSummary, mm) {
   try {
     var chart, options;
-    var i;
 
     options = {
       0:{color:'#b7b7b7', type:'bars', labelInLegend:'Income'},
@@ -422,22 +421,6 @@ function setupPart9_(sheetSummary, mm) {
       2:{color:'#45818e', type:'bars', labelInLegend:'Income'},
       3:{color:'#e69138', type:'bars', labelInLegend:'Expenses'}
     };
-
-    sheetSummary.getRange(25, 3, 12, 7).setValue(null);
-    for(i = 0;  i < mm;  i++) {
-      sheetSummary.getRange(25 + i, 3).setValue(MN_FULL_[i]);
-      sheetSummary.getRange(25 + i, 4).setFormulaR1C1('=R[-14]C');
-      sheetSummary.getRange(25 + i, 5).setFormulaR1C1('=-R[-14]C[1]');
-    }
-    for(;  i < 12;  i++) {
-      sheetSummary.getRange(25 + i, 3).setValue(MN_FULL_[i]);
-      sheetSummary.getRange(25 + i, 6).setFormulaR1C1('=R[-14]C[-2]');
-      sheetSummary.getRange(25 + i, 7).setFormulaR1C1('=-R[-14]C[-1]');
-    }
-
-    if(mm == 0) {
-      sheetSummary.getRange(25, 4, 1, 2).setValue(0);
-    }
 
     chart = sheetSummary.newChart()
       .addRange( sheetSummary.getRange('C25:H36') )
