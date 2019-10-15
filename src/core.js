@@ -195,7 +195,9 @@ function optAddonSettings_Save(settings) {
 
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheet;
-  var user_settings, yyyy, init;
+  var user_settings, yyyy, mm, init;
+
+	mm = optAddonSettings_Get_("InitialMonth");
 
   try {
     if(!update_DecimalSepartor_()) return 1;
@@ -235,7 +237,8 @@ function optAddonSettings_Save(settings) {
     return 1;
   }
 
-	setPropertiesService_("document", "string", "update_layout", "[ ]");
+	if(mm !== init) foo_ColorTabs_();
+
   return -1;
 }
 

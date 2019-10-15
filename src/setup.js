@@ -466,12 +466,6 @@ function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
     }
 
     sheetSummary.getRange('B2').setValue(Y+' | Year Summary');
-    if(m > 0) {
-      c = sheetBackstage.getMaxColumns();
-      sheetBackstage.getRange(2, 1, h_ * m, c)
-        .setFontColor('#b7b7b7');
-      sheetSummary.getRange(11,2, m,8).setFontColor('#b7b7b7');
-    }
 
     if(dateToday.FullYear == Y) {
       sheetTags.hideColumns(6, 12);
