@@ -168,7 +168,7 @@ function optTool_UpdateCashFlow_(mm_) {
   if(onlineUpdate_()) return;
 
   var sheet, range;
-  var yyyy, mm;
+  var mm;
 
   if(isNaN(mm_)) {
     sheet = SpreadsheetApp.getActiveSheet();
@@ -190,14 +190,12 @@ function optTool_UpdateCashFlow_(mm_) {
     return;
   }
 
-  yyyy = optAddonSettings_Get_('FinancialYear');
-
   if(mm === -1) {
     mm = range.getColumn() - 1;
     mm = (mm - (mm % 4)) / 4;
   }
 
-  foo_UpdateCashFlow_(yyyy, mm);
+  foo_UpdateCashFlow_(mm);
 }
 
 

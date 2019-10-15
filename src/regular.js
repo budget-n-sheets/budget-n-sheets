@@ -217,7 +217,7 @@ function foo_ColorTabs_() {
 
 
 
-function foo_UpdateCashFlow_(yyyy, mm) {
+function foo_UpdateCashFlow_(mm) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheetTarget = spreadsheet.getSheetByName(MN_SHORT_[mm]),
       sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
@@ -226,7 +226,7 @@ function foo_UpdateCashFlow_(yyyy, mm) {
   if(!sheetTarget) return;
   if(!sheetCashFlow) return;
 
-  var calendar, listEventos, evento, day, dd;
+  var calendar, listEventos, evento, day, yyyy, dd;
   var number_accounts, number_cards;
   var metaTags, OverrideZero;
   var data_cards, data_tags, value, maxRows;
@@ -241,6 +241,8 @@ function foo_UpdateCashFlow_(yyyy, mm) {
 
   h_ = AppsScriptGlobal.TableDimensions()["height"];
   w_ = AppsScriptGlobal.TableDimensions()["width"];
+
+	yyyy = optAddonSettings_Get_('FinancialYear');
 
   dd = new Date(yyyy, mm + 1, 0).getDate();
   OverrideZero = optAddonSettings_Get_("OverrideZero");
