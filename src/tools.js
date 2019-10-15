@@ -170,30 +170,32 @@ function optTool_UpdateCashFlow_(mm_) {
   var sheet, range;
   var mm;
 
-  if(isNaN(mm_)) {
+  if (typeof mm_ !== 'number' || isNaN(mm_)) {
     sheet = SpreadsheetApp.getActiveSheet();
-    range = SpreadsheetApp.getActiveRange();
-
+    range = sheet.getActiveRange();
     mm = MN_SHORT_.indexOf( sheet.getSheetName() );
-  } else if(mm_ >= 0  &&  mm_ < 12) {
+
+  } else if (mm_ >= 0 && mm_ < 12) {
     mm = mm_;
+
   } else {
     console.error("optTool_UpdateCashFlow_(): Internal error.", mm_);
     return;
   }
 
-  if(mm === -1  &&  sheet.getSheetName() !== 'Cash Flow') {
-    SpreadsheetApp.getUi().alert(
-      "Can't update cash flow",
-      "Select a month or Cash Flow to update cash flow.",
-      SpreadsheetApp.getUi().ButtonSet.OK);
-    return;
-  }
+	if (mm === -1) {
+		if (sheet.getSheetName() === 'Cash Flow') {
+			mm = range.getColumn() - 1;
+			mm = (mm - (mm % 4)) / 4;
 
-  if(mm === -1) {
-    mm = range.getColumn() - 1;
-    mm = (mm - (mm % 4)) / 4;
-  }
+		} else {
+			SpreadsheetApp.getUi().alert(
+				"Can't update cash flow",
+				"Select a month or Cash Flow to update cash flow.",
+				SpreadsheetApp.getUi().ButtonSet.OK);
+			return;
+		}
+	}
 
   foo_UpdateCashFlow_(mm);
 }
