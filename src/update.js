@@ -187,7 +187,8 @@ function update0pack10_() {
 			n = sheet.getIndex();
 			spreadsheet.deleteSheet(sheet);
 		} else {
-			n = 16;
+			n = spreadsheet.getSheets().length;
+			if (n.length >= 16) n = 16;
 		}
 
 		template = SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
