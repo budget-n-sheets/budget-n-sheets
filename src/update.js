@@ -127,7 +127,11 @@ function update_ExecutePatial_() {
 
 		case 62:
 			update0pack08_();
-      break;
+
+		case 63:
+			update0pack09_();
+			update0pack10_();
+			break;
 
     default:
 			var load = {
@@ -164,6 +168,121 @@ function update0packXX_() {
 		return true;
 	}
 }*/
+
+/**
+ * Delete and re-add sheet "Quick Actions".
+ *
+ * 0.18.12 part 2
+ */
+function update0pack10_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var sheet, range;
+		var template;
+		var n;
+
+		sheet = spreadsheet.getSheetByName("Quick Actions");
+
+		if (sheet) {
+			n = sheet.getIndex();
+			spreadsheet.deleteSheet(sheet);
+		} else {
+			n = 16;
+		}
+
+		template = SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+		template.getSheetByName("Quick Actions")
+			.copyTo(spreadsheet)
+			.setName("Quick Actions")
+			.setTabColor('#6aa84f');
+
+		sheet = spreadsheet.getSheetByName("Quick Actions");
+		spreadsheet.setActiveSheet(sheet);
+		spreadsheet.moveActiveSheet(n);
+
+		range = [ ];
+		range.push( sheet.getRange(4, 2, 3, 1) );
+		range.push( sheet.getRange(9, 2, 2, 1) );
+		range.push( sheet.getRange(13, 1, 1, 2) );
+
+		sheet.protect()
+			.setUnprotectedRanges(range)
+			.setWarningOnly(true);
+	} catch(err) {
+		console.error("update0pack10_()", err);
+		return true;
+	}
+}
+
+/**
+ * Show or hide data range based on initial month.
+ * Set conditional formatting for data range on active months.
+ *
+ * 0.18.12 part 1
+ */
+function update0pack09_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var sheet, range, rules, rule;
+		var template;
+		var n, i;
+		var h_ = AppsScriptGlobal.TableDimensions()["height"];
+
+		sheet = spreadsheet.getSheetByName("Summary");
+
+		sheet.getRange('M2:M3')
+			.setFontColor('#b7b7b7')
+			.setFontWeight("bold")
+			.setNumberFormat("0");
+		sheet.getRange('M2').setFormula('\'_Settings\'!B4');
+		sheet.getRange('M3').setFormula('\'_Settings\'!B3');
+
+		for (i = 0; i < 12; i++) {
+			sheet.getRange(25 + i, 3).setValue(MN_FULL_[i]);
+			sheet.getRange(25 + i, 4).setFormula('IF(ROW() - 24 < $M$2; ' + rollA1Notation(11 + i, 4) + ';)');
+			sheet.getRange(25 + i, 5).setFormula('IF(ROW() - 24 < $M$2; -' + rollA1Notation(11 + i, 6) + ';)');
+			sheet.getRange(25 + i, 6).setFormula('IF(ROW() - 24 < $M$2; ; ' + rollA1Notation(11 + i, 4) + ')');
+			sheet.getRange(25 + i, 7).setFormula('IF(ROW() - 24 < $M$2; ; -' + rollA1Notation(11 + i, 6) + ')');
+		}
+
+		sheet.getRange(25, 4).setFormula('IF(ROW() - 24 < $M$2; ' + rollA1Notation(11, 4) + '; 0)');
+		sheet.getRange(25, 5).setFormula('IF(ROW() - 24 < $M$2; -' + rollA1Notation(11, 6) + '; 0)');
+
+
+		sheet.clearConditionalFormatRules();
+		sheet.getRange(11, 2, 12, 8).setFontColor("#000000");
+
+		rules = sheet.getConditionalFormatRules();
+
+		range = sheet.getRange(11, 8, 12, 2);
+		rule = SpreadsheetApp.newConditionalFormatRule()
+			.whenNumberLessThan(0.0)
+			.setFontColor("#c53929")
+			.setBold(true)
+			.setRanges([ range ])
+			.build();
+		rules.push(rule);
+
+		range = sheet.getRange(11, 2, 12, 8);
+		rule = SpreadsheetApp.newConditionalFormatRule()
+			.whenFormulaSatisfied("=ROW() - 10 < $M$2")
+			.setFontColor("#b7b7b7")
+			.setRanges([ range ])
+			.build();
+		rules.push(rule);
+
+		sheet.setConditionalFormatRules(rules);
+
+
+		sheet = spreadsheet.getSheetByName("_Backstage");
+
+		n = sheet.getMaxColumns();
+		sheet.getRange(2, 1, h_*12 - 1, n).setFontColor("#000000");
+	} catch(err) {
+		console.error("update0pack09_()", err);
+		return true;
+	}
+}
 
 /**
  * Call monthly_TreatLayout_().
