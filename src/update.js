@@ -131,6 +131,9 @@ function update_ExecutePatial_() {
 		case 63:
 			update0pack09_();
 			update0pack10_();
+
+		case 64:
+			update0pack11_();
 			break;
 
     default:
@@ -168,6 +171,24 @@ function update0packXX_() {
 		return true;
 	}
 }*/
+
+/**
+ * Fix range reference for codes of tags.
+ *
+ * 0.18.14
+ */
+function update0pack11_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var n = getPropertiesService_("document", "number", "number_accounts");
+		var c;
+
+		setupPart4_(spreadsheet, n);
+	} catch(err) {
+		console.error("update0pack11_()", err);
+		return true;
+	}
+}
 
 /**
  * Delete and re-add sheet "Quick Actions".
