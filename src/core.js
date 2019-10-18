@@ -118,7 +118,7 @@ function showPanelAnalytics() {
 	htmlTemplate.list = AppsScriptGlobal.CoolGallery();
 
 	htmlSidebar = htmlTemplate.evaluate()
-		.setTitle("Analytics Gallery");
+		.setTitle("Analytics Gallery (experimental)");
 
 	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
