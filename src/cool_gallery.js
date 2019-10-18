@@ -25,24 +25,29 @@ function getCoolSheet(option) {
 
 	var cool_gallery = AppsScriptGlobal.CoolGallery();
 	var info;
-	var r = 2;
+	var r;
 
 	info = cool_gallery[option];
-	if (!info) return 2;
+	if (!info) {
+		showDialogErrorMessage();
+		console.warn("getCoolSheet(): Details of sheet not found.", {"option":option, "info":info});
+		return 1;
+	}
 
 	sheet = spreadsheet.getSheetByName(info.sheet_name);
 	if (sheet) {
-		SpreadsheetApp.getUi().alert(
+		ui.alert(
 			"Can't import analytics sheet",
 			"A sheet with the name \"" + info.sheet_name + "\" already exists. Please rename, or delete the sheet.",
 			ui.ButtonSet.OK
 		);
-		return 1;
+		return -1;
 	}
 
 	try {
 		template = SpreadsheetApp.openById(info.id);
 	} catch(err) {
+		showDialogErrorMessage();
 		console.warn("getCoolSheet()", err);
 		return 1;
 	}
@@ -54,6 +59,7 @@ function getCoolSheet(option) {
 	sheet = spreadsheet.getSheetByName(info.sheet_name);
 	SpreadsheetApp.flush();
 
+	r = -1;
 	switch (option) {
 		case "tags":
 			r = coolTags(info);
