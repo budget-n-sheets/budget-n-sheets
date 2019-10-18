@@ -607,7 +607,7 @@ function setupPart4_(spreadsheet, number_accounts) {
 
       formula = "{\"" + MN_FULL_[i] + "\"; ";
       formula += "IF(\'_Settings\'!$B$7 > 0; ";
-      formula += "BSSUMBYTAG(TRANSPOSE($D$1:$D); IFERROR(FILTER(" + rg + "; ";
+      formula += "BSSUMBYTAG(TRANSPOSE($E$1:$E); IFERROR(FILTER(" + rg + "; ";
       formula += "NOT(ISBLANK(" + cd + "))); \"0\")); )}";
 
       formulas[0].push(formula);
