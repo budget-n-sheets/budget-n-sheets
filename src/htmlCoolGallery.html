@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base target="_top">
+		<meta charset="UTF-8">
+		<?!= htmlInclude('htmlStyles'); ?>
+		<style>
+			.table {
+				display: table;
+				width: 100%;
+				margin-bottom: 17px;
+				border: 1px solid #d9d9d9;
+				border-radius: 7px;
+			}
+			.table_row {
+				display: table-row;
+			}
+			.table_name {
+				width: 100%;
+				display: table-cell;
+				padding: 11px;
+			}
+			.table_buttons {
+				width: 100%;
+				display: table-cell;
+				padding: 11px;
+				font-weight: bold;
+				border-top: 1px solid #d9d9d9;
+				word-spacing: 11px;
+			}
+
+			.MainMenu-bot_title {
+				display: table;
+				width: 100%;
+				border-collapse: separate;
+				border-spacing: 7px;
+			}
+			.MainMenu_row {
+				display: table-row;
+			}
+			.m-footer {
+				display: table-cell;
+				vertical-align: middle;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="MainPanel_wrapper">
+
+			<div id="MainPanel_content" style="margin-bottom:4.7em;">
+				<? for (var i in list) { ?>
+				<div class="table">
+					<div class="table_row">
+						<div class="table_name">
+							<span style="font-size: 23px;"><?= list[i].name ?></span><br>
+							<span class="gray"><?= list[i].version_date ?></span><br>
+							<span class="gray"><?= list[i].version_name ?></span>
+						</div>
+					</div>
+					<div class="table_row">
+						<div class="table_buttons">
+							<a class="m-la" id="<?= i ?>">Import</a>
+						</div>
+					</div>
+				</div>
+				<? } ?>
+			</dvi>
+
+			<div id="MainPanel_footer">
+				<div class="MainMenu-bot_title"><div class="MainMenu_row">
+					<div class="m-footer left"style="width: 100%;">
+						<span class="current" id="p-Resposne"></span>
+					</div>
+					<div class="m-footer right">
+						<a id="i-help" href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank"><i class="material-icons md-click md-24" title="Send feedback">feedback</i></a>
+					</div>
+				</div></div>
+			</div>
+		</div>
+
+		<?!= htmlInclude('htmlJavaScript'); ?>
+		<script>
+			$(document).on('click', '.m-la', function() {
+				var id = $(this).attr('id');
+
+				$("#p-Response").empty();
+				google.script.run.withSuccessHandler(response)
+					.withFailureHandler(showError)
+					.optCoolGallery("import", id);
+			});
+
+			function response(r) {
+				if (r === 0) {
+					$("#p-Response").append("Add-on is busy. Try again in a moment.");
+				}
+			}
+		</script>
+	</body>
+</html>

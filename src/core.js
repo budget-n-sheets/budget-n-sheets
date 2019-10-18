@@ -46,6 +46,7 @@ function onOpen(e) {
           .addItem("Expand", "toolShowSheets_"))
         .addSeparator()
         .addItem('Open Accounts & Cards panel', 'showPanelTables')
+				.addItem('Open Analytics panel', 'showPanelAnalytics')
         .addItem('Open Tags panel', 'showPanelTags')
         .addSeparator()
         .addItem('About the add-on', 'showDialogAboutAddon')
@@ -107,6 +108,20 @@ function showPanelTags() {
     .showModalDialog(htmlDialog, 'Tags');
 }
 
+
+function showPanelAnalytics() {
+	if(onlineUpdate_()) return;
+
+	var htmlTemplate = HtmlService.createTemplateFromFile("htmlCoolGallery");
+	var htmlSidebar;
+
+	htmlTemplate.list = AppsScriptGlobal.CoolGallery();
+
+	htmlSidebar = htmlTemplate.evaluate()
+		.setTitle("Analytics Gallery");
+
+	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
+}
 
 function showSidebarMainSettings() {
   if(onlineUpdate_()) return;

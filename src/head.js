@@ -14,6 +14,17 @@ var AppsScriptGlobal = (function() {
 		TemplateId: "",
 		TemplateSheets: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "_Settings", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "Summary", "About" ],
 
+		CoolGallery: {
+			tags: {
+				id: "",
+				version: 1,
+				version_name: "v0.1.0-beta",
+				version_date: "2019-10-07",
+				name: "Stats for Tags",
+				sheet_name: "Stats for Tags"
+			}
+		},
+
 		TableDimensions: { height:10, width:5 }
 	};
 
@@ -25,6 +36,8 @@ var AppsScriptGlobal = (function() {
 		TemplateVersionName: function() { return o.TemplateVersionName },
 		TemplateId: function() { return o.TemplateId },
 		TemplateSheets: function() { return o.TemplateSheets },
+
+		CoolGallery: function() { return o.CoolGallery },
 
 		TableDimensions: function() { return o.TableDimensions }
 	};
