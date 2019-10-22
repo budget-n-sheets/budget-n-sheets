@@ -128,13 +128,13 @@ function coolTags(info) {
 		.addRange( sheet.getRange('J55:J67') )
 		.setNumHeaders(1)
 		.setChartType(Charts.ChartType.COMBO)
-		.setPosition(55, 7, 0, 0)
+		.setPosition(53, 7, 0, 0)
 		.setOption('mode', 'view')
 		.setOption('legend', 'top')
 		.setOption('focusTarget', 'category')
 		.setOption('backgroundColor', {fill: '#f3f3f3'})
 		.setOption('series', options)
-		.setOption('height', 360)
+		.setOption('height', 402)
 		.setOption('width', 783);
 	sheet.insertChart( chart.build() );
 
@@ -143,11 +143,11 @@ function coolTags(info) {
 		.addRange( sheet.getRange('D74:D84') )
 		.setNumHeaders(1)
 		.setChartType(Charts.ChartType.PIE)
-		.setPosition(74, 7, 0, 0)
+		.setPosition(72, 7, 0, 0)
 		.setOption('mode', 'view')
 		.setOption('focusTarget', 'category')
 		.setOption('backgroundColor', {fill: '#f3f3f3'})
-		.setOption('height', 360)
+		.setOption('height', 402)
 		.setOption('width', 783);
 	sheet.insertChart( chart.build() );
 
