@@ -18,8 +18,8 @@ var AppsScriptGlobal = (function() {
 			tags: {
 				id: "",
 				version: 1,
-				version_name: "v0.1.0-beta",
-				version_date: "2019-10-07",
+				version_name: "v0.1.0",
+				version_date: "2019-10-22",
 				name: "Stats for Tags",
 				sheet_name: "Stats for Tags"
 			}
