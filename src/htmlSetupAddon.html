@@ -224,14 +224,9 @@
         case 'main':
           $('#main-panel').hide();
 
-          $('#MainPanel_footer-left').append('<button class="action" onclick="clickNext()" disabled>Continue</button>');
+          $('#MainPanel_footer-left').append('<button class="action" onclick="clickNext()">Continue</button>');
           htmlVarGlobal.Panel = 'note';
           $('#note-panel').fadeIn('fast');
-          setTimeout(
-            function() {
-              $('#MainPanel_footer-left button').prop('disabled', false);
-            }, 739
-          );
           break;
         case 'note':
           $('#note-panel').hide();
