@@ -153,15 +153,14 @@ function showDialogErrorMessage() {
 }
 
 
-function showDialogQuickMessage(text, button, bar) {
+function showDialogQuickMessage(title, text, button, bar) {
   var htmlTemplate, htmlDialog;
-  var height;
 	var list;
 
 	if (Array.isArray(text)) list = text;
 	else list = [ text ];
 
-	height = 127;
+	if (title === "") title = "Budget n Sheets";
 
   htmlTemplate = HtmlService.createTemplateFromFile('htmlQuickMessage');
 
@@ -170,11 +169,11 @@ function showDialogQuickMessage(text, button, bar) {
   htmlTemplate.bar = bar;
 
   htmlDialog = htmlTemplate.evaluate()
-    .setWidth(443)
+    .setWidth(307)
     .setHeight(127);
 
   SpreadsheetApp.getUi()
-    .showModalDialog(htmlDialog, 'Budget n Sheets');
+    .showModalDialog(htmlDialog, title);
 }
 
 
