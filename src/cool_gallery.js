@@ -105,7 +105,7 @@ function coolTags(info) {
 	sheet.insertChart( chart.build() );
 
 	chart = sheet.newChart()
-		.addRange( sheet.getRange('B18:N28') )
+		.addRange( sheet.getRange('B18:B28') )
 		.addRange( sheet.getRange('O18:O28') )
 		.setNumHeaders(1)
 		.setChartType(Charts.ChartType.PIE)
