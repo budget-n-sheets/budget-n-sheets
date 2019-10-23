@@ -165,12 +165,12 @@ function update_ExecutePatial_() {
 /**
  * Lorem ipsum dolor sit amet, consectetur adipiscing elit.
  *
- * X.XX.X
+ * 0.0.0
  *
-function update0packXX_() {
+function update_v0m0p0_() {
 	try {
 	} catch(err) {
-		console.error("update0packXX_()", err);
+		console.error("update_v0m0p0_()", err);
 		return true;
 	}
 }*/
