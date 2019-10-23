@@ -6,8 +6,8 @@ var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 
 var AppsScriptGlobal = (function() {
 	var o = {
-		AddonVersion: 65,
-		AddonVersionName: "0.19.0-beta",
+		AddonVersion: 66,
+		AddonVersionName: "0.19.0-beta2",
 
 		TemplateVersion: 55,
 		TemplateVersionName: "5.9",
