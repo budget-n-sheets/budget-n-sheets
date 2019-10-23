@@ -110,7 +110,7 @@ function optTag_GetList_() {
       C: TC_CODE_[a],
       Description: data[i][2],
       Tag: data[i][4],
-			analytics: data[i][3]
+			analytics: data[i][3] === "TRUE"
     }
     output[a].push(cell);
     output[a][0]++;
@@ -148,7 +148,7 @@ function optTag_GetInfo_(input) {
       output.Name = listTags[i][0];
       output.Description = listTags[i][2];
       output.Tag = listTags[i][4];
-			output.analytics = listTags[i][3];
+			output.analytics = listTags[i][3] === "TRUE";
 
       a = sheetTags.getRange(2 + i, 22).getValue();
       a = TC_CODE_.indexOf(a);
@@ -274,6 +274,8 @@ function optTag_Add_(tag) {
     }
   }
 
+	tag.analytics = tag.analytics ? "TRUE" : "FALSE";
+
   sheet.insertRowAfter(n);
   sheet.getRange(n, 1, 1, 5).setValues([
     [ tag.name, TC_NAME_[c], tag.description, tag.analytics, tag.code ]
@@ -304,6 +306,8 @@ function optTag_Update_(input) {
       }
     }
   }
+
+	input.analytics = input.analytics ? "TRUE" : "FALSE";
 
   n = vIndex.length;  i = 0;
   while(i < n) {
