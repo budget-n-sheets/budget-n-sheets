@@ -173,6 +173,37 @@ function update0packXX_() {
 }*/
 
 /**
+ * Fill with zeros columns Average and Total when M factor is zero.
+ * Replace bool with words the analytics of tags.
+ *
+ * 0.18.15
+ */
+function update0pack12_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var sheet, data;
+		var i, n;
+
+		n = getPropertiesService_("document", "number", "number_accounts");
+		setupPart4_(spreadsheet, n);
+
+		sheet = spreadsheet.getSheetByName("Tags");
+		n = sheet.getMaxRows();
+		if (n > 2) {
+			data = sheet.getRange(1, 4, n, 1).getValues();
+			for (i = 1; i < n; i++) {
+				if (data[i][0] === "true") data[i][0] = "TRUE";
+				else data[i][0] = "FALSE";
+			}
+			sheet.getRange(1, 4, n, 1).setValues(data);
+		}
+	} catch(err) {
+		console.error("update0pack12_()", err);
+		return true;
+	}
+}
+
+/**
  * Fix range reference for codes of tags.
  *
  * 0.18.14
