@@ -14,7 +14,7 @@ function onlineUpdate_() {
   var version = optGetClass_("AddonVersion");
   if(version === AppsScriptGlobal.AddonVersion()) return;
 
-  showDialogQuickMessage("Working on updates...", false, true);
+  showDialogQuickMessage("The add-on is updating...", false, true);
 
   var b = update_ExecutePatial_();
   if(b === -1) {
