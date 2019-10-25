@@ -5,9 +5,10 @@ function onlineUpdate_() {
   } catch(err) {
     console.warn("onlineUpdate_()", err);
 
-    ui.alert("Budget n Sheets",
-      "The add-on is updating. Try again later.",
-      ui.ButtonSet.OK);
+		ui.alert(
+			"Add-on Update",
+			"Please re-open the spreadsheet to update the add-on.",
+			ui.ButtonSet.OK);
     return true;
   }
 
@@ -18,9 +19,10 @@ function onlineUpdate_() {
 
   var b = update_ExecutePatial_();
   if(b === -1) {
-    ui.alert("Budget n Sheets",
-      "Update completed.",
-      ui.ButtonSet.OK);
+		ui.alert(
+			"Add-on Update",
+			"Update is complete.",
+			ui.ButtonSet.OK);
     return;
   }
 
