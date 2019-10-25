@@ -85,6 +85,7 @@ function optSetClass_(a, b) {
 }
 
 
+var HEAD_EP = 66;
 function update_ExecutePatial_() {
   if(!getPropertiesService_("document", "", "is_installed")) return 1;
 
@@ -95,9 +96,25 @@ function update_ExecutePatial_() {
     return 0;
   }
 
+	var load;
   var c = false;
   var v0 = optGetClass_("AddonVersion"),
       v1 = AppsScriptGlobal.AddonVersion();
+
+	if (HEAD_EP != HEAD_AG) {
+		load = {
+			value_v0: v0,
+			type_v0: typeof v0,
+			value_v1: v1,
+			type_v1: typeof v1,
+			v0ev1: v0 == v1,
+			head_ep: HEAD_EP,
+			head_ag: HEAD_AG,
+			isEPeAG: HEAD_EP = HEAD_AG
+		};
+		console.warn("update_ExecutePatial_(): HEAD_EP not equal to HEAD_AG.", load);
+		return 0;
+	}
 
   switch(v0) {
     case 54:
@@ -140,10 +157,12 @@ function update_ExecutePatial_() {
 			break;
 
     default:
-			var load = {
-				v0: v0,
-				type: typeof v0,
-				is_v1: v0 == v1
+			load = {
+				value_v0: v0,
+				type_v0: typeof v0,
+				value_v1: v1,
+				type_v1: typeof v1,
+				v0ev1: v0 == v1
 			};
 			console.warn("update_ExecutePatial_(): Switch case is default.", load);
       return 0;
