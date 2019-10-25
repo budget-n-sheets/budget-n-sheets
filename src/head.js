@@ -17,7 +17,7 @@ var AppsScriptGlobal = (function() {
 		CoolGallery: {
 			tags: {
 				id: "",
-				preview_url: "",
+				preview_id: "",
 				version: 1,
 				version_name: "v0.1.0",
 				version_date: "2019-10-22",
