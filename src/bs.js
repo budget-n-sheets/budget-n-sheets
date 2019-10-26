@@ -54,7 +54,7 @@ function signDoc_() {
   sig = Utilities.computeHmacSha256Signature(
     data, key,
     Utilities.Charset.UTF_8);
-  sig = bin2String(sig);
+  sig = byte2string(sig);
 
   sheet.getRange(8, 2).setValue(data + ":" + sig);
   SpreadsheetApp.flush();
@@ -80,7 +80,7 @@ function verifySig_(data) {
   sig = Utilities.computeHmacSha256Signature(
     data[0], key,
     Utilities.Charset.UTF_8);
-  sig = bin2String(sig);
+  sig = byte2string(sig);
 
   if(sig !== data[1]) return;
 

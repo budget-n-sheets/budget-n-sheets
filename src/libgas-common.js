@@ -15,7 +15,7 @@ function htmlInclude(fileName) {
  * @param  {Object} b Array of bytes.
  * @return {String} String.
  */
-function bin2String(b) {
+function byte2string(b) {
   var r = '';
   var v, i;
 
