@@ -138,16 +138,17 @@ function setup_ui(settings, list) {
 	console.info("add-on/Install: Success.");
 }
 
-function setup_(addonSettings, listAccountName) {
+function setup_(settings, listAccountName) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
-  addonSettings.FinancialYear = Number(addonSettings.FinancialYear);
-  addonSettings.InitialMonth = Number(addonSettings.InitialMonth);
-  addonSettings.number_accounts = Number(addonSettings.number_accounts);
+	settings.date_created = new Date().getTime();
+  settings.FinancialYear = Number(settings.FinancialYear);
+  settings.InitialMonth = Number(settings.InitialMonth);
+  settings.number_accounts = Number(settings.number_accounts);
 
   console.time("add-on/Install");
 
-  spreadsheet.rename(addonSettings.SpreadsheetName);
+  spreadsheet.rename(settings.SpreadsheetName);
 
   purgePropertiesService_("document");
   purgeScriptAppTriggers_();
@@ -158,7 +159,7 @@ function setup_(addonSettings, listAccountName) {
 
   spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Summary') );
 
-	setup_ExecutePatial_(addonSettings, listAccountName);
+	setup_ExecutePatial_(settings, listAccountName);
 
   var s = {
     AddonVersion: AppsScriptGlobal.AddonVersion(),
@@ -637,7 +638,7 @@ function setupPart2_(sheetBackstage, listAccountName, m, number_accounts) {
 }
 
 
-function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
+function setupPart1_(spreadsheet, sheetSettings, settings, dateToday) {
   var cell;
 
   {
@@ -654,9 +655,9 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
   }
   {
     cell = [
-      [ "="+AddonSettings.FinancialYear.formatLocaleSignal() ],
+      [ "=" + settings.FinancialYear.formatLocaleSignal() ],
       [ "=IF(YEAR(TODAY()) = $B2; MONTH(TODAY()); IF(YEAR(TODAY()) < $B2; 0; 12))" ],
-      [ "="+(AddonSettings.InitialMonth + 1).formatLocaleSignal() ],
+      [ "=" + (settings.InitialMonth + 1).formatLocaleSignal() ],
       [ "=IF($B4 > $B3; 0; $B3 - $B4 + 1)" ],
       [ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))" ],
       [ "=ROWS(\'Tags\'!$E1:$E) - 2" ],
@@ -668,8 +669,8 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
   }
   {
     cell = {
-      FinancialYear: AddonSettings.FinancialYear,
-      InitialMonth: AddonSettings.InitialMonth,
+      FinancialYear: settings.FinancialYear,
+      InitialMonth: settings.InitialMonth,
       FinancialCalendar: "",
       PostDayEvents: false,
       CashFlowEvents: false,
@@ -678,20 +679,22 @@ function setupPart1_(spreadsheet, sheetSettings, AddonSettings, dateToday) {
     };
 
     setPropertiesService_('document', 'json', 'user_settings', cell);
-    setPropertiesService_('document', 'number', 'number_accounts', AddonSettings.number_accounts);
+    setPropertiesService_('document', 'number', 'number_accounts', settings.number_accounts);
+		setPropertiesService_('document', 'number', 'financial_year', settings.FinancialYear);
+		setPropertiesService_('document', 'number', 'date_created', settings.date_created);
   }
   {
     createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
 
-    if(AddonSettings.FinancialYear < dateToday.FullYear) {
+    if(settings.FinancialYear < dateToday.FullYear) {
       createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Foo_', 2);
       setPropertiesService_('document', 'string', 'OperationMode', "passive");
 
-    } else if(AddonSettings.FinancialYear == dateToday.FullYear) {
+    } else if(settings.FinancialYear == dateToday.FullYear) {
       createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
       setPropertiesService_('document', 'string', 'OperationMode', "active");
 
-    } else if(AddonSettings.FinancialYear > dateToday.FullYear) {
+    } else if(settings.FinancialYear > dateToday.FullYear) {
       createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', 2);
       setPropertiesService_('document', 'string', 'OperationMode', "passive");
     }
