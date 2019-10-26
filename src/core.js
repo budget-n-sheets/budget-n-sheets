@@ -189,18 +189,34 @@ function optAddonSettings_Retrieve() {
 
 
 function optAddonSettings_Save(settings) {
-  var lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch(err) {
-    return 0;
-  }
-
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet;
+  var spreadsheet, sheet;
   var user_settings, yyyy, mm, init;
 
-	mm = optAddonSettings_Get_("InitialMonth");
+	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	sheet = spreadsheet.getSheetByName("_Settings");
+	if(!sheet) return 1;
+
+	yyyy = optAddonSettings_Get_("FinancialYear");
+	init = Number(settings.InitialMonth);
+
+	user_settings = {
+		SpreadsheetLocale: spreadsheet.getSpreadsheetLocale(),
+		FinancialYear: yyyy,
+		InitialMonth: init,
+
+		FinancialCalendar: settings.FinancialCalendar,
+		OnlyEventsOwned: false,
+		PostDayEvents: settings.PostDayEvents,
+		OverrideZero: settings.OverrideZero,
+		CashFlowEvents: settings.CashFlowEvents
+	};
+
+  try {
+    setPropertiesService_("document", "json", "user_settings", user_settings);
+  } catch(err) {
+    console.error("optAddonSettings_Save_()", err);
+    return 1;
+  }
 
   try {
     if(!update_DecimalSepartor_()) return 1;
@@ -209,37 +225,11 @@ function optAddonSettings_Save(settings) {
     return 1;
   }
 
-  yyyy = optAddonSettings_Get_("FinancialYear");
-  init = Number(settings.InitialMonth);
-
-  sheet = spreadsheet.getSheetByName("_Settings");
-  if(!sheet) return 1;
-
-  sheet.getRange("B2")
-    .setFormula("=" + yyyy.formatLocaleSignal());
-  sheet.getRange("B4")
-    .setFormula("=" + (init + 1).formatLocaleSignal());
+  sheet.getRange("B2").setFormula("=" + yyyy.formatLocaleSignal());
+  sheet.getRange("B4").setFormula("=" + (init + 1).formatLocaleSignal());
   SpreadsheetApp.flush();
 
-  try {
-    user_settings = {
-      SpreadsheetLocale: spreadsheet.getSpreadsheetLocale(),
-      FinancialYear: yyyy,
-      InitialMonth: init,
-
-      FinancialCalendar: settings.FinancialCalendar,
-      OnlyEventsOwned: false,
-      PostDayEvents: settings.PostDayEvents,
-      OverrideZero: settings.OverrideZero,
-      CashFlowEvents: settings.CashFlowEvents
-    };
-
-    setPropertiesService_("document", "json", "user_settings", user_settings);
-  } catch(err) {
-    console.error("optAddonSettings_Save_()", err);
-    return 1;
-  }
-
+	mm = optAddonSettings_Get_("InitialMonth");
 	if(mm !== init) foo_ColorTabs_();
 
   return -1;
