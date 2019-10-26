@@ -157,6 +157,10 @@ function update_ExecutePatial_() {
 
 		case 65:
 			c = update0pack12_();
+			if (c) break;
+
+		case 66:
+			c = update0pack13_();
 			break;
 
     default:
@@ -198,6 +202,32 @@ function update0packXX_() {
 		return true;
 	}
 }*/
+
+/**
+ * Create property for const user settings.
+ *
+ * 0.18.17
+ */
+function update0pack13_() {
+	try {
+		var user_const_settings;
+		var date_created, number_accounts, financial_year;
+
+		financial_year = optAddonSettings_Get_("FinancialYear");
+		number_accounts = getPropertiesService_("document", "number", "number_accounts");
+
+		user_const_settings = {
+			date_created: 0,
+			number_accounts: number_accounts,
+			financial_year: financial_year
+		};
+
+		setPropertiesService_('document', 'obj', 'user_const_settings', user_const_settings);
+	} catch(err) {
+		console.error("update0pack13_()", err);
+		return true;
+	}
+}
 
 /**
  * Fill with zeros columns Average and Total when M factor is zero.
