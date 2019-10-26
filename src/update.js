@@ -120,13 +120,6 @@ function update_ExecutePatial_() {
 	}
 
   switch(v0) {
-    case 54:
-      c = update0pack01_();
-      if(c) break;
-
-    case 55:
-      update0pack02_();
-
 		case 56:
 			c = update0pack03_();
 			if(c) break;
