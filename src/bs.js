@@ -50,11 +50,7 @@ function signDoc_() {
 
   data = JSON.stringify(data);
   data = Utilities.base64Encode(data, Utilities.Charset.UTF_8);
-
-  sig = Utilities.computeHmacSha256Signature(
-    data, key,
-    Utilities.Charset.UTF_8);
-  sig = byte2string(sig);
+	sig = computeHmacSignature("SHA_256", data, key, "UTF_8");
 
   sheet.getRange(8, 2).setValue(data + ":" + sig);
   SpreadsheetApp.flush();
@@ -77,10 +73,7 @@ function verifySig_(data) {
   data = data.split(":");
   if(data.length !== 2) return;
 
-  sig = Utilities.computeHmacSha256Signature(
-    data[0], key,
-    Utilities.Charset.UTF_8);
-  sig = byte2string(sig);
+	sig = computeHmacSignature("SHA_256", data[0], key, "UTF_8");
 
   if(sig !== data[1]) return;
 
