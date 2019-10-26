@@ -679,10 +679,19 @@ function setupPart1_(spreadsheet, sheetSettings, settings, dateToday) {
     };
 
     setPropertiesService_('document', 'json', 'user_settings', cell);
-    setPropertiesService_('document', 'number', 'number_accounts', settings.number_accounts);
+		setPropertiesService_('document', 'number', 'number_accounts', settings.number_accounts);
 		setPropertiesService_('document', 'number', 'financial_year', settings.FinancialYear);
 		setPropertiesService_('document', 'number', 'date_created', settings.date_created);
-  }
+	}
+	{
+		cell = {
+			date_created: settings.date_created,
+			number_accounts: settings.number_accounts,
+			financial_year: settings.FinancialYear
+		};
+
+		setPropertiesService_('document', 'obj', 'user_const_settings', cell);
+	}
   {
     createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
 

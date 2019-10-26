@@ -311,3 +311,19 @@ function optAddonSettings_Set_(select, value) {
   setPropertiesService_('document', 'json', 'user_settings', user_settings);
   return true;
 }
+
+
+function getUserConstSettings_(select) {
+	var user_const_settings = getPropertiesService_('document', 'obj', 'user_const_settings');
+
+	switch (select) {
+		case 'financial_year':
+		case 'number_accounts':
+		case 'date_created':
+			return user_const_settings[select];
+
+		default:
+			console.error("getUserConstSettings_(): Switch case is default.", select);
+			break;
+	}
+}
