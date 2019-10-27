@@ -9,7 +9,7 @@ function optCoolGallery(command, options) {
 
 	switch (command) {
 		case "import":
-			r = getCoolSheet(options);
+			r = getCoolSheet_(options);
 			break;
 
 		default:
@@ -23,7 +23,7 @@ function optCoolGallery(command, options) {
 }
 
 
-function getCoolSheet(option) {
+function getCoolSheet_(option) {
 	var ui = SpreadsheetApp.getUi();
 
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -68,7 +68,7 @@ function getCoolSheet(option) {
 	r = -1;
 	switch (option) {
 		case "tags":
-			r = coolTags(info);
+			r = coolTags_(info);
 			break;
 		default:
 			break;
@@ -84,7 +84,7 @@ function getCoolSheet(option) {
 }
 
 
-function coolTags(info) {
+function coolTags_(info) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet = spreadsheet.getSheetByName(info.sheet_name);
 	var chart, options;
