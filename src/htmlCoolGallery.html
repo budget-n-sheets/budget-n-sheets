@@ -92,6 +92,8 @@
 			function response(r) {
 				if (r === 0) {
 					$("#p-Response").empty().append("Add-on is busy. Try again in a moment.");
+				} else if (r === 1) {
+					$("#p-Response").empty().append("Something went wrong. Try again in a moment.");
 				} else if (r === 3) {
 					showError();
 				}

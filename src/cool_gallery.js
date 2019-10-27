@@ -1,6 +1,6 @@
 function optCoolGallery(command, options) {
 	var lock = LockService.getDocumentLock();
-	var r;
+	var r = 1;
 	try {
 		lock.waitLock(200);
 	} catch(err) {
