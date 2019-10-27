@@ -29,6 +29,8 @@ function optNavTools_(p) {
       console.error("optNavTools_(): Switch case is default.", p);
       break;
   }
+
+	lock.releaseLock();
 }
 
 
@@ -76,6 +78,8 @@ function optMainTools_(p, mm) {
       console.error("optMainTools_(): Switch case is default.", p);
       break;
   }
+
+	lock.releaseLock();
 }
 
 

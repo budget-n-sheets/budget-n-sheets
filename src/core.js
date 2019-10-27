@@ -168,24 +168,27 @@ function showDialogErrorMessage() {
 }
 
 
-function showDialogQuickMessage(text, button, bar) {
+function showDialogQuickMessage(title, text, button, bar) {
   var htmlTemplate, htmlDialog;
-  var height;
+	var list;
 
-  height = 107 + (text.length - text.length % 31) / 31 * 20;
+	if (Array.isArray(text)) list = text;
+	else list = [ text ];
 
+	if (title === "") title = "Budget n Sheets";
 
   htmlTemplate = HtmlService.createTemplateFromFile('htmlQuickMessage');
-  htmlTemplate.text = text;
+
+  htmlTemplate.text = list;
   htmlTemplate.button = button;
   htmlTemplate.bar = bar;
 
   htmlDialog = htmlTemplate.evaluate()
     .setWidth(307)
-    .setHeight(height);
+    .setHeight(127);
 
   SpreadsheetApp.getUi()
-    .showModalDialog(htmlDialog, 'Budget n Sheets');
+    .showModalDialog(htmlDialog, title);
 }
 
 
@@ -201,18 +204,34 @@ function optAddonSettings_Retrieve() {
 
 
 function optAddonSettings_Save(settings) {
-  var lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch(err) {
-    return 0;
-  }
-
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet;
+  var spreadsheet, sheet;
   var user_settings, yyyy, mm, init;
 
-	mm = optAddonSettings_Get_("InitialMonth");
+	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	sheet = spreadsheet.getSheetByName("_Settings");
+	if(!sheet) return 1;
+
+	yyyy = optAddonSettings_Get_("FinancialYear");
+	init = Number(settings.InitialMonth);
+
+	user_settings = {
+		SpreadsheetLocale: spreadsheet.getSpreadsheetLocale(),
+		FinancialYear: yyyy,
+		InitialMonth: init,
+
+		FinancialCalendar: settings.FinancialCalendar,
+		OnlyEventsOwned: false,
+		PostDayEvents: settings.PostDayEvents,
+		OverrideZero: settings.OverrideZero,
+		CashFlowEvents: settings.CashFlowEvents
+	};
+
+  try {
+    setPropertiesService_("document", "json", "user_settings", user_settings);
+  } catch(err) {
+    console.error("optAddonSettings_Save_()", err);
+    return 1;
+  }
 
   try {
     if(!update_DecimalSepartor_()) return 1;
@@ -221,37 +240,11 @@ function optAddonSettings_Save(settings) {
     return 1;
   }
 
-  yyyy = optAddonSettings_Get_("FinancialYear");
-  init = Number(settings.InitialMonth);
-
-  sheet = spreadsheet.getSheetByName("_Settings");
-  if(!sheet) return 1;
-
-  sheet.getRange("B2")
-    .setFormula("=" + yyyy.formatLocaleSignal());
-  sheet.getRange("B4")
-    .setFormula("=" + (init + 1).formatLocaleSignal());
+  sheet.getRange("B2").setFormula("=" + yyyy.formatLocaleSignal());
+  sheet.getRange("B4").setFormula("=" + (init + 1).formatLocaleSignal());
   SpreadsheetApp.flush();
 
-  try {
-    user_settings = {
-      SpreadsheetLocale: spreadsheet.getSpreadsheetLocale(),
-      FinancialYear: yyyy,
-      InitialMonth: init,
-
-      FinancialCalendar: settings.FinancialCalendar,
-      OnlyEventsOwned: false,
-      PostDayEvents: settings.PostDayEvents,
-      OverrideZero: settings.OverrideZero,
-      CashFlowEvents: settings.CashFlowEvents
-    };
-
-    setPropertiesService_("document", "json", "user_settings", user_settings);
-  } catch(err) {
-    console.error("optAddonSettings_Save_()", err);
-    return 1;
-  }
-
+	mm = optAddonSettings_Get_("InitialMonth");
 	if(mm !== init) foo_ColorTabs_();
 
   return -1;
@@ -332,4 +325,20 @@ function optAddonSettings_Set_(select, value) {
 
   setPropertiesService_('document', 'json', 'user_settings', user_settings);
   return true;
+}
+
+
+function getUserConstSettings_(select) {
+	var user_const_settings = getPropertiesService_('document', 'obj', 'user_const_settings');
+
+	switch (select) {
+		case 'financial_year':
+		case 'number_accounts':
+		case 'date_created':
+			return user_const_settings[select];
+
+		default:
+			console.error("getUserConstSettings_(): Switch case is default.", select);
+			break;
+	}
 }

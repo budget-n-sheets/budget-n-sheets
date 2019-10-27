@@ -1,37 +1,51 @@
 function optMainTables(opt, param) {
   var lock = LockService.getDocumentLock();
+	var r;
   try {
-    lock.waitLock(2000);
+    lock.waitLock(200);
   } catch(err) {
     return 0;
   }
 
   switch(opt) {
     case 'GetList':
-      return optTable_GetList_();
+      r = optTable_GetList_();
+			break;
     case 'GetInfo':
-      return optTable_GetInfo_(param);
+      r = optTable_GetInfo_(param);
+			break;
     case 'GenerateRandomId':
-      return optTable_GenerateRandomId_();
+      r = optTable_GenerateRandomId_();
+			break;
 
     case 'UpdateAccount':
-      return optAccount_Update_(param);
+      r = optAccount_Update_(param);
+			break;
     case 'UpdateTableRef':
-      return optAccount_UpdateTableRef_();
+      r = optAccount_UpdateTableRef_();
+			break;
 
     case 'AddCard':
-      return optCard_Add_(param);
+      r = optCard_Add_(param);
+			break;
     case 'UpdateCard':
-      return optCard_Update_(param);
+      r = optCard_Update_(param);
+			break;
     case 'RemoveCard':
-      return optCard_Remove_(param);
+      r = optCard_Remove_(param);
+			break;
 
     case 'isBusy':
-      return -1;
+      r = -1;
+			break;
     default:
       console.warn("optMainTables(): Switch case is default.", opt);
-      return 3;
+			r = 3;
+			break;
   }
+
+	lock.releaseLock();
+	return r;
 }
 
 

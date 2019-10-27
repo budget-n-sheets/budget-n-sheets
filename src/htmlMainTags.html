@@ -738,7 +738,7 @@
     function ListTags_Merge(input) {
       if(input === 0) {
         google.script.run.withFailureHandler(showError)
-          .showDialogQuickMessage('The add-on is busy. Try again a moment.', true);
+          .showDialogQuickMessage("", 'The add-on is busy. Try again a moment.', true);
         return;
 
       } else if( !isNaN(input) ) {

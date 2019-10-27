@@ -257,13 +257,10 @@
       if(p === 1) {
         showError();
         return;
-      } else if(p === 0) {
-        $("#p-footer_FastResponse").empty().append("Add-on is busy. Try again in a moment.");
-        return;
       }
 
+			$(".Form-Settings_lock").prop("disabled", false);
       $("#p-footer_FastResponse").empty().append("Settings saved.");
-      $(".Form-Settings_lock").prop("disabled", false);
 
       if($("#FinancialCalendar").val() === "") {
         $(".Form-Settings_calendar").prop("disabled", true);

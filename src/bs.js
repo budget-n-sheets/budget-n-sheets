@@ -1,20 +1,28 @@
 function nodeControl_(c, data) {
   var lock = LockService.getDocumentLock();
+	var r;
   try {
     lock.waitLock(200);
   } catch(err) {
-    return;
+    return 0;
   }
 
   switch(c) {
     case "sign":
-      return signDoc_();
+			r = signDoc_();
+			break;
     case "verify":
-      return verifySig_(data);
+			r = verifySig_(data);
+			break;
+
     default:
       console.error("nodeControl_(): Switch case is default.", c);
+			r = 1;
       break;
   }
+
+	lock.releaseLock();
+	return r;
 }
 
 
@@ -42,11 +50,7 @@ function signDoc_() {
 
   data = JSON.stringify(data);
   data = Utilities.base64Encode(data, Utilities.Charset.UTF_8);
-
-  sig = Utilities.computeHmacSha256Signature(
-    data, key,
-    Utilities.Charset.UTF_8);
-  sig = bin2String(sig);
+	sig = computeHmacSignature("SHA_256", data, key, "UTF_8");
 
   sheet.getRange(8, 2).setValue(data + ":" + sig);
   SpreadsheetApp.flush();
@@ -69,10 +73,7 @@ function verifySig_(data) {
   data = data.split(":");
   if(data.length !== 2) return;
 
-  sig = Utilities.computeHmacSha256Signature(
-    data[0], key,
-    Utilities.Charset.UTF_8);
-  sig = bin2String(sig);
+	sig = computeHmacSignature("SHA_256", data[0], key, "UTF_8");
 
   if(sig !== data[1]) return;
 

@@ -6,9 +6,8 @@
     <?!= htmlInclude('htmlStyles'); ?>
     <style>
       p {
-        margin-bottom: 1em;
-        text-indent: 0;
-        font-size: 1.3em;
+				text-indent: 0;
+				font-size: 1.3em;
       }
       .animation_WaitLoad_wrapper {
         margin: 0 0 1.7em 0;
@@ -26,18 +25,22 @@
     </style>
   </head>
   <body>
-    <p style="text-indent: 0;font-size: 1.3em">
-      <?= text ?>
-    </p>
+		<div style="margin-bottom: 3em;">
+			<? for (var i = 0; i < text.length; i++) { ?>
+				<p>
+					<?= text[i] ?>
+				</p>
+			<? } ?>
 
-    <? if(bar) { ?>
-      <div class="animation_WaitLoad_wrapper">
-        <div class="animation_WaitLoad_bar"></div>
-      </div>
-    <? } ?>
+	    <? if(bar) { ?>
+	      <div class="animation_WaitLoad_wrapper">
+	        <div class="animation_WaitLoad_bar"></div>
+	      </div>
+	    <? } ?>
 
-    <? if(button) { ?>
-      <button onclick="google.script.host.close()">Ok</button>
-    <? } ?>
+	    <? if(button) { ?>
+	      <button onclick="google.script.host.close()">OK</button>
+	    <? } ?>
+		</div>
   </body>
 </html>

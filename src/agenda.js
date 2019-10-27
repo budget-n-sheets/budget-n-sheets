@@ -109,12 +109,8 @@ function optCalendar_GetListOwned() {
   for(i = 0;  i < list.length;  i++) {
     calendars.Name.push( list[i].getName() );
 
-    s = Utilities.computeDigest(
-      Utilities.DigestAlgorithm.SHA_1,
-      list[i].getId(),
-      Utilities.Charset.UTF_8);
-    s = bin2String(s);
-
+		s = list[i].getId();
+		s = computeDigest("SHA_1", s, "UTF_8");
     calendars.Id.push(s);
   }
 
@@ -132,11 +128,8 @@ function optCalendar_GetCalendarFromSHA1_(sha1sum) {
   var s, i;
 
   for(i = 0;  i < list.length;  i++) {
-    s = Utilities.computeDigest(
-      Utilities.DigestAlgorithm.SHA_1,
-      list[i].getId(),
-      Utilities.Charset.UTF_8);
-    s = bin2String(s);
+		s = list[i].getId();
+		s = computeDigest("SHA_1", s, "UTF_8");
 
     if(s === sha1sum) return list[i];
   }
