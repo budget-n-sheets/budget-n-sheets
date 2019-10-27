@@ -1,5 +1,6 @@
 function optCoolGallery(command, options) {
 	var lock = LockService.getDocumentLock();
+	var r;
 	try {
 		lock.waitLock(1000);
 	} catch(err) {
@@ -8,12 +9,16 @@ function optCoolGallery(command, options) {
 
 	switch (command) {
 		case "import":
-			return getCoolSheet(options);
+			r = getCoolSheet(options);
 			break;
+
 		default:
 			console.warn("optCoolGallery(): Switch case is default.", command);
-			return 3;
+			r = 3;
 	}
+
+	lock.releaseLock();
+	return r;
 }
 
 
