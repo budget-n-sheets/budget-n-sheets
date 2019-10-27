@@ -44,7 +44,7 @@ function optMainTables(opt, param) {
 			break;
   }
 
-	lock.releaseLock();
+	// lock.releaseLock();
 	return r;
 }
 

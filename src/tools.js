@@ -30,7 +30,7 @@ function optNavTools_(p) {
       break;
   }
 
-	lock.releaseLock();
+	// lock.releaseLock();
 }
 
 
@@ -79,7 +79,7 @@ function optMainTools_(p, mm) {
       break;
   }
 
-	lock.releaseLock();
+	// lock.releaseLock();
 }
 
 

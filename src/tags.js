@@ -39,7 +39,7 @@ function optMainTags(opt, input) {
       r= 3;
   }
 
-	lock.releaseLock();
+	// lock.releaseLock();
 	return r;
 }
 

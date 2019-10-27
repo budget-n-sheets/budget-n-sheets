@@ -21,7 +21,7 @@ function nodeControl_(c, data) {
       break;
   }
 
-	lock.releaseLock();
+	// lock.releaseLock();
 	return r;
 }
 
