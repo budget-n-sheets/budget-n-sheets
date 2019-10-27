@@ -94,6 +94,15 @@ function showPanelTags() {
     return;
   }
 
+	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+	if (!sheet) {
+		SpreadsheetApp.getUi().alert(
+			"Can't open Tags panel",
+			"The sheet Tags was not found.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+		return;
+	}
+
   var htmlTemplate, htmlDialog;
 
   htmlTemplate = HtmlService.createTemplateFromFile('htmlMainTags');
