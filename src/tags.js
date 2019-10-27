@@ -4,6 +4,7 @@ function optMainTags(opt, input) {
   try {
     lock.waitLock(200);
   } catch(err) {
+		console.warn("optMainTags(): Wait lock time out.");
     return 0;
   }
 

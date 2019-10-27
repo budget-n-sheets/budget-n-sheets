@@ -15,6 +15,7 @@ function optNavTools_(p) {
       "Add-on is busy",
       "The add-on is busy. Try again in a moment.",
       SpreadsheetApp.getUi().ButtonSet.OK);
+		console.warn("optNavTools_(): Wait lock time out.");
     return;
   }
 
@@ -55,6 +56,7 @@ function optMainTools_(p, mm) {
       "Add-on is busy",
       "The add-on is busy. Try again in a moment.",
       SpreadsheetApp.getUi().ButtonSet.OK);
+		console.warn("optMainTools_(): Wait lock time out.");
     return;
   }
 

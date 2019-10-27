@@ -4,6 +4,7 @@ function nodeControl_(c, data) {
   try {
     lock.waitLock(200);
   } catch(err) {
+		console.warn("nodeControl_(): Wait lock time out.");
     return 0;
   }
 

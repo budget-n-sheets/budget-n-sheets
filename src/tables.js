@@ -4,6 +4,7 @@ function optMainTables(opt, param) {
   try {
     lock.waitLock(200);
   } catch(err) {
+		console.warn("optMainTables(): Wait lock time out.");
     return 0;
   }
 

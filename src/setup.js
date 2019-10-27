@@ -115,6 +115,7 @@ function setup_ui(settings, list) {
       "Add-on is busy",
       "A budget spreadsheet setup is in progress. Try again later.",
       SpreadsheetApp.getUi().ButtonSet.OK);
+		console.warn("nodeControl_(): Wait lock time out.");
     return;
   }
 
