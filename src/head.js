@@ -8,7 +8,7 @@ var HEAD_AG = 67;
 var AppsScriptGlobal = (function() {
 	var o = {
 		AddonVersion: 67,
-		AddonVersionName: "0.18.18",
+		AddonVersionName: "0.18.19",
 
 		TemplateVersion: 55,
 		TemplateVersionName: "5.9",
