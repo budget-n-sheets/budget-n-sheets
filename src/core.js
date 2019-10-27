@@ -86,7 +86,7 @@ function showPanelTables() {
 
 function showPanelTags() {
   if(onlineUpdate_()) return;
-  else if(optMainTags('isBusy') !== -1) {
+  if(optMainTags('isBusy') !== -1) {
     SpreadsheetApp.getUi().alert(
       "Add-on is busy",
       "The add-on is busy. Try again a moment.",

@@ -38,6 +38,7 @@ function optMainTags(opt, input) {
     default:
       console.warn("optMainTags(): Switch case is default.", opt);
       r= 3;
+			break;
   }
 
 	// lock.releaseLock();
