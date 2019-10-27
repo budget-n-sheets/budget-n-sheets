@@ -120,8 +120,8 @@ function optTable_GenerateRandomId_() {
 function optAccount_UpdateTableRef_() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cash Flow');
   var listTables = optTable_GetList_();
-  var number_accounts = getPropertiesService_('document', 'number', 'number_accounts'),
-      yyyy = getUserSettings_('FinancialYear');
+  var number_accounts = getUserConstSettings_('number_accounts'),
+      yyyy = getUserConstSettings_('financial_year');
   var range_, string, mm, dd,
       i, k, h_;
 

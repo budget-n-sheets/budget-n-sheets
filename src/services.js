@@ -52,7 +52,7 @@ function daily_Main_(e) {
   if(isMissingSheet()) return;
   if(seamlessUpdate_()) return;
 
-  var FinancialYear = getUserSettings_('FinancialYear');
+  var financial_year = getUserConstSettings_('financial_year');
   var date, a;
 
   if(e) {
@@ -72,7 +72,7 @@ function daily_Main_(e) {
     if(!update_DecimalSepartor_()) return;
   }
 
-  if(FinancialYear < a["year"]) {
+  if(financial_year < a["year"]) {
     monthly_TreatLayout_(a["year"], a["month"]);
     deleteScriptAppTriggers_('document', 'dailyMainId');
     createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
@@ -117,7 +117,7 @@ function weekly_Bar_(e) {
   if(seamlessUpdate_()) return;
 
   var date = getSpreadsheetDate();
-  var yyyy = getUserSettings_("FinancialYear");
+  var yyyy = getUserConstSettings_('financial_year');
 
   if(e["year"] > yyyy) return;
 

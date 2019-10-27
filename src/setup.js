@@ -57,7 +57,7 @@ function askDeactivation() {
 function askReinstall() {
   if(!getPropertiesService_("document", "", "is_installed")) return;
 
-  var FinancialYear = getUserSettings_('FinancialYear');
+  var financial_year = getUserConstSettings_('financial_year');
   var dateToday = getSpreadsheetDate();
 
   purgeScriptAppTriggers_();
@@ -669,7 +669,6 @@ function setupPart1_(spreadsheet, sheetSettings, settings, dateToday) {
   }
   {
     cell = {
-      FinancialYear: settings.FinancialYear,
       InitialMonth: settings.InitialMonth,
       FinancialCalendar: "",
       PostDayEvents: false,
@@ -679,9 +678,6 @@ function setupPart1_(spreadsheet, sheetSettings, settings, dateToday) {
     };
 
     setPropertiesService_('document', 'json', 'user_settings', cell);
-		setPropertiesService_('document', 'number', 'number_accounts', settings.number_accounts);
-		setPropertiesService_('document', 'number', 'financial_year', settings.FinancialYear);
-		setPropertiesService_('document', 'number', 'date_created', settings.date_created);
 	}
 	{
 		cell = {

@@ -25,7 +25,7 @@ function daily_PostEvents_(date) {
   if(listEventos.length === 0) return;
   listEventos = optCalendar_ProcessRawEvents_(listEventos);
 
-  number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
+  number_accounts = getUserConstSettings_('number_accounts');
 
   data = [ ];
   data_Cards = [ ];
@@ -119,18 +119,18 @@ function update_DecimalSepartor_() {
 function monthly_TreatLayout_(yyyy, mm) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
       sheetTags = spreadsheet.getSheetByName('Tags');
-  var FinancialYear = getUserSettings_('FinancialYear');
+  var financial_year = getUserConstSettings_('financial_year');
   var a, i;
 
-  if(FinancialYear > yyyy) return; // Too soon to format the spreadsheet.
-  else if(FinancialYear < yyyy) {
+  if(financial_year > yyyy) return; // Too soon to format the spreadsheet.
+  else if(financial_year < yyyy) {
     mm = 0; // Last time to format the spreadsheet.
     a = 0;
   }
 
 
   if(mm === 0) {
-    if(yyyy === FinancialYear) {
+    if(yyyy === financial_year) {
       for(i = 0;  i < 3;  i++) {
         spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
       }
@@ -183,7 +183,7 @@ function monthly_TreatLayout_(yyyy, mm) {
 
 function foo_ColorTabs_() {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var FinancialYear = getUserSettings_('FinancialYear'),
+  var financial_year = getUserConstSettings_('financial_year'),
       InitialMonth = getUserSettings_('InitialMonth');
   var date = getSpreadsheetDate();
   var mm, i;
@@ -191,7 +191,7 @@ function foo_ColorTabs_() {
   mm = date.getMonth();
 
 
-  if(FinancialYear === date.getFullYear()) {
+  if(financial_year === date.getFullYear()) {
     for(i = 0;  i < InitialMonth;  i++) {
       spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
     }
@@ -242,11 +242,11 @@ function foo_UpdateCashFlow_(mm) {
   h_ = AppsScriptGlobal.TableDimensions()["height"];
   w_ = AppsScriptGlobal.TableDimensions()["width"];
 
-	yyyy = getUserSettings_('FinancialYear');
+	yyyy = getUserConstSettings_('financial_year');
 
   dd = new Date(yyyy, mm + 1, 0).getDate();
   OverrideZero = getUserSettings_("OverrideZero");
-  number_accounts = getPropertiesService_("document", "number", "number_accounts");
+  number_accounts = getUserConstSettings_('number_accounts');
 
   cf_flow = [ ];
   cf_transaction = [ ];
@@ -397,8 +397,8 @@ function foo_FormatAccounts_(mm) {
 
   var thisSheet = SpreadsheetApp.getActiveSpreadsheet()
     .getSheetByName( MN_SHORT_[Number(mm)] );
-  var number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
-  var FinancialYear = getUserSettings_('FinancialYear');
+  var number_accounts = getUserConstSettings_('number_accounts');
+  var financial_year = getUserConstSettings_('financial_year');
   var dateToday;
   var table;
   var numNegativeDays;
@@ -444,7 +444,7 @@ function foo_FormatAccounts_(mm) {
 
   dateToday = getSpreadsheetDate();
   if(n - c <= 0) return;
-  else if(FinancialYear < dateToday.getFullYear()  ||  (FinancialYear == dateToday.getFullYear()  &&  mm < dateToday.getMonth())) {
+  else if(financial_year < dateToday.getFullYear()  ||  (financial_year == dateToday.getFullYear()  &&  mm < dateToday.getMonth())) {
     if(n - c < n) thisSheet.hideRows(5+c, n-c);
     else thisSheet.hideRows(5+1, n-1);
   }
@@ -497,7 +497,7 @@ function update_Layout() {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheet;
 
-  var yyyy = getUserSettings_("FinancialYear");
+  var yyyy = getUserConstSettings_('financial_year');
   var init = getUserSettings_("InitialMonth");
   var c, i;
   var h_;

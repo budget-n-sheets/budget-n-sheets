@@ -207,7 +207,7 @@ function update0pack13_() {
 		var date_created, number_accounts, financial_year;
 
 		financial_year = getUserSettings_("FinancialYear");
-		number_accounts = getPropertiesService_("document", "number", "number_accounts");
+		number_accounts = getUserConstSettings_('number_accounts');
 
 		user_const_settings = {
 			date_created: 0,
@@ -234,7 +234,7 @@ function update0pack12_() {
 		var sheet, data;
 		var i, n;
 
-		n = getPropertiesService_("document", "number", "number_accounts");
+		n = getUserConstSettings_('number_accounts');
 		setupPart4_(spreadsheet, n);
 
 		sheet = spreadsheet.getSheetByName("Tags");
@@ -261,7 +261,7 @@ function update0pack12_() {
 function update0pack11_() {
 	try {
 		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-		var n = getPropertiesService_("document", "number", "number_accounts");
+		var n = getUserConstSettings_('number_accounts');
 		var c;
 
 		setupPart4_(spreadsheet, n);
@@ -507,7 +507,7 @@ function update0pack03_() {
 				sheetCards = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 		var range, formula, header1, header2, r1c1;
 		var db_cards = getPropertiesService_("document", "obj", "DB_CARD");
-		var number_accounts = getPropertiesService_("document", "number", "number_accounts");
+		var number_accounts = getUserConstSettings_('number_accounts');
 		var c1, c2, c3, n, i, k;
 		var h_, w_;
 

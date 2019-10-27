@@ -6,7 +6,7 @@ function cardsGetData_() {
 
   h_ = AppsScriptGlobal.TableDimensions()["height"];
   w_ = AppsScriptGlobal.TableDimensions()["width"];
-  n = getPropertiesService_("document", "number", "number_accounts");
+  n = getUserConstSettings_('number_accounts');
 
   db_cards = getPropertiesService_("document", "obj", "DB_CARD");
   if(!db_cards) return;
@@ -130,7 +130,7 @@ function optCard_Add_(input) {
 function optCard_Refresh_() {
   var sheetBackstage = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage"),
 			sheetSettings = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
-	var number_accounts = getPropertiesService_("document", "number", "number_accounts");
+	var number_accounts = getUserConstSettings_('number_accounts');
 	var db_card;
   var h_, w_;
 	var c, i;
