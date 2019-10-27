@@ -1,4 +1,4 @@
-function optAddonSettings_Retrieve() {
+function retrieveUserSettings() {
 	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
 	user_settings.docName = SpreadsheetApp.getActiveSpreadsheet().getName();
@@ -8,7 +8,7 @@ function optAddonSettings_Retrieve() {
 }
 
 
-function optAddonSettings_Save(settings) {
+function saveUserSettings(settings) {
 	var spreadsheet, sheet;
 	var user_settings, yyyy, mm, init;
 
@@ -16,7 +16,7 @@ function optAddonSettings_Save(settings) {
 	sheet = spreadsheet.getSheetByName("_Settings");
 	if(!sheet) return 1;
 
-	yyyy = optAddonSettings_Get_("FinancialYear");
+	yyyy = getUserSettings_("FinancialYear");
 	init = Number(settings.InitialMonth);
 
 	user_settings = {
@@ -34,7 +34,7 @@ function optAddonSettings_Save(settings) {
 	try {
 		setPropertiesService_("document", "json", "user_settings", user_settings);
 	} catch(err) {
-		console.error("optAddonSettings_Save_()", err);
+		console.error("saveUserSettings()", err);
 		return 1;
 	}
 
@@ -49,14 +49,14 @@ function optAddonSettings_Save(settings) {
 	sheet.getRange("B4").setFormula("=" + (init + 1).formatLocaleSignal());
 	SpreadsheetApp.flush();
 
-	mm = optAddonSettings_Get_("InitialMonth");
+	mm = getUserSettings_("InitialMonth");
 	if(mm !== init) foo_ColorTabs_();
 
 	return -1;
 }
 
 
-function optAddonSettings_Get_(select) {
+function getUserSettings_(select) {
 	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
 	var dateToday, dateTodayYear, dateTodayMonth;
 	var tmp;
@@ -92,7 +92,7 @@ function optAddonSettings_Get_(select) {
 			else return (dateTodayMonth - user_settings.InitialMonth + 1);
 		case 'MFactor': // Number in 0-12 range
 			dateTodayYear = getSpreadsheetDate().getFullYear();
-			tmp = optAddonSettings_Get_('ActiveMonths');
+			tmp = getUserSettings_('ActiveMonths');
 
 			if(dateTodayYear == user_settings.FinancialYear) {
 				tmp--;
@@ -105,13 +105,13 @@ function optAddonSettings_Get_(select) {
 			}
 
 		default:
-			console.error("optAddonSettings_Get_(): Switch case is default.", select);
+			console.error("getUserSettings_(): Switch case is default.", select);
 			break;
 	}
 }
 
 
-function optAddonSettings_Set_(select, value) {
+function setUserSettings_(select, value) {
 	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
 	switch(select) {
@@ -126,7 +126,7 @@ function optAddonSettings_Set_(select, value) {
 			break;
 
 		default:
-			console.error("optAddonSettings_Set_() : Switch case is default.", select);
+			console.error("setUserSettings_() : Switch case is default.", select);
 			return false;
 	}
 

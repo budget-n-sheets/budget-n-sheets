@@ -1,7 +1,7 @@
 function optCalendar_ProcessRawEvents_(listEvents) {
   var list, cell,
       thisEvent;
-  // var OnlyEventsOwned = optAddonSettings_Get_('OnlyEventsOwned');
+  // var OnlyEventsOwned = getUserSettings_('OnlyEventsOwned');
   var regExp_Account, regExp_Card, code_Card;
   var output, translation;
   var s, i, j;
@@ -134,15 +134,15 @@ function optCalendar_GetCalendarFromSHA1_(sha1sum) {
     if(s === sha1sum) return list[i];
   }
 
-  optAddonSettings_Set_("FinancialCalendar", "");
-  optAddonSettings_Set_("PostDayEvents", false);
-  optAddonSettings_Set_("CashFlowEvents", false);
+  setUserSettings_("FinancialCalendar", "");
+  setUserSettings_("PostDayEvents", false);
+  setUserSettings_("CashFlowEvents", false);
 }
 
 
 function calendarMuteEvents_(calendar, list) {
   var evento, description;
-  // var OnlyEventsOwned = optAddonSettings_Get_("OnlyEventsOwned");
+  // var OnlyEventsOwned = getUserSettings_("OnlyEventsOwned");
   var i;
 
 

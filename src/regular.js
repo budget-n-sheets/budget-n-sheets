@@ -16,7 +16,7 @@ function daily_PostEvents_(date) {
   if(!sheet) return;
   if(sheet.getMaxRows() < 4) return;
 
-  calendar = optAddonSettings_Get_("FinancialCalendar");
+  calendar = getUserSettings_("FinancialCalendar");
   if(calendar === "") return;
   calendar = optCalendar_GetCalendarFromSHA1_(calendar);
   if(!calendar) return;
@@ -110,7 +110,7 @@ function update_DecimalSepartor_() {
     deletePropertiesService_("document", "decimal_separator");
   }
 
-  optAddonSettings_Set_("SpreadsheetLocale", spreadsheet.getSpreadsheetLocale());
+  setUserSettings_("SpreadsheetLocale", spreadsheet.getSpreadsheetLocale());
   return true;
 }
 
@@ -119,7 +119,7 @@ function update_DecimalSepartor_() {
 function monthly_TreatLayout_(yyyy, mm) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
       sheetTags = spreadsheet.getSheetByName('Tags');
-  var FinancialYear = optAddonSettings_Get_('FinancialYear');
+  var FinancialYear = getUserSettings_('FinancialYear');
   var a, i;
 
   if(FinancialYear > yyyy) return; // Too soon to format the spreadsheet.
@@ -183,8 +183,8 @@ function monthly_TreatLayout_(yyyy, mm) {
 
 function foo_ColorTabs_() {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var FinancialYear = optAddonSettings_Get_('FinancialYear'),
-      InitialMonth = optAddonSettings_Get_('InitialMonth');
+  var FinancialYear = getUserSettings_('FinancialYear'),
+      InitialMonth = getUserSettings_('InitialMonth');
   var date = getSpreadsheetDate();
   var mm, i;
 
@@ -242,10 +242,10 @@ function foo_UpdateCashFlow_(mm) {
   h_ = AppsScriptGlobal.TableDimensions()["height"];
   w_ = AppsScriptGlobal.TableDimensions()["width"];
 
-	yyyy = optAddonSettings_Get_('FinancialYear');
+	yyyy = getUserSettings_('FinancialYear');
 
   dd = new Date(yyyy, mm + 1, 0).getDate();
-  OverrideZero = optAddonSettings_Get_("OverrideZero");
+  OverrideZero = getUserSettings_("OverrideZero");
   number_accounts = getPropertiesService_("document", "number", "number_accounts");
 
   cf_flow = [ ];
@@ -258,9 +258,9 @@ function foo_UpdateCashFlow_(mm) {
   listEventos = [ ];
   t = getSpreadsheetDate();
   b = new Date(yyyy, mm + 1, 1);
-  if( optAddonSettings_Get_("CashFlowEvents")
+  if( getUserSettings_("CashFlowEvents")
       && t.getTime() < b.getTime() ) {
-    calendar = optAddonSettings_Get_("FinancialCalendar");
+    calendar = getUserSettings_("FinancialCalendar");
     calendar = optCalendar_GetCalendarFromSHA1_(calendar);
 
     if(calendar) {
@@ -398,7 +398,7 @@ function foo_FormatAccounts_(mm) {
   var thisSheet = SpreadsheetApp.getActiveSpreadsheet()
     .getSheetByName( MN_SHORT_[Number(mm)] );
   var number_accounts = getPropertiesService_('document', 'number', 'number_accounts');
-  var FinancialYear = optAddonSettings_Get_('FinancialYear');
+  var FinancialYear = getUserSettings_('FinancialYear');
   var dateToday;
   var table;
   var numNegativeDays;
@@ -497,8 +497,8 @@ function update_Layout() {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheet;
 
-  var yyyy = optAddonSettings_Get_("FinancialYear");
-  var init = optAddonSettings_Get_("InitialMonth");
+  var yyyy = getUserSettings_("FinancialYear");
+  var init = getUserSettings_("InitialMonth");
   var c, i;
   var h_;
 

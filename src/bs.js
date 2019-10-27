@@ -44,7 +44,7 @@ function signDoc_() {
     addon_version: optGetClass_("AddonVersion"),
     template_version: optGetClass_("TemplateVersion"),
 
-    financial_year: optAddonSettings_Get_("FinancialYear"),
+    financial_year: getUserSettings_("FinancialYear"),
     number_accounts: getPropertiesService_("document", "number", "number_accounts")
   };
 

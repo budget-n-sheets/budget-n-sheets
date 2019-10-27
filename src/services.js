@@ -52,7 +52,7 @@ function daily_Main_(e) {
   if(isMissingSheet()) return;
   if(seamlessUpdate_()) return;
 
-  var FinancialYear = optAddonSettings_Get_('FinancialYear');
+  var FinancialYear = getUserSettings_('FinancialYear');
   var date, a;
 
   if(e) {
@@ -68,7 +68,7 @@ function daily_Main_(e) {
 		"date": date.getDate()
 	};
 
-  if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != optAddonSettings_Get_('SpreadsheetLocale')) {
+  if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('SpreadsheetLocale')) {
     if(!update_DecimalSepartor_()) return;
   }
 
@@ -86,7 +86,7 @@ function daily_Main_(e) {
     monthly_TreatLayout_(a["year"], a["month"]);
   }
 
-  if(optAddonSettings_Get_("PostDayEvents")) {
+  if(getUserSettings_("PostDayEvents")) {
     daily_PostEvents_(date);
   }
 
@@ -98,7 +98,7 @@ function weekly_Foo_(e) {
   if(isReAuthorizationRequired_()) return;
   if(isMissingSheet()) return;
 
-  if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != optAddonSettings_Get_('SpreadsheetLocale')) {
+  if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('SpreadsheetLocale')) {
     if(!update_DecimalSepartor_()) return;
   }
 
@@ -110,14 +110,14 @@ function weekly_Bar_(e) {
   if(isReAuthorizationRequired_()) return;
   if(isMissingSheet()) return;
 
-  if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != optAddonSettings_Get_('SpreadsheetLocale')) {
+  if(SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('SpreadsheetLocale')) {
     if(!update_DecimalSepartor_()) return;
   }
 
   if(seamlessUpdate_()) return;
 
   var date = getSpreadsheetDate();
-  var yyyy = optAddonSettings_Get_("FinancialYear");
+  var yyyy = getUserSettings_("FinancialYear");
 
   if(e["year"] > yyyy) return;
 

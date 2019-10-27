@@ -121,7 +121,7 @@ function optAccount_UpdateTableRef_() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cash Flow');
   var listTables = optTable_GetList_();
   var number_accounts = getPropertiesService_('document', 'number', 'number_accounts'),
-      yyyy = optAddonSettings_Get_('FinancialYear');
+      yyyy = getUserSettings_('FinancialYear');
   var range_, string, mm, dd,
       i, k, h_;
 

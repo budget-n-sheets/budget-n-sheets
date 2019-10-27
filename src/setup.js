@@ -57,7 +57,7 @@ function askDeactivation() {
 function askReinstall() {
   if(!getPropertiesService_("document", "", "is_installed")) return;
 
-  var FinancialYear = optAddonSettings_Get_('FinancialYear');
+  var FinancialYear = getUserSettings_('FinancialYear');
   var dateToday = getSpreadsheetDate();
 
   purgeScriptAppTriggers_();

@@ -183,9 +183,9 @@ function optTag_GetStat_(input) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
   if(!sheet) return 2;
 
-  var init = optAddonSettings_Get_("InitialMonth");
-  var ActualMonth = optAddonSettings_Get_('ActualMonth');
-  var MFactor = optAddonSettings_Get_('MFactor');
+  var init = getUserSettings_("InitialMonth");
+  var ActualMonth = getUserSettings_('ActualMonth');
+  var MFactor = getUserSettings_('MFactor');
 
   var output;
   var data, avgValue;

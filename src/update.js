@@ -206,7 +206,7 @@ function update0pack13_() {
 		var user_const_settings;
 		var date_created, number_accounts, financial_year;
 
-		financial_year = optAddonSettings_Get_("FinancialYear");
+		financial_year = getUserSettings_("FinancialYear");
 		number_accounts = getPropertiesService_("document", "number", "number_accounts");
 
 		user_const_settings = {
@@ -396,7 +396,7 @@ function update0pack08_() {
   try {
 		var date = getSpreadsheetDate();
 
-		if(date.getFullYear() == optAddonSettings_Get_("FinancialYear")) {
+		if(date.getFullYear() == getUserSettings_("FinancialYear")) {
 			monthly_TreatLayout_(date.getFullYear(), date.getMonth());
 		}
   } catch(err) {
@@ -462,7 +462,7 @@ function update0pack05_() {
   try {
 		var date = getSpreadsheetDate();
 
-		if(date.getFullYear() == optAddonSettings_Get_("FinancialYear")) {
+		if(date.getFullYear() == getUserSettings_("FinancialYear")) {
 			monthly_TreatLayout_(date.getFullYear(), date.getMonth());
 		}
   } catch(err) {

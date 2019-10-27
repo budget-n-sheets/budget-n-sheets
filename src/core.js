@@ -99,7 +99,7 @@ function showPanelTags() {
 
   htmlTemplate = HtmlService.createTemplateFromFile('htmlMainTags');
 
-  htmlTemplate.isInitiated = (optAddonSettings_Get_("MFactor") > 0);
+  htmlTemplate.isInitiated = (getUserSettings_("MFactor") > 0);
 
   htmlDialog = htmlTemplate.evaluate()
     .setWidth(640)

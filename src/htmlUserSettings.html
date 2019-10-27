@@ -162,7 +162,7 @@
       google.script.run
         .withSuccessHandler(Settings_Post)
         .withFailureHandler(showError)
-        .optAddonSettings_Retrieve();
+        .retrieveUserSettings();
     });
     $("#FinancialCalendar").change(function() {
       if($(this).val() === "") {
@@ -251,7 +251,7 @@
 
       google.script.run.withSuccessHandler(optSettings_Aftermath)
         .withFailureHandler(showError)
-        .optAddonSettings_Save(settings);
+        .saveUserSettings(settings);
     }
     function optSettings_Aftermath(p) {
       if(p === 1) {
