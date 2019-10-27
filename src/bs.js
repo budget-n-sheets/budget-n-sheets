@@ -2,7 +2,7 @@ function nodeControl_(c, data) {
   var lock = LockService.getDocumentLock();
 	var r;
   try {
-    lock.waitLock(200);
+    lock.waitLock(2000);
   } catch(err) {
 		console.warn("nodeControl_(): Wait lock time out.");
     return 0;

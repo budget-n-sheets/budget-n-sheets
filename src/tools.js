@@ -9,7 +9,7 @@ function toolHideSheets_() {
 function optNavTools_(p) {
   var lock = LockService.getDocumentLock();
   try {
-    lock.waitLock(200);
+    lock.waitLock(2000);
   } catch(err) {
     SpreadsheetApp.getUi().alert(
       "Add-on is busy",
@@ -50,7 +50,7 @@ function toolFormatRegistry() {
 function optMainTools_(p, mm) {
   var lock = LockService.getDocumentLock();
   try {
-    lock.waitLock(200);
+    lock.waitLock(2000);
   } catch(err) {
     SpreadsheetApp.getUi().alert(
       "Add-on is busy",

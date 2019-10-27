@@ -2,7 +2,7 @@ function optMainTags(opt, input) {
   var lock = LockService.getDocumentLock();
 	var r;
   try {
-    lock.waitLock(200);
+    lock.waitLock(2000);
   } catch(err) {
 		console.warn("optMainTags(): Wait lock time out.");
     return 0;

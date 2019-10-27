@@ -109,7 +109,7 @@ function setup_ui(settings, list) {
 
   var lock = LockService.getDocumentLock();
   try {
-    lock.waitLock(200);
+    lock.waitLock(2000);
   } catch(err) {
     SpreadsheetApp.getUi().alert(
       "Add-on is busy",
