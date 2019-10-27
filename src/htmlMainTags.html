@@ -564,7 +564,7 @@
         Tag: $('#Form-AddEditTag_Tag').val(),
         C: $('#Form-AddEditTag_C').val(),
 				analytics: $('#AddEditTag_Analytics').val() === "on",
-        refTag: htmlVarGlobal.Tag
+        old_tag: htmlVarGlobal.Tag
       };
 
       google.script.run
@@ -741,7 +741,7 @@
           .showDialogQuickMessage("", 'The add-on is busy. Try again a moment.', true);
         return;
 
-      } else if( !isNaN(input) ) {
+      } else if(input === 2) {
         showError();
         return;
       }
