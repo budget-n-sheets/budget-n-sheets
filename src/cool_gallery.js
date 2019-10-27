@@ -15,6 +15,7 @@ function optCoolGallery(command, options) {
 		default:
 			console.warn("optCoolGallery(): Switch case is default.", command);
 			r = 3;
+			break;
 	}
 
 	lock.releaseLock();
