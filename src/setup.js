@@ -584,57 +584,47 @@ function setupPart3_(spreadsheet, number_accounts) {
 }
 
 
-function setupPart2_(sheetBackstage, listAccountName, m, number_accounts) {
-  if(number_accounts !== listAccountName.length) throw "Number number_accounts and listAccountName length are different.";
-  var thisSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Jan');
-  var dbAccountInfo;
+function setupPart2_(sheetBackstage, listAcc, m, number_accounts) {
+  if(number_accounts !== listAcc.length) throw "Number number_accounts and listAcc length are differ.";
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Jan');
+  var db_acc, list_id;
   var newCell;
-  var r, n, k, w_;
+  var r, i, k, w_;
 
   w_ = AppsScriptGlobal.TableDimensions()["width"];
 
-  dbAccountInfo = [ ];
-  r = randomString(11, "word");
+	r = "";
+	db_acc = [ ];
+	list_id = [ ];
 
+  for(k = 0; k < number_accounts; k++) {
+		i = 0;
+		do {
+			r = randomString(11, "word");
+			i++;
+		} while (list_id.indexOf(r) !== -1 && i < 99);
 
-  for(k = 0;  k < number_accounts;  k++) {
+		if (i >= 99) throw "Could not generate unique ID for account.";
+
+		list_id.push(r);
+
     newCell = {
       Id: r,
-      Name: listAccountName[k],
+      Name: listAcc[i],
       TimeA: m,
       TimeZ: 11,
       Balance: 0
     };
 
-    sheetBackstage.getRange(1, 7+w_*k).setValue(listAccountName[k]);
-    thisSheet.getRange(1, 6+k*5).setValue(listAccountName[k]);
+    sheetBackstage.getRange(1, 7 + w_*k).setValue(listAcc[k]);
+    sheet.getRange(1, 6 + k*5).setValue(listAcc[k]);
 
-    dbAccountInfo.push(newCell);
+    db_acc.push(newCell);
   }
 
-  setPropertiesService_('document', 'json', 'DB_ACCOUNT', dbAccountInfo);
-  setPropertiesService_('document', 'json', 'DB_CARD', [ ]);
-
-	k = 0;
-	n = 0;
-	while (k < dbAccountInfo.length) {
-		r = optMainTables('GenerateRandomId');
-
-		if (!r) {
-			if (r === 0 && n < 3) {
-				n++;
-				Utilities.sleep(137);
-			} else {
-				throw "Error: could not set ID to tables."
-			}
-		} else {
-			dbAccountInfo[k].Id = r;
-			k++;
-			n = 0;
-		}
-	}
-
-  setPropertiesService_('document', 'json', 'DB_ACCOUNT', dbAccountInfo);
+	setPropertiesService_('document', 'json', 'DB_CARD', [ ]);
+  setPropertiesService_('document', 'json', 'DB_ACCOUNT', db_acc);
 }
 
 
