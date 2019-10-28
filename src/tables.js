@@ -10,30 +10,22 @@ function optMainTables(opt, param) {
 	switch(opt) {
 		case 'GetList':
 			return optTable_GetList_();
-			break;
 		case 'GetInfo':
 			return optTable_GetInfo_(param);
-			break;
 		case 'GenerateRandomId':
 			return optTable_GenerateRandomId_();
-			break;
 
 		case 'UpdateAccount':
 			return optAccount_Update_(param);
-			break;
 		case 'UpdateTableRef':
 			return optAccount_UpdateTableRef_();
-			break;
 
 		case 'AddCard':
 			return optCard_Add_(param);
-			break;
 		case 'UpdateCard':
 			return optCard_Update_(param);
-			break;
 		case 'RemoveCard':
 			return optCard_Remove_(param);
-			break;
 
 		case 'isBusy':
 			return -1;
