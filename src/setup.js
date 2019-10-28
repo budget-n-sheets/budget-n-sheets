@@ -169,13 +169,8 @@ function setup_(settings, listAccountName) {
 	};
 	setPropertiesService_("document", "json", "class_version", s);
 
-	try {
-		s = nodeControl_("sign");
-		if(typeof s != "string") throw 1;
-	} catch(err) {
-		console.error("nodeControl_()/sign", err);
-		return;
-	}
+	s = nodeControl_("sign");
+	if(typeof s != "string") throw 1;
 
 	console.timeEnd("add-on/Install");
 	return true;
