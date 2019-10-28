@@ -87,13 +87,22 @@ function showPanelTables() {
 
 function showPanelTags() {
   if(onlineUpdate_()) return;
-  else if(optMainTags('isBusy') !== -1) {
+  if(optMainTags('isBusy') !== -1) {
     SpreadsheetApp.getUi().alert(
       "Add-on is busy",
       "The add-on is busy. Try again a moment.",
       SpreadsheetApp.getUi().ButtonSet.OK);
     return;
   }
+
+	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+	if (!sheet) {
+		SpreadsheetApp.getUi().alert(
+			"Can't open Tags panel",
+			"The sheet Tags was not found.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+		return;
+	}
 
   var htmlTemplate, htmlDialog;
 

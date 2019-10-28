@@ -9,12 +9,13 @@ function toolHideSheets_() {
 function optNavTools_(p) {
   var lock = LockService.getDocumentLock();
   try {
-    lock.waitLock(200);
+    lock.waitLock(2000);
   } catch(err) {
     SpreadsheetApp.getUi().alert(
       "Add-on is busy",
       "The add-on is busy. Try again in a moment.",
       SpreadsheetApp.getUi().ButtonSet.OK);
+		console.warn("optNavTools_(): Wait lock time out.");
     return;
   }
 
@@ -25,12 +26,11 @@ function optNavTools_(p) {
     case "hide":
       optTool_HideSheets_();
       break;
+
     default:
       console.error("optNavTools_(): Switch case is default.", p);
       break;
   }
-
-	lock.releaseLock();
 }
 
 
@@ -49,12 +49,13 @@ function toolFormatRegistry() {
 function optMainTools_(p, mm) {
   var lock = LockService.getDocumentLock();
   try {
-    lock.waitLock(200);
+    lock.waitLock(2000);
   } catch(err) {
     SpreadsheetApp.getUi().alert(
       "Add-on is busy",
       "The add-on is busy. Try again in a moment.",
       SpreadsheetApp.getUi().ButtonSet.OK);
+		console.warn("optMainTools_(): Wait lock time out.");
     return;
   }
 
@@ -74,12 +75,11 @@ function optMainTools_(p, mm) {
 		case 'FormatCards':
 			foo_FormatCards_(mm);
 			break;
+
     default:
       console.error("optMainTools_(): Switch case is default.", p);
       break;
   }
-
-	lock.releaseLock();
 }
 
 
