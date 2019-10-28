@@ -1,275 +1,275 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top">
-    <meta charset="UTF-8">
-    <?!= htmlInclude('htmlStyles'); ?>
-	  <style>
-      body {
-        display: none;
-      }
-      table {
-        width: 100%;
-      }
+	<head>
+		<base target="_top">
+		<meta charset="UTF-8">
+		<?!= htmlInclude('htmlStyles'); ?>
+		<style>
+			body {
+				display: none;
+			}
+			table {
+				width: 100%;
+			}
 
-      .animation_WaitLoad_wrapper {
-        width: 257px;
-      }
-      .animation_WaitLoad_bar {
-        width: 113px;
-        animation-name: animateCustomProgressBar;
-        animation-duration: 1709ms;
-      }
-      @keyframes animateCustomProgressBar {
-        from {left: -257px;}
-        to {left: 257px;}
-      }
+			.animation_WaitLoad_wrapper {
+				width: 257px;
+			}
+			.animation_WaitLoad_bar {
+				width: 113px;
+				animation-name: animateCustomProgressBar;
+				animation-duration: 1709ms;
+			}
+			@keyframes animateCustomProgressBar {
+				from {left: -257px;}
+				to {left: 257px;}
+			}
 
-      #MainPanel_content {
-        padding: 7px 5px;
-        margin-bottom: 4.7em;
-      }
-	  </style>
-  </head>
-  <body>
+			#MainPanel_content {
+				padding: 7px 5px;
+				margin-bottom: 4.7em;
+			}
+		</style>
+	</head>
+	<body>
 
-    <div id="MainPanel_wrapper">
-      <div id="MainPanel_content">
-        <div class="panel active" id="main-panel" align="center">
-          <img style="height:83px;margin:1.7em 0 0 0;" src="https://raw.githubusercontent.com/guimspace/budget-n-sheets/master/media/icon/icon-large.png" alt="Budget n Sheets">
-          <h2 style="margin-bottom:0.3em;">Budget n Sheets</h2>
-          <span class="gray" style="font-style:italic;">Mind your budget</span>
-          <div style="margin-top:2.3em;">
-            <button style="width:13em;" onclick="clickNext()" class="action">Start</button>
-          </div>
-          <div style="margin-top:0.7em;">
-            <a href="https://sites.google.com/view/guimspace/budget-n-sheets/privacy-policy" target="_blank">Privacy Policy</a> and <a href="https://sites.google.com/view/guimspace/budget-n-sheets/terms-of-service" target="_blank">Terms of Service</a>
-          </div>
-        </div>
+		<div id="MainPanel_wrapper">
+			<div id="MainPanel_content">
+				<div class="panel active" id="main-panel" align="center">
+					<img style="height:83px;margin:1.7em 0 0 0;" src="https://raw.githubusercontent.com/guimspace/budget-n-sheets/master/media/icon/icon-large.png" alt="Budget n Sheets">
+					<h2 style="margin-bottom:0.3em;">Budget n Sheets</h2>
+					<span class="gray" style="font-style:italic;">Mind your budget</span>
+					<div style="margin-top:2.3em;">
+						<button style="width:13em;" onclick="clickNext()" class="action">Start</button>
+					</div>
+					<div style="margin-top:0.7em;">
+						<a href="https://sites.google.com/view/guimspace/budget-n-sheets/privacy-policy" target="_blank">Privacy Policy</a> and <a href="https://sites.google.com/view/guimspace/budget-n-sheets/terms-of-service" target="_blank">Terms of Service</a>
+					</div>
+				</div>
 
-        <div class="panel" id="note-panel">
-          <h2>Attention</h2>
-          <p>All sheets and data of the spreadsheet will be deleted before the building process start!</p>
-          <p>If the spreadsheet has important or sensitive data that you care about, <a href="https://support.google.com/docs/answer/49114" target="_blank"><b>make a copy or start a new spreadsheet</b></a> before continuing, then restart the building process.</p>
-        </div>
+				<div class="panel" id="note-panel">
+					<h2>Attention</h2>
+					<p>All sheets and data of the spreadsheet will be deleted before the building process start!</p>
+					<p>If the spreadsheet has important or sensitive data that you care about, <a href="https://support.google.com/docs/answer/49114" target="_blank"><b>make a copy or start a new spreadsheet</b></a> before continuing, then restart the building process.</p>
+				</div>
 
-        <div class="panel" id="form-panel">
-          <div style="display:table;width:100%;">
-            <div style="display:table-row;">
-              <div style="width:100%;display:table-cell;vertical-align:middle;">
-                <h2>Budget sheet specs</h2>
-              </div>
-              <div align="right" style="display:table-cell;vertical-align:middle;">
-                <a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
-              </div>
-            </div>
-          </div>
+				<div class="panel" id="form-panel">
+					<div style="display:table;width:100%;">
+						<div style="display:table-row;">
+							<div style="width:100%;display:table-cell;vertical-align:middle;">
+								<h2>Budget sheet specs</h2>
+							</div>
+							<div align="right" style="display:table-cell;vertical-align:middle;">
+								<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
+							</div>
+						</div>
+					</div>
 
-          <form accept-charset="UTF-8" onSubmit="fireSetup();">
+					<form accept-charset="UTF-8" onSubmit="fireSetup();">
 						<table style="width: 100%;">
 							<tr>
 								<td class="name" style="width:50%;"><label for="Form_SpreadsheetName">Spreadsheet title</label></td>
 								<td><input type="text" id="Form_SpreadsheetName" maxlength="53" required></td>
 							</tr>
 						</table>
-            <table style="width: 100%; margin-top: 2em;">
+						<table style="width: 100%; margin-top: 2em;">
 							<tr>
 								<th colspan="2" style="font-size:1.2em;"><i class="material-icons">calendar_today</i> Calendar</th>
 							</tr>
-              <tr>
-                <td class="name" style="width:50%;"><label for="Form_FinancialYear">Financial year</label></td>
-                <td><input type="number" id="Form_FinancialYear" style="width:61px;" min="1889" max="2111" step="1" required></td>
-              </tr>
-              <tr>
-                <td class="name" style="width:50%;"><label for="Form_InitialMonth">Initial month</label></td>
-                <td>
-                  <select id="Form_InitialMonth" style="width:89px;">
-                    <option value="0" selected>January</option>
-                    <option value="1">February</option>
-                    <option value="2">March</option>
-                    <option value="3">April</option>
-                    <option value="4">May</option>
-                    <option value="5">June</option>
-                    <option value="6">July</option>
-                    <option value="7">August</option>
-                    <option value="8">September</option>
-                    <option value="9">October</option>
-                    <option value="10">November</option>
-                    <option value="11">December</option>
-                  </select>
-                </td>
-              </tr>
+							<tr>
+								<td class="name" style="width:50%;"><label for="Form_FinancialYear">Financial year</label></td>
+								<td><input type="number" id="Form_FinancialYear" style="width:61px;" min="1889" max="2111" step="1" required></td>
+							</tr>
+							<tr>
+								<td class="name" style="width:50%;"><label for="Form_InitialMonth">Initial month</label></td>
+								<td>
+									<select id="Form_InitialMonth" style="width:89px;">
+										<option value="0" selected>January</option>
+										<option value="1">February</option>
+										<option value="2">March</option>
+										<option value="3">April</option>
+										<option value="4">May</option>
+										<option value="5">June</option>
+										<option value="6">July</option>
+										<option value="7">August</option>
+										<option value="8">September</option>
+										<option value="9">October</option>
+										<option value="10">November</option>
+										<option value="11">December</option>
+									</select>
+								</td>
+							</tr>
 						</table>
 						<table style="width: 100%; margin-top: 2em;">
 							<tr>
 								<th colspan="2" style="font-size:1.2em;"><i class="material-icons">account_balance</i> Accounts</th>
 							</tr>
-              <tr>
-                <td class="name comment" style="width:50%;"><label for="Form_NumberLneAccount">Accounts</label></td>
-                <td>
-                  <select id="Form_NumberLneAccount" style="width:83px;">
-                    <option value="1" selected>One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                    <option value="4">Four</option>
-                    <option value="5">Five</option>
-                  </select>
-                </td>
-              </tr>
-              <tr class="tr_Account">
-                <td>
-                  <label style="font-weight: bold;">Account 1</label><br/>
-									<span class="gray">Name</span>
-                </td>
+							<tr>
+								<td class="name comment" style="width:50%;"><label for="Form_NumberLneAccount">Accounts</label></td>
 								<td>
-                  <input type="text" placeholder="Bank A" class="Form_AccountName" style="width: 100%;" required>
-                </td>
-              </tr>
+									<select id="Form_NumberLneAccount" style="width:83px;">
+										<option value="1" selected>One</option>
+										<option value="2">Two</option>
+										<option value="3">Three</option>
+										<option value="4">Four</option>
+										<option value="5">Five</option>
+									</select>
+								</td>
+							</tr>
 							<tr class="tr_Account">
-                <td>
-                  <label style="font-weight: bold;">Account 2</label><br/>
-									<span class="gray">Name</span>
-                </td>
 								<td>
-                  <input type="text" placeholder="Bank B" class="Form_AccountName" style="width: 100%;">
-                </td>
-              </tr>
+									<label style="font-weight: bold;">Account 1</label><br/>
+									<span class="gray">Name</span>
+								</td>
+								<td>
+									<input type="text" placeholder="Bank A" class="Form_AccountName" style="width: 100%;" required>
+								</td>
+							</tr>
 							<tr class="tr_Account">
-                <td>
-                  <label style="font-weight: bold;">Account 3</label><br/>
-									<span class="gray">Name</span>
-                </td>
 								<td>
-                  <input type="text" placeholder="Bank C" class="Form_AccountName" style="width: 100%;">
-                </td>
-              </tr>
+									<label style="font-weight: bold;">Account 2</label><br/>
+									<span class="gray">Name</span>
+								</td>
+								<td>
+									<input type="text" placeholder="Bank B" class="Form_AccountName" style="width: 100%;">
+								</td>
+							</tr>
 							<tr class="tr_Account">
-                <td>
-                  <label style="font-weight: bold;">Account 4</label><br/>
-									<span class="gray">Name</span>
-                </td>
 								<td>
-                  <input type="text" placeholder="Bank D" class="Form_AccountName" style="width: 100%;">
-                </td>
-              </tr>
+									<label style="font-weight: bold;">Account 3</label><br/>
+									<span class="gray">Name</span>
+								</td>
+								<td>
+									<input type="text" placeholder="Bank C" class="Form_AccountName" style="width: 100%;">
+								</td>
+							</tr>
 							<tr class="tr_Account">
-                <td>
-                  <label style="font-weight: bold;">Account 5</label><br/>
-									<span class="gray">Name</span>
-                </td>
 								<td>
-                  <input type="text" placeholder="Bank E" class="Form_AccountName" style="width: 100%;">
-                </td>
-              </tr>
-            </table>
-            <input id="form-p_submit" style="display:none;" type="submit">
-          </form>
-        </div>
+									<label style="font-weight: bold;">Account 4</label><br/>
+									<span class="gray">Name</span>
+								</td>
+								<td>
+									<input type="text" placeholder="Bank D" class="Form_AccountName" style="width: 100%;">
+								</td>
+							</tr>
+							<tr class="tr_Account">
+								<td>
+									<label style="font-weight: bold;">Account 5</label><br/>
+									<span class="gray">Name</span>
+								</td>
+								<td>
+									<input type="text" placeholder="Bank E" class="Form_AccountName" style="width: 100%;">
+								</td>
+							</tr>
+						</table>
+						<input id="form-p_submit" style="display:none;" type="submit">
+					</form>
+				</div>
 
-        <div class="panel" id="setup-panel">
-          <h2>Assembling process</h2>
-          <p>We are putting everything together, hold on!</p>
-          <ol>
-            <li>Format spreadsheet</li>
-            <li>Import template</li>
-            <li>Assemble spreadsheet</li>
-            <li>Apply updates</li>
-          </ol>
-          <br/>
-          <div class="animation_WaitLoad_wrapper">
-            <div class="animation_WaitLoad_bar"></div>
-          </div>
-        </div>
-      </div>
+				<div class="panel" id="setup-panel">
+					<h2>Assembling process</h2>
+					<p>We are putting everything together, hold on!</p>
+					<ol>
+						<li>Format spreadsheet</li>
+						<li>Import template</li>
+						<li>Assemble spreadsheet</li>
+						<li>Apply updates</li>
+					</ol>
+					<br/>
+					<div class="animation_WaitLoad_wrapper">
+						<div class="animation_WaitLoad_bar"></div>
+					</div>
+				</div>
+			</div>
 
-      <div id="MainPanel_footer" style="display:table;">
-        <div style="display:table-row;">
-          <div id="MainPanel_footer-left" style="width:50%;height:3.7em;display:table-cell;padding:7px;vertical-align:middle;">
-          </div>
-          <div id="MainPanel_footer-right" align="right" style="width:50%;display:table-cell;padding:7px;vertical-align:middle;">
-          </div>
-        </div>
-      </div>
-    </div>
-    <?!= htmlInclude('htmlJavaScript'); ?>
-  <script>
-    var htmlVarGlobal = {
-      Panel: "main"
-    };
-    $(document).ready(function() {
-      var dateToday = new Date();
+			<div id="MainPanel_footer" style="display:table;">
+				<div style="display:table-row;">
+					<div id="MainPanel_footer-left" style="width:50%;height:3.7em;display:table-cell;padding:7px;vertical-align:middle;">
+					</div>
+					<div id="MainPanel_footer-right" align="right" style="width:50%;display:table-cell;padding:7px;vertical-align:middle;">
+					</div>
+				</div>
+			</div>
+		</div>
+		<?!= htmlInclude('htmlJavaScript'); ?>
+	<script>
+		var htmlVarGlobal = {
+			Panel: "main"
+		};
+		$(document).ready(function() {
+			var dateToday = new Date();
 
-      $('#Form_FinancialYear').val( dateToday.getFullYear() );
+			$('#Form_FinancialYear').val( dateToday.getFullYear() );
 
-      if(dateToday.getMonth() > 1) {
-        $('#Form_InitialMonth').val( dateToday.getMonth()-1 );
-      }
+			if(dateToday.getMonth() > 1) {
+				$('#Form_InitialMonth').val( dateToday.getMonth()-1 );
+			}
 
-      $('.tr_Account').slice(1).hide();
+			$('.tr_Account').slice(1).hide();
 
-      $('body').fadeIn('slow');
-    });
-    $('#Form_NumberLneAccount').change(function() { /* ------------------- */
-      var number_accounts = Number( $(this).val() );
+			$('body').fadeIn('slow');
+		});
+		$('#Form_NumberLneAccount').change(function() { /* ------------------- */
+			var number_accounts = Number( $(this).val() );
 
-      $('.tr_Account').show();
-      $('.tr_Account').slice(number_accounts).hide();
+			$('.tr_Account').show();
+			$('.tr_Account').slice(number_accounts).hide();
 
-      $('.Form_AccountName').attr('required', true);
-      $('.Form_AccountName').slice(number_accounts).attr('required', false).val('');
-    });
-    function clickNext(param) { /* ------------------- */
-      window.scrollTo(0, 0);
-      switch(htmlVarGlobal.Panel) {
-        case 'main':
-          $('#main-panel').hide();
+			$('.Form_AccountName').attr('required', true);
+			$('.Form_AccountName').slice(number_accounts).attr('required', false).val('');
+		});
+		function clickNext(param) { /* ------------------- */
+			window.scrollTo(0, 0);
+			switch(htmlVarGlobal.Panel) {
+				case 'main':
+					$('#main-panel').hide();
 
-          $('#MainPanel_footer-left').append('<button class="action" onclick="clickNext()">Continue</button>');
-          htmlVarGlobal.Panel = 'note';
-          $('#note-panel').fadeIn('fast');
-          break;
-        case 'note':
-          $('#note-panel').hide();
-          $('#MainPanel_footer-left button').remove();
+					$('#MainPanel_footer-left').append('<button class="action" onclick="clickNext()">Continue</button>');
+					htmlVarGlobal.Panel = 'note';
+					$('#note-panel').fadeIn('fast');
+					break;
+				case 'note':
+					$('#note-panel').hide();
+					$('#MainPanel_footer-left button').remove();
 
-          $('#MainPanel_footer-left').append('<button id="b_install" class="create" onclick="clickNext()">Build</button>');
-          htmlVarGlobal.Panel = 'form';
-          $('#form-panel').fadeIn('fast');
-          break;
-        case 'form':
-          $('#form-p_submit').click();
-          break;
-        default:
-          showError();
-          break;
-      }
-      return;
-    }
-    function fireSetup() {
-      $('#form-panel').hide();
-      $('#MainPanel_footer button').remove();
+					$('#MainPanel_footer-left').append('<button id="b_install" class="create" onclick="clickNext()">Build</button>');
+					htmlVarGlobal.Panel = 'form';
+					$('#form-panel').fadeIn('fast');
+					break;
+				case 'form':
+					$('#form-p_submit').click();
+					break;
+				default:
+					showError();
+					break;
+			}
+			return;
+		}
+		function fireSetup() {
+			$('#form-panel').hide();
+			$('#MainPanel_footer button').remove();
 
-      htmlVarGlobal.Panel = 'setup';
-      $('#setup-panel').fadeIn('fast');
+			htmlVarGlobal.Panel = 'setup';
+			$('#setup-panel').fadeIn('fast');
 
 
-      var addonSettings = {
-        SpreadsheetName: $('#Form_SpreadsheetName').val(),
-        FinancialYear: $('#Form_FinancialYear').val(),
-        InitialMonth: $('#Form_InitialMonth').val(),
-        number_accounts: $('#Form_NumberLneAccount').val()
-      };
+			var addonSettings = {
+				SpreadsheetName: $('#Form_SpreadsheetName').val(),
+				FinancialYear: $('#Form_FinancialYear').val(),
+				InitialMonth: $('#Form_InitialMonth').val(),
+				number_accounts: $('#Form_NumberLneAccount').val()
+			};
 
-      var selectorAccountName = $('.Form_AccountName[required]');
-      var listAccountName = selectorAccountName.map(function() {
-        return $(this).val();
-      }).get();
+			var selectorAccountName = $('.Form_AccountName[required]');
+			var listAccountName = selectorAccountName.map(function() {
+				return $(this).val();
+			}).get();
 
-      google.script.run.withSuccessHandler(function() {
-          google.script.host.close();
-        }).withFailureHandler(showError)
-        .setup_ui(addonSettings, listAccountName);
-    }
-  </script>
-  </body>
+			google.script.run.withSuccessHandler(function() {
+					google.script.host.close();
+				}).withFailureHandler(showError)
+				.setup_ui(addonSettings, listAccountName);
+		}
+	</script>
+	</body>
 </html>

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top">
-    <meta charset="UTF-8">
-    <?!= htmlInclude('htmlStyles'); ?>
-    <style>
-      td > label {
-        width: 37%;
-      }
+	<head>
+		<base target="_top">
+		<meta charset="UTF-8">
+		<?!= htmlInclude('htmlStyles'); ?>
+		<style>
+			td > label {
+				width: 37%;
+			}
 
 			#tab_accounts { color: #b6d7a8; }
 			#tab_accounts:hover { color: #6aa84f; }
@@ -17,8 +17,8 @@
 			#tab_cards:hover { color: #3c78d8; }
 			#tab_cards.active { color: #3c78d8; border-bottom: solid 2px; }
 
-      .m-tool { color: #6d9eeb; cursor: pointer; }
-      .m-tool:hover { color: #3c78d8; cursor: pointer; }
+			.m-tool { color: #6d9eeb; cursor: pointer; }
+			.m-tool:hover { color: #3c78d8; cursor: pointer; }
 
 			#MainPanel_header {
 				height: 3.7em;
@@ -34,17 +34,17 @@
 				border-collapse: separate;
 				border-spacing: 13px 7px;
 			}
-      .MainMenu-bot_title {
-        display: table;
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 7px;
-        background-color: #efefef;
-        border-top: 2px solid #d9d9d9;
-      }
-      .MainMenu_row {
-        display: table-row;
-      }
+			.MainMenu-bot_title {
+				display: table;
+				width: 100%;
+				border-collapse: separate;
+				border-spacing: 7px;
+				background-color: #efefef;
+				border-top: 2px solid #d9d9d9;
+			}
+			.MainMenu_row {
+				display: table-row;
+			}
 			.m-tab {
 				cursor: pointer;
 				display: table-cell;
@@ -52,41 +52,41 @@
 				color: #7a7a7a;
 				font-size: 24px;
 			}
-      .m-footer {
-        display: table-cell;
-        vertical-align: middle;
-      }
+			.m-footer {
+				display: table-cell;
+				vertical-align: middle;
+			}
 
-      .a-disabled { color: #7a7a7a !important; }
+			.a-disabled { color: #7a7a7a !important; }
 
-      .Table-head {
-        display: table;
-        width: 100%;
-        margin-bottom: 17px;
-        border: 1px solid #d9d9d9;
-        border-radius: 7px;
-      }
-      .Table-row {
-        display: table-row;
-      }
-      .Table-name {
-        width: 100%;
-        display: table-cell;
-        padding: 11px;
-      }
-      .Table-menu {
-        width: 100%;
-        display: table-cell;
-        text-align: right;
-        padding: 11px;
-        font-weight: bold;
-        border-top: 1px solid #d9d9d9;
-        word-spacing: 11px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="MainPanel_wrapper">
+			.Table-head {
+				display: table;
+				width: 100%;
+				margin-bottom: 17px;
+				border: 1px solid #d9d9d9;
+				border-radius: 7px;
+			}
+			.Table-row {
+				display: table-row;
+			}
+			.Table-name {
+				width: 100%;
+				display: table-cell;
+				padding: 11px;
+			}
+			.Table-menu {
+				width: 100%;
+				display: table-cell;
+				text-align: right;
+				padding: 11px;
+				font-weight: bold;
+				border-top: 1px solid #d9d9d9;
+				word-spacing: 11px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="MainPanel_wrapper">
 			<div class="panel active" id="MainPanel_header" align="center">
 				<div class="MainMenu-top_title">
 					<div class="MainMenu_row">
@@ -100,7 +100,7 @@
 				</div>
 			</div>
 
-      <div id="MainPanel_content" style="margin-bottom:4.7em;">
+			<div id="MainPanel_content" style="margin-bottom:4.7em;">
 				<div class="panel active" id="panel_Accounts">
 					<div id="box_Accounts">
 					</div>
@@ -119,80 +119,80 @@
 					</div>
 				</div>
 
-        <div class="panel" id="panel_AddEditCard">
-          <h2 id="Panel-AddEditCard_Title"></h2>
-          <form id="Form-AddEditCard" onSubmit="AddEditCard_Push()" accept-charset="UTF-8">
-            <table id="Table-AddEditCard" style="width:100%;">
-              <tr>
-                <td class="name"><label for="Form-AddEditCard_Name">Name</label></td>
-                <td><input class="Form-AddEditCard_lock" type="text" id="Form-AddEditCard_Name" maxlength="90" required></td>
-              </tr>
-              <tr>
-                <td class="name"><label for="Form-AddEditCard_Code">Code</label></td>
-                <td><input class="Form-AddEditCard_lock" type="text" pattern="[A-Z][0-9A-Z]{1,13}" id="Form-AddEditCard_Code" required></td>
-              </tr>
-            </table>
-            <input id="Form-AddEditCard_submit" style="display:none;" type="submit">
-          </form>
-        </div>
+				<div class="panel" id="panel_AddEditCard">
+					<h2 id="Panel-AddEditCard_Title"></h2>
+					<form id="Form-AddEditCard" onSubmit="AddEditCard_Push()" accept-charset="UTF-8">
+						<table id="Table-AddEditCard" style="width:100%;">
+							<tr>
+								<td class="name"><label for="Form-AddEditCard_Name">Name</label></td>
+								<td><input class="Form-AddEditCard_lock" type="text" id="Form-AddEditCard_Name" maxlength="90" required></td>
+							</tr>
+							<tr>
+								<td class="name"><label for="Form-AddEditCard_Code">Code</label></td>
+								<td><input class="Form-AddEditCard_lock" type="text" pattern="[A-Z][0-9A-Z]{1,13}" id="Form-AddEditCard_Code" required></td>
+							</tr>
+						</table>
+						<input id="Form-AddEditCard_submit" style="display:none;" type="submit">
+					</form>
+				</div>
 
-        <div class="panel" id="panel_EditAccount">
-          <h2>Edit account</h2>
-          <form id="Form-EditAccount" onSubmit="EditAccount_Save();" accept-charset="UTF-8">
-            <table style="width:100%;">
-              <tr>
-                <td class="name"><label for="Form-EditAccount_Name">Name</label></td>
-                <td><input class="Form-EditAccount_lock" type="text" id="Form-EditAccount_Name" maxlength="90" required></td>
-              </tr>
-              <tr>
-                <td class="name"><label for="Form-EditAccount_TimeA">Initial month</label></td>
-                <td>
-                  <select class="Form-EditAccount_lock" id="Form-EditAccount_TimeA" style="width:83px;">
-                    <option value="0" selected>January</option>
-                    <option value="1">February</option>
-                    <option value="2">March</option>
-                    <option value="3">April</option>
-                    <option value="4">May</option>
-                    <option value="5">June</option>
-                    <option value="6">July</option>
-                    <option value="7">August</option>
-                    <option value="8">September</option>
-                    <option value="9">October</option>
-                    <option value="10">November</option>
-                    <option value="11">December</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td class="name"><label for="Form-EditAccount_Balance">Initial balance</label></td>
-                <td>$ <input class="Form-EditAccount_lock" type="number" id="Form-EditAccount_Balance" style="width:7.3em;" value="0" step="0.01" placeholder="0.00" required></td>
-              </tr>
-            </table>
-            <input id="Form-EditAccount_submit" style="display:none;" type="submit">
-          </form>
-        </div>
+				<div class="panel" id="panel_EditAccount">
+					<h2>Edit account</h2>
+					<form id="Form-EditAccount" onSubmit="EditAccount_Save();" accept-charset="UTF-8">
+						<table style="width:100%;">
+							<tr>
+								<td class="name"><label for="Form-EditAccount_Name">Name</label></td>
+								<td><input class="Form-EditAccount_lock" type="text" id="Form-EditAccount_Name" maxlength="90" required></td>
+							</tr>
+							<tr>
+								<td class="name"><label for="Form-EditAccount_TimeA">Initial month</label></td>
+								<td>
+									<select class="Form-EditAccount_lock" id="Form-EditAccount_TimeA" style="width:83px;">
+										<option value="0" selected>January</option>
+										<option value="1">February</option>
+										<option value="2">March</option>
+										<option value="3">April</option>
+										<option value="4">May</option>
+										<option value="5">June</option>
+										<option value="6">July</option>
+										<option value="7">August</option>
+										<option value="8">September</option>
+										<option value="9">October</option>
+										<option value="10">November</option>
+										<option value="11">December</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="name"><label for="Form-EditAccount_Balance">Initial balance</label></td>
+								<td>$ <input class="Form-EditAccount_lock" type="number" id="Form-EditAccount_Balance" style="width:7.3em;" value="0" step="0.01" placeholder="0.00" required></td>
+							</tr>
+						</table>
+						<input id="Form-EditAccount_submit" style="display:none;" type="submit">
+					</form>
+				</div>
 
-        <div class="panel" id="panel_WaitLoad">
-          <div class="animation_WaitLoad_wrapper">
-            <div class="animation_WaitLoad_bar"></div>
-          </div>
-        </div>
-      </div>
+				<div class="panel" id="panel_WaitLoad">
+					<div class="animation_WaitLoad_wrapper">
+						<div class="animation_WaitLoad_bar"></div>
+					</div>
+				</div>
+			</div>
 
 
-      <div id="MainPanel_footer">
-        <div class="current" id="p-footer_FastResponse" style="padding:0 7px;"></div>
-        <div class="MainMenu-bot_title"><div class="MainMenu_row">
-            <div class="m-footer left" style="width:100%;">
-            </div>
-            <div class="m-footer right">
-              <a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
-            </div>
-        </div></div>
-      </div>
-    </div>
-    <?!= htmlInclude('htmlJavaScript'); ?>
-  <script>
+			<div id="MainPanel_footer">
+				<div class="current" id="p-footer_FastResponse" style="padding:0 7px;"></div>
+				<div class="MainMenu-bot_title"><div class="MainMenu_row">
+						<div class="m-footer left" style="width:100%;">
+						</div>
+						<div class="m-footer right">
+							<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
+						</div>
+				</div></div>
+			</div>
+		</div>
+		<?!= htmlInclude('htmlJavaScript'); ?>
+	<script>
 		var htmlVarGlobal = {
 			Id: "",
 			Code: "",
@@ -207,40 +207,40 @@
 				.optMainTables('GetList');
 		});
 
-    $(document).on('click', '.m-li', function() {
-      htmlVarGlobal.Id = $(this).parent().attr('id');
+		$(document).on('click', '.m-li', function() {
+			htmlVarGlobal.Id = $(this).parent().attr('id');
 
-      g2("panel_WaitLoad");
+			g2("panel_WaitLoad");
 
-      google.script.run.withSuccessHandler(EditAccount_Panel)
-        .withFailureHandler(showError)
-        .optMainTables('GetInfo', htmlVarGlobal.Id);
-    });
+			google.script.run.withSuccessHandler(EditAccount_Panel)
+				.withFailureHandler(showError)
+				.optMainTables('GetInfo', htmlVarGlobal.Id);
+		});
 
-    $(document).on('click', '.m-la', function() {
-      htmlVarGlobal.Id = $(this).parent().attr('id');
-      htmlVarGlobal.Action = 'edit';
+		$(document).on('click', '.m-la', function() {
+			htmlVarGlobal.Id = $(this).parent().attr('id');
+			htmlVarGlobal.Action = 'edit';
 
-      g2("panel_WaitLoad");
+			g2("panel_WaitLoad");
 
-      google.script.run.withSuccessHandler(EditCard_Panel)
-        .withFailureHandler(showError)
-        .optMainTables("GetInfo", htmlVarGlobal.Id);
-    });
+			google.script.run.withSuccessHandler(EditCard_Panel)
+				.withFailureHandler(showError)
+				.optMainTables("GetInfo", htmlVarGlobal.Id);
+		});
 
-    $(document).on('click', '.b-DeleteCard', function() {
-      htmlVarGlobal.Id = $(this).parent().attr('id');
+		$(document).on('click', '.b-DeleteCard', function() {
+			htmlVarGlobal.Id = $(this).parent().attr('id');
 
-      var response = confirm("Click OK to confirm and remove the card.");
-      if(!response) return;
+			var response = confirm("Click OK to confirm and remove the card.");
+			if(!response) return;
 
-      g2("panel_WaitLoad");
-      $('#p-footer_FastResponse').empty().append("Removing card...");
+			g2("panel_WaitLoad");
+			$('#p-footer_FastResponse').empty().append("Removing card...");
 
-      google.script.run.withSuccessHandler(RemoveCard_Aftermath)
-        .withFailureHandler(showError)
-        .optMainTables("RemoveCard", htmlVarGlobal.Id);
-    });
+			google.script.run.withSuccessHandler(RemoveCard_Aftermath)
+				.withFailureHandler(showError)
+				.optMainTables("RemoveCard", htmlVarGlobal.Id);
+		});
 
 		$(document).on('click', '.m-tab', function() {
 			if( $(this).hasClass('active') ) return;
@@ -253,125 +253,125 @@
 			else if($(this).attr('id') === "tab_cards") g2("panel_Cards");
 		});
 
-    function EditAccount_Panel(r) {
-      if(r === 0) {
-        g2("panel_Accounts");
-        $('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
-        return;
-      } else if(r > 0) {
-        showError();
-        return;
-      }
+		function EditAccount_Panel(r) {
+			if(r === 0) {
+				g2("panel_Accounts");
+				$('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
+				return;
+			} else if(r > 0) {
+				showError();
+				return;
+			}
 
-      $('#Form-EditAccount_Name').val(r.Name);
-      $('#Form-EditAccount_TimeA').val(r.TimeA);
-      $('#Form-EditAccount_Balance').val(r.Balance);
+			$('#Form-EditAccount_Name').val(r.Name);
+			$('#Form-EditAccount_TimeA').val(r.TimeA);
+			$('#Form-EditAccount_Balance').val(r.Balance);
 
 			g2("panel_EditAccount");
-    }
+		}
 
-    function EditAccount_Save() {
-      $('.Form-EditAccount_lock').prop('disabled', true);
-      $('#p-footer_FastResponse').empty().append('Saving changes...');
+		function EditAccount_Save() {
+			$('.Form-EditAccount_lock').prop('disabled', true);
+			$('#p-footer_FastResponse').empty().append('Saving changes...');
 
-      var output = {
-        Id: htmlVarGlobal.Id,
-        Name: $('#Form-EditAccount_Name').val(),
-        TimeA: $('#Form-EditAccount_TimeA').val(),
-        Balance: $('#Form-EditAccount_Balance').val()
-      };
+			var output = {
+				Id: htmlVarGlobal.Id,
+				Name: $('#Form-EditAccount_Name').val(),
+				TimeA: $('#Form-EditAccount_TimeA').val(),
+				Balance: $('#Form-EditAccount_Balance').val()
+			};
 
-      google.script.run.withSuccessHandler(EditTable_Aftermath)
-        .withFailureHandler(showError)
-        .optMainTables('UpdateAccount', output);
-    }
-    function EditTable_Aftermath(input) {
-      if(input === 0) {
-        $('.Form-EditAccount_lock').prop('disabled', false);
-        $('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
-        return;
-      } else if(input > 0) {
-        showError();
-        return;
-      }
+			google.script.run.withSuccessHandler(EditTable_Aftermath)
+				.withFailureHandler(showError)
+				.optMainTables('UpdateAccount', output);
+		}
+		function EditTable_Aftermath(input) {
+			if(input === 0) {
+				$('.Form-EditAccount_lock').prop('disabled', false);
+				$('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
+				return;
+			} else if(input > 0) {
+				showError();
+				return;
+			}
 
-      google.script.run.withSuccessHandler(ListTables_Post)
-        .withFailureHandler(showError)
-        .optMainTables('GetList');
+			google.script.run.withSuccessHandler(ListTables_Post)
+				.withFailureHandler(showError)
+				.optMainTables('GetList');
 
-      $('.Form-EditAccount_lock').prop('disabled', false);
-      $('#p-footer_FastResponse').empty().append('Changes saved.');
-    }
+			$('.Form-EditAccount_lock').prop('disabled', false);
+			$('#p-footer_FastResponse').empty().append('Changes saved.');
+		}
 
-    function EditCard_Panel(r) {
-      if(r === 0) {
-        g2("panel_Cards")
-        $('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
-        return;
-      } else if(r > 0) {
-        showError();
-        return;
-      }
+		function EditCard_Panel(r) {
+			if(r === 0) {
+				g2("panel_Cards")
+				$('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
+				return;
+			} else if(r > 0) {
+				showError();
+				return;
+			}
 
-      $('#Form-AddEditCard_Name').val(r.Name);
-      $('#Form-AddEditCard_Code').val(r.Code);
+			$('#Form-AddEditCard_Name').val(r.Name);
+			$('#Form-AddEditCard_Code').val(r.Code);
 
 			g2("panel_EditCard");
-    }
-    function AddCard_Panel() {
-      $('#Form-AddEditCard_Name').val('');
-      $('#Form-AddEditCard_Code').val('');
+		}
+		function AddCard_Panel() {
+			$('#Form-AddEditCard_Name').val('');
+			$('#Form-AddEditCard_Code').val('');
 
-      htmlVarGlobal.Action = 'add';
+			htmlVarGlobal.Action = 'add';
 
 			g2("panel_AddCard");
-    }
-    function AddEditCard_Push() {
-      if(htmlVarGlobal.Action === 'add') $('#p-footer_FastResponse').empty().append('Adding card...');
-      else $('#p-footer_FastResponse').empty().append('Saving changes...');
-      $('.Form-AddEditCard_lock').prop('disabled', true);
+		}
+		function AddEditCard_Push() {
+			if(htmlVarGlobal.Action === 'add') $('#p-footer_FastResponse').empty().append('Adding card...');
+			else $('#p-footer_FastResponse').empty().append('Saving changes...');
+			$('.Form-AddEditCard_lock').prop('disabled', true);
 
-      var cell = {
-        Id: htmlVarGlobal.Id,
-        Name: $('#Form-AddEditCard_Name').val(),
-        Code: $('#Form-AddEditCard_Code').val()
-      };
+			var cell = {
+				Id: htmlVarGlobal.Id,
+				Name: $('#Form-AddEditCard_Name').val(),
+				Code: $('#Form-AddEditCard_Code').val()
+			};
 
-      if(htmlVarGlobal.Action === 'add') {
-        google.script.run.withSuccessHandler(AddEditCard_Aftermath)
-          .withFailureHandler(showError)
-          .optMainTables('AddCard', cell);
-      } else {
-        google.script.run.withSuccessHandler(AddEditCard_Aftermath)
-          .withFailureHandler(showError)
-          .optMainTables('UpdateCard', cell);
-      }
-    }
-    function AddEditCard_Aftermath(r) {
-      if(r !== -1) {
-        switch(r) {
-        case 10:
-          $('#p-footer_FastResponse').empty().append('Invalid code format.');
-          $('.Form-AddEditCard_lock').prop('disabled', false);
-          break;
-        case 20:
-          $('#p-footer_FastResponse').empty().append('Code is already in use.');
-          $('.Form-AddEditCard_lock').prop('disabled', false);
-          break;
-        case 30:
-          backToBook();
-          $('#p-footer_FastResponse').append('Limit of 10 cards reached.');
-          break;
-        case 0:
-          backToBook();
-          $('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
-          break;
-        default:
-          showError();
-          break;
-        }
-        return;
-      }
+			if(htmlVarGlobal.Action === 'add') {
+				google.script.run.withSuccessHandler(AddEditCard_Aftermath)
+					.withFailureHandler(showError)
+					.optMainTables('AddCard', cell);
+			} else {
+				google.script.run.withSuccessHandler(AddEditCard_Aftermath)
+					.withFailureHandler(showError)
+					.optMainTables('UpdateCard', cell);
+			}
+		}
+		function AddEditCard_Aftermath(r) {
+			if(r !== -1) {
+				switch(r) {
+				case 10:
+					$('#p-footer_FastResponse').empty().append('Invalid code format.');
+					$('.Form-AddEditCard_lock').prop('disabled', false);
+					break;
+				case 20:
+					$('#p-footer_FastResponse').empty().append('Code is already in use.');
+					$('.Form-AddEditCard_lock').prop('disabled', false);
+					break;
+				case 30:
+					backToBook();
+					$('#p-footer_FastResponse').append('Limit of 10 cards reached.');
+					break;
+				case 0:
+					backToBook();
+					$('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
+					break;
+				default:
+					showError();
+					break;
+				}
+				return;
+			}
 
 			var a = htmlVarGlobal.Action;
 
@@ -379,39 +379,39 @@
 				.withFailureHandler(showError)
 				.optMainTables('GetList');
 
-      g2("panel_ClearCards");
+			g2("panel_ClearCards");
 
 			if(a === 'add') $('#p-footer_FastResponse').empty().append('Card added.');
 			else $('#p-footer_FastResponse').empty().append('Changes saved.');
-    }
-    function RemoveCard_Aftermath(r) {
-      if(r === 0) {
-        $('.Form-AddEditCard_lock').prop('disabled', false);
-        $('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
-        return;
-      } else if(r > 0) {
-        showError();
-        return;
-      }
+		}
+		function RemoveCard_Aftermath(r) {
+			if(r === 0) {
+				$('.Form-AddEditCard_lock').prop('disabled', false);
+				$('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
+				return;
+			} else if(r > 0) {
+				showError();
+				return;
+			}
 
 			google.script.run.withSuccessHandler(ListTables_Post)
 				.withFailureHandler(showError)
 				.optMainTables('GetList');
 
 			g2("panel_Cards");
-      $('#p-footer_FastResponse').append('Card removed.');
-    }
+			$('#p-footer_FastResponse').append('Card removed.');
+		}
 
-    function ListTables_Post(list) {
-      var c, k;
+		function ListTables_Post(list) {
+			var c, k;
 			var s, s1, s2;
 
 			$("#b-CheckQuota").hide();
-      $("#box_Accounts").empty();
-      $("#box_Cards").empty();
+			$("#box_Accounts").empty();
+			$("#box_Cards").empty();
 
-      c = 0;
-      for(k = 0;  k < list.length;  k++) {
+			c = 0;
+			for(k = 0;  k < list.length;  k++) {
 				if(list[k].Type == 'Account') {
 					s1 = '';
 					s2 = '<a class="m-li">Edit</a>';
@@ -442,10 +442,10 @@
 					$('#box_Cards').append(s);
 					c++;
 				}
-      }
+			}
 
-      if(c < 10) $("#b-CheckQuota").show();
-    }
+			if(c < 10) $("#b-CheckQuota").show();
+		}
 
 		function g2(p) {
 			window.scrollTo(0, 0);
@@ -453,12 +453,12 @@
 			$(".m-tab").removeClass('active');
 
 			$('#p-footer_FastResponse').empty();
-      $('.MainMenu-bot_title button').remove();
+			$('.MainMenu-bot_title button').remove();
 
 			switch(p) {
 				case 'panel_Accounts':
 					htmlVarGlobal.Id = "";
-		      htmlVarGlobal.Action = "";
+					htmlVarGlobal.Action = "";
 
 					$('#tab_accounts').addClass('active');
 					$('#panel_Accounts').fadeIn('fast')
@@ -470,7 +470,7 @@
 					$("#box_Cards").empty();
 				case 'panel_Cards':
 					htmlVarGlobal.Id = "";
-		      htmlVarGlobal.Action = "";
+					htmlVarGlobal.Action = "";
 
 					$('#tab_cards').addClass('active');
 					$('#panel_Cards').fadeIn('fast')
@@ -525,6 +525,6 @@
 					break;
 			}
 		}
-  </script>
-  </body>
+	</script>
+	</body>
 </html>

@@ -1,271 +1,271 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top">
-    <meta charset="UTF-8">
-    <?!= htmlInclude('htmlStyles'); ?>
-    <style>
-      td.comment {
-        border-bottom:none;
-        padding-bottom: 0;
-      }
-	    .MainMenu-bot_title {
-        display: table;
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 7px;
-        background-color: #efefef;
-        border-top: 2px solid #d9d9d9;
-      }
-      .MainMenu_row {
-        display: table-row;
-      }
-      .m-footer {
-        display: table-cell;
-        vertical-align: middle;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="MainPanel_wrapper">
-      <div id="MainPanel_content" style="margin-bottom:4.3em;">
-        <div class="panel" id="panel_Book">
-          <form accept-charset="UTF-8" onSubmit="optSettings_Save()">
-            <div>
-              <table style="width:100%;">
-                <tr>
-                  <th colspan="2"><span style="font-size:1.2em;">General</span></th>
-                </tr>
-                <tr>
-                  <td class="name" style="width:43%;"><label for="docName">Spreadsheet</label></td>
-                  <td><span class="docName"></span></td>
-                </tr>
-                <tr>
-                  <td class="name"><label>Financial year</label></td>
-                  <td id="FinancialYear"></td>
-                </tr>
-                <tr>
-                  <td class="name"><label for="InitialMonth">Initial month</label></td>
-                  <td>
-                    <select class="Form-Settings_lock" id="InitialMonth">
-                      <option value="0" selected>January</option>
-                      <option value="1">February</option>
-                      <option value="2">March</option>
-                      <option value="3">April</option>
-                      <option value="4">May</option>
-                      <option value="5">June</option>
-                      <option value="6">July</option>
-                      <option value="7">August</option>
-                      <option value="8">September</option>
-                      <option value="9">October</option>
-                      <option value="10">November</option>
-                      <option value="11">December</option>
-                    </select>
-                  </td>
-                </tr>
-              </table>
-            </div>
-            <div style="margin-top:1.3em;">
-              <table style="width:100%;">
-                <tr>
-                  <th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
-                </tr>
-                <tr>
-                  <td class="name" style="width:37%;"><label for="FinancialCalendar">Calendar</label></td>
-                  <td>
-                    <select class="Form-Settings_lock" id="FinancialCalendar">
-                      <option value="" selected>Disabled</option>
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="PostDayEvents"><label for="PostDayEvents">Sync calendar to spreadsheet</label></td>
-                </tr>
-              </table>
-            </div>
-            <div style="margin-top:1.3em;">
-              <table style="width:100%;">
-                <tr>
-                  <th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
-                </tr>
-                <tr>
-                  <td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="CashFlowEvents"><label for="CashFlowEvents">Sync calendar to cash flow</label></td>
-                </tr>
-                <tr>
-                  <td colspan="2"><input class="Form-Settings_lock" type="checkbox" id="OverrideZero"><label for="OverrideZero">Tag zeros</label></td>
-                </tr>
-              </table>
-            </div>
-            <input id="Form-Settings_submit" style="display:none;" type="submit">
-          </form>
-          <div style="margin-top:1.3em;">
-            <table style="width:100%;">
-              <tr>
-                <th style="width:100%;"><span style="font-size:1.2em;">Advanced</span></th>
-                <th style="text-align:right;"><a id="b-ShowAdvanced" href="javascript:void(0)">Show</a></th>
-              </tr>
+	<head>
+		<base target="_top">
+		<meta charset="UTF-8">
+		<?!= htmlInclude('htmlStyles'); ?>
+		<style>
+			td.comment {
+				border-bottom:none;
+				padding-bottom: 0;
+			}
+			.MainMenu-bot_title {
+				display: table;
+				width: 100%;
+				border-collapse: separate;
+				border-spacing: 7px;
+				background-color: #efefef;
+				border-top: 2px solid #d9d9d9;
+			}
+			.MainMenu_row {
+				display: table-row;
+			}
+			.m-footer {
+				display: table-cell;
+				vertical-align: middle;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="MainPanel_wrapper">
+			<div id="MainPanel_content" style="margin-bottom:4.3em;">
+				<div class="panel" id="panel_Book">
+					<form accept-charset="UTF-8" onSubmit="optSettings_Save()">
+						<div>
+							<table style="width:100%;">
+								<tr>
+									<th colspan="2"><span style="font-size:1.2em;">General</span></th>
+								</tr>
+								<tr>
+									<td class="name" style="width:43%;"><label for="docName">Spreadsheet</label></td>
+									<td><span class="docName"></span></td>
+								</tr>
+								<tr>
+									<td class="name"><label>Financial year</label></td>
+									<td id="FinancialYear"></td>
+								</tr>
+								<tr>
+									<td class="name"><label for="InitialMonth">Initial month</label></td>
+									<td>
+										<select class="Form-Settings_lock" id="InitialMonth">
+											<option value="0" selected>January</option>
+											<option value="1">February</option>
+											<option value="2">March</option>
+											<option value="3">April</option>
+											<option value="4">May</option>
+											<option value="5">June</option>
+											<option value="6">July</option>
+											<option value="7">August</option>
+											<option value="8">September</option>
+											<option value="9">October</option>
+											<option value="10">November</option>
+											<option value="11">December</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div style="margin-top:1.3em;">
+							<table style="width:100%;">
+								<tr>
+									<th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
+								</tr>
+								<tr>
+									<td class="name" style="width:37%;"><label for="FinancialCalendar">Calendar</label></td>
+									<td>
+										<select class="Form-Settings_lock" id="FinancialCalendar">
+											<option value="" selected>Disabled</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="PostDayEvents"><label for="PostDayEvents">Sync calendar to spreadsheet</label></td>
+								</tr>
+							</table>
+						</div>
+						<div style="margin-top:1.3em;">
+							<table style="width:100%;">
+								<tr>
+									<th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
+								</tr>
+								<tr>
+									<td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="CashFlowEvents"><label for="CashFlowEvents">Sync calendar to cash flow</label></td>
+								</tr>
+								<tr>
+									<td colspan="2"><input class="Form-Settings_lock" type="checkbox" id="OverrideZero"><label for="OverrideZero">Tag zeros</label></td>
+								</tr>
+							</table>
+						</div>
+						<input id="Form-Settings_submit" style="display:none;" type="submit">
+					</form>
+					<div style="margin-top:1.3em;">
+						<table style="width:100%;">
+							<tr>
+								<th style="width:100%;"><span style="font-size:1.2em;">Advanced</span></th>
+								<th style="text-align:right;"><a id="b-ShowAdvanced" href="javascript:void(0)">Show</a></th>
+							</tr>
 
-              <tr class="tr-hidden">
-                <td class="comment name"><label>Reinstall triggers</label></td>
-                <td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
-              </tr>
-              <tr class="tr-hidden">
-                <td colspan="2">
-                    This can fix issues related with the add-on's automatic update and maintenance.<br />
-                    <a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>Learn more</b></a>
-                </td>
-              </tr>
+							<tr class="tr-hidden">
+								<td class="comment name"><label>Reinstall triggers</label></td>
+								<td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
+							</tr>
+							<tr class="tr-hidden">
+								<td colspan="2">
+										This can fix issues related with the add-on's automatic update and maintenance.<br />
+										<a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>Learn more</b></a>
+								</td>
+							</tr>
 
-              <tr class="tr-hidden">
-                <td class="comment name"><label>Deactivate add-on</label></td>
-                <td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
-              </tr>
-              <tr class="tr-hidden">
-                <td colspan="2">
-                    Once you deactivate the add-on for spreadsheet <span class="docName" style="font-weight:bold;"></span>, there is no going back! Please be certain.<br />
-                    <a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>Learn more</b></a>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
+							<tr class="tr-hidden">
+								<td class="comment name"><label>Deactivate add-on</label></td>
+								<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
+							</tr>
+							<tr class="tr-hidden">
+								<td colspan="2">
+										Once you deactivate the add-on for spreadsheet <span class="docName" style="font-weight:bold;"></span>, there is no going back! Please be certain.<br />
+										<a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>Learn more</b></a>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
 
-        <div class="panel active" id="panel_WaitLoad">
-          <div class="animation_WaitLoad_wrapper">
-            <div class="animation_WaitLoad_bar"></div>
-          </div>
-        </div>
-      </div>
+				<div class="panel active" id="panel_WaitLoad">
+					<div class="animation_WaitLoad_wrapper">
+						<div class="animation_WaitLoad_bar"></div>
+					</div>
+				</div>
+			</div>
 
 
-      <div id="MainPanel_footer">
-        <div class="current" id="p-footer_FastResponse" style="padding:0 7px;"></div>
-        <div class="MainMenu-bot_title"><div class="MainMenu_row">
-            <div class="m-footer left" style="width:100%;">
-              <button class="action Form-Settings_lock" onclick="$('#Form-Settings_submit').click()" disabled>Save</button>
-            </div>
-            <div class="m-footer right">
-              <a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
-            </div>
-        </div></div>
-      </div>
-    </div>
-    <?!= htmlInclude('htmlJavaScript'); ?>
-  <script>
-    /* ---------- Control ------------------------------ */
-    $(document).ready(function() {
-      $(".tr-hidden").hide();
-      $('#b-ShowAdvanced').click(Show_Advanced);
-      $('#b-Deactivate').click(Deactivate_Submit);
-      $('#b-Reinstall').click(Reinstall_Submit);
+			<div id="MainPanel_footer">
+				<div class="current" id="p-footer_FastResponse" style="padding:0 7px;"></div>
+				<div class="MainMenu-bot_title"><div class="MainMenu_row">
+						<div class="m-footer left" style="width:100%;">
+							<button class="action Form-Settings_lock" onclick="$('#Form-Settings_submit').click()" disabled>Save</button>
+						</div>
+						<div class="m-footer right">
+							<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
+						</div>
+				</div></div>
+			</div>
+		</div>
+		<?!= htmlInclude('htmlJavaScript'); ?>
+	<script>
+		/* ---------- Control ------------------------------ */
+		$(document).ready(function() {
+			$(".tr-hidden").hide();
+			$('#b-ShowAdvanced').click(Show_Advanced);
+			$('#b-Deactivate').click(Deactivate_Submit);
+			$('#b-Reinstall').click(Reinstall_Submit);
 
-      google.script.run
-        .withSuccessHandler(Settings_Post)
-        .withFailureHandler(showError)
-        .retrieveUserSettings();
-    });
-    $("#FinancialCalendar").change(function() {
-      if($(this).val() === "") {
-        $('.Form-Settings_calendar').prop('disabled', true);
-        $('.Form-Settings_calendar').prop('checked', false);
-      } else {
-        $('.Form-Settings_calendar').prop('disabled', false);
-      }
-      return;
-    });
-    function Settings_Post(user_settings) { /* -------------------- */
-      var list, i;
+			google.script.run
+				.withSuccessHandler(Settings_Post)
+				.withFailureHandler(showError)
+				.retrieveUserSettings();
+		});
+		$("#FinancialCalendar").change(function() {
+			if($(this).val() === "") {
+				$('.Form-Settings_calendar').prop('disabled', true);
+				$('.Form-Settings_calendar').prop('checked', false);
+			} else {
+				$('.Form-Settings_calendar').prop('disabled', false);
+			}
+			return;
+		});
+		function Settings_Post(user_settings) { /* -------------------- */
+			var list, i;
 
-      list = user_settings.listCalendars;
+			list = user_settings.listCalendars;
 
-      try {
-        for(i = 0;  i < list.Id.length;  i++) {
-          $('#FinancialCalendar').append('<option value="'+list.Id[i]+'">'+list.Name[i]+'</option>');
-        }
+			try {
+				for(i = 0;  i < list.Id.length;  i++) {
+					$('#FinancialCalendar').append('<option value="'+list.Id[i]+'">'+list.Name[i]+'</option>');
+				}
 
-        $('.docName').append(user_settings.docName); // Spreadsheet title
-        $('#FinancialYear').append(user_settings.FinancialYear+''); // Financial year
-        $('#InitialMonth').val(user_settings.InitialMonth); // Initial month
+				$('.docName').append(user_settings.docName); // Spreadsheet title
+				$('#FinancialYear').append(user_settings.FinancialYear+''); // Financial year
+				$('#InitialMonth').val(user_settings.InitialMonth); // Initial month
 
-        $('#FinancialCalendar').val(user_settings.FinancialCalendar);
-        if(user_settings.PostDayEvents) $('#PostDayEvents').prop('checked', true);
-        if(user_settings.OverrideZero) $('#OverrideZero').prop('checked', true);
-        if(user_settings.CashFlowEvents) $('#CashFlowEvents').prop('checked', true);
-      } catch(err) {
-        showError();
-        return;
-      }
+				$('#FinancialCalendar').val(user_settings.FinancialCalendar);
+				if(user_settings.PostDayEvents) $('#PostDayEvents').prop('checked', true);
+				if(user_settings.OverrideZero) $('#OverrideZero').prop('checked', true);
+				if(user_settings.CashFlowEvents) $('#CashFlowEvents').prop('checked', true);
+			} catch(err) {
+				showError();
+				return;
+			}
 
-      $('.Form-Settings_lock').prop('disabled', false);
-      if(user_settings.FinancialCalendar === "") {
-        $('.Form-Settings_calendar').prop('disabled', true);
-      }
-      $('#panel_Book').fadeIn('fast')
-        .siblings()
-        .hide();
-    }
+			$('.Form-Settings_lock').prop('disabled', false);
+			if(user_settings.FinancialCalendar === "") {
+				$('.Form-Settings_calendar').prop('disabled', true);
+			}
+			$('#panel_Book').fadeIn('fast')
+				.siblings()
+				.hide();
+		}
 
-    function Show_Advanced() {
-      $("#b-ShowAdvanced").remove();
-      $(".tr-hidden").fadeIn();
-    }
+		function Show_Advanced() {
+			$("#b-ShowAdvanced").remove();
+			$(".tr-hidden").fadeIn();
+		}
 
-    function Deactivate_Submit() {
-      google.script.run
-        .withSuccessHandler(Deactivate_Aftermath)
-        .withFailureHandler(showError)
-        .askDeactivation();
-      $('#b-Deactivate').prop('disabled', true);
-    }
+		function Deactivate_Submit() {
+			google.script.run
+				.withSuccessHandler(Deactivate_Aftermath)
+				.withFailureHandler(showError)
+				.askDeactivation();
+			$('#b-Deactivate').prop('disabled', true);
+		}
 
-    function Deactivate_Aftermath(p) {
-      if(!p) $('#b-Deactivate').prop('disabled', false);
-      else google.script.host.close();
-    }
+		function Deactivate_Aftermath(p) {
+			if(!p) $('#b-Deactivate').prop('disabled', false);
+			else google.script.host.close();
+		}
 
-    function Reinstall_Submit() {
-      $('#b-Reinstall').prop('disabled', true);
-      google.script.run
-        .withSuccessHandler(Reinstall_Aftermath)
-        .withFailureHandler(showError)
-        .askReinstall();
-    }
-    function Reinstall_Aftermath() {
-      $('#b-Reinstall').prop('disabled', false);
-      $('#p-footer_FastResponse').empty()
-        .append('Triggers reinstalled.');
-    }
+		function Reinstall_Submit() {
+			$('#b-Reinstall').prop('disabled', true);
+			google.script.run
+				.withSuccessHandler(Reinstall_Aftermath)
+				.withFailureHandler(showError)
+				.askReinstall();
+		}
+		function Reinstall_Aftermath() {
+			$('#b-Reinstall').prop('disabled', false);
+			$('#p-footer_FastResponse').empty()
+				.append('Triggers reinstalled.');
+		}
 
-    function optSettings_Save() {
-      $('.Form-Settings_lock').prop('disabled', true);
-      $('#p-footer_FastResponse').empty().append('Saving...');
+		function optSettings_Save() {
+			$('.Form-Settings_lock').prop('disabled', true);
+			$('#p-footer_FastResponse').empty().append('Saving...');
 
-      var settings = {
-        InitialMonth: $("#InitialMonth").val(),
+			var settings = {
+				InitialMonth: $("#InitialMonth").val(),
 
-        FinancialCalendar: $("#FinancialCalendar").val(),
-        PostDayEvents: $("#PostDayEvents").prop("checked"),
-        OverrideZero: $("#OverrideZero").prop("checked"),
-        CashFlowEvents: $("#CashFlowEvents").prop("checked")
-      };
+				FinancialCalendar: $("#FinancialCalendar").val(),
+				PostDayEvents: $("#PostDayEvents").prop("checked"),
+				OverrideZero: $("#OverrideZero").prop("checked"),
+				CashFlowEvents: $("#CashFlowEvents").prop("checked")
+			};
 
-      google.script.run.withSuccessHandler(optSettings_Aftermath)
-        .withFailureHandler(showError)
-        .saveUserSettings(settings);
-    }
-    function optSettings_Aftermath(p) {
-      if(p === 1) {
-        showError();
-        return;
-      }
+			google.script.run.withSuccessHandler(optSettings_Aftermath)
+				.withFailureHandler(showError)
+				.saveUserSettings(settings);
+		}
+		function optSettings_Aftermath(p) {
+			if(p === 1) {
+				showError();
+				return;
+			}
 
 			$(".Form-Settings_lock").prop("disabled", false);
-      $("#p-footer_FastResponse").empty().append("Settings saved.");
+			$("#p-footer_FastResponse").empty().append("Settings saved.");
 
-      if($("#FinancialCalendar").val() === "") {
-        $(".Form-Settings_calendar").prop("disabled", true);
-      }
-    }
-  </script>
-  </body>
+			if($("#FinancialCalendar").val() === "") {
+				$(".Form-Settings_calendar").prop("disabled", true);
+			}
+		}
+	</script>
+	</body>
 </html>

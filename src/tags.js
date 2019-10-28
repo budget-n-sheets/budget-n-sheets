@@ -157,11 +157,11 @@ function optTag_GetInfo_(input) {
 
 
 function optTag_GetStat_(input) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
 
-  var init = getUserSettings_("InitialMonth");
-  var ActualMonth = getUserSettings_('ActualMonth');
-  var MFactor = getUserSettings_('MFactor');
+	var init = getUserSettings_("InitialMonth");
+	var ActualMonth = getUserSettings_('ActualMonth');
+	var MFactor = getUserSettings_('MFactor');
 
 	var output;
 	var data, avgValue;

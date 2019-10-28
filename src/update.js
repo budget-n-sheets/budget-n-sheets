@@ -1,108 +1,108 @@
 function onlineUpdate_() {
-  var ui = SpreadsheetApp.getUi();
-  try {
-    SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
-  } catch(err) {
-    console.warn("onlineUpdate_()", err);
+	var ui = SpreadsheetApp.getUi();
+	try {
+		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+	} catch(err) {
+		console.warn("onlineUpdate_()", err);
 
 		ui.alert(
 			"Add-on Update",
 			"Please re-open the spreadsheet to update the add-on.",
 			ui.ButtonSet.OK);
-    return true;
-  }
+		return true;
+	}
 
-  var version = optGetClass_("AddonVersion");
-  if(version === AppsScriptGlobal.AddonVersion()) return;
+	var version = optGetClass_("AddonVersion");
+	if(version === AppsScriptGlobal.AddonVersion()) return;
 
-  showDialogQuickMessage("Add-on Update", "The add-on is updating...", false, true);
+	showDialogQuickMessage("Add-on Update", "The add-on is updating...", false, true);
 
-  var b = update_ExecutePatial_();
-  if(b === -1) {
+	var b = update_ExecutePatial_();
+	if(b === -1) {
 		ui.alert(
 			"Add-on Update",
 			"Update is complete.",
 			ui.ButtonSet.OK);
-    return;
-  }
+		return;
+	}
 
-  if(b === 1) {
-    uninstall_();
-    showDialogErrorMessage();
-    onOpen();
-  } else {
-    ui.alert("Budget n Sheets",
-      "The add-on is busy. Try again in a moment.",
-      ui.ButtonSet.OK);
-  }
+	if(b === 1) {
+		uninstall_();
+		showDialogErrorMessage();
+		onOpen();
+	} else {
+		ui.alert("Budget n Sheets",
+			"The add-on is busy. Try again in a moment.",
+			ui.ButtonSet.OK);
+	}
 
-  return true;
+	return true;
 }
 
 function seamlessUpdate_() {
-  try {
-    SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
-  } catch(err) {
-    console.warn("seamlessUpdate_()", err);
-    return true;
-  }
+	try {
+		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+	} catch(err) {
+		console.warn("seamlessUpdate_()", err);
+		return true;
+	}
 
-  var version = optGetClass_("AddonVersion");
-  if(version === AppsScriptGlobal.AddonVersion()) return;
+	var version = optGetClass_("AddonVersion");
+	if(version === AppsScriptGlobal.AddonVersion()) return;
 
-  var b = update_ExecutePatial_();
-  if(b === -1) return;
-  if(b === 1) uninstall_();
+	var b = update_ExecutePatial_();
+	if(b === -1) return;
+	if(b === 1) uninstall_();
 
-  return true;
+	return true;
 }
 
 
 function optGetClass_(a) {
-  if(typeof a != "string") return;
+	if(typeof a != "string") return;
 
-  var b = getPropertiesService_("document", "json", "class_version");
+	var b = getPropertiesService_("document", "json", "class_version");
 
-  return b[a];
+	return b[a];
 }
 
 function optSetClass_(a, b) {
-  if(typeof a != "string") return;
+	if(typeof a != "string") return;
 
-  var c = getPropertiesService_("document", "json", "class_version");
+	var c = getPropertiesService_("document", "json", "class_version");
 
-  switch(a) {
-    case "AddonVersion":
-    case "AddonVersionName":
-    case "TemplateVersion":
-    case "TemplateVersionName":
-      c[a] = b;
-      break;
-    default:
-      console.error("optSetClass_(): Switch case is default", a, b);
-      break;
-  }
+	switch(a) {
+		case "AddonVersion":
+		case "AddonVersionName":
+		case "TemplateVersion":
+		case "TemplateVersionName":
+			c[a] = b;
+			break;
+		default:
+			console.error("optSetClass_(): Switch case is default", a, b);
+			break;
+	}
 
-  setPropertiesService_("document", "json", "class_version", c);
+	setPropertiesService_("document", "json", "class_version", c);
 }
 
 
 var HEAD_EP = 67;
 function update_ExecutePatial_() {
-  if(!getPropertiesService_("document", "", "is_installed")) return 1;
+	if(!getPropertiesService_("document", "", "is_installed")) return 1;
 
-  var lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(2000);
-  } catch(err) {
+	var lock = LockService.getDocumentLock();
+	try {
+		lock.waitLock(2000);
+	} catch(err) {
 		console.warn("update_ExecutePatial_(): Wait lock time out.");
-    return 0;
-  }
+		return 0;
+	}
 
 	var load;
-  var c = false;
-  var v0 = optGetClass_("AddonVersion"),
-      v1 = AppsScriptGlobal.AddonVersion();
+	var c = false;
+	var v0 = optGetClass_("AddonVersion"),
+			v1 = AppsScriptGlobal.AddonVersion();
 
 	if (HEAD_EP != HEAD_AG) {
 		load = {
@@ -119,7 +119,7 @@ function update_ExecutePatial_() {
 		return 0;
 	}
 
-  switch(v0) {
+	switch(v0) {
 		case 56:
 			c = update0pack03_();
 			if(c) break;
@@ -156,7 +156,7 @@ function update_ExecutePatial_() {
 			c = update0pack13_();
 			break;
 
-    default:
+		default:
 			load = {
 				value_v0: v0,
 				type_v0: typeof v0,
@@ -165,19 +165,19 @@ function update_ExecutePatial_() {
 				v0ev1: v0 == v1
 			};
 			console.warn("update_ExecutePatial_(): Switch case is default.", load);
-      return 0;
-  }
+			return 0;
+	}
 
-  if(c) {
-    console.info("add-on/Update: Fail.");
-    return 1;
-  }
+	if(c) {
+		console.info("add-on/Update: Fail.");
+		return 1;
+	}
 
-  optSetClass_("AddonVersion", v1);
-  SpreadsheetApp.flush();
+	optSetClass_("AddonVersion", v1);
+	SpreadsheetApp.flush();
 
-  console.info("add-on/Update: Success.");
-  return -1;
+	console.info("add-on/Update: Success.");
+	return -1;
 }
 
 /**
@@ -390,16 +390,16 @@ function update0pack09_() {
  * 0.18.8
  */
 function update0pack08_() {
-  try {
+	try {
 		var date = getSpreadsheetDate();
 
 		if(date.getFullYear() == getUserSettings_("FinancialYear")) {
 			monthly_TreatLayout_(date.getFullYear(), date.getMonth());
 		}
-  } catch(err) {
-    console.error("update0pack08_()", err);
-    return true;
-  }
+	} catch(err) {
+		console.error("update0pack08_()", err);
+		return true;
+	}
 }
 
 
@@ -428,7 +428,7 @@ function update0pack07_() {
  * 0.18.4
  */
 function update0pack06_() {
-  try {
+	try {
 		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
 		var n = sheet.getMaxRows();
 
@@ -443,10 +443,10 @@ function update0pack06_() {
 		if(n > 2) {
 			sheet.getRange(2, 4, sheet.getMaxRows() - 2).setValue("TRUE");
 		}
-  } catch(err) {
-    console.error("update0pack06_()", err);
-    return true;
-  }
+	} catch(err) {
+		console.error("update0pack06_()", err);
+		return true;
+	}
 }
 
 
@@ -456,16 +456,16 @@ function update0pack06_() {
  * 0.18.2
  */
 function update0pack05_() {
-  try {
+	try {
 		var date = getSpreadsheetDate();
 
 		if(date.getFullYear() == getUserSettings_("FinancialYear")) {
 			monthly_TreatLayout_(date.getFullYear(), date.getMonth());
 		}
-  } catch(err) {
-    console.error("update0pack05_()", err);
-    return true;
-  }
+	} catch(err) {
+		console.error("update0pack05_()", err);
+		return true;
+	}
 }
 
 
@@ -475,7 +475,7 @@ function update0pack05_() {
  * 0.18.1
  */
 function update0pack04_() {
-  try {
+	try {
 		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 
 		if(!sheet) {
@@ -485,10 +485,10 @@ function update0pack04_() {
 		if(sheet.isSheetHidden()) {
 			sheet.showSheet()
 		}
-  } catch(err) {
-    console.error("update0pack04_()", err);
-    return true;
-  }
+	} catch(err) {
+		console.error("update0pack04_()", err);
+		return true;
+	}
 }
 
 

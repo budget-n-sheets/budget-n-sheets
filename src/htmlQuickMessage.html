@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top">
-    <meta charset="UTF-8">
-    <?!= htmlInclude('htmlStyles'); ?>
-    <style>
-      p {
+	<head>
+		<base target="_top">
+		<meta charset="UTF-8">
+		<?!= htmlInclude('htmlStyles'); ?>
+		<style>
+			p {
 				text-indent: 0;
 				font-size: 1.3em;
-      }
-      .animation_WaitLoad_wrapper {
-        margin: 0 0 1.7em 0;
-        width: 137px;
-      }
-      .animation_WaitLoad_bar {
-        width: 79px;
-        animation-name: animate;
-        animation-duration: 1201ms;
-      }
-      @keyframes animate {
-        from {left: -137px;}
-        to {left: 137px;}
-      }
-    </style>
-  </head>
-  <body>
+			}
+			.animation_WaitLoad_wrapper {
+				margin: 0 0 1.7em 0;
+				width: 137px;
+			}
+			.animation_WaitLoad_bar {
+				width: 79px;
+				animation-name: animate;
+				animation-duration: 1201ms;
+			}
+			@keyframes animate {
+				from {left: -137px;}
+				to {left: 137px;}
+			}
+		</style>
+	</head>
+	<body>
 		<div style="margin-bottom: 3em;">
 			<? for (var i = 0; i < text.length; i++) { ?>
 				<p>
@@ -32,15 +32,15 @@
 				</p>
 			<? } ?>
 
-	    <? if(bar) { ?>
-	      <div class="animation_WaitLoad_wrapper">
-	        <div class="animation_WaitLoad_bar"></div>
-	      </div>
-	    <? } ?>
+			<? if(bar) { ?>
+				<div class="animation_WaitLoad_wrapper">
+					<div class="animation_WaitLoad_bar"></div>
+				</div>
+			<? } ?>
 
-	    <? if(button) { ?>
-	      <button onclick="google.script.host.close()">OK</button>
-	    <? } ?>
+			<? if(button) { ?>
+				<button onclick="google.script.host.close()">OK</button>
+			<? } ?>
 		</div>
-  </body>
+	</body>
 </html>

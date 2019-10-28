@@ -1,20 +1,20 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script>
-  // Prevent forms from submitting
-  function preventFormSubmit() {
-    var forms = document.querySelectorAll('form');
-    for (var i = 0; i < forms.length; i++) {
-      forms[i].addEventListener('submit', function(event) {
-        event.preventDefault();
-      });
-    }
-  }
-  window.addEventListener('load', preventFormSubmit);
+	// Prevent forms from submitting
+	function preventFormSubmit() {
+		var forms = document.querySelectorAll('form');
+		for (var i = 0; i < forms.length; i++) {
+			forms[i].addEventListener('submit', function(event) {
+				event.preventDefault();
+			});
+		}
+	}
+	window.addEventListener('load', preventFormSubmit);
 
-  function showError() {
-    google.script.run.withSuccessHandler(function() {
-      google.script.host.close();
-    }).showDialogErrorMessage();
-  }
+	function showError() {
+		google.script.run.withSuccessHandler(function() {
+			google.script.host.close();
+		}).showDialogErrorMessage();
+	}
 </script>
