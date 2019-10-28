@@ -105,7 +105,6 @@ function update_ExecutePatial_() {
       v1 = AppsScriptGlobal.AddonVersion();
 
 	if (HEAD_EP != HEAD_AG) {
-		// lock.releaseLock();
 		load = {
 			value_v0: v0,
 			type_v0: typeof v0,
@@ -158,7 +157,6 @@ function update_ExecutePatial_() {
 			break;
 
     default:
-			// lock.releaseLock();
 			load = {
 				value_v0: v0,
 				type_v0: typeof v0,
@@ -171,13 +169,11 @@ function update_ExecutePatial_() {
   }
 
   if(c) {
-		// lock.releaseLock();
     console.info("add-on/Update: Fail.");
     return 1;
   }
 
   optSetClass_("AddonVersion", v1);
-	// lock.releaseLock();
   SpreadsheetApp.flush();
 
   console.info("add-on/Update: Success.");

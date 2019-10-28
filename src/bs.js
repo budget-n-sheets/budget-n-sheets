@@ -1,6 +1,5 @@
 function nodeControl_(c, data) {
   var lock = LockService.getDocumentLock();
-	var r;
   try {
     lock.waitLock(2000);
   } catch(err) {
@@ -10,20 +9,13 @@ function nodeControl_(c, data) {
 
   switch(c) {
     case "sign":
-			r = signDoc_();
-			break;
+			return signDoc_();
     case "verify":
-			r = verifySig_(data);
-			break;
-
+			return verifySig_(data);
     default:
       console.error("nodeControl_(): Switch case is default.", c);
-			r = 1;
-      break;
+			return 1;
   }
-
-	// lock.releaseLock();
-	return r;
 }
 
 

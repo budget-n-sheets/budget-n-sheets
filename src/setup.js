@@ -122,7 +122,6 @@ function setup_ui(settings, list) {
 	setup_(settings, list);
 
 	setPropertiesService_("document", "string", "is_installed", "[ ]");
-	// lock.releaseLock();
 	showDialogSetupEnd();
 	onOpen();
 

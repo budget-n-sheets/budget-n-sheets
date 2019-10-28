@@ -26,12 +26,11 @@ function optNavTools_(p) {
     case "hide":
       optTool_HideSheets_();
       break;
+
     default:
       console.error("optNavTools_(): Switch case is default.", p);
       break;
   }
-
-	// lock.releaseLock();
 }
 
 
@@ -76,12 +75,11 @@ function optMainTools_(p, mm) {
 		case 'FormatCards':
 			foo_FormatCards_(mm);
 			break;
+
     default:
       console.error("optMainTools_(): Switch case is default.", p);
       break;
   }
-
-	// lock.releaseLock();
 }
 
 

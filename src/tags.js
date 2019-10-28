@@ -1,6 +1,5 @@
 function optMainTags(opt, input) {
   var lock = LockService.getDocumentLock();
-	var r;
   try {
     lock.waitLock(2000);
   } catch(err) {
@@ -10,39 +9,27 @@ function optMainTags(opt, input) {
 
   switch(opt) {
     case "GetData":
-      r = tagGetData_();
-			break;
+      return tagGetData_();
     case 'GetList':
-      r = optTag_GetList_();
-			break;
+      return optTag_GetList_();
     case 'GetInfo':
-      r = optTag_GetInfo_(input);
-			break;
+      return optTag_GetInfo_(input);
     case 'GetStat':
-      r = optTag_GetStat_(input);
-			break;
+      return optTag_GetStat_(input);
 
     case 'Add':
-      r = optTag_Add_(input);
-			break;
+      return optTag_Add_(input);
     case 'Update':
-      r = optTag_Update_(input);
-			break;
+      return optTag_Update_(input);
     case 'Remove':
-      r = optTag_Remove_(input);
-			break;
+      return optTag_Remove_(input);
 
     case 'isBusy':
-			r = -1;
-      break;
+			return -1;
     default:
       console.warn("optMainTags(): Switch case is default.", opt);
-      r= 3;
-			break;
+      return 3;
   }
-
-	// lock.releaseLock();
-	return r;
 }
 
 
