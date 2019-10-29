@@ -192,84 +192,84 @@
 			</div>
 		</div>
 		<?!= htmlInclude('htmlJavaScript'); ?>
-	<script>
-		var htmlVarGlobal = {
-			Panel: "main"
-		};
-		$(document).ready(function() {
-			var dateToday = new Date();
-
-			$('#Form_FinancialYear').val( dateToday.getFullYear() );
-
-			if (dateToday.getMonth() > 1) {
-				$('#Form_InitialMonth').val( dateToday.getMonth()-1 );
-			}
-
-			$('.tr_Account').slice(1).hide();
-
-			$('body').fadeIn('slow');
-		});
-		$('#Form_NumberLneAccount').change(function() { /* ------------------- */
-			var number_accounts = Number( $(this).val() );
-
-			$('.tr_Account').show();
-			$('.tr_Account').slice(number_accounts).hide();
-
-			$('.Form_AccountName').attr('required', true);
-			$('.Form_AccountName').slice(number_accounts).attr('required', false).val('');
-		});
-		function clickNext(param) { /* ------------------- */
-			window.scrollTo(0, 0);
-			switch (htmlVarGlobal.Panel) {
-				case 'main':
-					$('#main-panel').hide();
-
-					$('#MainPanel_footer-left').append('<button class="action" onclick="clickNext()">Continue</button>');
-					htmlVarGlobal.Panel = 'note';
-					$('#note-panel').fadeIn('fast');
-					break;
-				case 'note':
-					$('#note-panel').hide();
-					$('#MainPanel_footer-left button').remove();
-
-					$('#MainPanel_footer-left').append('<button id="b_install" class="create" onclick="clickNext()">Build</button>');
-					htmlVarGlobal.Panel = 'form';
-					$('#form-panel').fadeIn('fast');
-					break;
-				case 'form':
-					$('#form-p_submit').click();
-					break;
-				default:
-					showError();
-					break;
-			}
-			return;
-		}
-		function fireSetup() {
-			$('#form-panel').hide();
-			$('#MainPanel_footer button').remove();
-
-			htmlVarGlobal.Panel = 'setup';
-			$('#setup-panel').fadeIn('fast');
-
-
-			var addonSettings = {
-				SpreadsheetName: $('#Form_SpreadsheetName').val(),
-				FinancialYear: $('#Form_FinancialYear').val(),
-				InitialMonth: $('#Form_InitialMonth').val(),
-				number_accounts: $('#Form_NumberLneAccount').val()
+		<script>
+			var htmlVarGlobal = {
+				Panel: "main"
 			};
+			$(document).ready(function() {
+				var dateToday = new Date();
 
-			var selectorAccountName = $('.Form_AccountName[required]');
-			var listAccountName = selectorAccountName.map(function() {
-				return $(this).val();
-			}).get();
+				$('#Form_FinancialYear').val( dateToday.getFullYear() );
 
-			google.script.run.withSuccessHandler(function() {
-					google.script.host.close();
-				}).withFailureHandler(showError)
-				.setup_ui(addonSettings, listAccountName);
-		}
-	</script>
+				if (dateToday.getMonth() > 1) {
+					$('#Form_InitialMonth').val( dateToday.getMonth()-1 );
+				}
+
+				$('.tr_Account').slice(1).hide();
+
+				$('body').fadeIn('slow');
+			});
+			$('#Form_NumberLneAccount').change(function() { /* ------------------- */
+				var number_accounts = Number( $(this).val() );
+
+				$('.tr_Account').show();
+				$('.tr_Account').slice(number_accounts).hide();
+
+				$('.Form_AccountName').attr('required', true);
+				$('.Form_AccountName').slice(number_accounts).attr('required', false).val('');
+			});
+			function clickNext(param) { /* ------------------- */
+				window.scrollTo(0, 0);
+				switch (htmlVarGlobal.Panel) {
+					case 'main':
+						$('#main-panel').hide();
+
+						$('#MainPanel_footer-left').append('<button class="action" onclick="clickNext()">Continue</button>');
+						htmlVarGlobal.Panel = 'note';
+						$('#note-panel').fadeIn('fast');
+						break;
+					case 'note':
+						$('#note-panel').hide();
+						$('#MainPanel_footer-left button').remove();
+
+						$('#MainPanel_footer-left').append('<button id="b_install" class="create" onclick="clickNext()">Build</button>');
+						htmlVarGlobal.Panel = 'form';
+						$('#form-panel').fadeIn('fast');
+						break;
+					case 'form':
+						$('#form-p_submit').click();
+						break;
+					default:
+						showError();
+						break;
+				}
+				return;
+			}
+
+			function fireSetup() {
+				$('#form-panel').hide();
+				$('#MainPanel_footer button').remove();
+
+				htmlVarGlobal.Panel = 'setup';
+				$('#setup-panel').fadeIn('fast');
+
+				var settings = {
+					spreadsheet_name: $('#Form_SpreadsheetName').val(),
+					financial_year: $('#Form_FinancialYear').val(),
+					init_month: $('#Form_InitialMonth').val(),
+					number_accounts: $('#Form_NumberLneAccount').val()
+				};
+
+				var selectorAcc = $('.Form_AccountName[required]');
+				var listAcc = selectorAcc.map(function() {
+					return $(this).val();
+				}).get();
+
+				google.script.run.withSuccessHandler(function() {
+						google.script.host.close();
+					}).withFailureHandler(showError)
+					.setup_ui(settings, listAcc);
+			}
+		</script>
 	</body>
 </html>

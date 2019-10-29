@@ -100,7 +100,7 @@ function uninstall_() {
 }
 
 
-function setup_ui(settings, list) {
+function setup_ui(settings, listAcc) {
 	if (getPropertiesService_("document", "", "is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
@@ -119,7 +119,7 @@ function setup_ui(settings, list) {
 		return;
 	}
 
-	setup_(settings, list);
+	setup_(settings, listAcc);
 
 	setPropertiesService_("document", "string", "is_installed", "[ ]");
 	console.info("add-on/install");
@@ -129,7 +129,7 @@ function setup_ui(settings, list) {
 
 	try {
 		var stats = {
-			financial_year: Number(settings.FinancialYear),
+			financial_year: Number(settings.financial_year),
 			number_accounts: Number(settings.number_accounts)
 		};
 		console.info("add-on/Stats", stats);
@@ -138,17 +138,27 @@ function setup_ui(settings, list) {
 	}
 }
 
-function setup_(settings, listAccountName) {
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
-	settings.date_created = new Date().getTime();
-	settings.FinancialYear = Number(settings.FinancialYear);
-	settings.InitialMonth = Number(settings.InitialMonth);
-	settings.number_accounts = Number(settings.number_accounts);
+var CONST_SETUP_SPREADSHEET_, CONST_SETUP_SETTINGS_;
+var CONST_LIST_ES_SHEETS_, CONST_LIST_MN_SHEETS_;
+
+function setup_(settings, listAcc) {
+	var a;
+
+	CONST_SETUP_SPREADSHEET_ = SpreadsheetApp.getActiveSpreadsheet();
+	CONST_SETUP_SETTINGS_ = {
+		date_created: new Date(),
+		spreadsheet_name: settings.spreadsheet_name,
+		spreadsheet_locale: CONST_SETUP_SPREADSHEET_.getSpreadsheetLocale(),
+		financial_year: Number(settings.financial_year),
+		init_month: Number(settings.init_month),
+		number_accounts: Number(settings.number_accounts),
+		list_acc: listAcc
+	};
 
 	console.time("add-on/Install");
 
-	spreadsheet.rename(settings.SpreadsheetName);
+	CONST_SETUP_SPREADSHEET_.rename(CONST_SETUP_SETTINGS_["spreadsheet_name"]);
 
 	purgePropertiesService_("document");
 	purgeScriptAppTriggers_();
@@ -157,23 +167,54 @@ function setup_(settings, listAccountName) {
 	copySheetsFromTemplate_();
 	if (sortSheetOrder_() !== -1) return;
 
-	spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Summary') );
+	if (loadConstListSheets_() !== -1) return;
 
-	setup_ExecutePatial_(settings, listAccountName);
+	CONST_SETUP_SPREADSHEET_.setActiveSheet(CONST_LIST_ES_SHEETS_["summary"]);
 
-	var s = {
+	setup_ExecutePatial_();
+
+	a = {
 		AddonVersion: AppsScriptGlobal.AddonVersion(),
 		AddonVersionName: AppsScriptGlobal.AddonVersionName(),
 		TemplateVersion: AppsScriptGlobal.TemplateVersion(),
 		TemplateVersionName: AppsScriptGlobal.TemplateVersionName()
 	};
-	setPropertiesService_("document", "json", "class_version", s);
+	setPropertiesService_("document", "json", "class_version", a);
 
-	s = nodeControl_("sign");
-	if (typeof s != "string") throw 1;
+	a = nodeControl_("sign");
+	if (typeof a != "string") throw 1;
 
 	console.timeEnd("add-on/Install");
+
+	CONST_SETUP_SPREADSHEET_ = null;
+	CONST_SETUP_SETTINGS_ = null;
+	CONST_LIST_ES_SHEETS_ = null;
+	CONST_LIST_MN_SHEETS_ = null;
 	return true;
+}
+
+
+function loadConstListSheets_() {
+	var list = [
+		[ "summary", "cards", "cash_flow", "tags", "quick_actions", "_settings", "_backstage", "about" ],
+		[ "Summary", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ]
+	];
+	var i;
+
+	CONST_LIST_ES_SHEETS_ = { };
+	CONST_LIST_MN_SHEETS_ = [ ];
+
+	for (i = 0; i < list[0].length; i++) {
+		CONST_LIST_ES_SHEETS_[list[0][i]] = CONST_SETUP_SPREADSHEET_.getSheetByName(list[1][i]);
+		if (!CONST_LIST_ES_SHEETS_[list[0][i]]) return;
+	}
+
+	for (i = 0; i < MN_SHORT_.length; i++) {
+		CONST_LIST_MN_SHEETS_[i] = CONST_SETUP_SPREADSHEET_.getSheetByName(MN_SHORT_[i]);
+		if (!CONST_LIST_MN_SHEETS_[i]) return;
+	}
+
+	return -1;
 }
 
 
@@ -200,53 +241,43 @@ function sortSheetOrder_() {
 }
 
 
-function setup_ExecutePatial_(addonSettings, listAccountName) {
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
-			sheetFinances = spreadsheet.getSheetByName('Summary'),
-			sheetBackstage = spreadsheet.getSheetByName('_Backstage'),
-			sheetSettings = spreadsheet.getSheetByName('_Settings');
-	var dateToday = getSpreadsheetDate();
-	var number_accounts;
-	var chk;
+function setup_ExecutePatial_() {
+	var yyyy_mm = CONST_SETUP_SETTINGS_["date_created"];
 
-	if (!sheetFinances) return;
-	if (!sheetBackstage) return;
-	if (!sheetSettings) return;
-
-	number_accounts = addonSettings.number_accounts;
-
-	dateToday = {
-		FullYear: dateToday.getFullYear(),
-		Month: dateToday.getMonth()
+	yyyy_mm = {
+		yyyy: yyyy_mm.getFullYear(),
+		mm: yyyy_mm.getMonth()
 	};
 
-	setupPart3_(spreadsheet, number_accounts);
-	setupPart1_(spreadsheet, sheetSettings, addonSettings, dateToday);
-	setupPart2_(sheetBackstage, listAccountName, addonSettings.InitialMonth, number_accounts);
-	setupPart4_(spreadsheet, number_accounts);
-	setupPart5_(spreadsheet, sheetBackstage, number_accounts);
-	setupPart6_(spreadsheet, number_accounts);
-	setupPart7_(spreadsheet, dateToday, addonSettings.FinancialYear, addonSettings.InitialMonth, number_accounts);
-	setupPart9_(sheetFinances, addonSettings.InitialMonth);
-	setupPart10_(number_accounts, addonSettings.FinancialYear, addonSettings.InitialMonth);
-	setupPart11_(spreadsheet, number_accounts);
+	setupPart3_();
+	setupPart1_(yyyy_mm);
+	setupPart2_();
+	setupPart4_();
+	setupPart5_();
+	setupPart6_();
+	setupPart7_(yyyy_mm);
+	setupPart9_();
+	setupPart10_();
+	setupPart11_();
+
+	CONST_SETUP_SETTINGS_ = null;
 }
 
 
-function setupPart11_(spreadsheet, number_accounts) {
+function setupPart11_() {
 	var thisSheet;
 	var vRange;
 	var i, k;
 
 	{
-		spreadsheet.getSheetByName('_Backstage').protect().setWarningOnly(true);
-		spreadsheet.getSheetByName('Tags').protect().setWarningOnly(true);
-		spreadsheet.getSheetByName('_Settings').protect().setWarningOnly(true);
-		spreadsheet.getSheetByName('About').protect().setWarningOnly(true);
-		spreadsheet.getSheetByName('Summary').protect().setWarningOnly(true);
+		CONST_LIST_ES_SHEETS_["_backstage"].protect().setWarningOnly(true);
+		CONST_LIST_ES_SHEETS_["tags"].protect().setWarningOnly(true);
+		CONST_LIST_ES_SHEETS_["_settings"].protect().setWarningOnly(true);
+		CONST_LIST_ES_SHEETS_["about"].protect().setWarningOnly(true);
+		CONST_LIST_ES_SHEETS_["summary"].protect().setWarningOnly(true);
 	}
 	{
-		thisSheet = spreadsheet.getSheetByName('Cash Flow');
+		thisSheet = CONST_LIST_ES_SHEETS_["cash_flow"];
 		vRange = [ ];
 		for (i = 0; i < 12; i++) {
 			vRange.push( thisSheet.getRange(3,2+4*i, 31) );
@@ -255,7 +286,7 @@ function setupPart11_(spreadsheet, number_accounts) {
 		thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
 	}
 	{
-		thisSheet = spreadsheet.getSheetByName('Cards');
+		thisSheet = CONST_LIST_ES_SHEETS_["cards"];
 		vRange = [ ];
 		for (i = 0; i < 12; i++) {
 			vRange.push( thisSheet.getRange(6, 1 + 6*i, 400, 5) );
@@ -264,7 +295,7 @@ function setupPart11_(spreadsheet, number_accounts) {
 		thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
 	}
 	{
-		thisSheet = spreadsheet.getSheetByName("Quick Actions");
+		thisSheet = CONST_LIST_ES_SHEETS_["quick_actions"];
 
 		vRange = [ ];
 		vRange.push( thisSheet.getRange(4, 2, 3, 1) );
@@ -278,10 +309,10 @@ function setupPart11_(spreadsheet, number_accounts) {
 	{
 		i = 0;
 		while (i < 12) {
-			thisSheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+			thisSheet = CONST_LIST_MN_SHEETS_[i];
 			vRange = [ ];
 
-			for (k = 0; k < 1+number_accounts; k++) {
+			for (k = 0; k < 1+CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
 				vRange.push( thisSheet.getRange(5, 1 + 5*k, 400, 4) );
 			}
 			thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
@@ -295,21 +326,22 @@ function setupPart11_(spreadsheet, number_accounts) {
 }
 
 
-function setupPart10_(number_accounts, Y, m) {
-	var sheetCashFlow = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cash Flow');
+function setupPart10_() {
+	var yy = CONST_SETUP_SETTINGS_["financial_year"];
+	var sheetCashFlow = CONST_LIST_ES_SHEETS_["cash_flow"];
 	var d, s;
 	var i, j, k;
 
 	i=0;
-	sheetCashFlow.getRange(3,3+i*4).setFormula('=0');
+	sheetCashFlow.getRange(3, 3+i*4).setFormula('=0');
 
-	d = new Date(Y, i+1, 0).getDate();
+	d = new Date(yy, i+1, 0).getDate();
 	sheetCashFlow.getRange(4,3+i*4, d-1).setFormulaR1C1('=R[-1]C+RC[-1]');
 	if (d < 31) {
 		sheetCashFlow.getRange(3+d,2+i*4, 31-d,3).setBackground('#f3f3f3');
 	}
 
-	s = new Date(Y, 0, 1).getDay(); j=0;
+	s = new Date(yy, 0, 1).getDay(); j=0;
 	while (j < d) {
 		switch (s) {
 			case 0:
@@ -329,13 +361,13 @@ function setupPart10_(number_accounts, Y, m) {
 	for (i = 1; i < 12; i++) {
 		sheetCashFlow.getRange(3,3+i*4).setFormulaR1C1('=R['+(d-1)+']C[-4]+RC[-1]');
 
-		d = new Date(Y, i+1, 0).getDate();
+		d = new Date(yy, i+1, 0).getDate();
 		sheetCashFlow.getRange(4,3+i*4, d-1).setFormulaR1C1('=R[-1]C+RC[-1]');
 		if (d < 31) {
 			sheetCashFlow.getRange(3+d,2+i*4, 31-d,3).setBackground('#f3f3f3');
 		}
 
-		s = new Date(Y, i, 1).getDay(); j=0;
+		s = new Date(yy, i, 1).getDay(); j=0;
 		while (j < d) {
 			switch (s) {
 				case 0:
@@ -358,7 +390,8 @@ function setupPart10_(number_accounts, Y, m) {
 }
 
 
-function setupPart9_(sheetSummary, mm) {
+function setupPart9_() {
+	var sheet = CONST_LIST_ES_SHEETS_["summary"];
 	var chart, options;
 
 	options = {
@@ -368,8 +401,8 @@ function setupPart9_(sheetSummary, mm) {
 		3:{color:'#e69138', type:'bars', labelInLegend:'Expenses'}
 	};
 
-	chart = sheetSummary.newChart()
-		.addRange( sheetSummary.getRange('C25:H36') )
+	chart = sheet.newChart()
+		.addRange( sheet.getRange('C25:H36') )
 		.setChartType(Charts.ChartType.COMBO)
 		.setPosition(24, 2, 0, 0)
 		.setOption('mode', 'view')
@@ -379,41 +412,41 @@ function setupPart9_(sheetSummary, mm) {
 		.setOption('height', 482)
 		.setOption('width', 886);
 
-	sheetSummary.insertChart( chart.build() );
+	sheet.insertChart( chart.build() );
 	SpreadsheetApp.flush();
 }
 
 
-function setupPart7_(spreadsheet, dateToday, financial_year, init_month, number_accounts) {
-	var sheetSummary = spreadsheet.getSheetByName('Summary');
-	var sheetTags = spreadsheet.getSheetByName('Tags');
+function setupPart7_(yyyy_mm) {
+	var sheetSummary = CONST_LIST_ES_SHEETS_["summary"];
+	var sheetTags = CONST_LIST_ES_SHEETS_["tags"];
 	var sheet, i;
 
 	sheetSummary.setTabColor('#e69138');
-	spreadsheet.getSheetByName('Cards').setTabColor('#e69138');
-	spreadsheet.getSheetByName('Cash Flow').setTabColor('#e69138');
+	CONST_LIST_ES_SHEETS_["cards"].setTabColor('#e69138');
+	CONST_LIST_ES_SHEETS_["cash_flow"].setTabColor('#e69138');
 	sheetTags.setTabColor('#e69138');
-	spreadsheet.getSheetByName('Quick Actions').setTabColor('#6aa84f');
-	spreadsheet.getSheetByName("_Backstage").setTabColor('#cc0000').hideSheet();
-	spreadsheet.getSheetByName('_Settings').setTabColor('#cc0000').hideSheet();
-	spreadsheet.getSheetByName('About').setTabColor('#6aa84f').hideSheet();
+	CONST_LIST_ES_SHEETS_["quick_actions"].setTabColor('#6aa84f');
+	CONST_LIST_ES_SHEETS_["_backstage"].setTabColor('#cc0000').hideSheet();
+	CONST_LIST_ES_SHEETS_["_settings"].setTabColor('#cc0000').hideSheet();
+	CONST_LIST_ES_SHEETS_["about"].setTabColor('#6aa84f').hideSheet();
 
-	sheetSummary.getRange('B2').setValue(financial_year + ' | Year Summary');
+	sheetSummary.getRange('B2').setValue(CONST_SETUP_SETTINGS_["financial_year"] + ' | Year Summary');
 
-	if (dateToday.FullYear == financial_year) {
-		for (i = 0; i < init_month; i++) {
-			sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+	if (yyyy_mm.yyyy == CONST_SETUP_SETTINGS_["financial_year"]) {
+		for (i = 0; i < CONST_SETUP_SETTINGS_["init_month"]; i++) {
+			sheet = CONST_LIST_MN_SHEETS_[i];
 			sheet.setTabColor('#b7b7b7');
 
-			if (i < dateToday.Month - 1 || i > dateToday.Month + 2) {
+			if (i < yyyy_mm.mm - 1 || i > yyyy_mm.mm + 2) {
 				sheet.hideSheet();
 			}
 		}
 
 		for (; i < 12; i++) {
-			sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+			sheet = CONST_LIST_MN_SHEETS_[i];
 
-			if (i < dateToday.Month - 1 || i > dateToday.Month + 2) {
+			if (i < yyyy_mm.mm - 1 || i > yyyy_mm.mm + 2) {
 				sheet.setTabColor('#a4c2f4');
 				sheet.hideSheet();
 			} else {
@@ -421,25 +454,25 @@ function setupPart7_(spreadsheet, dateToday, financial_year, init_month, number_
 			}
 		}
 
-		spreadsheet.getSheetByName(MN_SHORT_[dateToday.Month]).setTabColor('#6aa84f');
+		CONST_LIST_MN_SHEETS_[yyyy_mm.mm].setTabColor('#6aa84f');
 
 		sheetTags.hideColumns(6, 12);
 
-		if (dateToday.Month < 2) {
+		if (yyyy_mm.mm < 2) {
 			sheetTags.showColumns(6, 4);
 		} else {
-			if (dateToday.Month == 11) {
-				spreadsheet.getSheetByName(MN_SHORT_[9]).showSheet();
-				dateToday.Month--;
+			if (yyyy_mm.mm == 11) {
+				CONST_LIST_MN_SHEETS_[9].showSheet();
+				yyyy_mm.mm--;
 			}
-			sheetTags.showColumns(4 + dateToday.Month, 4);
+			sheetTags.showColumns(4 + yyyy_mm.mm, 4);
 		}
 	} else {
-		for (i = 0; i < init_month; i++) {
-			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
+		for (i = 0; i < CONST_SETUP_SETTINGS_["init_month"]; i++) {
+			CONST_LIST_MN_SHEETS_[i].setTabColor('#b7b7b7');
 		}
 		for (; i < 12; i++) {
-			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#a4c2f4');
+			CONST_LIST_MN_SHEETS_[i].setTabColor('#a4c2f4');
 		}
 	}
 
@@ -447,8 +480,8 @@ function setupPart7_(spreadsheet, dateToday, financial_year, init_month, number_
 }
 
 
-function setupPart6_(spreadsheet, number_accounts) {
-	var sheetCards = spreadsheet.getSheetByName("Cards");
+function setupPart6_() {
+	var sheetCards = CONST_LIST_ES_SHEETS_["cards"];
 	var sheet, formula;
 	var header, c;
 	var i, k;
@@ -457,15 +490,15 @@ function setupPart6_(spreadsheet, number_accounts) {
 	h_ = AppsScriptGlobal.TableDimensions()["height"];
 	w_ = AppsScriptGlobal.TableDimensions()["width"];
 
-	c = 1 + w_ + w_*number_accounts;
+	c = 1 + w_ + w_*CONST_SETUP_SETTINGS_["number_accounts"];
 	header = rollA1Notation(1, c + 1, 1, w_*11);
 
 	for (i = 0; i < 12; i++) {
-		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+		sheet = CONST_LIST_MN_SHEETS_[i];
 
 		sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
 
-		for (k = 0; k < number_accounts; k++) {
+		for (k = 0; k < CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
 			sheet.getRange(1, 8 + 5*k).setFormula('IFERROR(BSINF(\'_Backstage\'!' + rollA1Notation(2 + h_*i, 8 + w_*k, h_, 2) + '; \'_Backstage\'!' + rollA1Notation(5 + i*6, 4 + k*3)+'); "")');
 			sheet.getRange(2, 6 + 5*k).setFormula('CONCAT("Balance "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(3 + h_*i, 7 + w_*k) + '))');
 			sheet.getRange(3, 6 + 5*k).setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4 + h_*i, 7 + w_*k) + '))');
@@ -486,7 +519,7 @@ function setupPart6_(spreadsheet, number_accounts) {
 }
 
 
-function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
+function setupPart5_() {
 	var formulaSumIncome, formulaSumExpenses;
 	var i, k;
 	var h_, w_;
@@ -503,21 +536,21 @@ function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
 			formulaSumIncome += rollA1Notation(6+h_*i, 8+w_*k);
 			formulaSumExpenses += rollA1Notation(4+h_*i, 7+w_*k);
 		}
-		for (k = 1; k < number_accounts; k++) {
+		for (k = 1; k < CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
 			formulaSumIncome += '+'+rollA1Notation(6+h_*i, 8+w_*k);
 			formulaSumExpenses += '+'+rollA1Notation(4+h_*i, 7+w_*k);
 		}
 
-		sheetBackstage.getRange(3+h_*i, 2).setFormula(formulaSumIncome);
-		sheetBackstage.getRange(5+h_*i, 2).setFormula(formulaSumExpenses);
+		CONST_LIST_ES_SHEETS_["_backstage"].getRange(3+h_*i, 2).setFormula(formulaSumIncome);
+		CONST_LIST_ES_SHEETS_["_backstage"].getRange(5+h_*i, 2).setFormula(formulaSumExpenses);
 	}
 
 	SpreadsheetApp.flush();
 }
 
 
-function setupPart4_(spreadsheet, number_accounts) {
-	var sheet = spreadsheet.getSheetByName("Tags");
+function setupPart4_() {
+	var sheet = CONST_LIST_ES_SHEETS_["tags"];
 	var formula, formulas, rg, cd;
 	var rgMonthTags, rgMonthCombo;
 	var i, k;
@@ -525,7 +558,7 @@ function setupPart4_(spreadsheet, number_accounts) {
 	formulas = [ [ ] ];
 	rgMonthTags = [ ];
 	rgMonthCombo = [ ];
-	for (k = 0; k < 1 + number_accounts; k++) {
+	for (k = 0; k < 1 + CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
 		rgMonthTags[k] = rollA1Notation(5, 4 + 5*k, -1, 1);
 		rgMonthCombo[k] = rollA1Notation(5, 3 + 5*k, -1, 2);
 	}
@@ -534,7 +567,7 @@ function setupPart4_(spreadsheet, number_accounts) {
 		rg = "{\'" + MN_SHORT_[i] + "\'!" + rgMonthCombo[0];
 		cd = "{\'" + MN_SHORT_[i] + "\'!" + rgMonthTags[0];
 
-		for (k = 1; k < 1 + number_accounts; k++) {
+		for (k = 1; k < 1 + CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
 			rg += "; \'" + MN_SHORT_[i] + "\'!" + rgMonthCombo[k];
 			cd += "; \'" + MN_SHORT_[i] + "\'!" + rgMonthTags[k];
 		}
@@ -570,19 +603,18 @@ function setupPart4_(spreadsheet, number_accounts) {
 }
 
 
-function setupPart3_(spreadsheet, number_accounts) {
-	var diff, w_;
+function setupPart3_() {
+	var d, n, w_;
 
-	diff = 5 - number_accounts;
 	w_ = AppsScriptGlobal.TableDimensions()["width"];
+	n = CONST_SETUP_SETTINGS_["number_accounts"];
+	d = 5 - n;
 
-	if (number_accounts !== 5) {
-		spreadsheet.getSheetByName("_Backstage")
-			.deleteColumns(7 + w_*number_accounts, w_*diff);
+	if (n !== 5) {
+		CONST_LIST_ES_SHEETS_["_backstage"].deleteColumns(7 + w_*n, w_*d);
 
 		for (var i = 0; i < 12; i++) {
-			spreadsheet.getSheetByName(MN_SHORT_[i])
-				.deleteColumns(6 + 5*number_accounts, 5*diff);
+			CONST_LIST_MN_SHEETS_[i].deleteColumns(6 + 5*n, 5*d);
 		}
 	}
 
@@ -590,12 +622,12 @@ function setupPart3_(spreadsheet, number_accounts) {
 }
 
 
-function setupPart2_(sheetBackstage, listAcc, m, number_accounts) {
-	if (number_accounts !== listAcc.length) throw "Number number_accounts and listAcc length are differ.";
+function setupPart2_() {
+	var list_acc = CONST_SETUP_SETTINGS_["list_acc"];
+	if (CONST_SETUP_SETTINGS_["number_accounts"] !== list_acc.length) throw "Number number_accounts and list_acc length are differ.";
 
-	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Jan');
-	var db_acc, list_id;
-	var newCell;
+	var sheet = CONST_LIST_MN_SHEETS_[0];
+	var db_acc, acc, list_id;
 	var r, i, k, w_;
 
 	w_ = AppsScriptGlobal.TableDimensions()["width"];
@@ -604,7 +636,7 @@ function setupPart2_(sheetBackstage, listAcc, m, number_accounts) {
 	db_acc = [ ];
 	list_id = [ ];
 
-	for (k = 0; k < number_accounts; k++) {
+	for (k = 0; k < CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
 		i = 0;
 		do {
 			r = randomString(11, "word");
@@ -615,18 +647,18 @@ function setupPart2_(sheetBackstage, listAcc, m, number_accounts) {
 
 		list_id.push(r);
 
-		newCell = {
+		acc = {
 			Id: r,
-			Name: listAcc[k],
-			TimeA: m,
+			Name: list_acc[k],
+			TimeA: CONST_SETUP_SETTINGS_["init_month"],
 			TimeZ: 11,
 			Balance: 0
 		};
 
-		sheetBackstage.getRange(1, 7 + w_*k).setValue(listAcc[k]);
-		sheet.getRange(1, 6 + k*5).setValue(listAcc[k]);
+		CONST_LIST_ES_SHEETS_["_backstage"].getRange(1, 7 + w_*k).setValue(list_acc[k]);
+		sheet.getRange(1, 6 + k*5).setValue(list_acc[k]);
 
-		db_acc.push(newCell);
+		db_acc.push(acc);
 	}
 
 	setPropertiesService_('document', 'json', 'DB_CARD', [ ]);
@@ -634,71 +666,61 @@ function setupPart2_(sheetBackstage, listAcc, m, number_accounts) {
 }
 
 
-function setupPart1_(spreadsheet, sheetSettings, settings, dateToday) {
+function setupPart1_(yyyy_mm) {
 	var cell;
 
-	{
-		cell = sheetSettings.getRange(8, 2);
+	cell = CONST_LIST_ES_SHEETS_["_settings"].getRange(8, 2);
 
-		cell.setValue(0.1);
-		cell.setNumberFormat("0.0");
-		SpreadsheetApp.flush();
+	cell.setValue(0.1);
+	cell.setNumberFormat("0.0");
+	SpreadsheetApp.flush();
 
-		cell = cell.getDisplayValue();
-		if ( /\./.test(cell) ) {
-			setPropertiesService_("document", "", "decimal_separator", "[ ]");
-		}
+	cell = cell.getDisplayValue();
+	if ( /\./.test(cell) ) {
+		setPropertiesService_("document", "", "decimal_separator", "[ ]");
 	}
-	{
-		cell = [
-			[ "=" + settings.FinancialYear.formatLocaleSignal() ],
-			[ "=IF(YEAR(TODAY()) = $B2; MONTH(TODAY()); IF(YEAR(TODAY()) < $B2; 0; 12))" ],
-			[ "=" + (settings.InitialMonth + 1).formatLocaleSignal() ],
-			[ "=IF($B4 > $B3; 0; $B3 - $B4 + 1)" ],
-			[ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))" ],
-			[ "=ROWS(\'Tags\'!$E1:$E) - 2" ],
-			[ "=RAND()" ],
-			[ "=COUNTIF(B11:B20; \"<>\")" ]
-		];
 
-		sheetSettings.getRange(2, 2, 8, 1).setFormulas(cell);
-	}
-	{
-		cell = {
-			InitialMonth: settings.InitialMonth,
-			FinancialCalendar: "",
-			PostDayEvents: false,
-			CashFlowEvents: false,
-			OverrideZero: false,
-			SpreadsheetLocale: spreadsheet.getSpreadsheetLocale()
-		};
+	cell = [
+		[ "=" + CONST_SETUP_SETTINGS_["financial_year"].formatLocaleSignal() ],
+		[ "=IF(YEAR(TODAY()) = $B2; MONTH(TODAY()); IF(YEAR(TODAY()) < $B2; 0; 12))" ],
+		[ "=" + (CONST_SETUP_SETTINGS_["init_month"] + 1).formatLocaleSignal() ],
+		[ "=IF($B4 > $B3; 0; $B3 - $B4 + 1)" ],
+		[ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))" ],
+		[ "=ROWS(\'Tags\'!$E1:$E) - 2" ],
+		[ "=RAND()" ],
+		[ "=COUNTIF(B11:B20; \"<>\")" ]
+	];
+	CONST_LIST_ES_SHEETS_["_settings"].getRange(2, 2, 8, 1).setFormulas(cell);
 
-		setPropertiesService_('document', 'json', 'user_settings', cell);
-	}
-	{
-		cell = {
-			date_created: settings.date_created,
-			number_accounts: settings.number_accounts,
-			financial_year: settings.FinancialYear
-		};
+	cell = {
+		InitialMonth: CONST_SETUP_SETTINGS_["init_month"],
+		FinancialCalendar: "",
+		PostDayEvents: false,
+		CashFlowEvents: false,
+		OverrideZero: false,
+		SpreadsheetLocale: CONST_SETUP_SETTINGS_["spreadsheet_locale"]
+	};
+	setPropertiesService_('document', 'json', 'user_settings', cell);
 
-		setPropertiesService_('document', 'obj', 'user_const_settings', cell);
-	}
-	{
-		createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
+	cell = {
+		date_created: CONST_SETUP_SETTINGS_["date_created"].getTime(),
+		number_accounts: CONST_SETUP_SETTINGS_["number_accounts"],
+		financial_year: CONST_SETUP_SETTINGS_["financial_year"]
+	};
+	setPropertiesService_('document', 'obj', 'user_const_settings', cell);
 
-		if (settings.FinancialYear < dateToday.FullYear) {
-			createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Foo_', 2);
-			setPropertiesService_('document', 'string', 'OperationMode', "passive");
+	createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
+	if (CONST_SETUP_SETTINGS_["financial_year"] < yyyy_mm.yyyy) {
+		createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Foo_', 2);
+		setPropertiesService_('document', 'string', 'OperationMode', "passive");
 
-		} else if (settings.FinancialYear == dateToday.FullYear) {
-			createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
-			setPropertiesService_('document', 'string', 'OperationMode', "active");
+	} else if (CONST_SETUP_SETTINGS_["financial_year"] == yyyy_mm.yyyy) {
+		createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
+		setPropertiesService_('document', 'string', 'OperationMode', "active");
 
-		} else if (settings.FinancialYear > dateToday.FullYear) {
-			createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', 2);
-			setPropertiesService_('document', 'string', 'OperationMode', "passive");
-		}
+	} else if (CONST_SETUP_SETTINGS_["financial_year"] > yyyy_mm.yyyy) {
+		createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', 2);
+		setPropertiesService_('document', 'string', 'OperationMode', "passive");
 	}
 
 	SpreadsheetApp.flush();
