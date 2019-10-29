@@ -384,50 +384,62 @@ function setupPart9_(sheetSummary, mm) {
 }
 
 
-function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
+function setupPart7_(spreadsheet, dateToday, financial_year, init_month, number_accounts) {
+	var sheetSummary = spreadsheet.getSheetByName('Summary');
 	var sheetTags = spreadsheet.getSheetByName('Tags');
-	var sheetCashFlow = spreadsheet.getSheetByName('Cash Flow'),
-			sheetSummary = spreadsheet.getSheetByName('Summary'),
-			sheetBackstage = spreadsheet.getSheetByName("_Backstage");
-	var matrixFormulas;
-	var c, i, h_;
+	var sheet, i;
 
-	h_ = AppsScriptGlobal.TableDimensions()["height"];
+	sheetSummary.setTabColor('#e69138');
+	spreadsheet.getSheetByName('Cards').setTabColor('#e69138');
+	spreadsheet.getSheetByName('Cash Flow').setTabColor('#e69138');
+	sheetTags.setTabColor('#e69138');
+	spreadsheet.getSheetByName('Quick Actions').setTabColor('#6aa84f');
+	spreadsheet.getSheetByName("_Backstage").setTabColor('#cc0000').hideSheet();
+	spreadsheet.getSheetByName('_Settings').setTabColor('#cc0000').hideSheet();
+	spreadsheet.getSheetByName('About').setTabColor('#6aa84f').hideSheet();
 
-	{
-		sheetSummary.setTabColor('#e69138');
-		foo_ColorTabs_();
-		spreadsheet.getSheetByName('Cash Flow').setTabColor('#e69138');
-		spreadsheet.getSheetByName('Cards').setTabColor('#e69138');
-		spreadsheet.getSheetByName('Tags').setTabColor('#e69138');
-		spreadsheet.getSheetByName('Quick Actions').setTabColor('#6aa84f');
-		sheetBackstage.setTabColor('#cc0000').hideSheet();
-		spreadsheet.getSheetByName('_Settings').setTabColor('#cc0000').hideSheet();
-		spreadsheet.getSheetByName('About').setTabColor('#6aa84f').hideSheet();
-	}
+	sheetSummary.getRange('B2').setValue(financial_year + ' | Year Summary');
 
-	sheetSummary.getRange('B2').setValue(Y+' | Year Summary');
+	if (dateToday.FullYear == financial_year) {
+		for (i = 0; i < init_month; i++) {
+			sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+			sheet.setTabColor('#b7b7b7');
 
-	if (dateToday.FullYear == Y) {
-		sheetTags.hideColumns(6, 12);
-
-		for (i = 0; i < 12; i++) {
-			if (i < dateToday.Month-1 || i > dateToday.Month+2) {
-				spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
-			} else {
-				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
+			if (i < dateToday.Month - 1 || i > dateToday.Month + 2) {
+				sheet.hideSheet();
 			}
 		}
+
+		for (; i < 12; i++) {
+			sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+
+			if (i < dateToday.Month - 1 || i > dateToday.Month + 2) {
+				sheet.setTabColor('#a4c2f4');
+				sheet.hideSheet();
+			} else {
+				sheet.setTabColor('#3c78d8');
+			}
+		}
+
+		spreadsheet.getSheetByName(MN_SHORT_[dateToday.Month]).setTabColor('#6aa84f');
+
+		sheetTags.hideColumns(6, 12);
 
 		if (dateToday.Month < 2) {
 			sheetTags.showColumns(6, 4);
 		} else {
-
 			if (dateToday.Month == 11) {
 				spreadsheet.getSheetByName(MN_SHORT_[9]).showSheet();
 				dateToday.Month--;
 			}
 			sheetTags.showColumns(4 + dateToday.Month, 4);
+		}
+	} else {
+		for (i = 0; i < init_month; i++) {
+			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
+		}
+		for (; i < 12; i++) {
+			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#a4c2f4');
 		}
 	}
 
