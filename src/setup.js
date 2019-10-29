@@ -58,21 +58,21 @@ function askReinstall() {
 	if(!getPropertiesService_("document", "", "is_installed")) return;
 
 	var financial_year = getUserConstSettings_('financial_year');
-	var dateToday = getSpreadsheetDate();
+	var date = getSpreadsheetDate();
 
 	purgeScriptAppTriggers_();
 
 	createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
 
-	if(FinancialYear < dateToday.getFullYear()) {
+	if(financial_year < date.getFullYear()) {
 		setPropertiesService_('document', 'string', 'OperationMode', 'passive');
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
 
-	} else if(FinancialYear === dateToday.getFullYear()) {
+	} else if(financial_year === date.getFullYear()) {
 		setPropertiesService_('document', 'string', 'OperationMode', 'active');
 		createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
 
-	} else if(FinancialYear > dateToday.getFullYear()) {
+	} else if(financial_year > date.getFullYear()) {
 		setPropertiesService_('document', 'string', 'OperationMode', 'passive');
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", 2);
 	}
