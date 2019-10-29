@@ -9,17 +9,12 @@ function optCoolGallery(command, options) {
 
 	switch (command) {
 		case "import":
-			r = getCoolSheet_(options);
-			break;
+			return getCoolSheet_(options);
 
 		default:
 			console.warn("optCoolGallery(): Switch case is default.", command);
-			r = 3;
 			break;
 	}
-
-	// lock.releaseLock();
-	return r;
 }
 
 
@@ -70,6 +65,7 @@ function getCoolSheet_(option) {
 		case "tags":
 			r = coolTags_(info);
 			break;
+
 		default:
 			break;
 	}
