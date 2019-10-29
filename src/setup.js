@@ -225,7 +225,7 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
 	setupPart2_(sheetBackstage, listAccountName, addonSettings.InitialMonth, number_accounts);
 	setupPart4_(spreadsheet, number_accounts);
 	setupPart5_(spreadsheet, sheetBackstage, number_accounts);
-	setupPart6_(spreadsheet, sheetBackstage, number_accounts);
+	setupPart6_(spreadsheet, number_accounts);
 	setupPart7_(spreadsheet, dateToday, addonSettings.FinancialYear, addonSettings.InitialMonth, number_accounts);
 	setupPart9_(sheetFinances, addonSettings.InitialMonth);
 	setupPart10_(number_accounts, addonSettings.FinancialYear, addonSettings.InitialMonth);
@@ -435,10 +435,10 @@ function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
 }
 
 
-function setupPart6_(spreadsheet, sheetBackstage, number_accounts) {
+function setupPart6_(spreadsheet, number_accounts) {
 	var sheetCards = spreadsheet.getSheetByName("Cards");
-	var thisSheet;
-	var header, str, c;
+	var sheet, formula;
+	var header, c;
 	var i, k;
 	var h_, w_;
 
@@ -449,26 +449,25 @@ function setupPart6_(spreadsheet, sheetBackstage, number_accounts) {
 	header = rollA1Notation(1, c + 1, 1, w_*11);
 
 	for (i = 0; i < 12; i++) {
-		thisSheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
 
-		thisSheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
+		sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
 
 		for (k = 0; k < number_accounts; k++) {
-			thisSheet.getRange(1, 8+5*k).setFormula('=BSINF(\'_Backstage\'!' + rollA1Notation(2+h_*i,8+w_*k, h_,2) + '; \'_Backstage\'!'+rollA1Notation(5+i*6, 4+k*3)+')');
-
-			thisSheet.getRange(2, 6+5*k).setFormula('=CONCAT("Balance "; TO_TEXT(\'_Backstage\'!'+rollA1Notation(3+h_*i, 7+w_*k)+'))');
-
-			thisSheet.getRange(3, 6+5*k).setFormula('=CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4+h_*i, 7+w_*k) + '))');
+			sheet.getRange(1, 8 + 5*k).setFormula('IFERROR(BSINF(\'_Backstage\'!' + rollA1Notation(2 + h_*i, 8 + w_*k, h_, 2) + '; \'_Backstage\'!' + rollA1Notation(5 + i*6, 4 + k*3)+'); "")');
+			sheet.getRange(2, 6 + 5*k).setFormula('CONCAT("Balance "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(3 + h_*i, 7 + w_*k) + '))');
+			sheet.getRange(3, 6 + 5*k).setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4 + h_*i, 7 + w_*k) + '))');
 		}
 
 		sheetCards.getRange(2, 1 + 6*i).setValue("All");
 
-		str = "BSINFCARD(IF(" + rollA1Notation(2, 1 + 6*i) + " = \"\"; \"\"; ";
-		str += "OFFSET(INDIRECT(ADDRESS(2; ";
-		str += c + " + MATCH(" + rollA1Notation(2, 1 + 6*i) + "; ";
-		str += "\'_Backstage\'!" + header + "; 0); 4; true; \"_Backstage\")); ";
-		str += (h_*i) + "; 0; " + h_ + "; 1)))";
-		sheetCards.getRange(2, 4 + i*6).setFormula(str);
+		formula = "MATCH(" + rollA1Notation(2, 1 + 6*i) + "; \'_Backstage\'!" + header + "; 0)";
+		formula = "INDIRECT(ADDRESS(2; " +  c + " + " + formula + "; 4; true; \"_Backstage\"))";
+		formula = "OFFSET(" + formula + "; " + (h_*i) + "; 0; " + h_ + "; 1)";
+		formula = "IF(" + rollA1Notation(2, 1 + 6*i) + " = \"\"; \"\"; " + formula + ")";
+		formula = "IFERROR(BSINFCARD(" + formula + "); \"\")";
+
+		sheetCards.getRange(2, 4 + i*6).setFormula(formula);
 	}
 
 	SpreadsheetApp.flush();
