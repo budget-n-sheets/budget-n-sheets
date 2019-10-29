@@ -23,11 +23,11 @@ function onOpen(e) {
 
 	try {
 		trial_onOpen();
-	} catch(err) {
+	} catch (err) {
 
 	}
 
-	if(e && e.authMode == ScriptApp.AuthMode.NONE) {
+	if (e && e.authMode == ScriptApp.AuthMode.NONE) {
 		SpreadsheetApp.getUi()
 			.createAddonMenu()
 			.addItem('Start budget sheet', 'showSetupAddon_')
@@ -35,7 +35,7 @@ function onOpen(e) {
 			.addItem('About the add-on', 'showDialogAboutAddon')
 			.addToUi();
 	} else {
-		if(PropertiesService.getDocumentProperties().getProperty('is_installed')) {
+		if (PropertiesService.getDocumentProperties().getProperty('is_installed')) {
 			SpreadsheetApp.getUi()
 				.createAddonMenu()
 				.addItem('Add blank lines', 'toolAddBlankRows')
@@ -68,8 +68,8 @@ function onOpen(e) {
 
 
 function showPanelTables() {
-	if(onlineUpdate_()) return;
-	else if(optMainTables('isBusy') !== -1) {
+	if (onlineUpdate_()) return;
+	else if (optMainTables('isBusy') !== -1) {
 		SpreadsheetApp.getUi().alert(
 			"Add-on is busy",
 			"The add-on is busy. Try again a moment.",
@@ -86,8 +86,8 @@ function showPanelTables() {
 
 
 function showPanelTags() {
-	if(onlineUpdate_()) return;
-	if(optMainTags('isBusy') !== -1) {
+	if (onlineUpdate_()) return;
+	if (optMainTags('isBusy') !== -1) {
 		SpreadsheetApp.getUi().alert(
 			"Add-on is busy",
 			"The add-on is busy. Try again a moment.",
@@ -119,7 +119,7 @@ function showPanelTags() {
 
 
 function showPanelAnalytics() {
-	if(onlineUpdate_()) return;
+	if (onlineUpdate_()) return;
 
 	var htmlTemplate = HtmlService.createTemplateFromFile("htmlCoolGallery");
 	var htmlSidebar;
@@ -133,7 +133,7 @@ function showPanelAnalytics() {
 }
 
 function showSidebarMainSettings() {
-	if(onlineUpdate_()) return;
+	if (onlineUpdate_()) return;
 
 	var htmlSidebar = HtmlService.createTemplateFromFile('htmlUserSettings')
 		.evaluate()
@@ -145,10 +145,10 @@ function showSidebarMainSettings() {
 
 function showDialogAboutAddon() {
 	try {
-		if(getPropertiesService_("document", "", "is_installed")) {
+		if (getPropertiesService_("document", "", "is_installed")) {
 			onlineUpdate_();
 		}
-	} catch(err) {
+	} catch (err) {
 		console.error("showDialogAboutAddon()", err);
 	}
 

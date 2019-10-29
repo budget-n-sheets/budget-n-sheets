@@ -9,8 +9,8 @@
 function BSREPORT(range, sum_range) {
 	Utilities.sleep(200);
 
-	if(sum_range == null || range == null) return 0;
-	else if(sum_range.length != range.length) return 0;
+	if (sum_range == null || range == null) return 0;
+	else if (sum_range.length != range.length) return 0;
 
 	var SUM;
 	var n1, n2, i;
@@ -25,29 +25,29 @@ function BSREPORT(range, sum_range) {
 	];
 
 
-	n1 = sum_range.length;  i = 0;
+	n1 = sum_range.length; i = 0;
 	n2 = n1 - 1;
-	while(i < n1  &&  sum_range[i] != '') {
+	while (i < n1 && sum_range[i] != '') {
 
-		while(range[i] == ''  &&  i < n2) { i++; }
+		while (range[i] == '' && i < n2) { i++; }
 
-		if( /#wd/.test(range[i])  &&  Number(sum_range[i]) <= 0 ) {
+		if ( /#wd/.test(range[i]) && Number(sum_range[i]) <= 0 ) {
 			SUM[0][1]++;
 			SUM[0][0] += Number(sum_range[i]);
 		}
-		if( /#dp/.test(range[i])  &&  Number(sum_range[i]) >= 0 ) {
+		if ( /#dp/.test(range[i]) && Number(sum_range[i]) >= 0 ) {
 			SUM[1][1]++;
 			SUM[1][0] += Number(sum_range[i]);
 		}
-		if( /#trf/.test(range[i])  &&  Number(sum_range[i]) >= 0 ) {
+		if ( /#trf/.test(range[i]) && Number(sum_range[i]) >= 0 ) {
 			SUM[2][1]++;
 			SUM[2][0] += Number(sum_range[i]);
 		}
-		if( /#trf/.test(range[i])  &&  Number(sum_range[i]) < 0 ) {
+		if ( /#trf/.test(range[i]) && Number(sum_range[i]) < 0 ) {
 			SUM[3][1]++;
 			SUM[3][0] += Number(sum_range[i]);
 		}
-		if( /#rct/.test(range[i]) ) {
+		if ( /#rct/.test(range[i]) ) {
 			SUM[4][0] += Number(sum_range[i]);
 		}
 
@@ -67,7 +67,7 @@ function BSREPORT(range, sum_range) {
  * @customfunction
  */
 function BSSUMBYTAG(tag, range) {
-	if(!tag || !range) return;
+	if (!tag || !range) return;
 	Utilities.sleep(200);
 
 	var SUM;
@@ -75,33 +75,33 @@ function BSSUMBYTAG(tag, range) {
 	var c, n, i, j;
 
 	n = tag[0].length;
-	if(n <= 2) return;
+	if (n <= 2) return;
 	else n -= 2;
 
 	SUM = [ ];
-	for(i = 0;  i < n;  i++) {
+	for (i = 0; i < n; i++) {
 		SUM.push([ 0 ]);
 	}
-	if(range === "0") return SUM;
+	if (range === "0") return SUM;
 
 	tag = tag[0];
 	tag = tag.slice(1, n + 1);
 
-	if(n > 1) regex = tag.join('|');
+	if (n > 1) regex = tag.join('|');
 	else regex = tag[0];
 
 	regex = "#(" + regex + ")";
 	regex = new RegExp(regex);
 
-	for(i = 0; i < tag.length; i++) {
+	for (i = 0; i < tag.length; i++) {
 		tag[i] = "#" + tag[i];
 	}
 
-	for(i = 0; i < range.length; i++) {
-		if(! regex.test(range[i][1])) continue;
+	for (i = 0; i < range.length; i++) {
+		if (! regex.test(range[i][1])) continue;
 
-		for(j = 0; j < tag.length; j++) {
-			if(range[i][1].indexOf(tag[j]) !== -1) {
+		for (j = 0; j < tag.length; j++) {
+			if (range[i][1].indexOf(tag[j]) !== -1) {
 				SUM[j][0] += Number(range[i][0]);
 			}
 		}
@@ -120,7 +120,7 @@ function BSSUMBYTAG(tag, range) {
 function BSINF(range) {
 	Utilities.sleep(200);
 
-	if(!range) return "#ERROR!";
+	if (!range) return "#ERROR!";
 
 	var inf = "";
 
@@ -149,7 +149,7 @@ function BSINF(range) {
 function BSINFCARD(range) {
 	Utilities.sleep(200);
 
-	if(!range) return "";
+	if (!range) return "";
 
 	var str = '';
 

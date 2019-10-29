@@ -2,12 +2,12 @@ function optMainTags(opt, input) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
-	} catch(err) {
+	} catch (err) {
 		console.warn("optMainTags(): Wait lock time out.");
 		return 0;
 	}
 
-	switch(opt) {
+	switch (opt) {
 		case "GetData":
 			return tagGetData_();
 		case 'GetList':

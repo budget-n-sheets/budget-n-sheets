@@ -3,7 +3,7 @@ function showSetupAddon_() {
 
 	try {
 		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
-	} catch(err) {
+	} catch (err) {
 		console.warn("showSetupAddon_()", err);
 
 		Ui.alert(
@@ -14,12 +14,12 @@ function showSetupAddon_() {
 		return;
 	}
 
-	if(getPropertiesService_("document", "", "is_installed")) {
+	if (getPropertiesService_("document", "", "is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
 		return;
 
-	} else if(SpreadsheetApp.getActiveSpreadsheet().getFormUrl() != null) {
+	} else if (SpreadsheetApp.getActiveSpreadsheet().getFormUrl() != null) {
 		Ui.alert(
 			"Linked form",
 			"The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.",
@@ -46,7 +46,7 @@ function askDeactivation() {
 
 	var button = result.getSelectedButton();
 	var text = result.getResponseText();
-	if (button == Ui.Button.OK  &&  text === s) {
+	if (button == Ui.Button.OK && text === s) {
 		uninstall_();
 		onOpen();
 		console.info("add-on/Deactivate : Success.");
@@ -55,7 +55,7 @@ function askDeactivation() {
 }
 
 function askReinstall() {
-	if(!getPropertiesService_("document", "", "is_installed")) return;
+	if (!getPropertiesService_("document", "", "is_installed")) return;
 
 	var financial_year = getUserConstSettings_('financial_year');
 	var date = getSpreadsheetDate();
@@ -64,15 +64,15 @@ function askReinstall() {
 
 	createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
 
-	if(financial_year < date.getFullYear()) {
+	if (financial_year < date.getFullYear()) {
 		setPropertiesService_('document', 'string', 'OperationMode', 'passive');
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
 
-	} else if(financial_year === date.getFullYear()) {
+	} else if (financial_year === date.getFullYear()) {
 		setPropertiesService_('document', 'string', 'OperationMode', 'active');
 		createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
 
-	} else if(financial_year > date.getFullYear()) {
+	} else if (financial_year > date.getFullYear()) {
 		setPropertiesService_('document', 'string', 'OperationMode', 'passive');
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", 2);
 	}
@@ -92,7 +92,7 @@ function showDialogSetupEnd() {
 function uninstall_() {
 	var list = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
 
-	for(var i = 0; i < list.length; i++) {
+	for (var i = 0; i < list.length; i++) {
 		ScriptApp.deleteTrigger(list[i]);
 	}
 
@@ -101,7 +101,7 @@ function uninstall_() {
 
 
 function setup_ui(settings, list) {
-	if(getPropertiesService_("document", "", "is_installed")) {
+	if (getPropertiesService_("document", "", "is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
 		return;
@@ -110,7 +110,7 @@ function setup_ui(settings, list) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
-	} catch(err) {
+	} catch (err) {
 		SpreadsheetApp.getUi().alert(
 			"Add-on is busy",
 			"A budget spreadsheet setup is in progress. Try again later.",
@@ -131,7 +131,7 @@ function setup_ui(settings, list) {
 			number_accounts: Number(settings.number_accounts)
 		};
 		console.info("add-on/Stats", stats);
-	} catch(err) {
+	} catch (err) {
 		console.error("setup_ui()/stats", err);
 	}
 
@@ -155,7 +155,7 @@ function setup_(settings, listAccountName) {
 
 	deleteAllSheets_();
 	copySheetsFromTemplate_();
-	if(sortSheetOrder_() !== -1) return;
+	if (sortSheetOrder_() !== -1) return;
 
 	spreadsheet.setActiveSheet( spreadsheet.getSheetByName('Summary') );
 
@@ -170,7 +170,7 @@ function setup_(settings, listAccountName) {
 	setPropertiesService_("document", "json", "class_version", s);
 
 	s = nodeControl_("sign");
-	if(typeof s != "string") throw 1;
+	if (typeof s != "string") throw 1;
 
 	console.timeEnd("add-on/Install");
 	return true;
@@ -185,13 +185,13 @@ function sortSheetOrder_() {
 
 	i = 0;
 	sheet = spreadsheet.getSheetByName(list[i]);
-	if(!sheet) return;
+	if (!sheet) return;
 	spreadsheet.setActiveSheet(sheet);
 	spreadsheet.moveActiveSheet(i + 1);
 
-	for(i = 13; i < list.length; i++) {
+	for (i = 13; i < list.length; i++) {
 		sheet = spreadsheet.getSheetByName(list[i]);
-		if(!sheet) return;
+		if (!sheet) return;
 		spreadsheet.setActiveSheet(sheet);
 		spreadsheet.moveActiveSheet(i + 1);
 	}
@@ -209,9 +209,9 @@ function setup_ExecutePatial_(addonSettings, listAccountName) {
 	var number_accounts;
 	var chk;
 
-	if(!sheetFinances) return;
-	if(!sheetBackstage) return;
-	if(!sheetSettings) return;
+	if (!sheetFinances) return;
+	if (!sheetBackstage) return;
+	if (!sheetSettings) return;
 
 	number_accounts = addonSettings.number_accounts;
 
@@ -248,7 +248,7 @@ function setupPart11_(spreadsheet, number_accounts) {
 	{
 		thisSheet = spreadsheet.getSheetByName('Cash Flow');
 		vRange = [ ];
-		for(i = 0;  i < 12;  i++) {
+		for (i = 0; i < 12; i++) {
 			vRange.push( thisSheet.getRange(3,2+4*i, 31) );
 			vRange.push( thisSheet.getRange(3,4+4*i, 31) );
 		}
@@ -257,7 +257,7 @@ function setupPart11_(spreadsheet, number_accounts) {
 	{
 		thisSheet = spreadsheet.getSheetByName('Cards');
 		vRange = [ ];
-		for(i = 0;  i < 12;  i++) {
+		for (i = 0; i < 12; i++) {
 			vRange.push( thisSheet.getRange(6, 1 + 6*i, 400, 5) );
 			vRange.push( thisSheet.getRange(2, 1 + 6*i, 1, 3) );
 		}
@@ -277,11 +277,11 @@ function setupPart11_(spreadsheet, number_accounts) {
 	}
 	{
 		i = 0;
-		while(i < 12) {
+		while (i < 12) {
 			thisSheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
 			vRange = [ ];
 
-			for(k = 0;  k < 1+number_accounts;  k++) {
+			for (k = 0; k < 1+number_accounts; k++) {
 				vRange.push( thisSheet.getRange(5, 1 + 5*k, 400, 4) );
 			}
 			thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
@@ -305,39 +305,39 @@ function setupPart10_(number_accounts, Y, m) {
 
 	d = new Date(Y, i+1, 0).getDate();
 	sheetCashFlow.getRange(4,3+i*4, d-1).setFormulaR1C1('=R[-1]C+RC[-1]');
-	if(d < 31) {
+	if (d < 31) {
 		sheetCashFlow.getRange(3+d,2+i*4, 31-d,3).setBackground('#f3f3f3');
 	}
 
 	s = new Date(Y, 0, 1).getDay(); j=0;
-	while(j < d) {
-		switch(s) {
+	while (j < d) {
+		switch (s) {
 			case 0:
 				sheetCashFlow.getRange(3+j,2, 1,3).setBackground('#d9ead3');
-				s += 6;  j += 6;
+				s += 6; j += 6;
 				break;
 			case 6:
 				sheetCashFlow.getRange(3+j,2, 1,3).setBackground('#d9ead3');
-				s = 0;  j++;
+				s = 0; j++;
 				break;
 			default:
-				s = (s+1)%7;  j++;
+				s = (s+1)%7; j++;
 				break;
 		}
 	}
 
-	for(i = 1;  i < 12;  i++) {
+	for (i = 1; i < 12; i++) {
 		sheetCashFlow.getRange(3,3+i*4).setFormulaR1C1('=R['+(d-1)+']C[-4]+RC[-1]');
 
 		d = new Date(Y, i+1, 0).getDate();
 		sheetCashFlow.getRange(4,3+i*4, d-1).setFormulaR1C1('=R[-1]C+RC[-1]');
-		if(d < 31) {
+		if (d < 31) {
 			sheetCashFlow.getRange(3+d,2+i*4, 31-d,3).setBackground('#f3f3f3');
 		}
 
 		s = new Date(Y, i, 1).getDay(); j=0;
-		while(j < d) {
-			switch(s) {
+		while (j < d) {
+			switch (s) {
 				case 0:
 					sheetCashFlow.getRange(3+j,2+i*4, 1,3).setBackground('#d9ead3');
 					s=6; j+=6;
@@ -408,22 +408,22 @@ function setupPart7_(spreadsheet, dateToday, Y, m, number_accounts) {
 
 	sheetSummary.getRange('B2').setValue(Y+' | Year Summary');
 
-	if(dateToday.FullYear == Y) {
+	if (dateToday.FullYear == Y) {
 		sheetTags.hideColumns(6, 12);
 
-		for(i = 0;  i < 12;  i++) {
-			if(i < dateToday.Month-1  ||  i > dateToday.Month+2) {
+		for (i = 0; i < 12; i++) {
+			if (i < dateToday.Month-1 || i > dateToday.Month+2) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
 			} else {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
 			}
 		}
 
-		if(dateToday.Month < 2) {
+		if (dateToday.Month < 2) {
 			sheetTags.showColumns(6, 4);
 		} else {
 
-			if(dateToday.Month == 11) {
+			if (dateToday.Month == 11) {
 				spreadsheet.getSheetByName(MN_SHORT_[9]).showSheet();
 				dateToday.Month--;
 			}
@@ -448,12 +448,12 @@ function setupPart6_(spreadsheet, sheetBackstage, number_accounts) {
 	c = 1 + w_ + w_*number_accounts;
 	header = rollA1Notation(1, c + 1, 1, w_*11);
 
-	for(i = 0;  i < 12;  i++) {
+	for (i = 0; i < 12; i++) {
 		thisSheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
 
 		thisSheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
 
-		for(k = 0;  k < number_accounts;  k++) {
+		for (k = 0; k < number_accounts; k++) {
 			thisSheet.getRange(1, 8+5*k).setFormula('=BSINF(\'_Backstage\'!' + rollA1Notation(2+h_*i,8+w_*k, h_,2) + '; \'_Backstage\'!'+rollA1Notation(5+i*6, 4+k*3)+')');
 
 			thisSheet.getRange(2, 6+5*k).setFormula('=CONCAT("Balance "; TO_TEXT(\'_Backstage\'!'+rollA1Notation(3+h_*i, 7+w_*k)+'))');
@@ -483,7 +483,7 @@ function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
 	h_ = AppsScriptGlobal.TableDimensions()["height"];
 	w_ = AppsScriptGlobal.TableDimensions()["width"];
 
-	for(i = 0;  i < 12;  i++) {
+	for (i = 0; i < 12; i++) {
 		formulaSumIncome = '=';
 		formulaSumExpenses = '=';
 
@@ -492,7 +492,7 @@ function setupPart5_(spreadsheet, sheetBackstage, number_accounts) {
 			formulaSumIncome += rollA1Notation(6+h_*i, 8+w_*k);
 			formulaSumExpenses += rollA1Notation(4+h_*i, 7+w_*k);
 		}
-		for(k = 1;  k < number_accounts;  k++) {
+		for (k = 1; k < number_accounts; k++) {
 			formulaSumIncome += '+'+rollA1Notation(6+h_*i, 8+w_*k);
 			formulaSumExpenses += '+'+rollA1Notation(4+h_*i, 7+w_*k);
 		}
@@ -514,16 +514,16 @@ function setupPart4_(spreadsheet, number_accounts) {
 	formulas = [ [ ] ];
 	rgMonthTags = [ ];
 	rgMonthCombo = [ ];
-	for(k = 0; k < 1 + number_accounts; k++) {
+	for (k = 0; k < 1 + number_accounts; k++) {
 		rgMonthTags[k] = rollA1Notation(5, 4 + 5*k, -1, 1);
 		rgMonthCombo[k] = rollA1Notation(5, 3 + 5*k, -1, 2);
 	}
 
-	for(i = 0;  i < 12;  i++) {
+	for (i = 0; i < 12; i++) {
 		rg = "{\'" + MN_SHORT_[i] + "\'!" + rgMonthCombo[0];
 		cd = "{\'" + MN_SHORT_[i] + "\'!" + rgMonthTags[0];
 
-		for(k = 1;  k < 1 + number_accounts;  k++) {
+		for (k = 1; k < 1 + number_accounts; k++) {
 			rg += "; \'" + MN_SHORT_[i] + "\'!" + rgMonthCombo[k];
 			cd += "; \'" + MN_SHORT_[i] + "\'!" + rgMonthTags[k];
 		}
@@ -565,11 +565,11 @@ function setupPart3_(spreadsheet, number_accounts) {
 	diff = 5 - number_accounts;
 	w_ = AppsScriptGlobal.TableDimensions()["width"];
 
-	if(number_accounts !== 5) {
+	if (number_accounts !== 5) {
 		spreadsheet.getSheetByName("_Backstage")
 			.deleteColumns(7 + w_*number_accounts, w_*diff);
 
-		for(var i = 0;  i < 12;  i++) {
+		for (var i = 0; i < 12; i++) {
 			spreadsheet.getSheetByName(MN_SHORT_[i])
 				.deleteColumns(6 + 5*number_accounts, 5*diff);
 		}
@@ -580,7 +580,7 @@ function setupPart3_(spreadsheet, number_accounts) {
 
 
 function setupPart2_(sheetBackstage, listAcc, m, number_accounts) {
-	if(number_accounts !== listAcc.length) throw "Number number_accounts and listAcc length are differ.";
+	if (number_accounts !== listAcc.length) throw "Number number_accounts and listAcc length are differ.";
 
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Jan');
 	var db_acc, list_id;
@@ -593,7 +593,7 @@ function setupPart2_(sheetBackstage, listAcc, m, number_accounts) {
 	db_acc = [ ];
 	list_id = [ ];
 
-	for(k = 0; k < number_accounts; k++) {
+	for (k = 0; k < number_accounts; k++) {
 		i = 0;
 		do {
 			r = randomString(11, "word");
@@ -634,7 +634,7 @@ function setupPart1_(spreadsheet, sheetSettings, settings, dateToday) {
 		SpreadsheetApp.flush();
 
 		cell = cell.getDisplayValue();
-		if( /\./.test(cell) ) {
+		if ( /\./.test(cell) ) {
 			setPropertiesService_("document", "", "decimal_separator", "[ ]");
 		}
 	}
@@ -676,15 +676,15 @@ function setupPart1_(spreadsheet, sheetSettings, settings, dateToday) {
 	{
 		createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
 
-		if(settings.FinancialYear < dateToday.FullYear) {
+		if (settings.FinancialYear < dateToday.FullYear) {
 			createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Foo_', 2);
 			setPropertiesService_('document', 'string', 'OperationMode', "passive");
 
-		} else if(settings.FinancialYear == dateToday.FullYear) {
+		} else if (settings.FinancialYear == dateToday.FullYear) {
 			createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
 			setPropertiesService_('document', 'string', 'OperationMode', "active");
 
-		} else if(settings.FinancialYear > dateToday.FullYear) {
+		} else if (settings.FinancialYear > dateToday.FullYear) {
 			createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', 2);
 			setPropertiesService_('document', 'string', 'OperationMode', "passive");
 		}

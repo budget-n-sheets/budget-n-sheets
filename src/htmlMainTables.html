@@ -232,7 +232,7 @@
 			htmlVarGlobal.Id = $(this).parent().attr('id');
 
 			var response = confirm("Click OK to confirm and remove the card.");
-			if(!response) return;
+			if (!response) return;
 
 			g2("panel_WaitLoad");
 			$('#p-footer_FastResponse').empty().append("Removing card...");
@@ -243,22 +243,22 @@
 		});
 
 		$(document).on('click', '.m-tab', function() {
-			if( $(this).hasClass('active') ) return;
+			if ( $(this).hasClass('active') ) return;
 
 			$(this).addClass('active')
 				.siblings()
 				.removeClass('active');
 
-			if($(this).attr('id') === "tab_accounts") g2("panel_Accounts");
-			else if($(this).attr('id') === "tab_cards") g2("panel_Cards");
+			if ($(this).attr('id') === "tab_accounts") g2("panel_Accounts");
+			else if ($(this).attr('id') === "tab_cards") g2("panel_Cards");
 		});
 
 		function EditAccount_Panel(r) {
-			if(r === 0) {
+			if (r === 0) {
 				g2("panel_Accounts");
 				$('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
 				return;
-			} else if(r > 0) {
+			} else if (r > 0) {
 				showError();
 				return;
 			}
@@ -286,11 +286,11 @@
 				.optMainTables('UpdateAccount', output);
 		}
 		function EditTable_Aftermath(input) {
-			if(input === 0) {
+			if (input === 0) {
 				$('.Form-EditAccount_lock').prop('disabled', false);
 				$('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
 				return;
-			} else if(input > 0) {
+			} else if (input > 0) {
 				showError();
 				return;
 			}
@@ -304,11 +304,11 @@
 		}
 
 		function EditCard_Panel(r) {
-			if(r === 0) {
+			if (r === 0) {
 				g2("panel_Cards")
 				$('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
 				return;
-			} else if(r > 0) {
+			} else if (r > 0) {
 				showError();
 				return;
 			}
@@ -327,7 +327,7 @@
 			g2("panel_AddCard");
 		}
 		function AddEditCard_Push() {
-			if(htmlVarGlobal.Action === 'add') $('#p-footer_FastResponse').empty().append('Adding card...');
+			if (htmlVarGlobal.Action === 'add') $('#p-footer_FastResponse').empty().append('Adding card...');
 			else $('#p-footer_FastResponse').empty().append('Saving changes...');
 			$('.Form-AddEditCard_lock').prop('disabled', true);
 
@@ -337,7 +337,7 @@
 				Code: $('#Form-AddEditCard_Code').val()
 			};
 
-			if(htmlVarGlobal.Action === 'add') {
+			if (htmlVarGlobal.Action === 'add') {
 				google.script.run.withSuccessHandler(AddEditCard_Aftermath)
 					.withFailureHandler(showError)
 					.optMainTables('AddCard', cell);
@@ -348,8 +348,8 @@
 			}
 		}
 		function AddEditCard_Aftermath(r) {
-			if(r !== -1) {
-				switch(r) {
+			if (r !== -1) {
+				switch (r) {
 				case 10:
 					$('#p-footer_FastResponse').empty().append('Invalid code format.');
 					$('.Form-AddEditCard_lock').prop('disabled', false);
@@ -381,15 +381,15 @@
 
 			g2("panel_ClearCards");
 
-			if(a === 'add') $('#p-footer_FastResponse').empty().append('Card added.');
+			if (a === 'add') $('#p-footer_FastResponse').empty().append('Card added.');
 			else $('#p-footer_FastResponse').empty().append('Changes saved.');
 		}
 		function RemoveCard_Aftermath(r) {
-			if(r === 0) {
+			if (r === 0) {
 				$('.Form-AddEditCard_lock').prop('disabled', false);
 				$('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
 				return;
-			} else if(r > 0) {
+			} else if (r > 0) {
 				showError();
 				return;
 			}
@@ -411,8 +411,8 @@
 			$("#box_Cards").empty();
 
 			c = 0;
-			for(k = 0;  k < list.length;  k++) {
-				if(list[k].Type == 'Account') {
+			for (k = 0; k < list.length; k++) {
+				if (list[k].Type == 'Account') {
 					s1 = '';
 					s2 = '<a class="m-li">Edit</a>';
 				} else {
@@ -436,7 +436,7 @@
 						</div> \
 					</div>';
 
-				if(list[k].Type == 'Account') {
+				if (list[k].Type == 'Account') {
 					$('#box_Accounts').append(s);
 				} else {
 					$('#box_Cards').append(s);
@@ -444,7 +444,7 @@
 				}
 			}
 
-			if(c < 10) $("#b-CheckQuota").show();
+			if (c < 10) $("#b-CheckQuota").show();
 		}
 
 		function g2(p) {
@@ -455,7 +455,7 @@
 			$('#p-footer_FastResponse').empty();
 			$('.MainMenu-bot_title button').remove();
 
-			switch(p) {
+			switch (p) {
 				case 'panel_Accounts':
 					htmlVarGlobal.Id = "";
 					htmlVarGlobal.Action = "";

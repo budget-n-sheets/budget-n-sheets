@@ -3,7 +3,7 @@ function optCoolGallery(command, options) {
 	// var r = 1;
 	// try {
 	// 	lock.waitLock(200);
-	// } catch(err) {
+	// } catch (err) {
 	// 	return 0;
 	// }
 
@@ -52,7 +52,7 @@ function getCoolSheet_(option) {
 
 	try {
 		template = SpreadsheetApp.openById(info.id);
-	} catch(err) {
+	} catch (err) {
 		showDialogErrorMessage();
 		console.warn("getCoolSheet()", err);
 		return 1;

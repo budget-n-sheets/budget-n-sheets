@@ -7,22 +7,22 @@ function daily_PostEvents_(date) {
 
 	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
-	if(!dec_p) dec_p = "] [";
+	if (!dec_p) dec_p = "] [";
 
 	mm = date.getMonth();
 	dd = date.getDate();
 
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT_[mm]);
-	if(!sheet) return;
-	if(sheet.getMaxRows() < 4) return;
+	if (!sheet) return;
+	if (sheet.getMaxRows() < 4) return;
 
 	calendar = getUserSettings_("FinancialCalendar");
-	if(calendar === "") return;
+	if (calendar === "") return;
 	calendar = optCalendar_GetCalendarFromSHA1_(calendar);
-	if(!calendar) return;
+	if (!calendar) return;
 
 	listEventos = calendar.getEventsForDay(date);
-	if(listEventos.length === 0) return;
+	if (listEventos.length === 0) return;
 	listEventos = optCalendar_ProcessRawEvents_(listEventos);
 
 	number_accounts = getUserConstSettings_('number_accounts');
@@ -31,32 +31,32 @@ function daily_PostEvents_(date) {
 	data_Cards = [ ];
 	listIds = [ ];
 
-	for(k = 0;  k < 1 + number_accounts;  k++) {
+	for (k = 0; k < 1 + number_accounts; k++) {
 		data.push([ ]);
 	}
 
-	for(i = 0;  i < listEventos.length;  i++) {
+	for (i = 0; i < listEventos.length; i++) {
 		evento = listEventos[i];
 
-		if(evento.Description === "") continue;
-		if(evento.hasAtIgn) continue;
+		if (evento.Description === "") continue;
+		if (evento.hasAtIgn) continue;
 
-		if(evento.Table !== -1) k = evento.Table;
-		else if(evento.Card !== -1) k = evento.Card;
+		if (evento.Table !== -1) k = evento.Table;
+		else if (evento.Card !== -1) k = evento.Card;
 		else continue;
 
-		if( !isNaN(evento.Value) ) value = (evento.Value).formatLocaleSignal(dec_p);
-		else if(evento.Tags.length > 0) value = 0;
+		if ( !isNaN(evento.Value) ) value = (evento.Value).formatLocaleSignal(dec_p);
+		else if (evento.Tags.length > 0) value = 0;
 		else continue;
 
 		tags = "";
-		for(j = 0;  j < evento.Tags.length;  j++) {
+		for (j = 0; j < evento.Tags.length; j++) {
 			tags += "#" + evento.Tags[j] + " ";
 		}
 
-		if(typeof k === "number") {
+		if (typeof k === "number") {
 			data[k].push([ dd, evento.Title, value, tags ]);
-		} else if(!evento.hasQcc) {
+		} else if (!evento.hasQcc) {
 			data_Cards.push([ dd, evento.Title, k, value, tags ]);
 		}
 
@@ -64,8 +64,8 @@ function daily_PostEvents_(date) {
 	}
 
 	lastRow = sheet.getLastRow() + 1;
-	for(k = 0;  k < 1 + number_accounts;  k++) {
-		if(data[k].length === 0) continue;
+	for (k = 0; k < 1 + number_accounts; k++) {
+		if (data[k].length === 0) continue;
 
 		sheet.getRange(
 				lastRow, 1 + 5*k,
@@ -73,12 +73,12 @@ function daily_PostEvents_(date) {
 			.setValues(data[k]);
 	}
 
-	if(data_Cards.length > 0) {
+	if (data_Cards.length > 0) {
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
-		if(!sheet) return;
+		if (!sheet) return;
 
 		lastRow = sheet.getLastRow() + 1;
-		if(lastRow < 6) return;
+		if (lastRow < 6) return;
 
 		sheet.getRange(
 				lastRow, 1 + 6*mm,
@@ -95,7 +95,7 @@ function update_DecimalSepartor_() {
 	var sheet = spreadsheet.getSheetByName("_Settings");
 	var cell;
 
-	if(!sheet) return;
+	if (!sheet) return;
 
 	cell = sheet.getRange(8, 2);
 
@@ -104,7 +104,7 @@ function update_DecimalSepartor_() {
 	SpreadsheetApp.flush();
 
 	cell = cell.getDisplayValue();
-	if( /\./.test(cell) ) {
+	if ( /\./.test(cell) ) {
 		setPropertiesService_("document", "", "decimal_separator", "[ ]");
 	} else {
 		deletePropertiesService_("document", "decimal_separator");
@@ -122,19 +122,19 @@ function monthly_TreatLayout_(yyyy, mm) {
 	var financial_year = getUserConstSettings_('financial_year');
 	var a, i;
 
-	if(financial_year > yyyy) return; // Too soon to format the spreadsheet.
-	else if(financial_year < yyyy) {
+	if (financial_year > yyyy) return; // Too soon to format the spreadsheet.
+	else if (financial_year < yyyy) {
 		mm = 0; // Last time to format the spreadsheet.
 		a = 0;
 	}
 
 
-	if(mm === 0) {
-		if(yyyy === financial_year) {
-			for(i = 0;  i < 3;  i++) {
+	if (mm === 0) {
+		if (yyyy === financial_year) {
+			for (i = 0; i < 3; i++) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
 			}
-			for(;  i < 12;  i++) {
+			for (; i < 12; i++) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
 			}
 
@@ -142,7 +142,7 @@ function monthly_TreatLayout_(yyyy, mm) {
 			sheetTags.showColumns(6, 4);
 			return;
 		} else {
-			for(i = 0;  i < 12;  i++) {
+			for (i = 0; i < 12; i++) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
 			}
 
@@ -151,8 +151,8 @@ function monthly_TreatLayout_(yyyy, mm) {
 			a = 11;
 		}
 	} else {
-		for(i = 0;  i < 12;  i++) {
-			if(i < mm-1  ||  i > mm+2) {
+		for (i = 0; i < 12; i++) {
+			if (i < mm-1 || i > mm+2) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
 			} else {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
@@ -162,11 +162,11 @@ function monthly_TreatLayout_(yyyy, mm) {
 		sheetTags.hideColumns(6, 12);
 		a = mm - 1;
 
-		if(mm < 2) {
+		if (mm < 2) {
 			sheetTags.showColumns(6, 4);
 		} else {
 
-			if(mm === 11) {
+			if (mm === 11) {
 				spreadsheet.getSheetByName(MN_SHORT_[9]).showSheet();
 				mm--;
 			}
@@ -191,12 +191,12 @@ function foo_ColorTabs_() {
 	mm = date.getMonth();
 
 
-	if(financial_year === date.getFullYear()) {
-		for(i = 0;  i < InitialMonth;  i++) {
+	if (financial_year === date.getFullYear()) {
+		for (i = 0; i < InitialMonth; i++) {
 			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
 		}
-		for(;  i < 12;  i++) {
-			if(i < mm-1  ||  i > mm+2) {
+		for (; i < 12; i++) {
+			if (i < mm-1 || i > mm+2) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#a4c2f4');
 			} else {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#3c78d8');
@@ -206,10 +206,10 @@ function foo_ColorTabs_() {
 		spreadsheet.getSheetByName(MN_SHORT_[mm]).setTabColor('#6aa84f');
 
 	} else {
-		for(i = 0;  i < InitialMonth;  i++) {
+		for (i = 0; i < InitialMonth; i++) {
 			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
 		}
-		for(;  i < 12;  i++) {
+		for (; i < 12; i++) {
 			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#a4c2f4');
 		}
 	}
@@ -223,8 +223,8 @@ function foo_UpdateCashFlow_(mm) {
 			sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
 	var sheetBackstage;
 
-	if(!sheetTarget) return;
-	if(!sheetCashFlow) return;
+	if (!sheetTarget) return;
+	if (!sheetCashFlow) return;
 
 	var calendar, listEventos, evento, day, yyyy, dd;
 	var number_accounts, number_cards;
@@ -237,7 +237,7 @@ function foo_UpdateCashFlow_(mm) {
 
 	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
-	if(!dec_p) dec_p = "] [";
+	if (!dec_p) dec_p = "] [";
 
 	h_ = AppsScriptGlobal.TableDimensions()["height"];
 	w_ = AppsScriptGlobal.TableDimensions()["width"];
@@ -250,7 +250,7 @@ function foo_UpdateCashFlow_(mm) {
 
 	cf_flow = [ ];
 	cf_transaction = [ ];
-	for(i = 0;  i < dd;  i++) {
+	for (i = 0; i < dd; i++) {
 		cf_flow[i] = [ "" ];
 		cf_transaction[i] = [ "" ];
 	}
@@ -258,36 +258,36 @@ function foo_UpdateCashFlow_(mm) {
 	listEventos = [ ];
 	t = getSpreadsheetDate();
 	b = new Date(yyyy, mm + 1, 1);
-	if( getUserSettings_("CashFlowEvents")
+	if ( getUserSettings_("CashFlowEvents")
 			&& t.getTime() < b.getTime() ) {
 		calendar = getUserSettings_("FinancialCalendar");
 		calendar = optCalendar_GetCalendarFromSHA1_(calendar);
 
-		if(calendar) {
+		if (calendar) {
 			a = new Date(yyyy, mm, 1);
-			if(t.getTime() > a.getTime()  &&  t.getTime() < b.getTime()) {
+			if (t.getTime() > a.getTime() && t.getTime() < b.getTime()) {
 				a = new Date(yyyy, mm, t.getDate());
 			}
 
 			listEventos = calendar.getEvents(a, b);
-			if(listEventos) listEventos = optCalendar_ProcessRawEvents_(listEventos);
+			if (listEventos) listEventos = optCalendar_ProcessRawEvents_(listEventos);
 			else listEventos = [ ];
 		}
 	}
 
-	if(OverrideZero  ||  listEventos.length > 0) {
+	if (OverrideZero || listEventos.length > 0) {
 		data_tags = tagGetData_();
-		if(data_tags && data_tags.tags.length > 0) hasTags = true;
+		if (data_tags && data_tags.tags.length > 0) hasTags = true;
 		else hasTags = false;
 	}
 
 	maxRows = sheetTarget.getLastRow() - 4 ;
 
-	if(maxRows > 0) {
+	if (maxRows > 0) {
 		k = 0;
 		table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
-		for(i = 0;  k < number_accounts;  i++) {
-			if(i >= maxRows  ||  table[i][2] === "") {
+		for (i = 0; k < number_accounts; i++) {
+			if (i >= maxRows || table[i][2] === "") {
 				k++;
 				i = -1;
 				table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
@@ -295,14 +295,14 @@ function foo_UpdateCashFlow_(mm) {
 			}
 
 			day = table[i][0];
-			if(day <= 0  ||  day > dd) continue;
+			if (day <= 0 || day > dd) continue;
 
 			value = table[i][2];
-			if(hasTags  &&  value === 0  &&  OverrideZero) {
+			if (hasTags && value === 0 && OverrideZero) {
 				ma = table[i][3].match(/#[\w]+/g);
-				for(j = 0;  j < ma.length;  j++) {
+				for (j = 0; j < ma.length; j++) {
 					c = data_tags.tags.indexOf(ma[j].substr(1));
-					if(c !== -1) {
+					if (c !== -1) {
 						value = data_tags.average[c];
 						break;
 					}
@@ -316,50 +316,50 @@ function foo_UpdateCashFlow_(mm) {
 	}
 
 
-	if(mm > 0) {
+	if (mm > 0) {
 		sheetBackstage = spreadsheet.getSheetByName("_Backstage");
 	}
-	if(sheetBackstage) {
+	if (sheetBackstage) {
 		number_cards = getPropertiesService_("document", "ojb", "DB_CARD");
 		number_cards = number_cards.length;
 		hasCards = number_cards > 0;
 	}
-	if(hasCards) {
+	if (hasCards) {
 		data_cards = cardsGetData_();
 	}
 
-	for(i = 0;  i < listEventos.length;  i++) {
+	for (i = 0; i < listEventos.length; i++) {
 		evento = listEventos[i];
 
-		if(evento.Description === "") continue;
-		if(evento.hasAtIgn) continue;
+		if (evento.Description === "") continue;
+		if (evento.hasAtIgn) continue;
 
-		if( !isNaN(evento.Value) ) value = evento.Value;
-		else if(hasCards  &&  evento.hasQcc) {
-			if(evento.Card !== -1) {
+		if ( !isNaN(evento.Value) ) value = evento.Value;
+		else if (hasCards && evento.hasQcc) {
+			if (evento.Card !== -1) {
 				c = data_cards.cards.indexOf(evento.Card);
-				if(c === -1) continue;
+				if (c === -1) continue;
 			} else {
 				c = 0;
 			}
 
-			if(evento.TranslationType === "M"
+			if (evento.TranslationType === "M"
 					&& mm + evento.TranslationNumber >= 0
 					&& mm + evento.TranslationNumber <= 11) {
 				value = +data_cards.balance[c][mm + evento.TranslationNumber].toFixed(2);
 			} else {
 				value = +data_cards.balance[c][mm - 1].toFixed(2);
 			}
-		} else if(hasTags  &&  evento.Tags.length > 0) {
+		} else if (hasTags && evento.Tags.length > 0) {
 			n = evento.Tags.length;
-			for(j = 0; j < n; j++) {
+			for (j = 0; j < n; j++) {
 				c = data_tags.tags.indexOf(evento.Tags[j]);
-				if(c !== -1) break;
+				if (c !== -1) break;
 			}
 
-			if(c === -1) continue;
+			if (c === -1) continue;
 
-			switch(evento.TranslationType) {
+			switch (evento.TranslationType) {
 				default:
 					console.warn("foo_UpdateCashFlow_(): Switch case is default.", evento.TranslationType);
 				case "Avg":
@@ -370,7 +370,7 @@ function foo_UpdateCashFlow_(mm) {
 					value = data_tags.total[c];
 					break;
 				case "M":
-					if(mm + evento.TranslationNumber < 0  ||  mm + evento.TranslationNumber > 11) continue;
+					if (mm + evento.TranslationNumber < 0 || mm + evento.TranslationNumber > 11) continue;
 
 					value = data_tags.months[c][mm + evento.TranslationNumber];
 					break;
@@ -393,7 +393,7 @@ function foo_UpdateCashFlow_(mm) {
 
 
 function foo_FormatAccounts_(mm) {
-	if(isNaN(mm)) return;
+	if (isNaN(mm)) return;
 
 	var thisSheet = SpreadsheetApp.getActiveSpreadsheet()
 		.getSheetByName( MN_SHORT_[Number(mm)] );
@@ -406,28 +406,28 @@ function foo_FormatAccounts_(mm) {
 
 	c = 0;
 	n = thisSheet.getMaxRows() - 4;
-	if(n < 1) return;
+	if (n < 1) return;
 
 	thisSheet.showRows(5, n);
 
-	for(k = 0;  k < 1 + number_accounts;  k++) {
+	for (k = 0; k < 1 + number_accounts; k++) {
 		thisSheet.getRange(5,1+k*5, n,4).setBackground('#ffffff');
 		thisSheet.getRange(5,1+k*5, n,4).setFontColor('#000000');
 		thisSheet.getRange(5,1+k*5, n,4).sort(1+k*5);
 
 		table = thisSheet.getRange(5,1+k*5, n,4).getValues();
-		numNegativeDays = 0;  i = 0;
-		while(i < n  &&  table[i][2] !== '') {
-			if(table[i][0] < 0) {
+		numNegativeDays = 0; i = 0;
+		while (i < n && table[i][2] !== '') {
+			if (table[i][0] < 0) {
 				numNegativeDays++;
 			}
 
-			if( /#(qcc|trf|wd|dp)/.test(table[i][3]) ) {
+			if ( /#(qcc|trf|wd|dp)/.test(table[i][3]) ) {
 				thisSheet.getRange(5+i,1+k*5, 1,4)
 					.setBackground('#d9d2e9');
 			}
 
-			if( /#ign/.test(table[i][3]) ) {
+			if ( /#ign/.test(table[i][3]) ) {
 				thisSheet.getRange(5+i,1+k*5, 1,4)
 					.setFontColor('#999999');
 			}
@@ -435,24 +435,24 @@ function foo_FormatAccounts_(mm) {
 			i++;
 		}
 
-		if(numNegativeDays > 1) {
+		if (numNegativeDays > 1) {
 			thisSheet.getRange(5,1+k*5, numNegativeDays,4)
 				.sort({column:1+k*5, ascending:false});
 		}
-		if(i > c) c = i;
+		if (i > c) c = i;
 	}
 
 	dateToday = getSpreadsheetDate();
-	if(n - c <= 0) return;
-	else if(financial_year < dateToday.getFullYear()  ||  (financial_year == dateToday.getFullYear()  &&  mm < dateToday.getMonth())) {
-		if(n - c < n) thisSheet.hideRows(5+c, n-c);
+	if (n - c <= 0) return;
+	else if (financial_year < dateToday.getFullYear() || (financial_year == dateToday.getFullYear() && mm < dateToday.getMonth())) {
+		if (n - c < n) thisSheet.hideRows(5+c, n-c);
 		else thisSheet.hideRows(5+1, n-1);
 	}
 }
 
 
 function foo_FormatCards_(mm) {
-	if(typeof mm !== "number" || isNaN(mm)) {
+	if (typeof mm !== "number" || isNaN(mm)) {
 		showDialogErrorMessage();
 		console.warn("foo_FormatCards_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
 		return;
@@ -471,20 +471,20 @@ function foo_FormatCards_(mm) {
 	sheet.getRange(6,1+a*6, n,5)
 		.sort([{column:(3+a*6), ascending:true}, {column:(1+a*6), ascending:true}]);
 
-	i = 0;  j = 0;
+	i = 0; j = 0;
 	table = sheet.getRange(6,1+a*6, n,5).getValues();
-	while(i < n  &&  table[i][3] !== '') {
-		card = table[i][2];  c = 0;
-		while(j < n  &&  table[j][3] !== ''  &&  table[j][2] === card) {
-			if(table[j][0] < 0) c++;
-			if( /#ign/.test(table[j][4]) ) {
+	while (i < n && table[i][3] !== '') {
+		card = table[i][2]; c = 0;
+		while (j < n && table[j][3] !== '' && table[j][2] === card) {
+			if (table[j][0] < 0) c++;
+			if ( /#ign/.test(table[j][4]) ) {
 				sheet.getRange(6+j,1+a*6, 1,5)
 					.setFontColor('#999999');
 			}
 			j++;
 		}
 
-		if(c > 1) {
+		if (c > 1) {
 			sheet.getRange(6+i,1+a*6, c,5)
 				.sort({column:1+a*6, ascending:false});
 		}
@@ -507,33 +507,33 @@ function update_Layout() {
 	foo_ColorTabs_();
 
 	sheet = spreadsheet.getSheetByName("_Backstage");
-	if(!sheet) return 1;
+	if (!sheet) return 1;
 
 	c = sheet.getMaxColumns();
 	sheet.getRange(2, 1, h_*12 - 1, c).setFontColor("#000000");
 
 
 	sheet = spreadsheet.getSheetByName("Summary");
-	if(!sheet) return 1;
+	if (!sheet) return 1;
 
 	sheet.getRange("B11:I22").setFontColor("#000000");
 	sheet.getRange(25, 3, 12, 7).setValue(null);
 
-	for(i = 0;  i < init;  i++) {
+	for (i = 0; i < init; i++) {
 		sheet.getRange(25 + i, 4).setFormulaR1C1('=R[-14]C');
 		sheet.getRange(25 + i, 5).setFormulaR1C1('=-R[-14]C[1]');
 	}
-	for(;  i < 12;  i++) {
+	for (; i < 12; i++) {
 		sheet.getRange(25 + i, 6).setFormulaR1C1('=R[-14]C[-2]');
 		sheet.getRange(25 + i, 7).setFormulaR1C1('=-R[-14]C[-1]');
 	}
 
-	if(init > 0) {
+	if (init > 0) {
 		sheet.getRange(11, 2, init, 8)
 			.setFontColor("#b7b7b7");
 
 		sheet = spreadsheet.getSheetByName("_Backstage");
-		if(!sheet) return 1;
+		if (!sheet) return 1;
 		sheet.getRange(2, 1, h_*init, c)
 			.setFontColor("#b7b7b7");
 	} else {

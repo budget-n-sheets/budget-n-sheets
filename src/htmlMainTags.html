@@ -383,12 +383,12 @@
 		});
 
 		$(document).on('click', '.m-tab', function() {
-			if( $(this).hasClass('active') || $(this).attr('id') == '' ) return;
+			if ( $(this).hasClass('active') || $(this).attr('id') == '' ) return;
 
 			window.scrollTo(0, 0);
 			$(this).addClass('active').siblings().removeClass('active');
 
-			switch( $(this).attr('id') ) {
+			switch ( $(this).attr('id') ) {
 			case 'tab_book':
 				goBackToPanel('p-Book');
 				break;
@@ -411,7 +411,7 @@
 		});
 
 		function RemoveTag_Confirm() {
-			if( confirm("Click OK to confirm and remove tag "+$('#p-TagDetails_head').text().toUpperCase()+".") ) {
+			if ( confirm("Click OK to confirm and remove tag "+$('#p-TagDetails_head').text().toUpperCase()+".") ) {
 				$('#panel_WaitLoad').fadeIn('fast')
 					.siblings()
 					.hide();
@@ -433,7 +433,7 @@
 		}
 
 		function TagDetails_Info(input) {
-			if(input == null) {
+			if (input == null) {
 				showError();
 				return;
 			}
@@ -443,7 +443,7 @@
 			$('#TagDetails_description').empty().append(input.Description);
 			$('#TagDetails_tag').empty().append("#" + input.Tag);
 
-			if(input.analytics) $('#TagDetails_analytics').empty().append("On");
+			if (input.analytics) $('#TagDetails_analytics').empty().append("On");
 			else $('#TagDetails_analytics').empty().append("Off");
 
 			$('#TagDetails_interval').empty();
@@ -466,7 +466,7 @@
 		}
 
 		function TagDetails_Stat(input) {
-			if(input == null) {
+			if (input == null) {
 				showError();
 				return;
 			}
@@ -496,7 +496,7 @@
 
 			chartData = new google.visualization.arrayToDataTable(input.Data);
 
-			<? if(isInitiated) { ?>
+			<? if (isInitiated) { ?>
 				chartOptions['series'] = { 0:{ color:'#cccccc' }, 1:{ color:'#a4c2f4' }, 2:{ color:'#6d9eeb' }, 3:{ 'type':'line', color:'#e06666' } };
 			<? } else { ?>
 				chartOptions['series'] = { 0:{ color:'#cccccc' }, 1:{ color:'#a4c2f4' } };
@@ -509,11 +509,11 @@
 		}
 
 		function EditTag_Panel(input) {
-			if(!input) {
+			if (!input) {
 				showError();
 				return;
 
-			} else if(input === 2) {
+			} else if (input === 2) {
 				alert('There was a problem...\nThe selected Tag does not exist or has been deleted.');
 				google.script.run
 					.withSuccessHandler(ListTags_Merge)
@@ -522,7 +522,7 @@
 				goBackToPanel('p-Book');
 				return;
 
-			} else if(input === -1) {
+			} else if (input === -1) {
 				$('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
 				return;
 			}
@@ -534,7 +534,7 @@
 			$('#Form-AddEditTag_Tag').val(input.Tag);
 			$('#Form-AddEditTag_C').val(input.C);
 
-			if(input.analytics) $('#AddEditTag_Analytics').val("on");
+			if (input.analytics) $('#AddEditTag_Analytics').val("on");
 			else $('#AddEditTag_Analytics').val("off");
 
 			$('.Form-AddEditTag_lock').prop('disabled', false);
@@ -550,7 +550,7 @@
 
 		function EditTag_Save() {
 			var auxTag = $('#Form-AddEditTag_Tag').val();
-			if(auxTag == 'wd' || auxTag == 'dp' || auxTag == 'trf' || auxTag == 'qcc' || auxTag == 'ign' || auxTag == 'rct') {
+			if (auxTag == 'wd' || auxTag == 'dp' || auxTag == 'trf' || auxTag == 'qcc' || auxTag == 'ign' || auxTag == 'rct') {
 				$('#p-footer_FastResponse').empty().append('Choose a different code.');
 				return false;
 			}
@@ -575,17 +575,17 @@
 		}
 
 		function EditTag_Aftermath(input) {
-			if(input === 10) {
+			if (input === 10) {
 				$('.Form-AddEditTag_lock').prop('disabled', false);
 				$('#p-footer_FastResponse').empty().append('The code is already in use. Choose a different one.');
 				return;
 
-			} else if(input === 0) {
+			} else if (input === 0) {
 				$('.Form-AddEditTag_lock').prop('disabled', false);
 				$('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
 				return;
 
-			} else if(!isNaN(input)  &&  input > 0) {
+			} else if (!isNaN(input) && input > 0) {
 				showError();
 				return;
 			}
@@ -601,11 +601,11 @@
 		}
 
 		function RemoveTag_Aftermath(p) {
-			if(!p) {
+			if (!p) {
 				showError();
 				return;
 
-			} else if(p === 0) {
+			} else if (p === 0) {
 				$('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
 				return;
 			}
@@ -641,7 +641,7 @@
 
 		function NewTag_Add() {
 			var code = $('#Form-AddEditTag_Tag').val();
-			if(code == 'wd' || code == 'dp' || code == 'trf' || code == 'qcc' || code == 'ign' || code == 'rct') {
+			if (code == 'wd' || code == 'dp' || code == 'trf' || code == 'qcc' || code == 'ign' || code == 'rct') {
 				$('#p-footer_FastResponse').empty().append("The code is already in use.");
 				return;
 			}
@@ -663,15 +663,15 @@
 		}
 
 		function NewTag_Aftermath(p) {
-			if(p === 0) {
+			if (p === 0) {
 				$('.Form-AddEditTag_lock').prop('disabled', false);
 				$('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
 				return;
-			} else if(p === 2) {
+			} else if (p === 2) {
 				$('.Form-AddEditTag_lock').prop('disabled', false);
 				$('#p-footer_FastResponse').empty().append("The code is already in use.");
 				return;
-			} else if(p !== -1) {
+			} else if (p !== -1) {
 				showError();
 				return;
 			}
@@ -685,8 +685,8 @@
 		}
 
 		function AddEditTag_opt() {
-			if(htmlVarGlobal.Panel == 'ae') NewTag_Add();
-			else if(htmlVarGlobal.Panel == 'de') EditTag_Save();
+			if (htmlVarGlobal.Panel == 'ae') NewTag_Add();
+			else if (htmlVarGlobal.Panel == 'de') EditTag_Save();
 			else showError();
 		}
 
@@ -695,7 +695,7 @@
 			$('#p-footer_FastResponse').empty();
 			$('.MainMenu-bot_title button').remove();
 
-			switch(input) {
+			switch (input) {
 				case 'p-Book':
 					$('#tab_book').addClass('active');
 					$('.m-footer.left').append('<button class="create" onclick="NewTag_Panel()">New tag</button>');
@@ -736,12 +736,12 @@
 		}
 
 		function ListTags_Merge(input) {
-			if(input === 0) {
+			if (input === 0) {
 				google.script.run.withFailureHandler(showError)
 					.showDialogQuickMessage("", 'The add-on is busy. Try again a moment.', true);
 				return;
 
-			} else if(input === 2) {
+			} else if (input === 2) {
 				showError();
 				return;
 			}
@@ -752,13 +752,13 @@
 			$('#p-Book_BoxListTags').empty();
 
 
-			for(i = 0;  i < 10;  i++) {
-				if(input[i][0] === 0) continue;
+			for (i = 0; i < 10; i++) {
+				if (input[i][0] === 0) continue;
 
 				$('#p-Book_BoxListTags').append('<span class="Tags-title">'+TC_NAME_[i]+'</span><div class="Tags-table" id="TagCategory-'+TC_CODE_[i]+'"></div><hr>');
 
 				string = '#TagCategory-'+TC_CODE_[i];
-				for(j = 0;  j < input[i][0];  j++) {
+				for (j = 0; j < input[i][0]; j++) {
 					$(string).append('<div class="Tag-row m-li" id="'+input[i][j+1].Tag+'"><div class="Tag-name">'+input[i][j+1].Name+'</div></div>');
 				}
 			}

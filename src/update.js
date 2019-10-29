@@ -2,7 +2,7 @@ function onlineUpdate_() {
 	var ui = SpreadsheetApp.getUi();
 	try {
 		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
-	} catch(err) {
+	} catch (err) {
 		console.warn("onlineUpdate_()", err);
 
 		ui.alert(
@@ -13,12 +13,12 @@ function onlineUpdate_() {
 	}
 
 	var version = optGetClass_("AddonVersion");
-	if(version === AppsScriptGlobal.AddonVersion()) return;
+	if (version === AppsScriptGlobal.AddonVersion()) return;
 
 	showDialogQuickMessage("Add-on Update", "The add-on is updating...", false, true);
 
 	var b = update_ExecutePatial_();
-	if(b === -1) {
+	if (b === -1) {
 		ui.alert(
 			"Add-on Update",
 			"Update is complete.",
@@ -26,7 +26,7 @@ function onlineUpdate_() {
 		return;
 	}
 
-	if(b === 1) {
+	if (b === 1) {
 		uninstall_();
 		showDialogErrorMessage();
 		onOpen();
@@ -42,24 +42,24 @@ function onlineUpdate_() {
 function seamlessUpdate_() {
 	try {
 		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
-	} catch(err) {
+	} catch (err) {
 		console.warn("seamlessUpdate_()", err);
 		return true;
 	}
 
 	var version = optGetClass_("AddonVersion");
-	if(version === AppsScriptGlobal.AddonVersion()) return;
+	if (version === AppsScriptGlobal.AddonVersion()) return;
 
 	var b = update_ExecutePatial_();
-	if(b === -1) return;
-	if(b === 1) uninstall_();
+	if (b === -1) return;
+	if (b === 1) uninstall_();
 
 	return true;
 }
 
 
 function optGetClass_(a) {
-	if(typeof a != "string") return;
+	if (typeof a != "string") return;
 
 	var b = getPropertiesService_("document", "json", "class_version");
 
@@ -67,11 +67,11 @@ function optGetClass_(a) {
 }
 
 function optSetClass_(a, b) {
-	if(typeof a != "string") return;
+	if (typeof a != "string") return;
 
 	var c = getPropertiesService_("document", "json", "class_version");
 
-	switch(a) {
+	switch (a) {
 		case "AddonVersion":
 		case "AddonVersionName":
 		case "TemplateVersion":
@@ -89,12 +89,12 @@ function optSetClass_(a, b) {
 
 var HEAD_EP = 67;
 function update_ExecutePatial_() {
-	if(!getPropertiesService_("document", "", "is_installed")) return 1;
+	if (!getPropertiesService_("document", "", "is_installed")) return 1;
 
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
-	} catch(err) {
+	} catch (err) {
 		console.warn("update_ExecutePatial_(): Wait lock time out.");
 		return 0;
 	}
@@ -119,10 +119,10 @@ function update_ExecutePatial_() {
 		return 0;
 	}
 
-	switch(v0) {
+	switch (v0) {
 		case 56:
 			c = update0pack03_();
-			if(c) break;
+			if (c) break;
 
 		case 57:
 			update0pack04_();
@@ -132,7 +132,7 @@ function update_ExecutePatial_() {
 
 		case 59:
 			c = update0pack06_();
-			if(c) break;
+			if (c) break;
 
 		case 60:
 		case 61:
@@ -168,7 +168,7 @@ function update_ExecutePatial_() {
 			return 0;
 	}
 
-	if(c) {
+	if (c) {
 		console.info("add-on/Update: Fail.");
 		return 1;
 	}
@@ -187,7 +187,7 @@ function update_ExecutePatial_() {
  *
 function update_v0m0p0_() {
 	try {
-	} catch(err) {
+	} catch (err) {
 		console.error("update_v0m0p0_()", err);
 		return true;
 	}
@@ -213,7 +213,7 @@ function update0pack13_() {
 		};
 
 		setPropertiesService_('document', 'obj', 'user_const_settings', user_const_settings);
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack13_()", err);
 		return true;
 	}
@@ -244,7 +244,7 @@ function update0pack12_() {
 			}
 			sheet.getRange(1, 4, n, 1).setValues(data);
 		}
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack12_()", err);
 		return true;
 	}
@@ -262,7 +262,7 @@ function update0pack11_() {
 		var c;
 
 		setupPart4_(spreadsheet, n);
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack11_()", err);
 		return true;
 	}
@@ -308,7 +308,7 @@ function update0pack10_() {
 		sheet.protect()
 			.setUnprotectedRanges(range)
 			.setWarningOnly(true);
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack10_()", err);
 		return true;
 	}
@@ -378,7 +378,7 @@ function update0pack09_() {
 
 		n = sheet.getMaxColumns();
 		sheet.getRange(2, 1, h_*12 - 1, n).setFontColor("#000000");
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack09_()", err);
 		return true;
 	}
@@ -393,10 +393,10 @@ function update0pack08_() {
 	try {
 		var date = getSpreadsheetDate();
 
-		if(date.getFullYear() == getUserSettings_("FinancialYear")) {
+		if (date.getFullYear() == getUserSettings_("FinancialYear")) {
 			monthly_TreatLayout_(date.getFullYear(), date.getMonth());
 		}
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack08_()", err);
 		return true;
 	}
@@ -415,7 +415,7 @@ function update0pack07_() {
 		sheet.getRange(22, 11).setFormula("ROUND(D9; 0)");
 		sheet.getRange(22, 12).setFormula("ROUND(F9; 0)");
 		sheet.getRange(22, 11, 1, 2).setNumberFormat("#,##0;(#,##0)");
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack07_()", err);
 		return true;
 	}
@@ -436,14 +436,14 @@ function update0pack06_() {
 		sheet.setColumnWidth(4, 83);
 		sheet.getRange(1, 4).setValue("Analyitcs");
 
-		if(n <= 1) return;
+		if (n <= 1) return;
 
 		sheet.getRange(2, 4, n - 1).setNumberFormat("0.###");
 
-		if(n > 2) {
+		if (n > 2) {
 			sheet.getRange(2, 4, sheet.getMaxRows() - 2).setValue("TRUE");
 		}
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack06_()", err);
 		return true;
 	}
@@ -459,10 +459,10 @@ function update0pack05_() {
 	try {
 		var date = getSpreadsheetDate();
 
-		if(date.getFullYear() == getUserSettings_("FinancialYear")) {
+		if (date.getFullYear() == getUserSettings_("FinancialYear")) {
 			monthly_TreatLayout_(date.getFullYear(), date.getMonth());
 		}
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack05_()", err);
 		return true;
 	}
@@ -478,14 +478,14 @@ function update0pack04_() {
 	try {
 		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 
-		if(!sheet) {
+		if (!sheet) {
 			return true;
 		}
 
-		if(sheet.isSheetHidden()) {
+		if (sheet.isSheetHidden()) {
 			sheet.showSheet()
 		}
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack04_()", err);
 		return true;
 	}
@@ -512,7 +512,7 @@ function update0pack03_() {
 		w_ = AppsScriptGlobal.TableDimensions()["width"];
 
 		n = 10 - db_cards.length;
-		if(n > 0) {
+		if (n > 0) {
 			c1 = sheetBackstage.getMaxColumns();
 			sheetBackstage.insertColumnsAfter(c1, w_*n);
 			sheetBackstage.getRange(1, c1 - 4, sheetBackstage.getMaxRows(), 5)
@@ -530,12 +530,12 @@ function update0pack03_() {
 		header1 = rollA1Notation(1, c2, 1, w_*11);
 		r1c1 = "RC[" + w_ + "]";
 		header2 = [ rollA1Notation(1, c3) ];
-		for(k = 2; k <= 10; k++) {
+		for (k = 2; k <= 10; k++) {
 			r1c1 += " + RC[" + w_*k + "]";
 			header2[k - 1] = rollA1Notation(1, c3 + w_*(k - 1));
 		}
 
-		for(i = 0; i < 12; i++) {
+		for (i = 0; i < 12; i++) {
 			sheetCards.getRange(2, 1 + 6*i).setValue("All");
 
 			formula = "BSINFCARD(IF(" + rollA1Notation(2, 1 + 6*i) + " = \"\"; \"\"; ";
@@ -545,7 +545,7 @@ function update0pack03_() {
 			formula += (h_*i) + "; 0; " + h_ + "; 1)))";
 			sheetCards.getRange(2, 4 + i*6).setFormula(formula);
 
-			for(k = 0; k < 10; k++) {
+			for (k = 0; k < 10; k++) {
 				formula = "IFERROR(IF(" + header2[k] + " = \"\"; \"\"; SUM(FILTER(";
 				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
 				formula += "\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + header2[k] + "; ";
@@ -580,7 +580,7 @@ function update0pack03_() {
 
 		SpreadsheetApp.flush();
 		optCard_Refresh_();
-	} catch(err) {
+	} catch (err) {
 		console.error("update0pack03_()", err);
 		return true;
 	}

@@ -201,7 +201,7 @@
 
 			$('#Form_FinancialYear').val( dateToday.getFullYear() );
 
-			if(dateToday.getMonth() > 1) {
+			if (dateToday.getMonth() > 1) {
 				$('#Form_InitialMonth').val( dateToday.getMonth()-1 );
 			}
 
@@ -220,7 +220,7 @@
 		});
 		function clickNext(param) { /* ------------------- */
 			window.scrollTo(0, 0);
-			switch(htmlVarGlobal.Panel) {
+			switch (htmlVarGlobal.Panel) {
 				case 'main':
 					$('#main-panel').hide();
 

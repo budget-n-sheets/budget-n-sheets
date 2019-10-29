@@ -165,7 +165,7 @@
 				.retrieveUserSettings();
 		});
 		$("#FinancialCalendar").change(function() {
-			if($(this).val() === "") {
+			if ($(this).val() === "") {
 				$('.Form-Settings_calendar').prop('disabled', true);
 				$('.Form-Settings_calendar').prop('checked', false);
 			} else {
@@ -179,7 +179,7 @@
 			list = user_settings.listCalendars;
 
 			try {
-				for(i = 0;  i < list.Id.length;  i++) {
+				for (i = 0; i < list.Id.length; i++) {
 					$('#FinancialCalendar').append('<option value="'+list.Id[i]+'">'+list.Name[i]+'</option>');
 				}
 
@@ -188,16 +188,16 @@
 				$('#InitialMonth').val(user_settings.InitialMonth); // Initial month
 
 				$('#FinancialCalendar').val(user_settings.FinancialCalendar);
-				if(user_settings.PostDayEvents) $('#PostDayEvents').prop('checked', true);
-				if(user_settings.OverrideZero) $('#OverrideZero').prop('checked', true);
-				if(user_settings.CashFlowEvents) $('#CashFlowEvents').prop('checked', true);
-			} catch(err) {
+				if (user_settings.PostDayEvents) $('#PostDayEvents').prop('checked', true);
+				if (user_settings.OverrideZero) $('#OverrideZero').prop('checked', true);
+				if (user_settings.CashFlowEvents) $('#CashFlowEvents').prop('checked', true);
+			} catch (err) {
 				showError();
 				return;
 			}
 
 			$('.Form-Settings_lock').prop('disabled', false);
-			if(user_settings.FinancialCalendar === "") {
+			if (user_settings.FinancialCalendar === "") {
 				$('.Form-Settings_calendar').prop('disabled', true);
 			}
 			$('#panel_Book').fadeIn('fast')
@@ -219,7 +219,7 @@
 		}
 
 		function Deactivate_Aftermath(p) {
-			if(!p) $('#b-Deactivate').prop('disabled', false);
+			if (!p) $('#b-Deactivate').prop('disabled', false);
 			else google.script.host.close();
 		}
 
@@ -254,7 +254,7 @@
 				.saveUserSettings(settings);
 		}
 		function optSettings_Aftermath(p) {
-			if(p === 1) {
+			if (p === 1) {
 				showError();
 				return;
 			}
@@ -262,7 +262,7 @@
 			$(".Form-Settings_lock").prop("disabled", false);
 			$("#p-footer_FastResponse").empty().append("Settings saved.");
 
-			if($("#FinancialCalendar").val() === "") {
+			if ($("#FinancialCalendar").val() === "") {
 				$(".Form-Settings_calendar").prop("disabled", true);
 			}
 		}

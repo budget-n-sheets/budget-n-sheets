@@ -6,13 +6,13 @@ function copySheetsFromTemplate_() {
 	var i;
 
 
-	for(i = 0;  i < listSheetsTemplate.length;  i++) {
+	for (i = 0; i < listSheetsTemplate.length; i++) {
 		spreadsheetTemplate.getSheetByName(listSheetsTemplate[i])
 			.copyTo(spreadsheet)
 			.setName(listSheetsTemplate[i]);
 	}
 
-	for(i = 0;  i < listSheets.length;  i++) {
+	for (i = 0; i < listSheets.length; i++) {
 		spreadsheet.deleteSheet(listSheets[i]);
 	}
 }
@@ -27,7 +27,7 @@ function deleteAllSheets_() {
 	listSheets[0].showSheet();
 	spreadsheet.setActiveSheet(listSheets[0]);
 
-	for(i = 1;  i < listSheets.length;  i++) {
+	for (i = 1; i < listSheets.length; i++) {
 		spreadsheet.deleteSheet(listSheets[i]);
 	}
 
@@ -43,9 +43,9 @@ function isMissingSheet() {
 	var i;
 
 
-	for(i = 0;  i < list.length;  i++) {
+	for (i = 0; i < list.length; i++) {
 		sheet = spreadsheet.getSheetByName(list[i]);
-		if(!sheet) return true;
+		if (!sheet) return true;
 	}
 
 	return false;

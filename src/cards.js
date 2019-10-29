@@ -9,12 +9,12 @@ function cardsGetData_() {
 	n = getUserConstSettings_('number_accounts');
 
 	db_cards = getPropertiesService_("document", "obj", "DB_CARD");
-	if(!db_cards) return;
-	if(db_cards.length == 0) return;
+	if (!db_cards) return;
+	if (db_cards.length == 0) return;
 
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
-	if(!sheet) return;
-	if(sheet.getMaxRows() < 1 + h_*12) return;
+	if (!sheet) return;
+	if (sheet.getMaxRows() < 1 + h_*12) return;
 
 	output = {
 		cards: [ "All" ],
@@ -28,7 +28,7 @@ function cardsGetData_() {
 		1, 1 + w_ + n*w_ + 1,
 		1 + 12*h_, w_
 	).getValues();
-	for(i = 0;  i < 12;  i++) {
+	for (i = 0; i < 12; i++) {
 		output.balance[0][i] = data[5 + h_*i][0];
 	}
 
@@ -36,12 +36,12 @@ function cardsGetData_() {
 		1, 1 + w_ + n*w_ + w_ + 1,
 		1 + 12*h_, w_*db_cards.length
 	).getValues();
-	for(k = 0;  k < db_cards.length;  k++) {
+	for (k = 0; k < db_cards.length; k++) {
 		c = data[0].indexOf(db_cards[k].Code);
-		if(c === -1) continue;
+		if (c === -1) continue;
 
 		v = [ ];
-		for(i = 0;  i < 12;  i++) {
+		for (i = 0; i < 12; i++) {
 			v[i] = data[5 + h_*i][c];
 		}
 		output.balance.push()
@@ -57,10 +57,10 @@ function optCard_Remove_(input) {
 
 	dbCard = getPropertiesService_('document', 'json', 'DB_CARD');
 
-	for(k = 0;  k < dbCard.length;  k++) {
-		if(dbCard[k].Id === input) break;
+	for (k = 0; k < dbCard.length; k++) {
+		if (dbCard[k].Id === input) break;
 	}
-	if(k >= dbCard.length || dbCard[k].Id !== input) return 1;
+	if (k >= dbCard.length || dbCard[k].Id !== input) return 1;
 
 	dbCard.splice(k, 1);
 	setPropertiesService_('document', 'json', 'DB_CARD', dbCard);
@@ -75,15 +75,15 @@ function optCard_Update_(input) {
 	var dbCard;
 	var k;
 
-	if( !/[A-Z][0-9A-Z]{1,13}/.test(input.Code) ) return 10;
+	if ( !/[A-Z][0-9A-Z]{1,13}/.test(input.Code) ) return 10;
 
 	dbCard = getPropertiesService_('document', 'json', 'DB_CARD');
 
-	for(k = 0;  k < dbCard.length;  k++) {
-		if(dbCard[k].Code === input.Code) return 20;
-		if(dbCard[k].Id === input.Id) break;
+	for (k = 0; k < dbCard.length; k++) {
+		if (dbCard[k].Code === input.Code) return 20;
+		if (dbCard[k].Id === input.Id) break;
 	}
-	if(k >= dbCard.length) return 2;
+	if (k >= dbCard.length) return 2;
 
 	dbCard[k].Name = input.Name;
 	dbCard[k].Code = input.Code;
@@ -102,15 +102,15 @@ function optCard_Add_(input) {
 
 	dbCard = getPropertiesService_('document', 'json', 'DB_CARD');
 
-	if(dbCard.length >= 10) return 30;
-	if( !/[A-Z][0-9A-Z]{1,13}/.test(input.Code) ) return 10;
+	if (dbCard.length >= 10) return 30;
+	if ( !/[A-Z][0-9A-Z]{1,13}/.test(input.Code) ) return 10;
 
-	for(k = 0;  k < dbCard.length;  k++) {
-		if(dbCard[k].Code === input.Code) return 20;
+	for (k = 0; k < dbCard.length; k++) {
+		if (dbCard[k].Code === input.Code) return 20;
 	}
 
 	string = optTable_GenerateRandomId_();
-	if(!string) return 2;
+	if (!string) return 2;
 
 	cell = {
 		Id: string,
@@ -148,7 +148,7 @@ function optCard_Refresh_() {
 	sheetSettings.getRange("B10").setValue("All");
 
 	c += w_;
-	for(i = 0; i < db_card.length; i++) {
+	for (i = 0; i < db_card.length; i++) {
 		sheetBackstage.getRange(1, c + w_*i).setValue(db_card[i].Code);
 		sheetSettings.getRange(11 + i, 2).setValue(db_card[i].Code);
 	}

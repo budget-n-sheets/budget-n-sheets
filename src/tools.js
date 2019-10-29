@@ -10,7 +10,7 @@ function optNavTools_(p) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
-	} catch(err) {
+	} catch (err) {
 		SpreadsheetApp.getUi().alert(
 			"Add-on is busy",
 			"The add-on is busy. Try again in a moment.",
@@ -19,7 +19,7 @@ function optNavTools_(p) {
 		return;
 	}
 
-	switch(p) {
+	switch (p) {
 		case "show":
 			optTool_ShowSheets_();
 			break;
@@ -50,7 +50,7 @@ function optMainTools_(p, mm) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
-	} catch(err) {
+	} catch (err) {
 		SpreadsheetApp.getUi().alert(
 			"Add-on is busy",
 			"The add-on is busy. Try again in a moment.",
@@ -59,7 +59,7 @@ function optMainTools_(p, mm) {
 		return;
 	}
 
-	switch(p) {
+	switch (p) {
 		case 'AddBlankRows':
 			optTool_AddBlankRows_(mm);
 			break;
@@ -92,11 +92,11 @@ function optTool_HideSheets_() {
 	mm = getSpreadsheetDate();
 	mm = mm.getMonth();
 
-	for(i = 0;  i < 12;  i++) {
+	for (i = 0; i < 12; i++) {
 		sheet = spreadsheet.getSheetByName(list[i]);
-		if(!sheet) continue;
+		if (!sheet) continue;
 
-		if(i < mm - 1  ||  i > mm + 2) {
+		if (i < mm - 1 || i > mm + 2) {
 			spreadsheet.getSheetByName(list[i]).hideSheet();
 		} else {
 			spreadsheet.getSheetByName(list[i]).showSheet();
@@ -111,9 +111,9 @@ function optTool_ShowSheets_() {
 	var list = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
 	var i;
 
-	for(i = 0;  i < 12;  i++) {
+	for (i = 0; i < 12; i++) {
 		sheet = spreadsheet.getSheetByName(list[i]);
-		if(!sheet) continue;
+		if (!sheet) continue;
 
 		spreadsheet.getSheetByName(list[i]).showSheet();
 	}
@@ -125,22 +125,22 @@ function optTool_AddBlankRows_(mm_) {
 			sheet;
 	var c;
 
-	if(isNaN(mm_)) {
+	if (isNaN(mm_)) {
 		sheet = SpreadsheetApp.getActiveSheet();
-	} else if(mm_ >= 0  &&  mm_ < 12) {
+	} else if (mm_ >= 0 && mm_ < 12) {
 		sheet = spreadsheet.getSheetByName(MN_SHORT_[mm_]);
-	} else if(mm_ === 12) {
+	} else if (mm_ === 12) {
 		sheet = spreadsheet.getSheetByName("Cards");
 	} else {
 		console.error("optTool_AddBlankRows_(): Internal error.", mm_);
 		return;
 	}
 
-	if(!sheet) {
+	if (!sheet) {
 		showDialogErrorMessage();
 		return;
-	} else if(sheet.getSheetName() === "Cards") c = 5;
-	else if(MN_SHORT_.indexOf(sheet.getSheetName()) !== -1) c = 4;
+	} else if (sheet.getSheetName() === "Cards") c = 5;
+	else if (MN_SHORT_.indexOf(sheet.getSheetName()) !== -1) c = 4;
 	else {
 		SpreadsheetApp.getUi().alert(
 			"Can't add rows",
@@ -154,7 +154,7 @@ function optTool_AddBlankRows_(mm_) {
 	var n = 400;
 	var values;
 
-	if(maxRows < c + 3) return;
+	if (maxRows < c + 3) return;
 
 	values = sheet.getRange(maxRows, 1, 1, maxCols).getValues();
 	sheet.insertRowsBefore(maxRows, n);
@@ -169,7 +169,7 @@ function optTool_AddBlankRows_(mm_) {
 
 
 function optTool_UpdateCashFlow_(mm_) {
-	if(onlineUpdate_()) return;
+	if (onlineUpdate_()) return;
 
 	var sheet, range;
 	var mm;
@@ -211,10 +211,10 @@ function optTool_FormatRegistry_() {
 	sheet = SpreadsheetApp.getActiveSheet();
 	mm = MN_SHORT_.indexOf( sheet.getSheetName() );
 
-	if(mm !== -1) {
+	if (mm !== -1) {
 		foo_FormatAccounts_(mm);
 
-	} else if(sheet.getSheetName() === 'Cards') {
+	} else if (sheet.getSheetName() === 'Cards') {
 		mm = sheet.getActiveRange().getColumn();
 		mm = (mm - (mm % 6)) / 6;
 

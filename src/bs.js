@@ -2,12 +2,12 @@ function nodeControl_(c, data) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
-	} catch(err) {
+	} catch (err) {
 		console.warn("nodeControl_(): Wait lock time out.");
 		return 0;
 	}
 
-	switch(c) {
+	switch (c) {
 		case "sign":
 			return signDoc_();
 		case "verify":
@@ -25,11 +25,11 @@ function signDoc_() {
 	var key = PropertiesService.getScriptProperties().getProperty("inner_lock");
 	var data, sig;
 
-	if(!key) {
+	if (!key) {
 		console.warn("Key 'inner_lock' was not found!");
 		return;
 	}
-	if(!sheet) return;
+	if (!sheet) return;
 
 	data = {
 		spreadsheet_id: spreadsheet.getId(),
@@ -53,22 +53,22 @@ function signDoc_() {
 
 
 function verifySig_(data) {
-	if(typeof data != "string") return;
+	if (typeof data != "string") return;
 
 	var key = PropertiesService.getScriptProperties().getProperty("inner_lock");
 	var sig;
 
-	if(!key) {
+	if (!key) {
 		console.warn("Key 'inner_lock' was not found!");
 		return;
 	}
 
 	data = data.split(":");
-	if(data.length !== 2) return;
+	if (data.length !== 2) return;
 
 	sig = computeHmacSignature("SHA_256", data[0], key, "UTF_8");
 
-	if(sig !== data[1]) return;
+	if (sig !== data[1]) return;
 
 	return true;
 }

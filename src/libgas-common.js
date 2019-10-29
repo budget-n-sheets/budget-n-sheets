@@ -19,11 +19,11 @@ function byte2string(b) {
 	var r = '';
 	var v, i;
 
-	for(i = 0;  i < b.length;  i++) {
+	for (i = 0; i < b.length; i++) {
 		v = b[i];
-		if(v < 0) v += 256;
+		if (v < 0) v += 256;
 		v = v.toString(16);
-		if(v.length === 1) v = '0' + v;
+		if (v.length === 1) v = '0' + v;
 		r += v;
 	}
 
@@ -42,7 +42,7 @@ function byte2string(b) {
 function isReAuthorizationRequired_() {
 	try {
 		var documentProperties = PropertiesService.getDocumentProperties();
-	} catch(err) {
+	} catch (err) {
 		Logger.log(err.message);
 		return true;
 	}
@@ -50,12 +50,12 @@ function isReAuthorizationRequired_() {
 	var authInfoLevel = ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL);
 	var htmlTemplate, htmlMessage;
 
-	if(authInfoLevel.getAuthorizationStatus() == ScriptApp.AuthorizationStatus.NOT_REQUIRED) {
+	if (authInfoLevel.getAuthorizationStatus() == ScriptApp.AuthorizationStatus.NOT_REQUIRED) {
 		documentProperties.deleteProperty("auth_request_sent");
 		return false;
 	}
 
-	if(!documentProperties.getProperty("auth_request_sent") && MailApp.getRemainingDailyQuota() > 0) {
+	if (!documentProperties.getProperty("auth_request_sent") && MailApp.getRemainingDailyQuota() > 0) {
 		htmlTemplate = HtmlService.createTemplateFromFile("htmlAuthorizationEmail");
 
 		htmlTemplate.spreadsheet_url = spreadsheet.getUrl();
@@ -84,7 +84,7 @@ function randomString(n, p) {
 	var i;
 
 	a = "";
-	switch(p) {
+	switch (p) {
 		case "digit":
 			b = "0123456789";
 			break;
@@ -114,7 +114,7 @@ function randomString(n, p) {
 			break;
 	}
 
-	for (i = 0;  i < n;  i++) {
+	for (i = 0; i < n; i++) {
 		a += b.charAt(Math.floor(Math.random() * b.length));
 	}
 
@@ -123,11 +123,11 @@ function randomString(n, p) {
 
 
 function rollA1Notation(posRow, posCol, height, width, mode1, mode2) {
-	if(!posRow  ||  !posCol) return;
-	if(!height) height = 1;
-	if(!width) width = 1;
-	if(!mode1) mode1 = 1;
-	if(!mode2) mode2 = 1;
+	if (!posRow  ||  !posCol) return;
+	if (!height) height = 1;
+	if (!width) width = 1;
+	if (!mode1) mode1 = 1;
+	if (!mode2) mode2 = 1;
 
 	posCol--;
 	width--;
@@ -148,7 +148,7 @@ function rollA1Notation(posRow, posCol, height, width, mode1, mode2) {
 	str += posRow;
 
 
-	if(height === 1  &&  width === 0) return str;
+	if (height === 1  &&  width === 0) return str;
 	else {
 		str += ":";
 		posCol += width;
@@ -160,7 +160,7 @@ function rollA1Notation(posRow, posCol, height, width, mode1, mode2) {
 		str += (c  ?  String.fromCharCode(64 + c)  :  "") ;
 		str += String.fromCharCode(65 + posCol%f_);
 
-		if(height !== -1) {
+		if (height !== -1) {
 			str += (m >= 2  ?  "$"  :  "");
 			str += posRow + height - 1;
 		}

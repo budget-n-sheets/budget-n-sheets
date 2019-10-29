@@ -18,7 +18,7 @@ Number.prototype.formatCurrency = function() {
 Number.prototype.formatFinancial = function(p_dec_p) {
 	var DEC_P, DEC_PS;
 
-	if(p_dec_p) {
+	if (p_dec_p) {
 		DEC_P = p_dec_p === "] [" ? "," : ".";
 	} else {
 		DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
@@ -32,7 +32,7 @@ Number.prototype.formatFinancial = function(p_dec_p) {
 	var j = (j = i.length) > 3 ? j % 3 : 0;
 	var a = (j ? i.substr(0, j) + DEC_PS : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + DEC_PS) + (2 ? DEC_P + Math.abs(n - i).toFixed(2).slice(2) : '');
 
-	if(s) {
+	if (s) {
 		a = '(' + a + ')';
 	}
 
@@ -45,7 +45,7 @@ Number.prototype.formatFinancial = function(p_dec_p) {
 Number.prototype.formatLocaleSignal = function(p_dec_p) {
 	var DEC_P, DEC_PS;
 
-	if(p_dec_p) {
+	if (p_dec_p) {
 		DEC_P = p_dec_p === "] [" ? "," : ".";
 	} else {
 		DEC_P = PropertiesService.getDocumentProperties().getProperty("decimal_separator") ? "." : ",";
@@ -64,18 +64,18 @@ Number.prototype.formatLocaleSignal = function(p_dec_p) {
 function getSpreadsheetDate(d) {
 	var timezone, date;
 
-	if(d) date = d;
+	if (d) date = d;
 	else date = new Date();
 
 	try {
 		timezone = SpreadsheetApp.getActiveSpreadsheet()
 			.getSpreadsheetTimeZone();
-	} catch(err) {
+	} catch (err) {
 		timezone = "GMT";
 		console.error("getSpreadsheetDate()", err);
 	}
 
-	if(typeof timezone != "string" || timezone == "") {
+	if (typeof timezone != "string" || timezone == "") {
 		timezone = "GMT";
 	}
 
