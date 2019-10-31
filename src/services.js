@@ -78,7 +78,7 @@ function daily_Main_(e) {
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
 		setPropertiesService_('document', 'string', 'OperationMode', "passive");
 
-		console.info("add-on/OperationMode: Passive");
+		console.info("add-on/mode-passive");
 		return;
 	}
 
@@ -125,6 +125,7 @@ function weekly_Bar_(e) {
 
 	if (e["year"] == yyyy) {
 		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
+		console.info("add-on/mode-active");
 	} else {
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
 	}

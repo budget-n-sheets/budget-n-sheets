@@ -49,7 +49,7 @@ function askDeactivation() {
 	if (button == Ui.Button.OK && text === s) {
 		uninstall_();
 		onOpen();
-		console.info("add-on/Deactivate : Success.");
+		console.info("add-on/deactivate");
 		return true;
 	}
 }
@@ -122,6 +122,8 @@ function setup_ui(settings, list) {
 	setup_(settings, list);
 
 	setPropertiesService_("document", "string", "is_installed", "[ ]");
+	console.info("add-on/install");
+
 	showDialogSetupEnd();
 	onOpen();
 
@@ -134,8 +136,6 @@ function setup_ui(settings, list) {
 	} catch (err) {
 		console.error("setup_ui()/stats", err);
 	}
-
-	console.info("add-on/Install: Success.");
 }
 
 function setup_(settings, listAccountName) {

@@ -169,14 +169,14 @@ function update_ExecutePatial_() {
 	}
 
 	if (c) {
-		console.info("add-on/Update: Fail.");
+		console.info("add-on/update-fail");
 		return 1;
 	}
 
 	optSetClass_("AddonVersion", v1);
 	SpreadsheetApp.flush();
 
-	console.info("add-on/Update: Success.");
+	console.info("add-on/update");
 	return -1;
 }
 

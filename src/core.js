@@ -11,7 +11,7 @@
 function onInstall(e) {
 	onOpen(e);
 
-	console.info("add-on/Purchase : Success.");
+	console.info("add-on/purchase");
 }
 
 /**
@@ -53,7 +53,7 @@ function onOpen(e) {
 				.addItem('Edit settings', 'showSidebarMainSettings')
 				.addToUi();
 
-			console.info("add-on/Open : Success.");
+			console.info("add-on/open");
 		} else {
 			SpreadsheetApp.getUi()
 				.createAddonMenu()
