@@ -137,16 +137,11 @@ function monthly_TreatLayout_(yyyy, mm) {
 			for (; i < 12; i++) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
 			}
-
-			sheetTags.hideColumns(6, 12);
-			sheetTags.showColumns(6, 4);
 			return;
 		} else {
 			for (i = 0; i < 12; i++) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
 			}
-
-			sheetTags.showColumns(6, 12);
 
 			a = 11;
 		}
@@ -159,19 +154,9 @@ function monthly_TreatLayout_(yyyy, mm) {
 			}
 		}
 
-		sheetTags.hideColumns(6, 12);
 		a = mm - 1;
 
-		if (mm < 2) {
-			sheetTags.showColumns(6, 4);
-		} else {
-
-			if (mm === 11) {
-				spreadsheet.getSheetByName(MN_SHORT_[9]).showSheet();
-				mm--;
-			}
-			sheetTags.showColumns(4 + mm, 4);
-		}
+		if (mm === 11) spreadsheet.getSheetByName(MN_SHORT_[8]).showSheet();
 	}
 
 	foo_ColorTabs_();
