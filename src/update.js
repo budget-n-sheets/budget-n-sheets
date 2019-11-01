@@ -194,6 +194,112 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Set unprotected ranges, insert checkboxes, set data validation for tag category.
+ *
+ * 0.19.0
+ */
+function update_v0m19p1_() {
+	try {
+		var sheet, protections, rule;
+		var n, i;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+		if (!sheet) return;
+
+		n = sheet.getMaxRows() - 1;
+		if (n < 1) return;
+
+		if (sheet.getMaxColumns() < 5) return;
+		if (sheet.getMaxColumns() >= 22) sheet.deleteColumns(21, 2);
+
+		protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
+		for (i = 0; i < protections.length; i++) {
+			if (protections[i].canEdit()) protections[i].remove();
+		}
+
+		rule = sheet.getRange(2, 1, n, 5);
+		sheet.protect()
+			.setUnprotectedRanges([ rule ])
+			.setWarningOnly(true);
+
+		rule = SpreadsheetApp.newDataValidation()
+			.requireValueInList(TC_NAME_, true)
+			.setAllowInvalid(true)
+			.build();
+		sheet.getRange(2, 2, n, 1).setDataValidation(rule);
+
+		sheet.getRange(2, 4, n, 1).insertCheckboxes();
+		rule = SpreadsheetApp.newDataValidation()
+			.requireCheckbox()
+			.build();
+		sheet.getRange(2, 4, n, 1).setDataValidation(rule);
+	} catch (err) {
+		console.error("update_v0m19p1_()", err);
+		return true;
+	}
+}
+
+/**
+ * Set conditional format based on standard tags.
+ *
+ * 0.19.0
+ */
+function update_v0m19p0_() {
+	try {
+		var spreadsheet, sheet, rules, rule, range;
+		var number_accounts;
+		var n, i, k;
+		var w_;
+
+		w_ = AppsScriptGlobal.TableDimensions()['width'];
+		number_accounts = getUserConstSettings_('number_accounts');
+
+		spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+
+		for (i = 0; i < 12; i++) {
+			sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+			if (!sheet) continue;
+
+			n = sheet.getMaxRows() - 4;
+			if (n < 1) continue;
+
+			rules = sheet.getConditionalFormatRules();
+
+			range = sheet.getRange(5, 1, n, 4);
+			rule = SpreadsheetApp.newConditionalFormatRule()
+				.whenFormulaSatisfied("=REGEXMATCH($" + rollA1Notation(5, 4) + "; \"#ign\")")
+				.setFontColor("#999999")
+				.setRanges([ range ])
+				.build();
+			rules.push(rule);
+
+			for (k = 1; k <= number_accounts; k++) {
+				range = sheet.getRange(5, 1 + w_*k, n, 4);
+
+				rule = SpreadsheetApp.newConditionalFormatRule()
+					.whenFormulaSatisfied("=REGEXMATCH($" + rollA1Notation(5, 4 + w_*k) + "; \"#(dp|wd|qcc|rct|trf)\")")
+					.setBackground("#d9d2e9")
+					.setRanges([ range ])
+					.build();
+				rules.push(rule);
+
+				rule = SpreadsheetApp.newConditionalFormatRule()
+					.whenFormulaSatisfied("=REGEXMATCH($" + rollA1Notation(5, 4 + w_*k) + "; \"#ign\")")
+					.setFontColor("#999999")
+					.setRanges([ range ])
+					.build();
+				rules.push(rule);
+			}
+
+			sheet.setConditionalFormatRules(rules);
+		}
+	} catch (err) {
+		console.error("update_v0m19p0_()", err);
+		return true;
+	}
+}
+
+/**
  * Create property for const user settings.
  *
  * 0.18.17
