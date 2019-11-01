@@ -223,53 +223,6 @@
 					</table>
 				</div>
 
-				<div class="panel" id="panel_AddEditTag">
-					<h2 id="AddEditTag-Title"></h2>
-					<form id="Form-AddEditTag" onSubmit="AddEditTag_opt()" accept-charset="UTF-8">
-						<table style="width:100%;">
-							<tr>
-								<td class="name"><label for="Form-AddEditTag_Name">Name</label></td>
-								<td><input class="Form-AddEditTag_lock" type="text" id="Form-AddEditTag_Name" maxlength="179" style="width:13em;" required></td>
-							</tr>
-							<tr>
-								<td class="name"><label for="Form-AddEditTag_Tag">Code</label></td>
-								<td><input class="Form-AddEditTag_lock" type="text" pattern="[a-zA-Z][\w]+" id="Form-AddEditTag_Tag" style="width:13em;" required></td>
-							</tr>
-							<tr>
-								<td class="name"><label for="Form-AddEditTag_C">Category</label></td>
-								<td>
-									<select class="Form-AddEditTag_lock" id="Form-AddEditTag_C">
-										<option value="0">Food and supply</option>
-										<option value="1">Shopping and clothing</option>
-										<option value="2">Hobby</option>
-										<option value="3">Leisure time</option>
-										<option value="4">Home</option>
-										<option value="5" selected>Other</option>
-										<option value="6">Health and insurance</option>
-										<option value="7">Services</option>
-										<option value="8">Transport</option>
-										<option value="9">Traveling</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td class="name"><label for="Form-AddEditTag_Description">Description</label></td>
-								<td><textarea class="Form-AddEditTag_lock" id="Form-AddEditTag_Description" rows="4" maxlength="523" style="width:13em;"></textarea></td>
-							</tr>
-							<tr>
-								<td class="name">Analytics</td>
-								<td>
-									<select class="Form-AddEditTag_lock" id="AddEditTag_Analytics">
-										<option value="on" selected>On</option>
-										<option value="off">Off</option>
-									</select>
-								</td>
-							</tr>
-						</table>
-						<input id="Form-AddEditTag_submit" style="display:none;" type="submit">
-					</form>
-				</div>
-
 				<div class="panel" id="panel_TagDetails">
 					<h2 id="p-TagDetails_head"></h2>
 					<table style="width:100%;">
@@ -288,11 +241,6 @@
 						<tr>
 							<td class="name">Analytics</td>
 							<td id="TagDetails_analytics"></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<i class="md-24 m-tool material-icons" id="b-EditTag" title="Edit tag">edit</i> <i class="md-24 m-tool material-icons" id="b-RemoveTag" title="Remove tag">delete</i>
-							</td>
 						</tr>
 					</table>
 
@@ -373,11 +321,7 @@
 				TC_NAME_ = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
 
 		$(document).ready(function() {
-			$('#b-EditTag').click(EditTag_Post);
-			$('#b-RemoveTag').click(RemoveTag_Confirm);
-
-			google.script.run
-				.withSuccessHandler(ListTags_Merge)
+			google.script.run.withSuccessHandler(ListTags_Merge)
 				.withFailureHandler(showError)
 				.optMainTags('GetList');
 		});
@@ -404,33 +348,10 @@
 		$(document).on('click', '.m-li', function() {
 			goBackToPanel('o-WaitLoad');
 			htmlVarGlobal.Tag = $(this).attr('id');
-			google.script.run
-				.withSuccessHandler(TagDetails_Info)
+			google.script.run.withSuccessHandler(TagDetails_Info)
 				.withFailureHandler(showError)
 				.optMainTags('GetInfo', htmlVarGlobal.Tag);
 		});
-
-		function RemoveTag_Confirm() {
-			if ( confirm("Click OK to confirm and remove tag "+$('#p-TagDetails_head').text().toUpperCase()+".") ) {
-				$('#panel_WaitLoad').fadeIn('fast')
-					.siblings()
-					.hide();
-				google.script.run
-					.withSuccessHandler(RemoveTag_Aftermath)
-					.withFailureHandler(showError)
-					.optMainTags('Remove', htmlVarGlobal.Tag);
-			}
-		}
-
-		function EditTag_Post() {
-			$('#panel_WaitLoad').fadeIn('fast')
-				.siblings()
-				.hide();
-			google.script.run
-				.withSuccessHandler(EditTag_Panel)
-				.withFailureHandler(showError)
-				.optMainTags('GetInfo', htmlVarGlobal.Tag);
-		}
 
 		function TagDetails_Info(input) {
 			if (input == null) {
@@ -459,8 +380,7 @@
 			htmlVarGlobal.Panel = 'ne';
 			$('#panel_TagDetails').fadeIn('fast').siblings().hide();
 
-			google.script.run
-				.withSuccessHandler(TagDetails_Stat)
+			google.script.run.withSuccessHandler(TagDetails_Stat)
 				.withFailureHandler(showError)
 				.optMainTags('GetStat', htmlVarGlobal.Tag);
 		}
@@ -506,188 +426,6 @@
 
 			chartBuilder = new google.visualization.ComboChart( document.getElementById('TagDetails_chart') );
 			chartBuilder.draw(chartData, chartOptions);
-		}
-
-		function EditTag_Panel(input) {
-			if (!input) {
-				showError();
-				return;
-
-			} else if (input === 2) {
-				alert('There was a problem...\nThe selected Tag does not exist or has been deleted.');
-				google.script.run
-					.withSuccessHandler(ListTags_Merge)
-					.withFailureHandler(showError)
-					.optMainTags('GetList');
-				goBackToPanel('p-Book');
-				return;
-
-			} else if (input === -1) {
-				$('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
-				return;
-			}
-
-			$('#AddEditTag-Title').empty().append('Edit tag');
-
-			$('#Form-AddEditTag_Name').val(input.Name);
-			$('#Form-AddEditTag_Description').val(input.Description);
-			$('#Form-AddEditTag_Tag').val(input.Tag);
-			$('#Form-AddEditTag_C').val(input.C);
-
-			if (input.analytics) $('#AddEditTag_Analytics').val("on");
-			else $('#AddEditTag_Analytics').val("off");
-
-			$('.Form-AddEditTag_lock').prop('disabled', false);
-
-			$('#p-footer_FastResponse').empty();
-			$('.MainMenu-bot_title button').remove();
-			$('.m-footer.left').append('<button class="action Form-AddEditTag_lock" onclick="$(\'#Form-AddEditTag_submit\').click()">Save</button>');
-			$('.m-footer.left').append('<button class="Form-AddEditTag_lock" onclick="goBackToPanel(\'o-Cancel\')">Cancel</button>');
-			htmlVarGlobal.Panel = 'de';
-
-			$('#panel_AddEditTag').fadeIn('fast').siblings().hide();
-		}
-
-		function EditTag_Save() {
-			var auxTag = $('#Form-AddEditTag_Tag').val();
-			if (auxTag == 'wd' || auxTag == 'dp' || auxTag == 'trf' || auxTag == 'qcc' || auxTag == 'ign' || auxTag == 'rct') {
-				$('#p-footer_FastResponse').empty().append('Choose a different code.');
-				return false;
-			}
-
-			$('#p-footer_FastResponse').empty();
-			$('.Form-AddEditTag_lock').prop('disabled', true);
-
-			var output = {
-				Name: $('#Form-AddEditTag_Name').val(),
-				Description: $('#Form-AddEditTag_Description').val(),
-				Tag: $('#Form-AddEditTag_Tag').val(),
-				C: $('#Form-AddEditTag_C').val(),
-				analytics: $('#AddEditTag_Analytics').val() === "on",
-				old_tag: htmlVarGlobal.Tag
-			};
-
-			google.script.run
-				.withSuccessHandler(EditTag_Aftermath)
-				.withFailureHandler(showError)
-				.optMainTags('Update', output);
-			return false;
-		}
-
-		function EditTag_Aftermath(input) {
-			if (input === 10) {
-				$('.Form-AddEditTag_lock').prop('disabled', false);
-				$('#p-footer_FastResponse').empty().append('The code is already in use. Choose a different one.');
-				return;
-
-			} else if (input === 0) {
-				$('.Form-AddEditTag_lock').prop('disabled', false);
-				$('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
-				return;
-
-			} else if (!isNaN(input) && input > 0) {
-				showError();
-				return;
-			}
-
-			htmlVarGlobal.Tag = $('#Form-AddEditTag_Tag').val();
-
-			goBackToPanel('p-TagDetails');
-			$('#p-footer_FastResponse').empty().append('Saved.');
-			google.script.run
-				.withSuccessHandler(ListTags_Merge)
-				.withFailureHandler(showError)
-				.optMainTags('GetList');
-		}
-
-		function RemoveTag_Aftermath(p) {
-			if (!p) {
-				showError();
-				return;
-
-			} else if (p === 0) {
-				$('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
-				return;
-			}
-
-			$('#p-Book_WaitLoad').fadeIn('fast').siblings().hide();
-			goBackToPanel('p-Book');
-			$('#p-footer_FastResponse').append('Tag removed.');
-			google.script.run
-				.withSuccessHandler(ListTags_Merge)
-				.withFailureHandler(showError)
-				.optMainTags('GetList');
-		}
-
-		function NewTag_Panel() {
-			$('#AddEditTag-Title').empty().append('New tag');
-
-			$('#Form-AddEditTag_Name').val('');
-			$('#Form-AddEditTag_Description').val('');
-			$('#Form-AddEditTag_Tag').val('');
-			$('#Form-AddEditTag_C').val(5);
-			$('#AddEditTag_Analytics').val("on");
-			$('.Form-AddEditTag_lock').prop('disabled', false);
-
-			$('#p-footer_FastResponse').empty();
-			$('.MainMenu-bot_title button').remove();
-			$('.m-footer.left').append('<button class="create Form-AddEditTag_lock" onclick="$(\'#Form-AddEditTag_submit\').click()">Add</button>');
-			$('.m-footer.left').append('<button class="Form-AddEditTag_lock" onclick="goBackToPanel(\'p-Book\')">Cancel</button>');
-			htmlVarGlobal.Panel = 'ae';
-
-			$('.m-tab').removeClass('active');
-			$('#panel_AddEditTag').fadeIn('fast').siblings().hide();
-		}
-
-		function NewTag_Add() {
-			var code = $('#Form-AddEditTag_Tag').val();
-			if (code == 'wd' || code == 'dp' || code == 'trf' || code == 'qcc' || code == 'ign' || code == 'rct') {
-				$('#p-footer_FastResponse').empty().append("The code is already in use.");
-				return;
-			}
-
-			$('#p-footer_FastResponse').empty();
-			$('.Form-AddEditTag_lock').prop('disabled', true);
-
-			var tag = {
-				name: $('#Form-AddEditTag_Name').val(),
-				description: $('#Form-AddEditTag_Description').val(),
-				code: $('#Form-AddEditTag_Tag').val(),
-				analytics: $('#AddEditTag_Analytics').val() === "on",
-				category: $('#Form-AddEditTag_C').val()
-			}
-
-			google.script.run.withSuccessHandler(NewTag_Aftermath)
-				.withFailureHandler(showError)
-				.optMainTags("Add", tag);
-		}
-
-		function NewTag_Aftermath(p) {
-			if (p === 0) {
-				$('.Form-AddEditTag_lock').prop('disabled', false);
-				$('#p-footer_FastResponse').append("Add-on is busy. Try again in a moment.");
-				return;
-			} else if (p === 2) {
-				$('.Form-AddEditTag_lock').prop('disabled', false);
-				$('#p-footer_FastResponse').empty().append("The code is already in use.");
-				return;
-			} else if (p !== -1) {
-				showError();
-				return;
-			}
-
-			$('#p-Book_WaitLoad').fadeIn('fast').siblings().hide();
-			goBackToPanel('p-Book');
-			$('#p-footer_FastResponse').append('New tag added.');
-			google.script.run.withSuccessHandler(ListTags_Merge)
-				.withFailureHandler(showError)
-				.optMainTags("GetList");
-		}
-
-		function AddEditTag_opt() {
-			if (htmlVarGlobal.Panel == 'ae') NewTag_Add();
-			else if (htmlVarGlobal.Panel == 'de') EditTag_Save();
-			else showError();
 		}
 
 		function goBackToPanel(input) {
