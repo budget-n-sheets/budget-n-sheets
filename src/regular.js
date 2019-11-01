@@ -378,49 +378,47 @@ function foo_UpdateCashFlow_(mm) {
 
 
 function foo_FormatAccounts_(mm) {
-	if (isNaN(mm)) return;
+	if (typeof mm != "number" || isNaN(mm)) {
+		showDialogErrorMessage();
+		console.warn("foo_FormatAccounts_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
+		return;
+	}
 
-	var thisSheet = SpreadsheetApp.getActiveSpreadsheet()
-		.getSheetByName( MN_SHORT_[Number(mm)] );
+	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT_[mm]);
 	var number_accounts = getUserConstSettings_('number_accounts');
-	var financial_year = getUserConstSettings_('financial_year');
-	var dateToday;
-	var table;
-	var numNegativeDays;
+	var date1, date2;
+	var table, nd;
 	var c, n, i, k;
+	var w_;
 
-	c = 0;
-	n = thisSheet.getMaxRows() - 4;
+	w_ = AppsScriptGlobal.TableDimensions()["width"];
+
+	n = sheet.getMaxRows() - 4;
 	if (n < 1) return;
 
-	thisSheet.showRows(5, n);
+	c = 0;
+	sheet.showRows(5, n);
 
 	for (k = 0; k < 1 + number_accounts; k++) {
-		thisSheet.getRange(5,1+k*5, n,4).sort(1+k*5);
+		sheet.getRange(5, 1 + w_*k, n, 4).sort(1 + w_*k);
 
-		table = thisSheet.getRange(5,1+k*5, n,4).getValues();
-		numNegativeDays = 0; i = 0;
+		i = 0;
+		nd = 0;
+		table = sheet.getRange(5, 1 + w_*k, n, 4).getValues();
 		while (i < n && table[i][2] !== '') {
-			if (table[i][0] < 0) {
-				numNegativeDays++;
-			}
-
+			if (table[i][0] < 0) nd++;
 			i++;
 		}
 
-		if (numNegativeDays > 1) {
-			thisSheet.getRange(5,1+k*5, numNegativeDays,4)
-				.sort({column:1+k*5, ascending:false});
-		}
 		if (i > c) c = i;
+		if (nd > 1) sheet.getRange(5, 1 + w_*k, nd, 4).sort({column:1 + w_*k, ascending:false});
 	}
 
-	dateToday = getSpreadsheetDate();
-	if (n - c <= 0) return;
-	else if (financial_year < dateToday.getFullYear() || (financial_year == dateToday.getFullYear() && mm < dateToday.getMonth())) {
-		if (n - c < n) thisSheet.hideRows(5+c, n-c);
-		else thisSheet.hideRows(5+1, n-1);
-	}
+	date1 = getUserConstSettings_('financial_year');
+	date1 = new Date(date1, mm, 1).getTime();
+	date2 = new Date().getTime();
+
+	if (c > 0 && c < n && date1 < date2) sheet.hideRows(5 + c, n - c);
 }
 
 
@@ -433,28 +431,29 @@ function foo_FormatCards_(mm) {
 
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
 	var table, card;
-	var a, c, n;
+	var c, n, w_;
 	var i, j;
 
+	w_ = 6;
 	n = sheet.getMaxRows() - 5;
-	a = Number(mm);
 
-	sheet.getRange(6,1+a*6, n,5)
-		.sort([{column:(3+a*6), ascending:true}, {column:(1+a*6), ascending:true}]);
+	sheet.getRange(6, 1 + w_*mm, n, 5).sort([
+		{column:(3 + w_*mm), ascending:true},
+		{column:(1 + w_*mm), ascending:true}
+	]);
 
-	i = 0; j = 0;
-	table = sheet.getRange(6,1+a*6, n,5).getValues();
+	i = 0;
+	j = 0;
+	table = sheet.getRange(6, 1 + w_*mm, n, 5).getValues();
 	while (i < n && table[i][3] !== '') {
-		card = table[i][2]; c = 0;
+		c = 0;
+		card = table[i][2];
 		while (j < n && table[j][3] !== '' && table[j][2] === card) {
 			if (table[j][0] < 0) c++;
 			j++;
 		}
 
-		if (c > 1) {
-			sheet.getRange(6+i,1+a*6, c,5)
-				.sort({column:1+a*6, ascending:false});
-		}
+		if (c > 1) sheet.getRange(6 + i, 1 + w_*mm, c, 5).sort({column:1 + w_*mm, ascending:false});
 		i = j;
 	}
 }

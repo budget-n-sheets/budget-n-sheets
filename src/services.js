@@ -12,7 +12,7 @@ function onEdit_Main_(e) {
 
 	mm = mm.indexOf(e.value);
 
-	switch ( row ) {
+	switch (row) {
 		case 4:
 			if (mm === -1) break;
 			optMainTools_("AddBlankRows", mm);
@@ -38,6 +38,7 @@ function onEdit_Main_(e) {
 			if (e.value == "Collapse") toolHideSheets_();
 			else if (e.value == "Expand") toolShowSheets_();
 			break;
+
 		default:
 			return;
 	}
