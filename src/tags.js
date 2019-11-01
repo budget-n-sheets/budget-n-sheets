@@ -17,13 +17,6 @@ function optMainTags(opt, input) {
 		case 'GetStat':
 			return optTag_GetStat_(input);
 
-		case 'Add':
-			return optTag_Add_(input);
-		case 'Update':
-			return optTag_Update_(input);
-		case 'Remove':
-			return optTag_Remove_(input);
-
 		case 'isBusy':
 			return -1;
 		default:
@@ -240,101 +233,4 @@ function optTag_GetStat_(input) {
 	}
 
 	return output;
-}
-
-
-function optTag_Add_(tag) {
-	if (!tag) return 3;
-	if ( !/[\w]+/.test(tag.code) ) return 2;
-	if ( /^(wd|dp|trf|qcc|ign|rct)$/.test(tag.code) ) return 2;
-
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
-			sheet = spreadsheet.getSheetByName("Tags");
-	var range;
-	var i, c, n;
-
-	n = sheet.getMaxRows();
-	if (n < 2) return 3;
-
-	if (n > 2) {
-		range = sheet.getRange(2, 5, n - 2, 1).getValues();
-		for (i = 0; i < range.length; i++) {
-			if (range[i][0] == tag.code) return 2;
-		}
-	}
-
-	c = Number(tag.category);
-	tag.analytics = tag.analytics ? "TRUE" : "FALSE";
-
-	sheet.insertRowAfter(n);
-	sheet.getRange(n, 1, 1, 5).setValues([
-		[ tag.name, TC_NAME_[c], tag.description, tag.analytics, tag.code ]
-	]);
-	sheet.getRange(n, 22).setValue(TC_CODE_[c]);
-
-	SpreadsheetApp.flush();
-	return -1;
-}
-
-
-function optTag_Update_(input) {
-	if (!/[\w]+/.test(input.Tag)) return;
-
-	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
-	var data;
-	var auxValue;
-	var n, i;
-
-	n = sheet.getMaxRows() - 2;
-	if (n <= 0) return -1;
-
-	data = sheet.getRange(2, 5, n, 1).getValues();
-
-	if (input.Tag != input.old_tag) {
-		for (i = 0; i < n; i++) {
-			if (data[i][0] == input.Tag) return 10;
-		}
-	}
-
-	input.analytics = input.analytics ? "TRUE" : "FALSE";
-
-	for (i = 0; i < n; i++) {
-		if (data[i][0] == input.old_tag) {
-			auxValue = Number(input.C);
-
-			sheet.getRange(2 + i, 1, 1, 5).setValues([
-				[input.Name, TC_NAME_[auxValue], input.Description, input.analytics, input.Tag]
-			]);
-			sheet.getRange(2 + i, 22).setValue(TC_CODE_[auxValue]);
-
-			SpreadsheetApp.flush();
-			return -1;
-		}
-	}
-
-	return 1;
-}
-
-
-function optTag_Remove_(input) {
-	if (!input) return 3;
-
-	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
-	var codes;
-	var n, i;
-
-	n = sheet.getMaxRows() - 2;
-	if (n <= 0) return -1;
-
-	codes = sheet.getRange(2, 5, n, 1).getValues();
-
-	for (i = 0; i < n; i++) {
-		if (codes[i][0] == input) {
-			sheet.deleteRow(2 + i);
-			SpreadsheetApp.flush();
-			return -1;
-		}
-	}
-
-	return -1;
 }
