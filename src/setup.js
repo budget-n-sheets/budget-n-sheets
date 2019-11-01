@@ -425,13 +425,12 @@ function setupPart9_() {
 
 function setupPart7_(yyyy_mm) {
 	var sheetSummary = CONST_LIST_ES_SHEETS_["summary"];
-	var sheetTags = CONST_LIST_ES_SHEETS_["tags"];
 	var sheet, i;
 
 	sheetSummary.setTabColor('#e69138');
 	CONST_LIST_ES_SHEETS_["cards"].setTabColor('#e69138');
 	CONST_LIST_ES_SHEETS_["cash_flow"].setTabColor('#e69138');
-	sheetTags.setTabColor('#e69138');
+	CONST_LIST_ES_SHEETS_["tags"].setTabColor('#e69138');
 	CONST_LIST_ES_SHEETS_["quick_actions"].setTabColor('#6aa84f');
 	CONST_LIST_ES_SHEETS_["_backstage"].setTabColor('#cc0000').hideSheet();
 	CONST_LIST_ES_SHEETS_["_settings"].setTabColor('#cc0000').hideSheet();
@@ -461,18 +460,7 @@ function setupPart7_(yyyy_mm) {
 		}
 
 		CONST_LIST_MN_SHEETS_[yyyy_mm.mm].setTabColor('#6aa84f');
-
-		sheetTags.hideColumns(6, 12);
-
-		if (yyyy_mm.mm < 2) {
-			sheetTags.showColumns(6, 4);
-		} else {
-			if (yyyy_mm.mm == 11) {
-				CONST_LIST_MN_SHEETS_[9].showSheet();
-				yyyy_mm.mm--;
-			}
-			sheetTags.showColumns(4 + yyyy_mm.mm, 4);
-		}
+		if (yyyy_mm.mm == 11) CONST_LIST_MN_SHEETS_[8].showSheet();
 	} else {
 		for (i = 0; i < CONST_SETUP_SETTINGS_["init_month"]; i++) {
 			CONST_LIST_MN_SHEETS_[i].setTabColor('#b7b7b7');
