@@ -71,37 +71,42 @@ function BSSUMBYTAG(tag, range) {
 	Utilities.sleep(200);
 
 	var SUM;
-	var match, regex;
-	var c, n, i, j;
+	var regex;
+	var n, i, j;
 
 	n = tag[0].length;
-	if (n <= 2) return;
-	else n -= 2;
+	if (n < 2) return;
+	else n--;
+
+	tag = tag[0];
+	tag = tag.slice(1);
 
 	SUM = [ ];
+	regex = [ ];
 	for (i = 0; i < n; i++) {
-		SUM.push([ 0 ]);
+		if (/[\w]+/.test(tag[i])) {
+			SUM.push([ 0 ]);
+			regex.push(tag[i]);
+			tag[i] = "#" + tag[i];
+		} else {
+			SUM.push([ null ]);
+			tag[i] = null;
+		}
 	}
 	if (range === "0") return SUM;
 
-	tag = tag[0];
-	tag = tag.slice(1, n + 1);
-
-	if (n > 1) regex = tag.join('|');
-	else regex = tag[0];
+	if (regex.length == 0) return SUM;
+	else if (regex.length == 1) regex = regex[0];
+	else regex = regex.join('|');
 
 	regex = "#(" + regex + ")";
 	regex = new RegExp(regex);
 
-	for (i = 0; i < tag.length; i++) {
-		tag[i] = "#" + tag[i];
-	}
-
 	for (i = 0; i < range.length; i++) {
-		if (! regex.test(range[i][1])) continue;
+		if ( !regex.test(range[i][1]) ) continue;
 
-		for (j = 0; j < tag.length; j++) {
-			if (range[i][1].indexOf(tag[j]) !== -1) {
+		for (j = 0; j < n; j++) {
+			if (tag[j] && range[i][1].indexOf(tag[j]) !== -1) {
 				SUM[j][0] += Number(range[i][0]);
 			}
 		}
