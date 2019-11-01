@@ -333,15 +333,15 @@
 			$(this).addClass('active').siblings().removeClass('active');
 
 			switch ( $(this).attr('id') ) {
-			case 'tab_book':
-				goBackToPanel('p-Book');
-				break;
-			case 'tab_view-list':
-				goBackToPanel('p-ViewList');
-				break;
-			default:
-				showError();
-				break;
+				case 'tab_book':
+					goBackToPanel('p-Book');
+					break;
+				case 'tab_view-list':
+					goBackToPanel('p-ViewList');
+					break;
+				default:
+					showError();
+					break;
 			}
 		});
 
@@ -449,22 +449,8 @@
 					$('#panel_ViewList').fadeIn('fast').siblings().hide();
 					break;
 
-				case 'p-TagDetails':
-					htmlVarGlobal.Panel = 'ne';
-					$('#panel_WaitLoad').fadeIn('fast').siblings().hide();
-					google.script.run
-						.withSuccessHandler(TagDetails_Info)
-						.withFailureHandler(showError)
-						.optMainTags('GetInfo', htmlVarGlobal.Tag);
-					break;
-
 				case 'o-WaitLoad':
 					$('#panel_WaitLoad').fadeIn('fast').siblings().hide();
-					break;
-
-				case 'o-Cancel':
-					htmlVarGlobal.Panel = 'ne';
-					$('#panel_TagDetails').fadeIn('fast').siblings().hide();
 					break;
 
 				default:
