@@ -49,7 +49,7 @@ function tagGetData_() {
 	i = 0;
 	j = 0;
 	while (i < data.length && j < n) {
-		if ( /^[\w]+$/.test(data[i][0]) ) {
+		if ( /^\w+$/.test(data[i][0]) ) {
 			output.tags.push(data[i][0]);
 
 			v = [ ];
@@ -92,7 +92,7 @@ function optTag_GetList_() {
 	data = sheet.getRange(2, 1, n, 5).getValues();
 
 	for (i = 0; i < n; i++) {
-		if ( !/\w+/.test(data[i][4]) ) continue;
+		if ( !/^\w+$/.test(data[i][4]) ) continue;
 
 		a = TC_NAME_.indexOf(data[i][1]);
 		if (a === -1) a = 5;

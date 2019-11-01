@@ -284,7 +284,7 @@ function foo_UpdateCashFlow_(mm) {
 
 			value = table[i][2];
 			if (hasTags && value === 0 && OverrideZero) {
-				ma = table[i][3].match(/#[\w]+/g);
+				ma = table[i][3].match(/#\w+/g);
 				for (j = 0; j < ma.length; j++) {
 					c = data_tags.tags.indexOf(ma[j].substr(1));
 					if (c !== -1) {

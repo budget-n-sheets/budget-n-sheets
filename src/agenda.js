@@ -9,7 +9,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	output = [ ];
 	code_Card = [ ];
 	regExp_Card = [ ];
-	regExp_Account = [ new RegExp('Wallet') ];
+	regExp_Account = [ /Wallet/ ];
 
 	list = optTable_GetList_();
 	for (i = 0; i < list.length; i++) {
@@ -81,7 +81,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			}
 		}
 
-		cell.Tags = cell.Description.match(/#[\w]+/g);
+		cell.Tags = cell.Description.match(/#\w+/g);
 		if (!cell.Tags) cell.Tags = [ ];
 		else {
 			for (j = 0; j < cell.Tags.length; j++) {

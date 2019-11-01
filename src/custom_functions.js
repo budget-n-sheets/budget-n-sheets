@@ -84,7 +84,7 @@ function BSSUMBYTAG(tag, range) {
 	SUM = [ ];
 	regex = [ ];
 	for (i = 0; i < n; i++) {
-		if (/[\w]+/.test(tag[i])) {
+		if (/^\w+$/.test(tag[i])) {
 			SUM.push([ 0 ]);
 			regex.push(tag[i]);
 			tag[i] = "#" + tag[i];
