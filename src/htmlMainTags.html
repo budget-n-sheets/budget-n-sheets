@@ -489,15 +489,14 @@
 
 			$('#p-Book_BoxListTags').empty();
 
-
 			for (i = 0; i < 10; i++) {
-				if (input[i][0] === 0) continue;
+				if (input[i][0] == 0) continue;
 
 				$('#p-Book_BoxListTags').append('<span class="Tags-title">'+TC_NAME_[i]+'</span><div class="Tags-table" id="TagCategory-'+TC_CODE_[i]+'"></div><hr>');
 
 				string = '#TagCategory-'+TC_CODE_[i];
 				for (j = 0; j < input[i][0]; j++) {
-					$(string).append('<div class="Tag-row m-li" id="'+input[i][j+1].Tag+'"><div class="Tag-name">'+input[i][j+1].Name+'</div></div>');
+					$(string).append('<div class="Tag-row m-li" id="'+input[i][j+1].tag+'"><div class="Tag-name">'+input[i][j+1].name+'</div></div>');
 				}
 			}
 

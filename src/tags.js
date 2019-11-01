@@ -91,23 +91,25 @@ function optTag_GetList_() {
 	];
 
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
-	if (sheet.getMaxColumns() < 22) return 2;
+	if (sheet.getMaxColumns() < 20) return 2;
 
-	n = sheet.getMaxRows() - 2;
-	if (n <= 0) return output;
+	n = sheet.getLastRow() - 1;
+	if (n < 1) return output;
 
-	data = sheet.getRange(2, 1, n, 22).getValues();
+	data = sheet.getRange(2, 1, n, 5).getValues();
 
 	for (i = 0; i < n; i++) {
-		a = TC_CODE_.indexOf(data[i][21]);
+		if ( !/\w+/.test(data[i][4]) ) continue;
+
+		a = TC_NAME_.indexOf(data[i][1]);
 		if (a === -1) a = 5;
 
 		cell = {
-			Name: data[i][0],
-			C: TC_CODE_[a],
-			Description: data[i][2],
-			Tag: data[i][4],
-			analytics: data[i][3] === "TRUE"
+			name: data[i][0],
+			category: TC_CODE_[a],
+			description: data[i][2],
+			tag: data[i][4],
+			analytics: data[i][3]
 		}
 		output[a].push(cell);
 		output[a][0]++;
@@ -121,11 +123,13 @@ function optTag_GetInfo_(input) {
 	if (!input) return 3;
 
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
-	var maxRows = sheet.getMaxRows();
+	var lastRow = sheet.getLastRow() - 1;
 	var vIndex, output;
 	var listTags, listTagsExtras;
 	var auxCell;
 	var a, n, i, j;
+
+	if (lastRow < 1) return 2;
 
 	output = {
 		Name: '',
@@ -135,17 +139,16 @@ function optTag_GetInfo_(input) {
 		analytics: false
 	}
 
-	listTags = sheet.getRange(2, 1, maxRows - 2, 5).getValues();
-	for (i = 0; i < listTags.length; i++) {
+	listTags = sheet.getRange(2, 1, lastRow, 5).getValues();
+	for (i = 0; i < lastRow; i++) {
 		if (listTags[i][4] == input) {
 			output.Name = listTags[i][0];
 			output.Description = listTags[i][2];
 			output.Tag = listTags[i][4];
-			output.analytics = listTags[i][3] === "TRUE";
+			output.analytics = listTags[i][3];
 
-			a = sheet.getRange(2 + i, 22).getValue();
-			a = TC_CODE_.indexOf(a);
-			if (a == -1) output.C = 5;
+			a = TC_NAME_.indexOf(listTags[i][1]);
+			if (a === -1) output.C = 5;
 			else output.C = a;
 
 			return output;
@@ -187,7 +190,7 @@ function optTag_GetStat_(input) {
 	lastRow = sheet.getLastRow();
 	if (lastRow <= 1) return 1;
 
-	data = sheet.getRange(2, 5, lastRow - 1, 1).getValues();
+	data = sheet.getRange(2, 5, lastRow, 1).getValues();
 
 	for (i = 0; i < data.length; i++) {
 		if (data[i][0] === input) break;
