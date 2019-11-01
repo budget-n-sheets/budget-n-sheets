@@ -271,10 +271,16 @@ function setupPart11_() {
 
 	{
 		CONST_LIST_ES_SHEETS_["_backstage"].protect().setWarningOnly(true);
-		CONST_LIST_ES_SHEETS_["tags"].protect().setWarningOnly(true);
 		CONST_LIST_ES_SHEETS_["_settings"].protect().setWarningOnly(true);
 		CONST_LIST_ES_SHEETS_["about"].protect().setWarningOnly(true);
 		CONST_LIST_ES_SHEETS_["summary"].protect().setWarningOnly(true);
+	}
+	{
+		thisSheet = CONST_LIST_ES_SHEETS_["tags"];
+		vRange = thisSheet.getRange(2, 1, 90, 5);
+		thisSheet.protect()
+			.setUnprotectedRanges(vRange)
+			.setWarningOnly(true);
 	}
 	{
 		thisSheet = CONST_LIST_ES_SHEETS_["cash_flow"];
