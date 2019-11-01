@@ -279,7 +279,7 @@ function setupPart11_() {
 		thisSheet = CONST_LIST_ES_SHEETS_["tags"];
 		vRange = thisSheet.getRange(2, 1, 90, 5);
 		thisSheet.protect()
-			.setUnprotectedRanges(vRange)
+			.setUnprotectedRanges([ vRange ])
 			.setWarningOnly(true);
 	}
 	{
