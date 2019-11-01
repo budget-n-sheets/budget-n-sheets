@@ -411,8 +411,6 @@ function foo_FormatAccounts_(mm) {
 	thisSheet.showRows(5, n);
 
 	for (k = 0; k < 1 + number_accounts; k++) {
-		thisSheet.getRange(5,1+k*5, n,4).setBackground('#ffffff');
-		thisSheet.getRange(5,1+k*5, n,4).setFontColor('#000000');
 		thisSheet.getRange(5,1+k*5, n,4).sort(1+k*5);
 
 		table = thisSheet.getRange(5,1+k*5, n,4).getValues();
@@ -420,16 +418,6 @@ function foo_FormatAccounts_(mm) {
 		while (i < n && table[i][2] !== '') {
 			if (table[i][0] < 0) {
 				numNegativeDays++;
-			}
-
-			if ( /#(qcc|trf|wd|dp)/.test(table[i][3]) ) {
-				thisSheet.getRange(5+i,1+k*5, 1,4)
-					.setBackground('#d9d2e9');
-			}
-
-			if ( /#ign/.test(table[i][3]) ) {
-				thisSheet.getRange(5+i,1+k*5, 1,4)
-					.setFontColor('#999999');
 			}
 
 			i++;
@@ -466,8 +454,6 @@ function foo_FormatCards_(mm) {
 	n = sheet.getMaxRows() - 5;
 	a = Number(mm);
 
-	sheet.getRange(6,1+a*6, n,5).setBackground('#ffffff');
-	sheet.getRange(6,1+a*6, n,5).setFontColor('#000000');
 	sheet.getRange(6,1+a*6, n,5)
 		.sort([{column:(3+a*6), ascending:true}, {column:(1+a*6), ascending:true}]);
 
@@ -477,10 +463,6 @@ function foo_FormatCards_(mm) {
 		card = table[i][2]; c = 0;
 		while (j < n && table[j][3] !== '' && table[j][2] === card) {
 			if (table[j][0] < 0) c++;
-			if ( /#ign/.test(table[j][4]) ) {
-				sheet.getRange(6+j,1+a*6, 1,5)
-					.setFontColor('#999999');
-			}
 			j++;
 		}
 
