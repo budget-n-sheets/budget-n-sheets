@@ -159,6 +159,9 @@ function update_ExecutePatial_() {
 		case 67:
 			update_v0m19p0_();
 			update_v0m19p1_();
+
+		case 68:
+			update_v0m19p2_();
 			break;
 
 		default:
@@ -197,6 +200,37 @@ function update_v0m0p0_() {
 		return true;
 	}
 }*/
+
+/**
+ * Set new function to count tags.
+ * Reset function Total of tags.
+ *
+ * 0.19.0
+ */
+function update_v0m19p2_() {
+	try {
+		var sheet, formula;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Settings');
+		if (!sheet) return;
+
+		sheet.getRange('B7').setFormula("COUNTIF(\'Tags\'!$E1:$E; \"\") - 1");
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+		if (!sheet) return;
+
+		formula = "IF(COLUMN(" + rollA1Notation(2, 6, -1, 12) + ") - 5 < \'_Settings\'!$B$4 + \'_Settings\'!$B$6; ROW(" + rollA1Notation(2, 6, -1) + "); 0)";
+		formula = "IF(COLUMN(" + rollA1Notation(2, 6, -1, 12) + ") - 5 >= \'_Settings\'!$B$4; " + formula + "; 0)";
+		formula = "ARRAYFORMULA(SUMIF(" + formula + "; ROW(" + rollA1Notation(2, 6, -1) + "); " + rollA1Notation(2, 6, -1) + "))";
+		formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; ARRAYFORMULA($F$2:$F * 0))";
+		formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
+		formula = "{\"Total\"; " + formula + "}";
+		sheet.getRange(1, 20).setFormula(formula);
+	} catch (err) {
+		console.error("update_v0m19p2_()", err);
+		return true;
+	}
+}
 
 /**
  * Set unprotected ranges, insert checkboxes, set data validation for tag category.
