@@ -213,7 +213,10 @@ function update_v0m19p1_() {
 
 		n = sheet.getMaxRows() - 1;
 		if (n < 1) return;
-		if (n < 30) sheet.insertRowsAfter(n, 30 - n);
+		if (n < 30) {
+			sheet.insertRowsAfter(n, 30 - n);
+			n += 30 - n;
+		}
 
 		if (sheet.getMaxColumns() < 5) return;
 		if (sheet.getMaxColumns() >= 22) sheet.deleteColumns(21, 2);
