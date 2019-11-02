@@ -117,14 +117,13 @@ function weekly_Bar_(e) {
 
 	if (seamlessUpdate_()) return;
 
-	var date = getSpreadsheetDate();
-	var yyyy = getUserConstSettings_('financial_year');
+	var financial_year = getUserConstSettings_('financial_year');
 
-	if (e["year"] > yyyy) return;
+	if (e["year"] > financial_year) return;
 
 	deleteScriptAppTriggers_("document", "weeklyMainId");
 
-	if (e["year"] == yyyy) {
+	if (e["year"] == financial_year) {
 		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
 		console.info("add-on/mode-active");
 	} else {

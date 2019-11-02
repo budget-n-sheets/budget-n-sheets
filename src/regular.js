@@ -120,18 +120,14 @@ function monthly_TreatLayout_(yyyy, mm) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
 			sheetTags = spreadsheet.getSheetByName('Tags');
 	var financial_year = getUserConstSettings_('financial_year');
-	var a, i;
+	var md, a, i;
 
 	if (financial_year > yyyy) return; // Too soon to format the spreadsheet.
-	else if (financial_year < yyyy) {
-		mm = 0; // Last time to format the spreadsheet.
-		a = 0;
-	}
-
+	else if (financial_year < yyyy) mm = 0; // Last time to format the spreadsheet.
 
 	if (mm === 0) {
 		if (yyyy === financial_year) {
-			for (i = 0; i < 3; i++) {
+			for (i = 0; i < 4; i++) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
 			}
 			for (; i < 12; i++) {
@@ -146,8 +142,10 @@ function monthly_TreatLayout_(yyyy, mm) {
 			a = 11;
 		}
 	} else {
+		md = getMonthDelta(mm);
+
 		for (i = 0; i < 12; i++) {
-			if (i < mm-1 || i > mm+2) {
+			if (i < mm + md[0] || i > mm + md[1]) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
 			} else {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
@@ -155,8 +153,6 @@ function monthly_TreatLayout_(yyyy, mm) {
 		}
 
 		a = mm - 1;
-
-		if (mm === 11) spreadsheet.getSheetByName(MN_SHORT_[8]).showSheet();
 	}
 
 	foo_ColorTabs_();
@@ -169,19 +165,20 @@ function monthly_TreatLayout_(yyyy, mm) {
 function foo_ColorTabs_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var financial_year = getUserConstSettings_('financial_year'),
-			InitialMonth = getUserSettings_('InitialMonth');
+			init_month = getUserSettings_('InitialMonth');
 	var date = getSpreadsheetDate();
-	var mm, i;
+	var mm, md, i;
 
-	mm = date.getMonth();
-
+	for (i = 0; i < init_month; i++) {
+		spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
+	}
 
 	if (financial_year === date.getFullYear()) {
-		for (i = 0; i < InitialMonth; i++) {
-			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
-		}
+		mm = date.getMonth();
+		md = getMonthDelta(mm);
+
 		for (; i < 12; i++) {
-			if (i < mm-1 || i > mm+2) {
+			if (i < mm + md[0] || i > mm + md[1]) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#a4c2f4');
 			} else {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#3c78d8');
@@ -189,11 +186,7 @@ function foo_ColorTabs_() {
 		}
 
 		spreadsheet.getSheetByName(MN_SHORT_[mm]).setTabColor('#6aa84f');
-
 	} else {
-		for (i = 0; i < InitialMonth; i++) {
-			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
-		}
 		for (; i < 12; i++) {
 			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#a4c2f4');
 		}

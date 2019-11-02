@@ -86,73 +86,66 @@ function optMainTools_(p, mm) {
 function optTool_HideSheets_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet;
-	var list = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-	var mm, i;
+	var d, mm, i;
 
 	mm = getSpreadsheetDate();
 	mm = mm.getMonth();
+	d = getMonthDelta(mm);
 
 	for (i = 0; i < 12; i++) {
-		sheet = spreadsheet.getSheetByName(list[i]);
+		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
 		if (!sheet) continue;
 
-		if (i < mm - 1 || i > mm + 2) {
-			spreadsheet.getSheetByName(list[i]).hideSheet();
-		} else {
-			spreadsheet.getSheetByName(list[i]).showSheet();
-		}
+		if (i < mm + d[0] || i > mm + d[1]) sheet.hideSheet();
+		else sheet.showSheet();
 	}
 }
 
 
 function optTool_ShowSheets_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet;
-	var list = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-	var i;
+	var sheet, i;
 
 	for (i = 0; i < 12; i++) {
-		sheet = spreadsheet.getSheetByName(list[i]);
+		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
 		if (!sheet) continue;
 
-		spreadsheet.getSheetByName(list[i]).showSheet();
+		sheet.showSheet();
 	}
 }
 
 
-function optTool_AddBlankRows_(mm_) {
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
-			sheet;
-	var c;
+function optTool_AddBlankRows_(mm) {
+	var sheet, c;
 
-	if (isNaN(mm_)) {
+	if (typeof mm != "number" || isNaN(mm)) {
 		sheet = SpreadsheetApp.getActiveSheet();
-	} else if (mm_ >= 0 && mm_ < 12) {
-		sheet = spreadsheet.getSheetByName(MN_SHORT_[mm_]);
-	} else if (mm_ === 12) {
-		sheet = spreadsheet.getSheetByName("Cards");
-	} else {
-		console.error("optTool_AddBlankRows_(): Internal error.", mm_);
-		return;
-	}
+		c = sheet.getSheetName();
 
-	if (!sheet) {
-		showDialogErrorMessage();
-		return;
-	} else if (sheet.getSheetName() === "Cards") c = 5;
-	else if (MN_SHORT_.indexOf(sheet.getSheetName()) !== -1) c = 4;
-	else {
-		SpreadsheetApp.getUi().alert(
-			"Can't add rows",
-			"Select a month or Cards to add rows.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
+		if (MN_SHORT_.indexOf(c) !== -1) c = 4;
+		else if (c === "Cards") c = 5;
+		else {
+			SpreadsheetApp.getUi().alert(
+				"Can't add rows",
+				"Select a month or Cards to add rows.",
+				SpreadsheetApp.getUi().ButtonSet.OK);
+			return;
+		}
+	} else if (mm >= 0 && mm < 12) {
+		c = 4;
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT_[mm]);
+	} else if (mm === 12) {
+		c = 5;
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+	} else {
+		console.error("optTool_AddBlankRows_(): Internal error.", mm);
 		return;
 	}
 
 	var maxRows = sheet.getMaxRows(),
 			maxCols = sheet.getMaxColumns();
 	var n = 400;
-	var values;
+	var range, values;
 
 	if (maxRows < c + 3) return;
 
@@ -160,11 +153,11 @@ function optTool_AddBlankRows_(mm_) {
 	sheet.insertRowsBefore(maxRows, n);
 	maxRows += n;
 
-	sheet.getRange(maxRows-n, 1, 1, maxCols).setValues(values);
-	sheet.getRange(maxRows-n+1, 1, n-1, maxCols).clear();
+	sheet.getRange(maxRows - n, 1, 1, maxCols).setValues(values);
+	sheet.getRange(maxRows - n + 1, 1, n - 1, maxCols).clear();
 	sheet.getRange(maxRows, 1, 1, maxCols).clearContent();
-	sheet.getRange(c+2, 1, 1, maxCols)
-		.copyTo(sheet.getRange(maxRows-n, 1, n, maxCols), {formatOnly:true});
+	range = sheet.getRange(maxRows - n, 1, n, maxCols);
+	sheet.getRange(c + 2, 1, 1, maxCols).copyTo(range, {formatOnly:true});
 }
 
 
