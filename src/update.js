@@ -276,6 +276,8 @@ function update_v0m19p1_() {
 			.requireCheckbox()
 			.build();
 		sheet.getRange(2, 4, n, 1).setDataValidation(rule);
+		sheet.getRange(2, 4, n, 1).setHorizontalAlignment('center');
+		sheet.showColumns(1, 5);
 	} catch (err) {
 		console.error("update_v0m19p1_()", err);
 		return true;
