@@ -358,16 +358,14 @@ function update_v0m19p0_() {
  */
 function update0pack13_() {
 	try {
-		var user_const_settings;
-		var date_created, number_accounts, financial_year;
+		var user_settings, user_const_settings;
 
-		financial_year = getUserSettings_("FinancialYear");
-		number_accounts = getUserConstSettings_('number_accounts');
+		user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
 		user_const_settings = {
 			date_created: 0,
-			number_accounts: number_accounts,
-			financial_year: financial_year
+			number_accounts: getPropertiesService_('document', 'number', 'number_accounts'),
+			financial_year: user_settings.FinancialYear
 		};
 
 		setPropertiesService_('document', 'obj', 'user_const_settings', user_const_settings);
