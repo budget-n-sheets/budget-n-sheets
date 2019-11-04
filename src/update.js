@@ -132,6 +132,9 @@ function update_ExecutePatial_() {
 
 		case 68:
 			update_v0m19p2_();
+
+		case 69:
+			update_v0m19p3_();
 			break;
 
 		default:
@@ -170,6 +173,30 @@ function update_v0m0p0_() {
 		return true;
 	}
 }*/
+
+/**
+ * Fix formatting in Tags.
+ *
+ * 0.19.1
+ */
+function update_v0m19p3_() {
+	try {
+		var sheet, range, n;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+
+		n = sheet.getMaxRows();
+		if (n < 3) return;
+		n -= 1;
+
+		range = sheet.getRange(2, 1, n - 1, 20);
+		sheet.getRange(n + 1, 1, 1, 20).copyTo(range, SpreadsheetApp.CopyPasteType.PASTE_FORMAT);
+		sheet.getRange(2, 4, n, 1).setNumberFormat('0.###');
+	} catch (err) {
+		console.error("update_v0m19p3_()", err);
+		return true;
+	}
+}
 
 /**
  * Set new function to count tags.
