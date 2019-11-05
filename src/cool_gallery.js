@@ -59,6 +59,7 @@ function getCoolSheet_(option) {
 
 	sheet = spreadsheet.getSheetByName(info.sheet_name);
 	SpreadsheetApp.flush();
+	console.info("add-on/cool_gallery/import/" + info.sheet_name);
 
 	r = -1;
 	switch (option) {
