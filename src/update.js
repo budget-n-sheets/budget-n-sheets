@@ -190,7 +190,7 @@ function update_v0m19p3_() {
 		n -= 1;
 
 		range = sheet.getRange(2, 1, n - 1, 20);
-		sheet.getRange(n + 1, 1, 1, 20).copyTo(range, SpreadsheetApp.CopyPasteType.PASTE_FORMAT);
+		sheet.getRange(n + 1, 1, 1, 20).copyTo(range, {formatOnly:true});
 		sheet.getRange(2, 4, n, 1).setNumberFormat('0.###');
 	} catch (err) {
 		console.error("update_v0m19p3_()", err);
