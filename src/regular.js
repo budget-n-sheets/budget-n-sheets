@@ -407,11 +407,11 @@ function foo_FormatAccounts_(mm) {
 		if (nd > 1) sheet.getRange(5, 1 + w_*k, nd, 4).sort({column:1 + w_*k, ascending:false});
 	}
 
-	date1 = getUserConstSettings_('financial_year');
-	date1 = new Date(date1, mm, 1).getTime();
-	date2 = new Date().getTime();
+	date1 = new Date().getTime();
+	date2 = getUserConstSettings_('financial_year');
+	date2 = new Date(date2, mm + 1, 0).getTime();
 
-	if (c > 0 && c < n && date1 < date2) sheet.hideRows(5 + c, n - c);
+	if (c > 0 && c < n && date2 < date1) sheet.hideRows(5 + c, n - c);
 }
 
 
