@@ -9,7 +9,7 @@ var AppsScriptGlobal = (function() {
 	var o = {
 
 		AddonVersion: 70,
-		AddonVersionName: "0.19.1",
+		AddonVersionName: "0.19.2",
 
 		TemplateVersion: 57,
 		TemplateVersionName: "6.2",
