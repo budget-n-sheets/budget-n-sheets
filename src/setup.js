@@ -425,7 +425,7 @@ function setupPart9_() {
 
 function setupPart7_(yyyy_mm) {
 	var sheetSummary = CONST_LIST_ES_SHEETS_["summary"];
-	var sheet, i;
+	var sheet, md, i;
 
 	sheetSummary.setTabColor('#e69138');
 	CONST_LIST_ES_SHEETS_["cards"].setTabColor('#e69138');
@@ -439,11 +439,13 @@ function setupPart7_(yyyy_mm) {
 	sheetSummary.getRange('B2').setValue(CONST_SETUP_SETTINGS_["financial_year"] + ' | Year Summary');
 
 	if (yyyy_mm.yyyy == CONST_SETUP_SETTINGS_["financial_year"]) {
+		md = getMonthDelta(yyyy_mm.mm);
+
 		for (i = 0; i < CONST_SETUP_SETTINGS_["init_month"]; i++) {
 			sheet = CONST_LIST_MN_SHEETS_[i];
 			sheet.setTabColor('#b7b7b7');
 
-			if (i < yyyy_mm.mm - 1 || i > yyyy_mm.mm + 2) {
+			if (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1]) {
 				sheet.hideSheet();
 			}
 		}
@@ -451,7 +453,7 @@ function setupPart7_(yyyy_mm) {
 		for (; i < 12; i++) {
 			sheet = CONST_LIST_MN_SHEETS_[i];
 
-			if (i < yyyy_mm.mm - 1 || i > yyyy_mm.mm + 2) {
+			if (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1]) {
 				sheet.setTabColor('#a4c2f4');
 				sheet.hideSheet();
 			} else {
