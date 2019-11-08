@@ -4,15 +4,15 @@ var MN_SHORT_ = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
 var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 		TC_NAME_ = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
 
-var HEAD_AG = 70;
+var HEAD_AG = 71;
 var AppsScriptGlobal = (function() {
 	var o = {
 
-		AddonVersion: 70,
-		AddonVersionName: "0.19.2",
+		AddonVersion: 71,
+		AddonVersionName: "0.19.3",
 
-		TemplateVersion: 57,
-		TemplateVersionName: "6.2",
+		TemplateVersion: 58,
+		TemplateVersionName: "6.3",
 		TemplateId: "",
 		TemplateSheets: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "_Settings", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "Summary", "About" ],
 

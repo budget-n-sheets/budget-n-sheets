@@ -87,7 +87,7 @@ function optSetClass_(a, b) {
 }
 
 
-var HEAD_EP = 70;
+var HEAD_EP = 71;
 function update_ExecutePatial_() {
 	if (!getPropertiesService_("document", "", "is_installed")) return 1;
 
