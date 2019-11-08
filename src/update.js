@@ -135,6 +135,10 @@ function update_ExecutePatial_() {
 
 		case 69:
 			update_v0m19p3_();
+
+		case 70:
+			update_v0m19p4_();
+			update_v0m19p5_();
 			break;
 
 		default:
