@@ -682,7 +682,7 @@ function setupPart1_(yyyy_mm) {
 		[ "=" + (CONST_SETUP_SETTINGS_["init_month"] + 1).formatLocaleSignal() ],
 		[ "=IF($B4 > $B3; 0; $B3 - $B4 + 1)" ],
 		[ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))" ],
-		[ "=COUNTIF(\'Tags\'!$E1:$E; \"\") - 1" ],
+		[ "=COUNTIF(\'Tags\'!$E1:$E; \"<>\") - 1" ],
 		[ "=RAND()" ],
 		[ "=COUNTIF(B11:B20; \"<>\")" ]
 	];
