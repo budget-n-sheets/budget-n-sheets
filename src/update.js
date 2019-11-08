@@ -175,6 +175,43 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Add conditional format to Cards.
+ *
+ * 0.19.3
+ */
+function update_v0m19p5_() {
+	try {
+		var sheet, range, rules, rule;
+		var n, i;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+		if (!sheet) return;
+		if (sheet.getMaxColumns() < 72) return;
+
+		rules = sheet.getConditionalFormatRules();
+		n = sheet.getMaxRows() - 5;
+		if (n < 1) return;
+
+		for (i = 0; i < 12; i++) {
+			range = sheet.getRange(6, 1 + 6*i, n, 5);
+			range.setFontColor('#000000');
+
+			rule = SpreadsheetApp.newConditionalFormatRule()
+				.whenFormulaSatisfied("=REGEXMATCH(" + rollA1Notation(6, 5 + 6*i, 1, 1, 2) + "; \"#ign\")")
+				.setFontColor("#999999")
+				.setRanges([ range ])
+				.build();
+			rules.push(rule);
+		}
+
+		sheet.setConditionalFormatRules(rules);
+	} catch (err) {
+		console.error("update_v0m19p5_()", err);
+		return true;
+	}
+}
+
+/**
  * Fix test criteria to count tags.
  *
  * 0.19.3
