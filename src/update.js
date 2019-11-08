@@ -181,12 +181,10 @@ function update_v0m0p0_() {
  */
 function update_v0m19p4_() {
 	try {
-		var sheet;
-
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Settings');
-		if (!sheet) return;
-
-		sheet.getRange('B7').setFormula("COUNTIF(\'Tags\'!$E1:$E; \"<>\") - 1");
+		SpreadsheetApp.getActiveSpreadsheet()
+			.getSheetByName('_Settings')
+			.getRange('B7')
+			.setFormula("COUNTIF(\'Tags\'!$E1:$E; \"<>\") - 1");
 	} catch (err) {
 		console.error("update_v0m19p4_()", err);
 		return true;
