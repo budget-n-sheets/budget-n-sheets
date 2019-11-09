@@ -578,8 +578,8 @@ function setupPart4_() {
 
 		formula = "{\"" + MN_FULL_[i] + "\"; ";
 		formula += "IF(\'_Settings\'!$B$7 > 0; ";
-		formula += "BSSUMBYTAG(TRANSPOSE($E$1:$E); FILTER(" + rg + "; ";
-		formula += "NOT(ISBLANK(" + cd + ")))); )}";
+		formula += "BSSUMBYTAG(TRANSPOSE($E$1:$E); IFERROR(FILTER(" + rg + "; ";
+		formula += "NOT(ISBLANK(" + cd + "))); \"\")); )}";
 
 		formulas[0].push(formula);
 	}

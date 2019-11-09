@@ -67,6 +67,8 @@ function BSSUMBYTAG(tag, range) {
 		}
 	}
 
+	if (range == "") return sum;
+
 	if (regex.length == 0) return sum;
 	else if (regex.length == 1) regex = regex[0];
 	else regex = regex.join('|');
