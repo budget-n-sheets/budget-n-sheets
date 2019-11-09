@@ -46,8 +46,7 @@ function BSREPORT(range, sum_range) {
 
 
 function BSSUMBYTAG(tag, range) {
-	var SUM;
-	var regex;
+	var sum, regex;
 	var n, i, j;
 
 	n = tag[0].length;
@@ -57,21 +56,21 @@ function BSSUMBYTAG(tag, range) {
 	tag = tag[0];
 	tag = tag.slice(1);
 
-	SUM = [ ];
+	sum = [ ];
 	regex = [ ];
 	for (i = 0; i < n; i++) {
 		if (/^\w+$/.test(tag[i])) {
-			SUM.push([ 0 ]);
+			sum.push([ 0 ]);
 			regex.push(tag[i]);
 			tag[i] = "#" + tag[i];
 		} else {
-			SUM.push([ null ]);
+			sum.push([ null ]);
 			tag[i] = null;
 		}
 	}
-	if (range === "0") return SUM;
+	if (range === "0") return sum;
 
-	if (regex.length == 0) return SUM;
+	if (regex.length == 0) return sum;
 	else if (regex.length == 1) regex = regex[0];
 	else regex = regex.join('|');
 
@@ -79,16 +78,16 @@ function BSSUMBYTAG(tag, range) {
 	regex = new RegExp(regex);
 
 	for (i = 0; i < range.length; i++) {
-		if ( !regex.test(range[i][1]) ) continue;
+		if (!regex.test(range[i][1])) continue;
 
 		for (j = 0; j < n; j++) {
 			if (tag[j] && range[i][1].indexOf(tag[j]) !== -1) {
-				SUM[j][0] += Number(range[i][0]);
+				sum[j][0] += Number(range[i][0]);
 			}
 		}
 	}
 
-	return SUM;
+	return sum;
 }
 
 
