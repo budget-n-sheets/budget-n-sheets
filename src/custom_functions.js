@@ -1,14 +1,12 @@
-function BSREPORT(range, sum_range) {
+function BSREPORT(data) {
 	var stats;
+	var range, sum_range;
 	var n1, n2, i;
 
+	range = data[0];
+	sum_range = data[1];
 	stats = [
-		[ 0 , 0 ],
-		[ 0 , 0 ],
-		[ 0 , 0 ],
-		[ 0 , 0 ],
-		[ 0 , 0 ],
-		[ 0 , 0 ]
+		[ 0 , 0 ], [ 0 , 0 ], [ 0 , 0 ], [ 0 , 0 ], [ 0 , 0 ], [ 0 , 0 ]
 	];
 
 	i = 0;
@@ -16,8 +14,6 @@ function BSREPORT(range, sum_range) {
 	n2 = n1 - 1;
 
 	while (i < n1 && sum_range[i] != '') {
-		while (range[i] == '' && i < n2) { i++; }
-
 		if (/#wd/.test(range[i]) && Number(sum_range[i]) <= 0) {
 			stats[0][1]++;
 			stats[0][0] += Number(sum_range[i]);
