@@ -16,24 +16,24 @@ function BSREPORT(data) {
 	n = sum_range.length;
 
 	while (i < n && sum_range[i] != '') {
-		if (/#wd/.test(range[i]) && Number(sum_range[i]) <= 0) {
+		if (/#wd/.test(range[i]) && sum_range[i] <= 0) {
 			stats[0][1]++;
-			stats[0][0] += Number(sum_range[i]);
+			stats[0][0] += sum_range[i];
 		}
-		if (/#dp/.test(range[i]) && Number(sum_range[i]) >= 0) {
+		if (/#dp/.test(range[i]) && sum_range[i] >= 0) {
 			stats[1][1]++;
-			stats[1][0] += Number(sum_range[i]);
+			stats[1][0] += sum_range[i];
 		}
-		if (/#trf/.test(range[i]) && Number(sum_range[i]) >= 0) {
+		if (/#trf/.test(range[i]) && sum_range[i] >= 0) {
 			stats[2][1]++;
-			stats[2][0] += Number(sum_range[i]);
+			stats[2][0] += sum_range[i];
 		}
-		if (/#trf/.test(range[i]) && Number(sum_range[i]) < 0) {
+		if (/#trf/.test(range[i]) && sum_range[i] < 0) {
 			stats[3][1]++;
-			stats[3][0] += Number(sum_range[i]);
+			stats[3][0] += sum_range[i];
 		}
 		if (/#rct/.test(range[i])) {
-			stats[4][0] += Number(sum_range[i]);
+			stats[4][0] += sum_range[i];
 		}
 
 		i++;
