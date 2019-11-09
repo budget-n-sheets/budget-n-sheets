@@ -511,7 +511,7 @@ function setupPart6_() {
 		formula = "INDIRECT(ADDRESS(2; " +  c + " + " + formula + "; 4; true; \"_Backstage\"))";
 		formula = "OFFSET(" + formula + "; " + (h_*i) + "; 0; " + h_ + "; 1)";
 		formula = "IF(" + rollA1Notation(2, 1 + 6*i) + " = \"\"; \"\"; " + formula + ")";
-		formula = "IFERROR(BSINFCARD(" + formula + "); \"\")";
+		formula = "IFERROR(BSINFCARD(" + formula + "); \"#ERROR\")";
 
 		sheetCards.getRange(2, 4 + i*6).setFormula(formula);
 	}
@@ -578,8 +578,8 @@ function setupPart4_() {
 
 		formula = "{\"" + MN_FULL_[i] + "\"; ";
 		formula += "IF(\'_Settings\'!$B$7 > 0; ";
-		formula += "BSSUMBYTAG(TRANSPOSE($E$1:$E); IFERROR(FILTER(" + rg + "; ";
-		formula += "NOT(ISBLANK(" + cd + "))); \"0\")); )}";
+		formula += "IFERROR(BSSUMBYTAG(TRANSPOSE($E$1:$E); IFERROR(FILTER(" + rg + "; ";
+		formula += "NOT(ISBLANK(" + cd + "))); \"0\")); \"#ERROR\"); )}";
 
 		formulas[0].push(formula);
 	}
