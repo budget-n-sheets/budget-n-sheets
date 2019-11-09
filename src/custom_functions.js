@@ -1,21 +1,8 @@
-/**
- * Returns a financial report.
- *
- * @param {string} range The range which is tested against criterias.
- * @param {number} sum_range The range to be accounted.
- * @return The financial report.
- * @customfunction
- */
 function BSREPORT(range, sum_range) {
-	Utilities.sleep(200);
-
-	if (sum_range == null || range == null) return 0;
-	else if (sum_range.length != range.length) return 0;
-
-	var SUM;
+	var stats;
 	var n1, n2, i;
 
-	SUM = [
+	stats = [
 		[ 0 , 0 ],
 		[ 0 , 0 ],
 		[ 0 , 0 ],
@@ -24,52 +11,41 @@ function BSREPORT(range, sum_range) {
 		[ 0 , 0 ]
 	];
 
-
-	n1 = sum_range.length; i = 0;
+	i = 0;
+	n1 = sum_range.length;
 	n2 = n1 - 1;
-	while (i < n1 && sum_range[i] != '') {
 
+	while (i < n1 && sum_range[i] != '') {
 		while (range[i] == '' && i < n2) { i++; }
 
-		if ( /#wd/.test(range[i]) && Number(sum_range[i]) <= 0 ) {
-			SUM[0][1]++;
-			SUM[0][0] += Number(sum_range[i]);
+		if (/#wd/.test(range[i]) && Number(sum_range[i]) <= 0) {
+			stats[0][1]++;
+			stats[0][0] += Number(sum_range[i]);
 		}
-		if ( /#dp/.test(range[i]) && Number(sum_range[i]) >= 0 ) {
-			SUM[1][1]++;
-			SUM[1][0] += Number(sum_range[i]);
+		if (/#dp/.test(range[i]) && Number(sum_range[i]) >= 0) {
+			stats[1][1]++;
+			stats[1][0] += Number(sum_range[i]);
 		}
-		if ( /#trf/.test(range[i]) && Number(sum_range[i]) >= 0 ) {
-			SUM[2][1]++;
-			SUM[2][0] += Number(sum_range[i]);
+		if (/#trf/.test(range[i]) && Number(sum_range[i]) >= 0) {
+			stats[2][1]++;
+			stats[2][0] += Number(sum_range[i]);
 		}
-		if ( /#trf/.test(range[i]) && Number(sum_range[i]) < 0 ) {
-			SUM[3][1]++;
-			SUM[3][0] += Number(sum_range[i]);
+		if (/#trf/.test(range[i]) && Number(sum_range[i]) < 0) {
+			stats[3][1]++;
+			stats[3][0] += Number(sum_range[i]);
 		}
-		if ( /#rct/.test(range[i]) ) {
-			SUM[4][0] += Number(sum_range[i]);
+		if (/#rct/.test(range[i])) {
+			stats[4][0] += Number(sum_range[i]);
 		}
 
 		i++;
 	}
 
-	return SUM;
+	return stats;
 }
 
-/**
- * Returns a conditional sum across a range.
- *
- * @param {string} tag The pattern or test to apply to range.
- * @param {number} sum_range The range to be summed.
- * @param {string} range The range which is tested against criterion.
- * @return The total tagged.
- * @customfunction
- */
-function BSSUMBYTAG(tag, range) {
-	if (!tag || !range) return;
-	Utilities.sleep(200);
 
+function BSSUMBYTAG(tag, range) {
 	var SUM;
 	var regex;
 	var n, i, j;
@@ -115,25 +91,14 @@ function BSSUMBYTAG(tag, range) {
 	return SUM;
 }
 
-/**
- * Returns credit card stats.
- *
- * @param {number} range The data to evaluate.
- * @return The stats.
- * @customfunction
- */
-function BSINFCARD(range) {
-	Utilities.sleep(200);
 
-	if (!range) return "";
+function BSINFCARD(data) {
+	var inf = '';
 
-	var str = '';
+	inf += 'Credit: ' + Number(range[1][0]).formatFinancial() + '\n';
+	inf += 'Expenses: ' + Number(range[3][0]).formatFinancial() + '\n';
+	inf += '-----------\n';
+	inf += 'Balance: ' + Number(range[4][0]).formatFinancial();
 
-	//str += 'P balance: ' + Number(range[0][0]).formatFinancial() + '\n';
-	str += 'Credit: ' + Number(range[1][0]).formatFinancial() + '\n';
-	str += 'Expenses: ' + Number(range[3][0]).formatFinancial() + '\n';
-	str += '-----------\n';
-	str += 'Balance: ' + Number(range[4][0]).formatFinancial();
-
-	return str;
+	return inf;
 }
