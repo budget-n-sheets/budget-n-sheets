@@ -116,35 +116,6 @@ function BSSUMBYTAG(tag, range) {
 }
 
 /**
- * Returns a financial report.
- *
- * @param {number} range The data to evaluate.
- * @return The financial report.
- * @customfunction
- */
-function BSINF(range) {
-	Utilities.sleep(200);
-
-	if (!range) return "#ERROR!";
-
-	var inf = "";
-
-	inf += 'Withdrawal: (' + range[0][1] + ') ';
-	inf += Number(range[0][0]).formatFinancial() + '\n';
-
-	inf += 'Deposit: (' + range[1][1] + ') ';
-	inf += Number(range[1][0]).formatFinancial() + '\n';
-
-	inf += 'Trf. in: (' + range[2][1] + ') ';
-	inf += Number(range[2][0]).formatFinancial() + '\n';
-
-	inf += 'Trf. out: (' + range[3][1] + ') ';
-	inf += Number(range[3][0]).formatFinancial();
-
-	return inf;
-}
-
-/**
  * Returns credit card stats.
  *
  * @param {number} range The data to evaluate.

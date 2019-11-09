@@ -493,7 +493,14 @@ function setupPart6_() {
 		sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
 
 		for (k = 0; k < CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
-			sheet.getRange(1, 8 + 5*k).setFormula('IFERROR(BSINF(\'_Backstage\'!' + rollA1Notation(2 + h_*i, 8 + w_*k, h_, 2) + '; \'_Backstage\'!' + rollA1Notation(5 + i*6, 4 + k*3)+'); "")');
+			formula = "IFERROR(CONCATENATE(";
+			formula += "\"Withdrawal: (\"; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(2 + h_*i, 8 + w_*k) + "; \"0.00;-0.00\"); \"\n\"; ";
+			formula += "\"Deposit: (\"; \'_Backstage\'!" + rollA1Notation(3 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 8 + w_*k) + "; \"0.00;-0.00\"); \"\n\"; ";
+			formula += "\"Trf. in: (\"; \'_Backstage\'!" + rollA1Notation(4 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(4 + h_*i, 8 + w_*k) + "; \"0.00;-0.00\"); \"\n\"; ";
+			formula += "\"Trf. out: (\"; \'_Backstage\'!" + rollA1Notation(5 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(5 + h_*i, 8 + w_*k) + "; \"0.00;-0.00\")";
+			formula += "); \"\")";
+			sheet.getRange(1, 8 + 5*k).setFormula(formula);
+
 			sheet.getRange(2, 6 + 5*k).setFormula('CONCAT("Balance "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(3 + h_*i, 7 + w_*k) + '))');
 			sheet.getRange(3, 6 + 5*k).setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4 + h_*i, 7 + w_*k) + '))');
 		}
