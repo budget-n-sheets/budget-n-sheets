@@ -498,7 +498,7 @@ function setupPart6_() {
 			formula += "\"Deposit: (\"; \'_Backstage\'!" + rollA1Notation(3 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 8 + w_*k) + "; \"0.00;-0.00\"); \"\n\"; ";
 			formula += "\"Trf. in: (\"; \'_Backstage\'!" + rollA1Notation(4 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(4 + h_*i, 8 + w_*k) + "; \"0.00;-0.00\"); \"\n\"; ";
 			formula += "\"Trf. out: (\"; \'_Backstage\'!" + rollA1Notation(5 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(5 + h_*i, 8 + w_*k) + "; \"0.00;-0.00\")";
-			formula += "); \"\")";
+			formula += "); \"#ERR\")";
 			sheet.getRange(1, 8 + 5*k).setFormula(formula);
 
 			sheet.getRange(2, 6 + 5*k).setFormula('CONCAT("Balance "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(3 + h_*i, 7 + w_*k) + '))');
@@ -511,7 +511,7 @@ function setupPart6_() {
 		formula = "INDIRECT(ADDRESS(2; " +  c + " + " + formula + "; 4; true; \"_Backstage\"))";
 		formula = "OFFSET(" + formula + "; " + (h_*i) + "; 0; " + h_ + "; 1)";
 		formula = "IF(" + rollA1Notation(2, 1 + 6*i) + " = \"\"; \"\"; " + formula + ")";
-		formula = "IFERROR(BSINFCARD(" + formula + "); \"#ERROR\")";
+		formula = "IFERROR(BSINFCARD(" + formula + "); \"#ERR\")";
 
 		sheetCards.getRange(2, 4 + i*6).setFormula(formula);
 	}
@@ -578,8 +578,8 @@ function setupPart4_() {
 
 		formula = "{\"" + MN_FULL_[i] + "\"; ";
 		formula += "IF(\'_Settings\'!$B$7 > 0; ";
-		formula += "IFERROR(BSSUMBYTAG(TRANSPOSE($E$1:$E); IFERROR(FILTER(" + rg + "; ";
-		formula += "NOT(ISBLANK(" + cd + "))); \"0\")); \"#ERROR\"); )}";
+		formula += "IFERROR(BSSUMBYTAG(TRANSPOSE($E$1:$E); FILTER(" + rg + "; ";
+		formula += "NOT(ISBLANK(" + cd + ")))); \"#ERR\"); )}";
 
 		formulas[0].push(formula);
 	}
