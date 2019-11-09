@@ -3,11 +3,14 @@ function BSREPORT(data) {
 	var range, sum_range;
 	var n, i;
 
-	range = data[0];
-	sum_range = data[1];
 	stats = [
 		[ 0 , 0 ], [ 0 , 0 ], [ 0 , 0 ], [ 0 , 0 ], [ 0 , 0 ], [ 0 , 0 ]
 	];
+
+	if (data == "") return stats;
+
+	range = data[0];
+	sum_range = data[1];
 
 	i = 0;
 	n = sum_range.length;
