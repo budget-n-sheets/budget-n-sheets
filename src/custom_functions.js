@@ -9,8 +9,8 @@ function BSREPORT(data) {
 
 	if (data == "") return stats;
 
-	range = data[0];
-	sum_range = data[1];
+	sum_range = data[0];
+	range = data[1];
 
 	i = 0;
 	n = sum_range.length;
