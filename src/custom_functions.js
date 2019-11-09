@@ -93,10 +93,29 @@ function BSSUMBYTAG(tag, range) {
 function BSINFCARD(data) {
 	var inf = '';
 
-	inf += 'Credit: ' + Number(range[1][0]).formatFinancial() + '\n';
-	inf += 'Expenses: ' + Number(range[3][0]).formatFinancial() + '\n';
+	inf += 'Credit: ' + Number(data[1][0]).formatFinancial() + '\n';
+	inf += 'Expenses: ' + Number(data[3][0]).formatFinancial() + '\n';
 	inf += '-----------\n';
-	inf += 'Balance: ' + Number(range[4][0]).formatFinancial();
+	inf += 'Balance: ' + Number(data[4][0]).formatFinancial();
+
+	return inf;
+}
+
+
+function BSINF(data) {
+	var inf = '';
+
+	inf += 'Withdrawal: (' + data[0][1] + ') ';
+	inf += Number(data[0][0]).formatFinancial() + '\n';
+
+	inf += 'Deposit: (' + data[1][1] + ') ';
+	inf += Number(data[1][0]).formatFinancial() + '\n';
+
+	inf += 'Trf. in: (' + data[2][1] + ') ';
+	inf += Number(data[2][0]).formatFinancial() + '\n';
+
+	inf += 'Trf. out: (' + data[3][1] + ') ';
+	inf += Number(data[3][0]).formatFinancial();
 
 	return inf;
 }
