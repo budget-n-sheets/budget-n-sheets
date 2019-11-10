@@ -4,11 +4,39 @@ function nodeControl_(c, data) {
 			return signDoc_();
 		case "verify":
 			return verifySig_(data);
+		case "import":
+			return importAboutPage_();
 
 		default:
 			console.error("nodeControl_(): Switch case is default.", c);
 			return 1;
 	}
+}
+
+
+function importAboutPage_() {
+	var template, spreadsheet;
+
+	try {
+		template = SpreadsheetApp.openById(AppsScriptGlobal.TemplateId());
+	} catch (err) {
+		console.warn("importAboutPage_()", err);
+		return 1;
+	}
+
+	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+
+	if (spreadsheet.getSheetByName("About")) return -1;
+
+	template.getSheetByName("About")
+		.copyTo(spreadsheet)
+		.setName("About")
+		.setTabColor('#6aa84f')
+		.hideSheet()
+		.protect()
+		.setWarningOnly(true);
+
+	return -1;
 }
 
 
