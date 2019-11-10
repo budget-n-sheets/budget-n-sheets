@@ -122,8 +122,6 @@ function setup_ui(settings, listAcc) {
 	setup_(settings, listAcc);
 
 	setPropertiesService_("document", "string", "is_installed", "[ ]");
-	console.info("add-on/install");
-
 	showDialogSetupEnd();
 	onOpen();
 
