@@ -1,17 +1,10 @@
 function nodeControl_(c, data) {
-	var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(2000);
-	} catch (err) {
-		console.warn("nodeControl_(): Wait lock time out.");
-		return 0;
-	}
-
 	switch (c) {
 		case "sign":
 			return signDoc_();
 		case "verify":
 			return verifySig_(data);
+
 		default:
 			console.error("nodeControl_(): Switch case is default.", c);
 			return 1;
