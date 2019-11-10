@@ -8,11 +8,11 @@ var HEAD_AG = 71;
 var AppsScriptGlobal = (function() {
 	var o = {
 
-		AddonVersion: 71,
-		AddonVersionName: "0.19.3",
+		AddonVersion: 72,
+		AddonVersionName: "0.19.4-beta",
 
-		TemplateVersion: 58,
-		TemplateVersionName: "6.3",
+		TemplateVersion: 59,
+		TemplateVersionName: "6.4",
 		TemplateId: "",
 		TemplateSheets: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "_Settings", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "Summary", "About" ],
 
