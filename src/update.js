@@ -152,6 +152,117 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Update BSSUMBYTAG() function.
+ *
+ * 0.19.4
+ */
+function update_v0m19p7_() {
+	try {
+		var sheet, formula, formulas, rg, cd;
+		var rgMonthTags, rgMonthCombo;
+		var i, k;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+		number_accounts = getUserConstSettings_('number_accounts');
+
+		formulas = [ [ ] ];
+		rgMonthTags = [ ];
+		rgMonthCombo = [ ];
+
+		for (k = 0; k < 1 + number_accounts; k++) {
+			rgMonthTags[k] = rollA1Notation(5, 4 + 5*k, -1, 1);
+			rgMonthCombo[k] = rollA1Notation(5, 3 + 5*k, -1, 2);
+		}
+
+		for (i = 0; i < 12; i++) {
+			rg = "{\'" + MN_SHORT_[i] + "\'!" + rgMonthCombo[0];
+			cd = "{\'" + MN_SHORT_[i] + "\'!" + rgMonthTags[0];
+
+			for (k = 1; k < 1 + number_accounts; k++) {
+				rg += "; \'" + MN_SHORT_[i] + "\'!" + rgMonthCombo[k];
+				cd += "; \'" + MN_SHORT_[i] + "\'!" + rgMonthTags[k];
+			}
+
+			rg += "; \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1, 2) + "}";
+			cd += "; \'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1, 1) + "}";
+
+			formula = "{\"" + MN_FULL_[i] + "\"; ";
+			formula += "IF(\'_Settings\'!$B$7 > 0; ";
+			formula += "BSSUMBYTAG(TRANSPOSE($E$1:$E); IFERROR(FILTER(" + rg + "; ";
+			formula += "NOT(ISBLANK(" + cd + "))); \"\")); )}";
+
+			formulas[0].push(formula);
+		}
+
+		sheet.getRange(1, 6, 1, 12).setFormulas(formulas);
+	} catch (err) {
+		console.error("update_v0m19p7_()", err);
+		return true;
+	}
+}
+
+/**
+ * Update custom functions.
+ *
+ * 0.19.4
+ */
+function update_v0m19p6_() {
+	try {
+		var spreadsheet, sheetBackstage, sheetMonth, formula;
+		var range_value_tags, range_value, range_tags;
+		var number_accounts, header;
+		var c, n, i, k;
+		var h_, w_;
+
+		h_ = AppsScriptGlobal.TableDimensions()["height"];
+		w_ = AppsScriptGlobal.TableDimensions()["width"];
+
+		spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		sheetCards = spreadsheet.getSheetByName("Cards");
+		sheetBackstage = spreadsheet.getSheetByName("_Backstage");
+
+		number_accounts = getUserConstSettings_('number_accounts');
+
+		c = 1 + w_ + w_*number_accounts;
+		header = rollA1Notation(1, c + 1, 1, w_*11);
+
+		for (i = 0; i < 12; i++) {
+			sheetMonth = spreadsheet.getSheetByName(MN_SHORT_[i]);
+			n = sheetMonth.getMaxRows() - 4;
+
+			for (k = 0; k < number_accounts; k++) {
+				formula = 'NOT(ISBLANK(' + MN_SHORT_[i] + '!' + rollA1Notation(5, 9 + 5*k, n, 1, 1) + '))';
+				formula = 'FILTER(' + MN_SHORT_[i] + '!' + rollA1Notation(5, 8 + 5*k, n, 2, 1) + '; ' + formula + ')';
+				formula = 'IFERROR(' + formula + '; \"\")';
+				formula = 'BSREPORT(TRANSPOSE(' + formula + '))';
+
+				sheetBackstage.getRange(2 + h_*i, 8 + w_*k).setFormula(formula);
+
+				formula = "CONCATENATE(";
+				formula += "\"Withdrawal: (\"; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(2 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\"); \"\n\"; ";
+				formula += "\"Deposit: (\"; \'_Backstage\'!" + rollA1Notation(3 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\"); \"\n\"; ";
+				formula += "\"Trf. in: (\"; \'_Backstage\'!" + rollA1Notation(4 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(4 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\"); \"\n\"; ";
+				formula += "\"Trf. out: (\"; \'_Backstage\'!" + rollA1Notation(5 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(5 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\")";
+				formula += ")";
+
+				sheetMonth.getRange(1, 8 + 5*k).setFormula(formula);
+			}
+
+			formula = "MATCH(" + rollA1Notation(2, 1 + 6*i) + "; \'_Backstage\'!" + header + "; 0)";
+			formula = "INDIRECT(ADDRESS(2; " +  c + " + " + formula + "; 4; true; \"_Backstage\"))";
+			formula = "OFFSET(" + formula + "; " + (h_*i) + "; 0; " + h_ + "; 1)";
+			formula = "IF(" + rollA1Notation(2, 1 + 6*i) + " = \"\"; \"\"; " + formula + ")";
+			formula = "BSINFCARD(" + formula + ")";
+
+			sheetCards.getRange(2, 4 + i*6).setFormula(formula);
+		}
+	} catch (err) {
+		console.error("update_v0m19p6_()", err);
+		return true;
+	}
+}
+
+/**
  * Add conditional format to Cards.
  *
  * 0.19.3
