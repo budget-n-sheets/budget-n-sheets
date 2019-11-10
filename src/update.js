@@ -159,6 +159,7 @@ function update_ExecutePatial_() {
 	}
 
 	optSetClass_("AddonVersion", v1);
+	nodeControl_("sign");
 	SpreadsheetApp.flush();
 
 	console.info("add-on/update");
