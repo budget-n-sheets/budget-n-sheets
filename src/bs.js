@@ -41,24 +41,32 @@ function importAboutPage_() {
 
 
 function signDoc_() {
-	var spreadsheet, sheet;
-	var key, data, sig;
-	var c;
+	var sheet, sig;
+
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("About");
+	if (!sheet) return 1;
+
+	sig = makeSign_();
+	if (!sig) return 2;
+	sheet.getRange(8, 2).setValue(sig);
+
+	SpreadsheetApp.flush();
+	return -1;
+}
+
+
+function makeSign_() {
+	var data, key, sig;
 
 	key = PropertiesService.getScriptProperties().getProperty("inner_lock");
 
 	if (!key) {
 		console.warn("Key 'inner_lock' was not found!");
-		return 1;
+		return;
 	}
 
-	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	sheet = spreadsheet.getSheetByName("About");
-
-	if (!sheet) return 1;
-
 	data = {
-		spreadsheet_id: spreadsheet.getId(),
+		spreadsheet_id: SpreadsheetApp.getActiveSpreadsheet().getId(),
 
 		addon_version: optGetClass_("AddonVersion"),
 		template_version: optGetClass_("TemplateVersion"),
@@ -69,12 +77,10 @@ function signDoc_() {
 
 	data = JSON.stringify(data);
 	data = Utilities.base64EncodeWebSafe(data, Utilities.Charset.UTF_8);
+
 	sig = computeHmacSignature("SHA_256", data, key, "UTF_8");
 
-	sheet.getRange(8, 2).setValue(data + ":" + sig);
-
-	SpreadsheetApp.flush();
-	return -1;
+	return data + ":" + sig;
 }
 
 
