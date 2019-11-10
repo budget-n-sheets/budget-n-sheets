@@ -79,22 +79,26 @@ function signDoc_() {
 
 
 function verifySig_(data) {
-	if (typeof data != "string") return;
+	if (typeof data != "string") {
+		console.warn("verifySig_(): type of parameter is incorrect.", {data:data, type:typeof data});
+		return 2;
+	}
 
-	var key = PropertiesService.getScriptProperties().getProperty("inner_lock");
-	var sig;
+	var key, sig;
+
+	key = PropertiesService.getScriptProperties().getProperty("inner_lock");
 
 	if (!key) {
 		console.warn("Key 'inner_lock' was not found!");
-		return;
+		return 1;
 	}
 
 	data = data.split(":");
-	if (data.length !== 2) return;
+	if (data.length !== 2) return 2;
 
 	sig = computeHmacSignature("SHA_256", data[0], key, "UTF_8");
 
-	if (sig !== data[1]) return;
+	if (sig !== data[1]) return -10;
 
-	return true;
+	return -1;
 }
