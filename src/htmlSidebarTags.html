@@ -17,9 +17,6 @@
 			#tab_view-list:hover { color: #ff9900; }
 			#tab_view-list.active { color: #ff9900;border-bottom: solid 2px; }
 
-			.m-tool { color: #a4c2f4; cursor: pointer; }
-			.m-tool:hover { color: #4a86e8; cursor: pointer; }
-
 			#MainPanel_header {
 				height: 3.7em;
 				width: 100%;
@@ -39,8 +36,6 @@
 				width: 100%;
 				border-collapse: separate;
 				border-spacing: 7px;
-				background-color: #efefef;
-				border-top: 2px solid #d9d9d9;
 			}
 			.MainMenu_row {
 				display: table-row;
@@ -66,6 +61,7 @@
 			.Tags-title {
 				font-weight: bold;
 				font-size: 19px;
+				padding-bottom: 7px;
 			}
 			.Tags-table {
 				display: table;
@@ -136,8 +132,7 @@
 				</div></div>
 			</div>
 
-
-			<div id="MainPanel_content" style="margin-bottom:4.7em;">
+			<div id="MainPanel_content" style="margin-bottom:2.3em;">
 				<div class="panel active" id="panel_Book">
 					<div class="panel active" id="p-Book_WaitLoad">
 						<div class="animation_WaitLoad_wrapper">
@@ -223,75 +218,6 @@
 					</table>
 				</div>
 
-				<div class="panel" id="panel_TagDetails">
-					<h2 id="p-TagDetails_head"></h2>
-					<table style="width:100%;">
-						<tr>
-							<td class="name"><label>Code</label></td>
-							<td id="TagDetails_tag"></td>
-						</tr>
-						<tr>
-							<td class="name"><label>Category</label></td>
-							<td id="TagDetails_category"></td>
-						</tr>
-						<tr>
-							<td class="name"><label>Description</label></td>
-							<td id="TagDetails_description" style="font-style:italic;"></td>
-						</tr>
-						<tr>
-							<td class="name">Analytics</td>
-							<td id="TagDetails_analytics"></td>
-						</tr>
-					</table>
-
-					<table id="TagDetails_bad-romance" style="width:100%;margin-top:1.7em;">
-						<tr>
-							<th><span style="font-size:1.2em;">Statistics</span></th>
-						</tr>
-						<tr>
-							<td class="gray" id="TagDetails_tell-me" style="font-size:17px;"></td>
-						</tr>
-					</table>
-
-					<table id="TagDetails_extras" style="width:100%;margin-top:1.7em;">
-						<tr>
-							<th colspan="2"><span style="font-size:1.2em;">Statistics</span></th>
-						</tr>
-
-						<tr>
-							<td class="name"><label>Period</label></td>
-							<td><span id="TagDetails_interval" style="float:right;"></span></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div style="width:100%;margin:0 auto;">
-									<div style="padding:0 3px;">
-										<span style="font-weight:bold;">MINIMUM</span>
-										<span style="float:right;" id="TagDetails_min"></span>
-									</div>
-									<div style="padding:0 3px;">
-										<span style="font-weight:bold;">MAXIMUM</span>
-										<span style="float:right;" id="TagDetails_max"></span>
-									</div>
-									<div style="padding:0 3px;">
-										<span style="font-weight:bold;">AVERAGE</span>
-										<span style="float:right;" id="TagDetails_average"></span>
-									</div>
-									<div style="padding:0 3px;">
-										<span style="font-weight:bold;">TOTAL</span>
-										<span style="float:right;" id="TagDetails_total"></span>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div id="TagDetails_chart"></div>
-							</td>
-						</tr>
-					</table>
-				</div>
-
 				<div class="panel" id="panel_WaitLoad">
 					<div class="animation_WaitLoad_wrapper">
 						<div class="animation_WaitLoad_bar"></div>
@@ -300,196 +226,103 @@
 			</div>
 
 			<div id="MainPanel_footer">
-				<div class="current" id="p-footer_FastResponse" style="padding:0 7px;"></div>
 				<div class="MainMenu-bot_title"><div class="MainMenu_row">
-						<div class="m-footer left" style="width:100%;">
-							<button class="create" onclick="NewTag_Panel()">New tag</button>
-						</div>
-						<div class="m-footer right">
-							<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18" title="Help">help</i></a>
-						</div>
+					<div class="m-footer left" style="width:100%;">
+					</div>
+					<div class="m-footer right">
+						<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18" title="Help">help</i></a>
+					</div>
 				</div></div>
 			</div>
 		</div>
 		<?!= htmlInclude('htmlJavaScript'); ?>
-	<script>
-		var htmlVarGlobal = {
-			Panel: "",
-			Tag: ""
-		};
-		var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
-				TC_NAME_ = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
+		<script>
+			$(document).ready(function() {
+				google.script.run.withSuccessHandler(ListTags_Merge)
+					.withFailureHandler(showError)
+					.optMainTags('GetList');
+			});
 
-		$(document).ready(function() {
-			google.script.run.withSuccessHandler(ListTags_Merge)
-				.withFailureHandler(showError)
-				.optMainTags('GetList');
-		});
+			$(document).on('click', '.m-tab', function() {
+				if ( $(this).hasClass('active') || $(this).attr('id') == '' ) return;
 
-		$(document).on('click', '.m-tab', function() {
-			if ( $(this).hasClass('active') || $(this).attr('id') == '' ) return;
+				window.scrollTo(0, 0);
+				$(this).addClass('active').siblings().removeClass('active');
 
-			window.scrollTo(0, 0);
-			$(this).addClass('active').siblings().removeClass('active');
+				switch ( $(this).attr('id') ) {
+					case 'tab_book':
+						goBackToPanel('p-Book');
+						break;
+					case 'tab_view-list':
+						goBackToPanel('p-ViewList');
+						break;
 
-			switch ( $(this).attr('id') ) {
-				case 'tab_book':
-					goBackToPanel('p-Book');
-					break;
-				case 'tab_view-list':
-					goBackToPanel('p-ViewList');
-					break;
-				default:
-					showError();
-					break;
-			}
-		});
+					default:
+						showError();
+						break;
+				}
+			});
 
-		$(document).on('click', '.m-li', function() {
-			goBackToPanel('o-WaitLoad');
-			htmlVarGlobal.Tag = $(this).attr('id');
-			google.script.run.withSuccessHandler(TagDetails_Info)
-				.withFailureHandler(showError)
-				.optMainTags('GetInfo', htmlVarGlobal.Tag);
-		});
-
-		function TagDetails_Info(input) {
-			if (input == null) {
-				showError();
-				return;
-			}
-
-			$('#p-TagDetails_head').empty().append(input.Name);
-			$('#TagDetails_category').empty().append(TC_NAME_[input.C]);
-			$('#TagDetails_description').empty().append(input.Description);
-			$('#TagDetails_tag').empty().append("#" + input.Tag);
-
-			if (input.analytics) $('#TagDetails_analytics').empty().append("On");
-			else $('#TagDetails_analytics').empty().append("Off");
-
-			$('#TagDetails_interval').empty();
-			$('#TagDetails_total').empty();
-			$('#TagDetails_average').empty();
-			$('#TagDetails_min').empty();
-			$('#TagDetails_max').empty();
-			$('#TagDetails_chart').empty();
-
-			$('#TagDetails_extras').hide();
-			$('#TagDetails_bad-romance').hide();
-
-			htmlVarGlobal.Panel = 'ne';
-			$('#panel_TagDetails').fadeIn('fast').siblings().hide();
-
-			google.script.run.withSuccessHandler(TagDetails_Stat)
-				.withFailureHandler(showError)
-				.optMainTags('GetStat', htmlVarGlobal.Tag);
-		}
-
-		function TagDetails_Stat(input) {
-			if (input == null) {
-				showError();
-				return;
-			}
-
-			var chartBuilder, chartData, chartOptions;
-			var i;
-
-			$('#TagDetails_extras').show();
-			$('#TagDetails_bad-romance').hide();
-
-			$('#TagDetails_interval').append(input.Interval);
-			$('#TagDetails_total').append(input.Total);
-			$('#TagDetails_average').append(input.Average);
-			$('#TagDetails_min').append(input.Min);
-			$('#TagDetails_max').append(input.Max);
-
-			chartOptions = {
-				'width':607,
-				'height':293,
-				'isStacked':true,
-				'seriesType':'bars',
-				'legend':{ 'position':'none' },
-				'theme':'maximized',
-				'focusTarget':'category',
-				'vAxis':{'format':'#,##0.00;(#,##0.00)'}
-			};
-
-			chartData = new google.visualization.arrayToDataTable(input.Data);
-
-			<? if (isInitiated) { ?>
-				chartOptions['series'] = { 0:{ color:'#cccccc' }, 1:{ color:'#a4c2f4' }, 2:{ color:'#6d9eeb' }, 3:{ 'type':'line', color:'#e06666' } };
-			<? } else { ?>
-				chartOptions['series'] = { 0:{ color:'#cccccc' }, 1:{ color:'#a4c2f4' } };
-				chartData.removeColumn(4);
-				chartData.removeColumn(3);
-			<? } ?>
-
-			chartBuilder = new google.visualization.ComboChart( document.getElementById('TagDetails_chart') );
-			chartBuilder.draw(chartData, chartOptions);
-		}
-
-		function goBackToPanel(input) {
-			$('.m-tab').removeClass('active');
-			$('#p-footer_FastResponse').empty();
-			$('.MainMenu-bot_title button').remove();
-
-			switch (input) {
-				case 'p-Book':
-					$('#tab_book').addClass('active');
-					$('.m-footer.left').append('<button class="create" onclick="NewTag_Panel()">New tag</button>');
-					htmlVarGlobal.Panel = 'e';
-					htmlVarGlobal.Tag = 'e';
-					$('#panel_Book').fadeIn('fast').siblings().hide();
-					break;
-
-				case 'p-ViewList':
-					$('#tab_view-list').addClass('active');
-					htmlVarGlobal.Panel = 'e';
-					htmlVarGlobal.Tag = 'e';
-					$('#panel_ViewList').fadeIn('fast').siblings().hide();
-					break;
-
-				case 'o-WaitLoad':
-					$('#panel_WaitLoad').fadeIn('fast').siblings().hide();
-					break;
-
-				default:
-					showError();
-					break;
-			}
-		}
-
-		function ListTags_Merge(input) {
-			if (input === 0) {
+			$(document).on('click', '.m-li', function() {
 				google.script.run.withFailureHandler(showError)
-					.showDialogQuickMessage("", 'The add-on is busy. Try again a moment.', true);
-				return;
+					.showPanelTagsStats( $(this).attr('id') );
+			});
 
-			} else if (input === 2) {
-				showError();
-				return;
-			}
+			function goBackToPanel(input) {
+				$('.m-tab').removeClass('active');
 
-			var string;
-			var i, j;
+				switch (input) {
+					case 'p-Book':
+						$('#tab_book').addClass('active');
+						$('#panel_Book').fadeIn('fast').siblings().hide();
+						break;
+					case 'p-ViewList':
+						$('#tab_view-list').addClass('active');
+						$('#panel_ViewList').fadeIn('fast').siblings().hide();
+						break;
+					case 'o-WaitLoad':
+						$('#panel_WaitLoad').fadeIn('fast').siblings().hide();
+						break;
 
-			$('#p-Book_BoxListTags').empty();
-
-			for (i = 0; i < 10; i++) {
-				if (input[i][0] == 0) continue;
-
-				$('#p-Book_BoxListTags').append('<span class="Tags-title">'+TC_NAME_[i]+'</span><div class="Tags-table" id="TagCategory-'+TC_CODE_[i]+'"></div><hr>');
-
-				string = '#TagCategory-'+TC_CODE_[i];
-				for (j = 0; j < input[i][0]; j++) {
-					$(string).append('<div class="Tag-row m-li" id="'+input[i][j+1].tag+'"><div class="Tag-name">'+input[i][j+1].name+'</div></div>');
+					default:
+						showError();
+						break;
 				}
 			}
 
-			$('#p-Book_ListTags').fadeIn('fast')
-				.siblings()
-				.hide();
-		}
-	</script>
+			function ListTags_Merge(input) {
+				if (input === 0) {
+					google.script.run.withFailureHandler(showError)
+						.showDialogQuickMessage("", 'The add-on is busy. Try again a moment.', true);
+					return;
+				} else if (input === 2) {
+					showError();
+					return;
+				}
+
+				var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ];
+				var TC_NAME_ = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
+
+				var string;
+				var i, j;
+
+				$('#p-Book_BoxListTags').empty();
+
+				for (i = 0; i < 10; i++) {
+					if (input[i][0] == 0) continue;
+
+					$('#p-Book_BoxListTags').append('<span class="Tags-title">'+TC_NAME_[i]+'</span><div class="Tags-table" id="TagCategory-'+TC_CODE_[i]+'"></div><hr>');
+
+					string = '#TagCategory-'+TC_CODE_[i];
+					for (j = 0; j < input[i][0]; j++) {
+						$(string).append('<div class="Tag-row m-li" id="'+input[i][j+1].tag+'"><div class="Tag-name">'+input[i][j+1].name+'</div></div>');
+					}
+				}
+
+				$('#p-Book_ListTags').fadeIn('fast')
+					.siblings()
+					.hide();
+			}
+		</script>
 	</body>
 </html>

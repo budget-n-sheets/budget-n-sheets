@@ -104,17 +104,33 @@ function showPanelTags() {
 		return;
 	}
 
+	var htmlSidebar = HtmlService.createTemplateFromFile('htmlSidebarTags')
+		.evaluate()
+		.setTitle('Tags');
+	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
+}
+
+
+function showPanelTagsStats(tag) {
 	var htmlTemplate, htmlDialog;
+	var tag;
 
-	htmlTemplate = HtmlService.createTemplateFromFile('htmlSidebarTags');
+	htmlTemplate = HtmlService.createTemplateFromFile('htmlSidebarTagsStats');
+	tag = optMainTags('GetInfo', tag);
 
-	htmlTemplate.isInitiated = (getUserSettings_("MFactor") > 0);
+	htmlTemplate.is_initiated = getUserSettings_('MFactor') > 0;
+
+	htmlTemplate.tag_name = tag.Name;
+	htmlTemplate.tag_code = tag.Tag;
+	htmlTemplate.tag_category = TC_NAME_[tag.C];
+	htmlTemplate.tag_description = tag.Description;
+	htmlTemplate.tag_analytics = tag.analytics ? "On" : "Off";
 
 	htmlDialog = htmlTemplate.evaluate()
-		.setWidth(640)
+		.setWidth(439)
 		.setHeight(509);
 	SpreadsheetApp.getUi()
-		.showModalDialog(htmlDialog, 'Tags');
+		.showModalDialog(htmlDialog, 'Tag Stats');
 }
 
 
@@ -131,6 +147,7 @@ function showPanelAnalytics() {
 
 	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
+
 
 function showSidebarMainSettings() {
 	if (onlineUpdate_()) return;
