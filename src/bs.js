@@ -41,16 +41,21 @@ function importAboutPage_() {
 
 
 function signDoc_() {
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet = spreadsheet.getSheetByName("About");
-	var key = PropertiesService.getScriptProperties().getProperty("inner_lock");
-	var data, sig;
+	var spreadsheet, sheet;
+	var key, data, sig;
+	var c;
+
+	key = PropertiesService.getScriptProperties().getProperty("inner_lock");
 
 	if (!key) {
 		console.warn("Key 'inner_lock' was not found!");
-		return;
+		return 1;
 	}
-	if (!sheet) return;
+
+	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	sheet = spreadsheet.getSheetByName("About");
+
+	if (!sheet) return 1;
 
 	data = {
 		spreadsheet_id: spreadsheet.getId(),
@@ -63,13 +68,13 @@ function signDoc_() {
 	};
 
 	data = JSON.stringify(data);
-	data = Utilities.base64Encode(data, Utilities.Charset.UTF_8);
+	data = Utilities.base64EncodeWebSafe(data, Utilities.Charset.UTF_8);
 	sig = computeHmacSignature("SHA_256", data, key, "UTF_8");
 
 	sheet.getRange(8, 2).setValue(data + ":" + sig);
-	SpreadsheetApp.flush();
 
-	return data + ":" + sig;
+	SpreadsheetApp.flush();
+	return -1;
 }
 
 

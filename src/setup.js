@@ -182,7 +182,7 @@ function setup_(settings, listAcc) {
 	setPropertiesService_("document", "json", "class_version", a);
 
 	a = nodeControl_("sign");
-	if (typeof a != "string") throw 1;
+	if (a !== -1) throw 1;
 
 	console.timeEnd("add-on/Install");
 
