@@ -77,7 +77,7 @@ function showPanelTables() {
 		return;
 	}
 
-	var htmlSidebar = HtmlService.createTemplateFromFile('htmlMainTables')
+	var htmlSidebar = HtmlService.createTemplateFromFile('htmlSidebarTables')
 		.evaluate()
 		.setTitle('Accounts & Cards');
 	SpreadsheetApp.getUi()
@@ -106,7 +106,7 @@ function showPanelTags() {
 
 	var htmlTemplate, htmlDialog;
 
-	htmlTemplate = HtmlService.createTemplateFromFile('htmlMainTags');
+	htmlTemplate = HtmlService.createTemplateFromFile('htmlSidebarTags');
 
 	htmlTemplate.isInitiated = (getUserSettings_("MFactor") > 0);
 
