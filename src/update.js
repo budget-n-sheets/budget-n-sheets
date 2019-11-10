@@ -97,20 +97,19 @@ function update_ExecutePatial_() {
 		case 66:
 			c = update0pack13_();
 			if (c) break;
-
 		case 67:
 			update_v0m19p0_();
 			update_v0m19p1_();
-
 		case 68:
 			update_v0m19p2_();
-
 		case 69:
 			update_v0m19p3_();
-
 		case 70:
 			update_v0m19p4_();
 			update_v0m19p5_();
+		case 71:
+			update_v0m19p6_();
+			update_v0m19p7_();
 			break;
 
 		default:
