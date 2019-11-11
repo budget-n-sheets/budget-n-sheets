@@ -4,12 +4,12 @@ var MN_SHORT_ = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
 var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 		TC_NAME_ = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
 
-var HEAD_AG = 71;
+var HEAD_AG = 72;
 var AppsScriptGlobal = (function() {
 	var o = {
 
 		AddonVersion: 72,
-		AddonVersionName: "0.19.4-beta2",
+		AddonVersionName: "0.19.4",
 
 		TemplateVersion: 59,
 		TemplateVersionName: "6.4",

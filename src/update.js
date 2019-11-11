@@ -59,7 +59,7 @@ function seamlessUpdate_() {
 }
 
 
-var HEAD_EP = 71;
+var HEAD_EP = 72;
 function update_ExecutePatial_() {
 	if (!getPropertiesService_("document", "", "is_installed")) return 1;
 
