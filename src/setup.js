@@ -340,7 +340,7 @@ function setupPart10_() {
 	sheet.getRange(3, 3 + 4*i).setFormula('=0');
 
 	d = new Date(yyyy, 1 + i, 0).getDate();
-	sheet.getRange(4,3 + 4*i, 1 - d).setFormulaR1C1('=R[-1]C + RC[-1]');
+	sheet.getRange(4, 3 + 4*i, d - 1).setFormulaR1C1('=R[-1]C + RC[-1]');
 	if (d < 31) {
 		sheet.getRange(3 + d, 2 + 4*i, 31 - d, 3).setBackground('#f3f3f3');
 	}
@@ -370,7 +370,7 @@ function setupPart10_() {
 		sheet.getRange(3, 3 + 4*i).setFormulaR1C1('=R[' + (d - 1) + ']C[-4] + RC[-1]');
 
 		d = new Date(yyyy, 1 + i, 0).getDate();
-		sheet.getRange(4, 3 + 4*i, 1 - d).setFormulaR1C1('=R[-1]C + RC[-1]');
+		sheet.getRange(4, 3 + 4*i, d - 1).setFormulaR1C1('=R[-1]C + RC[-1]');
 		if (d < 31) {
 			sheet.getRange(3 + d, 2 + 4*i, 31 - d, 3).setBackground('#f3f3f3');
 		}
