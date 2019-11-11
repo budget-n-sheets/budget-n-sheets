@@ -331,59 +331,67 @@ function setupPart11_() {
 
 
 function setupPart10_() {
-	var yy = CONST_SETUP_SETTINGS_["financial_year"];
-	var sheetCashFlow = CONST_LIST_ES_SHEETS_["cash_flow"];
+	var sheet = CONST_LIST_ES_SHEETS_["cash_flow"];
+	var yyyy = CONST_SETUP_SETTINGS_["financial_year"];
 	var d, s;
 	var i, j, k;
 
-	i=0;
-	sheetCashFlow.getRange(3, 3+i*4).setFormula('=0');
+	i = 0;
+	sheet.getRange(3, 3 + 4*i).setFormula('=0');
 
-	d = new Date(yy, i+1, 0).getDate();
-	sheetCashFlow.getRange(4,3+i*4, d-1).setFormulaR1C1('=R[-1]C+RC[-1]');
+	d = new Date(yyyy, 1 + i, 0).getDate();
+	sheet.getRange(4,3 + 4*i, 1 - d).setFormulaR1C1('=R[-1]C + RC[-1]');
 	if (d < 31) {
-		sheetCashFlow.getRange(3+d,2+i*4, 31-d,3).setBackground('#f3f3f3');
+		sheet.getRange(3 + d, 2 + 4*i, 31 - d, 3).setBackground('#f3f3f3');
 	}
 
-	s = new Date(yy, 0, 1).getDay(); j=0;
+	j = 0;
+	s = new Date(yyyy, 0, 1).getDay();
 	while (j < d) {
 		switch (s) {
 			case 0:
-				sheetCashFlow.getRange(3+j,2, 1,3).setBackground('#d9ead3');
-				s += 6; j += 6;
+				sheet.getRange(3 + j, 2, 1, 3).setBackground('#d9ead3');
+				s += 6;
+				j += 6;
 				break;
 			case 6:
-				sheetCashFlow.getRange(3+j,2, 1,3).setBackground('#d9ead3');
-				s = 0; j++;
+				sheet.getRange(3 + j, 2, 1, 3).setBackground('#d9ead3');
+				s = 0;
+				j++;
 				break;
 			default:
-				s = (s+1)%7; j++;
+				s = (s + 1)%7;
+				j++;
 				break;
 		}
 	}
 
 	for (i = 1; i < 12; i++) {
-		sheetCashFlow.getRange(3,3+i*4).setFormulaR1C1('=R['+(d-1)+']C[-4]+RC[-1]');
+		sheet.getRange(3, 3 + 4*i).setFormulaR1C1('=R[' + (d - 1) + ']C[-4] + RC[-1]');
 
-		d = new Date(yy, i+1, 0).getDate();
-		sheetCashFlow.getRange(4,3+i*4, d-1).setFormulaR1C1('=R[-1]C+RC[-1]');
+		d = new Date(yyyy, 1 + i, 0).getDate();
+		sheet.getRange(4, 3 + 4*i, 1 - d).setFormulaR1C1('=R[-1]C + RC[-1]');
 		if (d < 31) {
-			sheetCashFlow.getRange(3+d,2+i*4, 31-d,3).setBackground('#f3f3f3');
+			sheet.getRange(3 + d, 2 + 4*i, 31 - d, 3).setBackground('#f3f3f3');
 		}
 
-		s = new Date(yy, i, 1).getDay(); j=0;
+		j = 0;
+		s = new Date(yyyy, i, 1).getDay();
 		while (j < d) {
 			switch (s) {
 				case 0:
-					sheetCashFlow.getRange(3+j,2+i*4, 1,3).setBackground('#d9ead3');
-					s=6; j+=6;
+					sheet.getRange(3 + j, 2 + 4*i, 1, 3).setBackground('#d9ead3');
+					s = 6;
+					j += 6;
 					break;
 				case 6:
-					sheetCashFlow.getRange(3+j,2+i*4, 1,3).setBackground('#d9ead3');
-					s=0; j++;
+					sheet.getRange(3 + j, 2 + 4*i, 1, 3).setBackground('#d9ead3');
+					s = 0;
+					j++;
 					break;
 				default:
-					s=(s+1)%7; j++;
+					s = (s + 1)%7;
+					j++;
 					break;
 			}
 		}
