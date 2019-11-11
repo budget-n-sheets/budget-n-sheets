@@ -1,4 +1,6 @@
 function BSREPORT(data) {
+	Utilities.sleep(300);
+
 	var stats;
 	var range, sum_range;
 	var n, i;
@@ -44,6 +46,8 @@ function BSREPORT(data) {
 
 
 function BSSUMBYTAG(tag, range) {
+	Utilities.sleep(300);
+
 	var sum, regex;
 	var n, i, j;
 
@@ -91,6 +95,8 @@ function BSSUMBYTAG(tag, range) {
 
 
 function BSINFCARD(data) {
+	Utilities.sleep(300);
+
 	var inf = '';
 
 	inf += 'Credit: ' + Number(data[1][0]).formatFinancial() + '\n';
@@ -103,6 +109,8 @@ function BSINFCARD(data) {
 
 
 function BSINF(data) {
+	Utilities.sleep(300);
+
 	var inf = '';
 
 	inf += 'Withdrawal: (' + data[0][1] + ') ';
