@@ -196,6 +196,8 @@ function foo_ColorTabs_() {
 
 
 function foo_UpdateCashFlow_(mm) {
+	console.time("tool/update-cash-flow");
+
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheetTarget = spreadsheet.getSheetByName(MN_SHORT_[mm]),
 			sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
@@ -217,6 +219,7 @@ function foo_UpdateCashFlow_(mm) {
 
 	if (!dec_p) dec_p = "] [";
 
+	console.time("tool/update-cash-flow/load");
 	h_ = AppsScriptGlobal.TableDimensions()["height"];
 	w_ = AppsScriptGlobal.TableDimensions()["width"];
 
@@ -260,7 +263,9 @@ function foo_UpdateCashFlow_(mm) {
 	}
 
 	maxRows = sheetTarget.getLastRow() - 4 ;
+	console.timeEnd("tool/update-cash-flow/load");
 
+	console.time("tool/update-cash-flow/registry");
 	if (maxRows > 0) {
 		k = 0;
 		table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
@@ -292,8 +297,10 @@ function foo_UpdateCashFlow_(mm) {
 			cf_transaction[day][0] += "@" + table[i][1] + " ";
 		}
 	}
+	console.timeEnd("tool/update-cash-flow/registry");
 
 
+	console.time("tool/update-cash-flow/calendar");
 	if (mm > 0) {
 		sheetBackstage = spreadsheet.getSheetByName("_Backstage");
 	}
@@ -361,11 +368,13 @@ function foo_UpdateCashFlow_(mm) {
 		cf_flow[day][0] += value.formatLocaleSignal(dec_p);
 		cf_transaction[day][0] += "@" + evento.Title + " ";
 	}
+	console.timeEnd("tool/update-cash-flow/calendar");
 
 
 	sheetCashFlow.getRange(3, 2 + 4*mm, dd, 1).setFormulas(cf_flow);
 	sheetCashFlow.getRange(3, 4 + 4*mm, dd, 1).setValues(cf_transaction);
 	SpreadsheetApp.flush();
+	console.timeEnd("tool/update-cash-flow");
 }
 
 
