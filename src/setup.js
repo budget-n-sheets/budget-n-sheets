@@ -154,7 +154,7 @@ function setup_(settings, listAcc) {
 		list_acc: listAcc
 	};
 
-	console.time("add-on/Install");
+	console.time("add-on/install");
 
 	CONST_SETUP_SPREADSHEET_.rename(CONST_SETUP_SETTINGS_["spreadsheet_name"]);
 
@@ -182,7 +182,7 @@ function setup_(settings, listAcc) {
 	a = nodeControl_("sign");
 	if (a !== -1) throw 1;
 
-	console.timeEnd("add-on/Install");
+	console.timeEnd("add-on/install");
 
 	CONST_SETUP_SPREADSHEET_ = null;
 	CONST_SETUP_SETTINGS_ = null;
