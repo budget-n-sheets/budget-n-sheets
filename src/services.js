@@ -50,6 +50,10 @@ function onEdit_Main_(e) {
 
 function daily_Main_(e) {
 	if (isReAuthorizationRequired_()) return;
+	if (!getPropertiesService_('document', '', 'is_installed')) {
+		uninstall_();
+		return;
+	}
 	if (isMissingSheet()) return;
 	if (seamlessUpdate_()) return;
 
@@ -97,6 +101,10 @@ function daily_Main_(e) {
 
 function weekly_Foo_(e) {
 	if (isReAuthorizationRequired_()) return;
+	if (!getPropertiesService_('document', '', 'is_installed')) {
+		uninstall_();
+		return;
+	}
 	if (isMissingSheet()) return;
 
 	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('SpreadsheetLocale')) {
@@ -109,6 +117,10 @@ function weekly_Foo_(e) {
 
 function weekly_Bar_(e) {
 	if (isReAuthorizationRequired_()) return;
+	if (!getPropertiesService_('document', '', 'is_installed')) {
+		uninstall_();
+		return;
+	}
 	if (isMissingSheet()) return;
 
 	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('SpreadsheetLocale')) {
