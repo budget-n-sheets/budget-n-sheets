@@ -29,8 +29,8 @@ function onlineUpdate_() {
 
 	if (b === 1) {
 		uninstall_();
-		showDialogErrorMessage();
 		onOpen();
+		showDialogErrorMessage();
 	} else {
 		ui.alert("Budget n Sheets",
 			"The add-on is busy. Try again in a moment.",
@@ -63,7 +63,7 @@ function seamlessUpdate_() {
 
 var HEAD_EP = 72;
 function update_ExecutePatial_() {
-	if (!getPropertiesService_("document", "", "is_installed")) return 1;
+	if (!getPropertiesService_('document', '', 'is_installed')) return 1;
 
 	var lock = LockService.getDocumentLock();
 	try {
