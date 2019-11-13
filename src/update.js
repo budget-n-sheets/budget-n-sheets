@@ -14,7 +14,7 @@ function onlineUpdate_() {
 
 	var version = optGetClass_("AddonVersion");
 
-	if (version === AppsScriptGlobal.AddonVersion()) return;
+	if (version >= AppsScriptGlobal.AddonVersion()) return;
 
 	showDialogQuickMessage("Add-on Update", "The add-on is updating...", false, true);
 
@@ -51,7 +51,7 @@ function seamlessUpdate_() {
 
 	var version = optGetClass_("AddonVersion");
 
-	if (version === AppsScriptGlobal.AddonVersion()) return;
+	if (version >= AppsScriptGlobal.AddonVersion()) return;
 
 	var b = update_ExecutePatial_();
 	if (b === -1) return;
