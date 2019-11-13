@@ -97,6 +97,8 @@ function uninstall_() {
 	}
 
 	PropertiesService.getDocumentProperties().deleteAllProperties();
+
+	console.info("add-on/uninstall");
 }
 
 
