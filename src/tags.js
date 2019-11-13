@@ -17,8 +17,6 @@ function optMainTags(opt, input) {
 		case 'GetStat':
 			return optTag_GetStat_(input);
 
-		case 'isBusy':
-			return -1;
 		default:
 			console.warn("optMainTags(): Switch case is default.", opt);
 			return 3;

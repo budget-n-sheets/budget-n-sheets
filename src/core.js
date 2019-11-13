@@ -86,13 +86,6 @@ function showPanelTables() {
 
 function showPanelTags() {
 	if (onlineUpdate_()) return;
-	if (optMainTags('isBusy') !== -1) {
-		SpreadsheetApp.getUi().alert(
-			"Add-on is busy",
-			"The add-on is busy. Try again a moment.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
-		return;
-	}
 
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
 	if (!sheet) {
