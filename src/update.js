@@ -67,7 +67,7 @@ function update_ExecutePatial_() {
 
 	var lock = LockService.getDocumentLock();
 	try {
-		lock.waitLock(2000);
+		lock.waitLock(200);
 	} catch (err) {
 		console.warn("update_ExecutePatial_(): Wait lock time out.");
 		return 0;
