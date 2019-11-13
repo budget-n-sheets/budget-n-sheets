@@ -115,7 +115,7 @@ function optAccount_UpdateTableRef_() {
 	if (!sheet) return 2;
 	range_ = [ "G", "L", "Q", "V", "AA" ];
 
-	h_ = AppsScriptGlobal.TableDimensions()["height"];
+	h_ = TABLE_DIMENSION_.height;
 
 	sheet.getRange(3, 3).setFormula('=0');
 	for (i = 1; i < 12; i++) {
@@ -152,8 +152,8 @@ function optAccount_Update_(input) {
 	if (!sheet) return 2;
 	dbAccount = getPropertiesService_('document', 'json', 'DB_ACCOUNT');
 
-	h_ = AppsScriptGlobal.TableDimensions()["height"];
-	w_ = AppsScriptGlobal.TableDimensions()["width"];
+	h_ = TABLE_DIMENSION_.height;
+	w_ = TABLE_DIMENSION_.width;
 
 	for (k = 0; k < dbAccount.length; k++) {
 		if (dbAccount[k].Id == input.Id) break;

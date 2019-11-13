@@ -445,8 +445,8 @@ function setupPart6_() {
 	var i, k;
 	var h_, w_;
 
-	h_ = AppsScriptGlobal.TableDimensions()["height"];
-	w_ = AppsScriptGlobal.TableDimensions()["width"];
+	h_ = TABLE_DIMENSION_.height;
+	w_ = TABLE_DIMENSION_.width;
 
 	c = 1 + w_ + w_*CONST_SETUP_SETTINGS_["number_accounts"];
 	header = rollA1Notation(1, c + 1, 1, w_*11);
@@ -489,8 +489,8 @@ function setupPart5_() {
 	var i, k;
 	var h_, w_;
 
-	h_ = AppsScriptGlobal.TableDimensions()["height"];
-	w_ = AppsScriptGlobal.TableDimensions()["width"];
+	h_ = TABLE_DIMENSION_.height;
+	w_ = TABLE_DIMENSION_.width;
 
 	for (i = 0; i < 12; i++) {
 		formulaSumIncome = '=';
@@ -571,7 +571,7 @@ function setupPart4_() {
 function setupPart3_() {
 	var d, n, w_;
 
-	w_ = AppsScriptGlobal.TableDimensions()["width"];
+	w_ = TABLE_DIMENSION_.width;
 	n = CONST_SETUP_SETTINGS_["number_accounts"];
 	d = 5 - n;
 
@@ -595,7 +595,7 @@ function setupPart2_() {
 	var db_acc, acc, list_id;
 	var r, i, k, w_;
 
-	w_ = AppsScriptGlobal.TableDimensions()["width"];
+	w_ = TABLE_DIMENSION_.width;
 
 	r = "";
 	db_acc = [ ];

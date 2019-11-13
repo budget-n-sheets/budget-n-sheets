@@ -4,10 +4,11 @@ var MN_SHORT_ = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
 var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 		TC_NAME_ = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
 
+var TABLE_DIMENSION_ = {height: 10, width: 5};
+
 var HEAD_AG = 72;
 var AppsScriptGlobal = (function() {
 	var o = {
-
 		AddonVersion: 72,
 		AddonVersionName: "0.19.6",
 
@@ -26,9 +27,7 @@ var AppsScriptGlobal = (function() {
 				name: "Stats for Tags",
 				sheet_name: "Stats for Tags"
 			}
-		},
-
-		TableDimensions: { height:10, width:5 }
+		}
 	};
 
 	return {
@@ -40,8 +39,6 @@ var AppsScriptGlobal = (function() {
 		TemplateId: function() { return o.TemplateId },
 		TemplateSheets: function() { return o.TemplateSheets },
 
-		CoolGallery: function() { return o.CoolGallery },
-
-		TableDimensions: function() { return o.TableDimensions }
+		CoolGallery: function() { return o.CoolGallery }
 	};
 })();

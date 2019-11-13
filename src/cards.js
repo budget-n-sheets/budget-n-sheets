@@ -4,8 +4,8 @@ function cardsGetData_() {
 	var c, n, v, i, k;
 	var h_, w_;
 
-	h_ = AppsScriptGlobal.TableDimensions()["height"];
-	w_ = AppsScriptGlobal.TableDimensions()["width"];
+	h_ = TABLE_DIMENSION_.height;
+	w_ = TABLE_DIMENSION_.width;
 	n = getUserConstSettings_('number_accounts');
 
 	db_cards = getPropertiesService_("document", "obj", "DB_CARD");
@@ -135,8 +135,8 @@ function optCard_Refresh_() {
 	var h_, w_;
 	var c, i;
 
-	h_ = AppsScriptGlobal.TableDimensions()["height"];
-	w_ = AppsScriptGlobal.TableDimensions()["width"];
+	h_ = TABLE_DIMENSION_.height;
+	w_ = TABLE_DIMENSION_.width;
 
 	db_card = getPropertiesService_("document", "obj", "DB_CARD");
 

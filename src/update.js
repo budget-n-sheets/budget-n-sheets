@@ -215,8 +215,8 @@ function update_v0m19p6_() {
 		var c, n, i, k;
 		var h_, w_;
 
-		h_ = AppsScriptGlobal.TableDimensions()["height"];
-		w_ = AppsScriptGlobal.TableDimensions()["width"];
+		h_ = TABLE_DIMENSION_.height;
+		w_ = TABLE_DIMENSION_.width;
 
 		spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 		sheetCards = spreadsheet.getSheetByName("Cards");
@@ -436,7 +436,7 @@ function update_v0m19p0_() {
 		var n, i, k;
 		var w_;
 
-		w_ = AppsScriptGlobal.TableDimensions()['width'];
+		w_ = TABLE_DIMENSION_.width;
 		number_accounts = getUserConstSettings_('number_accounts');
 
 		spreadsheet = SpreadsheetApp.getActiveSpreadsheet();

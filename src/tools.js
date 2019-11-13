@@ -247,8 +247,8 @@ function foo_UpdateCashFlow_(mm) {
 	if (!dec_p) dec_p = "] [";
 
 	console.time("tool/update-cash-flow/load");
-	h_ = AppsScriptGlobal.TableDimensions()["height"];
-	w_ = AppsScriptGlobal.TableDimensions()["width"];
+	h_ = TABLE_DIMENSION_.height;
+	w_ = TABLE_DIMENSION_.width;
 
 	yyyy = getUserConstSettings_('financial_year');
 
@@ -419,7 +419,7 @@ function foo_FormatAccounts_(mm) {
 	var c, n, i, k;
 	var w_;
 
-	w_ = AppsScriptGlobal.TableDimensions()["width"];
+	w_ = TABLE_DIMENSION_.width;
 
 	n = sheet.getMaxRows() - 4;
 	if (n < 1) return;
