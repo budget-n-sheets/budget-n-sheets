@@ -66,7 +66,6 @@ function onOpen(e) {
 }
 
 
-
 function showPanelTables() {
 	if (onlineUpdate_()) return;
 	else if (optMainTables('isBusy') !== -1) {
@@ -215,4 +214,53 @@ function showDialogQuickMessage(title, text, button, bar) {
 
 	SpreadsheetApp.getUi()
 		.showModalDialog(htmlDialog, title);
+}
+
+
+function showSetupAddon_() {
+	var Ui = SpreadsheetApp.getUi();
+
+	try {
+		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+	} catch (err) {
+		console.warn("showSetupAddon_()", err);
+
+		Ui.alert(
+			"Budget n Sheets",
+			"The add-on is updating. Try again later.",
+			Ui.ButtonSet.OK);
+
+		return;
+	}
+
+	if (getPropertiesService_("document", "", "is_installed")) {
+		showDialogSetupEnd();
+		onOpen();
+		return;
+
+	} else if (SpreadsheetApp.getActiveSpreadsheet().getFormUrl() != null) {
+		Ui.alert(
+			"Linked form",
+			"The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.",
+			Ui.ButtonSet.OK);
+		return;
+	}
+
+	var htmlDialog = HtmlService.createTemplateFromFile('htmlSetupAddon')
+		.evaluate()
+		.setWidth(353)
+		.setHeight(359);
+	SpreadsheetApp.getUi()
+		.showModalDialog(htmlDialog, 'Start budget spreadsheet');
+}
+
+
+function showDialogSetupEnd() {
+	var htmlDialog = HtmlService.createTemplateFromFile("htmlSetupEnd")
+		.evaluate()
+		.setWidth(353)
+		.setHeight(359);
+
+	SpreadsheetApp.getUi()
+		.showModalDialog(htmlDialog, "Add-on Budget n Sheets");
 }

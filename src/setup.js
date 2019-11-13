@@ -1,40 +1,3 @@
-function showSetupAddon_() {
-	var Ui = SpreadsheetApp.getUi();
-
-	try {
-		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
-	} catch (err) {
-		console.warn("showSetupAddon_()", err);
-
-		Ui.alert(
-			"Budget n Sheets",
-			"The add-on is updating. Try again later.",
-			Ui.ButtonSet.OK);
-
-		return;
-	}
-
-	if (getPropertiesService_("document", "", "is_installed")) {
-		showDialogSetupEnd();
-		onOpen();
-		return;
-
-	} else if (SpreadsheetApp.getActiveSpreadsheet().getFormUrl() != null) {
-		Ui.alert(
-			"Linked form",
-			"The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.",
-			Ui.ButtonSet.OK);
-		return;
-	}
-
-	var htmlDialog = HtmlService.createTemplateFromFile('htmlSetupAddon')
-		.evaluate()
-		.setWidth(353)
-		.setHeight(359);
-	SpreadsheetApp.getUi()
-		.showModalDialog(htmlDialog, 'Start budget spreadsheet');
-}
-
 function askDeactivation() {
 	var Ui = SpreadsheetApp.getUi(); // Same variations.
 	var s = randomString(5, 'upnum');
@@ -53,6 +16,7 @@ function askDeactivation() {
 		return true;
 	}
 }
+
 
 function askReinstall() {
 	if (!getPropertiesService_("document", "", "is_installed")) return;
@@ -76,16 +40,6 @@ function askReinstall() {
 		setPropertiesService_('document', 'string', 'OperationMode', 'passive');
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", 2);
 	}
-}
-
-function showDialogSetupEnd() {
-	var htmlDialog = HtmlService.createTemplateFromFile("htmlSetupEnd")
-		.evaluate()
-		.setWidth(353)
-		.setHeight(359);
-
-	SpreadsheetApp.getUi()
-		.showModalDialog(htmlDialog, "Add-on Budget n Sheets");
 }
 
 
