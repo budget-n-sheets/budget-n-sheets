@@ -18,6 +18,97 @@ function askDeactivation() {
 }
 
 
+function askResetProtection() {
+	var lock = LockService.getDocumentLock();
+	try {
+		lock.waitLock(200);
+	} catch (err) {
+		return;
+	}
+
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var sheet, ranges, range;
+	var protections, protection;
+	var n, i, j, k;
+
+	number_accounts = getUserConstSettings_('number_accounts');
+
+	for (i = 0; i < 12; i++) {
+		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+		if (!sheet) continue;
+
+		n = sheet.getMaxRows() - 4;
+		if (n < 1) continue;
+		if (sheet.getMaxColumns() < 5*(1 + number_accounts)) continue;
+
+		protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
+		for (j = 0; j < protections.length; j++) {
+		  protection = protections[j];
+		  if (protection.canEdit()) protection.remove();
+		}
+
+		ranges = [ ];
+		for (k = 0; k < 1 + number_accounts; k++) {
+			range = sheet.getRange(5, 1 + 5*k, n, 4);
+			ranges.push(range);
+		}
+
+		sheet.protect()
+			.setUnprotectedRanges(ranges)
+			.setWarningOnly(true);
+	}
+
+
+	sheet = spreadsheet.getSheetByName("Cards");
+
+	if (sheet) n = sheet.getMaxRows() - 5;
+	else n = -1;
+
+	if (n > 0 && sheet.getMaxColumns() >= 72) {
+		protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
+		for (j = 0; j < protections.length; j++) {
+		  protection = protections[j];
+		  if (protection.canEdit()) protection.remove();
+		}
+
+		ranges = [ ];
+
+		for (i = 0; i < 12; i++) {
+			range = sheet.getRange(6, 1 + 6*i, n, 5);
+			ranges.push(range);
+
+			range = sheet.getRange(2, 1 + 6*i, 1, 3);
+			ranges.push(range);
+		}
+
+		sheet.protect()
+			.setUnprotectedRanges(ranges)
+			.setWarningOnly(true);
+	}
+
+
+	sheet = spreadsheet.getSheetByName("Tags");
+
+	if (sheet) n = sheet.getMaxRows() - 1;
+	else n = -1;
+
+	if (n > 0) {
+		protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
+		for (j = 0; j < protections.length; j++) {
+		  protection = protections[j];
+		  if (protection.canEdit()) protection.remove();
+		}
+
+		range = sheet.getRange(2, 1, n, 5);
+		sheet.protect()
+			.setUnprotectedRanges([ range ])
+			.setWarningOnly(true);
+	}
+
+	lock.releaseLock();
+}
+
+
 function askReinstall() {
 	if (!getPropertiesService_("document", "", "is_installed")) return;
 
