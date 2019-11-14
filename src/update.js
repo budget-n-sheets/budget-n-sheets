@@ -94,11 +94,6 @@ function update_ExecutePatial_() {
 	}
 
 	switch (v0) {
-		case 64:
-		case 65:
-		case 66:
-			c = update0pack13_();
-			if (c) break;
 		case 67:
 			update_v0m19p0_();
 			update_v0m19p1_();
@@ -487,30 +482,6 @@ function update_v0m19p0_() {
 		}
 	} catch (err) {
 		console.error("update_v0m19p0_()", err);
-		return true;
-	}
-}
-
-/**
- * Create property for const user settings.
- *
- * 0.18.17
- */
-function update0pack13_() {
-	try {
-		var user_settings, user_const_settings;
-
-		user_settings = getPropertiesService_('document', 'json', 'user_settings');
-
-		user_const_settings = {
-			date_created: 0,
-			number_accounts: getPropertiesService_('document', 'number', 'number_accounts'),
-			financial_year: user_settings.FinancialYear
-		};
-
-		setPropertiesService_('document', 'obj', 'user_const_settings', user_const_settings);
-	} catch (err) {
-		console.error("update0pack13_()", err);
 		return true;
 	}
 }
