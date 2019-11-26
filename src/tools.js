@@ -319,6 +319,8 @@ function foo_UpdateCashFlow_(mm) {
 				}
 			}
 
+			if (typeof value !== "number") continue;
+
 			day--;
 			cf_flow[day][0] += value.formatLocaleSignal(dec_p);
 			cf_transaction[day][0] += "@" + table[i][1] + " ";
