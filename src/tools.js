@@ -138,6 +138,7 @@ function optTool_AddBlankRows_(mm) {
 		c = 5;
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 	} else {
+		showDialogErrorMessage();
 		console.error("optTool_AddBlankRows_(): Internal error.", mm);
 		return;
 	}
@@ -219,6 +220,12 @@ function optTool_FormatRegistry_() {
 
 
 function foo_UpdateCashFlow_(mm) {
+	if (typeof mm !== 'number' || isNaN(mm)) {
+		showDialogErrorMessage();
+		console.warn("foo_UpdateCashFlow_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
+		return;
+	}
+
 	console.time("tool/update-cash-flow");
 
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
