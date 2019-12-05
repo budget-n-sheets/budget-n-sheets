@@ -39,7 +39,7 @@ function onOpen(e) {
 			SpreadsheetApp.getUi()
 				.createAddonMenu()
 				.addItem('Add blank lines', 'toolAddBlankRows')
-				.addItem('Format registry', 'toolFormatRegistry')
+				.addItem('Sort registry', 'toolFormatRegistry')
 				.addItem('Update cash flow', 'toolUpdateCashFlow')
 				.addSubMenu(SpreadsheetApp.getUi().createMenu("Pages view")
 					.addItem("Collapse", "toolHideSheets_")

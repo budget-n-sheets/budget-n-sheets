@@ -161,36 +161,30 @@ function optTool_AddBlankRows_(mm) {
 }
 
 
-function optTool_UpdateCashFlow_(mm_) {
+function optTool_UpdateCashFlow_(mm) {
 	if (onlineUpdate_()) return;
 
 	var sheet, range;
-	var mm;
+	var name, mm;
 
-	if (typeof mm_ !== 'number' || isNaN(mm_)) {
-		sheet = SpreadsheetApp.getActiveSheet();
-		range = sheet.getActiveRange();
-		mm = MN_SHORT_.indexOf( sheet.getSheetName() );
+	if (mm == null) {
+		range = SpreadsheetApp.getActiveRange();
+		sheet = range.getSheet();
+		name = sheet.getSheetName();
 
-	} else if (mm_ >= 0 && mm_ < 12) {
-		mm = mm_;
+		mm = MN_SHORT_.indexOf(name);
 
-	} else {
-		console.error("optTool_UpdateCashFlow_(): Internal error.", mm_);
-		return;
-	}
-
-	if (mm === -1) {
-		if (sheet.getSheetName() === 'Cash Flow') {
-			mm = range.getColumn() - 1;
-			mm = (mm - (mm % 4)) / 4;
-
-		} else {
-			SpreadsheetApp.getUi().alert(
-				"Can't update cash flow",
-				"Select a month or Cash Flow to update cash flow.",
-				SpreadsheetApp.getUi().ButtonSet.OK);
-			return;
+		if (mm === -1) {
+			if (name === 'Cash Flow') {
+				mm = range.getColumn() - 1;
+				mm = (mm - (mm % 4)) / 4;
+			} else {
+				SpreadsheetApp.getUi().alert(
+					"Can't update cash flow",
+					"Select a month or Cash Flow to update cash flow.",
+					SpreadsheetApp.getUi().ButtonSet.OK);
+				return;
+			}
 		}
 	}
 
@@ -199,24 +193,26 @@ function optTool_UpdateCashFlow_(mm_) {
 
 
 function optTool_FormatRegistry_() {
-	var sheet, mm;
+	var range = SpreadsheetApp.getActiveRange();
+	var sheet = range.getSheet();
+	var name = sheet.getSheetName();
+	var mm;
 
-	sheet = SpreadsheetApp.getActiveSheet();
-	mm = MN_SHORT_.indexOf( sheet.getSheetName() );
+	mm = MN_SHORT_.indexOf(name);
 
 	if (mm !== -1) {
 		foo_FormatAccounts_(mm);
 
-	} else if (sheet.getSheetName() === 'Cards') {
-		mm = sheet.getActiveRange().getColumn();
+	} else if (name === 'Cards') {
+		mm = range.getColumn();
 		mm = (mm - (mm % 6)) / 6;
 
 		foo_FormatCards_(mm);
 
 	} else {
 		SpreadsheetApp.getUi().alert(
-			"Can't format registry",
-			"Select a month to format the registry.",
+			"Can't sort registry",
+			"Select a month to sort the registry.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 	}
 }
