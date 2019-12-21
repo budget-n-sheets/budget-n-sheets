@@ -117,11 +117,10 @@ function optAccount_UpdateTableRef_() {
 
 	h_ = TABLE_DIMENSION_.height;
 
-	sheet.getRange(3, 3).setFormula('=0');
+	sheet.getRange(3, 3).setFormula('=B3');
 	for (i = 1; i < 12; i++) {
 		dd = new Date(yyyy, i, 0).getDate();
-		sheet.getRange(3, 3+i*4)
-			.setFormulaR1C1('=R[' + (dd - 1) + ']C[-4]+RC[-1]');
+		sheet.getRange(3, 3+i*4).setFormulaR1C1('=R[' + (dd - 1) + ']C[-4]+RC[-1]');
 	}
 	SpreadsheetApp.flush();
 
@@ -129,7 +128,7 @@ function optAccount_UpdateTableRef_() {
 	while (k < number_accounts) {
 		mm = listTables[k].TimeA;
 
-		string = sheet.getRange(3, 3+mm*4).getFormula();
+		string = sheet.getRange(3, 3 + 4*mm).getFormula();
 		string += "+\'_Backstage\'!" + range_[k] + (2 + h_*mm);
 		sheet.getRange(3, 3+mm*4).setFormula(string);
 		Utilities.sleep(137);
