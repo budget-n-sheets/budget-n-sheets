@@ -9,8 +9,8 @@ var TABLE_DIMENSION_ = {height: 10, width: 5};
 var HEAD_AG = 72;
 var AppsScriptGlobal = (function() {
 	var o = {
-		AddonVersion: 72,
-		AddonVersionName: "0.19.8",
+		AddonVersion: 73,
+		AddonVersionName: "0.19.9",
 
 		TemplateVersion: 59,
 		TemplateVersionName: "6.4",
