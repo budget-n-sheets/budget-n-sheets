@@ -107,6 +107,8 @@ function update_ExecutePatial_() {
 		case 71:
 			update_v0m19p6_();
 			update_v0m19p7_();
+		case 72:
+			update_v0m19p8_();
 			break;
 
 		default:
@@ -146,6 +148,21 @@ function update_v0m0p0_() {
 		return true;
 	}
 }*/
+
+
+/**
+ * Update Cash Flow range references.
+ *
+ * 0.19.9
+ */
+function update_v0m19p8_() {
+	try {
+		optAccount_UpdateTableRef_();
+	} catch (err) {
+		console.error("update_v0m19p8_()", err);
+		return true;
+	}
+}
 
 /**
  * Update BSSUMBYTAG() function.
