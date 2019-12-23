@@ -6,6 +6,7 @@ function cardsGetData_() {
 
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
+
 	n = getUserConstSettings_('number_accounts');
 
 	db_cards = getPropertiesService_("document", "obj", "DB_CARD");
@@ -44,7 +45,9 @@ function cardsGetData_() {
 		for (i = 0; i < 12; i++) {
 			v[i] = data[5 + h_*i][c];
 		}
-		output.balance.push()
+
+		output.cards.push(db_cards[k].Code);
+		output.balance.push(v);
 	}
 
 	return output;
