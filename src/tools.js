@@ -229,11 +229,11 @@ function foo_UpdateCashFlow_(mm) {
 	console.time("tool/update-cash-flow");
 
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheetTarget = spreadsheet.getSheetByName(MN_SHORT_[mm]),
+	var sheetMonth = spreadsheet.getSheetByName(MN_SHORT_[mm]),
 			sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
 	var sheetBackstage;
 
-	if (!sheetTarget) return;
+	if (!sheetMonth) return;
 	if (!sheetCashFlow) return;
 
 	var calendar, listEventos, evento, day, yyyy, dd;
@@ -269,8 +269,7 @@ function foo_UpdateCashFlow_(mm) {
 	listEventos = [ ];
 	t = getSpreadsheetDate();
 	b = new Date(yyyy, mm + 1, 1);
-	if ( getUserSettings_("CashFlowEvents")
-			&& t.getTime() < b.getTime() ) {
+	if (getUserSettings_("CashFlowEvents") && t.getTime() < b.getTime()) {
 		calendar = getUserSettings_("FinancialCalendar");
 		calendar = optCalendar_GetCalendarFromSHA1_(calendar);
 
@@ -292,18 +291,18 @@ function foo_UpdateCashFlow_(mm) {
 		else hasTags = false;
 	}
 
-	maxRows = sheetTarget.getLastRow() - 4 ;
+	maxRows = sheetMonth.getLastRow() - 4 ;
 	console.timeEnd("tool/update-cash-flow/load");
 
 	console.time("tool/update-cash-flow/registry");
 	if (maxRows > 0) {
 		k = 0;
-		table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
+		table = sheetMonth.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
 		for (i = 0; k < number_accounts; i++) {
 			if (i >= maxRows || table[i][2] === "") {
 				k++;
 				i = -1;
-				table = sheetTarget.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
+				table = sheetMonth.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
 				continue;
 			}
 

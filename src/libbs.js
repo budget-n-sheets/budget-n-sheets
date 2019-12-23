@@ -68,8 +68,7 @@ function getSpreadsheetDate(d) {
 	else date = new Date();
 
 	try {
-		timezone = SpreadsheetApp.getActiveSpreadsheet()
-			.getSpreadsheetTimeZone();
+		timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
 	} catch (err) {
 		timezone = "GMT";
 		console.error("getSpreadsheetDate()", err);
