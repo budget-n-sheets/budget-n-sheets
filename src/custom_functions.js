@@ -108,22 +108,6 @@ function BSINFCARD(data) {
 }
 
 
-function BSINF(data) {
-	Utilities.sleep(300);
-
-	var inf = '';
-
-	inf += 'Withdrawal: (' + data[0][1] + ') ';
-	inf += Number(data[0][0]).formatFinancial() + '\n';
-
-	inf += 'Deposit: (' + data[1][1] + ') ';
-	inf += Number(data[1][0]).formatFinancial() + '\n';
-
-	inf += 'Trf. in: (' + data[2][1] + ') ';
-	inf += Number(data[2][0]).formatFinancial() + '\n';
-
-	inf += 'Trf. out: (' + data[3][1] + ') ';
-	inf += Number(data[3][0]).formatFinancial();
-
-	return inf;
+function BSINF() {
+	return "";
 }
