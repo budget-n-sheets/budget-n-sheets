@@ -80,6 +80,7 @@ function daily_Main_(e) {
 	if (financial_year < a["year"]) {
 		monthly_TreatLayout_(a["year"], a["month"]);
 		deleteScriptAppTriggers_('document', 'dailyMainId');
+		Utilities.sleep(300);
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
 		setPropertiesService_('document', 'string', 'OperationMode', "passive");
 
