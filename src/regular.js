@@ -133,7 +133,8 @@ function monthly_TreatLayout_(yyyy, mm) {
 			for (; i < 12; i++) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
 			}
-			return;
+
+			a = 0;
 		} else {
 			for (i = 0; i < 12; i++) {
 				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
