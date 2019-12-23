@@ -124,6 +124,21 @@ function weekly_Bar_(e) {
 	}
 	if (isMissingSheet()) return;
 
+	var date, a;
+
+	if (e) {
+		date = new Date(e["year"], e["month"] - 1, e["day-of-month"], e["hour"]);
+		date = getSpreadsheetDate(date);
+	} else {
+		date = getSpreadsheetDate();
+	}
+
+	a = {
+		year: date.getFullYear(),
+		month: date.getMonth(),
+		date: date.getDate()
+	};
+
 	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('SpreadsheetLocale')) {
 		if (!update_DecimalSepartor_()) return;
 	}
@@ -132,16 +147,16 @@ function weekly_Bar_(e) {
 
 	var financial_year = getUserConstSettings_('financial_year');
 
-	if (e["year"] > financial_year) return;
+	if (a["year"] > financial_year) return;
 
 	deleteScriptAppTriggers_("document", "weeklyMainId");
 
-	if (e["year"] == financial_year) {
+	if (a["year"] == financial_year) {
 		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
 		console.info("add-on/mode-active");
 	} else {
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
 	}
 
-	monthly_TreatLayout_(e["year"], e["month"] - 1);
+	monthly_TreatLayout_(a["year"], a["month"]);
 }
