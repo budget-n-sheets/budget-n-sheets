@@ -261,9 +261,9 @@ function foo_UpdateCashFlow_(mm) {
 
 	cf_flow = [ ];
 	cf_transaction = [ ];
-	for (i = 0; i < dd; i++) {
-		cf_flow[i] = [ "" ];
-		cf_transaction[i] = [ "" ];
+	for (i = 0; i < 31; i++) {
+		cf_flow.push("");
+		cf_transaction.push("");
 	}
 
 	listEventos = [ ];
@@ -324,8 +324,8 @@ function foo_UpdateCashFlow_(mm) {
 			if (typeof value !== "number") continue;
 
 			day--;
-			cf_flow[day][0] += value.formatLocaleSignal(dec_p);
-			cf_transaction[day][0] += "@" + table[i][1] + " ";
+			cf_flow[day] += value.formatLocaleSignal(dec_p);
+			cf_transaction[day] += "@" + table[i][1] + " ";
 		}
 	}
 	console.timeEnd("tool/update-cash-flow/registry");
@@ -396,11 +396,17 @@ function foo_UpdateCashFlow_(mm) {
 		}
 
 		day = evento.Day - 1;
-		cf_flow[day][0] += value.formatLocaleSignal(dec_p);
-		cf_transaction[day][0] += "@" + evento.Title + " ";
+		cf_flow[day] += value.formatLocaleSignal(dec_p);
+		cf_transaction[day] += "@" + evento.Title + " ";
 	}
 	console.timeEnd("tool/update-cash-flow/calendar");
 
+	if (dd < 31) {
+		cf_flow.splice(dd - 31, 31 - dd);
+		cf_transaction.splice(dd - 31, 31 - dd);
+	}
+	cf_flow = transpose([cf_flow]);
+	cf_transaction = transpose([cf_transaction]);
 
 	sheetCashFlow.getRange(3, 2 + 4*mm, dd, 1).setFormulas(cf_flow);
 	sheetCashFlow.getRange(3, 4 + 4*mm, dd, 1).setValues(cf_transaction);
