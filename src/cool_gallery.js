@@ -84,7 +84,8 @@ function getCoolSheet_(option) {
 function coolTags_(info) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet = spreadsheet.getSheetByName(info.sheet_name);
-	var chart, options;
+	var sheetTags, range;
+	var chart, options, n;
 
 	sheet.getRange('E2').setFormula('\'_Settings\'!B4');
 	sheet.getRange('E3').setFormula('\'_Settings\'!B5');
@@ -150,6 +151,43 @@ function coolTags_(info) {
 		.setOption('mode', 'view')
 		.setOption('focusTarget', 'category')
 		.setOption('backgroundColor', {fill: '#f3f3f3'})
+		.setOption('height', 402)
+		.setOption('width', 783);
+	sheet.insertChart( chart.build() );
+
+	sheetTags = spreadsheet.getSheetByName('Tags');
+	n = sheetTags.getMaxRows();
+	if (n > 1) {
+		range = sheetTags.getRange(2, 5, n - 1, 1);
+
+		rule = SpreadsheetApp.newDataValidation()
+			.requireValueInRange(range, true)
+			.setAllowInvalid(false)
+			.build();
+
+		sheet.getRange(92, 2, 1, 2).setDataValidation(rule);
+	}
+
+	sheet.getRange(92, 4).setFormula('IFERROR(MATCH(B92; Tags!E1:E; 0); 0)');
+	sheet.getRange(95, 4).setFormula('IF(D92 > 0; ARRAYFORMULA(ABS(TRANSPOSE(OFFSET(Tags!E1; D92 - 1; 1; 1; 12)))); )');
+	sheet.getRange(107, 4).setFormula('IF(D92 > 0; ARRAYFORMULA(ABS(TRANSPOSE(OFFSET(Tags!S1; D92 - 1; 0; 1, 2)))); )');
+
+	options = {
+		0:{type:'bars'},
+		1:{type:'line'}
+	};
+
+	chart = sheet.newChart()
+		.addRange( sheet.getRange('B94:D106') )
+		.addRange( sheet.getRange('J94:J106') )
+		.setNumHeaders(1)
+		.setChartType(Charts.ChartType.COMBO)
+		.setPosition(92, 7, 0, 0)
+		.setOption('mode', 'view')
+		.setOption('legend', 'top')
+		.setOption('focusTarget', 'category')
+		.setOption('backgroundColor', {fill: '#f3f3f3'})
+		.setOption('series', options)
 		.setOption('height', 402)
 		.setOption('width', 783);
 	sheet.insertChart( chart.build() );
