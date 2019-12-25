@@ -217,6 +217,7 @@ function setup_(settings, listAcc) {
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(CONST_LIST_ES_SHEETS_["summary"]);
 
 	setup_ExecutePatial_();
+	coolGallery('tags');
 
 	a = {
 		AddonVersion: AppsScriptGlobal.AddonVersion(),
