@@ -9,8 +9,8 @@ var TABLE_DIMENSION_ = {height: 10, width: 5};
 var HEAD_AG = 72;
 var AppsScriptGlobal = (function() {
 	var o = {
-		AddonVersion: 73,
-		AddonVersionName: "0.19.11",
+		AddonVersion: 74,
+		AddonVersionName: "0.20.0-beta",
 
 		TemplateVersion: 59,
 		TemplateVersionName: "6.4",
@@ -21,9 +21,9 @@ var AppsScriptGlobal = (function() {
 			tags: {
 				id: "",
 				preview_id: "",
-				version: 1,
-				version_name: "v0.1.0",
-				version_date: "2019-10-26",
+				version: 2,
+				version_name: "v0.2.1",
+				version_date: "2019-12-24",
 				name: "Stats for Tags",
 				sheet_name: "Stats for Tags"
 			}
