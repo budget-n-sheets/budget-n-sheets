@@ -109,6 +109,8 @@ function update_ExecutePatial_() {
 			update_v0m19p7_();
 		case 72:
 			update_v0m19p8_();
+		case 73:
+			update_v0m20p0_();
 			break;
 
 		default:
@@ -149,6 +151,21 @@ function update_v0m0p0_() {
 	}
 }*/
 
+/**
+ * Import cool sheet Stats for Tags.
+ *
+ * 0.20.0
+ */
+function update_v0m20p0_() {
+	try {
+		if (!SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Stats for Tags')) {
+			coolGallery('tags');
+		}
+	} catch (err) {
+		console.error("update_v0m20p0_()", err);
+		return true;
+	}
+}
 
 /**
  * Update Cash Flow range references.
