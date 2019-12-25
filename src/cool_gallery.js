@@ -1,20 +1,23 @@
 function optCoolGallery(command, options) {
-	// var lock = LockService.getDocumentLock();
-	// var r = 1;
-	// try {
-	// 	lock.waitLock(200);
-	// } catch (err) {
-	// 	return 0;
-	// }
+	var lock, s;
+
+	lock = LockService.getDocumentLock();
+	s = lock.tryLock(200);
+	if (!s) return 0;
 
 	switch (command) {
 		case "import":
-			return getCoolSheet_(options);
+			s = getCoolSheet_(options);
+			break;
 
 		default:
 			console.warn("optCoolGallery(): Switch case is default.", command);
+			s = 1;
 			break;
 	}
+
+	lock.releaseLock();
+	return s;
 }
 
 
