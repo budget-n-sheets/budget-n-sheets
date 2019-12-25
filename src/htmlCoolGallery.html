@@ -100,7 +100,7 @@
 					.hide();
 				google.script.run.withSuccessHandler(response)
 					.withFailureHandler(showError)
-					.optCoolGallery("import", id);
+					.coolGallery(id);
 			});
 
 			function response(r) {

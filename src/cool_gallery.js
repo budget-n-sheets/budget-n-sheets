@@ -1,86 +1,62 @@
-function optCoolGallery(command, options) {
+function coolGallery(option) {
 	var lock, s;
+	var info;
 
 	lock = LockService.getDocumentLock();
 	s = lock.tryLock(200);
 	if (!s) return 0;
 
-	switch (command) {
-		case "import":
-			s = getCoolSheet_(options);
-			break;
-
-		default:
-			console.warn("optCoolGallery(): Switch case is default.", command);
-			s = 1;
-			break;
+	info = AppsScriptGlobal.CoolGallery();
+	info = info[option];
+	if (!info) {
+		showDialogErrorMessage();
+		console.warn("getCoolSheet_(): Details of page not found.", {"option":option, "info":info});
+		return 1;
 	}
 
+	s = getCoolSheet_(info);
 	lock.releaseLock();
+
+	if (s === 3) {
+		showDialogErrorMessage();
+		return 1;
+	} else if (s === 100) {
+		SpreadsheetApp.getUi().alert(
+			"Can't import analytics page",
+			"A page with the name \"" + info.sheet_name + "\" already exists. Please rename, or delete the page.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+		return -1;
+	}
+
+	if (option === "tags") {
+		s = coolTags_(info);
+	}
+
+	console.info("add-on/cool_gallery/import/" + info.sheet_name);
 	return s;
 }
 
 
-function getCoolSheet_(option) {
-	var ui = SpreadsheetApp.getUi();
-
+function getCoolSheet_(info) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var template;
 
-	var cool_gallery = AppsScriptGlobal.CoolGallery();
-	var info;
-	var r;
-
-	info = cool_gallery[option];
-	if (!info) {
-		showDialogErrorMessage();
-		console.warn("getCoolSheet(): Details of sheet not found.", {"option":option, "info":info});
-		return 1;
-	}
-
-	sheet = spreadsheet.getSheetByName(info.sheet_name);
-	if (sheet) {
-		ui.alert(
-			"Can't import analytics sheet",
-			"A sheet with the name \"" + info.sheet_name + "\" already exists. Please rename, or delete the sheet.",
-			ui.ButtonSet.OK
-		);
-		return -1;
+	if (spreadsheet.getSheetByName(info.sheet_name)) {
+		return 100;
 	}
 
 	try {
 		template = SpreadsheetApp.openById(info.id);
 	} catch (err) {
-		showDialogErrorMessage();
-		console.warn("getCoolSheet()", err);
-		return 1;
+		console.warn("getCoolSheet_()", err);
+		return 3;
 	}
 
 	template.getSheetByName(info.sheet_name)
 		.copyTo(spreadsheet)
 		.setName(info.sheet_name);
 
-	sheet = spreadsheet.getSheetByName(info.sheet_name);
 	SpreadsheetApp.flush();
-	console.info("add-on/cool_gallery/import/" + info.sheet_name);
-
-	r = -1;
-	switch (option) {
-		case "tags":
-			r = coolTags_(info);
-			break;
-
-		default:
-			break;
-	}
-
-	if (r === -1) {
-		spreadsheet.setActiveSheet(sheet);
-	} else {
-		spreadsheet.deleteSheet(sheet);
-	}
-
-	return r;
 }
 
 
@@ -195,6 +171,9 @@ function coolTags_(info) {
 		.setOption('width', 783);
 	sheet.insertChart( chart.build() );
 
+	sheet.setTabColor('#e69138');
 	SpreadsheetApp.flush();
+	spreadsheet.setActiveSheet(sheet);
+
 	return -1;
 }
