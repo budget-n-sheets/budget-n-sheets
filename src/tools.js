@@ -286,7 +286,7 @@ function foo_UpdateCashFlow_(mm) {
 	}
 
 	if (OverrideZero || listEventos.length > 0) {
-		data_tags = tagGetData_();
+		data_tags = getTagData_();
 		if (data_tags && data_tags.tags.length > 0) hasTags = true;
 		else hasTags = false;
 	}
@@ -498,4 +498,51 @@ function foo_FormatCards_(mm) {
 		if (c > 1) sheet.getRange(6 + i, 1 + w_*mm, c, 5).sort({column:1 + w_*mm, ascending:false});
 		i = j;
 	}
+}
+
+
+function getTagData_() {
+	var sheet, lastRow;
+	var output, data;
+	var n, i, j, k, v;
+
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+	lastRow = sheet.getLastRow();
+	if (lastRow < 2) return;
+	if (sheet.getMaxColumns() < 20) return;
+
+	output = {
+		tags: [ ],
+		months: [ ],
+		average: [ ],
+		total: [ ]
+	};
+
+	n = lastRow - 1;
+	data = sheet.getRange(2, 5, n, 16).getValues();
+
+	i = 0;
+	j = 0;
+	while (i < data.length && j < n) {
+		if ( /^\w+$/.test(data[i][0]) ) {
+			output.tags.push(data[i][0]);
+
+			v = [ ];
+			for (k = 0; k < 12; k++) {
+			v[k] = data[i][1 + k];
+			}
+			output.months.push(v);
+
+			output.average.push(data[i][14]);
+			output.total.push(data[i][15]);
+			i++;
+		} else {
+			data.splice(i, 1);
+		}
+
+		j++;
+	}
+
+	output.data = data;
+	return output;
 }
