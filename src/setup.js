@@ -230,6 +230,7 @@ function setup_(settings, listAcc) {
 	a = nodeControl_("sign");
 	if (a !== -1) throw 1;
 
+	CONST_SETUP_SPREADSHEET_.setActiveSheet(CONST_LIST_ES_SHEETS_["summary"]);
 	console.timeEnd("add-on/install");
 
 	CONST_SETUP_SPREADSHEET_ = null;
