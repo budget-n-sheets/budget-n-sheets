@@ -10,7 +10,7 @@ var HEAD_AG = 74;
 var AppsScriptGlobal = (function() {
 	var o = {
 		AddonVersion: 74,
-		AddonVersionName: "0.20.0-beta1",
+		AddonVersionName: "0.20.0",
 
 		TemplateVersion: 59,
 		TemplateVersionName: "6.4",
@@ -22,8 +22,8 @@ var AppsScriptGlobal = (function() {
 				id: "",
 				preview_id: "",
 				version: 2,
-				version_name: "v0.2.1",
-				version_date: "2019-12-24",
+				version_name: "v0.2.2",
+				version_date: "2019-12-26",
 				name: "Stats for Tags",
 				sheet_name: "Stats for Tags"
 			}
