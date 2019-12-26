@@ -6,11 +6,11 @@ var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 
 var TABLE_DIMENSION_ = {height: 10, width: 5};
 
-var HEAD_AG = 72;
+var HEAD_AG = 74;
 var AppsScriptGlobal = (function() {
 	var o = {
 		AddonVersion: 74,
-		AddonVersionName: "0.20.0-beta",
+		AddonVersionName: "0.20.0-beta1",
 
 		TemplateVersion: 59,
 		TemplateVersionName: "6.4",

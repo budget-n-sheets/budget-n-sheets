@@ -61,7 +61,7 @@ function seamlessUpdate_() {
 }
 
 
-var HEAD_EP = 72;
+var HEAD_EP = 74;
 function update_ExecutePatial_() {
 	if (!getPropertiesService_('document', '', 'is_installed')) return 1;
 
@@ -78,7 +78,7 @@ function update_ExecutePatial_() {
 	var v0 = optGetClass_("AddonVersion"),
 			v1 = AppsScriptGlobal.AddonVersion();
 
-	if (HEAD_EP != HEAD_AG) {
+	if (HEAD_EP !== HEAD_AG) {
 		load = {
 			value_v0: v0,
 			type_v0: typeof v0,
