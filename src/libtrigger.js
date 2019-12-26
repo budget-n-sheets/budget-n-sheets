@@ -21,6 +21,7 @@ function createScriptAppTriggers_(method, key, type, name, param1, param2, param
 			case 'document':
 				m_Properties = PropertiesService.getDocumentProperties();
 				break;
+
 			case 'user':
 			default:
 				m_Properties = PropertiesService.getUserProperties();
@@ -53,20 +54,24 @@ function createScriptAppTriggers_(method, key, type, name, param1, param2, param
 			.create();
 	} else if (type === 'onMonthDay') {
 		if (param2 == null) param2 = 0;
+		if (param3 == null) param3 = 0;
 
 		thisTrigger = ScriptApp.newTrigger(name)
 			.timeBased()
 			.onMonthDay(param1)
 			.atHour(param2)
+			.nearMinute(param3)
 			.inTimezone( SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone() )
 			.create();
 	} else if (type === 'onWeekDay') {
 		if (param2 == null) param2 = 0;
+		if (param3 == null) param3 = 0;
 
 		thisTrigger = ScriptApp.newTrigger(name)
 			.timeBased()
 			.onWeekDay(enum_weekday[param1])
 			.atHour(param2)
+			.nearMinute(param3)
 			.inTimezone( SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone() )
 			.create();
 	} else if (type === 'everyMinutes') {
@@ -83,11 +88,13 @@ function createScriptAppTriggers_(method, key, type, name, param1, param2, param
 			.create();
 	} else if (type === 'everyDays') {
 		if (param2 == null) param2 = 0;
+		if (param3 == null) param3 = 0;
 
 		thisTrigger = ScriptApp.newTrigger(name)
 			.timeBased()
 			.everyDays(param1)
 			.atHour(param2)
+			.nearMinute(param3)
 			.inTimezone( SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone() )
 			.create();
 	} else if (type === 'everyWeeks') {
@@ -169,7 +176,6 @@ function deleteScriptAppTriggers_(method, key, name) {
 function purgeScriptAppTriggers_() {
 	var listTriggers = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
 	var i;
-
 
 	for (i = 0; i < listTriggers.length; i++) {
 		ScriptApp.deleteTrigger(listTriggers[i]);

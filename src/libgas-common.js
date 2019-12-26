@@ -5,29 +5,7 @@
  */
 
 function htmlInclude(fileName) {
-	return HtmlService.createHtmlOutputFromFile(fileName)
-		.getContent();
-}
-
-
-/**
- * Converts an array of bytes to string.
- * @param  {Object} b Array of bytes.
- * @return {String} String.
- */
-function byte2string(b) {
-	var r = '';
-	var v, i;
-
-	for (i = 0; i < b.length; i++) {
-		v = b[i];
-		if (v < 0) v += 256;
-		v = v.toString(16);
-		if (v.length === 1) v = '0' + v;
-		r += v;
-	}
-
-	return r;
+	return HtmlService.createHtmlOutputFromFile(fileName).getContent();
 }
 
 
@@ -110,6 +88,7 @@ function randomString(n, p) {
 		case "word":
 			b = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
 			break;
+
 		default:
 			b = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 			break;
@@ -124,7 +103,7 @@ function randomString(n, p) {
 
 
 function rollA1Notation(posRow, posCol, height, width, mode1, mode2) {
-	if (!posRow  ||  !posCol) return;
+	if (!posRow || !posCol) return;
 	if (!height) height = 1;
 	if (!width) width = 1;
 	if (!mode1) mode1 = 1;
@@ -139,30 +118,30 @@ function rollA1Notation(posRow, posCol, height, width, mode1, mode2) {
 	var str, c, m;
 
 	m = mode1%s_;
-	str = ((m === 1 || m === 3)  ?  "$"  :  "");
+	str = ((m === 1 || m === 3) ? "$" : "");
 
 	c = (posCol - posCol%f_)/f_;
-	str += (c  ?  String.fromCharCode(64 + c)  :  "");
+	str += (c ? String.fromCharCode(64 + c) : "");
 	str += String.fromCharCode(65 + posCol%f_);
 
-	str += (m >= 2  ?  "$"  :  "");
+	str += (m >= 2 ? "$" : "");
 	str += posRow;
 
 
-	if (height === 1  &&  width === 0) return str;
+	if (height === 1 && width === 0) return str;
 	else {
 		str += ":";
 		posCol += width;
 
 		m = mode2%s_;
-		str += ((m === 1 || m === 3)  ?  "$"  :  "");
+		str += ((m === 1 || m === 3) ? "$" : "");
 
 		c = (posCol - posCol%f_)/f_;
-		str += (c  ?  String.fromCharCode(64 + c)  :  "") ;
+		str += (c ? String.fromCharCode(64 + c) : "") ;
 		str += String.fromCharCode(65 + posCol%f_);
 
 		if (height !== -1) {
-			str += (m >= 2  ?  "$"  :  "");
+			str += (m >= 2 ? "$" : "");
 			str += posRow + height - 1;
 		}
 	}

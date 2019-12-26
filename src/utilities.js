@@ -4,6 +4,27 @@
  * <https://github.com/guimspace/gas-common>
  */
 
+/**
+ * Converts an array of bytes to string.
+ * @param  {Object} b Array of bytes.
+ * @return {String} String.
+ */
+function byte2string(b) {
+	var r = '';
+	var v, i;
+
+	for (i = 0; i < b.length; i++) {
+		v = b[i];
+		if (v < 0) v += 256;
+		v = v.toString(16);
+		if (v.length === 1) v = '0' + v;
+		r += v;
+	}
+
+	return r;
+}
+
+
 function getDigestAlgorithm(v) {
 	switch (v) {
 		case "MD5":

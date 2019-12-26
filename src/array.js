@@ -5,6 +5,9 @@
  */
 
 /**
+ * Transpose a 2D array.
+ * @param  {array} src The array to be transposed.
+ * @return {array}     The tranposed array.
  */
 function transpose(src) {
 	var dest = [ ];

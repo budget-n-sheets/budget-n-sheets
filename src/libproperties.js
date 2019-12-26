@@ -14,11 +14,11 @@
 function getPropertiesService_(method, type, key) {
 	var m_Properties;
 
-
 	switch (method) {
 		case 'document':
 			m_Properties = PropertiesService.getDocumentProperties();
 			break;
+
 		case 'user':
 		default:
 			m_Properties = PropertiesService.getUserProperties();
@@ -37,6 +37,7 @@ function getPropertiesService_(method, type, key) {
 		case 'json':
 			var p = m_Properties.getProperty(key);
 			return JSON.parse( p );
+
 		default:
 			return m_Properties.getProperty(key);
 	}
@@ -52,11 +53,11 @@ function getPropertiesService_(method, type, key) {
 function setPropertiesService_(method, type, key, value) {
 	var m_Properties;
 
-
 	switch (method) {
 		case 'document':
 			m_Properties = PropertiesService.getDocumentProperties();
 			break;
+
 		case 'user':
 		default:
 			m_Properties = PropertiesService.getUserProperties();
@@ -78,6 +79,7 @@ function setPropertiesService_(method, type, key, value) {
 		case 'json':
 			m_Properties.setProperty(key, JSON.stringify( value ));
 			break;
+
 		default:
 			m_Properties.setProperty(key, value);
 			break;
@@ -96,6 +98,7 @@ function deletePropertiesService_(method, key) {
 		case 'document':
 			m_Properties = PropertiesService.getDocumentProperties();
 			break;
+
 		case 'user':
 		default:
 			m_Properties = PropertiesService.getUserProperties();
@@ -117,6 +120,7 @@ function purgePropertiesService_(method) {
 		case 'user':
 			PropertiesService.getUserProperties().deleteAllProperties();
 			break;
+
 		default:
 			PropertiesService.getDocumentProperties().deleteAllProperties();
 			PropertiesService.getUserProperties().deleteAllProperties();
