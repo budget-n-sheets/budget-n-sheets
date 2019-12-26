@@ -78,7 +78,7 @@ function optCard_Update_(input) {
 	var dbCard;
 	var k;
 
-	if ( !/[A-Z][0-9A-Z]{1,13}/.test(input.Code) ) return 10;
+	if ( !/^\w+$/.test(input.Code) ) return 10;
 
 	dbCard = getPropertiesService_('document', 'json', 'DB_CARD');
 
@@ -106,7 +106,7 @@ function optCard_Add_(input) {
 	dbCard = getPropertiesService_('document', 'json', 'DB_CARD');
 
 	if (dbCard.length >= 10) return 30;
-	if ( !/[A-Z][0-9A-Z]{1,13}/.test(input.Code) ) return 10;
+	if ( !/^\w+$/.test(input.Code) ) return 10;
 
 	for (k = 0; k < dbCard.length; k++) {
 		if (dbCard[k].Code === input.Code) return 20;
