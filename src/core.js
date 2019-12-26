@@ -47,7 +47,6 @@ function onOpen(e) {
 				.addSeparator()
 				.addItem('Open Accounts & Cards panel', 'showPanelTables')
 				.addItem('Open Analytics panel', 'showPanelAnalytics')
-				.addItem('Open Tags panel', 'showPanelTags')
 				.addSeparator()
 				.addItem('About the add-on', 'showDialogAboutAddon')
 				.addItem('Edit settings', 'showSidebarMainSettings')
@@ -81,48 +80,6 @@ function showPanelTables() {
 		.setTitle('Accounts & Cards');
 	SpreadsheetApp.getUi()
 		.showSidebar(htmlSidebar);
-}
-
-
-function showPanelTags() {
-	if (onlineUpdate_()) return;
-
-	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
-	if (!sheet) {
-		SpreadsheetApp.getUi().alert(
-			"Can't open Tags panel",
-			"The sheet Tags was not found.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
-		return;
-	}
-
-	var htmlSidebar = HtmlService.createTemplateFromFile('htmlSidebarTags')
-		.evaluate()
-		.setTitle('Tags');
-	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
-}
-
-
-function showPanelTagsStats(tag) {
-	var htmlTemplate, htmlDialog;
-	var tag;
-
-	htmlTemplate = HtmlService.createTemplateFromFile('htmlSidebarTagsStats');
-	tag = optMainTags('GetInfo', tag);
-
-	htmlTemplate.is_initiated = getUserSettings_('MFactor') > 0;
-
-	htmlTemplate.tag_name = tag.Name;
-	htmlTemplate.tag_code = tag.Tag;
-	htmlTemplate.tag_category = TC_NAME_[tag.C];
-	htmlTemplate.tag_description = tag.Description;
-	htmlTemplate.tag_analytics = tag.analytics ? "On" : "Off";
-
-	htmlDialog = htmlTemplate.evaluate()
-		.setWidth(439)
-		.setHeight(509);
-	SpreadsheetApp.getUi()
-		.showModalDialog(htmlDialog, 'Tag Stats');
 }
 
 
