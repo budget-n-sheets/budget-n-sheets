@@ -111,6 +111,8 @@ function update_ExecutePatial_() {
 			update_v0m19p8_();
 		case 73:
 			update_v0m20p0_();
+		case 74:
+			update_v0m20p1_();
 			break;
 
 		default:
@@ -150,6 +152,34 @@ function update_v0m0p0_() {
 		return true;
 	}
 }*/
+
+/**
+ * Reinstall weekly_Bar_() trigger to fix week day.
+ *
+ * 0.20.2
+ */
+function update_v0m20p1_() {
+	try {
+		var financial_year;
+		var date, day;
+
+		if (getPropertiesService_('document', 'string', 'OperationMode') === 'active') return;
+
+		financial_year = getUserConstSettings_('financial_year');
+		date = getSpreadsheetDate();
+
+		if (date.getFullYear() < financial_year || financial_year >= 2020) {
+			day = new Date(financial_year, 0, 3);
+			day = day.getDay();
+
+			deleteScriptAppTriggers_('document', 'weeklyMainId');
+			createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', day);
+		}
+	} catch (err) {
+		console.error("update_v0m20p1_()", err);
+		return true;
+	}
+}
 
 /**
  * Import cool sheet Stats for Tags.
