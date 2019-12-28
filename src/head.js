@@ -9,6 +9,13 @@ var TABLE_DIMENSION_ = {height: 10, width: 5};
 var HEAD_AG = 75;
 var AppsScriptGlobal = (function() {
 	var o = {
+		version_number: {
+			major: 0,
+			minor: 0,
+			patch: 0,
+		},
+		version_name: "0.20.3",
+
 		AddonVersion: 75,
 		AddonVersionName: "0.20.5",
 
@@ -31,6 +38,9 @@ var AppsScriptGlobal = (function() {
 	};
 
 	return {
+		version_number: function() { return o.version_number },
+		version_name: function() { return o.version_name },
+
 		AddonVersion: function() { return o.AddonVersion },
 		AddonVersionName: function() { return o.AddonVersionName },
 
