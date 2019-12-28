@@ -114,6 +114,7 @@ function askReinstall() {
 
 	var financial_year = getUserConstSettings_('financial_year');
 	var date = getSpreadsheetDate();
+	var d;
 
 	purgeScriptAppTriggers_();
 
@@ -128,8 +129,10 @@ function askReinstall() {
 		createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
 
 	} else if (financial_year > date.getFullYear()) {
+		d = new Date(financial_year, 0, 3);
+		d = d.getDay();
 		setPropertiesService_('document', 'string', 'OperationMode', 'passive');
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", 2);
+		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
 	}
 }
 
@@ -725,7 +728,7 @@ function setupPart2_() {
 
 
 function setupPart1_(yyyy_mm) {
-	var cell;
+	var cell, d;
 
 	cell = CONST_LIST_ES_SHEETS_["_settings"].getRange(8, 2);
 
@@ -777,7 +780,9 @@ function setupPart1_(yyyy_mm) {
 		setPropertiesService_('document', 'string', 'OperationMode', "active");
 
 	} else if (CONST_SETUP_SETTINGS_["financial_year"] > yyyy_mm.yyyy) {
-		createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', 2);
+		d = new Date(CONST_SETUP_SETTINGS_["financial_year"], 0, 3);
+		d = d.getDay();
+		createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', d);
 		setPropertiesService_('document', 'string', 'OperationMode', "passive");
 	}
 
