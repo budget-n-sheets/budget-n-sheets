@@ -169,7 +169,7 @@ function update_v0m20p1_() {
 		date = getSpreadsheetDate();
 
 		if (date.getFullYear() < financial_year || financial_year >= 2020) {
-			day = new Date(financial_year, 0, 3);
+			day = new Date(financial_year, 0, 2);
 			day = day.getDay();
 
 			deleteScriptAppTriggers_('document', 'weeklyMainId');

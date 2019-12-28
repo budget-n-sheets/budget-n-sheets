@@ -129,7 +129,7 @@ function askReinstall() {
 		createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
 
 	} else if (financial_year > date.getFullYear()) {
-		d = new Date(financial_year, 0, 3);
+		d = new Date(financial_year, 0, 2);
 		d = d.getDay();
 		setPropertiesService_('document', 'string', 'OperationMode', 'passive');
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
@@ -780,7 +780,7 @@ function setupPart1_(yyyy_mm) {
 		setPropertiesService_('document', 'string', 'OperationMode', "active");
 
 	} else if (CONST_SETUP_SETTINGS_["financial_year"] > yyyy_mm.yyyy) {
-		d = new Date(CONST_SETUP_SETTINGS_["financial_year"], 0, 3);
+		d = new Date(CONST_SETUP_SETTINGS_["financial_year"], 0, 2);
 		d = d.getDay();
 		createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', d);
 		setPropertiesService_('document', 'string', 'OperationMode', "passive");
