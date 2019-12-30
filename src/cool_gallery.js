@@ -2,38 +2,36 @@ function coolGallery(option) {
 	var lock, s;
 	var info;
 
-	lock = LockService.getDocumentLock();
-	s = lock.tryLock(200);
-	if (!s) return 0;
-
 	info = AppsScriptGlobal.CoolGallery();
 	info = info[option];
 	if (!info) {
-		showDialogErrorMessage();
 		console.warn("getCoolSheet_(): Details of page not found.", {"option":option, "info":info});
-		return 1;
+		showDialogErrorMessage();
+		return 2;
 	}
 
+	lock = LockService.getDocumentLock();
+	s = lock.tryLock(200);
+	if (!s) return 0;
 	s = getCoolSheet_(info);
 	lock.releaseLock();
 
-	if (s === 3) {
-		showDialogErrorMessage();
-		return 1;
-	} else if (s === 100) {
+	if (s === 0) {
 		SpreadsheetApp.getUi().alert(
 			"Can't import analytics page",
 			"A page with the name \"" + info.sheet_name + "\" already exists. Please rename, or delete the page.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 		return -1;
+	} else if (s === 1) {
+		return 1;
 	}
 
 	if (option === "tags") {
-		s = coolTags_(info);
+		coolTags_(info);
 	}
 
 	console.info("add-on/cool_gallery/import/" + info.sheet_name);
-	return s;
+	return -1;
 }
 
 
@@ -41,21 +39,18 @@ function getCoolSheet_(info) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var template;
 
-	if (spreadsheet.getSheetByName(info.sheet_name)) {
-		return 100;
-	}
+	if (spreadsheet.getSheetByName(info.sheet_name)) return 0;
 
 	try {
 		template = SpreadsheetApp.openById(info.id);
 	} catch (err) {
 		console.warn("getCoolSheet_()", err);
-		return 3;
+		return 1;
 	}
 
 	template.getSheetByName(info.sheet_name)
 		.copyTo(spreadsheet)
 		.setName(info.sheet_name);
-
 	SpreadsheetApp.flush();
 }
 
@@ -174,6 +169,4 @@ function coolTags_(info) {
 	sheet.setTabColor('#e69138');
 	SpreadsheetApp.flush();
 	spreadsheet.setActiveSheet(sheet);
-
-	return -1;
 }

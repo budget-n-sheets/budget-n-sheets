@@ -220,7 +220,14 @@ function setup_(settings, listAcc) {
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(CONST_LIST_ES_SHEETS_["summary"]);
 
 	setup_ExecutePatial_();
-	coolGallery('tags');
+
+	try {
+		a = AppsScriptGlobal.CoolGallery();
+		getCoolSheet_(a["tags"]);
+		coolTags_(a["tags"]);
+	} catch (err) {
+		console.error(err);
+	}
 
 	a = {
 		AddonVersion: AppsScriptGlobal.AddonVersion(),
