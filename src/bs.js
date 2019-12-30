@@ -68,8 +68,8 @@ function makeSign_() {
 	data = {
 		spreadsheet_id: SpreadsheetApp.getActiveSpreadsheet().getId(),
 
-		addon_version: optGetClass_("AddonVersion"),
-		template_version: optGetClass_("TemplateVersion"),
+		addon_version: optGetClass_('script'),
+		template_version: optGetClass_('template'),
 
 		financial_year: getUserConstSettings_('financial_year'),
 		number_accounts: getUserConstSettings_('number_accounts')

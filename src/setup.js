@@ -230,12 +230,10 @@ function setup_(settings, listAcc) {
 	}
 
 	a = {
-		AddonVersion: AppsScriptGlobal.AddonVersion(),
-		AddonVersionName: AppsScriptGlobal.AddonVersionName(),
-		TemplateVersion: AppsScriptGlobal.TemplateVersion(),
-		TemplateVersionName: AppsScriptGlobal.TemplateVersionName()
+		script: AppsScriptGlobal.script_version()["number"],
+		template: AppsScriptGlobal.template_version()["number"]
 	};
-	setPropertiesService_("document", "json", "class_version", a);
+	setPropertiesService_('document', 'json', 'class_version2', a);
 
 	a = nodeControl_("sign");
 	if (a !== -1) throw 1;
