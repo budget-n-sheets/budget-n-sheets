@@ -29,16 +29,16 @@ function onlineUpdate_() {
 			"Update is complete.",
 			ui.ButtonSet.OK);
 		return;
-	}
-
-	if (b === 1) {
-		uninstall_();
-		onOpen();
-		showDialogErrorMessage();
-	} else {
+	} else if (b === 0) {
 		ui.alert("Budget n Sheets",
 			"The add-on is busy. Try again in a moment.",
 			ui.ButtonSet.OK);
+	} else if (b === 1) {
+		showDialogErrorMessage();
+	} else {
+		uninstall_();
+		onOpen();
+		showDialogErrorMessage();
 	}
 
 	return true;
@@ -64,7 +64,7 @@ function seamlessUpdate_() {
 
 	var b = update_ExecutePatial_();
 	if (b === -1) return;
-	if (b === 1) uninstall_();
+	if (b > 1) uninstall_();
 
 	return true;
 }
@@ -85,7 +85,6 @@ function update_ExecutePatial_() {
 			v1 = AppsScriptGlobal.script_version()["number"];
 	var a, p, r, t;
 
-	r = -1;
 	t = true;
 	a = v0.minor;
 	p = v0.patch;
@@ -101,61 +100,70 @@ function update_ExecutePatial_() {
 
 			default:
 				console.warn("update_ExecutePatial_(): Switch case is default.", a);
-				r = 0;
+				r.e = 1;
 				break;
 		}
 
-		if (r === -1) {
-			if (a < v1.minor) {
-				a++;
-				p = 0;
-			} else {
-				t = false;
-			}
+		if (r.e === -1 && a < v1.minor) {
+			v0.minor = a;
+			v0.patch = r.p;
+
+			a++;
+			p = 0;
 		} else {
-			return 0;
+			t = false;
 		}
 	}
 
-	v0.minor = a;
-	v0.patch = v1.patch;
+	if (r.e === -1) {
+		v0.minor = a;
+		v0.patch = r.p;
+		r = -1;
+	} else {
+		r = 1;
+	}
+
 	optSetClass_('script', v0);
 	nodeControl_('sign');
 
 	console.info("add-on/update");
-	return -1;
+	return r;
 }
 
 
-function update_v0m21_(patch) {
-	switch (patch) {
+function update_v0m21_(p) {
+	switch (p) {
 		case 0:
+			p = 0;
 			break;
 
 		default:
-			console.warn("update_v0m21_(): Switch case is default.", patch);
-			return 0;
+			console.warn("update_v0m21_(): Switch case is default.", p);
+			return {e:1, p:p};
 	}
 
-	return -1;
+	return {e:-1, p:p};
 }
 
 
-function update_v0m20_(patch) {
-	switch (patch) {
+function update_v0m20_(p) {
+	switch (p) {
 		case 0:
 			update_v0m20p0s0_();
+			p = 0;
 		case 1:
+			p = 1;
 		case 2:
 			update_v0m20p1s0_();
+			p = 2;
 			break;
 
 		default:
-			console.warn("update_v0m20_(): Switch case is default.", patch);
-			return 0;
+			console.warn("update_v0m20_(): Switch case is default.", p);
+			return {e:1, p:p};
 	}
 
-	return -1;
+	return {e:-1, p:p};
 }
 
 
