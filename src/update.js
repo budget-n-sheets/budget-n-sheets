@@ -133,7 +133,7 @@ function update_v0m21_(patch) {
 			break;
 
 		default:
-			console.warn("update_v0m20_(): Switch case is default.", patch);
+			console.warn("update_v0m21_(): Switch case is default.", patch);
 			return 0;
 	}
 
