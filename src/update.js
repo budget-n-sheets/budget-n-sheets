@@ -118,7 +118,7 @@ function update_ExecutePatial_() {
 	}
 
 	v0.minor = a;
-	v0.patch = p;
+	v0.patch = v1.patch;
 	optSetClass_('script', v0);
 	nodeControl_('sign');
 
