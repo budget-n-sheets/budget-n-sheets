@@ -16,9 +16,10 @@ function onlineUpdate_() {
 			v1 = AppsScriptGlobal.script_version()["number"];
 
 	if (v0.major > v1.major) return;
-	if (v0.minor > v1.minor) return;
-	if (v0.patch >= v1.patch) return;
-
+	if (v0.major == v1.major) {
+		if (v0.minor > v1.minor) return;
+		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return;
+	}
 	showDialogQuickMessage("Add-on Update", "The add-on is updating...", false, true);
 
 	var b = update_ExecutePatial_();
@@ -56,8 +57,10 @@ function seamlessUpdate_() {
 			v1 = AppsScriptGlobal.script_version()["number"];
 
 	if (v0.major > v1.major) return;
-	if (v0.minor > v1.minor) return;
-	if (v0.patch >= v1.patch) return;
+	if (v0.major == v1.major) {
+		if (v0.minor > v1.minor) return;
+		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return;
+	}
 
 	var b = update_ExecutePatial_();
 	if (b === -1) return;
