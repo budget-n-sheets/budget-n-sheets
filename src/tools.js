@@ -440,7 +440,7 @@ function foo_FormatAccounts_(mm) {
 	for (k = 0; k < 1 + number_accounts; k++) {
 		sheet.getRange(5, 1 + w_*k, n, 4).sort([
 			{column:(1 + w_*k), ascending:true},
-			{column:(4 + w_*k), ascending:false}
+			{column:(3 + w_*k), ascending:true}
 		]);
 
 		i = 0;
@@ -481,7 +481,7 @@ function foo_FormatCards_(mm) {
 	sheet.getRange(6, 1 + w_*mm, n, 5).sort([
 		{column:(3 + w_*mm), ascending:true},
 		{column:(1 + w_*mm), ascending:true},
-		{column:(4 + w_*mm), ascending:false}
+		{column:(4 + w_*mm), ascending:true}
 	]);
 
 	i = 0;
