@@ -20,6 +20,11 @@ function onInstall(e) {
 	* @param {Object} e The event parameter for a simple onOpen trigger.
 	*/
 function onOpen(e) {
+	try {
+		trial_onOpen();
+	} catch (err) {
+
+	}
 	if (e && e.authMode == ScriptApp.AuthMode.NONE) {
 		SpreadsheetApp.getUi()
 			.createAddonMenu()
