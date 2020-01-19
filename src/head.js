@@ -6,7 +6,7 @@ var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 
 var TABLE_DIMENSION_ = {height: 10, width: 5};
 
-var HEAD_AG = 75;
+var HEAD_AG = 76;
 var AppsScriptGlobal = (function() {
 	var o = {
 		script_version: {
@@ -23,8 +23,8 @@ var AppsScriptGlobal = (function() {
 			name: "6.4"
 		},
 
-		AddonVersion: 75,
-		AddonVersionName: "0.20.5",
+		AddonVersion: 76,
+		AddonVersionName: "0.20.6",
 
 		TemplateVersion: 59,
 		TemplateVersionName: "6.4",
