@@ -4,7 +4,6 @@ function onlineUpdate_() {
 		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
 	} catch (err) {
 		console.warn("onlineUpdate_()", err);
-
 		ui.alert(
 			"Add-on Update",
 			"Please re-open the spreadsheet to update the add-on.",
@@ -20,22 +19,22 @@ function onlineUpdate_() {
 		if (v0.minor > v1.minor) return;
 		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return;
 	}
+
 	showDialogQuickMessage("Add-on Update", "The add-on is updating...", false, true);
 
-	var b = update_partial_();
-	if (b === -1) {
+	var r = update_partial_();
+
+	if (r === 0) {
 		ui.alert(
 			"Add-on Update",
 			"Update is complete.",
 			ui.ButtonSet.OK);
 		return;
-	} else if (b === 0) {
+	} else if (r === 1) {
 		ui.alert("Budget n Sheets",
 			"The add-on is busy. Try again in a moment.",
 			ui.ButtonSet.OK);
-	} else if (b === 1) {
-		showDialogErrorMessage();
-	} else {
+	} else if (r > 1) {
 		uninstall_();
 		onOpen();
 		showDialogErrorMessage();
@@ -62,32 +61,33 @@ function seamlessUpdate_() {
 		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return;
 	}
 
-	var b = update_partial_();
-	if (b === -1) return;
-	if (b > 1) uninstall_();
+	var r = update_partial_();
+
+	if (r === 0) return;
+	if (r > 1) uninstall_();
 
 	return true;
 }
 
 
 function update_partial_() {
-	if (!getPropertiesService_('document', '', 'is_installed')) return 1;
+	if (!getPropertiesService_('document', '', 'is_installed')) return 3;
 
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(200);
 	} catch (err) {
 		console.warn("update_ExecutePatial_(): Wait lock time out.");
-		return 0;
+		return 1;
 	}
 
 	const v0 = optGetClass_('script');
 	const v1 = AppsScriptGlobal.script_version()["number"];
 
-	if (v0.major > v1.major) return -1;
+	if (v0.major > v1.major) return 0;
 	if (v0.major == v1.major) {
-		if (v0.minor > v1.minor) return -1;
-		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return -1;
+		if (v0.minor > v1.minor) return 0;
+		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return 0;
 	}
 
 	var ver, major, minor, patch;
@@ -140,7 +140,7 @@ function update_partial_() {
 	optSetClass_('script', cell);
 	nodeControl_('sign');
 
-	return r.r;
+	return 0;
 }
 
 
