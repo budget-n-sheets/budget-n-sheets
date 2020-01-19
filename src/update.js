@@ -129,6 +129,10 @@ function update_partial_() {
 			r.m = mm;
 		}
 		if (r.p == -1) r.p = pp;
+
+		console.info("add-on/update/fail", r);
+	} else {
+		console.info("add-on/update/success");
 	}
 
 	var cell = {
