@@ -12,8 +12,8 @@ function onlineUpdate_() {
 		return true;
 	}
 
-	var v0 = optGetClass_('script'),
-			v1 = AppsScriptGlobal.script_version()["number"];
+	const v0 = optGetClass_('script');
+	const v1 = AppsScriptGlobal.script_version()["number"];
 
 	if (v0.major > v1.major) return;
 	if (v0.major == v1.major) {
@@ -22,7 +22,7 @@ function onlineUpdate_() {
 	}
 	showDialogQuickMessage("Add-on Update", "The add-on is updating...", false, true);
 
-	var b = update_ExecutePatial_();
+	var b = update_partial_();
 	if (b === -1) {
 		ui.alert(
 			"Add-on Update",
@@ -53,8 +53,8 @@ function seamlessUpdate_() {
 		return true;
 	}
 
-	var v0 = optGetClass_('script'),
-			v1 = AppsScriptGlobal.script_version()["number"];
+	const v0 = optGetClass_('script');
+	const v1 = AppsScriptGlobal.script_version()["number"];
 
 	if (v0.major > v1.major) return;
 	if (v0.major == v1.major) {
@@ -62,7 +62,7 @@ function seamlessUpdate_() {
 		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return;
 	}
 
-	var b = update_ExecutePatial_();
+	var b = update_partial_();
 	if (b === -1) return;
 	if (b > 1) uninstall_();
 
@@ -70,7 +70,7 @@ function seamlessUpdate_() {
 }
 
 
-function update_ExecutePatial_() {
+function update_partial_() {
 	if (!getPropertiesService_('document', '', 'is_installed')) return 1;
 
 	var lock = LockService.getDocumentLock();
@@ -81,89 +81,132 @@ function update_ExecutePatial_() {
 		return 0;
 	}
 
-	var v0 = optGetClass_('script'),
-			v1 = AppsScriptGlobal.script_version()["number"];
-	var a, p, r, t;
+	const v0 = optGetClass_('script');
+	const v1 = AppsScriptGlobal.script_version()["number"];
 
-	t = true;
-	a = v0.minor;
-	p = v0.patch;
+	if (v0.major > v1.major) return -1;
+	if (v0.major == v1.major) {
+		if (v0.minor > v1.minor) return -1;
+		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return -1;
+	}
 
-	while (t) {
-		switch (a) {
-			case 20:
-				r = update_v0m20_(p);
-				break;
-			case 21:
-				r = update_v0m21_(p);
-				break;
+	var ver, major, minor, patch;
+	var mm, pp, r, t;
 
-			default:
-				console.warn("update_ExecutePatial_(): Switch case is default.", a);
-				r.e = 1;
-				break;
+	major = v0.major;
+	minor = v0.minor;
+	patch = v0.patch;
+	list = AppsScriptGlobal.patch_list();
+
+	t = 0;
+	mm = minor;
+	pp = patch;
+	r = {r:0, m:minor, p:patch};
+
+	do {
+		ver = (major == v1.major ? v1 : null);
+		if (major >= list.length) {
+			major -= 2;
+			t = 1;
+		} else if (list[major]) {
+			r = update_major_(ver, list[major], minor, patch);
 		}
 
-		if (r.e === -1 && a < v1.minor) {
-			v0.minor = a;
-			v0.patch = r.p;
-
-			a++;
-			p = 0;
+		if (r.r || major == v1.major) {
+			t = 1;
 		} else {
-			t = false;
+			major++;
+			mm = r.m;
+			minor = 0;
+			pp = r.p;
+			patch = -1;
 		}
+	} while (!t);
+
+	if (r.r) {
+		if (r.m == -1) {
+			major--;
+			r.m = mm;
+		}
+		if (r.p == -1) r.p = pp;
 	}
 
-	if (r.e === -1) {
-		v0.minor = a;
-		v0.patch = r.p;
-		r = -1;
-	} else {
-		r = 1;
-	}
+	var cell = {
+		major: major,
+		minor: r.m,
+		patch: r.p
+	};
 
-	optSetClass_('script', v0);
+	optSetClass_('script', cell);
 	nodeControl_('sign');
 
-	console.info("add-on/update");
-	return r;
+	return r.r;
 }
 
 
-function update_v0m21_(p) {
-	switch (p) {
-		case 0:
-			p = 0;
-			break;
+function update_major_(v1, list, minor, patch) {
+	var m = minor;
+	var p = patch;
+	var ver, pp, r, t;
 
-		default:
-			console.warn("update_v0m21_(): Switch case is default.", p);
-			return {e:1, p:p};
+	t = 0;
+	pp = p;
+	r = {r:0, p:p};
+
+	do {
+		if (v1 && m == v1.minor) ver = v1;
+		else ver = null;
+
+		if (m >= list.length) {
+			m -= 2;
+			t = 1;
+		} else if (list[m]) {
+			r = update_minor_(ver, list[m], p);
+		}
+
+		if (r.r || (ver && m == ver.minor)) {
+			t = 1;
+		} else {
+			m++;
+			pp = r.p;
+			p = -1;
+		}
+	} while (!t);
+
+	if (r.r && r.p == -1) {
+		m--;
+		r.p = pp;
 	}
 
-	return {e:-1, p:p};
+	p = r.p;
+	r = r.r;
+
+	return {r:r, m:m, p:p};
 }
 
 
-function update_v0m20_(p) {
-	switch (p) {
-		case 0:
-			update_v0m20p0s0_();
-			p = 0;
-		case 1:
-			p = 1;
-		case 2:
-			update_v0m20p1s0_();
-			p = 2;
+function update_minor_(v1, list, patch) {
+	var p = patch;
+	var ver, r;
+
+	r = 0;
+
+	if (v1) ver = v1;
+	else ver = {patch:-100};
+
+	do {
+		p++;
+		if (p >= list.length) {
+			p--;
 			break;
+		} else if (list[p]) {
+			r = list[p]();
+		}
+	} while (!r && p != ver.patch);
 
-		default:
-			console.warn("update_v0m20_(): Switch case is default.", p);
-			return {e:1, p:p};
-	}
+	if (r) p--;
 
-	return {e:-1, p:p};
+	return {r:r, p:p};
 }
 
 
@@ -172,11 +215,11 @@ function update_v0m20_(p) {
  *
  * 0.0.0
  *
-function update_v0m0p0s0_() {
+function update_v0m0p0_() {
 	try {
 	} catch (err) {
-		console.error("update_v0m0p0s0_()", err);
-		return true;
+		console.error("update_v0m0p0_()", err);
+		return 1;
 	}
 }*/
 
@@ -186,7 +229,7 @@ function update_v0m0p0s0_() {
  *
  * 0.20.2
  */
-function update_v0m20p2s0_() {
+function update_v0m20p2_() {
 	try {
 		var financial_year;
 		var date, day;
@@ -204,8 +247,8 @@ function update_v0m20p2s0_() {
 			createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', day);
 		}
 	} catch (err) {
-		console.error("update_v0m20p2s0_()", err);
-		return true;
+		console.error("update_v0m20p2_()", err);
+		return 1;
 	}
 }
 
@@ -215,13 +258,13 @@ function update_v0m20p2s0_() {
  *
  * 0.20.0
  */
-function update_v0m20p0s0_() {
+function update_v0m20p0_() {
 	try {
 		if (!SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Stats for Tags')) {
 			coolGallery('tags');
 		}
 	} catch (err) {
-		console.error("update_v0m20p0s0_()", err);
-		return true;
+		console.error("update_v0m20p0_()", err);
+		return 1;
 	}
 }
