@@ -237,6 +237,12 @@ function setup_(settings, listAcc) {
 	};
 	setPropertiesService_("document", "json", "class_version", a);
 
+	a = {
+		script: AppsScriptGlobal.script_version()["number"],
+		template: AppsScriptGlobal.template_version()["number"]
+	};
+	setPropertiesService_('document', 'json', 'class_version2', a);
+
 	a = nodeControl_("sign");
 	if (a !== -1) throw 1;
 

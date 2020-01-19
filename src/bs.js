@@ -71,6 +71,9 @@ function makeSign_() {
 		addon_version: optGetClass_("AddonVersion"),
 		template_version: optGetClass_("TemplateVersion"),
 
+		addon_version2: optGetClass2_('script'),
+		template_version2: optGetClass2_('template'),
+
 		financial_year: getUserConstSettings_('financial_year'),
 		number_accounts: getUserConstSettings_('number_accounts')
 	};

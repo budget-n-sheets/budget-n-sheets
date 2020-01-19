@@ -113,6 +113,8 @@ function update_ExecutePatial_() {
 			update_v0m20p0_();
 		case 74:
 			update_v0m20p1_();
+		case 75:
+			c = update_v0m20p2_();
 			break;
 
 		default:
@@ -152,6 +154,25 @@ function update_v0m0p0_() {
 		return true;
 	}
 }*/
+
+/**
+ * Transition to new update system.
+ *
+ * 0.20.6
+ */
+function update_v0m20p2_() {
+	try {
+		var a = {
+			script: AppsScriptGlobal.script_version()["number"],
+			template: AppsScriptGlobal.template_version()["number"]
+		};
+
+		setPropertiesService_('document', 'json', 'class_version2', a);
+	} catch (err) {
+		console.error("update_v0m20p2_()", err);
+		return true;
+	}
+}
 
 /**
  * Reinstall weekly_Bar_() trigger to fix week day.

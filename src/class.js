@@ -8,7 +8,6 @@ function optGetClass_(a) {
 	return b[a];
 }
 
-
 function optSetClass_(a, b) {
 	if (typeof a != "string") return;
 
@@ -30,4 +29,24 @@ function optSetClass_(a, b) {
 	}
 
 	setPropertiesService_("document", "json", "class_version", c);
+}
+
+
+function optGetClass2_(o) {
+	var c = getPropertiesService_('document', 'json', 'class_version2');
+
+	return c[o];
+}
+
+function optSetClass2_(o, v) {
+	if (o !== 'script' && o !== 'template') {
+			console.error("optSetClass_(): Switch case is default", {o:o, v:v});
+			return;
+	}
+
+	var c = getPropertiesService_('document', 'json', 'class_version2');
+
+	c[o] = v;
+
+	setPropertiesService_('document', 'json', 'class_version2', c);
 }
