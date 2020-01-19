@@ -21,7 +21,7 @@ var AppsScriptGlobal = (function() {
 			[
 				null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-				[ update_v0m20p0_, null, update_v0m20p2_ ],
+				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null ],
 				[ null ]
 			]
 		],
