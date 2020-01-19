@@ -22,7 +22,7 @@ function onlineUpdate_() {
 
 	showDialogQuickMessage("Add-on Update", "The add-on is updating...", false, true);
 
-	var r = update_partial_();
+	var r = update_();
 
 	if (r === 0) {
 		ui.alert(
@@ -61,7 +61,7 @@ function seamlessUpdate_() {
 		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return;
 	}
 
-	var r = update_partial_();
+	var r = update_();
 
 	if (r === 0) return;
 	if (r > 1) uninstall_();
@@ -70,147 +70,24 @@ function seamlessUpdate_() {
 }
 
 
-function update_partial_() {
-	if (!getPropertiesService_('document', '', 'is_installed')) return 3;
+function optGetClass_(o) {
+	var c = getPropertiesService_('document', 'json', 'class_version2');
 
-	var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(200);
-	} catch (err) {
-		console.warn("update_ExecutePatial_(): Wait lock time out.");
-		return 1;
-	}
-
-	const v0 = optGetClass_('script');
-	const v1 = AppsScriptGlobal.script_version()["number"];
-
-	if (v0.major > v1.major) return 0;
-	if (v0.major == v1.major) {
-		if (v0.minor > v1.minor) return 0;
-		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return 0;
-	}
-
-	var ver, major, minor, patch;
-	var mm, pp, r, t;
-
-	major = v0.major;
-	minor = v0.minor;
-	patch = v0.patch;
-	list = AppsScriptGlobal.patch_list();
-
-	t = 0;
-	mm = minor;
-	pp = patch;
-	r = {r:0, m:minor, p:patch};
-
-	do {
-		ver = (major == v1.major ? v1 : null);
-		if (major >= list.length) {
-			major -= 2;
-			t = 1;
-		} else if (list[major]) {
-			r = update_major_(ver, list[major], minor, patch);
-		}
-
-		if (r.r || major == v1.major) {
-			t = 1;
-		} else {
-			major++;
-			mm = r.m;
-			minor = 0;
-			pp = r.p;
-			patch = -1;
-		}
-	} while (!t);
-
-	if (r.r) {
-		if (r.m == -1) {
-			major--;
-			r.m = mm;
-		}
-		if (r.p == -1) r.p = pp;
-
-		console.info("add-on/update/fail", r);
-	} else {
-		console.info("add-on/update/success");
-	}
-
-	var cell = {
-		major: major,
-		minor: r.m,
-		patch: r.p
-	};
-
-	optSetClass_('script', cell);
-	nodeControl_('sign');
-
-	return 0;
+	return c[o];
 }
 
 
-function update_major_(v1, list, minor, patch) {
-	var m = minor;
-	var p = patch;
-	var ver, pp, r, t;
-
-	t = 0;
-	pp = p;
-	r = {r:0, p:p};
-
-	do {
-		if (v1 && m == v1.minor) ver = v1;
-		else ver = null;
-
-		if (m >= list.length) {
-			m -= 2;
-			t = 1;
-		} else if (list[m]) {
-			r = update_minor_(ver, list[m], p);
-		}
-
-		if (r.r || (ver && m == ver.minor)) {
-			t = 1;
-		} else {
-			m++;
-			pp = r.p;
-			p = -1;
-		}
-	} while (!t);
-
-	if (r.r && r.p == -1) {
-		m--;
-		r.p = pp;
+function optSetClass_(o, v) {
+	if (o !== 'script' && o !== 'template') {
+			console.error("optSetClass_(): Switch case is default", {o:o, v:v});
+			return;
 	}
 
-	p = r.p;
-	r = r.r;
+	var c = getPropertiesService_('document', 'json', 'class_version2');
 
-	return {r:r, m:m, p:p};
-}
+	c[o] = v;
 
-
-function update_minor_(v1, list, patch) {
-	var p = patch;
-	var ver, r;
-
-	r = 0;
-
-	if (v1) ver = v1;
-	else ver = {patch:-100};
-
-	do {
-		p++;
-		if (p >= list.length) {
-			p--;
-			break;
-		} else if (list[p]) {
-			r = list[p]();
-		}
-	} while (!r && p != ver.patch);
-
-	if (r) p--;
-
-	return {r:r, p:p};
+	setPropertiesService_('document', 'json', 'class_version2', c);
 }
 
 
