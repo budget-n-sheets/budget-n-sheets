@@ -6,7 +6,6 @@ var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 
 var TABLE_DIMENSION_ = {height: 10, width: 5};
 
-var HEAD_AG = 76;
 var AppsScriptGlobal = (function() {
 	var o = {
 		script_version: {
@@ -18,16 +17,20 @@ var AppsScriptGlobal = (function() {
 			name: "0.21.0"
 		},
 
+		patch_list: [
+			[
+				null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
+				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
+				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
+				[ null ]
+			]
+		],
+
 		template_version: {
 			number: 59,
 			name: "6.4"
 		},
 
-		AddonVersion: 76,
-		AddonVersionName: "0.20.6",
-
-		TemplateVersion: 59,
-		TemplateVersionName: "6.4",
 		TemplateId: "",
 		TemplateSheets: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "_Settings", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "Summary", "About" ],
 
@@ -46,13 +49,9 @@ var AppsScriptGlobal = (function() {
 
 	return {
 		script_version: function() { return o.script_version },
+		patch_list: function() { return o.patch_list },
 		template_version: function() { return o.template_version },
 
-		AddonVersion: function() { return o.AddonVersion },
-		AddonVersionName: function() { return o.AddonVersionName },
-
-		TemplateVersion: function() { return o.TemplateVersion },
-		TemplateVersionName: function() { return o.TemplateVersionName },
 		TemplateId: function() { return o.TemplateId },
 		TemplateSheets: function() { return o.TemplateSheets },
 

@@ -120,7 +120,7 @@ function showDialogAboutAddon() {
 
 	htmlTemplate = HtmlService.createTemplateFromFile('htmlAboutAddon')
 
-	htmlTemplate.version = AppsScriptGlobal.AddonVersionName();
+	htmlTemplate.version = AppsScriptGlobal.script_version()["name"];
 
 	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(281)
