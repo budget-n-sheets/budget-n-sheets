@@ -56,23 +56,34 @@ function signDoc_() {
 
 
 function makeSign_() {
-	var data, key, sig;
-
-	key = PropertiesService.getScriptProperties().getProperty("inner_lock");
-
+	const key = PropertiesService.getScriptProperties().getProperty('inner_lock');
 	if (!key) {
 		console.warn("Key 'inner_lock' was not found!");
 		return;
 	}
 
+	const user_const_settings = getPropertiesService_('document', 'json', 'user_const_settings');
+	if (!user_const_settings) {
+		console.warn("Property 'user_const_settings' is undefined!");
+		return;
+	}
+
+	const class_version = getPropertiesService_('document', 'json', 'class_version2');
+	if (!class_version) {
+		console.warn("Property 'class_version' is undefined!");
+		return;
+	}
+
+	var data, sig;
+
 	data = {
 		spreadsheet_id: SpreadsheetApp.getActiveSpreadsheet().getId(),
 
-		addon_version: optGetClass_('script'),
-		template_version: optGetClass_('template'),
+		addon_version: class_version.script,
+		template_version: class_version.template,
 
-		financial_year: getUserConstSettings_('financial_year'),
-		number_accounts: getUserConstSettings_('number_accounts')
+		financial_year: user_const_settings.financial_year,
+		number_accounts: user_const_settings.number_accounts
 	};
 
 	data = JSON.stringify(data);
@@ -90,17 +101,16 @@ function verifySig_(data) {
 		return 2;
 	}
 
-	var key, sig;
-
-	key = PropertiesService.getScriptProperties().getProperty("inner_lock");
-
+	const key = PropertiesService.getScriptProperties().getProperty('inner_lock');
 	if (!key) {
 		console.warn("Key 'inner_lock' was not found!");
 		return 1;
 	}
 
+	var sig;
+
 	data = data.split(":");
-	if (data.length !== 2) return 2;
+	if (data.length != 2) return 2;
 
 	sig = computeHmacSignature("SHA_256", data[0], key, "UTF_8");
 
