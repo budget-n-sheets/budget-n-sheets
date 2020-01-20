@@ -79,6 +79,7 @@ function update_() {
 
 		console.info("add-on/update/fail", r);
 	} else {
+		if (r.m == -1) r.m = 0;
 		console.info("add-on/update/success");
 	}
 
@@ -96,6 +97,8 @@ function update_() {
 
 
 function update_major_(v1, list, minor, patch) {
+	if (list == null || list.length == 0) return {r:1, m:-1, p:-1};
+
 	var m = minor;
 	var p = patch;
 	var ver, pp, r, t;
@@ -127,6 +130,8 @@ function update_major_(v1, list, minor, patch) {
 	if (r.r && r.p == -1) {
 		m--;
 		r.p = pp;
+	} else if (r.p == -1) {
+		r.p = 0;
 	}
 
 	p = r.p;
@@ -137,6 +142,8 @@ function update_major_(v1, list, minor, patch) {
 
 
 function update_minor_(v1, list, patch) {
+	if (list == null || list.length == 0) return {r:1, p:-1};
+
 	var p = patch;
 	var ver, r;
 
