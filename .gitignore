@@ -1,4 +1,5 @@
-appsscript.json
-.clasp.json
 clasp.sh
+.clasp.json
+appsscript.json
+
 trial_*.js
