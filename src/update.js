@@ -124,6 +124,39 @@ function update_v0m0p0_() {
 
 
 /**
+ * Set MD5 of selected financial calendar ID.
+ *
+ * 0.21.1
+ */
+function update_v0m21p1_() {
+	try {
+		var calendars, calendar;
+		var digest, i;
+
+		calendar = getUserSettings_('FinancialCalendar');
+		if (calendar == "") return;
+
+		calendars = CalendarApp.getAllOwnedCalendars();
+
+		for (i = 0; i < calendars.length; i++) {
+			digest = computeDigest("SHA1", calendars[i].getId(), "UTF_8");
+			if (calendar === digest) break;
+		}
+
+		if (i < calendars.length) {
+			digest = computeDigest("MD5", calendars[i].getId(), "UTF_8");
+			setUserSettings_("FinancialCalendar", digest);
+		} else {
+			setUserSettings_("FinancialCalendar", "");
+			setUserSettings_("PostDayEvents", false);
+			setUserSettings_("CashFlowEvents", false);
+		}
+	} catch (err) {
+		console.error("update_v0m21p1_()", err);
+	}
+}
+
+/**
  * Transition to new update system.
  *
  * 0.20.6
