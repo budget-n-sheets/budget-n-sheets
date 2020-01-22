@@ -35,8 +35,12 @@ function onEdit_Main_(e) {
 			break;
 
 		case 13:
-			if (e.value == "Collapse") toolHideSheets_();
-			else if (e.value == "Expand") toolShowSheets_();
+			if (e.value == "Collapse") {
+				if (mm === -1) break;
+				optNavTools_('hide', mm);
+			} else if (e.value == "Expand") {
+				optNavTools_('show');
+			}
 			break;
 
 		default:

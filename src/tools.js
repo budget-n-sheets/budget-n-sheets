@@ -6,7 +6,7 @@ function toolHideSheets_() {
 	optNavTools_("hide");
 }
 
-function optNavTools_(p) {
+function optNavTools_(p, mm) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
@@ -24,7 +24,7 @@ function optNavTools_(p) {
 			optTool_ShowSheets_();
 			break;
 		case "hide":
-			optTool_HideSheets_();
+			optTool_HideSheets_(mm);
 			break;
 
 		default:
@@ -83,13 +83,23 @@ function optMainTools_(p, mm) {
 }
 
 
-function optTool_HideSheets_() {
+function optTool_HideSheets_(mm) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet;
-	var d, mm, i;
+	var d, i;
 
-	mm = getSpreadsheetDate();
-	mm = mm.getMonth();
+	if (mm == null) {
+		sheet = SpreadsheetApp.getActiveSheet();
+		mm = MN_SHORT_.indexOf( sheet.getName() );
+		if (mm === -1) {
+			SpreadsheetApp.getUi().alert(
+				"Can't collapse pages view",
+				"Select a month to collapse pages view.",
+				SpreadsheetApp.getUi().ButtonSet.OK);
+			return:
+		}
+	}
+
 	d = getMonthDelta(mm);
 
 	for (i = 0; i < 12; i++) {
@@ -166,7 +176,7 @@ function optTool_UpdateCashFlow_(mm) {
 	if (onlineUpdate_()) return;
 
 	var sheet, range;
-	var name, mm;
+	var name;
 
 	if (mm == null) {
 		range = SpreadsheetApp.getActiveRange();
