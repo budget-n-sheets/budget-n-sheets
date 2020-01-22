@@ -283,7 +283,8 @@ function foo_UpdateCashFlow_(mm) {
 	b = new Date(yyyy, mm + 1, 1);
 	if (getUserSettings_("CashFlowEvents") && t.getTime() < b.getTime()) {
 		calendar = getUserSettings_("FinancialCalendar");
-		calendar = optCalendar_GetCalendarFromSHA1_(calendar);
+		if (calendar !== "") calendar = getCalendarByMD5_(calendar);
+		else calendar = null;
 
 		if (calendar) {
 			a = new Date(yyyy, mm, 1);

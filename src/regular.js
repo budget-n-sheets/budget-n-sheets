@@ -18,7 +18,7 @@ function daily_PostEvents_(date) {
 
 	calendar = getUserSettings_("FinancialCalendar");
 	if (calendar === "") return;
-	calendar = optCalendar_GetCalendarFromSHA1_(calendar);
+	calendar = getCalendarByMD5_(calendar);
 	if (!calendar) return;
 
 	listEventos = calendar.getEventsForDay(date);

@@ -2,7 +2,7 @@ function retrieveUserSettings() {
 	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
 	user_settings.docName = SpreadsheetApp.getActiveSpreadsheet().getName();
-	user_settings.listCalendars = optCalendar_GetListOwned();
+	user_settings.calendars = getAllOwnedCalendars();
 	user_settings.FinancialYear = getUserConstSettings_('financial_year');
 
 	return user_settings;

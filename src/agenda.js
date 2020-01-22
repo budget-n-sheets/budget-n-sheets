@@ -96,42 +96,39 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 }
 
 
-function optCalendar_GetListOwned() {
+function getAllOwnedCalendars() {
 	var list = CalendarApp.getAllOwnedCalendars();
 	var calendars;
-	var b, s, i;
+	var digest, i;
 
 	calendars = {
-		Name: [ ],
-		Id: [ ]
+		name: [ ],
+		id: [ ]
 	};
 
 	for (i = 0; i < list.length; i++) {
-		calendars.Name.push( list[i].getName() );
+		calendars.name.push( list[i].getName() );
 
-		s = list[i].getId();
-		s = computeDigest("SHA_1", s, "UTF_8");
-		calendars.Id.push(s);
+		digest = computeDigest("MD5", list[i].getId(), "UTF_8");
+		calendars.id.push(digest);
 	}
 
 	return calendars;
 }
 
 
-function optCalendar_GetCalendarFromSHA1_(sha1sum) {
-	if (typeof sha1sum != "string") {
-		console.warn("optCalendar_GetCalendarFromSHA1_(): Invalid parameter.", sha1sum);
+function getCalendarByMD5_(md5sum) {
+	if (typeof md5sum != "string") {
+		console.warn("getCalendarByMD5_(): Invalid parameter.", md5sum);
 		return;
 	}
 
 	var list = CalendarApp.getAllOwnedCalendars();
-	var s, i;
+	var digest, i;
 
 	for (i = 0; i < list.length; i++) {
-		s = list[i].getId();
-		s = computeDigest("SHA_1", s, "UTF_8");
-
-		if (s === sha1sum) return list[i];
+		digest = computeDigest("MD5", list[i].getId(), "UTF_8");
+		if (digest === md5sum) return list[i];
 	}
 
 	setUserSettings_("FinancialCalendar", "");

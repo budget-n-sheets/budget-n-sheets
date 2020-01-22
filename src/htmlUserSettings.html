@@ -187,11 +187,11 @@
 		function Settings_Post(user_settings) { /* -------------------- */
 			var list, i;
 
-			list = user_settings.listCalendars;
+			list = user_settings.calendars;
 
 			try {
-				for (i = 0; i < list.Id.length; i++) {
-					$('#FinancialCalendar').append('<option value="'+list.Id[i]+'">'+list.Name[i]+'</option>');
+				for (i = 0; i < list.id.length; i++) {
+					$('#FinancialCalendar').append('<option value="'+list.id[i]+'">'+list.name[i]+'</option>');
 				}
 
 				$('.docName').append(user_settings.docName); // Spreadsheet title
