@@ -96,6 +96,28 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 }
 
 
+function calendarRefreshDb_() {
+	var calendars = CalendarApp.getAllOwnedCalendars();
+	var db_calendars;
+	var digest, id, i;
+
+	db_calendars = {
+		id: [ ],
+		md5: [ ]
+	};
+
+	for (i = 0; i < calendars.length; i++) {
+		id = calendars[i].getId();
+		digest = computeDigest("MD5", id, "UTF_8");
+
+		db_calendars.id.push(id);
+		db_calendars.md5.push(digest);
+	}
+
+	setPropertiesService_('document', 'json', 'DB_CALENDARS', db_calendars);
+}
+
+
 function getAllOwnedCalendars() {
 	var list = CalendarApp.getAllOwnedCalendars();
 	var calendars;
