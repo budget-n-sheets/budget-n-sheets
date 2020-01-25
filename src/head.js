@@ -14,7 +14,7 @@ var AppsScriptGlobal = (function() {
 				minor: 21,
 				patch: 0,
 			},
-			name: "0.21.0-beta"
+			name: "0.21.0"
 		},
 
 		patch_list: [
