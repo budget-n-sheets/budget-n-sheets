@@ -97,7 +97,7 @@ function optTool_HideSheets_(r) {
 				"Can't collapse pages view",
 				"Select a month to collapse pages view.",
 				SpreadsheetApp.getUi().ButtonSet.OK);
-			return:
+			return;
 		}
 	}
 
