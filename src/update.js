@@ -125,32 +125,50 @@ function update_v0m0p0_() {
 
 /**
  * Set MD5 of selected financial calendar ID.
+ * Update calendars DB.
  *
  * 0.21.1
  */
 function update_v0m21p1_() {
 	try {
+		var db_calendars;
 		var calendars, calendar;
-		var digest, i;
+		var digest, id, a, i, t;
 
-		calendar = getUserSettings_('FinancialCalendar');
-		if (calendar == "") return;
+		t = 0;
+		calendar = getUserSettings_("FinancialCalendar");
+
+		db_calendars = {
+			id: [ ],
+			md5: [ ]
+		};
 
 		calendars = CalendarApp.getAllOwnedCalendars();
 
 		for (i = 0; i < calendars.length; i++) {
-			digest = computeDigest("SHA1", calendars[i].getId(), "UTF_8");
-			if (calendar === digest) break;
+			id = calendars[i].getId();
+			digest = computeDigest("MD5", id, "UTF_8");
+
+			db_calendars.id.push(id);
+			db_calendars.md5.push(digest);
+
+			if (calendar == "") continue;
+
+			a = computeDigest("SHA_1", id, "UTF_8");
+			if (calendar === a) {
+				setUserSettings_("FinancialCalendar", digest);
+				calendar = "";
+				t = 1;
+			}
 		}
 
-		if (i < calendars.length) {
-			digest = computeDigest("MD5", calendars[i].getId(), "UTF_8");
-			setUserSettings_("FinancialCalendar", digest);
-		} else {
+		if (!t) {
 			setUserSettings_("FinancialCalendar", "");
 			setUserSettings_("PostDayEvents", false);
 			setUserSettings_("CashFlowEvents", false);
 		}
+
+		setPropertiesService_("document", "json", "DB_CALENDARS", db_calendars);
 	} catch (err) {
 		console.error("update_v0m21p1_()", err);
 	}
