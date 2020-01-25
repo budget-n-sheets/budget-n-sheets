@@ -103,14 +103,14 @@ function getAllOwnedCalendars() {
 
 	calendars = {
 		name: [ ],
-		id: [ ]
+		md5: [ ]
 	};
 
 	for (i = 0; i < list.length; i++) {
 		calendars.name.push( list[i].getName() );
 
 		digest = computeDigest("MD5", list[i].getId(), "UTF_8");
-		calendars.id.push(digest);
+		calendars.md5.push(digest);
 	}
 
 	return calendars;

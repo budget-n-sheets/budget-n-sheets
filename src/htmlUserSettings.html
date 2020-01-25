@@ -190,8 +190,8 @@
 			list = user_settings.calendars;
 
 			try {
-				for (i = 0; i < list.id.length; i++) {
-					$('#FinancialCalendar').append('<option value="'+list.id[i]+'">'+list.name[i]+'</option>');
+				for (i = 0; i < list.md5.length; i++) {
+					$('#FinancialCalendar').append('<option value="'+list.md5[i]+'">'+list.name[i]+'</option>');
 				}
 
 				$('.docName').append(user_settings.docName); // Spreadsheet title
