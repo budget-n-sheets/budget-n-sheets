@@ -6,7 +6,7 @@ function toolHideSheets_() {
 	optNavTools_("hide");
 }
 
-function optNavTools_(p, mm) {
+function optNavTools_(p, r) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
@@ -24,7 +24,7 @@ function optNavTools_(p, mm) {
 			optTool_ShowSheets_();
 			break;
 		case "hide":
-			optTool_HideSheets_(mm);
+			optTool_HideSheets_(r);
 			break;
 
 		default:
@@ -83,12 +83,13 @@ function optMainTools_(p, mm) {
 }
 
 
-function optTool_HideSheets_(mm) {
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet;
-	var d, i;
+function optTool_HideSheets_(r) {
+	var spreadsheet, sheet;
+	var mm, d, i;
 
-	if (mm == null) {
+	if (r) {
+		mm = new Date().getMonth();
+	} else {
 		sheet = SpreadsheetApp.getActiveSheet();
 		mm = MN_SHORT_.indexOf( sheet.getName() );
 		if (mm === -1) {
@@ -100,6 +101,7 @@ function optTool_HideSheets_(mm) {
 		}
 	}
 
+	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	d = getMonthDelta(mm);
 
 	for (i = 0; i < 12; i++) {

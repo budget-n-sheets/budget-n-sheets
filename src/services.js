@@ -35,12 +35,8 @@ function onEdit_Main_(e) {
 			break;
 
 		case 13:
-			if (e.value == "Collapse") {
-				if (mm === -1) break;
-				optNavTools_('hide', mm);
-			} else if (e.value == "Expand") {
-				optNavTools_('show');
-			}
+			if (e.value == "Collapse") optNavTools_("hide", "[ ]");
+			else if (e.value == "Expand") optNavTools_("show");
 			break;
 
 		default:
