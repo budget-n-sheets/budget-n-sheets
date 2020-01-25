@@ -145,13 +145,12 @@ function getCalendarByMD5_(md5sum) {
 		return;
 	}
 
-	var list = CalendarApp.getAllOwnedCalendars();
-	var digest, i;
+	var db_calendars, c;
 
-	for (i = 0; i < list.length; i++) {
-		digest = computeDigest("MD5", list[i].getId(), "UTF_8");
-		if (digest === md5sum) return list[i];
-	}
+	db_calendars = getPropertiesService_('document', 'json', 'DB_CALENDARS');
+
+	c = db_calendars.md5.indexOf(md5sum);
+	if (c != -1) return CalendarApp.getCalendarById(db_calendars.id[c]);
 
 	setUserSettings_("FinancialCalendar", "");
 	setUserSettings_("PostDayEvents", false);
