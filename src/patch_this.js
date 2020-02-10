@@ -43,7 +43,7 @@ function update_() {
 	major = v0.major;
 	minor = v0.minor;
 	patch = v0.patch;
-	list = AppsScriptGlobal.patch_list();
+	list = PatchThis.patch_list();
 
 	t = 0;
 	mm = minor;

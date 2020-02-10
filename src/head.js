@@ -17,15 +17,6 @@ var AppsScriptGlobal = (function() {
 			name: "0.21.0"
 		},
 
-		patch_list: [
-			[
-				null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
-				[ null ]
-			]
-		],
-
 		template_version: {
 			number: 59,
 			name: "6.4"
@@ -49,7 +40,6 @@ var AppsScriptGlobal = (function() {
 
 	return {
 		script_version: function() { return o.script_version },
-		patch_list: function() { return o.patch_list },
 		template_version: function() { return o.template_version },
 
 		TemplateId: function() { return o.TemplateId },

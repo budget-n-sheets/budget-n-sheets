@@ -1,3 +1,21 @@
+var PatchThis = (function() {
+	var o = {
+		patch_list: [
+			[
+				null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
+				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
+				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
+				[ null ]
+			]
+		]
+	};
+
+	return {
+		patch_list: function() { return o.patch_list }
+	};
+})();
+
+
 function onlineUpdate_() {
 	var ui = SpreadsheetApp.getUi();
 	try {
