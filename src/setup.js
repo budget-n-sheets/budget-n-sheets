@@ -19,6 +19,8 @@ function askDeactivation() {
 
 
 function askResetProtection() {
+	return;
+
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(200);
@@ -313,7 +315,7 @@ function setup_ExecutePatial_() {
 	setupPart7_(yyyy_mm);
 	setupPart9_();
 	setupPart10_();
-	setupPart11_();
+	// setupPart11_();
 
 	CONST_SETUP_SETTINGS_ = null;
 }
