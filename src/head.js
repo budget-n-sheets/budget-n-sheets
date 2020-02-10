@@ -12,9 +12,9 @@ var AppsScriptGlobal = (function() {
 			number: {
 				major: 0,
 				minor: 21,
-				patch: 0,
+				patch: 1,
 			},
-			name: "0.21.0"
+			name: "0.21.1"
 		},
 
 		template_version: {
