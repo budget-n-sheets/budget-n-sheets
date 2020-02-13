@@ -126,49 +126,37 @@ function update_v0m0p0_() {
 /**
  * Set MD5 of selected financial calendar ID.
  * Update calendars DB.
+ * Rename settings properties names.
  *
  * 0.21.1
  */
 function update_v0m21p1_() {
 	try {
-		var db_calendars;
-		var calendars, calendar;
-		var digest, id, a, i, t;
+		var user_settings, financial_calendar;
+		var db_calendars, calendars;
+		var digest, i;
 
-		t = 0;
-		calendar = getUserSettings_("financial_calendar");
+		user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
-		db_calendars = {
-			id: [ ],
-			md5: [ ]
-		};
+		user_settings.initial_month = user_settings.InitialMonth;
+		user_settings.financial_calendar = user_settings.FinancialCalendar;
+		user_settings.spreadsheet_locale = user_settings.SpreadsheetLocale;
 
-		calendars = CalendarApp.getAllOwnedCalendars();
+		setPropertiesService_('document', 'json', 'user_settings', user_settings);
 
-		for (i = 0; i < calendars.length; i++) {
-			id = calendars[i].getId();
-			digest = computeDigest("MD5", id, "UTF_8");
+		db_calendars = getAllOwnedCalendars();
 
-			db_calendars.id.push(id);
-			db_calendars.md5.push(digest);
+		financial_calendar = user_settings.financial_calendar;
+		if (financial_calendar == "") return;
 
-			if (calendar == "") continue;
+		for (i = 0; i < db_calendars.id.length; i++) {
+			digest = computeDigest("SHA_1", db_calendars.id[i], "UTF_8");
 
-			a = computeDigest("SHA_1", id, "UTF_8");
-			if (calendar === a) {
-				setUserSettings_("financial_calendar", digest);
-				calendar = "";
-				t = 1;
+			if (financial_calendar == digest) {
+				setUserSettings_('financial_calendar', db_calendars.md5[i]);
+				break;
 			}
 		}
-
-		if (!t) {
-			setUserSettings_("financial_calendar", "");
-			setUserSettings_("PostDayEvents", false);
-			setUserSettings_("CashFlowEvents", false);
-		}
-
-		setPropertiesService_("document", "json", "DB_CALENDARS", db_calendars);
 	} catch (err) {
 		console.error("update_v0m21p1_()", err);
 	}
