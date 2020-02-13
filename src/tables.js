@@ -90,7 +90,7 @@ function getTableGreatList_() {
 	db_card = getPropertiesService_('document', 'json', 'DB_CARD');
 
 	for (k = 0; k < db_account.length; k++) {
-		db_account[k].BalanceString = dbAccountInfo[k].Balance.formatCurrency();
+		db_account[k].BalanceString = db_account[k].Balance.formatCurrency();
 		db_account[k].Type = 'Account';
 
 		db.list.push(db_account[k]);
@@ -98,7 +98,7 @@ function getTableGreatList_() {
 	}
 
 	for (k = 0; k < db_card.length; k++) {
-		db_card[k].LimitString = dbCardInfo[k].Limit.formatCurrency();
+		db_card[k].LimitString = db_card[k].Limit.formatCurrency();
 		db_card[k].Type = 'Card';
 
 		db.list.push(db_card[k]);
