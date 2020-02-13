@@ -130,7 +130,7 @@ function getCalendarByMD5_(md5sum) {
 	a = db_calendars.md5.indexOf(md5sum);
 	a = db_calendars.id[a];
 
-	a = CalendarApp.getCalendarById(db_calendars.id[a]);
+	a = CalendarApp.getCalendarById(a);
 
 	if (a) {
 		return a;
