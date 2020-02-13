@@ -5,27 +5,39 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	// var OnlyEventsOwned = getUserSettings_('OnlyEventsOwned');
 	var regExp_Account, regExp_Card, code_Card;
 	var output, translation;
-	var s, i, j;
+	var a, s, i, j;
 
 	output = [ ];
 	code_Card = [ ];
 	regExp_Card = [ ];
-	regExp_Account = [ /Wallet/ ];
+	regExp_Account = [ ];
 
 	decimal_separator = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
 
-	list = optTable_GetList_();
+	a = getTableGreatList_();
+
+	a.list_account.push("Wallet");
+	a.list_account.sort(function(a, b) {
+	  return b.length - a.length;
+	});
+
+	list = a.list_account;
 	for (i = 0; i < list.length; i++) {
-		if (list[i].Type === "Account") {
-			s = new RegExp(list[i].Name);
-			regExp_Account.push(s);
-		} else {
-			s = new RegExp(list[i].Code);
-			regExp_Card.push(s);
-			code_Card.push(list[i].Code);
-		}
+		s = new RegExp(list[i]);
+		regExp_Account.push(s);
 	}
 
+	a.list_card.sort(function(a, b) {
+	  return b.length - a.length;
+	});
+
+	list = a.list_card;
+	for (i = 0; i < list.length; i++) {
+		code_Card.push(list[i]);
+
+		s = new RegExp(list[i]);
+		regExp_Card.push(s);
+	}
 
 	for (i = 0; i < listEvents.length; i++) {
 		// if (OnlyEventsOwned && !listEvents[i].isOwnedByMe()) continue;

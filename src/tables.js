@@ -76,6 +76,39 @@ function optTable_GetList_() {
 }
 
 
+function getTableGreatList_() {
+	var db, db_account, db_card;
+	var k;
+
+	db = {
+		list: [ ],
+		list_account: [ ],
+		list_card: [ ]
+	};
+
+	db_account = getPropertiesService_('document', 'json', 'DB_ACCOUNT');
+	db_card = getPropertiesService_('document', 'json', 'DB_CARD');
+
+	for (k = 0; k < db_account.length; k++) {
+		db_account[k].BalanceString = dbAccountInfo[k].Balance.formatCurrency();
+		db_account[k].Type = 'Account';
+
+		db.list.push(db_account[k]);
+		db.list_account.push(db_account[k].Name);
+	}
+
+	for (k = 0; k < db_card.length; k++) {
+		db_card[k].LimitString = dbCardInfo[k].Limit.formatCurrency();
+		db_card[k].Type = 'Card';
+
+		db.list.push(db_card[k]);
+		db.list_card.push(db_card[k].Code);
+	}
+
+	return db;
+}
+
+
 function optTable_GenerateRandomId_() {
 	var array, string;
 	var n, i, k;
