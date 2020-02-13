@@ -16,7 +16,7 @@ function daily_PostEvents_(date) {
 	if (!sheet) return;
 	if (sheet.getMaxRows() < 4) return;
 
-	calendar = getUserSettings_("FinancialCalendar");
+	calendar = getUserSettings_("financial_calendar");
 	if (calendar === "") return;
 	calendar = getCalendarByMD5_(calendar);
 	if (!calendar) return;
@@ -110,7 +110,7 @@ function update_DecimalSepartor_() {
 		deletePropertiesService_("document", "decimal_separator");
 	}
 
-	setUserSettings_("SpreadsheetLocale", spreadsheet.getSpreadsheetLocale());
+	setUserSettings_('spreadsheet_locale', spreadsheet.getSpreadsheetLocale());
 	return true;
 }
 
@@ -166,7 +166,7 @@ function monthly_TreatLayout_(yyyy, mm) {
 function foo_ColorTabs_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var financial_year = getUserConstSettings_('financial_year'),
-			init_month = getUserSettings_('InitialMonth');
+			init_month = getUserSettings_('initial_month');
 	var date = getSpreadsheetDate();
 	var mm, md, i;
 

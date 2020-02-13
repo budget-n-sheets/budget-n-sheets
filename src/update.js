@@ -136,7 +136,7 @@ function update_v0m21p1_() {
 		var digest, id, a, i, t;
 
 		t = 0;
-		calendar = getUserSettings_("FinancialCalendar");
+		calendar = getUserSettings_("financial_calendar");
 
 		db_calendars = {
 			id: [ ],
@@ -156,14 +156,14 @@ function update_v0m21p1_() {
 
 			a = computeDigest("SHA_1", id, "UTF_8");
 			if (calendar === a) {
-				setUserSettings_("FinancialCalendar", digest);
+				setUserSettings_("financial_calendar", digest);
 				calendar = "";
 				t = 1;
 			}
 		}
 
 		if (!t) {
-			setUserSettings_("FinancialCalendar", "");
+			setUserSettings_("financial_calendar", "");
 			setUserSettings_("PostDayEvents", false);
 			setUserSettings_("CashFlowEvents", false);
 		}

@@ -282,7 +282,7 @@ function foo_UpdateCashFlow_(mm) {
 	t = getSpreadsheetDate();
 	b = new Date(yyyy, mm + 1, 1);
 	if (getUserSettings_("CashFlowEvents") && t.getTime() < b.getTime()) {
-		calendar = getUserSettings_("FinancialCalendar");
+		calendar = getUserSettings_("financial_calendar");
 		if (calendar !== "") calendar = getCalendarByMD5_(calendar);
 		else calendar = null;
 

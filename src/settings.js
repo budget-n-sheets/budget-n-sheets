@@ -17,14 +17,14 @@ function saveUserSettings(settings) {
 	sheet = spreadsheet.getSheetByName("_Settings");
 	if (!sheet) return 1;
 
-	mm = getUserSettings_("InitialMonth");
-	init = Number(settings.InitialMonth);
+	mm = getUserSettings_("initial_month");
+	init = Number(settings.initial_month);
 
 	user_settings = {
-		SpreadsheetLocale: spreadsheet.getSpreadsheetLocale(),
-		InitialMonth: init,
+		spreadsheet_locale: spreadsheet.getSpreadsheetLocale(),
+		initial_month: init,
 
-		FinancialCalendar: settings.FinancialCalendar,
+		financial_calendar: settings.financial_calendar,
 		OnlyEventsOwned: false,
 		PostDayEvents: settings.PostDayEvents,
 		OverrideZero: settings.OverrideZero,
@@ -69,13 +69,13 @@ function getUserSettings_(select) {
 		case 'docName': // Spreadsheet file name
 			return spreadsheet.getName();
 
-		case 'SpreadsheetLocale':
-		case 'FinancialCalendar':
+		case 'spreadsheet_locale':
+		case 'financial_calendar':
 		case 'OnlyEventsOwned':
 		case 'PostDayEvents':
 		case 'OverrideZero':
 		case 'CashFlowEvents':
-		case 'InitialMonth': // Number in 0-11 range
+		case 'initial_month': // Number in 0-11 range
 			return user_settings[select];
 
 		case 'ActualMonth': // Number in 0-12 range
@@ -93,9 +93,9 @@ function getUserSettings_(select) {
 			else if (dateToday.getFullYear() < financial_year) dateTodayMonth = 0;
 			else dateTodayMonth = 12;
 
-			user_settings.InitialMonth++;
-			if (user_settings.InitialMonth > dateTodayMonth) return 0;
-			else return (dateTodayMonth - user_settings.InitialMonth + 1);
+			user_settings.initial_month++;
+			if (user_settings.initial_month > dateTodayMonth) return 0;
+			else return (dateTodayMonth - user_settings.initial_month + 1);
 
 		case 'MFactor': // Number in 0-12 range
 			dateTodayYear = getSpreadsheetDate().getFullYear();
@@ -122,9 +122,9 @@ function setUserSettings_(select, value) {
 	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
 	switch (select) {
-		case 'InitialMonth':
-		case 'SpreadsheetLocale':
-		case 'FinancialCalendar':
+		case 'initial_month':
+		case 'spreadsheet_locale':
+		case 'financial_calendar':
 		case 'OnlyEventsOwned':
 		case 'PostDayEvents':
 		case 'CashFlowEvents':

@@ -135,7 +135,7 @@ function getCalendarByMD5_(md5sum) {
 	if (a) {
 		return a;
 	} else {
-		setUserSettings_('FinancialCalendar', '');
+		setUserSettings_('financial_calendar', '');
 		setUserSettings_('PostDayEvents', false);
 		setUserSettings_('CashFlowEvents', false);
 	}

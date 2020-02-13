@@ -761,12 +761,12 @@ function setupPart1_(yyyy_mm) {
 	CONST_LIST_ES_SHEETS_["_settings"].getRange(2, 2, 8, 1).setFormulas(cell);
 
 	cell = {
-		InitialMonth: CONST_SETUP_SETTINGS_["init_month"],
-		FinancialCalendar: "",
+		initial_month: CONST_SETUP_SETTINGS_["init_month"],
+		financial_calendar: "",
 		PostDayEvents: false,
 		CashFlowEvents: false,
 		OverrideZero: false,
-		SpreadsheetLocale: CONST_SETUP_SETTINGS_["spreadsheet_locale"]
+		spreadsheet_locale: CONST_SETUP_SETTINGS_["spreadsheet_locale"]
 	};
 	setPropertiesService_('document', 'json', 'user_settings', cell);
 

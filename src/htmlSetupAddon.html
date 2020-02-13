@@ -81,9 +81,9 @@
 								<td><input type="number" id="Form_FinancialYear" style="width:61px;" min="1889" max="2111" step="1" required></td>
 							</tr>
 							<tr>
-								<td class="name" style="width:50%;"><label for="Form_InitialMonth">Initial month</label></td>
+								<td class="name" style="width:50%;"><label for="Form_initial_month">Initial month</label></td>
 								<td>
-									<select id="Form_InitialMonth" style="width:89px;">
+									<select id="Form_initial_month" style="width:89px;">
 										<option value="0" selected>January</option>
 										<option value="1">February</option>
 										<option value="2">March</option>
@@ -201,7 +201,7 @@
 				$('#Form_FinancialYear').val( dateToday.getFullYear() );
 
 				if (dateToday.getMonth() > 1) {
-					$('#Form_InitialMonth').val( dateToday.getMonth()-1 );
+					$('#Form_initial_month').val( dateToday.getMonth()-1 );
 				}
 
 				$('.tr_Account').slice(1).hide();
@@ -255,7 +255,7 @@
 				var settings = {
 					spreadsheet_name: $('#Form_SpreadsheetName').val(),
 					financial_year: $('#Form_FinancialYear').val(),
-					init_month: $('#Form_InitialMonth').val(),
+					init_month: $('#Form_initial_month').val(),
 					number_accounts: $('#Form_NumberLneAccount').val()
 				};
 

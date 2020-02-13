@@ -73,7 +73,7 @@ function daily_Main_(e) {
 		"date": date.getDate()
 	};
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('SpreadsheetLocale')) {
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('spreadsheet_locale')) {
 		if (!update_DecimalSepartor_()) return;
 	}
 
@@ -108,7 +108,7 @@ function weekly_Foo_(e) {
 	}
 	if (isMissingSheet()) return;
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('SpreadsheetLocale')) {
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('spreadsheet_locale')) {
 		if (!update_DecimalSepartor_()) return;
 	}
 
@@ -139,7 +139,7 @@ function weekly_Bar_(e) {
 		date: date.getDate()
 	};
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('SpreadsheetLocale')) {
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('spreadsheet_locale')) {
 		if (!update_DecimalSepartor_()) return;
 	}
 

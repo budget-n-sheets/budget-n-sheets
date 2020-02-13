@@ -45,9 +45,9 @@
 									<td id="FinancialYear"></td>
 								</tr>
 								<tr>
-									<td class="name"><label for="InitialMonth">Initial month</label></td>
+									<td class="name"><label for="initial_month">Initial month</label></td>
 									<td>
-										<select class="Form-Settings_lock" id="InitialMonth">
+										<select class="Form-Settings_lock" id="initial_month">
 											<option value="0" selected>January</option>
 											<option value="1">February</option>
 											<option value="2">March</option>
@@ -71,9 +71,9 @@
 									<th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
 								</tr>
 								<tr>
-									<td class="name" style="width:37%;"><label for="FinancialCalendar">Calendar</label></td>
+									<td class="name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
 									<td>
-										<select class="Form-Settings_lock" id="FinancialCalendar">
+										<select class="Form-Settings_lock" id="financial_calendar">
 											<option value="" selected>Disabled</option>
 										</select>
 									</td>
@@ -175,7 +175,7 @@
 				.withFailureHandler(showError)
 				.retrieveUserSettings();
 		});
-		$("#FinancialCalendar").change(function() {
+		$("#financial_calendar").change(function() {
 			if ($(this).val() === "") {
 				$('.Form-Settings_calendar').prop('disabled', true);
 				$('.Form-Settings_calendar').prop('checked', false);
@@ -191,14 +191,14 @@
 
 			try {
 				for (i = 0; i < list.md5.length; i++) {
-					$('#FinancialCalendar').append('<option value="'+list.md5[i]+'">'+list.name[i]+'</option>');
+					$('#financial_calendar').append('<option value="'+list.md5[i]+'">'+list.name[i]+'</option>');
 				}
 
 				$('.docName').append(user_settings.docName); // Spreadsheet title
 				$('#FinancialYear').append(user_settings.FinancialYear+''); // Financial year
-				$('#InitialMonth').val(user_settings.InitialMonth); // Initial month
+				$('#initial_month').val(user_settings.initial_month); // Initial month
 
-				$('#FinancialCalendar').val(user_settings.FinancialCalendar);
+				$('#financial_calendar').val(user_settings.financial_calendar);
 				if (user_settings.PostDayEvents) $('#PostDayEvents').prop('checked', true);
 				if (user_settings.OverrideZero) $('#OverrideZero').prop('checked', true);
 				if (user_settings.CashFlowEvents) $('#CashFlowEvents').prop('checked', true);
@@ -208,7 +208,7 @@
 			}
 
 			$('.Form-Settings_lock').prop('disabled', false);
-			if (user_settings.FinancialCalendar === "") {
+			if (user_settings.financial_calendar === "") {
 				$('.Form-Settings_calendar').prop('disabled', true);
 			}
 			$('#panel_Book').fadeIn('fast')
@@ -263,9 +263,9 @@
 			$('#p-footer_FastResponse').empty().append('Saving...');
 
 			var settings = {
-				InitialMonth: $("#InitialMonth").val(),
+				initial_month: $("#initial_month").val(),
 
-				FinancialCalendar: $("#FinancialCalendar").val(),
+				financial_calendar: $("#financial_calendar").val(),
 				PostDayEvents: $("#PostDayEvents").prop("checked"),
 				OverrideZero: $("#OverrideZero").prop("checked"),
 				CashFlowEvents: $("#CashFlowEvents").prop("checked")
@@ -284,7 +284,7 @@
 			$(".Form-Settings_lock").prop("disabled", false);
 			$("#p-footer_FastResponse").empty().append("Settings saved.");
 
-			if ($("#FinancialCalendar").val() === "") {
+			if ($("#financial_calendar").val() === "") {
 				$(".Form-Settings_calendar").prop("disabled", true);
 			}
 		}
