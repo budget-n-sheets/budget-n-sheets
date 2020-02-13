@@ -1,6 +1,7 @@
 function optCalendar_ProcessRawEvents_(listEvents) {
 	var list, cell,
 			thisEvent;
+	var decimal_separator;
 	// var OnlyEventsOwned = getUserSettings_('OnlyEventsOwned');
 	var regExp_Account, regExp_Card, code_Card;
 	var output, translation;
@@ -10,6 +11,8 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	code_Card = [ ];
 	regExp_Card = [ ];
 	regExp_Account = [ /Wallet/ ];
+
+	decimal_separator = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
 
 	list = optTable_GetList_();
 	for (i = 0; i < list.length; i++) {
@@ -47,7 +50,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 		cell.hasAtIgn = /@ign/.test(cell.Description);
 		cell.hasQcc = /#qcc/.test(cell.Description);
 
-		if (PropertiesService.getDocumentProperties().getProperty("decimal_separator")) {
+		if (decimal_separator) {
 			cell.Value = cell.Description.match( /-?\$[\d]+\.[\d]{2}/ );
 		} else {
 			cell.Value = cell.Description.match( /-?\$[\d]+,[\d]{2}/ );
