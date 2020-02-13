@@ -99,15 +99,11 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 function getAllOwnedCalendars() {
 	var calendars = CalendarApp.getAllOwnedCalendars();
 	var db_calendars;
-	var output, digest, id, i;
+	var digest, id, i;
 
 	db_calendars = {
-		id: [ ],
-		md5: [ ]
-	};
-
-	output = {
 		name: [ ],
+		id: [ ],
 		md5: [ ]
 	};
 
@@ -115,34 +111,34 @@ function getAllOwnedCalendars() {
 		id = calendars[i].getId();
 		digest = computeDigest("MD5", id, "UTF_8");
 
-		output.name.push(calendars[i].getName());
-		output.md5.push(digest);
-
+		db_calendars.name.push(calendars[i].getName());
 		db_calendars.id.push(id);
 		db_calendars.md5.push(digest);
 	}
 
 	setPropertiesService_('document', 'json', 'DB_CALENDARS', db_calendars);
-	return output;
+
+	return db_calendars;
 }
 
 
 function getCalendarByMD5_(md5sum) {
-	if (typeof md5sum != "string") {
-		console.warn("getCalendarByMD5_(): Invalid parameter.", md5sum);
-		return;
-	}
-
-	var db_calendars, c;
+	var calendar, db_calendars, a;
 
 	db_calendars = getPropertiesService_('document', 'json', 'DB_CALENDARS');
 
-	c = db_calendars.md5.indexOf(md5sum);
-	if (c != -1) return CalendarApp.getCalendarById(db_calendars.id[c]);
+	a = db_calendars.md5.indexOf(md5sum);
+	a = db_calendars.id[a];
 
-	setUserSettings_("FinancialCalendar", "");
-	setUserSettings_("PostDayEvents", false);
-	setUserSettings_("CashFlowEvents", false);
+	a = CalendarApp.getCalendarById(db_calendars.id[a]);
+
+	if (a) {
+		return a;
+	} else {
+		setUserSettings_('FinancialCalendar', '');
+		setUserSettings_('PostDayEvents', false);
+		setUserSettings_('CashFlowEvents', false);
+	}
 }
 
 
