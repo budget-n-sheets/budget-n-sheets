@@ -322,6 +322,7 @@ function setup_ExecutePatial_() {
 
 
 function setupPart11_() {
+	console.time('add-on/setup/part11');
 	var thisSheet;
 	var vRange;
 	var i, k;
@@ -386,10 +387,12 @@ function setupPart11_() {
 	}
 
 	SpreadsheetApp.flush();
+	console.timeEnd('add-on/setup/part11');
 }
 
 
 function setupPart10_() {
+	console.time('add-on/setup/part10');
 	var sheet = CONST_LIST_ES_SHEETS_["cash_flow"];
 	var yyyy = CONST_SETUP_SETTINGS_["financial_year"];
 	var d, s;
@@ -458,10 +461,12 @@ function setupPart10_() {
 
 	optMainTables('UpdateTableRef');
 	SpreadsheetApp.flush();
+	console.timeEnd('add-on/setup/part10');
 }
 
 
 function setupPart9_() {
+	console.time('add-on/setup/part9');
 	var sheet = CONST_LIST_ES_SHEETS_["summary"];
 	var chart, options;
 
@@ -485,10 +490,12 @@ function setupPart9_() {
 
 	sheet.insertChart( chart.build() );
 	SpreadsheetApp.flush();
+	console.timeEnd('add-on/setup/par9');
 }
 
 
 function setupPart7_(yyyy_mm) {
+	console.time('add-on/setup/part7');
 	var sheetSummary = CONST_LIST_ES_SHEETS_["summary"];
 	var sheet, md, i;
 
@@ -538,10 +545,12 @@ function setupPart7_(yyyy_mm) {
 	}
 
 	SpreadsheetApp.flush();
+	console.timeEnd('add-on/setup/part7');
 }
 
 
 function setupPart6_() {
+	console.time('add-on/setup/part6');
 	var sheetCards = CONST_LIST_ES_SHEETS_["cards"];
 	var sheet, formula;
 	var header, c;
@@ -584,10 +593,12 @@ function setupPart6_() {
 	}
 
 	SpreadsheetApp.flush();
+	console.timeEnd('add-on/setup/part6');
 }
 
 
 function setupPart5_() {
+	console.time('add-on/setup/part5');
 	var formulaSumIncome, formulaSumExpenses;
 	var i, k;
 	var h_, w_;
@@ -614,10 +625,12 @@ function setupPart5_() {
 	}
 
 	SpreadsheetApp.flush();
+	console.timeEnd('add-on/setup/part5');
 }
 
 
 function setupPart4_() {
+	console.time('add-on/setup/part4');
 	var sheet = CONST_LIST_ES_SHEETS_["tags"];
 	var formula, formulas, rg, cd;
 	var rgMonthTags, rgMonthCombo;
@@ -668,10 +681,12 @@ function setupPart4_() {
 	sheet.getRange(1, 20).setFormula(formula);
 
 	SpreadsheetApp.flush();
+	console.timeEnd('add-on/setup/part4');
 }
 
 
 function setupPart3_() {
+	console.time('add-on/setup/part3');
 	var d, n, w_;
 
 	w_ = TABLE_DIMENSION_.width;
@@ -687,10 +702,12 @@ function setupPart3_() {
 	}
 
 	SpreadsheetApp.flush();
+	console.timeEnd('add-on/setup/part3');
 }
 
 
 function setupPart2_() {
+	console.time('add-on/setup/part2');
 	var list_acc = CONST_SETUP_SETTINGS_["list_acc"];
 	if (CONST_SETUP_SETTINGS_["number_accounts"] !== list_acc.length) throw "Number number_accounts and list_acc length are differ.";
 
@@ -731,10 +748,12 @@ function setupPart2_() {
 
 	setPropertiesService_('document', 'json', 'DB_CARD', [ ]);
 	setPropertiesService_('document', 'json', 'DB_ACCOUNT', db_acc);
+	console.timeEnd('add-on/setup/part2');
 }
 
 
 function setupPart1_(yyyy_mm) {
+	console.time('add-on/setup/part1');
 	var cell, d;
 
 	cell = CONST_LIST_ES_SHEETS_["_settings"].getRange(8, 2);
@@ -794,4 +813,5 @@ function setupPart1_(yyyy_mm) {
 	}
 
 	SpreadsheetApp.flush();
+	console.timeEnd('add-on/setup/part1');
 }
