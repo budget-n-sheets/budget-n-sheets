@@ -5,7 +5,7 @@ var PatchThis = (function() {
 				null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
-				[ null, null ]
+				[ null, null, update_v0m21p2_ ]
 			]
 		]
 	};
@@ -128,9 +128,9 @@ function update_v0m0p0_() {
  * Update calendars DB.
  * Rename settings properties names.
  *
- * 0.21.1
+ * 0.21.2
  */
-function update_v0m21p1_() {
+function update_v0m21p2_() {
 	try {
 		var user_settings, financial_calendar;
 		var db_calendars, calendars;
@@ -158,7 +158,7 @@ function update_v0m21p1_() {
 			}
 		}
 	} catch (err) {
-		console.error("update_v0m21p1_()", err);
+		console.error("update_v0m21p2_()", err);
 	}
 }
 
