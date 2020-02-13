@@ -16,22 +16,20 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 
 	a = getTableGreatList_();
 
-	a.list_account.push("Wallet");
-	a.list_account.sort(function(a, b) {
+	list = a.list_account;
+	list.push("Wallet");
+	list.sort(function(a, b) {
 	  return b.length - a.length;
 	});
-
-	list = a.list_account;
 	for (i = 0; i < list.length; i++) {
 		s = new RegExp(list[i]);
 		regExp_Account.push(s);
 	}
 
-	a.list_card.sort(function(a, b) {
+	list = a.list_card;
+	list.sort(function(a, b) {
 	  return b.length - a.length;
 	});
-
-	list = a.list_card;
 	for (i = 0; i < list.length; i++) {
 		code_Card.push(list[i]);
 
