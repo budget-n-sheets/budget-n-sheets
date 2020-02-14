@@ -62,6 +62,8 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			hasQcc: false
 		};
 
+		if (cell.Description == "") continue;
+
 		cell.hasAtIgn = /@ign/.test(cell.Description);
 		cell.hasQcc = /#qcc/.test(cell.Description);
 
