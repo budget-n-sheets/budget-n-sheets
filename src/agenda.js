@@ -1,7 +1,6 @@
 function optCalendar_ProcessRawEvents_(listEvents) {
-	var list, cell,
-			thisEvent;
-	var decimal_separator;
+	var list, cell, evento;
+	var decimal_separator, description;
 	// var OnlyEventsOwned = getUserSettings_('OnlyEventsOwned');
 	var infoAccount, infoCard;
 	var output, translation;
@@ -45,13 +44,17 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 
 	for (i = 0; i < listEvents.length; i++) {
 		// if (OnlyEventsOwned && !listEvents[i].isOwnedByMe()) continue;
-		thisEvent = listEvents[i];
+
+		evento = listEvents[i];
+
+		description = evento.getDescription();
+		if (description == "") continue;
 
 		cell = {
-			Id: thisEvent.getId(),
-			Day: thisEvent.getStartTime().getDate(),
-			Title: thisEvent.getTitle(),
-			Description: thisEvent.getDescription(),
+			Id: evento.getId(),
+			Day: evento.getStartTime().getDate(),
+			Title: evento.getTitle(),
+			Description: description,
 			Table: -1,
 			Card: -1,
 			Value: 0,
@@ -61,31 +64,6 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			hasAtIgn: true,
 			hasQcc: false
 		};
-
-		if (cell.Description == "") continue;
-
-		cell.hasAtIgn = /@ign/.test(cell.Description);
-		cell.hasQcc = /#qcc/.test(cell.Description);
-
-		if (decimal_separator) {
-			cell.Value = cell.Description.match( /-?\$[\d]+\.[\d]{2}/ );
-		} else {
-			cell.Value = cell.Description.match( /-?\$[\d]+,[\d]{2}/ );
-			if (cell.Value) cell.Value[0] = cell.Value[0].replace(",", ".");
-		}
-
-		translation = cell.Description.match( /@(M(\+|-)(\d+)|Avg|Total)/ );
-		if (translation) {
-			if (translation[1] == "Total" || translation[1] == "Avg") {
-				cell.TranslationType = translation[1];
-			} else {
-				cell.TranslationType = "M";
-				cell.TranslationNumber = Number(translation[2] + translation[3]);
-			}
-		}
-
-		if (cell.Value) cell.Value = Number(cell.Value[0].replace("\$", ""));
-		else cell.Value = NaN;
 
 		c = -1;
 		for (j = 0; j < infoAccount.regex.length; j++) {
@@ -130,6 +108,31 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			}
 		}
 		if (c != -1) cell.Card = infoCard.code[c];
+
+		if (cell.Table == -1 && cell.Card == -1) continue;
+
+		cell.hasAtIgn = /@ign/.test(cell.Description);
+		cell.hasQcc = /#qcc/.test(cell.Description);
+
+		if (decimal_separator) {
+			cell.Value = cell.Description.match( /-?\$[\d]+\.[\d]{2}/ );
+		} else {
+			cell.Value = cell.Description.match( /-?\$[\d]+,[\d]{2}/ );
+			if (cell.Value) cell.Value[0] = cell.Value[0].replace(",", ".");
+		}
+
+		translation = cell.Description.match( /@(M(\+|-)(\d+)|Avg|Total)/ );
+		if (translation) {
+			if (translation[1] == "Total" || translation[1] == "Avg") {
+				cell.TranslationType = translation[1];
+			} else {
+				cell.TranslationType = "M";
+				cell.TranslationNumber = Number(translation[2] + translation[3]);
+			}
+		}
+
+		if (cell.Value) cell.Value = Number(cell.Value[0].replace("\$", ""));
+		else cell.Value = NaN;
 
 		cell.Tags = cell.Description.match(/#\w+/g);
 		if (!cell.Tags) cell.Tags = [ ];
