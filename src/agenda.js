@@ -131,6 +131,9 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			if (cell.Value) cell.Value[0] = cell.Value[0].replace(",", ".");
 		}
 
+		if (cell.Value) cell.Value = Number(cell.Value[0].replace("\$", ""));
+		else cell.Value = NaN;
+
 		translation = cell.Description.match( /@(M(\+|-)(\d+)|Avg|Total)/ );
 		if (translation) {
 			if (translation[1] == "Total" || translation[1] == "Avg") {
@@ -140,9 +143,6 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 				cell.TranslationNumber = Number(translation[2] + translation[3]);
 			}
 		}
-
-		if (cell.Value) cell.Value = Number(cell.Value[0].replace("\$", ""));
-		else cell.Value = NaN;
 
 		cell.Tags = cell.Description.match(/#\w+/g);
 		if (!cell.Tags) cell.Tags = [ ];

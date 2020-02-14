@@ -1,31 +1,30 @@
 function daily_PostEvents_(date) {
-	var calendar, listEventos, listIds, evento;
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var calendar, list_eventos, listIds, evento;
 	var sheet, lastRow;
 	var data, data_Cards;
-	var number_accounts, mm, dd, value, tags;
+	var mm, dd, value, tags;
 	var i, j, k;
+	var number_accounts, dec_p;
 
-	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
+	calendar = getUserSettings_('financial_calendar');
+	if (calendar == "") return;
 
-	if (!dec_p) dec_p = "] [";
+	calendar = getCalendarByMD5_(calendar);
+	if (!calendar) return;
+
+	list_eventos = calendar.getEventsForDay(date);
+	if (list_eventos.length === 0) return;
+
+	list_eventos = optCalendar_ProcessRawEvents_(list_eventos);
 
 	mm = date.getMonth();
 	dd = date.getDate();
 
-	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT_[mm]);
-	if (!sheet) return;
-	if (sheet.getMaxRows() < 4) return;
-
-	calendar = getUserSettings_("financial_calendar");
-	if (calendar === "") return;
-	calendar = getCalendarByMD5_(calendar);
-	if (!calendar) return;
-
-	listEventos = calendar.getEventsForDay(date);
-	if (listEventos.length === 0) return;
-	listEventos = optCalendar_ProcessRawEvents_(listEventos);
-
 	number_accounts = getUserConstSettings_('number_accounts');
+
+	dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
+	if (!dec_p) dec_p = "] [";
 
 	data = [ ];
 	data_Cards = [ ];
@@ -35,10 +34,10 @@ function daily_PostEvents_(date) {
 		data.push([ ]);
 	}
 
-	for (i = 0; i < listEventos.length; i++) {
-		evento = listEventos[i];
+	for (i = 0; i < list_eventos.length; i++) {
+		evento = list_eventos[i];
 
-		if (evento.Description === "") continue;
+		if (evento.Description == "") continue;
 		if (evento.hasAtIgn) continue;
 
 		if (evento.Table !== -1) k = evento.Table;
@@ -62,6 +61,10 @@ function daily_PostEvents_(date) {
 
 		listIds.push(evento.Id);
 	}
+
+	sheet = spreadsheet.getSheetByName(MN_SHORT_[mm]);
+	if (!sheet) return;
+	if (sheet.getMaxRows() < 4) return;
 
 	lastRow = sheet.getLastRow() + 1;
 	for (k = 0; k < 1 + number_accounts; k++) {
