@@ -14,7 +14,7 @@ var AppsScriptGlobal = (function() {
 				minor: 21,
 				patch: 2,
 			},
-			name: "0.21.2-beta2"
+			name: "0.21.2"
 		},
 
 		template_version: {
