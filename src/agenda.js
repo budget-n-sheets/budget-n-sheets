@@ -9,11 +9,13 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	output = [ ];
 	infoAccount = {
 		name: [ ],
-		regex: [ ]
+		regex: [ ],
+		index: [ ]
 	};
 	infoCard = {
 		code: [ ],
-		regex: [ ]
+		regex: [ ],
+		index: [ ]
 	};
 
 	decimal_separator = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
@@ -21,7 +23,8 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	a = getTableGreatList_();
 
 	list = a.list_account;
-	list.push("Wallet");
+	list.splice(0, 0, "Wallet");
+	infoAccount.index = list;
 	list.sort(function(a, b) {
 	  return b.length - a.length;
 	});
@@ -32,6 +35,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	infoAccount.name = list;
 
 	list = a.list_card;
+	infoCard.index = list;
 	list.sort(function(a, b) {
 	  return b.length - a.length;
 	});
@@ -85,7 +89,10 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 				}
 			}
 		}
-		cell.Table = c;
+		if (c != -1) {
+			c = infoAccount.index.indexOf(infoAccount.name[c]);
+			cell.Table = c;
+		}
 
 		c = -1;
 		for (j = 0; j < infoCard.regex.length; j++) {
@@ -107,7 +114,10 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 				}
 			}
 		}
-		if (c != -1) cell.Card = infoCard.code[c];
+		if (c != -1) {
+			c = infoCard.index.indexOf(infoCard.code[c]);
+			cell.Card = infoCard.code[c];
+		}
 
 		if (cell.Table == -1 && cell.Card == -1) continue;
 
