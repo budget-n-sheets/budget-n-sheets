@@ -3,14 +3,19 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			thisEvent;
 	var decimal_separator;
 	// var OnlyEventsOwned = getUserSettings_('OnlyEventsOwned');
-	var regExp_Account, regExp_Card, code_Card;
+	var infoAccount, infoCard;
 	var output, translation;
-	var a, s, i, j;
+	var a, b, c, s, i, j;
 
 	output = [ ];
-	code_Card = [ ];
-	regExp_Card = [ ];
-	regExp_Account = [ ];
+	infoAccount = {
+		name: [ ],
+		regex: [ ]
+	};
+	infoCard = {
+		code: [ ],
+		regex: [ ]
+	};
 
 	decimal_separator = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
 
@@ -23,19 +28,20 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	});
 	for (i = 0; i < list.length; i++) {
 		s = new RegExp(list[i]);
-		regExp_Account.push(s);
+		infoAccount.regex.push(s);
 	}
+	infoAccount.name = list;
 
 	list = a.list_card;
 	list.sort(function(a, b) {
 	  return b.length - a.length;
 	});
 	for (i = 0; i < list.length; i++) {
-		code_Card.push(list[i]);
-
 		s = new RegExp(list[i]);
-		regExp_Card.push(s);
+		infoCard.regex.push(s);
 	}
+	infoCard.code = list;
+	Logger.log(infoCard);
 
 	for (i = 0; i < listEvents.length; i++) {
 		// if (OnlyEventsOwned && !listEvents[i].isOwnedByMe()) continue;
@@ -55,7 +61,6 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			hasAtIgn: true,
 			hasQcc: false
 		};
-
 
 		cell.hasAtIgn = /@ign/.test(cell.Description);
 		cell.hasQcc = /#qcc/.test(cell.Description);
@@ -80,19 +85,49 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 		if (cell.Value) cell.Value = Number(cell.Value[0].replace("\$", ""));
 		else cell.Value = NaN;
 
-		for (j = 0; j < regExp_Account.length; j++) {
-			if ( regExp_Account[j].test(cell.Description) ) {
-				cell.Table = j;
-				break;
+		c = -1;
+		for (j = 0; j < infoAccount.regex.length; j++) {
+			if ( infoAccount.regex[j].test(cell.Description) ) {
+				b = cell.Description.indexOf(infoAccount.name[j]);
+				if (b != -1) {
+					c = j;
+					a = b;
+					break;
+				}
 			}
 		}
+		for (j++; j < infoAccount.regex.length; j++) {
+			if ( infoAccount.regex[j].test(cell.Description) ) {
+				b = cell.Description.indexOf(infoAccount.name[j]);
+				if (b != -1 && b < a) {
+					c = j;
+					a = b;
+				}
+			}
+		}
+		cell.Table = c;
 
-		for (j = 0; j < regExp_Card.length; j++) {
-			if ( regExp_Card[j].test(cell.Description) ) {
-				cell.Card = code_Card[j];
-				break;
+		c = -1;
+		for (j = 0; j < infoCard.regex.length; j++) {
+			if ( infoCard.regex[j].test(cell.Description) ) {
+				b = cell.Description.indexOf(infoCard.code[j]);
+				if (b != -1) {
+					c = j;
+					a = b;
+					break;
+				}
 			}
 		}
+		for (j++; j < infoCard.regex.length; j++) {
+			if ( infoCard.regex[j].test(cell.Description) ) {
+				b = cell.Description.indexOf(infoCard.code[j]);
+				if (b != -1 && b < a) {
+					c = j;
+					a = b;
+				}
+			}
+		}
+		if (c != -1) cell.Card = infoCard.code[c];
 
 		cell.Tags = cell.Description.match(/#\w+/g);
 		if (!cell.Tags) cell.Tags = [ ];
