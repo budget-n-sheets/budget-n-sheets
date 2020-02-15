@@ -37,17 +37,16 @@ function optMainTables(opt, param) {
 
 
 function optTable_GetInfo_(r) {
+	var db_tables;
 	var array, k;
 
-	array = getPropertiesService_('document', 'json', 'DB_ACCOUNT');
-	array = array.concat( getPropertiesService_('document', 'json', 'DB_CARD') );
+	db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
 
+	k = db_tables.accounts.ids.indexOf(r);
+	if (k != -1) return db_tables.accounts.data[k];
 
-	for (k = 0; k < array.length; k++) {
-		if (r === array[k].Id) {
-			return array[k];
-		}
-	}
+	k = db_tables.cards.ids.indexOf(r);
+	if (k != -1) return db_tables.cards.data[k];
 
 	console.warn("optTable_GetInfo_(): Table was not found.");
 	return 2;
@@ -55,24 +54,19 @@ function optTable_GetInfo_(r) {
 
 
 function optTable_GetList_() {
-	var dbAccountInfo, dbCardInfo;
-	var k;
+	var db_tables, db;
 
-	dbAccountInfo = getPropertiesService_('document', 'json', 'DB_ACCOUNT');
-	dbCardInfo = getPropertiesService_('document', 'json', 'DB_CARD');
-
-
-	for (k = 0; k < dbAccountInfo.length; k++) {
-		dbAccountInfo[k].BalanceString = dbAccountInfo[k].Balance.formatCurrency();
-		dbAccountInfo[k].Type = 'Account';
+	db = {
+		accounts: [ ],
+		cards: [ ]
 	}
 
-	for (k = 0; k < dbCardInfo.length; k++) {
-		dbCardInfo[k].LimitString = dbCardInfo[k].Limit.formatCurrency();
-		dbCardInfo[k].Type = 'Card';
-	}
+	db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
 
-	return dbAccountInfo.concat(dbCardInfo);
+	db.accounts = db_tables.accounts.data;
+	db.cards = db_tables.cards.data;
+
+	return db;
 }
 
 
@@ -110,25 +104,23 @@ function getTableGreatList_() {
 
 
 function optTable_GenerateRandomId_() {
-	var array, string;
-	var n, i, k;
+	var db_tables, list;
+	var string, i;
 
 	string = '';
-	array = getPropertiesService_('document', 'json', 'DB_ACCOUNT');
-	array = array.concat( getPropertiesService_('document', 'json', 'DB_CARD') );
+	db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
 
+	list = [ db_tables.wallet ].concat(db_tables.accounts.ids);
+	list = list.concat(db_tables.cards.ids);
 
 	i = 0;
-	n = array.length;
 	do {
-		string = randomString(11, "word");
-		for (k = 0; k < n; k++) {
-			if (string === array[k].Id) break;
-		}
+		string = randomString(7, "lonum");
+		if (list.indexOf(string) == -1) break;
 		i++;
-	} while (k !== n && i < 100);
+	} while (i < 99);
 
-	if (i === 100) {
+	if (i >= 99) {
 		console.warn("optTable_GenerateRandomId_(): Maximum iterations allowed hit.");
 		return;
 	}
@@ -139,16 +131,19 @@ function optTable_GenerateRandomId_() {
 
 function optAccount_UpdateTableRef_() {
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cash Flow');
-	var listTables = optTable_GetList_();
+	var db_accounts;
 	var number_accounts = getUserConstSettings_('number_accounts'),
 			yyyy = getUserConstSettings_('financial_year');
 	var range_, string, mm, dd,
 			i, k, h_;
 
 	if (!sheet) return 2;
-	range_ = [ "G", "L", "Q", "V", "AA" ];
 
 	h_ = TABLE_DIMENSION_.height;
+	range_ = [ "G", "L", "Q", "V", "AA" ];
+
+	db_accounts = getPropertiesService_('document', 'json', 'DB_TABLES');
+	db_accounts = db_accounts.accounts;
 
 	sheet.getRange(3, 3).setFormula('=B3');
 	for (i = 1; i < 12; i++) {
@@ -159,7 +154,7 @@ function optAccount_UpdateTableRef_() {
 
 	k = 0;
 	while (k < number_accounts) {
-		mm = listTables[k].TimeA;
+		mm = db_accounts.data[k].time_a;
 
 		string = sheet.getRange(3, 3 + 4*mm).getFormula();
 		string += "+\'_Backstage\'!" + range_[k] + (2 + h_*mm);
@@ -177,29 +172,32 @@ function optAccount_UpdateTableRef_() {
 function optAccount_Update_(input) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
 			sheet = spreadsheet.getSheetByName('_Backstage');
-	var dbAccount;
+	var db_tables, db_accounts;
 	var auxCell, newCell;
 	var a, b, k, h_, w_;
 
 	if (!sheet) return 2;
-	dbAccount = getPropertiesService_('document', 'json', 'DB_ACCOUNT');
+
+	db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
+	db_accounts = db_tables.accounts;
 
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
 
-	for (k = 0; k < dbAccount.length; k++) {
-		if (dbAccount[k].Id == input.Id) break;
-	}
-	if (k === dbAccount.length) return 2;
+	k = db_accounts.ids.indexOf(input.id);
+	if (k == -1) return 2;
 
-	a = dbAccount[k].TimeA;
+	a = db_accounts.data[k].time_a;
 
-	dbAccount[k].Name = input.Name;
-	dbAccount[k].TimeA = Number(input.TimeA);
-	dbAccount[k].Balance = Number(input.Balance);
+	db_accounts.names[k] = input.name;
 
-	setPropertiesService_('document', 'json', 'DB_ACCOUNT', dbAccount);
+	db_accounts.data[k].name = input.name;
+	db_accounts.data[k].time_a = Number(input.time_a);
+	db_accounts.data[k].balance = Number(input.balance);
 
+	db_tables.accounts = db_accounts;
+
+	setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
 
 	try {
 		if (a > 0) b = "=R[-"+(h_-1)+"]C";
@@ -208,9 +206,9 @@ function optAccount_Update_(input) {
 
 		spreadsheet.getSheetByName('Jan')
 			.getRange(1, 6+k*5)
-			.setValue(input.Name);
-		sheet.getRange(1, 1+w_+1+w_*k).setValue(input.Name);
-		sheet.getRange(2+input.TimeA*h_, 1+w_+1+k*w_).setFormula('='+Number(input.Balance).formatLocaleSignal());
+			.setValue(input.name);
+		sheet.getRange(1, 1+w_+1+w_*k).setValue(input.name);
+		sheet.getRange(2+input.time_a*h_, 1+w_+1+k*w_).setFormula('='+Number(input.balance).formatLocaleSignal());
 
 		optAccount_UpdateTableRef_();
 	} catch (err) {
