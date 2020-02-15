@@ -712,42 +712,56 @@ function setupPart2_() {
 	if (CONST_SETUP_SETTINGS_["number_accounts"] !== list_acc.length) throw "Number number_accounts and list_acc length are differ.";
 
 	var sheet = CONST_LIST_MN_SHEETS_[0];
-	var db_acc, acc, list_id;
-	var r, i, k, w_;
+	var ids, acc, r, i, k, w_;
 
 	w_ = TABLE_DIMENSION_.width;
 
-	r = "";
-	db_acc = [ ];
-	list_id = [ ];
+	r = randomString(7, "lonum");
+
+	db_tables = {
+		wallet: r,
+		accounts: {
+			ids: [ ],
+			names: [ ],
+			data: [ ]
+		},
+		cards: {
+			count: 0,
+			ids: [ ],
+			codes: [ ],
+			data: [ ]
+		}
+	};
+
+	ids = [ r ];
 
 	for (k = 0; k < CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
 		i = 0;
 		do {
-			r = randomString(11, "word");
+			r = "" + randomString(7, "lonum");
 			i++;
-		} while (list_id.indexOf(r) !== -1 && i < 99);
-
+		} while (ids.indexOf(r) != -1 && i < 99);
 		if (i >= 99) throw "Could not generate unique ID for account.";
 
-		list_id.push(r);
+		ids.push(r);
+		db_tables.accounts.ids.push(r);
 
 		acc = {
-			Id: r,
-			Name: list_acc[k],
-			TimeA: CONST_SETUP_SETTINGS_["init_month"],
-			TimeZ: 11,
-			Balance: 0
+			id: r,
+			name: list_acc[k],
+			balance: 0,
+			time_a: CONST_SETUP_SETTINGS_["init_month"],
+			time_z: 11
 		};
 
 		CONST_LIST_ES_SHEETS_["_backstage"].getRange(1, 7 + w_*k).setValue(list_acc[k]);
 		sheet.getRange(1, 6 + k*5).setValue(list_acc[k]);
 
-		db_acc.push(acc);
+		db_tables.accounts.names.push(list_acc[k]);
+		db_tables.accounts.data.push(acc);
 	}
 
-	setPropertiesService_('document', 'json', 'DB_CARD', [ ]);
-	setPropertiesService_('document', 'json', 'DB_ACCOUNT', db_acc);
+	setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
 	console.timeEnd('add-on/setup/part2');
 }
 

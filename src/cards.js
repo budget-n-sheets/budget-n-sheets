@@ -1,5 +1,5 @@
 function cardsGetData_() {
-	var sheet;
+	var sheet, db_cards;
 	var output, data;
 	var c, n, v, i, k;
 	var h_, w_;
@@ -9,9 +9,9 @@ function cardsGetData_() {
 
 	n = getUserConstSettings_('number_accounts');
 
-	db_cards = getPropertiesService_("document", "obj", "DB_CARD");
-	if (!db_cards) return;
-	if (db_cards.length == 0) return;
+	db_cards = getPropertiesService_("document", "obj", "DB_TABLES");
+	db_cards = db_cards.cards;
+	if (db_cards.count == 0) return;
 
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
 	if (!sheet) return;
@@ -35,10 +35,10 @@ function cardsGetData_() {
 
 	data = sheet.getRange(
 		1, 1 + w_ + n*w_ + w_ + 1,
-		1 + 12*h_, w_*db_cards.length
+		1 + 12*h_, w_*db_cards.count
 	).getValues();
-	for (k = 0; k < db_cards.length; k++) {
-		c = data[0].indexOf(db_cards[k].Code);
+	for (k = 0; k < db_cards.count; k++) {
+		c = data[0].indexOf(db_cards.codes[k]);
 		if (c === -1) continue;
 
 		v = [ ];
@@ -46,7 +46,7 @@ function cardsGetData_() {
 			v[i] = data[5 + h_*i][c];
 		}
 
-		output.cards.push(db_cards[k].Code);
+		output.cards.push(db_cards.codes[k]);
 		output.balance.push(v);
 	}
 
@@ -55,18 +55,22 @@ function cardsGetData_() {
 
 
 function optCard_Remove_(input) {
-	var dbCard;
+	var db_tables, db_cards;
 	var k;
 
-	dbCard = getPropertiesService_('document', 'json', 'DB_CARD');
+	db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
+	db_cards = db_tables.cards;
 
-	for (k = 0; k < dbCard.length; k++) {
-		if (dbCard[k].Id === input) break;
-	}
-	if (k >= dbCard.length || dbCard[k].Id !== input) return 1;
+	k = db_cards.ids.indexOf(input);
+	if (k == -1) return 1;
 
-	dbCard.splice(k, 1);
-	setPropertiesService_('document', 'json', 'DB_CARD', dbCard);
+	db_cards.count--;
+	db_cards.ids.splice(k, 1);
+	db_cards.codes.splice(k, 1);
+	db_cards.data.splice(k, 1);
+
+	db_tables.cards = db_cards;
+	setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
 
 	optCard_Refresh_();
 	return -1;
@@ -75,24 +79,27 @@ function optCard_Remove_(input) {
 
 
 function optCard_Update_(input) {
-	var dbCard;
+	var db_tables, db_cards;
 	var k;
 
-	if ( !/^\w+$/.test(input.Code) ) return 10;
+	if ( !/^\w+$/.test(input.code) ) return 10;
 
-	dbCard = getPropertiesService_('document', 'json', 'DB_CARD');
+	db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
+	db_cards = db_tables.cards;
 
-	for (k = 0; k < dbCard.length; k++) {
-		if (dbCard[k].Code === input.Code) return 20;
-		if (dbCard[k].Id === input.Id) break;
-	}
-	if (k >= dbCard.length) return 2;
+	if (db_cards.codes.indexOf(input.code) != -1) return 20;
 
-	dbCard[k].Name = input.Name;
-	dbCard[k].Code = input.Code;
-	dbCard[k].Limit = 0;
+	k = db_cards.ids.indexOf(input.id);
+	if (k == -1) return 2;
 
-	setPropertiesService_('document', 'json', 'DB_CARD', dbCard);
+	db_cards.codes[k] == input.code;
+
+	db_cards.data[k].name = input.name;
+	db_cards.data[k].code = input.code;
+
+	db_tables.cards = db_cards;
+
+	setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
 
 	optCard_Refresh_();
 	return -1;
@@ -100,30 +107,35 @@ function optCard_Update_(input) {
 
 
 function optCard_Add_(input) {
-	var dbCard, cell, string;
+	var db_tables, db_cards, cell, string;
 	var c, k;
 
-	dbCard = getPropertiesService_('document', 'json', 'DB_CARD');
+	db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
+	db_cards = db_tables.cards;
 
-	if (dbCard.length >= 10) return 30;
-	if ( !/^\w+$/.test(input.Code) ) return 10;
+	if (db_cards.count >= 10) return 30;
+	if ( !/^\w+$/.test(input.code) ) return 10;
 
-	for (k = 0; k < dbCard.length; k++) {
-		if (dbCard[k].Code === input.Code) return 20;
-	}
+	if (db_cards.codes.indexOf(input.code) != -1) return 20;
 
 	string = optTable_GenerateRandomId_();
 	if (!string) return 2;
 
 	cell = {
-		Id: string,
-		Name: input.Name,
-		Code: input.Code,
-		Limit: 0
+		id: string,
+		name: input.name,
+		code: input.code,
+		limit: 0
 	};
 
-	dbCard.push(cell);
-	setPropertiesService_('document', 'json', 'DB_CARD', dbCard);
+	db_cards.count++;
+	db_cards.ids.push(string);
+	db_cards.codes.push(input.code);
+	db_cards.data.push(cell);
+
+	db_tables.cards = db_cards;
+
+	setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
 
 	optCard_Refresh_();
 	return -1;
@@ -134,14 +146,15 @@ function optCard_Refresh_() {
 	var sheetBackstage = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage"),
 			sheetSettings = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
 	var number_accounts = getUserConstSettings_('number_accounts');
-	var db_card;
+	var db_cards;
 	var h_, w_;
 	var c, i;
 
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
 
-	db_card = getPropertiesService_("document", "obj", "DB_CARD");
+	db_cards = getPropertiesService_("document", "obj", "DB_TABLES");
+	db_cards = db_cards.cards;
 
 	c = 1 + 1 + w_ + w_*number_accounts;
 	sheetBackstage.getRange(1, c, 1, w_*11).setValue("");
@@ -151,9 +164,9 @@ function optCard_Refresh_() {
 	sheetSettings.getRange("B10").setValue("All");
 
 	c += w_;
-	for (i = 0; i < db_card.length; i++) {
-		sheetBackstage.getRange(1, c + w_*i).setValue(db_card[i].Code);
-		sheetSettings.getRange(11 + i, 2).setValue(db_card[i].Code);
+	for (i = 0; i < db_cards.count; i++) {
+		sheetBackstage.getRange(1, c + w_*i).setValue(db_cards.codes[i]);
+		sheetSettings.getRange(11 + i, 2).setValue(db_cards.codes[i]);
 	}
 
 	SpreadsheetApp.flush();

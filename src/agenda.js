@@ -2,48 +2,46 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	var list, cell, evento;
 	var decimal_separator, description;
 	// var OnlyEventsOwned = getUserSettings_('OnlyEventsOwned');
-	var infoAccount, infoCard;
+	var accounts, cards;
 	var output, translation;
 	var a, b, c, s, i, j;
 
 	output = [ ];
-	infoAccount = {
-		name: [ ],
-		regex: [ ],
-		index: [ ]
+	accounts = {
+		regex: "",
+		list: [ ]
 	};
-	infoCard = {
-		code: [ ],
-		regex: [ ],
-		index: [ ]
+	cards = {
+		regex: "",
+		list: [ ]
 	};
 
 	decimal_separator = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
 
-	a = getTableGreatList_();
+	const db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
 
-	list = a.list_account;
+	list = db_tables.accounts.names;
 	list.splice(0, 0, "Wallet");
-	infoAccount.index = list;
-	list.sort(function(a, b) {
-	  return b.length - a.length;
-	});
-	for (i = 0; i < list.length; i++) {
-		s = new RegExp(list[i]);
-		infoAccount.regex.push(s);
-	}
-	infoAccount.name = list;
 
-	list = a.list_card;
-	infoCard.index = list;
+	a = list.join('|');
+	accounts.regex = new RegExp(a);
+
 	list.sort(function(a, b) {
 	  return b.length - a.length;
 	});
-	for (i = 0; i < list.length; i++) {
-		s = new RegExp(list[i]);
-		infoCard.regex.push(s);
-	}
-	infoCard.code = list;
+
+	accounts.list = list;
+
+	list = db_tables.cards.codes;
+
+	a = list.join('|');
+	cards.regex = new RegExp(a);
+
+	list.sort(function(a, b) {
+	  return b.length - a.length;
+	});
+
+	cards.list = list;
 
 	for (i = 0; i < listEvents.length; i++) {
 		// if (OnlyEventsOwned && !listEvents[i].isOwnedByMe()) continue;
@@ -68,54 +66,41 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			hasQcc: false
 		};
 
-		c = -1;
-		for (j = 0; j < infoAccount.regex.length; j++) {
-			if ( infoAccount.regex[j].test(cell.Description) ) {
-				b = cell.Description.indexOf(infoAccount.name[j]);
-				if (b != -1) {
+		if ( accounts.regex.test(cell.Description) ) {
+			c = -1;
+			list = accounts.list;
+			a = description.length;
+			for (j = 0; j < list.length; j++) {
+				b = cell.Description.indexOf(list[j]);
+				if (b != -1 && b < a) {
 					c = j;
 					a = b;
 					break;
 				}
 			}
-		}
-		for (j++; j < infoAccount.regex.length; j++) {
-			if ( infoAccount.regex[j].test(cell.Description) ) {
-				b = cell.Description.indexOf(infoAccount.name[j]);
-				if (b != -1 && b < a) {
-					c = j;
-					a = b;
-				}
+
+			if (c != -1) {
+				cell.Table = db_tables.accounts.names.indexOf(list[c]);
 			}
-		}
-		if (c != -1) {
-			c = infoAccount.index.indexOf(infoAccount.name[c]);
-			cell.Table = c;
 		}
 
-		c = -1;
-		for (j = 0; j < infoCard.regex.length; j++) {
-			if ( infoCard.regex[j].test(cell.Description) ) {
-				b = cell.Description.indexOf(infoCard.code[j]);
-				if (b != -1) {
+		if ( cards.regex.test(cell.Description) ) {
+			c = -1;
+			list = cards.list;
+			a = description.length;
+			for (j = 0; j < list.length; j++) {
+				b = cell.Description.indexOf(list[j]);
+				if (b != -1 && b < a) {
 					c = j;
 					a = b;
 					break;
 				}
 			}
-		}
-		for (j++; j < infoCard.regex.length; j++) {
-			if ( infoCard.regex[j].test(cell.Description) ) {
-				b = cell.Description.indexOf(infoCard.code[j]);
-				if (b != -1 && b < a) {
-					c = j;
-					a = b;
-				}
+
+			if (c != -1) {
+				c = db_tables.cards.codes.indexOf(list[c]);
+				cell.Card = db_tables.cards.codes[c];
 			}
-		}
-		if (c != -1) {
-			c = infoCard.index.indexOf(infoCard.code[c]);
-			cell.Card = infoCard.code[c];
 		}
 
 		if (cell.Table == -1 && cell.Card == -1) continue;
