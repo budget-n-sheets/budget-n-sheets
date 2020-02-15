@@ -349,7 +349,7 @@ function foo_UpdateCashFlow_(mm) {
 		sheetBackstage = spreadsheet.getSheetByName("_Backstage");
 	}
 	if (sheetBackstage) {
-		number_cards = getPropertiesService_("document", "ojb", "DB_TABLES");
+		number_cards = getPropertiesService_("document", "obj", "DB_TABLES");
 		number_cards = number_cards.cards.count;
 		hasCards = number_cards > 0;
 	}
