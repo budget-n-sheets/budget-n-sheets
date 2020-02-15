@@ -122,6 +122,90 @@ function update_v0m0p0_() {
 	}
 }*/
 
+/**
+ * Merge and update db of cards and accounts in one table.
+ *
+ * 0.22.0
+ */
+function update_v0m22p0_() {
+	try {
+		var db_tables, cell, ids;
+		var i, k, r;
+
+		r = randomString(7, "lonum");
+		ids = [ r ];
+
+		db_tables = {
+			wallet: r,
+			accounts: {
+				ids: [ ],
+				names: [ ],
+				data: [ ]
+			},
+			cards: {
+				count: 0,
+				ids: [ ],
+				codes: [ ],
+				data: [ ]
+			}
+		};
+
+		const db_accounts = getPropertiesService_('document', 'json', 'DB_ACCOUNT');
+		const db_cards = getPropertiesService_('document', 'json', 'DB_CARD');
+
+		for (k = 0; k < db_accounts.length; k++) {
+			i = 0;
+			do {
+				r = "" + randomString(7, "lonum");
+				i++;
+			} while (ids.indexOf(r) != -1 && i < 99);
+			if (i >= 99) throw "Could not generate unique ID for account.";
+
+			ids.push(r);
+			db_tables.accounts.ids.push(r);
+
+			cell = {
+				id: r,
+				name: db_accounts[k].Name,
+				balance: db_accounts[k].Balance,
+				time_a: db_accounts[k].TimeA,
+				time_z: 11
+			};
+
+			db_tables.accounts.names.push(db_accounts[k].Name);
+			db_tables.accounts.data.push(cell);
+		}
+
+		db_tables.cards.count = db_cards.length;
+
+		for (k = 0; k < db_cards.length; k++) {
+			i = 0;
+			do {
+				r = "" + randomString(7, "lonum");
+				i++;
+			} while (ids.indexOf(r) != -1 && i < 99);
+			if (i >= 99) throw "Could not generate unique ID for account.";
+
+			ids.push(r);
+			db_tables.cards.ids.push(r);
+
+			cell = {
+				id: r,
+				name: db_cards[k].Name,
+				code: db_cards[k].Code,
+				limit: db_cards[k].Limit
+			};
+
+			db_tables.cards.codes.push(db_cards[k].Code);
+			db_tables.cards.data.push(cell);
+		}
+
+		setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
+	} catch (err) {
+		console.error("update_v0m22p0_()", err);
+		return 1;
+	}
+}
 
 /**
  * Set MD5 of selected financial calendar ID.
