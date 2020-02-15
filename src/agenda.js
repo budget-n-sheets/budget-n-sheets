@@ -44,7 +44,6 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 		infoCard.regex.push(s);
 	}
 	infoCard.code = list;
-	Logger.log(infoCard);
 
 	for (i = 0; i < listEvents.length; i++) {
 		// if (OnlyEventsOwned && !listEvents[i].isOwnedByMe()) continue;
