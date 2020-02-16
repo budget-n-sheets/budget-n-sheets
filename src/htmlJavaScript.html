@@ -12,9 +12,9 @@
 	}
 	window.addEventListener('load', preventFormSubmit);
 
-	function showError() {
+	function showError(err) {
 		google.script.run.withSuccessHandler(function() {
 			google.script.host.close();
-		}).showDialogErrorMessage();
+		}).showDialogErrorMessage(err);
 	}
 </script>
