@@ -49,9 +49,11 @@ function daily_PostEvents_(date) {
 			continue;
 		}
 
-		if ( !isNaN(evento.Value) ) value = (evento.Value).formatLocaleSignal(dec_p);
+		if ( !isNaN(evento.Value) ) value = evento.Value;
 		else if (evento.Tags.length > 0) value = 0;
 		else continue;
+
+		value = value.formatLocaleSignal(dec_p);
 
 		tags = "";
 		for (j = 0; j < evento.Tags.length; j++) {

@@ -73,7 +73,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			}
 		}
 
-		if (cell.Table == -1 && cell.Card == -1) continue;
+		if (cell.Table === -1 && cell.Card === -1) continue;
 
 		cell.hasAtMute = /@(ign|mute)/.test(cell.Description);
 		cell.hasQcc = /#qcc/.test(cell.Description);
