@@ -159,9 +159,9 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 
 
 function getAllOwnedCalendars() {
-	var calendars = CalendarApp.getAllOwnedCalendars();
+	var calendars = CalendarApp.getAllCalendars();
 	var db_calendars;
-	var digest, id, i;
+	var digest, id, name, i;
 
 	db_calendars = {
 		name: [ ],
@@ -173,7 +173,10 @@ function getAllOwnedCalendars() {
 		id = calendars[i].getId();
 		digest = computeDigest("MD5", id, "UTF_8");
 
-		db_calendars.name.push(calendars[i].getName());
+		name = calendars[i].getName();
+		if (! calendars[i].isOwnedByMe()) name += " *";
+
+		db_calendars.name.push(name);
 		db_calendars.id.push(id);
 		db_calendars.md5.push(digest);
 	}
@@ -205,6 +208,8 @@ function getCalendarByMD5_(md5sum) {
 
 
 function calendarMuteEvents_(calendar, list) {
+	if (! calendar.isOwnedByMe()) return;
+
 	var evento, description;
 	// var OnlyEventsOwned = getUserSettings_("OnlyEventsOwned");
 	var i;
