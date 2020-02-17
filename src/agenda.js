@@ -24,6 +24,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	list.splice(0, 0, "Wallet");
 
 	a = list.join('|');
+	a = '(' + a + ')';
 	accounts.regex = new RegExp(a);
 
 	list.sort(function(a, b) {
@@ -35,6 +36,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	list = db_tables.cards.codes;
 
 	a = list.join('|');
+	a = '(' + a + ')';
 	cards.regex = new RegExp(a);
 
 	list.sort(function(a, b) {
