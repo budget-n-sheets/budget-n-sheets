@@ -5,7 +5,7 @@ var PatchThis = (function() {
 				null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
-				[ null, null, update_v0m21p2_, update_v0m21p3_, null ]
+				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ]
 			]
 		]
 	};
