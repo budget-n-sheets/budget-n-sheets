@@ -159,9 +159,16 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 
 
 function getAllOwnedCalendars() {
-	var calendars = CalendarApp.getAllCalendars();
+	var calendars;
 	var db_calendars;
 	var digest, id, name, i;
+
+	try {
+		calendars = CalendarApp.getAllCalendars();
+	} catch (err) {
+		console.warn(err);
+		calendars = [ ];
+	}
 
 	db_calendars = {
 		name: [ ],
