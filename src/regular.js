@@ -37,7 +37,7 @@ function daily_PostEvents_(date) {
 		evento = list_eventos[i];
 
 		if (evento.Description == "") continue;
-		if (evento.hasAtIgn) continue;
+		if (evento.hasAtMute) continue;
 
 		if (evento.Table !== -1) {
 			type = 'acc';

@@ -150,8 +150,8 @@ function optTool_AddBlankRows_(mm) {
 		c = 5;
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 	} else {
-		showDialogErrorMessage();
 		console.error("optTool_AddBlankRows_(): Internal error.", mm);
+		showDialogErrorMessage();
 		return;
 	}
 
@@ -233,8 +233,8 @@ function optTool_FormatRegistry_() {
 
 function foo_UpdateCashFlow_(mm) {
 	if (typeof mm !== 'number' || isNaN(mm)) {
-		showDialogErrorMessage();
 		console.warn("foo_UpdateCashFlow_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
+		showDialogErrorMessage();
 		return;
 	}
 
@@ -361,7 +361,7 @@ function foo_UpdateCashFlow_(mm) {
 		evento = listEventos[i];
 
 		if (evento.Description === "") continue;
-		if (evento.hasAtIgn) continue;
+		if (evento.hasAtMute) continue;
 
 		if ( !isNaN(evento.Value) ) value = evento.Value;
 		else if (hasCards && evento.hasQcc) {
@@ -430,8 +430,8 @@ function foo_UpdateCashFlow_(mm) {
 
 function foo_FormatAccounts_(mm) {
 	if (typeof mm != "number" || isNaN(mm)) {
-		showDialogErrorMessage();
 		console.warn("foo_FormatAccounts_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
+		showDialogErrorMessage();
 		return;
 	}
 
@@ -478,8 +478,8 @@ function foo_FormatAccounts_(mm) {
 
 function foo_FormatCards_(mm) {
 	if (typeof mm !== "number" || isNaN(mm)) {
-		showDialogErrorMessage();
 		console.warn("foo_FormatCards_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
+		showDialogErrorMessage();
 		return;
 	}
 

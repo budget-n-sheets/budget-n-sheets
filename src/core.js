@@ -127,14 +127,14 @@ function showDialogAboutAddon() {
 }
 
 
-function showDialogErrorMessage() {
-	console.warn("showDialogErrorMessage() : Ops...");
+function showDialogErrorMessage(err) {
+	if (err) console.error(err);
 
 	var htmlDialog = HtmlService.createHtmlOutputFromFile("htmlExceptionMessage")
 		.setWidth(373)
 		.setHeight(113);
-	SpreadsheetApp.getUi()
-		.showModalDialog(htmlDialog, "Something went wrong");
+
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Something went wrong");
 }
 
 

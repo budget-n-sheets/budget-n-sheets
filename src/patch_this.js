@@ -80,7 +80,6 @@ function update_() {
 		console.info("add-on/update/fail", r);
 	} else {
 		if (r.m == -1) r.m = 0;
-		console.info("add-on/update/success");
 	}
 
 	var cell = {
