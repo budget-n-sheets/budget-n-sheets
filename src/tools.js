@@ -361,7 +361,7 @@ function foo_UpdateCashFlow_(mm) {
 		evento = listEventos[i];
 
 		if (evento.Description === "") continue;
-		if (evento.hasAtIgn) continue;
+		if (evento.hasAtMute) continue;
 
 		if ( !isNaN(evento.Value) ) value = evento.Value;
 		else if (hasCards && evento.hasQcc) {

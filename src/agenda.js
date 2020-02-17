@@ -64,7 +64,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			TranslationType: "",
 			TranslationNumber: 0,
 			Tags: [ ],
-			hasAtIgn: true,
+			hasAtMute: true,
 			hasQcc: false
 		};
 
@@ -120,7 +120,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 
 		if (cell.Table == -1 && cell.Card == -1) continue;
 
-		cell.hasAtIgn = /@ign/.test(cell.Description);
+		cell.hasAtMute = /@(ign|mute)/.test(cell.Description);
 		cell.hasQcc = /#qcc/.test(cell.Description);
 
 		if (decimal_separator) {
@@ -216,7 +216,7 @@ function calendarMuteEvents_(calendar, list) {
 		// if (OnlyEventsOwned && !evento.isOwnedByMe()) continue;
 
 		description = evento.getDescription();
-		description += "\n\n\n@ign";
+		description += "\n\n\n@mute";
 
 		evento.setDescription(description);
 	}

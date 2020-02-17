@@ -39,7 +39,7 @@ function daily_PostEvents_(date) {
 		evento = listEventos[i];
 
 		if (evento.Description === "") continue;
-		if (evento.hasAtIgn) continue;
+		if (evento.hasAtMute) continue;
 
 		if (evento.Table !== -1) k = evento.Table;
 		else if (evento.Card !== -1) k = evento.Card;
