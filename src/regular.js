@@ -82,8 +82,8 @@ function daily_PostEvents_(date) {
 
 			value = transpose([ data[0].value ]);
 			sheet.getRange(
-					a, 3 + 5*k,
-					data[k].value.length, 1)
+					a, 4 + 6*mm,
+					value.length, 1)
 				.setFormulas(value);
 		}
 	}
