@@ -1,7 +1,13 @@
 function onEdit_Main_(e) {
 	if (e.authMode != ScriptApp.AuthMode.FULL) return;
-	else if (e.range.getSheet().getName() !== "Quick Actions") return;
 	else if (e.value == "") return;
+
+	try {
+		if (e.range.getSheet().getName() !== "Quick Actions") return;
+	} catch (err) {
+		console.warn(err);
+		return;
+	}
 
 	var row = e.range.getRow();
 	var mm = [
