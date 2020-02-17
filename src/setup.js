@@ -252,6 +252,7 @@ function setup_(settings, listAcc) {
 
 
 function loadConstListSheets_() {
+	console.time('add-on/setup/load');
 	var list = [
 		[ "summary", "cards", "cash_flow", "tags", "quick_actions", "_settings", "_backstage", "about" ],
 		[ "Summary", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ]
@@ -271,11 +272,13 @@ function loadConstListSheets_() {
 		if (!CONST_LIST_MN_SHEETS_[i]) return;
 	}
 
+	console.timeEnd('add-on/setup/load');
 	return -1;
 }
 
 
 function sortSheetOrder_() {
+	console.time('add-on/setup/sort-sheets');
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet;
 	var list = [ "Summary", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ];
@@ -294,6 +297,7 @@ function sortSheetOrder_() {
 		spreadsheet.moveActiveSheet(i + 1);
 	}
 
+	console.timeEnd('add-on/setup/sort-sheets');
 	return -1;
 }
 
