@@ -7,7 +7,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 	output = [ ];
 	regexp = {
 		accounts: "",
-		cards: ""
+		cards: 0
 	};
 
 	const dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
@@ -25,16 +25,18 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 
 	regexp.accounts = new RegExp(s, 'g');
 
-	list = db_tables.cards.codes;
+	if (db_tables.cards.count > 0) {
+		list = db_tables.cards.codes;
 
-	list.sort(function(a, b) {
-	  return b.length - a.length;
-	});
+		list.sort(function(a, b) {
+		  return b.length - a.length;
+		});
 
-	s = list.join('|');
-	s = '(' + s + ')';
+		s = list.join('|');
+		s = '(' + s + ')';
 
-	regexp.cards = new RegExp(s, 'g');
+		regexp.cards = new RegExp(s, 'g');
+	}
 
 	for (i = 0; i < listEvents.length; i++) {
 		// if (OnlyEventsOwned && !listEvents[i].isOwnedByMe()) continue;
@@ -64,9 +66,11 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			cell.Table = db_tables.accounts.names.indexOf(match[0]);
 		}
 
-		match = cell.Description.match(regexp.cards);
-		if (match) {
-			cell.Card = match[0];
+		if (db_tables.cards.count > 0) {
+			match = cell.Description.match(regexp.cards);
+			if (match) {
+				cell.Card = match[0];
+			}
 		}
 
 		if (cell.Table == -1 && cell.Card == -1) continue;
