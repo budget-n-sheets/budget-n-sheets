@@ -1,49 +1,40 @@
 function optCalendar_ProcessRawEvents_(listEvents) {
-	var list, cell, evento;
-	var decimal_separator, description;
+	var evento, description;
 	// var OnlyEventsOwned = getUserSettings_('OnlyEventsOwned');
-	var accounts, cards;
-	var output, translation;
-	var a, b, c, s, i, j;
+	var output, translation, regexp, match;
+	var list, cell, s, i, j;
 
 	output = [ ];
-	accounts = {
-		regex: "",
-		list: [ ]
-	};
-	cards = {
-		regex: "",
-		list: [ ]
+	regexp = {
+		accounts: "",
+		cards: ""
 	};
 
-	decimal_separator = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
-
+	const dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
 	const db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
 
 	list = db_tables.accounts.names;
 	list.splice(0, 0, "Wallet");
 
-	a = list.join('|');
-	a = '(' + a + ')';
-	accounts.regex = new RegExp(a);
-
 	list.sort(function(a, b) {
 	  return b.length - a.length;
 	});
 
-	accounts.list = list;
+	s = list.join('|');
+	s = '(' + s + ')';
+
+	regexp.accounts = new RegExp(s, 'g');
 
 	list = db_tables.cards.codes;
 
-	a = list.join('|');
-	a = '(' + a + ')';
-	cards.regex = new RegExp(a);
-
 	list.sort(function(a, b) {
 	  return b.length - a.length;
 	});
 
-	cards.list = list;
+	s = list.join('|');
+	s = '(' + s + ')';
+
+	regexp.cards = new RegExp(s, 'g');
 
 	for (i = 0; i < listEvents.length; i++) {
 		// if (OnlyEventsOwned && !listEvents[i].isOwnedByMe()) continue;
@@ -68,37 +59,14 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			hasQcc: false
 		};
 
-		if ( accounts.regex.test(cell.Description) ) {
-			c = -1;
-			a = description.length;
-			for (j = 0; j < accounts.list.length; j++) {
-				b = cell.Description.indexOf(accounts.list[j]);
-				if (b != -1 && b < a) {
-					c = j;
-					a = b;
-				}
-			}
-
-			if (c != -1) {
-				cell.Table = db_tables.accounts.names.indexOf(accounts.list[c]);
-			}
+		match = cell.Description.match(regexp.accounts);
+		if (match) {
+			cell.Table = db_tables.accounts.names.indexOf(match[0]);
 		}
 
-		if ( cards.regex.test(cell.Description) ) {
-			c = -1;
-			a = description.length;
-			for (j = 0; j < cards.list.length; j++) {
-				b = cell.Description.indexOf(cards.list[j]);
-				if (b != -1 && b < a) {
-					c = j;
-					a = b;
-				}
-			}
-
-			if (c != -1) {
-				c = db_tables.cards.codes.indexOf(cards.list[c]);
-				cell.Card = db_tables.cards.codes[c];
-			}
+		match = cell.Description.match(regexp.cards);
+		if (match) {
+			cell.Card = match[0];
 		}
 
 		if (cell.Table == -1 && cell.Card == -1) continue;
@@ -106,7 +74,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 		cell.hasAtIgn = /@ign/.test(cell.Description);
 		cell.hasQcc = /#qcc/.test(cell.Description);
 
-		if (decimal_separator) {
+		if (dec_p) {
 			cell.Value = cell.Description.match( /-?\$[\d]+\.[\d]{2}/ );
 		} else {
 			cell.Value = cell.Description.match( /-?\$[\d]+,[\d]{2}/ );
