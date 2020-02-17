@@ -71,21 +71,21 @@ function daily_PostEvents_(date) {
 
 	if (data[0].data.length > 0) {
 		sheet = spreadsheet.getSheetByName("Cards");
-	}
-	if (sheet && sheet.getMaxRows() >= 5) {
-		a = sheet.getLastRow() + 1;
-		if (a < 6) a = 6;
+		if (sheet && sheet.getMaxRows() >= 5) {
+			a = sheet.getLastRow() + 1;
+			if (a < 6) a = 6;
 
-		sheet.getRange(
-				a, 1 + 6*mm,
-				data[0].data.length, 5)
-			.setValues(data[0].data);
+			sheet.getRange(
+					a, 1 + 6*mm,
+					data[0].data.length, 5)
+				.setValues(data[0].data);
 
-		value = transpose([ data[0].value ]);
-		sheet.getRange(
-				a, 3 + 5*k,
-				data[k].value.length, 1)
-			.setFormulas(value);
+			value = transpose([ data[0].value ]);
+			sheet.getRange(
+					a, 3 + 5*k,
+					data[k].value.length, 1)
+				.setFormulas(value);
+		}
 	}
 
 	data.splice(0, 1);
