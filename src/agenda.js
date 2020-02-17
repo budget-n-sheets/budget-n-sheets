@@ -76,7 +76,6 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 				if (b != -1 && b < a) {
 					c = j;
 					a = b;
-					break;
 				}
 			}
 
@@ -93,7 +92,6 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 				if (b != -1 && b < a) {
 					c = j;
 					a = b;
-					break;
 				}
 			}
 
