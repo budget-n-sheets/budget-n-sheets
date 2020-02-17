@@ -70,10 +70,9 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 
 		if ( accounts.regex.test(cell.Description) ) {
 			c = -1;
-			list = accounts.list;
 			a = description.length;
-			for (j = 0; j < list.length; j++) {
-				b = cell.Description.indexOf(list[j]);
+			for (j = 0; j < accounts.list.length; j++) {
+				b = cell.Description.indexOf(accounts.list[j]);
 				if (b != -1 && b < a) {
 					c = j;
 					a = b;
@@ -82,16 +81,15 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			}
 
 			if (c != -1) {
-				cell.Table = db_tables.accounts.names.indexOf(list[c]);
+				cell.Table = db_tables.accounts.names.indexOf(accounts.list[c]);
 			}
 		}
 
 		if ( cards.regex.test(cell.Description) ) {
 			c = -1;
-			list = cards.list;
 			a = description.length;
-			for (j = 0; j < list.length; j++) {
-				b = cell.Description.indexOf(list[j]);
+			for (j = 0; j < cards.list.length; j++) {
+				b = cell.Description.indexOf(cards.list[j]);
 				if (b != -1 && b < a) {
 					c = j;
 					a = b;
@@ -100,7 +98,7 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			}
 
 			if (c != -1) {
-				c = db_tables.cards.codes.indexOf(list[c]);
+				c = db_tables.cards.codes.indexOf(cards.list[c]);
 				cell.Card = db_tables.cards.codes[c];
 			}
 		}
