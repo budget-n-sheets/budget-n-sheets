@@ -8,10 +8,7 @@ function daily_PostEvents_(date) {
 	var type, card;
 	var a, i, j, k;
 
-	calendar = getUserSettings_('financial_calendar');
-	if (calendar == "") return;
-
-	calendar = getCalendarByMD5_(calendar);
+	calendar = getFinancialCalendar_();
 	if (!calendar) return;
 
 	list_eventos = calendar.getEventsForDay(date);

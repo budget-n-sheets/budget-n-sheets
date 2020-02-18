@@ -152,9 +152,23 @@ function getAllOwnedCalendars() {
 		db_calendars.md5.push(digest);
 	}
 
-	setPropertiesService_('document', 'json', 'DB_CALENDARS', db_calendars);
+	putCacheService_('document', 'DB_CALENDARS', 'json', db_calendars);
 
 	return db_calendars;
+}
+
+
+function getFinancialCalendar_() {
+	var financial_calendar = getUserSettings_('financial_calendar');
+	var calendar;
+
+	calendar = CalendarApp.getCalendarById(financial_calendar);;
+
+	if (calendar) return calendar;
+
+	setUserSettings_('financial_calendar', '');
+	setUserSettings_('PostDayEvents', false);
+	setUserSettings_('CashFlowEvents', false);
 }
 
 
