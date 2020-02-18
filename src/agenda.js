@@ -125,6 +125,15 @@ function getAllOwnedCalendars() {
 		calendars = [ ];
 	}
 
+	try {
+		if (calendars.length == 0) {
+			calendars = CalendarApp.getAllOwnedCalendars();
+		}
+	} catch (err) {
+		console.warn(err);
+		calendars = [ ];
+	}
+
 	db_calendars = {
 		name: [ ],
 		id: [ ],
