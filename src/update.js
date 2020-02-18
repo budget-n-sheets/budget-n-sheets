@@ -5,7 +5,8 @@ var PatchThis = (function() {
 				null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
-				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ]
+				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
+				[ update_v0m22p0_ ]
 			]
 		]
 	};
@@ -29,24 +30,9 @@ function onlineUpdate_() {
 		return true;
 	}
 
-	const v0 = optGetClass_('script');
-	const v1 = AppsScriptGlobal.script_version()["number"];
-
-	if (v0.major > v1.major) return;
-	if (v0.major == v1.major) {
-		if (v0.minor > v1.minor) return;
-		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return;
-	}
-
-	showDialogQuickMessage("Add-on Update", "The add-on is updating...", false, true);
-
 	var r = update_();
 
 	if (r === 0) {
-		ui.alert(
-			"Add-on Update",
-			"Update is complete.",
-			ui.ButtonSet.OK);
 		return;
 	} else if (r === 1) {
 		ui.alert("Budget n Sheets",
@@ -68,15 +54,6 @@ function seamlessUpdate_() {
 	} catch (err) {
 		console.warn("seamlessUpdate_()", err);
 		return true;
-	}
-
-	const v0 = optGetClass_('script');
-	const v1 = AppsScriptGlobal.script_version()["number"];
-
-	if (v0.major > v1.major) return;
-	if (v0.major == v1.major) {
-		if (v0.minor > v1.minor) return;
-		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return;
 	}
 
 	var r = update_();
@@ -121,6 +98,22 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Merge and update db of cards and accounts in one table.
+ *
+ * 0.22.0
+ */
+function update_v0m22p0_() {
+	try {
+		if (getPropertiesService_('document', '', 'DB_TABLES')) return;
+
+		update_v0m21p3_();
+	} catch (err) {
+		console.error("update_v0m22p0_()", err);
+		return 1;
+	}
+}
 
 /**
  * Merge and update db of cards and accounts in one table.

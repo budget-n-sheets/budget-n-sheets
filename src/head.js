@@ -11,10 +11,10 @@ var AppsScriptGlobal = (function() {
 		script_version: {
 			number: {
 				major: 0,
-				minor: 21,
-				patch: 5,
+				minor: 22,
+				patch: 0,
 			},
-			name: "0.21.5"
+			name: "0.22.0-beta2"
 		},
 
 		template_version: {

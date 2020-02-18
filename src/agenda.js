@@ -1,49 +1,42 @@
 function optCalendar_ProcessRawEvents_(listEvents) {
-	var list, cell, evento;
-	var decimal_separator, description;
+	var evento, description;
 	// var OnlyEventsOwned = getUserSettings_('OnlyEventsOwned');
-	var infoAccount, infoCard;
-	var output, translation;
-	var a, b, c, s, i, j;
+	var output, translation, regexp, match;
+	var list, cell, s, i, j;
 
 	output = [ ];
-	infoAccount = {
-		name: [ ],
-		regex: [ ],
-		index: [ ]
-	};
-	infoCard = {
-		code: [ ],
-		regex: [ ],
-		index: [ ]
+	regexp = {
+		accounts: "",
+		cards: 0
 	};
 
-	decimal_separator = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
+	const dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
+	const db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
 
-	a = getTableGreatList_();
-
-	list = a.list_account;
+	list = db_tables.accounts.names;
 	list.splice(0, 0, "Wallet");
-	infoAccount.index = list;
-	list.sort(function(a, b) {
-	  return b.length - a.length;
-	});
-	for (i = 0; i < list.length; i++) {
-		s = new RegExp(list[i]);
-		infoAccount.regex.push(s);
-	}
-	infoAccount.name = list;
 
-	list = a.list_card;
-	infoCard.index = list;
 	list.sort(function(a, b) {
 	  return b.length - a.length;
 	});
-	for (i = 0; i < list.length; i++) {
-		s = new RegExp(list[i]);
-		infoCard.regex.push(s);
+
+	s = list.join('|');
+	s = '(' + s + ')';
+
+	regexp.accounts = new RegExp(s, 'g');
+
+	if (db_tables.cards.count > 0) {
+		list = db_tables.cards.codes;
+
+		list.sort(function(a, b) {
+		  return b.length - a.length;
+		});
+
+		s = list.join('|');
+		s = '(' + s + ')';
+
+		regexp.cards = new RegExp(s, 'g');
 	}
-	infoCard.code = list;
 
 	for (i = 0; i < listEvents.length; i++) {
 		// if (OnlyEventsOwned && !listEvents[i].isOwnedByMe()) continue;
@@ -68,67 +61,32 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 			hasQcc: false
 		};
 
-		c = -1;
-		for (j = 0; j < infoAccount.regex.length; j++) {
-			if ( infoAccount.regex[j].test(cell.Description) ) {
-				b = cell.Description.indexOf(infoAccount.name[j]);
-				if (b != -1) {
-					c = j;
-					a = b;
-					break;
-				}
-			}
-		}
-		for (j++; j < infoAccount.regex.length; j++) {
-			if ( infoAccount.regex[j].test(cell.Description) ) {
-				b = cell.Description.indexOf(infoAccount.name[j]);
-				if (b != -1 && b < a) {
-					c = j;
-					a = b;
-				}
-			}
-		}
-		if (c != -1) {
-			c = infoAccount.index.indexOf(infoAccount.name[c]);
-			cell.Table = c;
+		match = cell.Description.match(regexp.accounts);
+		if (match) {
+			cell.Table = db_tables.accounts.names.indexOf(match[0]);
 		}
 
-		c = -1;
-		for (j = 0; j < infoCard.regex.length; j++) {
-			if ( infoCard.regex[j].test(cell.Description) ) {
-				b = cell.Description.indexOf(infoCard.code[j]);
-				if (b != -1) {
-					c = j;
-					a = b;
-					break;
-				}
+		if (db_tables.cards.count > 0) {
+			match = cell.Description.match(regexp.cards);
+			if (match) {
+				cell.Card = match[0];
 			}
-		}
-		for (j++; j < infoCard.regex.length; j++) {
-			if ( infoCard.regex[j].test(cell.Description) ) {
-				b = cell.Description.indexOf(infoCard.code[j]);
-				if (b != -1 && b < a) {
-					c = j;
-					a = b;
-				}
-			}
-		}
-		if (c != -1) {
-			c = infoCard.index.indexOf(infoCard.code[c]);
-			cell.Card = infoCard.code[c];
 		}
 
-		if (cell.Table == -1 && cell.Card == -1) continue;
+		if (cell.Table === -1 && cell.Card === -1) continue;
 
 		cell.hasAtMute = /@(ign|mute)/.test(cell.Description);
 		cell.hasQcc = /#qcc/.test(cell.Description);
 
-		if (decimal_separator) {
+		if (dec_p) {
 			cell.Value = cell.Description.match( /-?\$[\d]+\.[\d]{2}/ );
 		} else {
 			cell.Value = cell.Description.match( /-?\$[\d]+,[\d]{2}/ );
 			if (cell.Value) cell.Value[0] = cell.Value[0].replace(",", ".");
 		}
+
+		if (cell.Value) cell.Value = Number(cell.Value[0].replace("\$", ""));
+		else cell.Value = NaN;
 
 		translation = cell.Description.match( /@(M(\+|-)(\d+)|Avg|Total)/ );
 		if (translation) {
@@ -139,9 +97,6 @@ function optCalendar_ProcessRawEvents_(listEvents) {
 				cell.TranslationNumber = Number(translation[2] + translation[3]);
 			}
 		}
-
-		if (cell.Value) cell.Value = Number(cell.Value[0].replace("\$", ""));
-		else cell.Value = NaN;
 
 		cell.Tags = cell.Description.match(/#\w+/g);
 		if (!cell.Tags) cell.Tags = [ ];

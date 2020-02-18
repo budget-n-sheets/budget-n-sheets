@@ -1,92 +1,118 @@
 function daily_PostEvents_(date) {
-	var calendar, listEventos, listIds, evento;
-	var sheet, lastRow;
-	var data, data_Cards;
-	var number_accounts, mm, dd, value, tags;
-	var i, j, k;
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var sheet, data, lastRow;
 
-	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
+	var calendar, list_ids, list_eventos, evento;
+	var mm, dd, value, tags;
+	var number_accounts, dec_p;
+	var type, card;
+	var a, i, j, k;
 
-	if (!dec_p) dec_p = "] [";
+	calendar = getUserSettings_('financial_calendar');
+	if (calendar == "") return;
 
-	mm = date.getMonth();
-	dd = date.getDate();
-
-	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT_[mm]);
-	if (!sheet) return;
-	if (sheet.getMaxRows() < 4) return;
-
-	calendar = getUserSettings_("financial_calendar");
-	if (calendar === "") return;
 	calendar = getCalendarByMD5_(calendar);
 	if (!calendar) return;
 
-	listEventos = calendar.getEventsForDay(date);
-	if (listEventos.length === 0) return;
-	listEventos = optCalendar_ProcessRawEvents_(listEventos);
+	list_eventos = calendar.getEventsForDay(date);
+	if (list_eventos.length == 0) return;
+
+	list_eventos = optCalendar_ProcessRawEvents_(list_eventos);
+
+	list_ids = [ ];
+	mm = date.getMonth();
+	dd = date.getDate();
 
 	number_accounts = getUserConstSettings_('number_accounts');
 
-	data = [ ];
-	data_Cards = [ ];
-	listIds = [ ];
+	dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
+	if (!dec_p) dec_p = "] [";
 
-	for (k = 0; k < 1 + number_accounts; k++) {
-		data.push([ ]);
+	data = [ ];
+	for (k = 0; k < 2 + number_accounts; k++) {
+		data.push({data: [ ], value: [ ]});
 	}
 
-	for (i = 0; i < listEventos.length; i++) {
-		evento = listEventos[i];
+	for (i = 0; i < list_eventos.length; i++) {
+		evento = list_eventos[i];
 
-		if (evento.Description === "") continue;
+		if (evento.Description == "") continue;
 		if (evento.hasAtMute) continue;
 
-		if (evento.Table !== -1) k = evento.Table;
-		else if (evento.Card !== -1) k = evento.Card;
-		else continue;
+		if (evento.Table !== -1) {
+			type = 'acc';
+			k = evento.Table;
+		} else if (evento.Card !== -1) {
+			type = 'card';
+			card = evento.Card;
+		} else {
+			continue;
+		}
 
-		if ( !isNaN(evento.Value) ) value = (evento.Value).formatLocaleSignal(dec_p);
+		if ( !isNaN(evento.Value) ) value = evento.Value;
 		else if (evento.Tags.length > 0) value = 0;
 		else continue;
+
+		value = value.formatLocaleSignal(dec_p);
 
 		tags = "";
 		for (j = 0; j < evento.Tags.length; j++) {
 			tags += "#" + evento.Tags[j] + " ";
 		}
 
-		if (typeof k === "number") {
-			data[k].push([ dd, evento.Title, value, tags ]);
-		} else if (!evento.hasQcc) {
-			data_Cards.push([ dd, evento.Title, k, value, tags ]);
+		if (type == 'acc') {
+			data[1 + k].data.push([ dd, evento.Title, "", tags ]);
+			data[1 + k].value.push(value);
+		} else if (type == 'card') {
+			data[0].data.push([ dd, evento.Title, card, "", tags ]);
+			data[0].value.push(value);
 		}
 
-		listIds.push(evento.Id);
+		list_ids.push(evento.Id);
 	}
 
-	lastRow = sheet.getLastRow() + 1;
+	if (data[0].data.length > 0) {
+		sheet = spreadsheet.getSheetByName("Cards");
+		if (sheet && sheet.getMaxRows() >= 5) {
+			a = sheet.getLastRow() + 1;
+			if (a < 6) a = 6;
+
+			sheet.getRange(
+					a, 1 + 6*mm,
+					data[0].data.length, 5)
+				.setValues(data[0].data);
+
+			value = transpose([ data[0].value ]);
+			sheet.getRange(
+					a, 4 + 6*mm,
+					value.length, 1)
+				.setFormulas(value);
+		}
+	}
+
+	data.splice(0, 1);
+
+	sheet = spreadsheet.getSheetByName(MN_SHORT_[mm]);
+	if (!sheet) return;
+	if (sheet.getMaxRows() < 4) return;
+
+	a = sheet.getLastRow() + 1;
 	for (k = 0; k < 1 + number_accounts; k++) {
-		if (data[k].length === 0) continue;
+		if (data[k].data.length == 0) continue;
 
 		sheet.getRange(
-				lastRow, 1 + 5*k,
-				data[k].length, 4)
-			.setValues(data[k]);
-	}
+				a, 1 + 5*k,
+				data[k].data.length, 4)
+			.setValues(data[k].data);
 
-	if (data_Cards.length > 0) {
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
-		if (!sheet) return;
-
-		lastRow = sheet.getLastRow() + 1;
-		if (lastRow < 6) return;
-
+		value = transpose([ data[k].value ]);
 		sheet.getRange(
-				lastRow, 1 + 6*mm,
-				data_Cards.length, 5)
-			.setValues(data_Cards);
+				a, 3 + 5*k,
+				data[k].value.length, 1)
+			.setFormulas(value);
 	}
 
-	calendarMuteEvents_(calendar, listIds);
+	calendarMuteEvents_(calendar, list_ids);
 }
 
 

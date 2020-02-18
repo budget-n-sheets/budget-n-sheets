@@ -263,9 +263,9 @@
 				return;
 			}
 
-			$('#Form-EditAccount_Name').val(r.Name);
-			$('#Form-EditAccount_TimeA').val(r.TimeA);
-			$('#Form-EditAccount_Balance').val(r.Balance);
+			$('#Form-EditAccount_Name').val(r.name);
+			$('#Form-EditAccount_TimeA').val(r.time_a);
+			$('#Form-EditAccount_Balance').val(r.balance);
 
 			g2("panel_EditAccount");
 		}
@@ -275,10 +275,10 @@
 			$('#p-footer_FastResponse').empty().append('Saving changes...');
 
 			var output = {
-				Id: htmlVarGlobal.Id,
-				Name: $('#Form-EditAccount_Name').val(),
-				TimeA: $('#Form-EditAccount_TimeA').val(),
-				Balance: $('#Form-EditAccount_Balance').val()
+				id: htmlVarGlobal.Id,
+				name: $('#Form-EditAccount_Name').val(),
+				time_a: $('#Form-EditAccount_TimeA').val(),
+				balance: $('#Form-EditAccount_Balance').val()
 			};
 
 			google.script.run.withSuccessHandler(EditTable_Aftermath)
@@ -313,8 +313,8 @@
 				return;
 			}
 
-			$('#Form-AddEditCard_Name').val(r.Name);
-			$('#Form-AddEditCard_Code').val(r.Code);
+			$('#Form-AddEditCard_Name').val(r.name);
+			$('#Form-AddEditCard_Code').val(r.code);
 
 			g2("panel_EditCard");
 		}
@@ -332,9 +332,9 @@
 			$('.Form-AddEditCard_lock').prop('disabled', true);
 
 			var cell = {
-				Id: htmlVarGlobal.Id,
-				Name: $('#Form-AddEditCard_Name').val(),
-				Code: $('#Form-AddEditCard_Code').val()
+				id: htmlVarGlobal.Id,
+				name: $('#Form-AddEditCard_Name').val(),
+				code: $('#Form-AddEditCard_Code').val()
 			};
 
 			if (htmlVarGlobal.Action === 'add') {
@@ -402,46 +402,48 @@
 			$('#p-footer_FastResponse').append('Card removed.');
 		}
 
-		function ListTables_Post(list) {
-			var c, k;
-			var s, s1, s2;
+		function ListTables_Post(db) {
+			var c, k, s;
 
 			$("#b-CheckQuota").hide();
 			$("#box_Accounts").empty();
 			$("#box_Cards").empty();
 
 			c = 0;
-			for (k = 0; k < list.length; k++) {
-				if (list[k].Type == 'Account') {
-					s1 = '';
-					s2 = '<a class="m-li">Edit</a>';
-				} else {
-					s1 = ' \
-						<div class="Table-row"> \
-							<div class="Table-name gray" style="padding-top: 0;">' + list[k].Code + '</div> \
-						</div>';
-					s2 = '<a class="b-DeleteCard">Remove</a> <a class="m-la">Edit</a>';
-				}
-
+			for (k = 0; k < db.accounts.length; k++) {
 				s = ' \
 					<div class="Table-head"> \
 						<div class="Table-row"> \
-							<div class="Table-name" style="font-size: 23px;">' + list[k].Name + '</div> \
-						</div>' +
-						s1 + ' \
+							<div class="Table-name" style="font-size: 23px;">' + db.accounts[k].name + '</div> \
+						</div> \
 						<div class="Table-row"> \
-							<div class="Table-menu" id="' + list[k].Id + '">' +
-								s2 + ' \
+							<div class="Table-menu" id="' + db.accounts[k].id + '"> \
+								<a class="m-li">Edit</a> \
 							</div> \
 						</div> \
 					</div>';
 
-				if (list[k].Type == 'Account') {
-					$('#box_Accounts').append(s);
-				} else {
-					$('#box_Cards').append(s);
-					c++;
-				}
+				$('#box_Accounts').append(s);
+			}
+
+			for (k = 0; k < db.cards.length; k++) {
+				s = ' \
+					<div class="Table-head"> \
+						<div class="Table-row"> \
+							<div class="Table-name" style="font-size: 23px;">' + db.cards[k].name + '</div> \
+						</div> \
+						<div class="Table-row"> \
+							<div class="Table-name gray" style="padding-top: 0;">' + db.cards[k].code + '</div> \
+						</div> \
+						<div class="Table-row"> \
+							<div class="Table-menu" id="' + db.cards[k].id + '"> \
+								<a class="b-DeleteCard">Remove</a> <a class="m-la">Edit</a> \
+							</div> \
+						</div> \
+					</div>';
+
+				$('#box_Cards').append(s);
+				c++;
 			}
 
 			if (c < 10) $("#b-CheckQuota").show();
