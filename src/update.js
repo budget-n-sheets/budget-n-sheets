@@ -30,24 +30,9 @@ function onlineUpdate_() {
 		return true;
 	}
 
-	const v0 = optGetClass_('script');
-	const v1 = AppsScriptGlobal.script_version()["number"];
-
-	if (v0.major > v1.major) return;
-	if (v0.major == v1.major) {
-		if (v0.minor > v1.minor) return;
-		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return;
-	}
-
-	showDialogQuickMessage("Add-on Update", "The add-on is updating...", false, true);
-
 	var r = update_();
 
 	if (r === 0) {
-		ui.alert(
-			"Add-on Update",
-			"Update is complete.",
-			ui.ButtonSet.OK);
 		return;
 	} else if (r === 1) {
 		ui.alert("Budget n Sheets",
@@ -69,15 +54,6 @@ function seamlessUpdate_() {
 	} catch (err) {
 		console.warn("seamlessUpdate_()", err);
 		return true;
-	}
-
-	const v0 = optGetClass_('script');
-	const v1 = AppsScriptGlobal.script_version()["number"];
-
-	if (v0.major > v1.major) return;
-	if (v0.major == v1.major) {
-		if (v0.minor > v1.minor) return;
-		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return;
 	}
 
 	var r = update_();
