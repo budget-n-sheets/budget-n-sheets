@@ -20,7 +20,7 @@ function importAboutPage_() {
 	try {
 		template = SpreadsheetApp.openById(AppsScriptGlobal.TemplateId());
 	} catch (err) {
-		console.warn("importAboutPage_()", err);
+		consoleLog_('warn', 'importAboutPage_()', err);
 		return 1;
 	}
 
@@ -97,7 +97,7 @@ function makeSign_() {
 
 function verifySig_(data) {
 	if (typeof data != "string") {
-		console.warn("verifySig_(): type of parameter is incorrect.", {data:data, type:typeof data});
+		consoleLog_('warn', 'verifySig_(): type of parameter is incorrect.', {data:data, type:typeof data});
 		return 2;
 	}
 

@@ -167,7 +167,8 @@ function setup_ui(settings, listAcc) {
 			"Add-on is busy",
 			"A budget spreadsheet setup is in progress. Try again later.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
-		console.warn("setup_ui(): Wait lock time out.");
+
+		consoleLog_('warn', 'setup_ui(): Wait lock time out.()', err);
 		return;
 	}
 
@@ -184,7 +185,7 @@ function setup_ui(settings, listAcc) {
 		};
 		console.info("add-on/Stats", stats);
 	} catch (err) {
-		console.error("setup_ui()/stats", err);
+		consoleLog_('error', 'setup_ui()/stats', err);
 	}
 }
 
@@ -228,7 +229,7 @@ function setup_(settings, listAcc) {
 		getCoolSheet_(a["tags"]);
 		coolTags_(a["tags"]);
 	} catch (err) {
-		console.error(err);
+		consoleLog_('error', '', err);
 	}
 
 	a = {

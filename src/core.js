@@ -110,7 +110,7 @@ function showDialogAboutAddon() {
 			onlineUpdate_();
 		}
 	} catch (err) {
-		console.error("showDialogAboutAddon()", err);
+		consoleLog_('error', 'showDialogAboutAddon()', err);
 	}
 
 	var htmlDialog, htmlTemplate;
@@ -128,7 +128,7 @@ function showDialogAboutAddon() {
 
 
 function showDialogErrorMessage(err) {
-	if (err) console.error(err);
+	if (err) consoleLog_('error', 'showDialogErrorMessage()', err);
 
 	var htmlDialog = HtmlService.createHtmlOutputFromFile("htmlExceptionMessage")
 		.setWidth(373)
@@ -168,7 +168,7 @@ function showSetupAddon_() {
 	try {
 		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
 	} catch (err) {
-		console.warn("showSetupAddon_()", err);
+		consoleLog_('warn', 'showSetupAddon_()', err);
 
 		Ui.alert(
 			"Budget n Sheets",

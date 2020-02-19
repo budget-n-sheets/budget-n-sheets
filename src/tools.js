@@ -15,7 +15,8 @@ function optNavTools_(p, r) {
 			"Add-on is busy",
 			"The add-on is busy. Try again in a moment.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
-		console.warn("optNavTools_(): Wait lock time out.");
+
+		consoleLog_('warn', 'optNavTools_(): Wait lock time out.', err);
 		return;
 	}
 
@@ -55,7 +56,8 @@ function optMainTools_(p, mm) {
 			"Add-on is busy",
 			"The add-on is busy. Try again in a moment.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
-		console.warn("optMainTools_(): Wait lock time out.");
+
+		consoleLog_('warn', 'optMainTools_(): Wait lock time out.', err);
 		return;
 	}
 
@@ -430,7 +432,7 @@ function foo_UpdateCashFlow_(mm) {
 
 function foo_FormatAccounts_(mm) {
 	if (typeof mm != "number" || isNaN(mm)) {
-		console.warn("foo_FormatAccounts_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
+		consoleLog_('warn', 'foo_FormatAccounts_(): type of parameter is incorrect.', {mm:mm, type:typeof mm});
 		showDialogErrorMessage();
 		return;
 	}
@@ -478,7 +480,7 @@ function foo_FormatAccounts_(mm) {
 
 function foo_FormatCards_(mm) {
 	if (typeof mm !== "number" || isNaN(mm)) {
-		console.warn("foo_FormatCards_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
+		consoleLog_('warn', 'foo_FormatCards_(): type of parameter is incorrect.', {mm:mm, type:typeof mm});
 		showDialogErrorMessage();
 		return;
 	}

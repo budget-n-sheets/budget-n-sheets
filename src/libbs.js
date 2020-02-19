@@ -71,7 +71,7 @@ function getSpreadsheetDate(d) {
 		timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
 	} catch (err) {
 		timezone = "GMT";
-		console.error("getSpreadsheetDate()", err);
+		consoleLog_('error', 'getSpreadsheetDate()', err);
 	}
 
 	if (typeof timezone != "string" || timezone == "") {
@@ -99,5 +99,31 @@ function getMonthDelta(mm) {
 
 		default:
 			return [ -1, 2 ];
+	}
+}
+
+
+function consoleLog_(type, message, error) {
+	const parts = {};
+
+	for (var i in error) {
+		parts[i] = error[i];
+	}
+
+	const payload = {
+		message: message,
+		error: error,
+		parts: parts
+	};
+
+	switch (type) {
+		case 'warn':
+			console.warn(payload);
+			break;
+
+		default:
+		case 'error':
+			console.error(payload);
+			break;
 	}
 }

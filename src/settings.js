@@ -34,14 +34,14 @@ function saveUserSettings(settings) {
 	try {
 		setPropertiesService_("document", "json", "user_settings", user_settings);
 	} catch (err) {
-		console.error("saveUserSettings()", err);
+		consoleLog_('error', 'saveUserSettings()', err);
 		return 1;
 	}
 
 	try {
 		if (!update_DecimalSepartor_()) return 1;
 	} catch (err) {
-		console.error("update_DecimalSepartor_()", err);
+		consoleLog_('error', 'update_DecimalSepartor_()', err);
 		return 1;
 	}
 

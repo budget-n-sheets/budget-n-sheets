@@ -5,7 +5,7 @@ function onEdit_Main_(e) {
 	try {
 		if (e.range.getSheet().getName() !== "Quick Actions") return;
 	} catch (err) {
-		console.warn(err);
+		consoleLog_('warn', '', err);
 		return;
 	}
 

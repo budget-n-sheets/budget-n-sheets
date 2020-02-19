@@ -5,7 +5,7 @@ function coolGallery(option) {
 	info = AppsScriptGlobal.CoolGallery();
 	info = info[option];
 	if (!info) {
-		console.warn("getCoolSheet_(): Details of page not found.", {"option":option, "info":info});
+		consoleLog_('warn', 'getCoolSheet_(): Details of page not found.', {"option":option, "info":info});
 		showDialogErrorMessage();
 		return 2;
 	}
@@ -44,7 +44,7 @@ function getCoolSheet_(info) {
 	try {
 		template = SpreadsheetApp.openById(info.id);
 	} catch (err) {
-		console.warn("getCoolSheet_()", err);
+		consoleLog_('warn', 'getCoolSheet_()', err);
 		return 1;
 	}
 

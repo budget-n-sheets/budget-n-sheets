@@ -22,7 +22,8 @@ function onlineUpdate_() {
 	try {
 		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
 	} catch (err) {
-		console.warn("onlineUpdate_()", err);
+		consoleLog_('warn', 'onlineUpdate_()', err);
+
 		ui.alert(
 			"Add-on Update",
 			"Please re-open the spreadsheet to update the add-on.",
@@ -52,7 +53,7 @@ function seamlessUpdate_() {
 	try {
 		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
 	} catch (err) {
-		console.warn("seamlessUpdate_()", err);
+		consoleLog_('warn', 'seamlessUpdate_()', err);
 		return true;
 	}
 
@@ -74,8 +75,8 @@ function optGetClass_(o) {
 
 function optSetClass_(o, v) {
 	if (o !== 'script' && o !== 'template') {
-			console.error("optSetClass_(): Switch case is default", {o:o, v:v});
-			return;
+		consoleLog_('error', 'optSetClass_(): Switch case is default', {o:o, v:v});
+		return;
 	}
 
 	var c = getPropertiesService_('document', 'json', 'class_version2');
@@ -94,7 +95,7 @@ function optSetClass_(o, v) {
 function update_v0m0p0_() {
 	try {
 	} catch (err) {
-		console.error("update_v0m0p0_()", err);
+		consoleLog_('error', 'update_v0m0p0_()', err);
 		return 1;
 	}
 }*/
@@ -110,7 +111,7 @@ function update_v0m22p0_() {
 
 		update_v0m21p3_();
 	} catch (err) {
-		console.error("update_v0m22p0_()", err);
+		consoleLog_('error', 'update_v0m22p0_()', err);
 		return 1;
 	}
 }
@@ -195,7 +196,7 @@ function update_v0m21p3_() {
 
 		setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
 	} catch (err) {
-		console.error("update_v0m21p3_()", err);
+		consoleLog_('error', 'update_v0m21p3_()', err);
 		return 1;
 	}
 }
@@ -235,7 +236,7 @@ function update_v0m21p2_() {
 			}
 		}
 	} catch (err) {
-		console.error("update_v0m21p2_()", err);
+		consoleLog_('error', 'update_v0m21p2_()', err);
 	}
 }
 
@@ -253,7 +254,7 @@ function update_v0m20p6_() {
 
 		setPropertiesService_('document', 'json', 'class_version2', a);
 	} catch (err) {
-		console.error("update_v0m20p6_()", err);
+		consoleLog_('error', 'update_v0m20p6_()', err);
 		return 1;
 	}
 }
@@ -281,7 +282,7 @@ function update_v0m20p2_() {
 			createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', day);
 		}
 	} catch (err) {
-		console.error("update_v0m20p2_()", err);
+		consoleLog_('error', 'update_v0m20p2_()', err);
 		return 1;
 	}
 }
@@ -298,7 +299,7 @@ function update_v0m20p0_() {
 			coolGallery('tags');
 		}
 	} catch (err) {
-		console.error("update_v0m20p0_()", err);
+		consoleLog_('error', 'update_v0m20p0_()', err);
 		return 1;
 	}
 }

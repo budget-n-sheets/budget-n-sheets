@@ -3,7 +3,7 @@ function optMainTables(opt, param) {
 	try {
 		lock.waitLock(2000);
 	} catch (err) {
-		console.warn("optMainTables(): Wait lock time out.");
+		consoleLog_('warn', 'optMainTables(): Wait lock time out.', err);
 		return 0;
 	}
 
@@ -212,7 +212,7 @@ function optAccount_Update_(input) {
 
 		optAccount_UpdateTableRef_();
 	} catch (err) {
-		console.error("optAccount_Update_(): Spreadsheet update failed.", err);
+		consoleLog_('error', 'optAccount_Update_(): Spreadsheet update failed.', err);
 		return 1;
 	}
 
