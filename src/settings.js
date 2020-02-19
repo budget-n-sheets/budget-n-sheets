@@ -2,7 +2,6 @@ function retrieveUserSettings() {
 	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
 	user_settings.docName = SpreadsheetApp.getActiveSpreadsheet().getName();
-	user_settings.calendars = getAllOwnedCalendars();
 	user_settings.FinancialYear = getUserConstSettings_('financial_year');
 
 	if (user_settings.financial_calendar != "") {
@@ -30,7 +29,7 @@ function saveUserSettings(settings) {
 
 	calendar = "";
 
-	if (settings.financial_calendar != "") {
+	if (settings.financial_calendar !== "") {
 		db_calendars = getCacheService_('document', 'DB_CALENDARS', 'json');
 		if (!db_calendars) db_calendars = getAllOwnedCalendars();
 

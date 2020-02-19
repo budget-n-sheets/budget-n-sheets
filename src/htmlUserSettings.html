@@ -70,22 +70,31 @@
 								<tr>
 									<th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
 								</tr>
-								<tr>
-									<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
-									<td class="comment">
-										<select class="Form-Settings_lock" id="financial_calendar">
-											<option value="" selected>Disabled</option>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td class="secondary" colspan="2">
-										* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="PostDayEvents"><label for="PostDayEvents">Sync calendar to spreadsheet</label></td>
-								</tr>
+								<? if (calendars_enabled) { ?>
+									<tr>
+										<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
+										<td class="comment">
+											<select class="Form-Settings_lock" id="financial_calendar">
+												<option value="" selected>Disabled</option>
+												<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
+													<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
+												<? } ?>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td class="secondary" colspan="2">
+											* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="PostDayEvents"><label for="PostDayEvents">Sync calendar to spreadsheet</label></td>
+									</tr>
+								<? } else { ?>
+									<tr>
+										<td>It seems like Google Calendar is not enable for your account. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar" target="_blank"><b>Learn more</b></a></td>
+									</tr>
+								<? } ?>
 							</table>
 						</div>
 						<div style="margin-top:1.3em;">
@@ -93,9 +102,11 @@
 								<tr>
 									<th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
 								</tr>
-								<tr>
-									<td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="CashFlowEvents"><label for="CashFlowEvents">Sync calendar to cash flow</label></td>
-								</tr>
+								<? if (calendars_enabled) { ?>
+									<tr>
+										<td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="CashFlowEvents"><label for="CashFlowEvents">Sync calendar to cash flow</label></td>
+									</tr>
+								<? } ?>
 								<tr>
 									<td colspan="2"><input class="Form-Settings_lock" type="checkbox" id="OverrideZero"><label for="OverrideZero">Tag zeros</label></td>
 								</tr>
@@ -180,42 +191,40 @@
 				.withFailureHandler(showError)
 				.retrieveUserSettings();
 		});
-		$("#financial_calendar").change(function() {
-			if ($(this).val() === "") {
-				$('.Form-Settings_calendar').prop('disabled', true);
-				$('.Form-Settings_calendar').prop('checked', false);
-			} else {
-				$('.Form-Settings_calendar').prop('disabled', false);
-			}
-			return;
-		});
-		function Settings_Post(user_settings) { /* -------------------- */
-			var list, i;
-
-			list = user_settings.calendars;
-
-			try {
-				for (i = 0; i < list.md5.length; i++) {
-					$('#financial_calendar').append('<option value="'+list.md5[i]+'">'+list.name[i]+'</option>');
+		<? if (calendars_enabled) { ?>
+			$("#financial_calendar").change(function() {
+				if ($(this).val() === "") {
+					$('.Form-Settings_calendar').prop('disabled', true);
+					$('.Form-Settings_calendar').prop('checked', false);
+				} else {
+					$('.Form-Settings_calendar').prop('disabled', false);
 				}
-
+				return;
+			});
+		<? } ?>
+		function Settings_Post(user_settings) { /* -------------------- */
+			try {
 				$('.docName').append(user_settings.docName); // Spreadsheet title
 				$('#FinancialYear').append(user_settings.FinancialYear+''); // Financial year
 				$('#initial_month').val(user_settings.initial_month); // Initial month
 
-				$('#financial_calendar').val(user_settings.financial_calendar);
-				if (user_settings.PostDayEvents) $('#PostDayEvents').prop('checked', true);
+				<? if (calendars_enabled) { ?>
+					$('#financial_calendar').val(user_settings.financial_calendar);
+					if (user_settings.PostDayEvents) $('#PostDayEvents').prop('checked', true);
+					if (user_settings.CashFlowEvents) $('#CashFlowEvents').prop('checked', true);
+				<? } ?>
 				if (user_settings.OverrideZero) $('#OverrideZero').prop('checked', true);
-				if (user_settings.CashFlowEvents) $('#CashFlowEvents').prop('checked', true);
 			} catch (err) {
 				showError();
 				return;
 			}
 
 			$('.Form-Settings_lock').prop('disabled', false);
-			if (user_settings.financial_calendar === "") {
-				$('.Form-Settings_calendar').prop('disabled', true);
-			}
+			<? if (calendars_enabled) { ?>
+				if (user_settings.financial_calendar === "") {
+					$('.Form-Settings_calendar').prop('disabled', true);
+				}
+			<? } ?>
 			$('#panel_Book').fadeIn('fast')
 				.siblings()
 				.hide();
@@ -270,10 +279,16 @@
 			var settings = {
 				initial_month: $("#initial_month").val(),
 
-				financial_calendar: $("#financial_calendar").val(),
-				PostDayEvents: $("#PostDayEvents").prop("checked"),
-				OverrideZero: $("#OverrideZero").prop("checked"),
-				CashFlowEvents: $("#CashFlowEvents").prop("checked")
+				<? if (calendars_enabled) { ?>
+					financial_calendar: $("#financial_calendar").val(),
+					PostDayEvents: $("#PostDayEvents").prop("checked"),
+					CashFlowEvents: $("#CashFlowEvents").prop("checked"),
+				<? } else { ?>
+					financial_calendar: "",
+					PostDayEvents: false,
+					CashFlowEvents: false,
+				<? } ?>
+				OverrideZero: $("#OverrideZero").prop("checked")
 			};
 
 			google.script.run.withSuccessHandler(optSettings_Aftermath)
@@ -289,9 +304,11 @@
 			$(".Form-Settings_lock").prop("disabled", false);
 			$("#p-footer_FastResponse").empty().append("Settings saved.");
 
-			if ($("#financial_calendar").val() === "") {
-				$(".Form-Settings_calendar").prop("disabled", true);
-			}
+			<? if (calendars_enabled) { ?>
+				if ($("#financial_calendar").val() === "") {
+					$(".Form-Settings_calendar").prop("disabled", true);
+				}
+			<? } ?>
 		}
 	</script>
 	</body>
