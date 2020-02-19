@@ -162,7 +162,7 @@ function getFinancialCalendar_() {
 	var financial_calendar = getUserSettings_('financial_calendar');
 	var calendar;
 
-	calendar = CalendarApp.getCalendarById(financial_calendar);;
+	calendar = CalendarApp.getCalendarById(financial_calendar);
 
 	if (calendar) return calendar;
 
