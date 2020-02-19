@@ -6,7 +6,7 @@ var PatchThis = (function() {
 				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
 				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
-				[ update_v0m22p0_ ]
+				[ update_v0m22p0_, update_v0m22p1_ ]
 			]
 		]
 	};
@@ -99,6 +99,76 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Reinstall triggers if transition year service failed.
+ * Delete property 'DB_CALENDARS'.
+ * Fix 'user_settings' where update_v0m21p2_() failed.
+ *
+ * 0.22.1
+ */
+function update_v0m22p1_() {
+	try {
+		update_v0m22p1s0_();
+		Utilities.sleep(200);
+
+		update_v0m22p1s1_();
+		Utilities.sleep(200);
+
+		update_v0m22p1s2_();
+		Utilities.sleep(200);
+	} catch (err) {
+		consoleLog_('error', 'update_v0m22p1_()', err);
+	}
+}
+
+/**
+ * Reinstall triggers if transition year service failed.
+ *
+ */
+function update_v0m22p1s2_() {
+	try {
+		askReinstall();
+	} catch (err) {
+		consoleLog_('error', 'update_v0m22p1s2_()', err);
+	}
+}
+
+/**
+ * Delete property 'DB_CALENDARS'.
+ *
+ */
+function update_v0m22p1s1_() {
+	try {
+		deletePropertiesService_('document', 'DB_CALENDARS');
+	} catch (err) {
+		consoleLog_('error', 'update_v0m22p1s1_()', err);
+	}
+}
+
+/**
+ * Fix 'user_settings' where update_v0m21p2_() failed.
+ *
+ */
+function update_v0m22p1s0_() {
+	try {
+		const user_settings = getPropertiesService_('document', 'json', 'user_settings');
+		var mm;
+
+		if (user_settings.initial_month == null) {
+			mm = new Date().getMonth();
+			if (mm > 0) mm--;
+
+			user_settings.initial_month = mm;
+			user_settings.financial_calendar = "";
+			user_settings.spreadsheet_locale = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale();
+		}
+
+		setPropertiesService_('document', 'json', 'user_settings', user_settings);
+	} catch (err) {
+		consoleLog_('error', 'update_v0m22p1s0_()', err);
+	}
+}
 
 /**
  * Merge and update db of cards and accounts in one table.
