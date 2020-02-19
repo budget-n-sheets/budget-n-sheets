@@ -6,7 +6,7 @@ var PatchThis = (function() {
 				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
 				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
-				[ update_v0m22p0_, update_v0m22p1_ ]
+				[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ]
 			]
 		]
 	};
@@ -99,6 +99,26 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Fix 'financial_calendar' value.
+ *
+ * 0.22.2
+ */
+function update_v0m22p2_() {
+	try {
+		const financial_calendar = getUserSettings_('financial_calendar');
+		if (financial_calendar == "") return;
+
+		const db_calendars = getAllOwnedCalendars();
+		var c;
+
+		c = db_calendars.md5.indexOf(financial_calendar);
+		if (c !== -1) setUserSettings_('financial_calendar', db_calendars.id[c]);
+	} catch (err) {
+		consoleLog_('error', 'update_v0m22p2_()', err);
+	}
+}
 
 /**
  * Reinstall triggers if transition year service failed.
