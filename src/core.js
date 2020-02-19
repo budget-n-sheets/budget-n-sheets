@@ -96,11 +96,16 @@ function showPanelAnalytics() {
 function showSidebarMainSettings() {
 	if (onlineUpdate_()) return;
 
-	var htmlSidebar = HtmlService.createTemplateFromFile('htmlUserSettings')
-		.evaluate()
-		.setTitle('Edit settings');
-	SpreadsheetApp.getUi()
-		.showSidebar(htmlSidebar);
+	var htmlTemplate = HtmlService.createTemplateFromFile('htmlUserSettings');
+	var htmlSidebar;
+	var calendars = getAllOwnedCalendars();
+
+	htmlTemplate.calendars_data = calendars;
+	htmlTemplate.calendars_enabled = calendars.md5.length > 0;
+
+	htmlSidebar = htmlTemplate.evaluate().setTitle('Edit settings');
+
+	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
 
 

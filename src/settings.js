@@ -2,8 +2,14 @@ function retrieveUserSettings() {
 	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
 	user_settings.docName = SpreadsheetApp.getActiveSpreadsheet().getName();
-	user_settings.calendars = getAllOwnedCalendars();
 	user_settings.FinancialYear = getUserConstSettings_('financial_year');
+
+	if (user_settings.financial_calendar != "") {
+		user_settings.financial_calendar = computeDigest(
+			"MD5",
+			user_settings.financial_calendar,
+			"UTF_8");
+	}
 
 	return user_settings;
 }
@@ -11,6 +17,7 @@ function retrieveUserSettings() {
 
 function saveUserSettings(settings) {
 	var spreadsheet, sheet;
+	var db_calendars, calendar, c;
 	var user_settings, yyyy, mm, init;
 
 	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -20,11 +27,21 @@ function saveUserSettings(settings) {
 	mm = getUserSettings_("initial_month");
 	init = Number(settings.initial_month);
 
+	calendar = "";
+
+	if (settings.financial_calendar !== "") {
+		db_calendars = getCacheService_('document', 'DB_CALENDARS', 'json');
+		if (!db_calendars) db_calendars = getAllOwnedCalendars();
+
+		c = db_calendars.md5.indexOf(settings.financial_calendar);
+		if (c != -1) calendar = db_calendars.id[c];
+	}
+
 	user_settings = {
 		spreadsheet_locale: spreadsheet.getSpreadsheetLocale(),
 		initial_month: init,
 
-		financial_calendar: settings.financial_calendar,
+		financial_calendar: calendar,
 		OnlyEventsOwned: false,
 		PostDayEvents: settings.PostDayEvents,
 		OverrideZero: settings.OverrideZero,
