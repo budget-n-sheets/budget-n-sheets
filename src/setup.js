@@ -400,12 +400,13 @@ function setupPart10_() {
 	console.time('add-on/setup/part10');
 	var sheet = CONST_LIST_ES_SHEETS_["cash_flow"];
 	var yyyy = CONST_SETUP_SETTINGS_["financial_year"];
-	var rangesR1C1, b_f3f3f3, b_d9ead3;
-	var d, s;
+	var num_acc = CONST_SETUP_SETTINGS_["number_accounts"];
+	var ranges, b_f3f3f3, b_d9ead3;
+	var mm, d, s, h_;
 	var i, j, k;
 
 	if (yyyy == 2020) {
-		rangesR1C1 = [ "C4:C33", "G4:G31", "K4:K33", "O4:O32", "S4:S33", "W4:W32", "AA4:AA33", "AE4:AE33", "AI4:AI32", "AM4:AM33", "AQ4:AQ32", "AU4:AU33" ];
+		ranges = [ "C4:C33", "G4:G31", "K4:K33", "O4:O32", "S4:S33", "W4:W32", "AA4:AA33", "AE4:AE33", "AI4:AI32", "AM4:AM33", "AQ4:AQ32", "AU4:AU33" ];
 
 		b_f3f3f3 = [ "F32:H33", "N33:P33", "V33:X33", "AH33:AJ33", "AP33:AR33" ];
 
@@ -416,15 +417,13 @@ function setupPart10_() {
 			sheet.getRange(3, 3 + 4*i).setFormulaR1C1('=R[' + (d - 1) + ']C[-4] + RC[-1]');
 		}
 	} else {
-		rangesR1C1 = [ ];
+		ranges = [ ];
 		b_f3f3f3 = [ ];
 		b_d9ead3 = [ ];
 
 		i = 0;
-		sheet.getRange(3, 3 + 4*i).setFormula('=0');
-
 		d = new Date(yyyy, 1 + i, 0).getDate();
-		rangesR1C1.push([ rollA1Notation(4, 3 + 4*i, d - 1) ]);
+		ranges.push([ rollA1Notation(4, 3 + 4*i, d - 1) ]);
 		if (d < 31) {
 			b_f3f3f3.push([ rollA1Notation(3 + d, 2 + 4*i, 31 - d, 3) ]);
 		}
@@ -454,7 +453,7 @@ function setupPart10_() {
 			sheet.getRange(3, 3 + 4*i).setFormulaR1C1('=R[' + (d - 1) + ']C[-4] + RC[-1]');
 
 			d = new Date(yyyy, 1 + i, 0).getDate();
-			rangesR1C1.push([ rollA1Notation(4, 3 + 4*i, d - 1) ]);
+			ranges.push([ rollA1Notation(4, 3 + 4*i, d - 1) ]);
 			if (d < 31) {
 				b_f3f3f3.push([ rollA1Notation(3 + d, 2 + 4*i, 31 - d, 3) ]);
 			}
@@ -482,11 +481,22 @@ function setupPart10_() {
 		}
 	}
 
-	sheet.getRangeList(rangesR1C1).setFormulaR1C1('=R[-1]C + RC[-1]');
+	sheet.getRangeList(ranges).setFormulaR1C1('=R[-1]C + RC[-1]');
 	sheet.getRangeList(b_f3f3f3).setBackground('#f3f3f3');
 	sheet.getRangeList(b_d9ead3).setBackground('#d9ead3');
 
-	optMainTables('UpdateTableRef');
+	h_ = TABLE_DIMENSION_.height;
+	mm = CONST_SETUP_SETTINGS_["init_month"];
+	ranges = [ "G", "L", "Q", "V", "AA" ];
+
+	sheet.getRange(3, 3).setFormula('=0 + B3');
+
+	s = "=" + rollA1Notation(3 + (d - 1), 3 + 4*mm -4) + " + " + rollA1Notation(3, 3 + 4*mm - 1);
+	for (k = 0; k < num_acc; k++) {
+		 s += " + \'_Backstage\'!" + ranges[k] + (2 + h_*mm);
+	}
+	sheet.getRange(3, 3 + 4*mm).setFormula(s);
+
 	SpreadsheetApp.flush();
 	console.timeEnd('add-on/setup/part10');
 }
