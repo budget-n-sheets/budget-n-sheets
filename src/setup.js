@@ -527,7 +527,7 @@ function setupPart9_() {
 
 	sheet.insertChart( chart.build() );
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/par9');
+	console.timeEnd('add-on/setup/part9');
 }
 
 
