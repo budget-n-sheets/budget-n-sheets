@@ -540,6 +540,11 @@ function setupPart7_(yyyy_mm) {
 	console.time('add-on/setup/part7');
 	var sheetSummary = CONST_LIST_ES_SHEETS_["summary"];
 	var sheet, md, i;
+	var ranges, formulas1, formulas2;
+	var h_, w_;
+
+	h_ = TABLE_DIMENSION_.height;
+	w_ = TABLE_DIMENSION_.width;
 
 	sheetSummary.setTabColor('#e69138');
 	CONST_LIST_ES_SHEETS_["cards"].setTabColor('#e69138');
@@ -551,6 +556,22 @@ function setupPart7_(yyyy_mm) {
 	CONST_LIST_ES_SHEETS_["about"].setTabColor('#6aa84f').hideSheet();
 
 	sheetSummary.getRange('B2').setValue(CONST_SETUP_SETTINGS_["financial_year"] + ' | Year Summary');
+
+	ranges = [ ];
+	formulas1 = [ ];
+	formulas2 = [ ];
+
+	for (i = 0; i < 12; i++) {
+		ranges[i] = rollA1Notation(11 + i, 8);
+
+		formulas1[i] = [ '=\'_Backstage\'!$B' + (3 + h_*i) ];
+		formulas2[i] = [ '=SUM(\'_Backstage\'!$B' + (4 + h_*i) + ':$B' + (6 + h_*i)+')' ];
+	}
+
+	sheetSummary.getRangeList(ranges).setFormulaR1C1('=R[0]C[-4] + R[0]C[-2]');
+
+	sheetSummary.getRange(11, 4, 12).setFormulas(formulas1);
+	sheetSummary.getRange(11, 6, 12).setFormulas(formulas2);
 
 	if (yyyy_mm.yyyy == CONST_SETUP_SETTINGS_["financial_year"]) {
 		md = getMonthDelta(yyyy_mm.mm);
