@@ -414,7 +414,7 @@ function setupPart10_() {
 
 		for (i = 0; i < 12; i++) {
 			d = new Date(yyyy, 1 + i, 0).getDate();
-			sheet.getRange(3, 3 + 4*i).setFormulaR1C1('=R[' + (d - 1) + ']C[-4] + RC[-1]');
+			sheet.getRange(3, 3 + 4*i + 4).setFormulaR1C1('=R[' + (d - 1) + ']C[-4] + RC[-1]');
 		}
 	} else {
 		ranges = [ ];
