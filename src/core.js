@@ -168,6 +168,7 @@ function showDialogQuickMessage(title, text, button, bar) {
 
 
 function showSetupAddon_() {
+	console.info("add-on/intent");
 	var Ui = SpreadsheetApp.getUi();
 
 	try {
