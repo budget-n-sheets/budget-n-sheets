@@ -491,7 +491,12 @@ function setupPart10_() {
 
 	sheet.getRange(3, 3).setFormula('=0 + B3');
 
-	s = "=" + rollA1Notation(3 + (d - 1), 3 + 4*mm -4) + " + " + rollA1Notation(3, 3 + 4*mm - 1);
+	if (mm == 0) {
+		s = "=0 + B3";
+	} else {
+		s = "=" + rollA1Notation(3 + (d - 1), 3 + 4*mm - 4) + " + " + rollA1Notation(3, 3 + 4*mm - 1);
+	}
+
 	for (k = 0; k < num_acc; k++) {
 		 s += " + \'_Backstage\'!" + ranges[k] + (2 + h_*mm);
 	}
