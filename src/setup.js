@@ -980,43 +980,38 @@ function setupPart0_() {
 	var sheetTTT = CONST_LIST_ES_SHEETS_["ttt"];
 	var sheet, ranges;
 	var num_acc, diff_num_acc;
-	var i, k;
+	var ref, i, k;
 
 	w_ = TABLE_DIMENSION_.width;
 	num_acc = CONST_SETUP_SETTINGS_["number_accounts"];
 	diff_num_acc = 5 - num_acc;
 
-	ranges = [ ];
+	ref = [ ];
 	for(k = 0; k < 1 + num_acc; k++) {
-		ranges.push(rollA1Notation(2, 1 + 5*k));
+		ref[k] = rollA1Notation(2, 1 + 5*k);
+	}
+
+	for(i = 11; i > 0; i--) {
+		CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetTTT);
+		sheet = CONST_SETUP_SPREADSHEET_.duplicateActiveSheet().setName(MN_SHORT_[i]);
+		if (diff_num_acc > 0) {
+			sheet.deleteColumns(6 + 5*num_acc, 5*diff_num_acc);
+		}
+		CONST_LIST_MN_SHEETS_[i] = sheet;
 	}
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetTTT);
 	sheet = CONST_SETUP_SPREADSHEET_.duplicateActiveSheet().setName(MN_SHORT_[0]);
-	CONST_SETUP_SPREADSHEET_.moveActiveSheet(2);
-
 	if (diff_num_acc > 0) {
 		sheet.deleteColumns(6 + 5*num_acc, 5*diff_num_acc);
 	}
-
 	sheet.getRange(1, 1).setValue('Wallet');
-
 	CONST_LIST_MN_SHEETS_[0] = sheet;
 
-	for(i = 1; i < 12; i++) {
-		CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetTTT);
-		sheet = CONST_SETUP_SPREADSHEET_.duplicateActiveSheet().setName(MN_SHORT_[i]);
-		CONST_SETUP_SPREADSHEET_.moveActiveSheet(2 + i);
-
-		if (diff_num_acc > 0) {
-			sheet.deleteColumns(6 + 5*num_acc, 5*diff_num_acc);
+	for (i = 1; i < 12; i++) {
+		for (k = 0; k < 1 + num_acc; k++) {
+			sheet.getRange(1, 1 + 5*k).setFormula('=\'' + MN_SHORT_[i - 1] + '\'!' + ref[k]);
 		}
-
-		for(k = 0; k < 1 + num_acc; k++) {
-			sheet.getRange(1, 1 + 5*k).setFormula('=\'' + MN_SHORT_[i - 1] + '\'!' + ranges[k]);
-		}
-
-		CONST_LIST_MN_SHEETS_[i] = sheet;
 	}
 
 	SpreadsheetApp.flush();
