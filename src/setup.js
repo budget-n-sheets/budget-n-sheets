@@ -988,7 +988,7 @@ function setupPart0_() {
 
 	ref = [ ];
 	for(k = 0; k < 1 + num_acc; k++) {
-		ref[k] = rollA1Notation(2, 1 + 5*k);
+		ref[k] = rollA1Notation(1, 1 + 5*k);
 	}
 
 	for(i = 11; i > 0; i--) {
