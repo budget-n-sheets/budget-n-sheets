@@ -23,7 +23,7 @@ var AppsScriptGlobal = (function() {
 		},
 
 		TemplateId: "",
-		TemplateSheets: [ "Cards", "Summary", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ],
+		TemplateSheets: [ "_Settings", "Cards", "Summary", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "About" ],
 
 		CoolGallery: {
 			tags: {

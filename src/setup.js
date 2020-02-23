@@ -622,7 +622,7 @@ function setupPart6_() {
 	w_ = TABLE_DIMENSION_.width;
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetCards);
-	CONST_SETUP_SPREADSHEET_.moveActiveSheet(14);
+	CONST_SETUP_SPREADSHEET_.moveActiveSheet(15);
 
 	c = 1 + w_ + w_*CONST_SETUP_SETTINGS_["number_accounts"];
 	header = rollA1Notation(1, c + 1, 1, w_*11);
@@ -833,6 +833,9 @@ function setupPart2_() {
 function setupPart1_(yyyy_mm) {
 	console.time('add-on/setup/part1');
 	var cell, d;
+
+	CONST_SETUP_SPREADSHEET_.setActiveSheet(CONST_LIST_ES_SHEETS_["_settings"]);
+	CONST_SETUP_SPREADSHEET_.moveActiveSheet(19);
 
 	cell = CONST_LIST_ES_SHEETS_["_settings"].getRange(8, 2);
 
