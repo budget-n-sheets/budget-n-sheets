@@ -539,7 +539,7 @@ function setupPart7_(yyyy_mm) {
 	console.time('add-on/setup/part7');
 	var sheetSummary = CONST_LIST_ES_SHEETS_["summary"];
 	var sheet, md, i;
-	var ranges, formulas;
+	var formulas;
 	var h_, w_;
 
 	h_ = TABLE_DIMENSION_.height;
@@ -556,11 +556,9 @@ function setupPart7_(yyyy_mm) {
 
 	sheetSummary.getRange('B2').setValue(CONST_SETUP_SETTINGS_["financial_year"] + ' | Year Summary');
 
-	ranges = [ ];
 	formulas = [ ];
 
 	for (i = 0; i < 12; i++) {
-		ranges[i] = rollA1Notation(11 + i, 8);
 
 		formulas[i] = [
 			"='_Backstage'!$B" + (3 + h_*i), null,
@@ -568,7 +566,6 @@ function setupPart7_(yyyy_mm) {
 		];
 	}
 
-	sheetSummary.getRangeList(ranges).setFormulaR1C1('=R[0]C[-4] + R[0]C[-2]');
 	sheetSummary.getRange(11, 4, 12, 4).setFormulas(formulas);
 
 	if (yyyy_mm.yyyy == CONST_SETUP_SETTINGS_["financial_year"]) {
