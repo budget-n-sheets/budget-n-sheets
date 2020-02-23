@@ -539,7 +539,7 @@ function setupPart7_(yyyy_mm) {
 	console.time('add-on/setup/part7');
 	var sheetSummary = CONST_LIST_ES_SHEETS_["summary"];
 	var sheet, md, i;
-	var ranges, formulas1, formulas2;
+	var ranges, formulas;
 	var h_, w_;
 
 	h_ = TABLE_DIMENSION_.height;
@@ -557,20 +557,19 @@ function setupPart7_(yyyy_mm) {
 	sheetSummary.getRange('B2').setValue(CONST_SETUP_SETTINGS_["financial_year"] + ' | Year Summary');
 
 	ranges = [ ];
-	formulas1 = [ ];
-	formulas2 = [ ];
+	formulas = [ ];
 
 	for (i = 0; i < 12; i++) {
 		ranges[i] = rollA1Notation(11 + i, 8);
 
-		formulas1[i] = [ '=\'_Backstage\'!$B' + (3 + h_*i) ];
-		formulas2[i] = [ '=SUM(\'_Backstage\'!$B' + (4 + h_*i) + ':$B' + (6 + h_*i)+')' ];
+		formulas[i] = [
+			"='_Backstage'!$B" + (3 + h_*i), null,
+			"=SUM('_Backstage'!$B" + (4 + h_*i) + ":$B" + (6 + h_*i) + ")", null
+		];
 	}
 
 	sheetSummary.getRangeList(ranges).setFormulaR1C1('=R[0]C[-4] + R[0]C[-2]');
-
-	sheetSummary.getRange(11, 4, 12).setFormulas(formulas1);
-	sheetSummary.getRange(11, 6, 12).setFormulas(formulas2);
+	sheetSummary.getRange(11, 4, 12, 4).setFormulas(formulas);
 
 	if (yyyy_mm.yyyy == CONST_SETUP_SETTINGS_["financial_year"]) {
 		md = getMonthDelta(yyyy_mm.mm);
