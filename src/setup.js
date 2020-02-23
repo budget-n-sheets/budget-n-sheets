@@ -216,7 +216,6 @@ function setup_(settings, listAcc) {
 
 	deleteAllSheets_();
 	copySheetsFromTemplate_();
-	if (sortSheetOrder_() !== -1) return;
 
 	if (loadConstListSheets_() !== -1) return;
 
@@ -622,6 +621,9 @@ function setupPart6_() {
 
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
+
+	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetCards);
+	CONST_SETUP_SPREADSHEET_.moveActiveSheet(14);
 
 	c = 1 + w_ + w_*CONST_SETUP_SETTINGS_["number_accounts"];
 	header = rollA1Notation(1, c + 1, 1, w_*11);
