@@ -1010,7 +1010,7 @@ function setupPart0_() {
 
 	for (i = 1; i < 12; i++) {
 		for (k = 0; k < 1 + num_acc; k++) {
-			sheet.getRange(1, 1 + 5*k).setFormula('=\'' + MN_SHORT_[i - 1] + '\'!' + ref[k]);
+			CONST_LIST_MN_SHEETS_[i].getRange(1, 1 + 5*k).setFormula('=\'' + MN_SHORT_[i - 1] + '\'!' + ref[k]);
 		}
 	}
 
