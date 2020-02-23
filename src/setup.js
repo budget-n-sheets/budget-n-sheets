@@ -886,9 +886,9 @@ function setupPart3_() {
 	rgValueTags = [ ];
 
 	for(k = 0; k < 1 + n; k++) {
-		rgValue.push(rollA1Notation(5, 3 + 5*k, 400, 1, 1));
-		rgTags.push(rollA1Notation(5, 4 + 5*k, 400, 1, 1));
-		rgValueTags.push(rollA1Notation(5, 3 + 5*k, 400, 2, 1));
+		rgValue[k] = rollA1Notation(5, 3 + 5*k, 400, 1, 1);
+		rgTags[k] = rollA1Notation(5, 4 + 5*k, 400, 1, 1);
+		rgValueTags[k] = rollA1Notation(5, 3 + 5*k, 400, 2, 1);
 	}
 
 	if (n < 5) {
@@ -946,21 +946,21 @@ function setupPart3_() {
 
 			str = rollA1Notation(2 + h_*i, 1 + w_ + w_*k + 1);
 			str += " + IFERROR(SUM(FILTER(";
-			str += "\'" + MN_SHORT_[i] + "\'!" + rgValue[1+k] + "; ";
-			str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + rgValue[1+k] + "))";
+			str += "\'" + MN_SHORT_[i] + "\'!" + rgValue[1 + k] + "; ";
+			str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + rgValue[1 + k] + "))";
 			str += ")); 0)";
 			formulas[1] = [ str ];
 
 			str = "IFERROR(SUM(FILTER(";
-			str += "\'" + MN_SHORT_[i] + "\'!" + rgValue[1+k] + "; ";
-			str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + rgValue[1+k] + ")); ";
+			str += "\'" + MN_SHORT_[i] + "\'!" + rgValue[1 + k] + "; ";
+			str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + rgValue[1 + k] + ")); ";
 			str += "NOT(REGEXMATCH(";
-			str += "\'" + MN_SHORT_[i] + "\'!" + rgTags[1+k] + "; ";
+			str += "\'" + MN_SHORT_[i] + "\'!" + rgTags[1 + k] + "; ";
 			str += "\"#(dp|wd|qcc|ign|rct|trf)\"))";
 			str += ")); 0)";
 			formulas[2] = [ str ];
 
-			sheet.getRange(2+i*h_, 7+k*w_, 3, 1).setFormulas(formulas);
+			sheet.getRange(2 + h_*i, 7 + w_*k, 3, 1).setFormulas(formulas);
 
 			str = 'BSREPORT(TRANSPOSE(IFERROR(FILTER(';
 			str += MN_SHORT_[i] + '!' + rgValueTags[1 + k] + '; ';
