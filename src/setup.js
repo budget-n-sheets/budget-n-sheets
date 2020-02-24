@@ -873,7 +873,7 @@ function setupPart1_(yyyy_mm) {
 function setupPart3_() {
 	console.time('add-on/setup/part3');
 	var sheet = CONST_LIST_ES_SHEETS_["_backstage"];
-	var formulas, str;
+	var formulas, formula, str;
 	var n, h_, w_;
 	var i, k;
 
@@ -892,24 +892,27 @@ function setupPart3_() {
 		sheet.deleteColumns(7 + w_*n, w_*(5 - n));
 	}
 
+	formulas = new Array(120);
+	for (i = 0; i < 120; i++) {
+		formulas[i] = new Array(w_*n).fill(null);
+	}
+
 	i = 0;
 	k = 0;
-	formulas = "IFERROR(SUM(";
-	formulas += "\'" + MN_SHORT_[i] + "\'!" + values[k];
-	formulas += "); 0)";
-	sheet.getRange(4 + h_*i, 2).setFormula(formulas);
+	formula = "IFERROR(SUM(";
+	formula += "\'" + MN_SHORT_[i] + "\'!" + values[k];
+	formula += "); 0)";
+	sheet.getRange(4 + h_*i, 2).setFormula(formula);
 
 	for(; k < n; k++) {
-		formulas = [ ];
-
-		formulas[0] = [ "=0" ];
+		formulas[0][w_*k] = "=0";
 
 		str = balance1[5*i + k];
 		str += " + IFERROR(SUM(FILTER(";
 		str += "\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; ";
 		str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "))";
 		str += ")); 0)";
-		formulas[1] = [ str ];
+		formulas[1][w_*k] = str;
 
 		str = "IFERROR(SUM(FILTER(";
 		str += "\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; ";
@@ -918,35 +921,31 @@ function setupPart3_() {
 		str += "\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "; ";
 		str += "\"#(dp|wd|qcc|ign|rct|trf)\"))";
 		str += ")); 0)";
-		formulas[2] = [ str ];
-
-		sheet.getRange(2 + h_*i, 7 + w_*k, 3, 1).setFormulas(formulas);
+		formulas[2][w_*k] = str;
 
 		str = 'BSREPORT(TRANSPOSE(IFERROR(FILTER(';
 		str += MN_SHORT_[i] + '!' + combo[1 + k] + '; ';
 		str += 'NOT(ISBLANK(' + MN_SHORT_[i] + '!' + tags[1 + k] + '))';
 		str += '); \"\")))';
-		sheet.getRange(2 + h_*i, 8 + w_*k).setFormula(str);
+		formulas[0][1 + w_*k] = str;
 	}
 
 	for(i = 1; i < 12; i++) {
 		k = 0;
-		formulas = "IFERROR(SUM(";
-		formulas += "\'" + MN_SHORT_[i] + "\'!" + values[k];
-		formulas += "); 0)";
-		sheet.getRange(4 + h_*i, 2).setFormula(formulas);
+		formula = "IFERROR(SUM(";
+		formula += "\'" + MN_SHORT_[i] + "\'!" + values[k];
+		formula += "); 0)";
+		sheet.getRange(4 + h_*i, 2).setFormula(formula);
 
 		for(; k < n; k++) {
-			formulas = [ ];
-
-			formulas[0] = [ "=" + balance2[5*i + k] ];
+			formulas[h_*i][w_*k] = "=" + balance2[5*i + k];
 
 			str = "=" + balance1[5*i + k];
 			str += " + IFERROR(SUM(FILTER(";
 			str += "\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; ";
 			str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "))";
 			str += ")); 0)";
-			formulas[1] = [ str ];
+			formulas[1 + h_*i][w_*k] = str;
 
 			str = "IFERROR(SUM(FILTER(";
 			str += "\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; ";
@@ -955,17 +954,17 @@ function setupPart3_() {
 			str += "\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "; ";
 			str += "\"#(dp|wd|qcc|ign|rct|trf)\"))";
 			str += ")); 0)";
-			formulas[2] = [ str ];
-
-			sheet.getRange(2 + h_*i, 7 + w_*k, 3, 1).setFormulas(formulas);
+			formulas[2 + h_*i][w_*k] = str;
 
 			str = 'BSREPORT(TRANSPOSE(IFERROR(FILTER(';
 			str += MN_SHORT_[i] + '!' + combo[1 + k] + '; ';
 			str += 'NOT(ISBLANK(' + MN_SHORT_[i] + '!' + tags[1 + k] + '))';
 			str += '); \"\")))';
-			sheet.getRange(2 + h_*i, 8 + w_*k).setFormula(str);
+			formulas[h_*i][1 + w_*k] = str;
 		}
 	}
+
+	sheet.getRange(2, 7, 120, w_*n).setFormulas(formulas);
 
 	SpreadsheetApp.flush();
 	console.timeEnd('add-on/setup/part3');
