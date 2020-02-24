@@ -221,14 +221,6 @@ function setup_(settings, listAcc) {
 
 	setup_ExecutePatial_();
 
-	try {
-		a = AppsScriptGlobal.CoolGallery();
-		getCoolSheet_(a["tags"]);
-		coolTags_(a["tags"]);
-	} catch (err) {
-		consoleLog_('error', '', err);
-	}
-
 	a = {
 		script: AppsScriptGlobal.script_version()["number"],
 		template: AppsScriptGlobal.template_version()["number"]
