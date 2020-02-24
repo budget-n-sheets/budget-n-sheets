@@ -219,6 +219,8 @@ function setup_(settings, listAcc) {
 
 	setup_ExecutePatial_();
 
+	CONST_SETUP_SPREADSHEET_.deleteSheet(CONST_LIST_ES_SHEETS_["ttt"]);
+
 	a = {
 		script: AppsScriptGlobal.script_version()["number"],
 		template: AppsScriptGlobal.template_version()["number"]
