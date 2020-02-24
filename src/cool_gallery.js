@@ -62,7 +62,7 @@ function coolTags_(info) {
 	var chart, options, n;
 
 	sheet.getRange('E2').setFormula('\'_Settings\'!B4');
-	sheet.getRange('E3').setFormula('\'_Settings\'!B5');
+	sheet.getRange('E3').setFormula('\'_Settings\'!B3');
 
 	sheet.getRange('B6').setFormula('QUERY({Tags!$B$1:$T}; "select Col1, sum(Col5), sum(Col6), sum(Col7), sum(Col8), sum(Col9), sum(Col10), sum(Col11), sum(Col12), sum(Col13), sum(Col14), sum(Col15), sum(Col16), sum(Col18), sum(Col19) where Col3=true or Col3=\'TRUE\' group by Col1"; 1)');
 
