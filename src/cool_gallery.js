@@ -97,13 +97,14 @@ function coolTags_(info) {
 	sheet.insertChart( chart.build() );
 
 	options = {
-		0:{type:'bars'},
-		1:{type:'line'}
+		0:{color:"#cccccc", type:"bars"},
+		1:{color:"#4285f4", type:"bars"},
+		2:{color:"#ea4335", type:"line"}
 	};
 
 	chart = sheet.newChart()
-		.addRange( sheet.getRange('B55:D67') )
-		.addRange( sheet.getRange('J55:J67') )
+		.addRange( sheet.getRange('B55:B67') )
+		.addRange( sheet.getRange('I55:K67') )
 		.setNumHeaders(1)
 		.setChartType(Charts.ChartType.COMBO)
 		.setPosition(53, 7, 0, 0)
@@ -147,13 +148,14 @@ function coolTags_(info) {
 	sheet.getRange(107, 4).setFormula('IF(D92 > 0; ARRAYFORMULA(ABS(TRANSPOSE(OFFSET(Tags!S1; D92 - 1; 0; 1; 2)))); )');
 
 	options = {
-		0:{type:'bars'},
-		1:{type:'line'}
+		0:{color:"#cccccc", type:"bars"},
+		1:{color:"#4285f4", type:"bars"},
+		2:{color:"#ea4335", type:"line"}
 	};
 
 	chart = sheet.newChart()
-		.addRange( sheet.getRange('B94:D106') )
-		.addRange( sheet.getRange('J94:J106') )
+		.addRange( sheet.getRange('B94:B106') )
+		.addRange( sheet.getRange('I94:K106') )
 		.setNumHeaders(1)
 		.setChartType(Charts.ChartType.COMBO)
 		.setPosition(92, 7, 0, 0)
