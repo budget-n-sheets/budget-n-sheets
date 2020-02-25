@@ -29,9 +29,8 @@ var AppsScriptGlobal = (function() {
 			tags: {
 				id: "",
 				preview_id: "",
-				version: 2,
-				version_name: "v0.2.2",
-				version_date: "2019-12-26",
+				version_name: "v1.0.1",
+				version_date: "2020-02-25",
 				name: "Stats for Tags",
 				sheet_name: "Stats for Tags"
 			}
