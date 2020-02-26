@@ -313,59 +313,54 @@ function setup_ExecutePatial_() {
 
 function setupPart11_() {
 	console.time('add-on/setup/part11');
-	var thisSheet;
-	var vRange;
-	var i, k;
+	var sheet, ranges;
+	var n, i, k;
 
 	CONST_LIST_ES_SHEETS_["_backstage"].protect().setWarningOnly(true);
 	CONST_LIST_ES_SHEETS_["_settings"].protect().setWarningOnly(true);
 	CONST_LIST_ES_SHEETS_["about"].protect().setWarningOnly(true);
 	CONST_LIST_ES_SHEETS_["summary"].protect().setWarningOnly(true);
 
-	thisSheet = CONST_LIST_ES_SHEETS_["tags"];
-	vRange = thisSheet.getRange(2, 1, 90, 5);
-	thisSheet.protect()
-		.setUnprotectedRanges([ vRange ])
-		.setWarningOnly(true);
+	sheet = CONST_LIST_ES_SHEETS_["tags"];
+	ranges = sheet.getRange(2, 1, 90, 5);
+	sheet.protect().setUnprotectedRanges([ ranges ]).setWarningOnly(true);
 
-	thisSheet = CONST_LIST_ES_SHEETS_["cash_flow"];
-	vRange = [ ];
+	ranges = [ ];
+	sheet = CONST_LIST_ES_SHEETS_["cash_flow"];
 	for (i = 0; i < 12; i++) {
-		vRange.push( thisSheet.getRange(3,2+4*i, 31) );
-		vRange.push( thisSheet.getRange(3,4+4*i, 31) );
+		ranges[2*i] = sheet.getRange(3, 2 + 4*i, 31);
+		ranges[2*i + 1] = sheet.getRange(3, 4 + 4*i, 31);
 	}
-	thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
+	sheet.protect().setUnprotectedRanges(ranges).setWarningOnly(true);
 
-
-	thisSheet = CONST_LIST_ES_SHEETS_["cards"];
-	vRange = [ ];
+	ranges = [ ];
+	sheet = CONST_LIST_ES_SHEETS_["cards"];
 	for (i = 0; i < 12; i++) {
-		vRange.push( thisSheet.getRange(6, 1 + 6*i, 400, 5) );
-		vRange.push( thisSheet.getRange(2, 1 + 6*i, 1, 3) );
+		ranges[2*i] = sheet.getRange(6, 1 + 6*i, 400, 5);
+		ranges[2*i + 1] = sheet.getRange(2, 1 + 6*i, 1, 3);
 	}
-	thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
+	sheet.protect().setUnprotectedRanges(ranges).setWarningOnly(true);
 
-	thisSheet = CONST_LIST_ES_SHEETS_["quick_actions"];
+	ranges = [ ];
+	sheet = CONST_LIST_ES_SHEETS_["quick_actions"];
 
-	vRange = [ ];
-	vRange.push( thisSheet.getRange(4, 2, 3, 1) );
-	vRange.push( thisSheet.getRange(9, 2, 2, 1) );
-	vRange.push( thisSheet.getRange(13, 1, 1, 2) );
+	ranges[0] = sheet.getRange(4, 2, 3, 1);
+	ranges[1] = sheet.getRange(9, 2, 2, 1);
+	ranges[2] = sheet.getRange(13, 1, 1, 2);
 
-	thisSheet.protect()
-		.setUnprotectedRanges(vRange)
-		.setWarningOnly(true);
+	sheet.protect().setUnprotectedRanges(ranges).setWarningOnly(true);
 
 
 	i = 0;
+	n = CONST_SETUP_SETTINGS_["number_accounts"] + 1;
 	while (i < 12) {
-		thisSheet = CONST_LIST_MN_SHEETS_[i];
-		vRange = [ ];
+		ranges = [ ];
+		sheet = CONST_LIST_MN_SHEETS_[i];
 
-		for (k = 0; k < 1+CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
-			vRange.push( thisSheet.getRange(5, 1 + 5*k, 400, 4) );
+		for (k = 0; k < n; k++) {
+			ranges[k] = sheet.getRange(5, 1 + 5*k, 400, 4);
 		}
-		thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
+		sheet.protect().setUnprotectedRanges(ranges).setWarningOnly(true);
 
 		i++;
 	}
