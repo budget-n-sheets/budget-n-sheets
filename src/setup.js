@@ -317,64 +317,59 @@ function setupPart11_() {
 	var vRange;
 	var i, k;
 
-	{
-		CONST_LIST_ES_SHEETS_["_backstage"].protect().setWarningOnly(true);
-		CONST_LIST_ES_SHEETS_["_settings"].protect().setWarningOnly(true);
-		CONST_LIST_ES_SHEETS_["about"].protect().setWarningOnly(true);
-		CONST_LIST_ES_SHEETS_["summary"].protect().setWarningOnly(true);
+	CONST_LIST_ES_SHEETS_["_backstage"].protect().setWarningOnly(true);
+	CONST_LIST_ES_SHEETS_["_settings"].protect().setWarningOnly(true);
+	CONST_LIST_ES_SHEETS_["about"].protect().setWarningOnly(true);
+	CONST_LIST_ES_SHEETS_["summary"].protect().setWarningOnly(true);
+
+	thisSheet = CONST_LIST_ES_SHEETS_["tags"];
+	vRange = thisSheet.getRange(2, 1, 90, 5);
+	thisSheet.protect()
+		.setUnprotectedRanges([ vRange ])
+		.setWarningOnly(true);
+
+	thisSheet = CONST_LIST_ES_SHEETS_["cash_flow"];
+	vRange = [ ];
+	for (i = 0; i < 12; i++) {
+		vRange.push( thisSheet.getRange(3,2+4*i, 31) );
+		vRange.push( thisSheet.getRange(3,4+4*i, 31) );
 	}
-	{
-		thisSheet = CONST_LIST_ES_SHEETS_["tags"];
-		vRange = thisSheet.getRange(2, 1, 90, 5);
-		thisSheet.protect()
-			.setUnprotectedRanges([ vRange ])
-			.setWarningOnly(true);
+	thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
+
+
+	thisSheet = CONST_LIST_ES_SHEETS_["cards"];
+	vRange = [ ];
+	for (i = 0; i < 12; i++) {
+		vRange.push( thisSheet.getRange(6, 1 + 6*i, 400, 5) );
+		vRange.push( thisSheet.getRange(2, 1 + 6*i, 1, 3) );
 	}
-	{
-		thisSheet = CONST_LIST_ES_SHEETS_["cash_flow"];
+	thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
+
+	thisSheet = CONST_LIST_ES_SHEETS_["quick_actions"];
+
+	vRange = [ ];
+	vRange.push( thisSheet.getRange(4, 2, 3, 1) );
+	vRange.push( thisSheet.getRange(9, 2, 2, 1) );
+	vRange.push( thisSheet.getRange(13, 1, 1, 2) );
+
+	thisSheet.protect()
+		.setUnprotectedRanges(vRange)
+		.setWarningOnly(true);
+
+
+	i = 0;
+	while (i < 12) {
+		thisSheet = CONST_LIST_MN_SHEETS_[i];
 		vRange = [ ];
-		for (i = 0; i < 12; i++) {
-			vRange.push( thisSheet.getRange(3,2+4*i, 31) );
-			vRange.push( thisSheet.getRange(3,4+4*i, 31) );
+
+		for (k = 0; k < 1+CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
+			vRange.push( thisSheet.getRange(5, 1 + 5*k, 400, 4) );
 		}
 		thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
-	}
-	{
-		thisSheet = CONST_LIST_ES_SHEETS_["cards"];
-		vRange = [ ];
-		for (i = 0; i < 12; i++) {
-			vRange.push( thisSheet.getRange(6, 1 + 6*i, 400, 5) );
-			vRange.push( thisSheet.getRange(2, 1 + 6*i, 1, 3) );
-		}
-		thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
-	}
-	{
-		thisSheet = CONST_LIST_ES_SHEETS_["quick_actions"];
 
-		vRange = [ ];
-		vRange.push( thisSheet.getRange(4, 2, 3, 1) );
-		vRange.push( thisSheet.getRange(9, 2, 2, 1) );
-		vRange.push( thisSheet.getRange(13, 1, 1, 2) );
-
-		thisSheet.protect()
-			.setUnprotectedRanges(vRange)
-			.setWarningOnly(true);
+		i++;
 	}
-	{
-		i = 0;
-		while (i < 12) {
-			thisSheet = CONST_LIST_MN_SHEETS_[i];
-			vRange = [ ];
 
-			for (k = 0; k < 1+CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
-				vRange.push( thisSheet.getRange(5, 1 + 5*k, 400, 4) );
-			}
-			thisSheet.protect().setUnprotectedRanges(vRange).setWarningOnly(true);
-
-			i++;
-			Utilities.sleep(137);
-		}
-	}
 
 	SpreadsheetApp.flush();
 	console.timeEnd('add-on/setup/part11');
