@@ -865,7 +865,7 @@ function setupPart3_() {
 	var sheet = CONST_LIST_ES_SHEETS_["_backstage"];
 	var formulas, formula, str;
 	var n, h_, w_;
-	var i, k;
+	var a, i, k;
 
 	const values = [ "C5:C404", "H5:H404", "M5:M404", "R5:R404", "W5:W404", "AB5:AB404" ];
 	const tags = [ "D5:D404", "I5:I404", "N5:N404", "S5:S404", "X5:X404", "AC5:AC404" ];
@@ -882,9 +882,15 @@ function setupPart3_() {
 		sheet.deleteColumns(7 + w_*n, w_*(5 - n));
 	}
 
+	a = w_*n;
 	formulas = new Array(120);
+
 	for (i = 0; i < 120; i++) {
-		formulas[i] = new Array(w_*n).fill(null);
+		formulas[i] = new Array(a);
+
+		for (k = 0; k < a; k++) {
+			formulas[i][k] = null;
+		}
 	}
 
 	i = 0;
