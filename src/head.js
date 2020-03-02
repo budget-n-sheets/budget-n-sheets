@@ -11,19 +11,19 @@ var AppsScriptGlobal = (function() {
 		script_version: {
 			number: {
 				major: 0,
-				minor: 23,
-				patch: 1,
+				minor: 24,
+				patch: 0,
 			},
-			name: "0.23.1"
+			name: "0.24.0-beta4"
 		},
 
 		template_version: {
-			number: 60,
-			name: "6.5"
+			number: 70,
+			name: "7.0"
 		},
 
 		TemplateId: "",
-		TemplateSheets: [ "_Settings", "Cards", "Summary", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "About" ],
+		TemplateSheets: [ "_Settings", "Cards", "Summary", "TTT", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "About" ],
 
 		CoolGallery: {
 			tags: {
