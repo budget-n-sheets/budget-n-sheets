@@ -293,7 +293,7 @@ function foo_UpdateCashFlow_(mm) {
 			}
 
 			listEventos = calendar.getEvents(a, b);
-			if (listEventos) listEventos = optCalendar_ProcessRawEvents_(listEventos);
+			if (listEventos) listEventos = calendarDigestListEvents_(listEventos);
 			else listEventos = [ ];
 		}
 	}

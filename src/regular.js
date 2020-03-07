@@ -14,7 +14,7 @@ function daily_PostEvents_(date) {
 	list_eventos = calendar.getEventsForDay(date);
 	if (list_eventos.length == 0) return;
 
-	list_eventos = optCalendar_ProcessRawEvents_(list_eventos);
+	list_eventos = calendarDigestListEvents_(list_eventos);
 
 	list_ids = [ ];
 	mm = date.getMonth();

@@ -1,4 +1,4 @@
-function optCalendar_ProcessRawEvents_(listEvents) {
+function calendarDigestListEvents_(listEvents) {
 	var evento, description;
 	// var OnlyEventsOwned = getUserSettings_('OnlyEventsOwned');
 	var output, translation, regexp, match;
