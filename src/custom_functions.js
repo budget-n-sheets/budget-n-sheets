@@ -94,17 +94,8 @@ function BSSUMBYTAG(tag, range) {
 }
 
 
-function BSINFCARD(data) {
-	Utilities.sleep(300);
-
-	var inf = '';
-
-	inf += 'Credit: ' + Number(data[1][0]).formatFinancial() + '\n';
-	inf += 'Expenses: ' + Number(data[3][0]).formatFinancial() + '\n';
-	inf += '-----------\n';
-	inf += 'Balance: ' + Number(data[4][0]).formatFinancial();
-
-	return inf;
+function BSINFCARD() {
+	return "";
 }
 
 
