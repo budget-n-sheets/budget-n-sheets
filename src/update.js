@@ -8,7 +8,7 @@ var PatchThis = (function() {
 				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
 				[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
 				[ null, null ],
-				[ null, null ]
+				[ null, null, update_v0m24p2_ ]
 			]
 		]
 	};
@@ -101,6 +101,106 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Update conditional formatting in Summary.
+ * Update conditional formatting in Tags.
+ *
+ * 0.24.2
+ */
+function update_v0m24p2_() {
+	try {
+		var sheet;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
+		if (!sheet) return;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Summary");
+		update_v0m24p2s0_(sheet);
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+		update_v0m24p2s1_(sheet);
+	} catch (err) {
+		consoleLog_('error', 'update_v0m24p2_()', err);
+	}
+}
+
+/**
+ * Update conditional formatting in Summary.
+ */
+function update_v0m24p2s0_(sheet) {
+	try {
+		if (!sheet) return;
+		if (sheet.getMaxRows() < 22) return;
+		if (sheet.getMaxColumns() < 9) return;
+
+		var range, rules, rule;
+
+		sheet.clearConditionalFormatRules();
+
+		rules = sheet.getConditionalFormatRules();
+
+		range = sheet.getRange(11, 2, 12, 8);
+		rule = SpreadsheetApp.newConditionalFormatRule()
+			.whenFormulaSatisfied("=ROW() - 10 < INDIRECT(\"'_Settings'!B4\")")
+			.setFontColor("#cccccc")
+			.setRanges([ range ])
+			.build();
+		rules.push(rule);
+
+		range = sheet.getRange(11, 2, 12, 8);
+		rule = SpreadsheetApp.newConditionalFormatRule()
+			.whenFormulaSatisfied("=ROW() - 9 > INDIRECT(\"'_Settings'!B3\")")
+			.setFontColor("#999999")
+			.setRanges([ range ])
+			.build();
+		rules.push(rule);
+
+		sheet.setConditionalFormatRules(rules);
+	} catch (err) {
+		consoleLog_('error', 'update_v0m24p2s0_()', err);
+	}
+}
+
+/**
+ * Update conditional formatting in Tags.
+ */
+function update_v0m24p2s1_(sheet) {
+	try {
+		if (!sheet) return;
+		if (sheet.getMaxColumns() < 17) return;
+
+		var range, rules, rule, n;
+
+		n = sheet.getMaxRows() - 1;
+		if (n < 1) return;
+
+		sheet.clearConditionalFormatRules();
+
+		rules = sheet.getConditionalFormatRules();
+
+		range = sheet.getRange(2, 6, n, 12);
+		rule = SpreadsheetApp.newConditionalFormatRule()
+			.whenFormulaSatisfied("=COLUMN() - 5 < INDIRECT(\"'_Settings'!B4\")")
+			.setFontColor("#cccccc")
+			.setRanges([ range ])
+			.build();
+		rules.push(rule);
+
+		range = sheet.getRange(2, 6, n, 12);
+		rule = SpreadsheetApp.newConditionalFormatRule()
+			.whenFormulaSatisfied("=COLUMN() - 4 > INDIRECT(\"'_Settings'!B3\")")
+			.setFontColor("#999999")
+			.setRanges([ range ])
+			.build();
+		rules.push(rule);
+
+		sheet.setConditionalFormatRules(rules);
+	} catch (err) {
+		consoleLog_('error', 'update_v0m24p2s1_()', err);
+	}
+}
+
 
 /**
  * Fix 'financial_calendar' value.
