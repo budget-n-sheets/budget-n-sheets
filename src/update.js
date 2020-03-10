@@ -8,7 +8,7 @@ var PatchThis = (function() {
 				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
 				[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
 				[ null, null ],
-				[ null, null, update_v0m24p2_ ]
+				[ null, null, null, update_v0m24p3_ ]
 			]
 		]
 	};
@@ -106,9 +106,9 @@ function update_v0m0p0_() {
  * Update conditional formatting in Summary.
  * Update conditional formatting in Tags.
  *
- * 0.24.2
+ * 0.24.3
  */
-function update_v0m24p2_() {
+function update_v0m24p3_() {
 	try {
 		var sheet;
 
@@ -116,19 +116,19 @@ function update_v0m24p2_() {
 		if (!sheet) return;
 
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Summary");
-		update_v0m24p2s0_(sheet);
+		update_v0m24p3s0_(sheet);
 
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
-		update_v0m24p2s1_(sheet);
+		update_v0m24p3s1_(sheet);
 	} catch (err) {
-		consoleLog_('error', 'update_v0m24p2_()', err);
+		consoleLog_('error', 'update_v0m24p3_()', err);
 	}
 }
 
 /**
  * Update conditional formatting in Summary.
  */
-function update_v0m24p2s0_(sheet) {
+function update_v0m24p3s0_(sheet) {
 	try {
 		if (!sheet) return;
 		if (sheet.getMaxRows() < 22) return;
@@ -140,6 +140,15 @@ function update_v0m24p2s0_(sheet) {
 
 		rules = sheet.getConditionalFormatRules();
 
+		range = sheet.getRange(11, 8, 12, 2);
+		rule = SpreadsheetApp.newConditionalFormatRule()
+			.whenNumberLessThan(0.0)
+			.setFontColor("#c53929")
+			.setBold(true)
+			.setRanges([ range ])
+			.build();
+		rules.push(rule);
+
 		range = sheet.getRange(11, 2, 12, 8);
 		rule = SpreadsheetApp.newConditionalFormatRule()
 			.whenFormulaSatisfied("=ROW() - 10 < INDIRECT(\"'_Settings'!B4\")")
@@ -150,7 +159,7 @@ function update_v0m24p2s0_(sheet) {
 
 		range = sheet.getRange(11, 2, 12, 8);
 		rule = SpreadsheetApp.newConditionalFormatRule()
-			.whenFormulaSatisfied("=ROW() - 9 > INDIRECT(\"'_Settings'!B3\")")
+			.whenFormulaSatisfied("=ROW() - 10 > INDIRECT(\"'_Settings'!B4\") - 1 + INDIRECT(\"'_Settings'!B6\")")
 			.setFontColor("#999999")
 			.setRanges([ range ])
 			.build();
@@ -158,14 +167,14 @@ function update_v0m24p2s0_(sheet) {
 
 		sheet.setConditionalFormatRules(rules);
 	} catch (err) {
-		consoleLog_('error', 'update_v0m24p2s0_()', err);
+		consoleLog_('error', 'update_v0m24p3s0_()', err);
 	}
 }
 
 /**
  * Update conditional formatting in Tags.
  */
-function update_v0m24p2s1_(sheet) {
+function update_v0m24p3s1_(sheet) {
 	try {
 		if (!sheet) return;
 		if (sheet.getMaxColumns() < 17) return;
@@ -189,7 +198,7 @@ function update_v0m24p2s1_(sheet) {
 
 		range = sheet.getRange(2, 6, n, 12);
 		rule = SpreadsheetApp.newConditionalFormatRule()
-			.whenFormulaSatisfied("=COLUMN() - 4 > INDIRECT(\"'_Settings'!B3\")")
+			.whenFormulaSatisfied("=COLUMN() - 5 > INDIRECT(\"'_Settings'!B4\") - 1 + INDIRECT(\"'_Settings'!B6\")")
 			.setFontColor("#999999")
 			.setRanges([ range ])
 			.build();
@@ -197,7 +206,7 @@ function update_v0m24p2s1_(sheet) {
 
 		sheet.setConditionalFormatRules(rules);
 	} catch (err) {
-		consoleLog_('error', 'update_v0m24p2s1_()', err);
+		consoleLog_('error', 'update_v0m24p3s1_()', err);
 	}
 }
 
