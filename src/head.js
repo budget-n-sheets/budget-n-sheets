@@ -18,8 +18,8 @@ var AppsScriptGlobal = (function() {
 		},
 
 		template_version: {
-			number: 71,
-			name: "7.1"
+			number: 72,
+			name: "7.2"
 		},
 
 		TemplateId: "",
