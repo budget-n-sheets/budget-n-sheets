@@ -146,7 +146,7 @@ function update_v0m25p0_() {
 				.clearDataValidations()
 				.setHorizontalAlignment("right")
 				.setValue(null)
-				.setBackground("#f9cb9c")
+				.setFontColor("#f9cb9c")
 				.setNumberFormat("0");
 
 			sheet.getRange(2, 2 + 6*i, 1, 2)
