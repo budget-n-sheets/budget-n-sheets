@@ -8,7 +8,8 @@ var PatchThis = (function() {
 				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
 				[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
 				[ null, null ],
-				[ null, null, null, update_v0m24p3_ ]
+				[ null, null, null, update_v0m24p3_ ],
+				[ update_v0m25p0_ ]
 			]
 		]
 	};
@@ -104,6 +105,8 @@ function update_v0m0p0_() {
 
 
 /**
+ * Update header layout in Cards to deprecate BSINFCARD().
+ *
  * 0.25.0
  */
 function update_v0m25p0_() {
