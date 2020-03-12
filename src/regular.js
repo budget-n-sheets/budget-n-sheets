@@ -2,10 +2,10 @@ function daily_PostEvents_(date) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet, data, lastRow;
 
-	var calendar, list_ids, list_eventos, evento;
+	var calendar, list_to_mute, list_eventos, evento;
 	var mm, dd, value, tags;
 	var number_accounts, dec_p;
-	var type, card;
+	var type, card, cell;
 	var a, i, j, k;
 
 	calendar = getFinancialCalendar_();
@@ -16,7 +16,7 @@ function daily_PostEvents_(date) {
 
 	list_eventos = calendarDigestListEvents_(list_eventos);
 
-	list_ids = [ ];
+	list_to_mute = [ ];
 	mm = date.getMonth();
 	dd = date.getDate();
 
@@ -65,7 +65,11 @@ function daily_PostEvents_(date) {
 			data[0].value.push(value);
 		}
 
-		list_ids.push(evento.Id);
+		cell = {
+			id: evento.Id,
+			isRecurring: evento.isRecurring
+		};
+		list_to_mute.push(cell);
 	}
 
 	if (data[0].data.length > 0) {
@@ -109,7 +113,7 @@ function daily_PostEvents_(date) {
 			.setFormulas(value);
 	}
 
-	calendarMuteEvents_(calendar, list_ids);
+	calendarMuteEvents_(date, calendar, list_to_mute);
 }
 
 
