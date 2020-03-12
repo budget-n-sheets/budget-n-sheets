@@ -59,7 +59,8 @@ function calendarDigestListEvents_(listEvents) {
 			TranslationNumber: 0,
 			Tags: [ ],
 			hasAtMute: true,
-			hasQcc: false
+			hasQcc: false,
+			isRecurring: evento.isRecurringEvent()
 		};
 
 		match = cell.Description.match(regexp.accounts);
@@ -193,22 +194,41 @@ function getCalendarByMD5_(md5sum) {
 }
 
 
-function calendarMuteEvents_(calendar, list) {
+function calendarMuteEvents_(date, calendar, list) {
 	if (! calendar.isOwnedByMe()) return;
 
-	var evento, description;
+	var calendarId = calendar.getId();
+	var evento, id, description;
 	// var OnlyEventsOwned = getUserSettings_("OnlyEventsOwned");
-	var i;
+	var timezone, sufix, i;
 
+	try {
+		timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
+	} catch (err) {
+		timezone = "GMT";
+	}
+
+	sufix = Utilities.formatDate(date, timezone, "yyyyMMdd");
 
 	for (i = 0; i < list.length; i++) {
-		evento = calendar.getEventById(list[i]);
+		evento = calendar.getEventById(list[i].id);
 
 		// if (OnlyEventsOwned && !evento.isOwnedByMe()) continue;
 
 		description = evento.getDescription();
-		description += "\n\n\n@mute";
+		description += "\n@mute";
 
-		evento.setDescription(description);
+		if (list[i].isRecurring) {
+			id = evento.getId();
+			id = id.split("@")[0];
+			id += "_" + sufix;
+
+			evento = Calendar.Events.get(calendarId, id);
+			evento.description = description;
+
+			Calendar.Events.insert(evento, calendarId);
+		} else {
+			evento.setDescription(description);
+		}
 	}
 }
