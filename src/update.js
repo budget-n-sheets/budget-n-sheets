@@ -160,7 +160,7 @@ function update_v0m25p0_() {
 			formula = "IFERROR((" + formula + " - 1)/5; \"\")";
 			sheet.getRange(2, 1 + 6*i).setFormula(formula);
 
-			formula = "CONCATENATE(";
+			formula = "IF(" + rollA1Notation(2, 1 + 6*i) + " <> \"\"; CONCATENATE(";
 
 			formula += "\"Credit: \"; ";
 			formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 1; 0; 1; 1); \"#,##0.00;(#,##0.00)\"); ";
@@ -175,7 +175,7 @@ function update_v0m25p0_() {
 			formula += "\"Balance: \"; ";
 			formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 4; 0; 1; 1); \"#,##0.00;(#,##0.00)\")";
 
-			formula += ")";
+			formula += "); \"\")";
 			sheet.getRange(2, 4 + 6*i).setFormula(formula);
 
 			ranges[2*i] = sheet.getRange(2, 2 + 6*i, 1, 2);
