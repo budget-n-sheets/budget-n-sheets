@@ -216,7 +216,7 @@ function calendarMuteEvents_(date, calendar, list) {
 		// if (OnlyEventsOwned && !evento.isOwnedByMe()) continue;
 
 		description = evento.getDescription();
-		description += "\n@mute";
+		description += "\n\n\n@mute";
 
 		if (list[i].isRecurring) {
 			id = evento.getId();
