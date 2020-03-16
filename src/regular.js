@@ -112,8 +112,6 @@ function daily_PostEvents_(date) {
 				data[k].value.length, 1)
 			.setFormulas(value);
 	}
-
-	calendarMuteEvents_(date, calendar, list_to_mute);
 }
 
 

@@ -288,8 +288,8 @@ function foo_UpdateCashFlow_(mm) {
 
 		if (calendar) {
 			a = new Date(yyyy, mm, 1);
-			if (t.getTime() > a.getTime() && t.getTime() < b.getTime()) {
-				a = new Date(yyyy, mm, t.getDate());
+			if (a.getTime() < t.getTime()  && t.getTime() < b.getTime()) {
+				a = new Date(yyyy, mm, t.getDate() + 1);
 			}
 
 			listEventos = calendar.getEvents(a, b);
