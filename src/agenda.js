@@ -223,6 +223,8 @@ function calendarMuteEvents_(date, calendar, list) {
 		description += "\n\n\n@mute";
 
 		if (list[i].isRecurring) {
+			continue;
+
 			id = evento.getId();
 			id = id.split("@")[0];
 			id += "_" + sufix;
