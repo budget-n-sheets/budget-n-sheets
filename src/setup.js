@@ -262,31 +262,6 @@ function loadConstListSheets_() {
 }
 
 
-function sortSheetOrder_() {
-	console.time('add-on/setup/sort-sheets');
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet;
-	var list = [ "Summary", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ];
-	var i;
-
-	i = 0;
-	sheet = spreadsheet.getSheetByName(list[i]);
-	if (!sheet) return;
-	spreadsheet.setActiveSheet(sheet);
-	spreadsheet.moveActiveSheet(i + 1);
-
-	for (i = 13; i < list.length; i++) {
-		sheet = spreadsheet.getSheetByName(list[i]);
-		if (!sheet) return;
-		spreadsheet.setActiveSheet(sheet);
-		spreadsheet.moveActiveSheet(i + 1);
-	}
-
-	console.timeEnd('add-on/setup/sort-sheets');
-	return -1;
-}
-
-
 function setup_ExecutePatial_() {
 	var yyyy_mm = CONST_SETUP_SETTINGS_["date_created"];
 
