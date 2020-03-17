@@ -211,7 +211,6 @@ function calendarMuteEvents_(date, calendar, list) {
 	if (typeof timezone != "string" || timezone == "") {
 		timezone = "GMT";
 	}
-
 	sufix = Utilities.formatDate(date, timezone, "yyyyMMdd");
 
 	for (i = 0; i < list.length; i++) {

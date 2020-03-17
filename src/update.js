@@ -8,7 +8,8 @@ var PatchThis = (function() {
 				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
 				[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
 				[ null, null ],
-				[ null, null, null, update_v0m24p3_, null, null ]
+				[ null, null, null, update_v0m24p3_, null, null ],
+				[ update_v0m25p0_ ]
 			]
 		]
 	};
@@ -101,6 +102,95 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+
+/**
+ * Update header layout in Cards to deprecate BSINFCARD().
+ *
+ * 0.25.0
+ */
+function update_v0m25p0_() {
+	try {
+		var sheet, formula;
+		var ranges;
+		var protections, protection;
+		var a, c, m, i;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+		if (!sheet) return;
+
+		const number_accounts = getUserConstSettings_('number_accounts');
+
+		const h_ = TABLE_DIMENSION_.height;
+		const w_ = TABLE_DIMENSION_.width;
+
+		protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
+		for (i = 0; i < protections.length; i++) {
+			protection = protections[i];
+			if (protection.canEdit()) {
+				protection.remove();
+			}
+		}
+
+		a = sheet.getMaxColumns();
+		m = sheet.getMaxRows() - 5;
+
+		ranges = [ ];
+		c = 1 + w_ + w_*number_accounts;
+		header = rollA1Notation(1, c + 1, 1, w_*11);
+
+		if (m < 1) return;
+
+		i = 0;
+		while (i < 12 && 6*i < a) {
+			sheet.getRange(2, 1 + 6*i, 1, 3).breakApart();
+
+			sheet.getRange(2, 1 + 6*i)
+				.clearDataValidations()
+				.setHorizontalAlignment("right")
+				.setValue(null)
+				.setFontColor("#f9cb9c")
+				.setNumberFormat("0");
+
+			sheet.getRange(2, 2 + 6*i, 1, 2)
+				.setValue("All")
+				.merge();
+
+			formula = "MATCH(" + rollA1Notation(2, 2 + 6*i) + "; \'_Backstage\'!" + header + "; 0)";
+			formula = "IFERROR((" + formula + " - 1)/5; \"\")";
+			sheet.getRange(2, 1 + 6*i).setFormula(formula);
+
+			formula = "IF(" + rollA1Notation(2, 1 + 6*i) + " <> \"\"; CONCATENATE(";
+
+			formula += "\"Credit: \"; ";
+			formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 1; 0; 1; 1); \"#,##0.00;(#,##0.00)\"); ";
+			formula += "\"\n\"; ";
+
+			formula += "\"Expenses: \"; ";
+			formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 3; 0; 1; 1); \"#,##0.00;(#,##0.00)\"); ";
+			formula += "\"\n\"; ";
+
+			formula += "\"\n\"; ";
+
+			formula += "\"Balance: \"; ";
+			formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 4; 0; 1; 1); \"#,##0.00;(#,##0.00)\")";
+
+			formula += "); \"\")";
+			sheet.getRange(2, 4 + 6*i).setFormula(formula);
+
+			ranges[2*i] = sheet.getRange(2, 2 + 6*i, 1, 2);
+			ranges[1 + 2*i] = sheet.getRange(6, 1 + 6*i, m, 5);
+
+			i++;
+		}
+
+		sheet.protect().setUnprotectedRanges(ranges).setWarningOnly(true);
+	} catch (err) {
+		consoleLog_('error', 'update_v0m25p0_()', err);
+		return 1;
+	}
+}
+
 
 /**
  * Update conditional formatting in Summary.

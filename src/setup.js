@@ -262,31 +262,6 @@ function loadConstListSheets_() {
 }
 
 
-function sortSheetOrder_() {
-	console.time('add-on/setup/sort-sheets');
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet;
-	var list = [ "Summary", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ];
-	var i;
-
-	i = 0;
-	sheet = spreadsheet.getSheetByName(list[i]);
-	if (!sheet) return;
-	spreadsheet.setActiveSheet(sheet);
-	spreadsheet.moveActiveSheet(i + 1);
-
-	for (i = 13; i < list.length; i++) {
-		sheet = spreadsheet.getSheetByName(list[i]);
-		if (!sheet) return;
-		spreadsheet.setActiveSheet(sheet);
-		spreadsheet.moveActiveSheet(i + 1);
-	}
-
-	console.timeEnd('add-on/setup/sort-sheets');
-	return -1;
-}
-
-
 function setup_ExecutePatial_() {
 	var yyyy_mm = CONST_SETUP_SETTINGS_["date_created"];
 
@@ -337,7 +312,7 @@ function setupPart11_() {
 	sheet = CONST_LIST_ES_SHEETS_["cards"];
 	for (i = 0; i < 12; i++) {
 		ranges[2*i] = sheet.getRange(6, 1 + 6*i, 400, 5);
-		ranges[2*i + 1] = sheet.getRange(2, 1 + 6*i, 1, 3);
+		ranges[2*i + 1] = sheet.getRange(2, 2 + 6*i, 1, 2);
 	}
 	sheet.protect().setUnprotectedRanges(ranges).setWarningOnly(true);
 
@@ -618,15 +593,29 @@ function setupPart6_() {
 			sheet.getRange(3, 6 + 5*k).setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4 + h_*i, 7 + w_*k) + '))');
 		}
 
-		sheetCards.getRange(2, 1 + 6*i).setValue("All");
+		sheetCards.getRange(2, 2 + 6*i).setValue("All");
 
-		formula = "MATCH(" + rollA1Notation(2, 1 + 6*i) + "; \'_Backstage\'!" + header + "; 0)";
-		formula = "INDIRECT(ADDRESS(2; " +  c + " + " + formula + "; 4; true; \"_Backstage\"))";
-		formula = "OFFSET(" + formula + "; " + (h_*i) + "; 0; " + h_ + "; 1)";
-		formula = "IF(" + rollA1Notation(2, 1 + 6*i) + " = \"\"; \"\"; " + formula + ")";
-		formula = "BSINFCARD(" + formula + ")";
+		formula = "MATCH(" + rollA1Notation(2, 2 + 6*i) + "; \'_Backstage\'!" + header + "; 0)";
+		formula = "IFERROR((" + formula + " - 1)/5; \"\")";
+		sheetCards.getRange(2, 1 + 6*i).setFormula(formula);
 
-		sheetCards.getRange(2, 4 + i*6).setFormula(formula);
+		formula = "CONCATENATE(";
+
+		formula += "\"Credit: \"; ";
+		formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 1; 0; 1; 1); \"#,##0.00;(#,##0.00)\"); ";
+		formula += "\"\n\"; ";
+
+		formula += "\"Expenses: \"; ";
+		formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 3; 0; 1; 1); \"#,##0.00;(#,##0.00)\"); ";
+		formula += "\"\n\"; ";
+
+		formula += "\"\n\"; ";
+
+		formula += "\"Balance: \"; ";
+		formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 4; 0; 1; 1); \"#,##0.00;(#,##0.00)\")";
+
+		formula += ")";
+		sheetCards.getRange(2, 4 + 6*i).setFormula(formula);
 	}
 
 	SpreadsheetApp.flush();
