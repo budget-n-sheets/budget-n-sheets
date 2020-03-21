@@ -256,7 +256,7 @@ function foo_UpdateCashFlow_(mm) {
 	var data_cards, data_tags, value, maxRows;
 	var table, hasCards, hasTags;
 	var cf_flow, cf_transaction;
-	var a, b, c, i, j, k, n, ma;
+	var a, b, c, i, j, k, n, ma, t, x;
 	var h_, w_;
 
 	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
@@ -288,9 +288,17 @@ function foo_UpdateCashFlow_(mm) {
 
 		if (calendar) {
 			a = new Date(yyyy, mm, 1);
-			if (a.getTime() < t.getTime()  && t.getTime() < b.getTime()) {
+			if (a.getTime() < t.getTime() && t.getTime() < b.getTime()) {
 				a = new Date(yyyy, mm, t.getDate() + 1);
 			}
+
+			x = getSpreadsheetDate(a);
+			a = a.getTime() + (a.getTime() - x.getTime());
+			a = new Date(a);
+
+			x = getSpreadsheetDate(b);
+			b = b.getTime() + (b.getTime() - x.getTime());
+			b = new Date(b);
 
 			listEventos = calendar.getEvents(a, b);
 			if (listEventos) listEventos = calendarDigestListEvents_(listEventos);
