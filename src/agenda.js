@@ -1,6 +1,5 @@
 function calendarDigestListEvents_(listEvents) {
 	var evento, description;
-	// var OnlyEventsOwned = getUserSettings_('OnlyEventsOwned');
 	var output, translation, regexp, match;
 	var list_acc, list, cell, s, i, j;
 
@@ -40,8 +39,6 @@ function calendarDigestListEvents_(listEvents) {
 	}
 
 	for (i = 0; i < listEvents.length; i++) {
-		// if (OnlyEventsOwned && !listEvents[i].isOwnedByMe()) continue;
-
 		evento = listEvents[i];
 
 		description = evento.getDescription();
@@ -203,7 +200,6 @@ function calendarMuteEvents_(date, calendar, list) {
 
 	var calendarId = calendar.getId();
 	var evento, id, description;
-	// var OnlyEventsOwned = getUserSettings_("OnlyEventsOwned");
 	var timezone, sufix, i;
 
 	try {
@@ -219,8 +215,6 @@ function calendarMuteEvents_(date, calendar, list) {
 
 	for (i = 0; i < list.length; i++) {
 		evento = calendar.getEventById(list[i].id);
-
-		// if (OnlyEventsOwned && !evento.isOwnedByMe()) continue;
 
 		description = evento.getDescription();
 		description += "\n\n\n@mute";

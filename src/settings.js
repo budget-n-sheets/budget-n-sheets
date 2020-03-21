@@ -42,7 +42,6 @@ function saveUserSettings(settings) {
 		initial_month: init,
 
 		financial_calendar: calendar,
-		OnlyEventsOwned: false,
 		PostDayEvents: settings.post_day_events,
 		post_day_events: settings.post_day_events,
 		OverrideZero: settings.override_zero,
@@ -91,7 +90,6 @@ function getUserSettings_(select) {
 
 		case 'spreadsheet_locale':
 		case 'financial_calendar':
-		case 'OnlyEventsOwned':
 		case 'PostDayEvents':
 		case 'post_day_events':
 		case 'OverrideZero':
@@ -148,7 +146,6 @@ function setUserSettings_(select, value) {
 		case 'initial_month':
 		case 'spreadsheet_locale':
 		case 'financial_calendar':
-		case 'OnlyEventsOwned':
 		case 'PostDayEvents':
 		case 'post_day_events':
 		case 'CashFlowEvents':
