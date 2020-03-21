@@ -276,8 +276,8 @@ function foo_UpdateCashFlow_(mm) {
 	cf_flow = [ ];
 	cf_transaction = [ ];
 	for (i = 0; i < 31; i++) {
-		cf_flow.push("");
-		cf_transaction.push("");
+		cf_flow[i] = "";
+		cf_transaction[i] = "";
 	}
 
 	listEventos = [ ];

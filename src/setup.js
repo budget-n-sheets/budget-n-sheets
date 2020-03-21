@@ -879,7 +879,7 @@ function setupPart3_() {
 	formula += "); 0)";
 	sheet.getRange(4 + h_*i, 2).setFormula(formula);
 
-	for(; k < n; k++) {
+	for (; k < n; k++) {
 		formulas[0][w_*k] = "=0";
 
 		str = balance1[5*i + k];
@@ -905,14 +905,14 @@ function setupPart3_() {
 		formulas[0][1 + w_*k] = str;
 	}
 
-	for(i = 1; i < 12; i++) {
+	for (i = 1; i < 12; i++) {
 		k = 0;
 		formula = "IFERROR(SUM(";
 		formula += "\'" + MN_SHORT_[i] + "\'!" + values[k];
 		formula += "); 0)";
 		sheet.getRange(4 + h_*i, 2).setFormula(formula);
 
-		for(; k < n; k++) {
+		for (; k < n; k++) {
 			formulas[h_*i][w_*k] = "=" + balance2[5*i + k];
 
 			str = "=" + balance1[5*i + k];
@@ -958,11 +958,11 @@ function setupPart0_() {
 	diff_num_acc = 5 - num_acc;
 
 	ref = [ ];
-	for(k = 0; k < 1 + num_acc; k++) {
+	for (k = 0; k < 1 + num_acc; k++) {
 		ref[k] = rollA1Notation(1, 1 + 5*k);
 	}
 
-	for(i = 11; i > 0; i--) {
+	for (i = 11; i > 0; i--) {
 		CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetTTT);
 		sheet = CONST_SETUP_SPREADSHEET_.duplicateActiveSheet().setName(MN_SHORT_[i]);
 		if (diff_num_acc > 0) {
