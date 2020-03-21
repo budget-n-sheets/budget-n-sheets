@@ -9,7 +9,7 @@ var PatchThis = (function() {
 				[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
 				[ null, null ],
 				[ null, null, null, update_v0m24p3_, null, null ],
-				[ update_v0m25p0_ ]
+				[ update_v0m25p0_, update_v0m25p1_ ]
 			]
 		]
 	};
@@ -102,6 +102,25 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+
+/**
+ * Update name of keys for user settings.
+ *
+ * 0.25.1
+ */
+function update_v0m25p1_() {
+	try {
+		const user_settings = getPropertiesService_('document', 'json', 'user_settings');
+
+		setUserSettings_("override_zero", user_settings.OverrideZero);
+		setUserSettings_("post_day_events", user_settings.PostDayEvents);
+		setUserSettings_("cash_flow_events", user_settings.CashFlowEvents);
+	} catch (err) {
+		consoleLog_('error', 'update_v0m25p1_()', err);
+		return 1;
+	}
+}
 
 
 /**
