@@ -252,7 +252,7 @@ function foo_UpdateCashFlow_(mm) {
 
 	var calendar, listEventos, evento, day, yyyy, dd;
 	var number_accounts, number_cards;
-	var metaTags, OverrideZero;
+	var metaTags, override_zero;
 	var data_cards, data_tags, value, maxRows;
 	var table, hasCards, hasTags;
 	var cf_flow, cf_transaction;
@@ -270,7 +270,7 @@ function foo_UpdateCashFlow_(mm) {
 	yyyy = getUserConstSettings_('financial_year');
 
 	dd = new Date(yyyy, mm + 1, 0).getDate();
-	OverrideZero = getUserSettings_("OverrideZero");
+	override_zero = getUserSettings_("OverrideZero");
 	number_accounts = getUserConstSettings_('number_accounts');
 
 	cf_flow = [ ];
@@ -306,7 +306,7 @@ function foo_UpdateCashFlow_(mm) {
 		}
 	}
 
-	if (OverrideZero || listEventos.length > 0) {
+	if (override_zero || listEventos.length > 0) {
 		data_tags = getTagData_();
 		if (data_tags && data_tags.tags.length > 0) hasTags = true;
 		else hasTags = false;
@@ -331,7 +331,7 @@ function foo_UpdateCashFlow_(mm) {
 			if (day <= 0 || day > dd) continue;
 
 			value = table[i][2];
-			if (hasTags && value === 0 && OverrideZero) {
+			if (hasTags && value === 0 && override_zero) {
 				ma = table[i][3].match(/#\w+/g);
 				for (j = 0; j < ma.length; j++) {
 					c = data_tags.tags.indexOf(ma[j].substr(1));

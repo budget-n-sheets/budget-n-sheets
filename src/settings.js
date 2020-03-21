@@ -2,7 +2,7 @@ function retrieveUserSettings() {
 	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
 	user_settings.docName = SpreadsheetApp.getActiveSpreadsheet().getName();
-	user_settings.FinancialYear = getUserConstSettings_('financial_year');
+	user_settings.financial_year = getUserConstSettings_('financial_year');
 
 	if (user_settings.financial_calendar != "") {
 		user_settings.financial_calendar = computeDigest(
@@ -43,9 +43,12 @@ function saveUserSettings(settings) {
 
 		financial_calendar: calendar,
 		OnlyEventsOwned: false,
-		PostDayEvents: settings.PostDayEvents,
-		OverrideZero: settings.OverrideZero,
-		CashFlowEvents: settings.CashFlowEvents
+		PostDayEvents: settings.post_day_events,
+		post_day_events: settings.post_day_events,
+		OverrideZero: settings.override_zero,
+		override_zero: settings.override_zero,
+		CashFlowEvents: settings.cash_flow_events,
+		cash_flow_events: settings.cash_flow_events
 	};
 
 	try {
@@ -90,8 +93,11 @@ function getUserSettings_(select) {
 		case 'financial_calendar':
 		case 'OnlyEventsOwned':
 		case 'PostDayEvents':
+		case 'post_day_events':
 		case 'OverrideZero':
+		case 'override_zero':
 		case 'CashFlowEvents':
+		case 'cash_flow_events':
 		case 'initial_month': // Number in 0-11 range
 			return user_settings[select];
 
@@ -144,8 +150,11 @@ function setUserSettings_(select, value) {
 		case 'financial_calendar':
 		case 'OnlyEventsOwned':
 		case 'PostDayEvents':
+		case 'post_day_events':
 		case 'CashFlowEvents':
+		case 'cash_flow_events':
 		case 'OverrideZero':
+		case 'override_zero':
 			user_settings[select] = value;
 			break;
 
