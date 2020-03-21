@@ -288,7 +288,7 @@ function foo_UpdateCashFlow_(mm) {
 
 		if (calendar) {
 			a = new Date(yyyy, mm, 1);
-			if (a.getTime() < t.getTime() && t.getTime() < b.getTime()) {
+			if (a.getTime() < t.getTime()) {
 				a = new Date(yyyy, mm, t.getDate() + 1);
 			}
 
