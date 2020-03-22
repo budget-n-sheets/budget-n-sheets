@@ -444,13 +444,14 @@ function foo_FormatAccounts_(mm) {
 	}
 
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT_[mm]);
-	var number_accounts = getUserConstSettings_('number_accounts');
 	var date1, date2;
 	var table, nd;
 	var c, n, i, k;
-	var w_;
 
-	w_ = TABLE_DIMENSION_.width;
+	const w_ = TABLE_DIMENSION_.width;
+	const num_acc = getUserConstSettings_('number_accounts');
+
+	if (sheet.getMaxColumns() < 5 + 5*num_acc) return;
 
 	n = sheet.getMaxRows() - 4;
 	if (n < 1) return;
@@ -458,7 +459,7 @@ function foo_FormatAccounts_(mm) {
 	c = 0;
 	sheet.showRows(5, n);
 
-	for (k = 0; k < 1 + number_accounts; k++) {
+	for (k = 0; k < 1 + num_acc; k++) {
 		sheet.getRange(5, 1 + w_*k, n, 4).sort([
 			{column:(1 + w_*k), ascending:true},
 			{column:(3 + w_*k), ascending:true}
