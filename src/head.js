@@ -33,6 +33,14 @@ var AppsScriptGlobal = (function() {
 				version_date: "2020-02-25",
 				name: "Stats for Tags",
 				sheet_name: "Stats for Tags"
+			},
+			filter: {
+				id: "",
+				preview_id: "",
+				version_name: "v0.1.1",
+				version_date: "2020-03-23",
+				name: "Filter by Tag",
+				sheet_name: "Filter by Tag"
 			}
 		}
 	};
