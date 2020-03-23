@@ -41,7 +41,7 @@ function onOpen(e) {
 					.addItem("Expand", "toolShowSheets_"))
 				.addSeparator()
 				.addItem('Open Accounts & Cards panel', 'showPanelTables')
-				.addItem('Open Analytics panel', 'showPanelAnalytics')
+				.addItem('Open Cool Gallery panel', 'showPanelAnalytics')
 				.addSeparator()
 				.addItem('About the add-on', 'showDialogAboutAddon')
 				.addItem('Edit settings', 'showSidebarMainSettings')
@@ -86,8 +86,7 @@ function showPanelAnalytics() {
 
 	htmlTemplate.list = AppsScriptGlobal.CoolGallery();
 
-	htmlSidebar = htmlTemplate.evaluate()
-		.setTitle("Analytics Gallery (experimental)");
+	htmlSidebar = htmlTemplate.evaluate().setTitle("Cool Gallery");
 
 	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
