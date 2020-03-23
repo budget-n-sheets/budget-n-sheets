@@ -36,7 +36,6 @@ var AppsScriptGlobal = (function() {
 			},
 			filter: {
 				id: "",
-				preview_id: "",
 				version_name: "v0.1.1",
 				version_date: "2020-03-23",
 				name: "Filter by Tag",
