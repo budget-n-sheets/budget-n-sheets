@@ -26,10 +26,10 @@ function coolGallery(option) {
 		return 1;
 	}
 
-	if (option === "tags") {
-		coolTags_(info);
-	} else if (option === "filter") {
-		coolFilter_(info);
+	if (option === "stats_for_tags") {
+		coolStatsForTags_(info);
+	} else if (option === "filter_by_tag") {
+		coolFilterByTag_(info);
 	}
 
 	console.info("add-on/cool_gallery/import/" + info.sheet_name);
@@ -55,7 +55,7 @@ function getCoolSheet_(info) {
 	SpreadsheetApp.flush();
 }
 
-function coolFilter_(info) {
+function coolFilterByTag_(info) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet = spreadsheet.getSheetByName(info.sheet_name);
 	var sheetTags, formula, range, rule;
@@ -113,7 +113,7 @@ function coolFilter_(info) {
 	spreadsheet.setActiveSheet(sheet);
 }
 
-function coolTags_(info) {
+function coolStatsForTags_(info) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet = spreadsheet.getSheetByName(info.sheet_name);
 	var sheetTags, range;

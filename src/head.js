@@ -26,7 +26,7 @@ var AppsScriptGlobal = (function() {
 		TemplateSheets: [ "_Settings", "Cards", "Summary", "TTT", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "About" ],
 
 		CoolGallery: {
-			tags: {
+			stats_for_tags: {
 				id: "",
 				preview_id: "",
 				version_name: "v1.0.1",
@@ -34,7 +34,7 @@ var AppsScriptGlobal = (function() {
 				name: "Stats for Tags",
 				sheet_name: "Stats for Tags"
 			},
-			filter: {
+			filter_by_tag: {
 				id: "",
 				version_name: "v0.1.1",
 				version_date: "2020-03-23",
