@@ -1,5 +1,6 @@
 clasp.sh
+
 .clasp.json
 appsscript.json
 
-trial_*.js
+trial_*
