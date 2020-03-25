@@ -99,6 +99,9 @@ function optCard_Update_(input) {
 
 	db_cards.data[k].name = input.name;
 	db_cards.data[k].code = input.code;
+	db_cards.data[k].limit = Number(input.limit);
+	db_cards.data[k].time_a = Number(input.time_a);
+	db_cards.data[k].balance = Number(input.balance);
 
 	db_tables.cards = db_cards;
 
@@ -128,7 +131,9 @@ function optCard_Add_(input) {
 		id: string,
 		name: input.name,
 		code: input.code,
-		limit: 0
+		limit: Number(input.limit),
+		time_a: Number(input.time_a),
+		balance: Number(input.balance)
 	};
 
 	db_cards.count++;
