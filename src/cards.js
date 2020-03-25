@@ -153,18 +153,20 @@ function optCard_Add_(input) {
 function optCard_Refresh_() {
 	var sheetBackstage = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage"),
 			sheetSettings = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
-	var number_accounts = getUserConstSettings_('number_accounts');
-	var db_cards;
-	var h_, w_;
-	var c, i;
+	var db_cards, card, time_a;
+	var ranges;
+	var c, i, j, k;
 
-	h_ = TABLE_DIMENSION_.height;
-	w_ = TABLE_DIMENSION_.width;
+	const h_ = TABLE_DIMENSION_.height;
+	const w_ = TABLE_DIMENSION_.width;
+
+	const num_acc = getUserConstSettings_('number_accounts');
 
 	db_cards = getPropertiesService_("document", "obj", "DB_TABLES");
 	db_cards = db_cards.cards;
 
-	c = 1 + 1 + w_ + w_*number_accounts;
+	c = 1 + 1 + w_ + w_*num_acc;
+
 	sheetBackstage.getRange(1, c, 1, w_*11).setValue("");
 	sheetBackstage.getRange(1, c).setValue("All");
 
@@ -172,9 +174,24 @@ function optCard_Refresh_() {
 	sheetSettings.getRange("B10").setValue("All");
 
 	c += w_;
+
 	for (i = 0; i < db_cards.count; i++) {
-		sheetBackstage.getRange(1, c + w_*i).setValue(db_cards.codes[i]);
-		sheetSettings.getRange(11 + i, 2).setValue(db_cards.codes[i]);
+		card = db_cards.data[i];
+		time_a = card.time_a;
+
+		if (time_a < 11) {
+			ranges = [ ];
+			for (k = 0, j = time_a + 1; j < 12; k++, j++) {
+				ranges[k] = rollA1Notation(3 + h_*j, 1 + c + w_*i);
+			}
+			sheetBackstage.getRangeList(ranges).setFormulaR1C1("=R[-7]C");
+		}
+
+		sheetBackstage.getRange(1, c + w_*i).setValue(card.code);
+		sheetBackstage.getRange(2 + h_*time_a, 1 + c + w_*i).setValue("=" + Number(card.limit).formatLocaleSignal());
+		sheetBackstage.getRange(3 + h_*time_a, 1 + c + w_*i).setValue("=" + Number(card.balance).formatLocaleSignal());
+
+		sheetSettings.getRange(11 + i, 2).setValue(card.code);
 	}
 
 	SpreadsheetApp.flush();
