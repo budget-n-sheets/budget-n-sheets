@@ -176,7 +176,7 @@ function optCard_Refresh_() {
 
 		ranges = [ ];
 		for (j = 0; j < 12; j++) {
-			ranges[i] = rollA1Notation(2 + h_*j, 1 + c + w_*i);
+			ranges[j] = rollA1Notation(2 + h_*j, 1 + c + w_*i);
 		}
 
 		sheetBackstage.getRange(1, c + w_*i).setValue(card.code);
