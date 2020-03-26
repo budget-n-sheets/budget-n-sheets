@@ -965,20 +965,18 @@ function setupPart0_() {
 		ref[k] = rollA1Notation(1, 1 + 5*k);
 	}
 
+	if (diff_num_acc > 0) {
+		sheetTTT.deleteColumns(6 + 5*num_acc, 5*diff_num_acc);
+	}
+
 	for (i = 11; i > 0; i--) {
 		CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetTTT);
 		sheet = CONST_SETUP_SPREADSHEET_.duplicateActiveSheet().setName(MN_SHORT_[i]);
-		if (diff_num_acc > 0) {
-			sheet.deleteColumns(6 + 5*num_acc, 5*diff_num_acc);
-		}
 		CONST_LIST_MN_SHEETS_[i] = sheet;
 	}
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetTTT);
 	sheet = CONST_SETUP_SPREADSHEET_.duplicateActiveSheet().setName(MN_SHORT_[0]);
-	if (diff_num_acc > 0) {
-		sheet.deleteColumns(6 + 5*num_acc, 5*diff_num_acc);
-	}
 	sheet.getRange(1, 1).setValue('Wallet');
 	CONST_LIST_MN_SHEETS_[0] = sheet;
 
