@@ -100,8 +100,6 @@ function optCard_Update_(input) {
 	db_cards.data[k].name = input.name;
 	db_cards.data[k].code = input.code;
 	db_cards.data[k].limit = Number(input.limit);
-	db_cards.data[k].time_a = Number(input.time_a);
-	db_cards.data[k].balance = Number(input.balance);
 
 	db_tables.cards = db_cards;
 
@@ -131,9 +129,7 @@ function optCard_Add_(input) {
 		id: string,
 		name: input.name,
 		code: input.code,
-		limit: Number(input.limit),
-		time_a: Number(input.time_a),
-		balance: Number(input.balance)
+		limit: Number(input.limit)
 	};
 
 	db_cards.count++;
@@ -153,7 +149,7 @@ function optCard_Add_(input) {
 function optCard_Refresh_() {
 	var sheetBackstage = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage"),
 			sheetSettings = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
-	var db_cards, card, time_a;
+	var db_cards, card;
 	var ranges;
 	var c, i, j, k;
 
@@ -177,19 +173,14 @@ function optCard_Refresh_() {
 
 	for (i = 0; i < db_cards.count; i++) {
 		card = db_cards.data[i];
-		time_a = card.time_a;
 
-		if (time_a < 11) {
-			ranges = [ ];
-			for (k = 0, j = time_a + 1; j < 12; k++, j++) {
-				ranges[k] = rollA1Notation(3 + h_*j, 1 + c + w_*i);
-			}
-			sheetBackstage.getRangeList(ranges).setFormulaR1C1("=R[-7]C");
+		ranges = [ ];
+		for (j = 0; j < 12; j++) {
+			ranges[i] = rollA1Notation(2 + h_*j, 1 + c + w_*i);
 		}
 
 		sheetBackstage.getRange(1, c + w_*i).setValue(card.code);
-		sheetBackstage.getRange(2 + h_*time_a, 1 + c + w_*i).setValue("=" + Number(card.limit).formatLocaleSignal());
-		sheetBackstage.getRange(3 + h_*time_a, 1 + c + w_*i).setValue("=" + Number(card.balance).formatLocaleSignal());
+		sheetBackstage.getRangeList(ranges).setValue("=" + Number(card.limit).formatLocaleSignal());
 
 		sheetSettings.getRange(11 + i, 2).setValue(card.code);
 	}
