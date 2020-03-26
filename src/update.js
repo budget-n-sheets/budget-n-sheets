@@ -1,30 +1,24 @@
-var PatchThis = (function() {
-	var o = {
-		patch_list: [
-			[
-				null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
-				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
-				[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
-				[ null, null ],
-				[ null, null, null, update_v0m24p3_, null, null ],
-				[ update_v0m25p0_, null, update_v0m25p2_ ],
-				[ null ]
-			]
+var PATCH_THIS_ = Object.freeze({
+	patch_list: [
+		[
+			null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
+			[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
+			[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
+			[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
+			[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
+			[ null, null ],
+			[ null, null, null, update_v0m24p3_, null, null ],
+			[ update_v0m25p0_, null, update_v0m25p2_ ],
+			[ null ]
 		]
-	};
-
-	return {
-		patch_list: function() { return o.patch_list }
-	};
-})();
+	]
+});
 
 
 function onlineUpdate_() {
 	var ui = SpreadsheetApp.getUi();
 	try {
-		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
 		consoleLog_('warn', 'onlineUpdate_()', err);
 
@@ -55,7 +49,7 @@ function onlineUpdate_() {
 
 function seamlessUpdate_() {
 	try {
-		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
 		consoleLog_('warn', 'seamlessUpdate_()', err);
 		return true;
@@ -558,8 +552,8 @@ function update_v0m21p2_() {
 function update_v0m20p6_() {
 	try {
 		var a = {
-			script: AppsScriptGlobal.script_version()["number"],
-			template: AppsScriptGlobal.template_version()["number"]
+			script: APPS_SCRIPT_GLOBAL_.script_version.number,
+			template: APPS_SCRIPT_GLOBAL_.template_version.number
 		};
 
 		setPropertiesService_('document', 'json', 'class_version2', a);

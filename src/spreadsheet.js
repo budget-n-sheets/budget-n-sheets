@@ -1,8 +1,8 @@
 function copySheetsFromTemplate_() {
 	console.time('add-on/setup/copy-template');
-	var spreadsheetTemplate = SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() ),
+	var spreadsheetTemplate = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id),
 			spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var listSheetsTemplate = AppsScriptGlobal.TemplateSheets(),
+	var listSheetsTemplate = APPS_SCRIPT_GLOBAL_.template_sheets,
 			listSheets = spreadsheet.getSheets();
 	var i;
 

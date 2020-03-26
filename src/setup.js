@@ -222,8 +222,8 @@ function setup_(settings, listAcc) {
 	CONST_SETUP_SPREADSHEET_.deleteSheet(CONST_LIST_ES_SHEETS_["ttt"]);
 
 	a = {
-		script: AppsScriptGlobal.script_version()["number"],
-		template: AppsScriptGlobal.template_version()["number"]
+		script: APPS_SCRIPT_GLOBAL_.script_version.number,
+		template: APPS_SCRIPT_GLOBAL_.template_version.number
 	};
 	setPropertiesService_('document', 'json', 'class_version2', a);
 

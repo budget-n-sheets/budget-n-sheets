@@ -2,7 +2,7 @@ function coolGallery(option) {
 	var lock, s;
 	var info;
 
-	info = AppsScriptGlobal.CoolGallery();
+	info = APPS_SCRIPT_GLOBAL_.cool_gallery;
 	info = info[option];
 	if (!info) {
 		consoleLog_('warn', 'getCoolSheet_(): Details of page not found.', {"option":option, "info":info});

@@ -84,7 +84,7 @@ function showPanelAnalytics() {
 	var htmlTemplate = HtmlService.createTemplateFromFile("htmlCoolGallery");
 	var htmlSidebar;
 
-	htmlTemplate.list = AppsScriptGlobal.CoolGallery();
+	htmlTemplate.list = APPS_SCRIPT_GLOBAL_.cool_gallery;
 
 	htmlSidebar = htmlTemplate.evaluate().setTitle("Cool Gallery");
 
@@ -121,7 +121,7 @@ function showDialogAboutAddon() {
 
 	htmlTemplate = HtmlService.createTemplateFromFile('htmlAboutAddon')
 
-	htmlTemplate.version = AppsScriptGlobal.script_version()["name"];
+	htmlTemplate.version = APPS_SCRIPT_GLOBAL_.script_version.name;
 
 	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(281)
@@ -171,7 +171,7 @@ function showSetupAddon_() {
 	var Ui = SpreadsheetApp.getUi();
 
 	try {
-		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
 		consoleLog_('warn', 'showSetupAddon_()', err);
 

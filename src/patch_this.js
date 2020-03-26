@@ -29,7 +29,7 @@ function update_() {
 	}
 
 	const v0 = optGetClass_('script');
-	const v1 = AppsScriptGlobal.script_version()["number"];
+	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
 
 	if (v0.major > v1.major) return 0;
 	if (v0.major == v1.major) {
@@ -43,7 +43,7 @@ function update_() {
 	major = v0.major;
 	minor = v0.minor;
 	patch = v0.patch;
-	list = PatchThis.patch_list();
+	list = PATCH_THIS_.patch_list;
 
 	t = 0;
 	mm = minor;
