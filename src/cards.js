@@ -80,17 +80,20 @@ function optCard_Remove_(input) {
 
 function optCard_Update_(input) {
 	var db_tables, db_cards;
-	var k;
+	var c, k;
 
 	if ( !/^\w+$/.test(input.code) ) return 10;
 
 	db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
 	db_cards = db_tables.cards;
 
-	if (db_cards.codes.indexOf(input.code) != -1) return 20;
-
 	k = db_cards.ids.indexOf(input.id);
 	if (k == -1) return 2;
+
+	c = db_cards.codes.indexOf(input.code);
+	if (c != -1) {
+		if (db_cards.data[c].id != input.id) return 20;
+	}
 
 	db_cards.codes[k] == input.code;
 
