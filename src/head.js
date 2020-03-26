@@ -4,6 +4,8 @@ var MN_SHORT_ = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
 var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 		TC_NAME_ = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
 
+var DATE_NOW = new Date();
+
 var TABLE_DIMENSION_ = Object.freeze({height: 10, width: 5});
 
 var APPS_SCRIPT_GLOBAL_ = Object.freeze({

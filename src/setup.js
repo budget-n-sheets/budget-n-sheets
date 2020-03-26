@@ -196,7 +196,7 @@ function setup_(settings, listAcc) {
 
 	CONST_SETUP_SPREADSHEET_ = SpreadsheetApp.getActiveSpreadsheet();
 	CONST_SETUP_SETTINGS_ = {
-		date_created: new Date(),
+		date_created: DATE_NOW,
 		spreadsheet_name: settings.spreadsheet_name,
 		spreadsheet_locale: CONST_SETUP_SPREADSHEET_.getSpreadsheetLocale(),
 		financial_year: Number(settings.financial_year),

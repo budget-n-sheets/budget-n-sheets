@@ -90,7 +90,7 @@ function optTool_HideSheets_(r) {
 	var mm, d, i;
 
 	if (r) {
-		mm = new Date().getMonth();
+		mm = DATE_NOW.getMonth();
 	} else {
 		sheet = SpreadsheetApp.getActiveSheet();
 		mm = MN_SHORT_.indexOf( sheet.getName() );
@@ -477,7 +477,7 @@ function foo_FormatAccounts_(mm) {
 		if (nd > 1) sheet.getRange(5, 1 + w_*k, nd, 4).sort({column:1 + w_*k, ascending:false});
 	}
 
-	date1 = new Date().getTime();
+	date1 = DATE_NOW.getTime();
 	date2 = getUserConstSettings_('financial_year');
 	date2 = new Date(date2, mm + 1, 0).getTime();
 
