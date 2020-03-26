@@ -9,7 +9,7 @@ var PatchThis = (function() {
 				[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
 				[ null, null ],
 				[ null, null, null, update_v0m24p3_, null, null ],
-				[ update_v0m25p0_, null, update_v0m25p2_ ]
+				[ update_v0m25p0_, null, update_v0m25p2_, null ]
 			]
 		]
 	};
