@@ -625,29 +625,46 @@ function setupPart6_() {
 
 function setupPart5_() {
 	console.time('add-on/setup/part5');
-	var formulaSumIncome, formulaSumExpenses;
-	var i, k;
-	var h_, w_;
 
-	h_ = TABLE_DIMENSION_.height;
-	w_ = TABLE_DIMENSION_.width;
+	var sheet = CONST_LIST_ES_SHEETS_["_backstage"];
+	var formulaSumIncome, formulaSumExpenses;
+	var formula;
+	var c, i, k;
+
+	const h_ = TABLE_DIMENSION_.height;
+	const w_ = TABLE_DIMENSION_.width;
+
+	const num_acc = CONST_SETUP_SETTINGS_["number_accounts"];
+
+	c = 2 + w_ + w_*num_acc + w_;
 
 	for (i = 0; i < 12; i++) {
 		formulaSumIncome = '=';
 		formulaSumExpenses = '=';
 
-		{
-			k = 0;
-			formulaSumIncome += rollA1Notation(6+h_*i, 8+w_*k);
-			formulaSumExpenses += rollA1Notation(4+h_*i, 7+w_*k);
-		}
-		for (k = 1; k < CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
+		k = 0;
+
+		formulaSumIncome += rollA1Notation(6+h_*i, 8+w_*k);
+		formulaSumExpenses += rollA1Notation(4+h_*i, 7+w_*k);
+
+		for (k = 1; k < num_acc; k++) {
 			formulaSumIncome += '+'+rollA1Notation(6+h_*i, 8+w_*k);
 			formulaSumExpenses += '+'+rollA1Notation(4+h_*i, 7+w_*k);
 		}
 
-		CONST_LIST_ES_SHEETS_["_backstage"].getRange(3+h_*i, 2).setFormula(formulaSumIncome);
-		CONST_LIST_ES_SHEETS_["_backstage"].getRange(5+h_*i, 2).setFormula(formulaSumExpenses);
+		for (k = 0; k < 10; k++) {
+			formula = "ARRAYFORMULA(SPLIT(REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\"); \"/\"))";
+			formula = "{" + formula + ", \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; \'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + rollA1Notation(1, c + w_*k) + "; ";
+			formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+			formula += "REGEXMATCH(Cards!" + rollA1Notation(6, 2 + 6*i, -1) + ", \"[0-9]+/[0-9]+\")";
+			formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + ")";
+			formula = "IF(" + rollA1Notation(1, c + w_*k) + " = \"\"; 0; " + formula + "; 0))))";
+
+			sheet.getRange(5 + h_*i, 1 + c + w_*k).setFormula(formula);
+		}
+
+		sheet.getRange(3 + h_*i, 2).setFormula(formulaSumIncome);
+		sheet.getRange(5 + h_*i, 2).setFormula(formulaSumExpenses);
 	}
 
 	SpreadsheetApp.flush();
