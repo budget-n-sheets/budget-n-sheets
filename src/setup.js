@@ -569,10 +569,12 @@ function setupPart6_() {
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
 
+	const num_acc = CONST_SETUP_SETTINGS_["number_accounts"];
+
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetCards);
 	CONST_SETUP_SPREADSHEET_.moveActiveSheet(15);
 
-	c = 1 + w_ + w_*CONST_SETUP_SETTINGS_["number_accounts"];
+	c = 1 + w_ + w_*num_acc;
 	header = rollA1Notation(1, c + 1, 1, w_*11);
 
 	for (i = 0; i < 12; i++) {
@@ -580,7 +582,7 @@ function setupPart6_() {
 
 		sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
 
-		for (k = 0; k < CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
+		for (k = 0; k < num_acc; k++) {
 			formula = "CONCATENATE(";
 			formula += "\"Withdrawal: (\"; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(2 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\"); \"\n\"; ";
 			formula += "\"Deposit: (\"; \'_Backstage\'!" + rollA1Notation(3 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\"); \"\n\"; ";
@@ -594,6 +596,8 @@ function setupPart6_() {
 		}
 
 		sheetCards.getRange(2, 2 + 6*i).setValue("All");
+		sheetCards.getRange(3, 1 + 6*i).setFormula("CONCATENATE(\"AVAIL credit: \"; IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 4; 1; 1; 1); \"#,##0.00;(#,##0.00)\")))");
+		sheetCards.getRange(4, 1 + 6*i).setFormula("IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 4; 1; 1; 1), {\"charttype\",\"bar\";\"max\",OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 0; 1; 1; 1);\"firstcolor\",\"#45818e\"}))");
 
 		formula = "MATCH(" + rollA1Notation(2, 2 + 6*i) + "; \'_Backstage\'!" + header + "; 0)";
 		formula = "IFERROR((" + formula + " - 1)/5; \"\")";
