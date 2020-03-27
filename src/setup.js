@@ -202,7 +202,8 @@ function setup_(settings, listAcc) {
 		financial_year: Number(settings.financial_year),
 		init_month: Number(settings.init_month),
 		number_accounts: Number(settings.number_accounts),
-		list_acc: listAcc
+		list_acc: listAcc,
+		decimal_separator: null
 	};
 
 	console.time("add-on/install");
@@ -808,7 +809,10 @@ function setupPart1_(yyyy_mm) {
 
 	cell = cell.getDisplayValue();
 	if ( /\./.test(cell) ) {
+		CONST_SETUP_SETTINGS_["decimal_separator"] = "[ ]";
 		setPropertiesService_("document", "", "decimal_separator", "[ ]");
+	} else {
+		CONST_SETUP_SETTINGS_["decimal_separator"] = "] [";
 	}
 
 	cell = [
