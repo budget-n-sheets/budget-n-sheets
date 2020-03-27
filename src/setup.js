@@ -564,13 +564,14 @@ function setupPart6_() {
 	console.time('add-on/setup/part6');
 	var sheetCards = CONST_LIST_ES_SHEETS_["cards"];
 	var sheet, formula;
-	var header, c;
+	var header, c, x;
 	var i, k;
 	var h_, w_;
 
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
 
+	const dec_p = CONST_SETUP_SETTINGS_["decimal_separator"];
 	const num_acc = CONST_SETUP_SETTINGS_["number_accounts"];
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetCards);
@@ -598,8 +599,20 @@ function setupPart6_() {
 		}
 
 		sheetCards.getRange(2, 2 + 6*i).setValue("All");
-		sheetCards.getRange(3, 1 + 6*i).setFormula("CONCATENATE(\"AVAIL credit: \"; IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 4; 1; 1; 1); \"#,##0.00;(#,##0.00)\")))");
-		sheetCards.getRange(4, 1 + 6*i).setFormula("IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 4; 1; 1; 1), {\"charttype\",\"bar\";\"max\",OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 0; 1; 1; 1);\"firstcolor\",\"#45818e\"}))");
+
+		formula = "ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
+		formula = "OFFSET(INDIRECT(" + formula + "); 4; 1; 1; 1)";
+		formula = "TEXT(" + formula + "; \"#,##0.00;(#,##0.00)\")";
+		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; " + formula + ")";
+		formula = "CONCATENATE(\"AVAIL credit: \"; " + formula + ")";
+		sheetCards.getRange(3, 1 + 6*i).setFormula(formula);
+
+		x = dec_p === "[ ]" ? "," : "\\";
+		formula = "INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\"))";
+
+		formula = "MAX(0; OFFSET(" + formula + "; 4; 1; 1; 1)); {\"charttype\"" + x + "\"bar\"; \"max\"" + x + "OFFSET(" + formula + "; 0; 1; 1; 1); \"color1\"" + x + "\"#45818e\"}";
+		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(" + formula + "))";
+		sheetCards.getRange(4, 1 + 6*i).setFormula(formula);
 
 		formula = "MATCH(" + rollA1Notation(2, 2 + 6*i) + "; \'_Backstage\'!" + header + "; 0)";
 		formula = "IFERROR((" + formula + " - 1)/5; \"\")";
