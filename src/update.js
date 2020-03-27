@@ -12,7 +12,7 @@ var PATCH_THIS_ = Object.freeze({
 			[ null ]
 		]
 	],
-	beta_list: [ ]
+	beta_list: [ update_v0m26p0b1_ ]
 });
 
 
@@ -99,6 +99,79 @@ function update_v0m0p0_() {
 	}
 }*/
 
+/**
+ * Set formulas and header for card limit.
+ *
+ * 0.26.0-beta
+ */
+function update_v0m26p0b1_() {
+	try {
+		update_v0m26p0b1s0_();
+		update_v0m26p0b1s1_();
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b1_()', err);
+	}
+}
+
+/**
+ * Set formulas for card limit.
+ */
+function update_v0m26p0b1s0_() {
+	try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+		var ranges, col, i, j;
+
+		if (!sheet) return;
+
+		const h_ = TABLE_DIMENSION_.height;
+		const w_ = TABLE_DIMENSION_.width;
+
+		const num_acc = getUserConstSettings_('number_accounts');
+
+		ranges = [ ];
+		col = 3 + w_ + w_*num_acc + w_;
+
+		if (col + 10*w_ - 2 > sheet.getMaxColumns()) return;
+
+		for (i = 0; i < 12; i++) {
+			for (j = 0; j < 10; j++) {
+				ranges[10*i + j] = rollA1Notation(6 + h_*i, col + w_*j);
+			}
+		}
+
+		sheet.getRangeList(ranges).setFormulaR1C1("R[-1]C + R[-4]C + RC[-1]");
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b1s0_()', err);
+	}
+}
+
+/**
+ * Set header for card limit.
+ */
+function update_v0m26p0b1s1_() {
+	try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+		var col, i;
+
+		if (!sheet) return;
+		if (sheet.getMaxColumns() < 12*6) return;
+
+		const h_ = TABLE_DIMENSION_.height;
+		const w_ = TABLE_DIMENSION_.width;
+
+		const num_acc = getUserConstSettings_('number_accounts');
+
+		col = 1 + w_ + w_*num_acc;
+
+		for (i = 0; i < 12; i++) {
+			sheet.getRange(3, 1 + 6*i).setFormula("CONCATENATE(\"AVAIL credit: \"; IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 4; 1; 1; 1); \"#,##0.00;(#,##0.00)\")))");
+
+			sheet.getRange(4, 1 + 6*i).setFormula("IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 4; 1; 1; 1), {\"charttype\", \"bar\"; \"max\", OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 0; 1; 1; 1); \"color1\", \"#45818e\"}))");
+		}
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b1s1_()', err);
+	}
+}
 
 /**
  * Update name of keys for user settings.
