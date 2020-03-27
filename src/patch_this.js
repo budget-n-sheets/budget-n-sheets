@@ -31,32 +31,39 @@ function update_() {
 	const v0 = optGetClass_('script');
 	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
 
-	if (v0.major > v1.major) return 0;
+	if (v0.major > v1.major) return;
 	if (v0.major == v1.major) {
-		if (v0.minor > v1.minor) return 0;
-		else if (v0.minor == v1.minor && v0.patch >= v1.patch) return 0;
+		if (v0.minor > v1.minor) return;
+		if (v0.minor == v1.minor) {
+			if (v0.patch > v1.patch) return;
+			if (v0.patch == v1.patch) {
+				if (PATCH_THIS_["beta_list"].length == 0 || v0.beta >= PATCH_THIS_["beta_list"].length) return;
+			}
+		}
 	}
 
 	var ver, major, minor, patch;
 	var mm, pp, r, t;
 
+	const beta = v0.beta == null ? 0 : v0.beta;
+	const patch_list = PATCH_THIS_.patch_list;
+
 	major = v0.major;
 	minor = v0.minor;
 	patch = v0.patch;
-	list = PATCH_THIS_.patch_list;
 
 	t = 0;
 	mm = minor;
 	pp = patch;
-	r = {r:0, m:minor, p:patch};
+	r = {r:0, m:minor, p:patch, b:beta};
 
 	do {
 		ver = (major == v1.major ? v1 : null);
-		if (major >= list.length) {
+		if (major >= patch_list.length) {
 			major -= 2;
 			t = 1;
-		} else if (list[major]) {
-			r = update_major_(ver, list[major], minor, patch);
+		} else if (patch_list[major]) {
+			r = update_major_(ver, patch_list[major], minor, patch, beta);
 		}
 
 		if (r.r || major == v1.major) {
@@ -85,7 +92,8 @@ function update_() {
 	var cell = {
 		major: major,
 		minor: r.m,
-		patch: r.p
+		patch: r.p,
+		beta: r.b
 	};
 
 	optSetClass_('script', cell);
@@ -95,12 +103,12 @@ function update_() {
 }
 
 
-function update_major_(v1, list, minor, patch) {
+function update_major_(v1, list, minor, patch, beta) {
 	if (list == null || list.length == 0) return {r:1, m:-1, p:-1};
 
 	var m = minor;
 	var p = patch;
-	var ver, pp, r, t;
+	var ver, pp, b, r, t;
 
 	t = 0;
 	pp = p;
@@ -114,7 +122,7 @@ function update_major_(v1, list, minor, patch) {
 			m -= 2;
 			t = 1;
 		} else if (list[m]) {
-			r = update_minor_(ver, list[m], p);
+			r = update_minor_(ver, list[m], p, beta);
 		}
 
 		if (r.r || (ver && m == ver.minor)) {
@@ -134,22 +142,26 @@ function update_major_(v1, list, minor, patch) {
 	}
 
 	p = r.p;
+	b = r.b;
 	r = r.r;
 
-	return {r:r, m:m, p:p};
+	return {r:r, m:m, p:p, b:b};
 }
 
 
-function update_minor_(v1, list, patch) {
-	if (list == null || list.length == 0) return {r:1, p:-1};
+function update_minor_(v1, list, patch, beta) {
+	if (list == null || list.length == 0) return {r:1, p:-1, b:0};
 
 	var p = patch;
-	var ver, r;
+	var ver, b, r;
 
 	r = 0;
 
 	if (v1) ver = v1;
 	else ver = {patch:-100};
+
+	if (p != ver.patch) b = 0;
+	else b = beta;
 
 	do {
 		p++;
@@ -163,5 +175,24 @@ function update_minor_(v1, list, patch) {
 
 	if (r) p--;
 
-	return {r:r, p:p};
+	if (p == ver.patch) {
+		b = update_beta_(b);
+	}
+
+	return {r:r, p:p, b:b};
+}
+
+
+function update_beta_(beta) {
+	var list = PATCH_THIS_["beta_list"];
+	var b = beta;
+
+	while (b < list.length) {
+		if (list[b]) {
+			list[b]();
+		}
+		b++;
+	}
+
+	return b;
 }
