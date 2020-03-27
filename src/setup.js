@@ -225,6 +225,7 @@ function setup_(settings, listAcc) {
 		script: APPS_SCRIPT_GLOBAL_.script_version.number,
 		template: APPS_SCRIPT_GLOBAL_.template_version.number
 	};
+	a.script.beta = PATCH_THIS_["beta_list"].length;
 	setPropertiesService_('document', 'json', 'class_version2', a);
 
 	a = nodeControl_("sign");
