@@ -147,11 +147,12 @@ function optCard_Add_(input) {
 
 
 function optCard_Refresh_() {
-	var sheetBackstage = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage"),
-			sheetSettings = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
-	var db_cards, card;
-	var ranges;
-	var c, i, j, k;
+	var sheet, ranges, rule1, rule2;
+	var db_cards, card, list;
+	var col, n1, i, j, k;
+
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+	if (!sheet) return;
 
 	const h_ = TABLE_DIMENSION_.height;
 	const w_ = TABLE_DIMENSION_.width;
@@ -161,28 +162,53 @@ function optCard_Refresh_() {
 	db_cards = getPropertiesService_("document", "obj", "DB_TABLES");
 	db_cards = db_cards.cards;
 
-	c = 1 + 1 + w_ + w_*num_acc;
+	list = [ ];
+	col = 2 + w_ + w_*num_acc;
 
-	sheetBackstage.getRange(1, c, 1, w_*11).setValue("");
-	sheetBackstage.getRange(1, c).setValue("All");
+	sheet.getRange(1, col, 1, 11*w_).setValue("");
+	sheet.getRange(1, col).setValue("All");
 
-	sheetSettings.getRange("B11:B20").setValue("");
-	sheetSettings.getRange("B10").setValue("All");
-
-	c += w_;
+	col += w_;
 
 	for (i = 0; i < db_cards.count; i++) {
 		card = db_cards.data[i];
 
+		list.push(card.code);
+
 		ranges = [ ];
 		for (j = 0; j < 12; j++) {
-			ranges[j] = rollA1Notation(2 + h_*j, 1 + c + w_*i);
+			ranges[j] = rollA1Notation(2 + h_*j, 1 + col + w_*i);
 		}
 
-		sheetBackstage.getRange(1, c + w_*i).setValue(card.code);
-		sheetBackstage.getRangeList(ranges).setValue("=" + Number(card.limit).formatLocaleSignal());
+		sheet.getRange(1, col + w_*i).setValue(card.code);
+		sheet.getRangeList(ranges).setValue("=" + Number(card.limit).formatLocaleSignal());
+	}
 
-		sheetSettings.getRange(11 + i, 2).setValue(card.code);
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+	if (!sheet) return;
+
+	n1 = sheet.getMaxRows() - 5;
+	if (n1 < 1) return;
+
+	rule2 = SpreadsheetApp.newDataValidation()
+						.requireValueInList(list, true)
+						.setAllowInvalid(true)
+						.build();
+
+	list.push("All");
+	rule1 = SpreadsheetApp.newDataValidation()
+						.requireValueInList(list, true)
+						.setAllowInvalid(true)
+						.build();
+
+	for (i = 0; i < 12; i++) {
+		sheet.getRange(2, 2 + 6*i)
+			.clearDataValidations()
+			.setDataValidation(rule1);
+
+		sheet.getRange(6, 3 + 6*i, n1, 1)
+			.clearDataValidations()
+			.setDataValidation(rule2);
 	}
 
 	SpreadsheetApp.flush();
