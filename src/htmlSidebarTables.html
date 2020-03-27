@@ -387,6 +387,7 @@
 
 			var a = htmlVarGlobal.Action;
 
+			google.script.run.optMainTables("Refresh");
 			google.script.run.withSuccessHandler(ListTables_Post)
 				.withFailureHandler(showError)
 				.optMainTables('GetList');
@@ -406,6 +407,7 @@
 				return;
 			}
 
+			google.script.run.optMainTables("Refresh");
 			google.script.run.withSuccessHandler(ListTables_Post)
 				.withFailureHandler(showError)
 				.optMainTables('GetList');

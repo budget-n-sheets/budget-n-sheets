@@ -72,7 +72,6 @@ function optCard_Remove_(input) {
 	db_tables.cards = db_cards;
 	setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
 
-	optCard_Refresh_();
 	return -1;
 }
 
@@ -105,7 +104,6 @@ function optCard_Update_(input) {
 
 	setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
 
-	optCard_Refresh_();
 	return -1;
 }
 
@@ -141,12 +139,11 @@ function optCard_Add_(input) {
 
 	setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
 
-	optCard_Refresh_();
 	return -1;
 }
 
 
-function optCard_Refresh_() {
+function cardsRefresh_() {
 	var sheet, ranges, rule1, rule2;
 	var db_cards, card, list;
 	var col, n1, i, j, k;
