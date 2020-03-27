@@ -31,13 +31,13 @@ function update_() {
 	const v0 = optGetClass_('script');
 	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
 
-	if (v0.major > v1.major) return;
+	if (v0.major > v1.major) return 0;
 	if (v0.major == v1.major) {
-		if (v0.minor > v1.minor) return;
+		if (v0.minor > v1.minor) return 0;
 		if (v0.minor == v1.minor) {
-			if (v0.patch > v1.patch) return;
+			if (v0.patch > v1.patch) return 0;
 			if (v0.patch == v1.patch) {
-				if (PATCH_THIS_["beta_list"].length == 0 || v0.beta >= PATCH_THIS_["beta_list"].length) return;
+				if (PATCH_THIS_["beta_list"].length == 0 || v0.beta >= PATCH_THIS_["beta_list"].length) return 0;
 			}
 		}
 	}
