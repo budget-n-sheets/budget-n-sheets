@@ -79,7 +79,8 @@ function optCard_Remove_(input) {
 
 function optCard_Update_(input) {
 	var db_tables, db_cards;
-	var c, k;
+	var aliases;
+	var c, i, k;
 
 	if ( !/^\w+$/.test(input.code) ) return 10;
 
@@ -94,11 +95,18 @@ function optCard_Update_(input) {
 		if (db_cards.data[c].id != input.id) return 20;
 	}
 
+	aliases = input.aliases.match(/\w+/g);
+
+	for (i = 0; i < aliases.length; i++) {
+		if (! /^\w+$/.test(aliases[i])) return 40;
+	}
+
 	db_cards.codes[k] == input.code;
 
 	db_cards.data[k].name = input.name;
 	db_cards.data[k].code = input.code;
 	db_cards.data[k].limit = Number(input.limit);
+	db_cards.data[k].aliases = aliases;
 
 	db_tables.cards = db_cards;
 
@@ -110,7 +118,8 @@ function optCard_Update_(input) {
 
 function optCard_Add_(input) {
 	var db_tables, db_cards, cell, string;
-	var c, k;
+	var aliases;
+	var c, i, k;
 
 	db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
 	db_cards = db_tables.cards;
@@ -123,11 +132,18 @@ function optCard_Add_(input) {
 	string = optTable_GenerateRandomId_();
 	if (!string) return 2;
 
+	aliases = input.aliases.match(/\w+/g);
+
+	for (i = 0; i < aliases.length; i++) {
+		if (! /^\w+$/.test(aliases[i])) return 40;
+	}
+
 	cell = {
 		id: string,
 		name: input.name,
 		code: input.code,
-		limit: Number(input.limit)
+		limit: Number(input.limit),
+		aliases: aliases
 	};
 
 	db_cards.count++;
@@ -145,7 +161,7 @@ function optCard_Add_(input) {
 
 function cardsRefresh_() {
 	var sheet, ranges, rule1, rule2;
-	var db_cards, card, list;
+	var db_cards, card, list1, list2;
 	var col, n1, i, j, k;
 
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
@@ -159,7 +175,8 @@ function cardsRefresh_() {
 	db_cards = getPropertiesService_("document", "obj", "DB_TABLES");
 	db_cards = db_cards.cards;
 
-	list = [ ];
+	list1 = [ "All" ];
+	list2 = [ ];
 	col = 2 + w_ + w_*num_acc;
 
 	sheet.getRange(1, col, 1, 11*w_).setValue("");
@@ -170,7 +187,12 @@ function cardsRefresh_() {
 	for (i = 0; i < db_cards.count; i++) {
 		card = db_cards.data[i];
 
-		list.push(card.code);
+		list1.push(card.code);
+		list2.push(card.code);
+
+		for (j = 0; j < card.aliases.length; j++) {
+			list2.push(card.aliases[j]);
+		}
 
 		ranges = [ ];
 		for (j = 0; j < 12; j++) {
@@ -187,14 +209,13 @@ function cardsRefresh_() {
 	n1 = sheet.getMaxRows() - 5;
 	if (n1 < 1) return;
 
-	rule2 = SpreadsheetApp.newDataValidation()
-						.requireValueInList(list, true)
+	rule1 = SpreadsheetApp.newDataValidation()
+						.requireValueInList(list1, true)
 						.setAllowInvalid(true)
 						.build();
 
-	list.push("All");
-	rule1 = SpreadsheetApp.newDataValidation()
-						.requireValueInList(list, true)
+	rule2 = SpreadsheetApp.newDataValidation()
+						.requireValueInList(list2, true)
 						.setAllowInvalid(true)
 						.build();
 

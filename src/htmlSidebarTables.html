@@ -137,6 +137,14 @@
 								<td><input class="Form-AddEditCard_lock" type="text" pattern="^\w+$" id="Form-AddEditCard_Code" required></td>
 							</tr>
 							<tr>
+								<td class="name"><label for="Form-AddEditCard_Aliases">Code aliases</label></td>
+								<td>
+									<input class="Form-AddEditCard_lock" type="text" name="aliases" pattern="^\w+(\s*,\s*\w+)*$" id="Form-AddEditCard_Aliases" required>
+									<br>
+									<span class="gray">Separate aliases with commas.<br>Charset 0-9, a-z, A-Z</span>
+								</td>
+							</tr>
+							<tr>
 								<td class="name"><label for="Form-AddEditCard_Limit">Limit</label></td>
 								<td>$ <input class="Form-AddEditCard_lock" type="number" style="width:7.3em;" value="0" min="0" step="0.01" placeholder="0.00" id="Form-AddEditCard_Limit" required></td>
 							</tr>
@@ -325,6 +333,7 @@
 			$('#Form-AddEditCard_Name').val(r.name);
 			$('#Form-AddEditCard_Code').val(r.code);
 			$('#Form-AddEditCard_Limit').val(r.limit);
+			$("#Form-AddEditCard_Aliases").val(r.aliases.join(", "));
 
 			g2("panel_EditCard");
 		}
@@ -332,6 +341,7 @@
 			$('#Form-AddEditCard_Name').val('');
 			$('#Form-AddEditCard_Code').val('');
 			$('#Form-AddEditCard_Limit').val(0);
+			$("#Form-AddEditCard_Aliases").val("");
 
 			htmlVarGlobal.Action = 'add';
 
@@ -346,7 +356,8 @@
 				id: htmlVarGlobal.Id,
 				name: $('#Form-AddEditCard_Name').val(),
 				code: $('#Form-AddEditCard_Code').val(),
-				limit: $('#Form-AddEditCard_Limit').val()
+				limit: $('#Form-AddEditCard_Limit').val(),
+				aliases: $("#Form-AddEditCard_Aliases").val()
 			};
 
 			if (htmlVarGlobal.Action === 'add') {
@@ -373,6 +384,10 @@
 				case 30:
 					backToBook();
 					$('#p-footer_FastResponse').append('Limit of 10 cards reached.');
+					break;
+				case 40:
+					$('#p-footer_FastResponse').empty().append('Aliases have an invalid code format.');
+					$('.Form-AddEditCard_lock').prop('disabled', false);
 					break;
 				case 0:
 					backToBook();

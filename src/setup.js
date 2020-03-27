@@ -835,10 +835,9 @@ function setupPart1_(yyyy_mm) {
 		[ "=IF($B4 > $B3; 0; $B3 - $B4 + 1)" ],
 		[ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))" ],
 		[ "=COUNTIF(\'Tags\'!$E1:$E; \"<>\") - 1" ],
-		[ "=RAND()" ],
-		[ "=COUNTIF(B11:B20; \"<>\")" ]
+		[ "=RAND()" ]
 	];
-	CONST_LIST_ES_SHEETS_["_settings"].getRange(2, 2, 8, 1).setFormulas(cell);
+	CONST_LIST_ES_SHEETS_["_settings"].getRange(2, 2, 7, 1).setFormulas(cell);
 
 	cell = {
 		initial_month: CONST_SETUP_SETTINGS_["init_month"],
