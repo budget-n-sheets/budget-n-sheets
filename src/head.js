@@ -15,12 +15,12 @@ var APPS_SCRIPT_GLOBAL_ = Object.freeze({
 			minor: 26,
 			patch: 0
 		},
-		name: "0.26.0-beta3"
+		name: "0.26.0-beta4"
 	},
 
 	template_version: {
-		number: 81,
-		name: "8.1"
+		number: 82,
+		name: "8.2-rc1"
 	},
 
 	template_id: "",
