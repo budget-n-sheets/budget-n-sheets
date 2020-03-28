@@ -42,11 +42,8 @@ function saveUserSettings(settings) {
 		initial_month: init,
 
 		financial_calendar: calendar,
-		PostDayEvents: settings.post_day_events,
 		post_day_events: settings.post_day_events,
-		OverrideZero: settings.override_zero,
 		override_zero: settings.override_zero,
-		CashFlowEvents: settings.cash_flow_events,
 		cash_flow_events: settings.cash_flow_events
 	};
 
@@ -90,11 +87,8 @@ function getUserSettings_(select) {
 
 		case 'spreadsheet_locale':
 		case 'financial_calendar':
-		case 'PostDayEvents':
 		case 'post_day_events':
-		case 'OverrideZero':
 		case 'override_zero':
-		case 'CashFlowEvents':
 		case 'cash_flow_events':
 		case 'initial_month': // Number in 0-11 range
 			return user_settings[select];
@@ -146,11 +140,8 @@ function setUserSettings_(select, value) {
 		case 'initial_month':
 		case 'spreadsheet_locale':
 		case 'financial_calendar':
-		case 'PostDayEvents':
 		case 'post_day_events':
-		case 'CashFlowEvents':
 		case 'cash_flow_events':
-		case 'OverrideZero':
 		case 'override_zero':
 			user_settings[select] = value;
 			break;

@@ -270,7 +270,7 @@ function foo_UpdateCashFlow_(mm) {
 	yyyy = getUserConstSettings_('financial_year');
 
 	dd = new Date(yyyy, mm + 1, 0).getDate();
-	override_zero = getUserSettings_("OverrideZero");
+	override_zero = getUserSettings_("override_zero");
 	number_accounts = getUserConstSettings_('number_accounts');
 
 	cf_flow = [ ];
@@ -283,7 +283,7 @@ function foo_UpdateCashFlow_(mm) {
 	listEventos = [ ];
 	t = getSpreadsheetDate();
 	b = new Date(yyyy, mm + 1, 1);
-	if (getUserSettings_("CashFlowEvents") && t.getTime() < b.getTime()) {
+	if (getUserSettings_("cash_flow_events") && t.getTime() < b.getTime()) {
 		calendar = getFinancialCalendar_();
 
 		if (calendar) {

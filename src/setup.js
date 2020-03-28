@@ -845,11 +845,8 @@ function setupPart1_(yyyy_mm) {
 	cell = {
 		initial_month: CONST_SETUP_SETTINGS_["init_month"],
 		financial_calendar: "",
-		PostDayEvents: false,
 		post_day_events: false,
-		CashFlowEvents: false,
 		cash_flow_events: false,
-		OverrideZero: false,
 		override_zero: false,
 		spreadsheet_locale: CONST_SETUP_SETTINGS_["spreadsheet_locale"]
 	};
