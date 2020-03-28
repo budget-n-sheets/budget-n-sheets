@@ -101,10 +101,23 @@ function update_v0m0p0_() {
 
 /**
  * Add BSCARDPART() in backstage.
+ * Update matcher in card header.
  *
  * 0.26.0-beta6
  */
 function update_v0m26p0b6_() {
+	try {
+		update_v0m26p0b6s0_();
+		update_v0m26p0b6s1_();
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b6_()', err);
+	}
+}
+
+/**
+ * Add BSCARDPART() in backstage.
+ */
+function update_v0m26p0b6s0_() {
 	try {
 		var sheet, formula;
 		var col, i, k;
@@ -134,7 +147,7 @@ function update_v0m26p0b6_() {
 			}
 		}
 	} catch (err) {
-		consoleLog_('error', 'update_v0m26p0b6_()', err);
+		consoleLog_("error", "update_v0m26p0b6s0_()", err);
 	}
 }
 
@@ -147,7 +160,6 @@ function update_v0m26p0b6_() {
 function update_v0m26p0b5_() {
 	try {
 		update_v0m26p0b5s0_();
-		update_v0m26p0b5s1_();
 	} catch (err) {
 		consoleLog_('error', 'update_v0m26p0b5_()', err);
 	}
@@ -226,7 +238,7 @@ function update_v0m26p0b4_() {
 /**
  * Update matcher in card header.
  */
-function update_v0m26p0b5s1_() {
+function update_v0m26p0b6s1_() {
 	try {
 		var sheet, formula, header;
 		var i;
@@ -242,16 +254,16 @@ function update_v0m26p0b5s1_() {
 		header = rollA1Notation(1, 2 + w_ + w_*num_acc, 1, w_*11);
 
 		for (i = 0; i < 12; i++) {
-			formula = "REGEXMATCH(\'_Backstage\'!" + header + "; " + rollA1Notation(2, 2 + 6*i) + ")";
+			formula = "REGEXMATCH(\'_Backstage\'!" + header + "; \"\\^\"&" + rollA1Notation(2, 2 + 6*i) + "&\"\\$\")"
 			formula = "FILTER(\'_Backstage\'!" + header + "; " + formula + ")";
 			formula = "INDEX(" + formula + "; 0; 1)";
-			formula = "MATCH(" + formula + "; \'_Backstage\'!" + header + "; 0)";
+			formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; 1; MATCH(" + formula + "; \'_Backstage\'!" + header + "; 0))";
 			formula = "IFERROR((" + formula + " - 1)/5; \"\")";
 
 			sheet.getRange(2, 1 + 6*i).setFormula(formula);
 		}
 	} catch (err) {
-		consoleLog_("error", "update_v0m26p0b5s1_()", err);
+		consoleLog_("error", "update_v0m26p0b6s1_()", err);
 	}
 }
 
