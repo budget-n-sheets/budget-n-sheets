@@ -12,7 +12,7 @@ var PATCH_THIS_ = Object.freeze({
 			[ null ]
 		]
 	],
-	beta_list: [ null, null, update_v0m26p0b3_, update_v0m26p0b4_, update_v0m26p0b5_ ]
+	beta_list: [ null, null, update_v0m26p0b3_, update_v0m26p0b4_, update_v0m26p0b5_, update_v0m26p0b6_ ]
 });
 
 
@@ -98,6 +98,45 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Add BSCARDPART() in backstage.
+ *
+ * 0.26.0-beta6
+ */
+function update_v0m26p0b6_() {
+	try {
+		var sheet, formula;
+		var col, i, k;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+		if (!sheet) return;
+
+		const h_ = TABLE_DIMENSION_.height;
+		const w_ = TABLE_DIMENSION_.width;
+
+		const num_acc = getUserConstSettings_("number_accounts");
+
+		col = 2 + w_ + w_*num_acc + w_;
+
+		if (sheet.getMaxColumns() < col + 10*w_ - 1) return;
+
+		for (i = 0; i < 12; i++) {
+			for (k = 0; k < 10; k++) {
+				formula = "ARRAYFORMULA(SPLIT(REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\"); \"/\"))";
+				formula = "{" + formula + ", \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, col + w_*k) + "); ";
+				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+				formula += "REGEXMATCH(Cards!" + rollA1Notation(6, 2 + 6*i, -1) + ", \"[0-9]+/[0-9]+\")";
+				formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + ")";
+				formula = "IF(" + rollA1Notation(1, col + w_*k) + " = \"\"; 0; " + formula + "; 0))))";
+
+				sheet.getRange(5 + h_*i, 1 + col + w_*k).setFormula(formula);
+			}
+		}
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b6_()', err);
+	}
+}
 
 /**
  * Update matcher in card header.
