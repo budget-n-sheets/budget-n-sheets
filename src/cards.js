@@ -1,6 +1,6 @@
 function cardsGetData_() {
 	var sheet, db_cards;
-	var output, data;
+	var output, data, code;
 	var c, n, v, i, k;
 	var h_, w_;
 
@@ -24,7 +24,6 @@ function cardsGetData_() {
 		]
 	};
 
-
 	data = sheet.getRange(
 		1, 1 + w_ + n*w_ + 1,
 		1 + 12*h_, w_
@@ -38,15 +37,18 @@ function cardsGetData_() {
 		1 + 12*h_, w_*db_cards.count
 	).getValues();
 	for (k = 0; k < db_cards.count; k++) {
-		c = data[0].indexOf(db_cards.codes[k]);
-		if (c === -1) continue;
+		if (data[0][0 + w_*k] == "") continue;
+
+		code = data[0][0 + w_*k].match(/\w+/);
+		if (code == null) continue;
+		if (db_cards.codes.indexOf(code[0]) == -1) continue;
 
 		v = [ ];
 		for (i = 0; i < 12; i++) {
-			v[i] = data[5 + h_*i][c];
+			v[i] = data[5 + h_*i][0 + w_*k];
 		}
 
-		output.cards.push(db_cards.codes[k]);
+		output.cards.push(code);
 		output.balance.push(v);
 	}
 
