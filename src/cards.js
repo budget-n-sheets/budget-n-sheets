@@ -101,6 +101,12 @@ function optCard_Update_(input) {
 		if (! /^\w+$/.test(aliases[i])) return 40;
 	}
 
+	c = aliases.indexOf(input.code);
+	while (c != -1) {
+		aliases.splice(c, 1);
+		c = aliases.indexOf(input.code);
+	}
+
 	db_cards.codes[k] == input.code;
 
 	db_cards.data[k].name = input.name;
@@ -136,6 +142,12 @@ function optCard_Add_(input) {
 
 	for (i = 0; i < aliases.length; i++) {
 		if (! /^\w+$/.test(aliases[i])) return 40;
+	}
+
+	c = aliases.indexOf(input.code);
+	while (c != -1) {
+		aliases.splice(c, 1);
+		c = aliases.indexOf(input.code);
 	}
 
 	cell = {
