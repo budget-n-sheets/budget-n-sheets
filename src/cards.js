@@ -96,6 +96,7 @@ function optCard_Update_(input) {
 	}
 
 	aliases = input.aliases.match(/\w+/g);
+	if (aliases == null) aliases = [ ];
 
 	for (i = 0; i < aliases.length; i++) {
 		if (! /^\w+$/.test(aliases[i])) return 40;
@@ -139,6 +140,7 @@ function optCard_Add_(input) {
 	if (!string) return 2;
 
 	aliases = input.aliases.match(/\w+/g);
+	if (aliases == null) aliases = [ ];
 
 	for (i = 0; i < aliases.length; i++) {
 		if (! /^\w+$/.test(aliases[i])) return 40;
