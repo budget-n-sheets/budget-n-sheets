@@ -213,11 +213,10 @@ function cardsRefresh_() {
 			ranges[j] = rollA1Notation(2 + h_*j, 1 + col + w_*i);
 		}
 
-		text = "^" + card.code;
-		if (card.aliases.length > 0) {
-			text += "|" + card.aliases.join("|");
+		text = "^" + card.code + "$";
+		for (j = 0; j < card.aliases.length; j++) {
+			text += "|^" + card.aliases[j] + "$";
 		}
-		text += "$";
 
 		sheet.getRange(1, col + w_*i).setValue(text);
 		sheet.getRangeList(ranges).setValue("=" + Number(card.limit).formatLocaleSignal());

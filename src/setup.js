@@ -614,10 +614,10 @@ function setupPart6_() {
 		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(" + formula + "))";
 		sheetCards.getRange(4, 1 + 6*i).setFormula(formula);
 
-		formula = "REGEXMATCH(\'_Backstage\'!" + header + "; " + rollA1Notation(2, 2 + 6*i) + ")";
+		formula = "REGEXMATCH(\'_Backstage\'!" + header + "; \"\\^\"&" + rollA1Notation(2, 2 + 6*i) + "&\"\\$\")";
 		formula = "FILTER(\'_Backstage\'!" + header + "; " + formula + ")";
 		formula = "INDEX(" + formula + "; 0; 1)";
-		formula = "MATCH(" + formula + "; \'_Backstage\'!" + header + "; 0)";
+		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; 1; MATCH(" + formula + "; \'_Backstage\'!" + header + "; 0))";
 		formula = "IFERROR((" + formula + " - 1)/5; \"\")";
 		sheetCards.getRange(2, 1 + 6*i).setFormula(formula);
 
