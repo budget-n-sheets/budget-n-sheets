@@ -199,7 +199,7 @@ function cardsRefresh_() {
 			ranges[j] = rollA1Notation(2 + h_*j, 1 + col + w_*i);
 		}
 
-		sheet.getRange(1, col + w_*i).setValue(card.code);
+		sheet.getRange(1, col + w_*i).setValue(card.code + "|" + card.aliases.join("|"));
 		sheet.getRangeList(ranges).setValue("=" + Number(card.limit).formatLocaleSignal());
 	}
 
