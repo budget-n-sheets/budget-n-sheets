@@ -174,7 +174,7 @@ function optCard_Add_(input) {
 function cardsRefresh_() {
 	var sheet, ranges, rule1, rule2;
 	var db_cards, card, list1, list2;
-	var col, n1, i, j, k;
+	var text, col, n1, i, j, k;
 
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
 	if (!sheet) return;
@@ -211,7 +211,13 @@ function cardsRefresh_() {
 			ranges[j] = rollA1Notation(2 + h_*j, 1 + col + w_*i);
 		}
 
-		sheet.getRange(1, col + w_*i).setValue(card.code + "|" + card.aliases.join("|"));
+		text = "^" + card.code;
+		if (card.aliases.length > 0) {
+			text += "|" + card.aliases.join("|");
+		}
+		text += "$";
+
+		sheet.getRange(1, col + w_*i).setValue(text);
 		sheet.getRangeList(ranges).setValue("=" + Number(card.limit).formatLocaleSignal());
 	}
 
