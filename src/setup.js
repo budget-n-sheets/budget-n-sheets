@@ -674,7 +674,7 @@ function setupPart5_() {
 
 		for (k = 0; k < 10; k++) {
 			formula = "ARRAYFORMULA(SPLIT(REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\"); \"/\"))";
-			formula = "{" + formula + ", \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; \'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + " = " + rollA1Notation(1, c + w_*k) + "; ";
+			formula = "{" + formula + ", \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, c + w_*k) + "); ";
 			formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
 			formula += "REGEXMATCH(Cards!" + rollA1Notation(6, 2 + 6*i, -1) + ", \"[0-9]+/[0-9]+\")";
 			formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + ")";
