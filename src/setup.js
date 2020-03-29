@@ -578,6 +578,7 @@ function setupPart6_() {
 	CONST_SETUP_SPREADSHEET_.moveActiveSheet(15);
 
 	c = 1 + w_ + w_*num_acc;
+	x = (dec_p === "[ ]" ? "," : "\\");
 	header = rollA1Notation(1, c + 1, 1, w_*11);
 
 	for (i = 0; i < 12; i++) {
@@ -607,7 +608,6 @@ function setupPart6_() {
 		formula = "CONCATENATE(\"AVAIL credit: \"; " + formula + ")";
 		sheetCards.getRange(3, 1 + 6*i).setFormula(formula);
 
-		x = dec_p === "[ ]" ? "," : "\\";
 		formula = "INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\"))";
 
 		formula = "MAX(0; OFFSET(" + formula + "; 4; 1; 1; 1)); {\"charttype\"" + x + "\"bar\"; \"max\"" + x + "OFFSET(" + formula + "; 0; 1; 1; 1); \"color1\"" + x + "\"#45818e\"}";
@@ -682,7 +682,7 @@ function setupPart5_() {
 			formula = "ARRAYFORMULA(SPLIT(REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\"); \"/\"))";
 			formula = "{" + formula + x + " \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, c + w_*k) + "); ";
 			formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
-			formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + ", \"[0-9]+/[0-9]+\")";
+			formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\")";
 			formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + ")";
 			formula = "IF(" + rollA1Notation(1, c + w_*k) + " = \"\"; 0; " + formula + "; 0))))";
 

@@ -9,10 +9,10 @@ var PATCH_THIS_ = Object.freeze({
 			[ null, null ],
 			[ null, null, null, update_v0m24p3_, null, null ],
 			[ update_v0m25p0_, null, update_v0m25p2_, null ],
-			[ null ]
+			[ update_v0m26p0_, update_v0m26p1_ ]
 		]
 	],
-	beta_list: [ null, null, update_v0m26p0b3_, update_v0m26p0b4_, update_v0m26p0b5_, update_v0m26p0b6_, update_v0m26p0b7_ ]
+	beta_list: [ ]
 });
 
 
@@ -101,25 +101,13 @@ function update_v0m0p0_() {
 
 /**
  * Add BSCARDPART() in backstage.
- * Update matcher in card header.
  *
- * 0.26.0-beta6
+ * 0.26.1
  */
-function update_v0m26p0b6_() {
-	try {
-		update_v0m26p0b6s1_();
-	} catch (err) {
-		consoleLog_('error', 'update_v0m26p0b6_()', err);
-	}
-}
-
-/**
- * Add BSCARDPART() in backstage.
- */
-function update_v0m26p0b7_() {
+function update_v0m26p1_() {
 	try {
 		var sheet, formula;
-		var col, x, i, k;
+		var max, col, x1, i, k;
 
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
 		if (!sheet) return;
@@ -130,49 +118,63 @@ function update_v0m26p0b7_() {
 		const num_acc = getUserConstSettings_("number_accounts");
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
-		x = (dec_p == "[ ]" ? ", " : " \\ ");
 		col = 2 + w_ + w_*num_acc + w_;
+		max = sheet.getMaxColumns() + 1;
+		x1 = (dec_p == "[ ]" ? ", " : " \\ ");
 
-		if (sheet.getMaxColumns() < col + 10*w_ - 1) return;
-
-		for (i = 0; i < 12; i++) {
+		i = 0;
+		while (i < 12 && 6 + 6*i < max) {
 			for (k = 0; k < 10; k++) {
 				formula = "ARRAYFORMULA(SPLIT(REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\"); \"/\"))";
-				formula = "{" + formula + x + "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, col + w_*k) + "); ";
+				formula = "{" + formula + x1 + "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, col + w_*k) + "); ";
 				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
-				formula += "REGEXMATCH(Cards!" + rollA1Notation(6, 2 + 6*i, -1) + ", \"[0-9]+/[0-9]+\")";
+				formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\")";
 				formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + ")";
 				formula = "IF(" + rollA1Notation(1, col + w_*k) + " = \"\"; 0; " + formula + "; 0))))";
 
 				sheet.getRange(5 + h_*i, 1 + col + w_*k).setFormula(formula);
 			}
+
+			i++;
 		}
 	} catch (err) {
-		consoleLog_("error", "update_v0m26p0b7_()", err);
+		consoleLog_("error", "update_v0m26p1_()", err);
+		return 1;
 	}
 }
 
 /**
- * Update matcher in card header.
- * Update card functions in backstage.
  *
- * 0.26.0-beta5
+ * 0.26.0
  */
-function update_v0m26p0b5_() {
+function update_v0m26p0_() {
 	try {
-		update_v0m26p0b5s0_();
+		var r;
+
+		r = update_v0m26p0s0_();
+		if (r) throw "v0m26p0s0";
+
+		r = update_v0m26p0s1_();
+		if (r) throw "v0m26p0s1";
+
+		r = update_v0m26p0s2_();
+		if (r) throw "v0m26p0s2";
 	} catch (err) {
-		consoleLog_('error', 'update_v0m26p0b5_()', err);
+		consoleLog_('error', 'update_v0m26p0_()', err);
+		return 1;
 	}
 }
 
 /**
- * Update card functions in backstage.
+ * Add BSCARDPART() in backstage.
+ * Update card filters.
+ * Set limit equation.
  */
-function update_v0m26p0b5s0_() {
+function update_v0m26p0s2_() {
 	try {
-		var sheet, formula, header;
-		var col, i, k;
+		var sheet, ranges, formula;
+		var header;
+		var max, col, x1, i, k;
 
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
 		if (!sheet) return;
@@ -180,27 +182,33 @@ function update_v0m26p0b5s0_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_('number_accounts');
+		const num_acc = getUserConstSettings_("number_accounts");
+		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
+		ranges = [ ];
 		col = 2 + w_ + w_*num_acc + w_;
+		max = sheet.getMaxColumns() + 1;
+		x1 = (dec_p == "[ ]" ? ", " : " \\ ");
 
-		if (sheet.getMaxColumns() < col + 10*w_ - 1) return;
+		header = [ ];
+		for (k = 0; k < 10; k++) {
+			header[k] = rollA1Notation(1, col + w_*k);
+		}
 
-		for(k = 0; k < 10; k++) {
-			header = rollA1Notation(1, col + w_*k);
-
-			for(i = 0; i < 12; i++) {
-				formula = "IFERROR(IF(" + header + " = \"\"; \"\"; SUM(FILTER(";
+		i = 0;
+		while (i < 12 && 6 + 6*i < max) {
+			for (k = 0; k < 10; k++) {
+				formula = "IFERROR(IF(" + header[k] + " = \"\"; \"\"; SUM(FILTER(";
 				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
-				formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + header + "); ";
+				formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + header[k] + "); ";
 				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
 				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " >= 0";
 				formula += "))); 0)"
 				sheet.getRange(3 + h_*i, col + w_*k).setFormula(formula);
 
-				formula = "IFERROR(IF(" + header + " = \"\"; \"\"; SUM(FILTER(";
+				formula = "IFERROR(IF(" + header[k] + " = \"\"; \"\"; SUM(FILTER(";
 				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
-				formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + header + "); ";
+				formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + header[k] + "); ";
 				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
 				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " < 0; ";
 				formula += "NOT(REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1) + "; ";
@@ -208,70 +216,31 @@ function update_v0m26p0b5s0_() {
 				formula += "))); 0)"
 				sheet.getRange(4 + h_*i, col + w_*k).setFormula(formula);
 
-				formula = "IFERROR(IF(" + header + " = \"\"; \"\"; SUM(FILTER(";
+				formula = "IFERROR(IF(" + header[k] + " = \"\"; \"\"; SUM(FILTER(";
 				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
-				formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + header + "); ";
+				formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + header[k] + "); ";
 				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
 				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " < 0";
 				formula += "))); 0)"
 				sheet.getRange(5 + h_*i, col + w_*k).setFormula(formula);
+
+				ranges[10*i + k] = rollA1Notation(6 + h_*i, 1 + col + w_*k);
 			}
+
+			i++;
 		}
+
+		sheet.getRangeList(ranges).setFormulaR1C1("R[-1]C + R[-4]C + RC[-1]");
 	} catch (err) {
-		consoleLog_("error", "update_v0m26p0b5s0_()", err);
-	}
-}
-
-/**
- * Add aliases to card data.
- * Update matchr in card header.
- *
- * 0.26.0-beta4
- */
-function update_v0m26p0b4_() {
-	try {
-		update_v0m26p0b4s0_();
-	} catch (err) {
-		consoleLog_('error', 'update_v0m26p0b4_()', err);
-	}
-}
-
-/**
- * Update matcher in card header.
- */
-function update_v0m26p0b6s1_() {
-	try {
-		var sheet, formula, header;
-		var i;
-
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
-		if (!sheet) return;
-		if (sheet.getMaxColumns() < 72) return;
-
-		const w_ = TABLE_DIMENSION_.width;
-
-		const num_acc = getUserConstSettings_('number_accounts');
-
-		header = rollA1Notation(1, 2 + w_ + w_*num_acc, 1, w_*11);
-
-		for (i = 0; i < 12; i++) {
-			formula = "REGEXMATCH(\'_Backstage\'!" + header + "; \"\\^\"&" + rollA1Notation(2, 2 + 6*i) + "&\"\\$\")"
-			formula = "FILTER(\'_Backstage\'!" + header + "; " + formula + ")";
-			formula = "INDEX(" + formula + "; 0; 1)";
-			formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; 1; MATCH(" + formula + "; \'_Backstage\'!" + header + "; 0))";
-			formula = "IFERROR((" + formula + " - 1)/5; \"\")";
-
-			sheet.getRange(2, 1 + 6*i).setFormula(formula);
-		}
-	} catch (err) {
-		consoleLog_("error", "update_v0m26p0b6s1_()", err);
+		consoleLog_("error", "update_v0m26p0s2_()", err);
+		return 1;
 	}
 }
 
 /**
  * Add aliases to card data.
  */
-function update_v0m26p0b4s0_() {
+function update_v0m26p0s0_() {
 	try {
 		var db_tables, db_cards;
 		var i;
@@ -290,77 +259,34 @@ function update_v0m26p0b4s0_() {
 		setPropertiesService_("document", "json", "DB_TABLES", db_tables);
 		optMainTables("Refresh");
 	} catch (err) {
-		consoleLog_("error", "update_v0m26p0b4s0_()", err);
+		consoleLog_("error", "update_v0m26p0s0_()", err);
+		return 1;
 	}
 }
 
 /**
- * Set formulas and header for card limit.
- *
- * 0.26.0-beta3
+ * Update card header.
  */
-function update_v0m26p0b3_() {
-	try {
-		update_v0m26p0b1s0_();
-		update_v0m26p0b3s1_();
-	} catch (err) {
-		consoleLog_('error', 'update_v0m26p0b3_()', err);
-	}
-}
-
-/**
- * Set formulas for card limit.
- */
-function update_v0m26p0b1s0_() {
-	try {
-		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
-		var ranges, col, i, j;
-
-		if (!sheet) return;
-
-		const h_ = TABLE_DIMENSION_.height;
-		const w_ = TABLE_DIMENSION_.width;
-
-		const num_acc = getUserConstSettings_('number_accounts');
-
-		ranges = [ ];
-		col = 3 + w_ + w_*num_acc + w_;
-
-		if (col + 10*w_ - 2 > sheet.getMaxColumns()) return;
-
-		for (i = 0; i < 12; i++) {
-			for (j = 0; j < 10; j++) {
-				ranges[10*i + j] = rollA1Notation(6 + h_*i, col + w_*j);
-			}
-		}
-
-		sheet.getRangeList(ranges).setFormulaR1C1("R[-1]C + R[-4]C + RC[-1]");
-	} catch (err) {
-		consoleLog_('error', 'update_v0m26p0b1s0_()', err);
-	}
-}
-
-/**
- * Set header for card limit.
- */
-function update_v0m26p0b3s1_() {
+function update_v0m26p0s1_() {
 	try {
 		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
-		var formula, col, x, i;
+		var formula, header, max, col, x1, i;
 
 		if (!sheet) return;
-		if (sheet.getMaxColumns() < 12*6) return;
 
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 		const num_acc = getUserConstSettings_('number_accounts');
+		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
-		x = dec_p === "[ ]" ? "," : "\\";
 		col = 1 + w_ + w_*num_acc;
+		max = sheet.getMaxColumns() + 1;
+		x1 = (dec_p === "[ ]" ? "," : "\\");
+		header = rollA1Notation(1, 2 + w_ + w_*num_acc, 1, w_*11);
 
-		for (i = 0; i < 12; i++) {
+		i = 0;
+		while (i < 12 && 6 + 6*i < max) {
 			formula = "ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
 			formula = "OFFSET(INDIRECT(" + formula + "); 4; 1; 1; 1)";
 			formula = "TEXT(" + formula + "; \"#,##0.00;(#,##0.00)\")";
@@ -368,15 +294,25 @@ function update_v0m26p0b3s1_() {
 			formula = "CONCATENATE(\"AVAIL credit: \"; " + formula + ")";
 			sheet.getRange(3, 1 + 6*i).setFormula(formula);
 
-			x = dec_p === "[ ]" ? "," : "\\";
 			formula = "INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\"))";
 
-			formula = "MAX(0; OFFSET(" + formula + "; 4; 1; 1; 1)); {\"charttype\"" + x + "\"bar\"; \"max\"" + x + "OFFSET(" + formula + "; 0; 1; 1; 1); \"color1\"" + x + "\"#45818e\"}";
+			formula = "MAX(0; OFFSET(" + formula + "; 4; 1; 1; 1)); {\"charttype\"" + x1 + "\"bar\"; \"max\"" + x1 + "OFFSET(" + formula + "; 0; 1; 1; 1); \"color1\"" + x1 + "\"#45818e\"}";
 			formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(" + formula + "))";
 			sheet.getRange(4, 1 + 6*i).setFormula(formula);
+
+			formula = "REGEXMATCH(\'_Backstage\'!" + header + "; \"\\^\"&" + rollA1Notation(2, 2 + 6*i) + "&\"\\$\")"
+			formula = "FILTER(\'_Backstage\'!" + header + "; " + formula + ")";
+			formula = "INDEX(" + formula + "; 0; 1)";
+			formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; 1; MATCH(" + formula + "; \'_Backstage\'!" + header + "; 0))";
+			formula = "IFERROR((" + formula + " - 1)/5; \"\")";
+
+			sheet.getRange(2, 1 + 6*i).setFormula(formula);
+
+			i++;
 		}
 	} catch (err) {
-		consoleLog_('error', 'update_v0m26p0b3s1_()', err);
+		consoleLog_('error', 'update_v0m26p0s1_()', err);
+		return 1;
 	}
 }
 
