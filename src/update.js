@@ -12,7 +12,7 @@ var PATCH_THIS_ = Object.freeze({
 			[ null ]
 		]
 	],
-	beta_list: [ null, null, update_v0m26p0b3_, update_v0m26p0b4_, update_v0m26p0b5_, update_v0m26p0b6_ ]
+	beta_list: [ null, null, update_v0m26p0b3_, update_v0m26p0b4_, update_v0m26p0b5_, update_v0m26p0b6_, update_v0m26p0b7_ ]
 });
 
 
@@ -107,7 +107,6 @@ function update_v0m0p0_() {
  */
 function update_v0m26p0b6_() {
 	try {
-		update_v0m26p0b6s0_();
 		update_v0m26p0b6s1_();
 	} catch (err) {
 		consoleLog_('error', 'update_v0m26p0b6_()', err);
@@ -117,7 +116,7 @@ function update_v0m26p0b6_() {
 /**
  * Add BSCARDPART() in backstage.
  */
-function update_v0m26p0b6s0_() {
+function update_v0m26p0b7_() {
 	try {
 		var sheet, formula;
 		var col, x, i, k;
@@ -149,7 +148,7 @@ function update_v0m26p0b6s0_() {
 			}
 		}
 	} catch (err) {
-		consoleLog_("error", "update_v0m26p0b6s0_()", err);
+		consoleLog_("error", "update_v0m26p0b7_()", err);
 	}
 }
 
