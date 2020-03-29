@@ -651,14 +651,18 @@ function setupPart5_() {
 	var sheet = CONST_LIST_ES_SHEETS_["_backstage"];
 	var formulaSumIncome, formulaSumExpenses;
 	var formula;
-	var c, i, k;
+	var c, x, i, k;
 
 	const h_ = TABLE_DIMENSION_.height;
 	const w_ = TABLE_DIMENSION_.width;
 
+	const dec_p = CONST_SETUP_SETTINGS_["decimal_separator"];
 	const num_acc = CONST_SETUP_SETTINGS_["number_accounts"];
 
 	c = 2 + w_ + w_*num_acc + w_;
+
+	if (dec_p == "[ ]") x = ",";
+	else x = " \\";
 
 	for (i = 0; i < 12; i++) {
 		formulaSumIncome = '=';
@@ -676,9 +680,9 @@ function setupPart5_() {
 
 		for (k = 0; k < 10; k++) {
 			formula = "ARRAYFORMULA(SPLIT(REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\"); \"/\"))";
-			formula = "{" + formula + ", \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, c + w_*k) + "); ";
+			formula = "{" + formula + x + " \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, c + w_*k) + "); ";
 			formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
-			formula += "REGEXMATCH(Cards!" + rollA1Notation(6, 2 + 6*i, -1) + ", \"[0-9]+/[0-9]+\")";
+			formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + ", \"[0-9]+/[0-9]+\")";
 			formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + ")";
 			formula = "IF(" + rollA1Notation(1, c + w_*k) + " = \"\"; 0; " + formula + "; 0))))";
 
