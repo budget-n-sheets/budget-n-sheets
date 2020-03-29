@@ -39,7 +39,6 @@ function deleteAllSheets_() {
 
 
 function isMissingSheet() {
-	console.time('add-on/setup/check-sheets');
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
 			sheet;
 	var list = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "_Settings", "Cash Flow", "Tags", "_Backstage", "Cards", "Summary" ];
@@ -52,5 +51,4 @@ function isMissingSheet() {
 	}
 
 	return false;
-	console.timeEnd('add-on/setup/check-sheets');
 }
