@@ -124,12 +124,29 @@
 					<form id="Form-AddEditCard" onSubmit="AddEditCard_Push()" accept-charset="UTF-8">
 						<table id="Table-AddEditCard" style="width:100%;">
 							<tr>
+								<th colspan="2" style="font-size:1.3em;">
+									Details
+								</th>
+							</tr>
+							<tr>
 								<td class="name"><label for="Form-AddEditCard_Name">Name</label></td>
 								<td><input class="Form-AddEditCard_lock" type="text" id="Form-AddEditCard_Name" maxlength="90" required></td>
 							</tr>
 							<tr>
 								<td class="name"><label for="Form-AddEditCard_Code">Code</label></td>
 								<td><input class="Form-AddEditCard_lock" type="text" pattern="^\w+$" id="Form-AddEditCard_Code" required></td>
+							</tr>
+							<tr>
+								<td class="name"><label for="Form-AddEditCard_Aliases">Code aliases</label></td>
+								<td>
+									<input class="Form-AddEditCard_lock" type="text" name="aliases" pattern="^\w+(\s*,\s*\w+)*$" id="Form-AddEditCard_Aliases">
+									<br>
+									<span class="gray">Separate aliases with commas.<br>Charset 0-9, a-z, A-Z</span>
+								</td>
+							</tr>
+							<tr>
+								<td class="name"><label for="Form-AddEditCard_Limit">Limit</label></td>
+								<td>$ <input class="Form-AddEditCard_lock" type="number" style="width:7.3em;" value="0" min="0" step="0.01" placeholder="0.00" id="Form-AddEditCard_Limit" required></td>
 							</tr>
 						</table>
 						<input id="Form-AddEditCard_submit" style="display:none;" type="submit">
@@ -315,12 +332,16 @@
 
 			$('#Form-AddEditCard_Name').val(r.name);
 			$('#Form-AddEditCard_Code').val(r.code);
+			$('#Form-AddEditCard_Limit').val(r.limit);
+			$("#Form-AddEditCard_Aliases").val(r.aliases.join(", "));
 
 			g2("panel_EditCard");
 		}
 		function AddCard_Panel() {
 			$('#Form-AddEditCard_Name').val('');
 			$('#Form-AddEditCard_Code').val('');
+			$('#Form-AddEditCard_Limit').val(0);
+			$("#Form-AddEditCard_Aliases").val("");
 
 			htmlVarGlobal.Action = 'add';
 
@@ -334,7 +355,9 @@
 			var cell = {
 				id: htmlVarGlobal.Id,
 				name: $('#Form-AddEditCard_Name').val(),
-				code: $('#Form-AddEditCard_Code').val()
+				code: $('#Form-AddEditCard_Code').val(),
+				limit: $('#Form-AddEditCard_Limit').val(),
+				aliases: $("#Form-AddEditCard_Aliases").val()
 			};
 
 			if (htmlVarGlobal.Action === 'add') {
@@ -362,6 +385,10 @@
 					backToBook();
 					$('#p-footer_FastResponse').append('Limit of 10 cards reached.');
 					break;
+				case 40:
+					$('#p-footer_FastResponse').empty().append('Aliases have an invalid code format.');
+					$('.Form-AddEditCard_lock').prop('disabled', false);
+					break;
 				case 0:
 					backToBook();
 					$('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
@@ -375,6 +402,7 @@
 
 			var a = htmlVarGlobal.Action;
 
+			google.script.run.optMainTables("Refresh");
 			google.script.run.withSuccessHandler(ListTables_Post)
 				.withFailureHandler(showError)
 				.optMainTables('GetList');
@@ -394,6 +422,7 @@
 				return;
 			}
 
+			google.script.run.optMainTables("Refresh");
 			google.script.run.withSuccessHandler(ListTables_Post)
 				.withFailureHandler(showError)
 				.optMainTables('GetList');

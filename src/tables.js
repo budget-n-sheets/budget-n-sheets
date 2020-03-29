@@ -26,6 +26,9 @@ function optMainTables(opt, param) {
 			return optCard_Update_(param);
 		case 'RemoveCard':
 			return optCard_Remove_(param);
+		case "Refresh":
+			cardsRefresh_();
+			return;
 
 		case 'isBusy':
 			return -1;

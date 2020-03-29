@@ -1,29 +1,25 @@
-var PatchThis = (function() {
-	var o = {
-		patch_list: [
-			[
-				null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-				[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-				[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
-				[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
-				[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
-				[ null, null ],
-				[ null, null, null, update_v0m24p3_, null, null ],
-				[ update_v0m25p0_, null, update_v0m25p2_, null ]
-			]
+var PATCH_THIS_ = Object.freeze({
+	patch_list: [
+		[
+			null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
+			[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
+			[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
+			[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
+			[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
+			[ null, null ],
+			[ null, null, null, update_v0m24p3_, null, null ],
+			[ update_v0m25p0_, null, update_v0m25p2_, null ],
+			[ null ]
 		]
-	};
-
-	return {
-		patch_list: function() { return o.patch_list }
-	};
-})();
+	],
+	beta_list: [ null, null, update_v0m26p0b3_, update_v0m26p0b4_, update_v0m26p0b5_, update_v0m26p0b6_, update_v0m26p0b7_ ]
+});
 
 
 function onlineUpdate_() {
 	var ui = SpreadsheetApp.getUi();
 	try {
-		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
 		consoleLog_('warn', 'onlineUpdate_()', err);
 
@@ -54,7 +50,7 @@ function onlineUpdate_() {
 
 function seamlessUpdate_() {
 	try {
-		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
 		consoleLog_('warn', 'seamlessUpdate_()', err);
 		return true;
@@ -103,6 +99,286 @@ function update_v0m0p0_() {
 	}
 }*/
 
+/**
+ * Add BSCARDPART() in backstage.
+ * Update matcher in card header.
+ *
+ * 0.26.0-beta6
+ */
+function update_v0m26p0b6_() {
+	try {
+		update_v0m26p0b6s1_();
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b6_()', err);
+	}
+}
+
+/**
+ * Add BSCARDPART() in backstage.
+ */
+function update_v0m26p0b7_() {
+	try {
+		var sheet, formula;
+		var col, x, i, k;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+		if (!sheet) return;
+
+		const h_ = TABLE_DIMENSION_.height;
+		const w_ = TABLE_DIMENSION_.width;
+
+		const num_acc = getUserConstSettings_("number_accounts");
+		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
+
+		x = (dec_p == "[ ]" ? ", " : " \\ ");
+		col = 2 + w_ + w_*num_acc + w_;
+
+		if (sheet.getMaxColumns() < col + 10*w_ - 1) return;
+
+		for (i = 0; i < 12; i++) {
+			for (k = 0; k < 10; k++) {
+				formula = "ARRAYFORMULA(SPLIT(REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\"); \"/\"))";
+				formula = "{" + formula + x + "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, col + w_*k) + "); ";
+				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+				formula += "REGEXMATCH(Cards!" + rollA1Notation(6, 2 + 6*i, -1) + ", \"[0-9]+/[0-9]+\")";
+				formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + ")";
+				formula = "IF(" + rollA1Notation(1, col + w_*k) + " = \"\"; 0; " + formula + "; 0))))";
+
+				sheet.getRange(5 + h_*i, 1 + col + w_*k).setFormula(formula);
+			}
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m26p0b7_()", err);
+	}
+}
+
+/**
+ * Update matcher in card header.
+ * Update card functions in backstage.
+ *
+ * 0.26.0-beta5
+ */
+function update_v0m26p0b5_() {
+	try {
+		update_v0m26p0b5s0_();
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b5_()', err);
+	}
+}
+
+/**
+ * Update card functions in backstage.
+ */
+function update_v0m26p0b5s0_() {
+	try {
+		var sheet, formula, header;
+		var col, i, k;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+		if (!sheet) return;
+
+		const h_ = TABLE_DIMENSION_.height;
+		const w_ = TABLE_DIMENSION_.width;
+
+		const num_acc = getUserConstSettings_('number_accounts');
+
+		col = 2 + w_ + w_*num_acc + w_;
+
+		if (sheet.getMaxColumns() < col + 10*w_ - 1) return;
+
+		for(k = 0; k < 10; k++) {
+			header = rollA1Notation(1, col + w_*k);
+
+			for(i = 0; i < 12; i++) {
+				formula = "IFERROR(IF(" + header + " = \"\"; \"\"; SUM(FILTER(";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
+				formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + header + "); ";
+				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " >= 0";
+				formula += "))); 0)"
+				sheet.getRange(3 + h_*i, col + w_*k).setFormula(formula);
+
+				formula = "IFERROR(IF(" + header + " = \"\"; \"\"; SUM(FILTER(";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
+				formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + header + "); ";
+				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " < 0; ";
+				formula += "NOT(REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1) + "; ";
+				formula += "\"#ign\"))";
+				formula += "))); 0)"
+				sheet.getRange(4 + h_*i, col + w_*k).setFormula(formula);
+
+				formula = "IFERROR(IF(" + header + " = \"\"; \"\"; SUM(FILTER(";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "; ";
+				formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + header + "); ";
+				formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+				formula += "\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + " < 0";
+				formula += "))); 0)"
+				sheet.getRange(5 + h_*i, col + w_*k).setFormula(formula);
+			}
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m26p0b5s0_()", err);
+	}
+}
+
+/**
+ * Add aliases to card data.
+ * Update matchr in card header.
+ *
+ * 0.26.0-beta4
+ */
+function update_v0m26p0b4_() {
+	try {
+		update_v0m26p0b4s0_();
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b4_()', err);
+	}
+}
+
+/**
+ * Update matcher in card header.
+ */
+function update_v0m26p0b6s1_() {
+	try {
+		var sheet, formula, header;
+		var i;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+		if (!sheet) return;
+		if (sheet.getMaxColumns() < 72) return;
+
+		const w_ = TABLE_DIMENSION_.width;
+
+		const num_acc = getUserConstSettings_('number_accounts');
+
+		header = rollA1Notation(1, 2 + w_ + w_*num_acc, 1, w_*11);
+
+		for (i = 0; i < 12; i++) {
+			formula = "REGEXMATCH(\'_Backstage\'!" + header + "; \"\\^\"&" + rollA1Notation(2, 2 + 6*i) + "&\"\\$\")"
+			formula = "FILTER(\'_Backstage\'!" + header + "; " + formula + ")";
+			formula = "INDEX(" + formula + "; 0; 1)";
+			formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; 1; MATCH(" + formula + "; \'_Backstage\'!" + header + "; 0))";
+			formula = "IFERROR((" + formula + " - 1)/5; \"\")";
+
+			sheet.getRange(2, 1 + 6*i).setFormula(formula);
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m26p0b6s1_()", err);
+	}
+}
+
+/**
+ * Add aliases to card data.
+ */
+function update_v0m26p0b4s0_() {
+	try {
+		var db_tables, db_cards;
+		var i;
+
+		db_tables = getPropertiesService_("document", "json", "DB_TABLES");
+		db_cards = db_tables.cards;
+
+		if (db_cards.count == 0) return;
+
+		for (i = 0; i < db_cards.count; i++) {
+			db_cards.data[i].aliases = [ ];
+		}
+
+		db_tables.cards = db_cards;
+
+		setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+		optMainTables("Refresh");
+	} catch (err) {
+		consoleLog_("error", "update_v0m26p0b4s0_()", err);
+	}
+}
+
+/**
+ * Set formulas and header for card limit.
+ *
+ * 0.26.0-beta3
+ */
+function update_v0m26p0b3_() {
+	try {
+		update_v0m26p0b1s0_();
+		update_v0m26p0b3s1_();
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b3_()', err);
+	}
+}
+
+/**
+ * Set formulas for card limit.
+ */
+function update_v0m26p0b1s0_() {
+	try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+		var ranges, col, i, j;
+
+		if (!sheet) return;
+
+		const h_ = TABLE_DIMENSION_.height;
+		const w_ = TABLE_DIMENSION_.width;
+
+		const num_acc = getUserConstSettings_('number_accounts');
+
+		ranges = [ ];
+		col = 3 + w_ + w_*num_acc + w_;
+
+		if (col + 10*w_ - 2 > sheet.getMaxColumns()) return;
+
+		for (i = 0; i < 12; i++) {
+			for (j = 0; j < 10; j++) {
+				ranges[10*i + j] = rollA1Notation(6 + h_*i, col + w_*j);
+			}
+		}
+
+		sheet.getRangeList(ranges).setFormulaR1C1("R[-1]C + R[-4]C + RC[-1]");
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b1s0_()', err);
+	}
+}
+
+/**
+ * Set header for card limit.
+ */
+function update_v0m26p0b3s1_() {
+	try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+		var formula, col, x, i;
+
+		if (!sheet) return;
+		if (sheet.getMaxColumns() < 12*6) return;
+
+		const h_ = TABLE_DIMENSION_.height;
+		const w_ = TABLE_DIMENSION_.width;
+
+		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
+		const num_acc = getUserConstSettings_('number_accounts');
+
+		x = dec_p === "[ ]" ? "," : "\\";
+		col = 1 + w_ + w_*num_acc;
+
+		for (i = 0; i < 12; i++) {
+			formula = "ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
+			formula = "OFFSET(INDIRECT(" + formula + "); 4; 1; 1; 1)";
+			formula = "TEXT(" + formula + "; \"#,##0.00;(#,##0.00)\")";
+			formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; " + formula + ")";
+			formula = "CONCATENATE(\"AVAIL credit: \"; " + formula + ")";
+			sheet.getRange(3, 1 + 6*i).setFormula(formula);
+
+			x = dec_p === "[ ]" ? "," : "\\";
+			formula = "INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\"))";
+
+			formula = "MAX(0; OFFSET(" + formula + "; 4; 1; 1; 1)); {\"charttype\"" + x + "\"bar\"; \"max\"" + x + "OFFSET(" + formula + "; 0; 1; 1; 1); \"color1\"" + x + "\"#45818e\"}";
+			formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(" + formula + "))";
+			sheet.getRange(4, 1 + 6*i).setFormula(formula);
+		}
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p0b3s1_()', err);
+	}
+}
 
 /**
  * Update name of keys for user settings.
@@ -557,8 +833,8 @@ function update_v0m21p2_() {
 function update_v0m20p6_() {
 	try {
 		var a = {
-			script: AppsScriptGlobal.script_version()["number"],
-			template: AppsScriptGlobal.template_version()["number"]
+			script: APPS_SCRIPT_GLOBAL_.script_version.number,
+			template: APPS_SCRIPT_GLOBAL_.template_version.number
 		};
 
 		setPropertiesService_('document', 'json', 'class_version2', a);

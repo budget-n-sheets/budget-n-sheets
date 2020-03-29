@@ -166,9 +166,7 @@ function getFinancialCalendar_() {
 	if (calendar) return calendar;
 
 	setUserSettings_('financial_calendar', '');
-	setUserSettings_('PostDayEvents', false);
 	setUserSettings_('post_day_events', false);
-	setUserSettings_('CashFlowEvents', false);
 	setUserSettings_('cash_flow_events', false);
 }
 
@@ -187,9 +185,7 @@ function getCalendarByMD5_(md5sum) {
 		return a;
 	} else {
 		setUserSettings_('financial_calendar', '');
-		setUserSettings_('PostDayEvents', false);
 		setUserSettings_('post_day_events', false);
-		setUserSettings_('CashFlowEvents', false);
 		setUserSettings_('cash_flow_events', false);
 	}
 }

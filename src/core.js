@@ -41,7 +41,7 @@ function onOpen(e) {
 					.addItem("Expand", "toolShowSheets_"))
 				.addSeparator()
 				.addItem('Open Accounts & Cards panel', 'showPanelTables')
-				.addItem('Open Analytics panel', 'showPanelAnalytics')
+				.addItem('Open Cool Gallery panel', 'showPanelAnalytics')
 				.addSeparator()
 				.addItem('About the add-on', 'showDialogAboutAddon')
 				.addItem('Edit settings', 'showSidebarMainSettings')
@@ -84,10 +84,9 @@ function showPanelAnalytics() {
 	var htmlTemplate = HtmlService.createTemplateFromFile("htmlCoolGallery");
 	var htmlSidebar;
 
-	htmlTemplate.list = AppsScriptGlobal.CoolGallery();
+	htmlTemplate.list = APPS_SCRIPT_GLOBAL_.cool_gallery;
 
-	htmlSidebar = htmlTemplate.evaluate()
-		.setTitle("Analytics Gallery (experimental)");
+	htmlSidebar = htmlTemplate.evaluate().setTitle("Cool Gallery");
 
 	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
@@ -122,7 +121,7 @@ function showDialogAboutAddon() {
 
 	htmlTemplate = HtmlService.createTemplateFromFile('htmlAboutAddon')
 
-	htmlTemplate.version = AppsScriptGlobal.script_version()["name"];
+	htmlTemplate.version = APPS_SCRIPT_GLOBAL_.script_version.name;
 
 	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(281)
@@ -172,7 +171,7 @@ function showSetupAddon_() {
 	var Ui = SpreadsheetApp.getUi();
 
 	try {
-		SpreadsheetApp.openById( AppsScriptGlobal.TemplateId() );
+		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
 		consoleLog_('warn', 'showSetupAddon_()', err);
 

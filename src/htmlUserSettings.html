@@ -210,10 +210,10 @@
 
 				<? if (calendars_enabled) { ?>
 					$('#financial_calendar').val(user_settings.financial_calendar);
-					if (user_settings.PostDayEvents) $('#post_day_events').prop('checked', true);
-					if (user_settings.CashFlowEvents) $('#cash_flow_events').prop('checked', true);
+					if (user_settings.post_day_events) $('#post_day_events').prop('checked', true);
+					if (user_settings.cash_flow_events) $('#cash_flow_events').prop('checked', true);
 				<? } ?>
-				if (user_settings.OverrideZero) $('#override_zero').prop('checked', true);
+				if (user_settings.override_zero) $('#override_zero').prop('checked', true);
 			} catch (err) {
 				showError();
 				return;

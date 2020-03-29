@@ -2,7 +2,7 @@ function coolGallery(option) {
 	var lock, s;
 	var info;
 
-	info = AppsScriptGlobal.CoolGallery();
+	info = APPS_SCRIPT_GLOBAL_.cool_gallery;
 	info = info[option];
 	if (!info) {
 		consoleLog_('warn', 'getCoolSheet_(): Details of page not found.', {"option":option, "info":info});
@@ -26,14 +26,15 @@ function coolGallery(option) {
 		return 1;
 	}
 
-	if (option === "tags") {
-		coolTags_(info);
+	if (option === "stats_for_tags") {
+		coolStatsForTags_(info);
+	} else if (option === "filter_by_tag") {
+		coolFilterByTag_(info);
 	}
 
 	console.info("add-on/cool_gallery/import/" + info.sheet_name);
 	return -1;
 }
-
 
 function getCoolSheet_(info) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -54,8 +55,65 @@ function getCoolSheet_(info) {
 	SpreadsheetApp.flush();
 }
 
+function coolFilterByTag_(info) {
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var sheet = spreadsheet.getSheetByName(info.sheet_name);
+	var sheetTags, formula, range, rule;
+	var text, aux1, aux2;
+	var n, i, k;
 
-function coolTags_(info) {
+	const header = "C8";
+	const num_acc = getUserConstSettings_('number_accounts');
+
+	sheet.getRange("B8").setFormula("IF(C8 = \"\"; \"\"; \"#\")");
+
+	i = 0;
+	formula = "";
+	while (i < 12) {
+		aux1 = "";
+		aux2 = "";
+
+		for (k = 0; k < num_acc; k++) {
+			aux1 += "; \'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 6 + 5*k, -1, 4);
+			aux2 += "; \'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 9 + 5*k, -1);
+		}
+
+		text = "REGEXMATCH({\'" + MN_SHORT_[i] + "\'!D5:D" + aux2 + "}; " + header + ")";
+		text = "FILTER({\'" + MN_SHORT_[i] + "\'!A5:D" + aux1 + "}; " + text + ")";
+		text = "SORT(" + text + "; 1; TRUE; 3; FALSE)";
+		text = "IFERROR(" + text + "; {\"\", \"\", \"\", \"\"})";
+		text = "{\"\", \"" + MN_FULL_[i] + "\", \"\", \"\"}; " + text + "; ";
+		formula += text;
+
+		i++;
+	}
+
+	formula = formula.slice(0, -2);
+	formula = "IF(C8 = \"\"; \"\"; {" + formula + "})";
+
+	sheet.getRange("B11").setFormula(formula);
+
+	sheetTags = spreadsheet.getSheetByName('Tags');
+	if (sheetTags) n = sheetTags.getMaxRows();
+	else n = 0;
+
+	if (n > 1) {
+		range = sheetTags.getRange(2, 5, n - 1, 1);
+
+		rule = SpreadsheetApp.newDataValidation()
+			.requireValueInRange(range, true)
+			.setAllowInvalid(true)
+			.build();
+
+		sheet.getRange("C8").setDataValidation(rule);
+	}
+
+	sheet.setTabColor('#e69138');
+	SpreadsheetApp.flush();
+	spreadsheet.setActiveSheet(sheet);
+}
+
+function coolStatsForTags_(info) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet = spreadsheet.getSheetByName(info.sheet_name);
 	var sheetTags, range;

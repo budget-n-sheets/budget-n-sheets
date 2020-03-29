@@ -196,13 +196,14 @@ function setup_(settings, listAcc) {
 
 	CONST_SETUP_SPREADSHEET_ = SpreadsheetApp.getActiveSpreadsheet();
 	CONST_SETUP_SETTINGS_ = {
-		date_created: new Date(),
+		date_created: DATE_NOW,
 		spreadsheet_name: settings.spreadsheet_name,
 		spreadsheet_locale: CONST_SETUP_SPREADSHEET_.getSpreadsheetLocale(),
 		financial_year: Number(settings.financial_year),
 		init_month: Number(settings.init_month),
 		number_accounts: Number(settings.number_accounts),
-		list_acc: listAcc
+		list_acc: listAcc,
+		decimal_separator: null
 	};
 
 	console.time("add-on/install");
@@ -222,9 +223,10 @@ function setup_(settings, listAcc) {
 	CONST_SETUP_SPREADSHEET_.deleteSheet(CONST_LIST_ES_SHEETS_["ttt"]);
 
 	a = {
-		script: AppsScriptGlobal.script_version()["number"],
-		template: AppsScriptGlobal.template_version()["number"]
+		script: APPS_SCRIPT_GLOBAL_.script_version.number,
+		template: APPS_SCRIPT_GLOBAL_.template_version.number
 	};
+	a.script.beta = PATCH_THIS_["beta_list"].length;
 	setPropertiesService_('document', 'json', 'class_version2', a);
 
 	a = nodeControl_("sign");
@@ -562,17 +564,20 @@ function setupPart6_() {
 	console.time('add-on/setup/part6');
 	var sheetCards = CONST_LIST_ES_SHEETS_["cards"];
 	var sheet, formula;
-	var header, c;
+	var header, c, x;
 	var i, k;
 	var h_, w_;
 
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
 
+	const dec_p = CONST_SETUP_SETTINGS_["decimal_separator"];
+	const num_acc = CONST_SETUP_SETTINGS_["number_accounts"];
+
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetCards);
 	CONST_SETUP_SPREADSHEET_.moveActiveSheet(15);
 
-	c = 1 + w_ + w_*CONST_SETUP_SETTINGS_["number_accounts"];
+	c = 1 + w_ + w_*num_acc;
 	header = rollA1Notation(1, c + 1, 1, w_*11);
 
 	for (i = 0; i < 12; i++) {
@@ -580,7 +585,7 @@ function setupPart6_() {
 
 		sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
 
-		for (k = 0; k < CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
+		for (k = 0; k < num_acc; k++) {
 			formula = "CONCATENATE(";
 			formula += "\"Withdrawal: (\"; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(2 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\"); \"\n\"; ";
 			formula += "\"Deposit: (\"; \'_Backstage\'!" + rollA1Notation(3 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\"); \"\n\"; ";
@@ -595,7 +600,24 @@ function setupPart6_() {
 
 		sheetCards.getRange(2, 2 + 6*i).setValue("All");
 
-		formula = "MATCH(" + rollA1Notation(2, 2 + 6*i) + "; \'_Backstage\'!" + header + "; 0)";
+		formula = "ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
+		formula = "OFFSET(INDIRECT(" + formula + "); 4; 1; 1; 1)";
+		formula = "TEXT(" + formula + "; \"#,##0.00;(#,##0.00)\")";
+		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; " + formula + ")";
+		formula = "CONCATENATE(\"AVAIL credit: \"; " + formula + ")";
+		sheetCards.getRange(3, 1 + 6*i).setFormula(formula);
+
+		x = dec_p === "[ ]" ? "," : "\\";
+		formula = "INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\"))";
+
+		formula = "MAX(0; OFFSET(" + formula + "; 4; 1; 1; 1)); {\"charttype\"" + x + "\"bar\"; \"max\"" + x + "OFFSET(" + formula + "; 0; 1; 1; 1); \"color1\"" + x + "\"#45818e\"}";
+		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(" + formula + "))";
+		sheetCards.getRange(4, 1 + 6*i).setFormula(formula);
+
+		formula = "REGEXMATCH(\'_Backstage\'!" + header + "; \"\\^\"&" + rollA1Notation(2, 2 + 6*i) + "&\"\\$\")";
+		formula = "FILTER(\'_Backstage\'!" + header + "; " + formula + ")";
+		formula = "INDEX(" + formula + "; 0; 1)";
+		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; 1; MATCH(" + formula + "; \'_Backstage\'!" + header + "; 0))";
 		formula = "IFERROR((" + formula + " - 1)/5; \"\")";
 		sheetCards.getRange(2, 1 + 6*i).setFormula(formula);
 
@@ -625,29 +647,50 @@ function setupPart6_() {
 
 function setupPart5_() {
 	console.time('add-on/setup/part5');
-	var formulaSumIncome, formulaSumExpenses;
-	var i, k;
-	var h_, w_;
 
-	h_ = TABLE_DIMENSION_.height;
-	w_ = TABLE_DIMENSION_.width;
+	var sheet = CONST_LIST_ES_SHEETS_["_backstage"];
+	var formulaSumIncome, formulaSumExpenses;
+	var formula;
+	var c, x, i, k;
+
+	const h_ = TABLE_DIMENSION_.height;
+	const w_ = TABLE_DIMENSION_.width;
+
+	const dec_p = CONST_SETUP_SETTINGS_["decimal_separator"];
+	const num_acc = CONST_SETUP_SETTINGS_["number_accounts"];
+
+	c = 2 + w_ + w_*num_acc + w_;
+
+	if (dec_p == "[ ]") x = ",";
+	else x = " \\";
 
 	for (i = 0; i < 12; i++) {
 		formulaSumIncome = '=';
 		formulaSumExpenses = '=';
 
-		{
-			k = 0;
-			formulaSumIncome += rollA1Notation(6+h_*i, 8+w_*k);
-			formulaSumExpenses += rollA1Notation(4+h_*i, 7+w_*k);
-		}
-		for (k = 1; k < CONST_SETUP_SETTINGS_["number_accounts"]; k++) {
+		k = 0;
+
+		formulaSumIncome += rollA1Notation(6+h_*i, 8+w_*k);
+		formulaSumExpenses += rollA1Notation(4+h_*i, 7+w_*k);
+
+		for (k = 1; k < num_acc; k++) {
 			formulaSumIncome += '+'+rollA1Notation(6+h_*i, 8+w_*k);
 			formulaSumExpenses += '+'+rollA1Notation(4+h_*i, 7+w_*k);
 		}
 
-		CONST_LIST_ES_SHEETS_["_backstage"].getRange(3+h_*i, 2).setFormula(formulaSumIncome);
-		CONST_LIST_ES_SHEETS_["_backstage"].getRange(5+h_*i, 2).setFormula(formulaSumExpenses);
+		for (k = 0; k < 10; k++) {
+			formula = "ARRAYFORMULA(SPLIT(REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\"); \"/\"))";
+			formula = "{" + formula + x + " \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, c + w_*k) + "); ";
+			formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+			formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + ", \"[0-9]+/[0-9]+\")";
+			formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + ")";
+			formula = "IF(" + rollA1Notation(1, c + w_*k) + " = \"\"; 0; " + formula + "; 0))))";
+
+			sheet.getRange(5 + h_*i, 1 + c + w_*k).setFormula(formula);
+		}
+
+		sheet.getRange(3 + h_*i, 2).setFormula(formulaSumIncome);
+		sheet.getRange(5 + h_*i, 2).setFormula(formulaSumExpenses);
 	}
 
 	SpreadsheetApp.flush();
@@ -786,7 +829,10 @@ function setupPart1_(yyyy_mm) {
 
 	cell = cell.getDisplayValue();
 	if ( /\./.test(cell) ) {
+		CONST_SETUP_SETTINGS_["decimal_separator"] = "[ ]";
 		setPropertiesService_("document", "", "decimal_separator", "[ ]");
+	} else {
+		CONST_SETUP_SETTINGS_["decimal_separator"] = "] [";
 	}
 
 	cell = [
@@ -796,19 +842,15 @@ function setupPart1_(yyyy_mm) {
 		[ "=IF($B4 > $B3; 0; $B3 - $B4 + 1)" ],
 		[ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))" ],
 		[ "=COUNTIF(\'Tags\'!$E1:$E; \"<>\") - 1" ],
-		[ "=RAND()" ],
-		[ "=COUNTIF(B11:B20; \"<>\")" ]
+		[ "=RAND()" ]
 	];
-	CONST_LIST_ES_SHEETS_["_settings"].getRange(2, 2, 8, 1).setFormulas(cell);
+	CONST_LIST_ES_SHEETS_["_settings"].getRange(2, 2, 7, 1).setFormulas(cell);
 
 	cell = {
 		initial_month: CONST_SETUP_SETTINGS_["init_month"],
 		financial_calendar: "",
-		PostDayEvents: false,
 		post_day_events: false,
-		CashFlowEvents: false,
 		cash_flow_events: false,
-		OverrideZero: false,
 		override_zero: false,
 		spreadsheet_locale: CONST_SETUP_SETTINGS_["spreadsheet_locale"]
 	};
@@ -965,20 +1007,18 @@ function setupPart0_() {
 		ref[k] = rollA1Notation(1, 1 + 5*k);
 	}
 
+	if (diff_num_acc > 0) {
+		sheetTTT.deleteColumns(6 + 5*num_acc, 5*diff_num_acc);
+	}
+
 	for (i = 11; i > 0; i--) {
 		CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetTTT);
 		sheet = CONST_SETUP_SPREADSHEET_.duplicateActiveSheet().setName(MN_SHORT_[i]);
-		if (diff_num_acc > 0) {
-			sheet.deleteColumns(6 + 5*num_acc, 5*diff_num_acc);
-		}
 		CONST_LIST_MN_SHEETS_[i] = sheet;
 	}
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetTTT);
 	sheet = CONST_SETUP_SPREADSHEET_.duplicateActiveSheet().setName(MN_SHORT_[0]);
-	if (diff_num_acc > 0) {
-		sheet.deleteColumns(6 + 5*num_acc, 5*diff_num_acc);
-	}
 	sheet.getRange(1, 1).setValue('Wallet');
 	CONST_LIST_MN_SHEETS_[0] = sheet;
 

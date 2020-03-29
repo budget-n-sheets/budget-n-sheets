@@ -90,7 +90,7 @@ function optTool_HideSheets_(r) {
 	var mm, d, i;
 
 	if (r) {
-		mm = new Date().getMonth();
+		mm = DATE_NOW.getMonth();
 	} else {
 		sheet = SpreadsheetApp.getActiveSheet();
 		mm = MN_SHORT_.indexOf( sheet.getName() );
@@ -270,7 +270,7 @@ function foo_UpdateCashFlow_(mm) {
 	yyyy = getUserConstSettings_('financial_year');
 
 	dd = new Date(yyyy, mm + 1, 0).getDate();
-	override_zero = getUserSettings_("OverrideZero");
+	override_zero = getUserSettings_("override_zero");
 	number_accounts = getUserConstSettings_('number_accounts');
 
 	cf_flow = [ ];
@@ -283,7 +283,7 @@ function foo_UpdateCashFlow_(mm) {
 	listEventos = [ ];
 	t = getSpreadsheetDate();
 	b = new Date(yyyy, mm + 1, 1);
-	if (getUserSettings_("CashFlowEvents") && t.getTime() < b.getTime()) {
+	if (getUserSettings_("cash_flow_events") && t.getTime() < b.getTime()) {
 		calendar = getFinancialCalendar_();
 
 		if (calendar) {
@@ -477,7 +477,7 @@ function foo_FormatAccounts_(mm) {
 		if (nd > 1) sheet.getRange(5, 1 + w_*k, nd, 4).sort({column:1 + w_*k, ascending:false});
 	}
 
-	date1 = new Date().getTime();
+	date1 = DATE_NOW.getTime();
 	date2 = getUserConstSettings_('financial_year');
 	date2 = new Date(date2, mm + 1, 0).getTime();
 

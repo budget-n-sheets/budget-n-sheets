@@ -98,7 +98,7 @@ function daily_Main_(e) {
 		monthly_TreatLayout_(a["year"], a["month"]);
 	}
 
-	if (getUserSettings_("PostDayEvents")) {
+	if (getUserSettings_("post_day_events")) {
 		daily_PostEvents_(date);
 	}
 
