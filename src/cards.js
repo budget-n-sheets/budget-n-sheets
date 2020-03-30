@@ -39,9 +39,14 @@ function cardsGetData_() {
 	for (k = 0; k < db_cards.count; k++) {
 		if (data[0][0 + w_*k] == "") continue;
 
-		code = data[0][0 + w_*k].match(/\w+/);
+		code = data[0][0 + w_*k].match(/\w+/g);
 		if (code == null) continue;
-		if (db_cards.codes.indexOf(code[0]) == -1) continue;
+
+		for (i = 0; i < code.length; i++) {
+			if (db_cards.codes.indexOf(code[i]) != -1) break;
+		}
+		if (i == code.length) continue;
+		code = code[i];
 
 		v = [ ];
 		for (i = 0; i < 12; i++) {
