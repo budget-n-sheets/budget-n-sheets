@@ -99,6 +99,8 @@ function showSidebarMainSettings() {
 	var htmlSidebar;
 	var calendars = getAllOwnedCalendars();
 
+	htmlTemplate.doc_name = SpreadsheetApp.getActiveSpreadsheet().getName();
+	htmlTemplate.financial_year = getUserConstSettings_("financial_year");
 	htmlTemplate.calendars_data = calendars;
 	htmlTemplate.calendars_enabled = calendars.md5.length > 0;
 

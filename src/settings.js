@@ -1,14 +1,10 @@
 function retrieveUserSettings() {
 	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
-	user_settings.docName = SpreadsheetApp.getActiveSpreadsheet().getName();
-	user_settings.financial_year = getUserConstSettings_('financial_year');
-
 	if (user_settings.financial_calendar != "") {
 		user_settings.financial_calendar = computeDigest(
-			"MD5",
-			user_settings.financial_calendar,
-			"UTF_8");
+				"MD5", user_settings.financial_calendar, "UTF_8"
+			);
 	}
 
 	return user_settings;
@@ -22,54 +18,47 @@ function saveUserSettings(settings) {
 
 	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	sheet = spreadsheet.getSheetByName("_Settings");
-	if (!sheet) return 1;
 
 	mm = getUserSettings_("initial_month");
 	init = Number(settings.initial_month);
 
-	calendar = "";
+	calendar = {
+		financial_calendar: "",
+		post_day_events: false,
+		cash_flow_events: false
+	};
 
-	if (settings.financial_calendar !== "") {
-		db_calendars = getCacheService_('document', 'DB_CALENDARS', 'json');
+	if (settings.financial_calendar != "") {
+		db_calendars = getCacheService_("document", "DB_CALENDARS", "json");
 		if (!db_calendars) db_calendars = getAllOwnedCalendars();
 
 		c = db_calendars.md5.indexOf(settings.financial_calendar);
-		if (c != -1) calendar = db_calendars.id[c];
+		if (c != -1) {
+			calendar.financial_calendar = db_calendars.id[c];
+			calendar.post_day_events = settings.post_day_events;
+			calendar.cash_flow_events = settings.cash_flow_events;
+		}
 	}
 
 	user_settings = {
 		spreadsheet_locale: spreadsheet.getSpreadsheetLocale(),
 		initial_month: init,
-
-		financial_calendar: calendar,
-		post_day_events: settings.post_day_events,
 		override_zero: settings.override_zero,
-		cash_flow_events: settings.cash_flow_events
+
+		financial_calendar: calendar.financial_calendar,
+		post_day_events: calendar.post_day_events,
+		cash_flow_events: calendar.cash_flow_events
 	};
+	setPropertiesService_("document", "json", "user_settings", user_settings);
 
-	try {
-		setPropertiesService_("document", "json", "user_settings", user_settings);
-	} catch (err) {
-		consoleLog_('error', 'saveUserSettings()', err);
-		return 1;
+	update_DecimalSepartor_();
+
+	if (mm !== init) {
+		sheet.getRange("B4").setFormula("=" + (init + 1).formatLocaleSignal());
+		SpreadsheetApp.flush();
+
+		foo_ColorTabs_();
 	}
-
-	try {
-		if (!update_DecimalSepartor_()) return 1;
-	} catch (err) {
-		consoleLog_('error', 'update_DecimalSepartor_()', err);
-		return 1;
-	}
-
-	yyyy = getUserConstSettings_('financial_year');
-
-	sheet.getRange("B2").setFormula("=" + yyyy.formatLocaleSignal());
-	sheet.getRange("B4").setFormula("=" + (init + 1).formatLocaleSignal());
-	SpreadsheetApp.flush();
-
-	if (mm !== init) foo_ColorTabs_();
-
-	return -1;
 }
 
 
