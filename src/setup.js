@@ -565,6 +565,7 @@ function setupPart6_() {
 	var sheetCards = CONST_LIST_ES_SHEETS_["cards"];
 	var sheet, formula;
 	var header, c, x;
+	var expr1, expr2, expr3, expr4;
 	var i, k;
 	var h_, w_;
 
@@ -587,12 +588,19 @@ function setupPart6_() {
 		sheet.getRange("A3").setFormula("CONCAT(\"Expenses \"; TO_TEXT(\'_Backstage\'!$B" + (4+h_*i) + "))");
 
 		for (k = 0; k < num_acc; k++) {
-			formula = "CONCATENATE(";
-			formula += "\"Withdrawal: (\"; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(2 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\"); \"\n\"; ";
-			formula += "\"Deposit: (\"; \'_Backstage\'!" + rollA1Notation(3 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\"); \"\n\"; ";
-			formula += "\"Trf. in: (\"; \'_Backstage\'!" + rollA1Notation(4 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(4 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\"); \"\n\"; ";
-			formula += "\"Trf. out: (\"; \'_Backstage\'!" + rollA1Notation(5 + h_*i, 9 + w_*k) + "; \") \"; TEXT(\'_Backstage\'!" + rollA1Notation(5 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\")";
-			formula += ")";
+			expr1 = "TEXT(\'_Backstage\'!" + rollA1Notation(2 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\")";
+			expr1 = "\"Withdrawal: (\"; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 9 + w_*k) + "; \") \"; " + expr1 + "; \"\n\"; ";
+
+			expr2 = "TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\")";
+			expr2 = "\"Deposit: (\"; \'_Backstage\'!" + rollA1Notation(3 + h_*i, 9 + w_*k) + "; \") \"; " + expr2 + "; \"\n\"; ";
+
+			expr3 = "TEXT(\'_Backstage\'!" + rollA1Notation(4 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\")";
+			expr3 = "\"Trf. in: (\"; \'_Backstage\'!" + rollA1Notation(4 + h_*i, 9 + w_*k) + "; \") \"; " + expr3 + "; \"\n\"; ";
+
+			expr4 = "TEXT(\'_Backstage\'!" + rollA1Notation(5 + h_*i, 8 + w_*k) + "; \"#,##0.00;-#,##0.00\")";
+			expr4 = "\"Trf. out: (\"; \'_Backstage\'!" + rollA1Notation(5 + h_*i, 9 + w_*k) + "; \") \"; " + expr4;
+
+			formula = "CONCATENATE(" + expr1 + expr2 + expr3 + expr4 + ")";
 			sheet.getRange(1, 8 + 5*k).setFormula(formula);
 
 			sheet.getRange(2, 6 + 5*k).setFormula("CONCAT(\"Balance \"; TO_TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 7 + w_*k) + "))");
@@ -621,22 +629,19 @@ function setupPart6_() {
 		formula = "IFERROR((" + formula + " - 1)/5; \"\")";
 		sheetCards.getRange(2, 1 + 6*i).setFormula(formula);
 
-		formula = "CONCATENATE(";
+		expr1 = "ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
+		expr1 = "OFFSET(INDIRECT(" + expr1 + "); 1; 0; 1; 1)";
+		expr1 = "\"Credit: \"; TEXT(" + expr1 + "; \"#,##0.00;(#,##0.00)\"); \"\n\"; ";
 
-		formula += "\"Credit: \"; ";
-		formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 1; 0; 1; 1); \"#,##0.00;(#,##0.00)\"); ";
-		formula += "\"\n\"; ";
+		expr2 = "ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
+		expr2 = "OFFSET(INDIRECT(" + expr2 + "); 3; 0; 1; 1)";
+		expr2 = "\"Expenses: \"; TEXT(" + expr2 + "; \"#,##0.00;(#,##0.00)\"); \"\n\"; ";
 
-		formula += "\"Expenses: \"; ";
-		formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 3; 0; 1; 1); \"#,##0.00;(#,##0.00)\"); ";
-		formula += "\"\n\"; ";
+		expr3 = "ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
+		expr3 = "OFFSET(INDIRECT(" + expr3 + "); 4; 0; 1; 1)";
+		expr3 = "\"Balance: \"; TEXT(" + expr3 + "; \"#,##0.00;(#,##0.00)\")";
 
-		formula += "\"\n\"; ";
-
-		formula += "\"Balance: \"; ";
-		formula += "TEXT(OFFSET(INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  c + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")); 4; 0; 1; 1); \"#,##0.00;(#,##0.00)\")";
-
-		formula += ")";
+		formula = "CONCATENATE(" + expr1 + expr2 + "\"\n\"; " + expr3 + ")";
 		sheetCards.getRange(2, 4 + 6*i).setFormula(formula);
 	}
 
@@ -679,12 +684,16 @@ function setupPart5_() {
 		}
 
 		for (k = 0; k < 10; k++) {
-			formula = "ARRAYFORMULA(SPLIT(REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\"); \"/\"))";
-			formula = "{" + formula + x + " \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, c + w_*k) + "); ";
-			formula += "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
-			formula += "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\")";
-			formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + ")";
-			formula = "IF(" + rollA1Notation(1, c + w_*k) + " = \"\"; 0; " + formula + "; 0))))";
+			formula = "REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\")";
+			formula = "ARRAYFORMULA(SPLIT(" + formula + "; \"/\"))";
+			formula = "{" + formula + x + " \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; ";
+			formula = formula + "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, c + w_*k) + "); ";
+
+			formula = formula + "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
+			formula = formula + "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\")";
+
+			formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + "); 0)))";
+			formula = "IF(" + rollA1Notation(1, c + w_*k) + " = \"\"; 0; " + formula + ")";
 
 			sheet.getRange(5 + h_*i, 1 + c + w_*k).setFormula(formula);
 		}
@@ -725,10 +734,9 @@ function setupPart4_() {
 		rg += "; \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1, 2) + "}";
 		cd += "; \'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1, 1) + "}";
 
-		formula = "{\"" + MN_FULL_[i] + "\"; ";
-		formula += "IF(\'_Settings\'!$B$7 > 0; ";
-		formula += "BSSUMBYTAG(TRANSPOSE($E$1:$E); IFERROR(FILTER(" + rg + "; ";
-		formula += "NOT(ISBLANK(" + cd + "))); \"\")); )}";
+		formula = "IFERROR(FILTER(" + rg + "; NOT(ISBLANK(" + cd + "))); \"\")";
+		formula = "BSSUMBYTAG(TRANSPOSE($E$1:$E); " + formula + ")";
+		formula = "{\"" + MN_FULL_[i] + "\"; IF(\'_Settings\'!$B$7 > 0; " + formula + "; )}";
 
 		formulas[0].push(formula);
 	}
@@ -887,7 +895,7 @@ function setupPart1_(yyyy_mm) {
 function setupPart3_() {
 	console.time("add-on/setup/part3");
 	var sheet = CONST_LIST_ES_SHEETS_["_backstage"];
-	var formulas, formula, str;
+	var formulas, formula;
 	var n, h_, w_;
 	var a, i, k;
 
@@ -919,68 +927,52 @@ function setupPart3_() {
 
 	i = 0;
 	k = 0;
-	formula = "IFERROR(SUM(";
-	formula += "\'" + MN_SHORT_[i] + "\'!" + values[k];
-	formula += "); 0)";
+	formula = "IFERROR(SUM(\'" + MN_SHORT_[i] + "\'!" + values[k] + "); 0)";
 	sheet.getRange(4 + h_*i, 2).setFormula(formula);
 
 	for (; k < n; k++) {
 		formulas[0][w_*k] = "=0";
 
-		str = balance1[5*i + k];
-		str += " + IFERROR(SUM(FILTER(";
-		str += "\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; ";
-		str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "))";
-		str += ")); 0)";
-		formulas[1][w_*k] = str;
+		formula = "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "))";
+		formula = "FILTER(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; " + formula + ")";
+		formula = balance1[5*i + k] + " + IFERROR(SUM(" + formula + "); 0)";
+		formulas[1][w_*k] = formula;
 
-		str = "IFERROR(SUM(FILTER(";
-		str += "\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; ";
-		str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + ")); ";
-		str += "NOT(REGEXMATCH(";
-		str += "\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "; ";
-		str += "\"#(dp|wd|qcc|ign|rct|trf)\"))";
-		str += ")); 0)";
-		formulas[2][w_*k] = str;
+		formula = "NOT(REGEXMATCH(\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "; \"#(dp|wd|qcc|ign|rct|trf)\"))";
+		formula = "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + ")); " + formula;
+		formula = "FILTER(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; " + formula + ")";
+		formula = "IFERROR(SUM(" + formula + "); 0)";
+		formulas[2][w_*k] = formula;
 
-		str = "BSREPORT(TRANSPOSE(IFERROR(FILTER(";
-		str += "\'" + MN_SHORT_[i] + "\'!" + combo[1 + k] + "; ";
-		str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "))";
-		str += "); \"\")))";
-		formulas[0][1 + w_*k] = str;
+		formula = "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "))";
+		formula = "IFERROR(FILTER(\'" + MN_SHORT_[i] + "\'!" + combo[1 + k] + "; " + formula + "); \"\")";
+		formula = "BSREPORT(TRANSPOSE(" + formula + "))";
+		formulas[0][1 + w_*k] = formula;
 	}
 
 	for (i = 1; i < 12; i++) {
 		k = 0;
-		formula = "IFERROR(SUM(";
-		formula += "\'" + MN_SHORT_[i] + "\'!" + values[k];
-		formula += "); 0)";
+		formula = "IFERROR(SUM(\'" + MN_SHORT_[i] + "\'!" + values[k] + "); 0)";
 		sheet.getRange(4 + h_*i, 2).setFormula(formula);
 
 		for (; k < n; k++) {
 			formulas[h_*i][w_*k] = "=" + balance2[5*i + k];
 
-			str = "=" + balance1[5*i + k];
-			str += " + IFERROR(SUM(FILTER(";
-			str += "\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; ";
-			str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "))";
-			str += ")); 0)";
-			formulas[1 + h_*i][w_*k] = str;
+			formula = "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "))";
+			formula = "FILTER(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; " + formula + ")";
+			formula = "=" + balance1[5*i + k] + " + IFERROR(SUM(" + formula + "); 0)";
+			formulas[1 + h_*i][w_*k] = formula;
 
-			str = "IFERROR(SUM(FILTER(";
-			str += "\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; ";
-			str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + ")); ";
-			str += "NOT(REGEXMATCH(";
-			str += "\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "; ";
-			str += "\"#(dp|wd|qcc|ign|rct|trf)\"))";
-			str += ")); 0)";
-			formulas[2 + h_*i][w_*k] = str;
+			formula = "NOT(REGEXMATCH(\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "; \"#(dp|wd|qcc|ign|rct|trf)\"))";
+			formula = "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + ")); " + formula;
+			formula = "FILTER(\'" + MN_SHORT_[i] + "\'!" + values[1 + k] + "; " + formula + ")";
+			formula = "IFERROR(SUM(" + formula + "); 0)";
+			formulas[2 + h_*i][w_*k] = formula;
 
-			str = "BSREPORT(TRANSPOSE(IFERROR(FILTER(";
-			str += "\'" + MN_SHORT_[i] + "\'!" + combo[1 + k] + "; ";
-			str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "))";
-			str += "); \"\")))";
-			formulas[h_*i][1 + w_*k] = str;
+			formula = "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "))";
+			formula = "IFERROR(FILTER(\'" + MN_SHORT_[i] + "\'!" + combo[1 + k] + "; " + formula + "); \"\")";
+			formula = "BSREPORT(TRANSPOSE(" + formula + "))";
+			formulas[h_*i][1 + w_*k] = formula;
 		}
 	}
 
