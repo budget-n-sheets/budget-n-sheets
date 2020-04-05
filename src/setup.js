@@ -514,8 +514,8 @@ function setupPart7_(yyyy_mm) {
 	for (i = 0; i < 12; i++) {
 
 		formulas[i] = [
-			"='_Backstage'!$B" + (3 + h_*i), null,
-			"=SUM('_Backstage'!$B" + (4 + h_*i) + ":$B" + (6 + h_*i) + ")", null
+			"=\'_Backstage\'!$B" + (3 + h_*i), null,
+			"=SUM(\'_Backstage\'!$B" + (4 + h_*i) + ":$B" + (6 + h_*i) + ")", null
 		];
 	}
 
@@ -584,7 +584,7 @@ function setupPart6_() {
 	for (i = 0; i < 12; i++) {
 		sheet = CONST_LIST_MN_SHEETS_[i];
 
-		sheet.getRange("A3").setFormula("CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B" + (4+h_*i) + "))");
+		sheet.getRange("A3").setFormula("CONCAT(\"Expenses \"; TO_TEXT(\'_Backstage\'!$B" + (4+h_*i) + "))");
 
 		for (k = 0; k < num_acc; k++) {
 			formula = "CONCATENATE(";
@@ -595,8 +595,8 @@ function setupPart6_() {
 			formula += ")";
 			sheet.getRange(1, 8 + 5*k).setFormula(formula);
 
-			sheet.getRange(2, 6 + 5*k).setFormula("CONCAT("Balance "; TO_TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 7 + w_*k) + "))");
-			sheet.getRange(3, 6 + 5*k).setFormula("CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!" + rollA1Notation(4 + h_*i, 7 + w_*k) + "))");
+			sheet.getRange(2, 6 + 5*k).setFormula("CONCAT(\"Balance \"; TO_TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 7 + w_*k) + "))");
+			sheet.getRange(3, 6 + 5*k).setFormula("CONCAT(\"Expenses \"; TO_TEXT(\'_Backstage\'!" + rollA1Notation(4 + h_*i, 7 + w_*k) + "))");
 		}
 
 		sheetCards.getRange(2, 2 + 6*i).setValue("All");
