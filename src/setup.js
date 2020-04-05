@@ -189,7 +189,6 @@ function setup_ui(settings, listAcc) {
 
 
 var CONST_SETUP_SPREADSHEET_, CONST_SETUP_SETTINGS_;
-var CONST_LIST_ES_SHEETS_;
 
 function setup_(settings, listAcc) {
 	var a;
@@ -216,8 +215,6 @@ function setup_(settings, listAcc) {
 	deleteAllSheets_();
 	copySheetsFromTemplate_();
 
-	if (loadConstListSheets_() !== -1) return;
-
 	setup_ExecutePatial_();
 
 	a = {
@@ -235,28 +232,7 @@ function setup_(settings, listAcc) {
 
 	CONST_SETUP_SPREADSHEET_ = null;
 	CONST_SETUP_SETTINGS_ = null;
-	CONST_LIST_ES_SHEETS_ = null;
 	return true;
-}
-
-
-function loadConstListSheets_() {
-	console.time("add-on/setup/load");
-	var list = [
-		[ ],
-		[ ]
-	];
-	var i;
-
-	CONST_LIST_ES_SHEETS_ = { };
-
-	for (i = 0; i < list[0].length; i++) {
-		CONST_LIST_ES_SHEETS_[list[0][i]] = CONST_SETUP_SPREADSHEET_.getSheetByName(list[1][i]);
-		if (!CONST_LIST_ES_SHEETS_[list[0][i]]) return;
-	}
-
-	console.timeEnd("add-on/setup/load");
-	return -1;
 }
 
 
