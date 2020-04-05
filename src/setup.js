@@ -283,8 +283,90 @@ function setup_ExecutePatial_() {
 	setupPart9_();
 	setupPart10_();
 	setupPart11_();
+	setupEast_(yyyy_mm);
 
 	CONST_SETUP_SETTINGS_ = null;
+}
+
+
+function setupEast_(yyyy_mm) {
+	console.time("add-on/setup/east");
+	var spreadsheet = CONST_SETUP_SPREADSHEET_;
+	var sheets, sheet;
+	var md, t, i;
+
+	const init_month = CONST_SETUP_SETTINGS_["init_month"];
+
+	if (yyyy_mm.yyyy == CONST_SETUP_SETTINGS_["financial_year"]) {
+		t = true;
+		md = getMonthDelta(yyyy_mm.mm);
+	} else {
+		t = false;
+	}
+
+	sheets = [ ];
+	for (i = 0; i < 12; i++) {
+		sheets[i] = spreadsheet.getSheetByName(MN_SHORT_[i]);
+	}
+
+	sheet = spreadsheet.getSheetByName("Summary");
+	spreadsheet.setActiveSheet(sheet);
+	sheet.setTabColor("#e69138");
+
+	for (i = 0; i < 12; i++) {
+		sheet = sheets[i];
+
+		if (i < init_month) {
+			if (t && (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1])) {
+				sheet.setTabColor("#b7b7b7");
+			} else {
+				sheet.setTabColor("#b7b7b7");
+			}
+		} else if (t) {
+			if (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1]) {
+				sheet.setTabColor("#a4c2f4");
+			} else {
+				sheet.setTabColor("#3c78d8");
+			}
+		} else {
+			sheet.setTabColor("#a4c2f4");
+		}
+	}
+
+	if (t) {
+		sheets[yyyy_mm.mm].setTabColor("#6aa84f");
+	}
+
+	spreadsheet.getSheetByName("Cards").setTabColor("#e69138");
+	spreadsheet.getSheetByName("Cash Flow").setTabColor("#e69138");
+	spreadsheet.getSheetByName("Tags").setTabColor("#e69138");
+	spreadsheet.getSheetByName("_Backstage").setTabColor("#cc0000");
+	spreadsheet.getSheetByName("_Settings").setTabColor("#cc0000");
+	spreadsheet.getSheetByName("Quick Actions").setTabColor("#6aa84f");
+	spreadsheet.getSheetByName("About").setTabColor("#6aa84f");
+
+	if (t) {
+		for (i = 0; i < 12; i++) {
+			sheet = sheets[i];
+
+			if (i < init_month && (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1])) {
+				sheet.hideSheet();
+			} else if (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1]) {
+				sheet.hideSheet();
+			}
+		}
+
+		if (yyyy_mm.mm == 11) {
+			sheets[8].showSheet();
+		}
+	}
+
+	spreadsheet.getSheetByName("_Backstage").hideSheet();
+	spreadsheet.getSheetByName("_Settings").hideSheet();
+	spreadsheet.getSheetByName("About").hideSheet();
+
+	SpreadsheetApp.flush();
+	console.timeEnd("add-on/setup/east");
 }
 
 
@@ -498,15 +580,6 @@ function setupPart7_(yyyy_mm) {
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
 
-	sheetSummary.setTabColor("#e69138");
-	CONST_LIST_ES_SHEETS_["cards"].setTabColor("#e69138");
-	CONST_LIST_ES_SHEETS_["cash_flow"].setTabColor("#e69138");
-	CONST_LIST_ES_SHEETS_["tags"].setTabColor("#e69138");
-	CONST_LIST_ES_SHEETS_["quick_actions"].setTabColor("#6aa84f");
-	CONST_LIST_ES_SHEETS_["_backstage"].setTabColor("#cc0000").hideSheet();
-	CONST_LIST_ES_SHEETS_["_settings"].setTabColor("#cc0000").hideSheet();
-	CONST_LIST_ES_SHEETS_["about"].setTabColor("#6aa84f").hideSheet();
-
 	sheetSummary.getRange("B2").setValue(CONST_SETUP_SETTINGS_["financial_year"] + " | Year Summary");
 
 	formulas = [ ];
@@ -520,40 +593,6 @@ function setupPart7_(yyyy_mm) {
 	}
 
 	sheetSummary.getRange(11, 4, 12, 4).setFormulas(formulas);
-
-	if (yyyy_mm.yyyy == CONST_SETUP_SETTINGS_["financial_year"]) {
-		md = getMonthDelta(yyyy_mm.mm);
-
-		for (i = 0; i < CONST_SETUP_SETTINGS_["init_month"]; i++) {
-			sheet = CONST_LIST_MN_SHEETS_[i];
-			sheet.setTabColor("#b7b7b7");
-
-			if (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1]) {
-				sheet.hideSheet();
-			}
-		}
-
-		for (; i < 12; i++) {
-			sheet = CONST_LIST_MN_SHEETS_[i];
-
-			if (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1]) {
-				sheet.setTabColor("#a4c2f4");
-				sheet.hideSheet();
-			} else {
-				sheet.setTabColor("#3c78d8");
-			}
-		}
-
-		CONST_LIST_MN_SHEETS_[yyyy_mm.mm].setTabColor("#6aa84f");
-		if (yyyy_mm.mm == 11) CONST_LIST_MN_SHEETS_[8].showSheet();
-	} else {
-		for (i = 0; i < CONST_SETUP_SETTINGS_["init_month"]; i++) {
-			CONST_LIST_MN_SHEETS_[i].setTabColor("#b7b7b7");
-		}
-		for (; i < 12; i++) {
-			CONST_LIST_MN_SHEETS_[i].setTabColor("#a4c2f4");
-		}
-	}
 
 	SpreadsheetApp.flush();
 	console.timeEnd("add-on/setup/part7");
