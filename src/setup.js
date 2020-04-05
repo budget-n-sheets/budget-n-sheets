@@ -944,8 +944,8 @@ function setupPart3_() {
 		formulas[2][w_*k] = str;
 
 		str = "BSREPORT(TRANSPOSE(IFERROR(FILTER(";
-		str += MN_SHORT_[i] + "!" + combo[1 + k] + "; ";
-		str += "NOT(ISBLANK(" + MN_SHORT_[i] + "!" + tags[1 + k] + "))";
+		str += "\'" + MN_SHORT_[i] + "\'!" + combo[1 + k] + "; ";
+		str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "))";
 		str += "); \"\")))";
 		formulas[0][1 + w_*k] = str;
 	}
@@ -977,8 +977,8 @@ function setupPart3_() {
 			formulas[2 + h_*i][w_*k] = str;
 
 			str = "BSREPORT(TRANSPOSE(IFERROR(FILTER(";
-			str += MN_SHORT_[i] + "!" + combo[1 + k] + "; ";
-			str += "NOT(ISBLANK(" + MN_SHORT_[i] + "!" + tags[1 + k] + "))";
+			str += "\'" + MN_SHORT_[i] + "\'!" + combo[1 + k] + "; ";
+			str += "NOT(ISBLANK(\'" + MN_SHORT_[i] + "\'!" + tags[1 + k] + "))";
 			str += "); \"\")))";
 			formulas[h_*i][1 + w_*k] = str;
 		}
