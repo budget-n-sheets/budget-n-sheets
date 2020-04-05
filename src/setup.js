@@ -230,7 +230,7 @@ function setup_(settings, listAcc) {
 	setPropertiesService_("document", "json", "class_version2", a);
 
 	a = nodeControl_("sign");
-	if (a !== -1) throw 1;
+	if (a !== -1) throw new Error("Failed to sign document.");
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(CONST_LIST_ES_SHEETS_["summary"]);
 	console.timeEnd("add-on/install");
@@ -757,7 +757,7 @@ function setupPart4_() {
 function setupPart2_() {
 	console.time("add-on/setup/part2");
 	var list_acc = CONST_SETUP_SETTINGS_["list_acc"];
-	if (CONST_SETUP_SETTINGS_["number_accounts"] !== list_acc.length) throw "Number number_accounts and list_acc length are differ.";
+	if (CONST_SETUP_SETTINGS_["number_accounts"] !== list_acc.length) throw new Error("Number number_accounts and list_acc length are differ.");
 
 	var sheet = CONST_LIST_MN_SHEETS_[0];
 	var ids, acc, r, i, k, w_;
@@ -789,7 +789,7 @@ function setupPart2_() {
 			r = "" + randomString(7, "lonum");
 			i++;
 		} while (ids.indexOf(r) != -1 && i < 99);
-		if (i >= 99) throw "Could not generate unique ID for account.";
+		if (i >= 99) throw new Error("Could not generate unique ID for account.");
 
 		ids.push(r);
 		db_tables.accounts.ids.push(r);
