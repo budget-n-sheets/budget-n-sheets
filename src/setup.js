@@ -1,10 +1,10 @@
 function askDeactivation() {
 	var Ui = SpreadsheetApp.getUi(); // Same variations.
-	var s = randomString(5, 'upnum');
+	var s = randomString(5, "upnum");
 
 	var result = Ui.prompt(
-			'Deactivate add-on',
-			'This action cannot be undone!\nPlease type in the code ' + s + ' to confirm:',
+			"Deactivate add-on",
+			"This action cannot be undone!\nPlease type in the code " + s + " to confirm:",
 			Ui.ButtonSet.OK_CANCEL);
 
 	var button = result.getSelectedButton();
@@ -31,7 +31,7 @@ function askResetProtection() {
 	var protections, protection;
 	var n, i, j, k;
 
-	number_accounts = getUserConstSettings_('number_accounts');
+	number_accounts = getUserConstSettings_("number_accounts");
 
 	for (i = 0; i < 12; i++) {
 		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
@@ -112,26 +112,26 @@ function askResetProtection() {
 function askReinstall() {
 	if (!getPropertiesService_("document", "", "is_installed")) return;
 
-	var financial_year = getUserConstSettings_('financial_year');
+	var financial_year = getUserConstSettings_("financial_year");
 	var date = getSpreadsheetDate();
 	var d;
 
 	purgeScriptAppTriggers_();
 
-	createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
+	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
 
 	if (financial_year < date.getFullYear()) {
-		setPropertiesService_('document', 'string', 'OperationMode', 'passive');
+		setPropertiesService_("document", "string", "OperationMode", "passive");
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
 
 	} else if (financial_year === date.getFullYear()) {
-		setPropertiesService_('document', 'string', 'OperationMode', 'active');
-		createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
+		setPropertiesService_("document", "string", "OperationMode", "active");
+		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
 
 	} else if (financial_year > date.getFullYear()) {
 		d = new Date(financial_year, 0, 2);
 		d = d.getDay();
-		setPropertiesService_('document', 'string', 'OperationMode', 'passive');
+		setPropertiesService_("document", "string", "OperationMode", "passive");
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
 	}
 }
@@ -166,7 +166,7 @@ function setup_ui(settings, listAcc) {
 			"A budget spreadsheet setup is in progress. Try again later.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 
-		consoleLog_('warn', 'setup_ui(): Wait lock time out.()', err);
+		consoleLog_("warn", "setup_ui(): Wait lock time out.()", err);
 		return;
 	}
 
@@ -183,7 +183,7 @@ function setup_ui(settings, listAcc) {
 		};
 		console.info("add-on/Stats", stats);
 	} catch (err) {
-		consoleLog_('error', 'setup_ui()/stats', err);
+		consoleLog_("error", "setup_ui()/stats", err);
 	}
 }
 
@@ -227,7 +227,7 @@ function setup_(settings, listAcc) {
 		template: APPS_SCRIPT_GLOBAL_.template_version.number
 	};
 	a.script.beta = PATCH_THIS_["beta_list"].length;
-	setPropertiesService_('document', 'json', 'class_version2', a);
+	setPropertiesService_("document", "json", "class_version2", a);
 
 	a = nodeControl_("sign");
 	if (a !== -1) throw 1;
@@ -244,7 +244,7 @@ function setup_(settings, listAcc) {
 
 
 function loadConstListSheets_() {
-	console.time('add-on/setup/load');
+	console.time("add-on/setup/load");
 	var list = [
 		[ "summary", "ttt", "cards", "cash_flow", "tags", "quick_actions", "_settings", "_backstage", "about" ],
 		[ "Summary", "TTT", "Cards", "Cash Flow", "Tags", "Quick Actions", "_Settings", "_Backstage", "About" ]
@@ -259,7 +259,7 @@ function loadConstListSheets_() {
 		if (!CONST_LIST_ES_SHEETS_[list[0][i]]) return;
 	}
 
-	console.timeEnd('add-on/setup/load');
+	console.timeEnd("add-on/setup/load");
 	return -1;
 }
 
@@ -289,7 +289,7 @@ function setup_ExecutePatial_() {
 
 
 function setupPart11_() {
-	console.time('add-on/setup/part11');
+	console.time("add-on/setup/part11");
 	var sheet, ranges;
 	var n, i, k;
 
@@ -344,12 +344,12 @@ function setupPart11_() {
 
 
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/part11');
+	console.timeEnd("add-on/setup/part11");
 }
 
 
 function setupPart10_() {
-	console.time('add-on/setup/part10');
+	console.time("add-on/setup/part10");
 	var sheet = CONST_LIST_ES_SHEETS_["cash_flow"];
 	var yyyy = CONST_SETUP_SETTINGS_["financial_year"];
 	var num_acc = CONST_SETUP_SETTINGS_["number_accounts"];
@@ -366,7 +366,7 @@ function setupPart10_() {
 
 		for (i = 0; i < 12; i++) {
 			d = new Date(yyyy, 1 + i, 0).getDate();
-			sheet.getRange(3, 3 + 4*i + 4).setFormulaR1C1('=R[' + (d - 1) + ']C[-4] + RC[-1]');
+			sheet.getRange(3, 3 + 4*i + 4).setFormulaR1C1("=R[" + (d - 1) + "]C[-4] + RC[-1]");
 		}
 	} else {
 		ranges = [ ];
@@ -402,7 +402,7 @@ function setupPart10_() {
 		}
 
 		for (i = 1; i < 12; i++) {
-			sheet.getRange(3, 3 + 4*i).setFormulaR1C1('=R[' + (d - 1) + ']C[-4] + RC[-1]');
+			sheet.getRange(3, 3 + 4*i).setFormulaR1C1("=R[" + (d - 1) + "]C[-4] + RC[-1]");
 
 			d = new Date(yyyy, 1 + i, 0).getDate();
 			ranges.push([ rollA1Notation(4, 3 + 4*i, d - 1) ]);
@@ -433,15 +433,15 @@ function setupPart10_() {
 		}
 	}
 
-	sheet.getRangeList(ranges).setFormulaR1C1('=R[-1]C + RC[-1]');
-	sheet.getRangeList(b_f3f3f3).setBackground('#f3f3f3');
-	sheet.getRangeList(b_d9ead3).setBackground('#d9ead3');
+	sheet.getRangeList(ranges).setFormulaR1C1("=R[-1]C + RC[-1]");
+	sheet.getRangeList(b_f3f3f3).setBackground("#f3f3f3");
+	sheet.getRangeList(b_d9ead3).setBackground("#d9ead3");
 
 	h_ = TABLE_DIMENSION_.height;
 	mm = CONST_SETUP_SETTINGS_["init_month"];
 	ranges = [ "G", "L", "Q", "V", "AA" ];
 
-	sheet.getRange(3, 3).setFormula('=0 + B3');
+	sheet.getRange(3, 3).setFormula("=0 + B3");
 
 	if (mm == 0) {
 		s = "=0 + B3";
@@ -455,41 +455,41 @@ function setupPart10_() {
 	sheet.getRange(3, 3 + 4*mm).setFormula(s);
 
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/part10');
+	console.timeEnd("add-on/setup/part10");
 }
 
 
 function setupPart9_() {
-	console.time('add-on/setup/part9');
+	console.time("add-on/setup/part9");
 	var sheet = CONST_LIST_ES_SHEETS_["summary"];
 	var chart, options;
 
 	options = {
-		0:{color:'#b7b7b7', type:'bars', labelInLegend:'Income'},
-		1:{color:'#cccccc', type:'bars', labelInLegend:'Expenses'},
-		2:{color:'#45818e', type:'bars', labelInLegend:'Income'},
-		3:{color:'#e69138', type:'bars', labelInLegend:'Expenses'}
+		0:{color:"#b7b7b7", type:"bars", labelInLegend:"Income"},
+		1:{color:"#cccccc", type:"bars", labelInLegend:"Expenses"},
+		2:{color:"#45818e", type:"bars", labelInLegend:"Income"},
+		3:{color:"#e69138", type:"bars", labelInLegend:"Expenses"}
 	};
 
 	chart = sheet.newChart()
-		.addRange( sheet.getRange('C25:H36') )
+		.addRange( sheet.getRange("C25:H36") )
 		.setChartType(Charts.ChartType.COMBO)
 		.setPosition(24, 2, 0, 0)
-		.setOption('mode', 'view')
-		.setOption('legend', 'top')
-		.setOption('focusTarget', 'category')
-		.setOption('series', options)
-		.setOption('height', 482)
-		.setOption('width', 886);
+		.setOption("mode", "view")
+		.setOption("legend", "top")
+		.setOption("focusTarget", "category")
+		.setOption("series", options)
+		.setOption("height", 482)
+		.setOption("width", 886);
 
 	sheet.insertChart( chart.build() );
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/part9');
+	console.timeEnd("add-on/setup/part9");
 }
 
 
 function setupPart7_(yyyy_mm) {
-	console.time('add-on/setup/part7');
+	console.time("add-on/setup/part7");
 	var sheetSummary = CONST_LIST_ES_SHEETS_["summary"];
 	var sheet, md, i;
 	var formulas;
@@ -498,16 +498,16 @@ function setupPart7_(yyyy_mm) {
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
 
-	sheetSummary.setTabColor('#e69138');
-	CONST_LIST_ES_SHEETS_["cards"].setTabColor('#e69138');
-	CONST_LIST_ES_SHEETS_["cash_flow"].setTabColor('#e69138');
-	CONST_LIST_ES_SHEETS_["tags"].setTabColor('#e69138');
-	CONST_LIST_ES_SHEETS_["quick_actions"].setTabColor('#6aa84f');
-	CONST_LIST_ES_SHEETS_["_backstage"].setTabColor('#cc0000').hideSheet();
-	CONST_LIST_ES_SHEETS_["_settings"].setTabColor('#cc0000').hideSheet();
-	CONST_LIST_ES_SHEETS_["about"].setTabColor('#6aa84f').hideSheet();
+	sheetSummary.setTabColor("#e69138");
+	CONST_LIST_ES_SHEETS_["cards"].setTabColor("#e69138");
+	CONST_LIST_ES_SHEETS_["cash_flow"].setTabColor("#e69138");
+	CONST_LIST_ES_SHEETS_["tags"].setTabColor("#e69138");
+	CONST_LIST_ES_SHEETS_["quick_actions"].setTabColor("#6aa84f");
+	CONST_LIST_ES_SHEETS_["_backstage"].setTabColor("#cc0000").hideSheet();
+	CONST_LIST_ES_SHEETS_["_settings"].setTabColor("#cc0000").hideSheet();
+	CONST_LIST_ES_SHEETS_["about"].setTabColor("#6aa84f").hideSheet();
 
-	sheetSummary.getRange('B2').setValue(CONST_SETUP_SETTINGS_["financial_year"] + ' | Year Summary');
+	sheetSummary.getRange("B2").setValue(CONST_SETUP_SETTINGS_["financial_year"] + " | Year Summary");
 
 	formulas = [ ];
 
@@ -526,7 +526,7 @@ function setupPart7_(yyyy_mm) {
 
 		for (i = 0; i < CONST_SETUP_SETTINGS_["init_month"]; i++) {
 			sheet = CONST_LIST_MN_SHEETS_[i];
-			sheet.setTabColor('#b7b7b7');
+			sheet.setTabColor("#b7b7b7");
 
 			if (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1]) {
 				sheet.hideSheet();
@@ -537,31 +537,31 @@ function setupPart7_(yyyy_mm) {
 			sheet = CONST_LIST_MN_SHEETS_[i];
 
 			if (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1]) {
-				sheet.setTabColor('#a4c2f4');
+				sheet.setTabColor("#a4c2f4");
 				sheet.hideSheet();
 			} else {
-				sheet.setTabColor('#3c78d8');
+				sheet.setTabColor("#3c78d8");
 			}
 		}
 
-		CONST_LIST_MN_SHEETS_[yyyy_mm.mm].setTabColor('#6aa84f');
+		CONST_LIST_MN_SHEETS_[yyyy_mm.mm].setTabColor("#6aa84f");
 		if (yyyy_mm.mm == 11) CONST_LIST_MN_SHEETS_[8].showSheet();
 	} else {
 		for (i = 0; i < CONST_SETUP_SETTINGS_["init_month"]; i++) {
-			CONST_LIST_MN_SHEETS_[i].setTabColor('#b7b7b7');
+			CONST_LIST_MN_SHEETS_[i].setTabColor("#b7b7b7");
 		}
 		for (; i < 12; i++) {
-			CONST_LIST_MN_SHEETS_[i].setTabColor('#a4c2f4');
+			CONST_LIST_MN_SHEETS_[i].setTabColor("#a4c2f4");
 		}
 	}
 
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/part7');
+	console.timeEnd("add-on/setup/part7");
 }
 
 
 function setupPart6_() {
-	console.time('add-on/setup/part6');
+	console.time("add-on/setup/part6");
 	var sheetCards = CONST_LIST_ES_SHEETS_["cards"];
 	var sheet, formula;
 	var header, c, x;
@@ -584,7 +584,7 @@ function setupPart6_() {
 	for (i = 0; i < 12; i++) {
 		sheet = CONST_LIST_MN_SHEETS_[i];
 
-		sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B' + (4+h_*i) + '))');
+		sheet.getRange("A3").setFormula("CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!$B" + (4+h_*i) + "))");
 
 		for (k = 0; k < num_acc; k++) {
 			formula = "CONCATENATE(";
@@ -595,8 +595,8 @@ function setupPart6_() {
 			formula += ")";
 			sheet.getRange(1, 8 + 5*k).setFormula(formula);
 
-			sheet.getRange(2, 6 + 5*k).setFormula('CONCAT("Balance "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(3 + h_*i, 7 + w_*k) + '))');
-			sheet.getRange(3, 6 + 5*k).setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4 + h_*i, 7 + w_*k) + '))');
+			sheet.getRange(2, 6 + 5*k).setFormula("CONCAT("Balance "; TO_TEXT(\'_Backstage\'!" + rollA1Notation(3 + h_*i, 7 + w_*k) + "))");
+			sheet.getRange(3, 6 + 5*k).setFormula("CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!" + rollA1Notation(4 + h_*i, 7 + w_*k) + "))");
 		}
 
 		sheetCards.getRange(2, 2 + 6*i).setValue("All");
@@ -641,12 +641,12 @@ function setupPart6_() {
 	}
 
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/part6');
+	console.timeEnd("add-on/setup/part6");
 }
 
 
 function setupPart5_() {
-	console.time('add-on/setup/part5');
+	console.time("add-on/setup/part5");
 
 	var sheet = CONST_LIST_ES_SHEETS_["_backstage"];
 	var formulaSumIncome, formulaSumExpenses;
@@ -665,8 +665,8 @@ function setupPart5_() {
 	else x = " \\";
 
 	for (i = 0; i < 12; i++) {
-		formulaSumIncome = '=';
-		formulaSumExpenses = '=';
+		formulaSumIncome = "=";
+		formulaSumExpenses = "=";
 
 		k = 0;
 
@@ -674,8 +674,8 @@ function setupPart5_() {
 		formulaSumExpenses += rollA1Notation(4+h_*i, 7+w_*k);
 
 		for (k = 1; k < num_acc; k++) {
-			formulaSumIncome += '+'+rollA1Notation(6+h_*i, 8+w_*k);
-			formulaSumExpenses += '+'+rollA1Notation(4+h_*i, 7+w_*k);
+			formulaSumIncome += "+"+rollA1Notation(6+h_*i, 8+w_*k);
+			formulaSumExpenses += "+"+rollA1Notation(4+h_*i, 7+w_*k);
 		}
 
 		for (k = 0; k < 10; k++) {
@@ -694,12 +694,12 @@ function setupPart5_() {
 	}
 
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/part5');
+	console.timeEnd("add-on/setup/part5");
 }
 
 
 function setupPart4_() {
-	console.time('add-on/setup/part4');
+	console.time("add-on/setup/part4");
 	var sheet = CONST_LIST_ES_SHEETS_["tags"];
 	var formula, formulas, rg, cd;
 	var rgMonthTags, rgMonthCombo;
@@ -750,12 +750,12 @@ function setupPart4_() {
 	sheet.getRange(1, 20).setFormula(formula);
 
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/part4');
+	console.timeEnd("add-on/setup/part4");
 }
 
 
 function setupPart2_() {
-	console.time('add-on/setup/part2');
+	console.time("add-on/setup/part2");
 	var list_acc = CONST_SETUP_SETTINGS_["list_acc"];
 	if (CONST_SETUP_SETTINGS_["number_accounts"] !== list_acc.length) throw "Number number_accounts and list_acc length are differ.";
 
@@ -809,13 +809,13 @@ function setupPart2_() {
 		db_tables.accounts.data.push(acc);
 	}
 
-	setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
-	console.timeEnd('add-on/setup/part2');
+	setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+	console.timeEnd("add-on/setup/part2");
 }
 
 
 function setupPart1_(yyyy_mm) {
-	console.time('add-on/setup/part1');
+	console.time("add-on/setup/part1");
 	var cell, d;
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(CONST_LIST_ES_SHEETS_["_settings"]);
@@ -854,38 +854,38 @@ function setupPart1_(yyyy_mm) {
 		override_zero: false,
 		spreadsheet_locale: CONST_SETUP_SETTINGS_["spreadsheet_locale"]
 	};
-	setPropertiesService_('document', 'json', 'user_settings', cell);
+	setPropertiesService_("document", "json", "user_settings", cell);
 
 	cell = {
 		date_created: CONST_SETUP_SETTINGS_["date_created"].getTime(),
 		number_accounts: CONST_SETUP_SETTINGS_["number_accounts"],
 		financial_year: CONST_SETUP_SETTINGS_["financial_year"]
 	};
-	setPropertiesService_('document', 'obj', 'user_const_settings', cell);
+	setPropertiesService_("document", "obj", "user_const_settings", cell);
 
-	createScriptAppTriggers_('document', 'onEditMainId', 'onEdit', 'onEdit_Main_');
+	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
 	if (CONST_SETUP_SETTINGS_["financial_year"] < yyyy_mm.yyyy) {
-		createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Foo_', 2);
-		setPropertiesService_('document', 'string', 'OperationMode', "passive");
+		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
+		setPropertiesService_("document", "string", "OperationMode", "passive");
 
 	} else if (CONST_SETUP_SETTINGS_["financial_year"] == yyyy_mm.yyyy) {
-		createScriptAppTriggers_('document', 'dailyMainId', 'everyDays', 'daily_Main_', 1, 2);
-		setPropertiesService_('document', 'string', 'OperationMode', "active");
+		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
+		setPropertiesService_("document", "string", "OperationMode", "active");
 
 	} else if (CONST_SETUP_SETTINGS_["financial_year"] > yyyy_mm.yyyy) {
 		d = new Date(CONST_SETUP_SETTINGS_["financial_year"], 0, 2);
 		d = d.getDay();
-		createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', d);
-		setPropertiesService_('document', 'string', 'OperationMode', "passive");
+		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
+		setPropertiesService_("document", "string", "OperationMode", "passive");
 	}
 
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/part1');
+	console.timeEnd("add-on/setup/part1");
 }
 
 
 function setupPart3_() {
-	console.time('add-on/setup/part3');
+	console.time("add-on/setup/part3");
 	var sheet = CONST_LIST_ES_SHEETS_["_backstage"];
 	var formulas, formula, str;
 	var n, h_, w_;
@@ -943,10 +943,10 @@ function setupPart3_() {
 		str += ")); 0)";
 		formulas[2][w_*k] = str;
 
-		str = 'BSREPORT(TRANSPOSE(IFERROR(FILTER(';
-		str += MN_SHORT_[i] + '!' + combo[1 + k] + '; ';
-		str += 'NOT(ISBLANK(' + MN_SHORT_[i] + '!' + tags[1 + k] + '))';
-		str += '); \"\")))';
+		str = "BSREPORT(TRANSPOSE(IFERROR(FILTER(";
+		str += MN_SHORT_[i] + "!" + combo[1 + k] + "; ";
+		str += "NOT(ISBLANK(" + MN_SHORT_[i] + "!" + tags[1 + k] + "))";
+		str += "); \"\")))";
 		formulas[0][1 + w_*k] = str;
 	}
 
@@ -976,10 +976,10 @@ function setupPart3_() {
 			str += ")); 0)";
 			formulas[2 + h_*i][w_*k] = str;
 
-			str = 'BSREPORT(TRANSPOSE(IFERROR(FILTER(';
-			str += MN_SHORT_[i] + '!' + combo[1 + k] + '; ';
-			str += 'NOT(ISBLANK(' + MN_SHORT_[i] + '!' + tags[1 + k] + '))';
-			str += '); \"\")))';
+			str = "BSREPORT(TRANSPOSE(IFERROR(FILTER(";
+			str += MN_SHORT_[i] + "!" + combo[1 + k] + "; ";
+			str += "NOT(ISBLANK(" + MN_SHORT_[i] + "!" + tags[1 + k] + "))";
+			str += "); \"\")))";
 			formulas[h_*i][1 + w_*k] = str;
 		}
 	}
@@ -987,12 +987,12 @@ function setupPart3_() {
 	sheet.getRange(2, 7, 120, w_*n).setFormulas(formulas);
 
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/part3');
+	console.timeEnd("add-on/setup/part3");
 }
 
 
 function setupPart0_() {
-	console.time('add-on/setup/part0');
+	console.time("add-on/setup/part0");
 	var sheetTTT = CONST_LIST_ES_SHEETS_["ttt"];
 	var sheet, ranges;
 	var num_acc, diff_num_acc;
@@ -1019,15 +1019,15 @@ function setupPart0_() {
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheetTTT);
 	sheet = CONST_SETUP_SPREADSHEET_.duplicateActiveSheet().setName(MN_SHORT_[0]);
-	sheet.getRange(1, 1).setValue('Wallet');
+	sheet.getRange(1, 1).setValue("Wallet");
 	CONST_LIST_MN_SHEETS_[0] = sheet;
 
 	for (i = 1; i < 12; i++) {
 		for (k = 0; k < 1 + num_acc; k++) {
-			CONST_LIST_MN_SHEETS_[i].getRange(1, 1 + 5*k).setFormula('=\'' + MN_SHORT_[i - 1] + '\'!' + ref[k]);
+			CONST_LIST_MN_SHEETS_[i].getRange(1, 1 + 5*k).setFormula("=\'" + MN_SHORT_[i - 1] + "\'!" + ref[k]);
 		}
 	}
 
 	SpreadsheetApp.flush();
-	console.timeEnd('add-on/setup/part0');
+	console.timeEnd("add-on/setup/part0");
 }
