@@ -446,7 +446,8 @@ function setupPart10_() {
 	if (mm == 0) {
 		s = "=0 + B3";
 	} else {
-		s = "=" + rollA1Notation(3 + (d - 1), 3 + 4*mm - 4) + " + " + rollA1Notation(3, 3 + 4*mm - 1);
+		d = new Date(yyyy, mm, 0).getDate();
+		s = "=" + rollA1Notation(2 + d, 4*mm - 1) + " + " + rollA1Notation(3, 2 + 4*mm);
 	}
 
 	for (k = 0; k < num_acc; k++) {
