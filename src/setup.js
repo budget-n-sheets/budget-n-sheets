@@ -475,7 +475,8 @@ function setupCashFlow_() {
 	if (init_month == 0) {
 		formula = "=0 + B3";
 	} else {
-		formula = "=" + rollA1Notation(3 + (d - 1), 3 + 4*init_month - 4) + " + " + rollA1Notation(3, 2 + 4*init_month - 1);
+		d = new Date(financial_year, init_month, 0).getDate();
+		formula = "=" + rollA1Notation(2 + d, 4*init_month - 1) + " + " + rollA1Notation(3, 2 + 4*init_month);
 	}
 
 	for (k = 0; k < num_acc; k++) {
