@@ -133,20 +133,22 @@ function optTable_GenerateRandomId_() {
 
 
 function optAccount_UpdateTableRef_() {
-	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cash Flow');
-	var formulas;
+	var sheet, formulas;
 	var db_accounts;
-	var number_accounts = getUserConstSettings_('number_accounts'),
-			yyyy = getUserConstSettings_('financial_year');
-	var range_, string, mm, dd,
-			i, k, h_;
+	var string, mm, dd;
+	var i, k;
 
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cash Flow");
 	if (!sheet) return 2;
 
-	h_ = TABLE_DIMENSION_.height;
-	range_ = [ "G", "L", "Q", "V", "AA" ];
+	const h_ = TABLE_DIMENSION_.height;
 
-	db_accounts = getPropertiesService_('document', 'json', 'DB_TABLES');
+	const ranges = [ "G", "L", "Q", "V", "AA" ];
+
+	const num_acc = getUserConstSettings_("number_accounts");
+	const yyyy = getUserConstSettings_("financial_year");
+
+	db_accounts = getPropertiesService_("document", "json", "DB_TABLES");
 	db_accounts = db_accounts.accounts;
 
 	formulas = [ "=0 + B3" ];
@@ -156,9 +158,9 @@ function optAccount_UpdateTableRef_() {
 		formulas[i] = "=" + rollA1Notation(2 + dd, 4*i - 1) + " + " + rollA1Notation(3, 2 + 4*i);
 	}
 
-	for (k = 0; k < number_accounts; k++) {
+	for (k = 0; k < num_acc; k++) {
 		mm = db_accounts.data[k].time_a;
-		formulas[mm] += " + \'_Backstage\'!" + range_[k] + (2 + h_*mm);
+		formulas[mm] += " + \'_Backstage\'!" + ranges[k] + (2 + h_*mm);
 	}
 
 	for (i = 0; i < 12; i++) {
