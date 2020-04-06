@@ -13,8 +13,14 @@
 	window.addEventListener('load', preventFormSubmit);
 
 	function showError(err) {
+		const payload = { };
+
+		for (var i in err) {
+			payload[i] = err[i];
+		}
+
 		google.script.run.withSuccessHandler(function() {
 			google.script.host.close();
-		}).showDialogErrorMessage(err);
+		}).showDialogErrorMessage(payload);
 	}
 </script>
