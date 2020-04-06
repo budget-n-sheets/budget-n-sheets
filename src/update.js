@@ -9,7 +9,7 @@ var PATCH_THIS_ = Object.freeze({
 			[ null, null ],
 			[ null, null, null, update_v0m24p3_, null, null ],
 			[ update_v0m25p0_, null, update_v0m25p2_, null ],
-			[ update_v0m26p0_, update_v0m26p1_, null ]
+			[ update_v0m26p0_, update_v0m26p1_, null, update_v0m26p3_ ]
 		]
 	],
 	beta_list: [ ]
@@ -98,6 +98,20 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Update cash flow range referencing.
+ *
+ * 0.26.3
+ */
+function update_v0m26p3_() {
+	try {
+		optAccount_UpdateTableRef_();
+	} catch (err) {
+		consoleLog_('error', 'update_v0m26p3_()', err);
+		return 1;
+	}
+}
 
 /**
  * Add BSCARDPART() in backstage.
