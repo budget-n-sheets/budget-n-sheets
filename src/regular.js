@@ -115,7 +115,7 @@ function daily_PostEvents_(date) {
 }
 
 
-function update_DecimalSepartor_() {
+function updateDecimalSepartor_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet = spreadsheet.getSheetByName("_Settings");
 	var cell;

@@ -51,7 +51,7 @@ function saveUserSettings(settings) {
 	};
 	setPropertiesService_("document", "json", "user_settings", user_settings);
 
-	update_DecimalSepartor_();
+	updateDecimalSepartor_();
 
 	if (mm !== init) {
 		sheet.getRange("B4").setFormula("=" + (init + 1).formatLocaleSignal());
