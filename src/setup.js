@@ -536,7 +536,7 @@ function setupSummary_() {
 function setupCards_() {
 	console.time("add-on/setup/cards");
 	var sheet = CONST_SETUP_SPREADSHEET_.getSheetByName("Cards");
-	var ranges, formula;
+	var ranges, formula, head, cell;
 	var expr1, expr2, expr3;
 	var i, k;
 
@@ -546,9 +546,9 @@ function setupCards_() {
 	const dec_p = CONST_SETUP_SETTINGS_["decimal_separator"];
 	const num_acc = CONST_SETUP_SETTINGS_["number_accounts"];
 
-	const col = 1 + w_ + w_*num_acc;
+	const col = 2 + w_ + w_*num_acc;
 	const dec_c = (dec_p == "[ ]" ? "," : "\\");
-	const header = rollA1Notation(1, col + 1, 1, w_*11);
+	const header = rollA1Notation(1, col, 1, w_*11);
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheet);
 	CONST_SETUP_SPREADSHEET_.moveActiveSheet(14);
@@ -564,19 +564,19 @@ function setupCards_() {
 		.setWarningOnly(true);
 
 	for (i = 0; i < 12; i++) {
+		head = rollA1Notation(2, 1 + 6*i);
+		cell = "\'_Backstage\'!" + rollA1Notation(2 + h_*i, col);
+
 		sheet.getRange(2, 2 + 6*i).setValue("All");
 
-		formula = "ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
-		formula = "OFFSET(INDIRECT(" + formula + "); 4; 1; 1; 1)";
+		formula = "OFFSET(" + cell + "; 4; 1 + 5*" + head + "; 1; 1)";
 		formula = "TEXT(" + formula + "; \"#,##0.00;(#,##0.00)\")";
 		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; " + formula + ")";
 		formula = "CONCATENATE(\"AVAIL credit: \"; " + formula + ")";
 		sheet.getRange(3, 1 + 6*i).setFormula(formula);
 
 
-		formula = "INDIRECT(ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\"))";
-
-		formula = "MAX(0; OFFSET(" + formula + "; 4; 1; 1; 1)); {\"charttype\"" + dec_c + "\"bar\"; \"max\"" + dec_c + "OFFSET(" + formula + "; 0; 1; 1; 1); \"color1\"" + dec_c + "\"#45818e\"}";
+		formula = "MAX(0; OFFSET(" + cell + "; 4; 1 + 5*" + head + "; 1; 1)); {\"charttype\"" + dec_c + "\"bar\"; \"max\"" + dec_c + "OFFSET(" + cell + "; 0; 1 + 5*" + head + "; 1; 1); \"color1\"" + dec_c + "\"#45818e\"}";
 		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(" + formula + "))";
 		sheet.getRange(4, 1 + 6*i).setFormula(formula);
 
@@ -588,16 +588,13 @@ function setupCards_() {
 		sheet.getRange(2, 1 + 6*i).setFormula(formula);
 
 
-		expr1 = "ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
-		expr1 = "OFFSET(INDIRECT(" + expr1 + "); 1; 0; 1; 1)";
+		expr1 = "OFFSET(" + cell + "; 1; 5*" + head + "; 1; 1)";
 		expr1 = "\"Credit: \"; TEXT(" + expr1 + "; \"#,##0.00;(#,##0.00)\"); \"\n\"; ";
 
-		expr2 = "ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
-		expr2 = "OFFSET(INDIRECT(" + expr2 + "); 3; 0; 1; 1)";
+		expr2 = "OFFSET(" + cell + "; 3; 5*" + head + "; 1; 1)";
 		expr2 = "\"Expenses: \"; TEXT(" + expr2 + "; \"#,##0.00;(#,##0.00)\"); \"\n\"; ";
 
-		expr3 = "ADDRESS(2 + " + (h_*i) + "; " +  col + " + " + rollA1Notation(2, 1 + 6*i) + "*5 + 1; 4; true; \"_Backstage\")";
-		expr3 = "OFFSET(INDIRECT(" + expr3 + "); 4; 0; 1; 1)";
+		expr3 = "OFFSET(" + cell + "; 4; 5*" + head + "; 1; 1)";
 		expr3 = "\"Balance: \"; TEXT(" + expr3 + "; \"#,##0.00;(#,##0.00)\")";
 
 		formula = "CONCATENATE(" + expr1 + expr2 + "\"\n\"; " + expr3 + ")";
