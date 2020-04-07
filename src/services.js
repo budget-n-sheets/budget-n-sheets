@@ -60,6 +60,11 @@ function daily_Main_(e) {
 		uninstall_();
 		return;
 	}
+
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
+		updateDecimalSepartor_();
+	}
+
 	if (seamlessUpdate_()) return;
 
 	var financial_year = getUserConstSettings_('financial_year');
@@ -77,10 +82,6 @@ function daily_Main_(e) {
 		"month": date.getMonth(),
 		"date": date.getDate()
 	};
-
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('spreadsheet_locale')) {
-		if (!update_DecimalSepartor_()) return;
-	}
 
 	if (financial_year < a["year"]) {
 		monthly_TreatLayout_(a["year"], a["month"]);
@@ -112,8 +113,8 @@ function weekly_Foo_(e) {
 		return;
 	}
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('spreadsheet_locale')) {
-		if (!update_DecimalSepartor_()) return;
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
+		updateDecimalSepartor_();
 	}
 
 	seamlessUpdate_();
@@ -142,8 +143,8 @@ function weekly_Bar_(e) {
 		date: date.getDate()
 	};
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('spreadsheet_locale')) {
-		if (!update_DecimalSepartor_()) return;
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
+		updateDecimalSepartor_();
 	}
 
 	if (seamlessUpdate_()) return;

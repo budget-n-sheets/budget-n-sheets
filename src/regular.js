@@ -117,15 +117,15 @@ function daily_PostEvents_(date) {
 
 function updateDecimalSepartor_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet = spreadsheet.getSheetByName("_Settings");
-	var cell;
+	var sheet, cell;
 
+	sheet = spreadsheet.getSheetByName("_Settings");
 	if (!sheet) return;
 
 	cell = sheet.getRange(8, 2);
 
-	cell.setValue(0.1);
 	cell.setNumberFormat("0.0");
+	cell.setValue(0.1);
 	SpreadsheetApp.flush();
 
 	cell = cell.getDisplayValue();
@@ -135,8 +135,7 @@ function updateDecimalSepartor_() {
 		deletePropertiesService_("document", "decimal_separator");
 	}
 
-	setUserSettings_('spreadsheet_locale', spreadsheet.getSpreadsheetLocale());
-	return true;
+	setUserSettings_("spreadsheet_locale", spreadsheet.getSpreadsheetLocale());
 }
 
 
