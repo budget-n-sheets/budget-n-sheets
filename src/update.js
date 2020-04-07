@@ -66,7 +66,13 @@ function seamlessUpdate_() {
 
 
 function getClass_(o) {
-	var c = getPropertiesService_('document', 'json', 'class_version2');
+	var c;
+
+	c = getCacheService_("document", "class_version2", "json");
+	if (!c) {
+		c = getPropertiesService_('document', 'json', 'class_version2');
+		putCacheService_("document", "class_version2", "json", c);
+	}
 
 	return c[o];
 }
@@ -83,6 +89,7 @@ function setClass_(o, v) {
 	c[o] = v;
 
 	setPropertiesService_('document', 'json', 'class_version2', c);
+	putCacheService_("document", "class_version2", "json", c);
 }
 
 
