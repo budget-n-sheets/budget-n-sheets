@@ -28,7 +28,7 @@ function update_() {
 		return 1;
 	}
 
-	const v0 = optGetClass_('script');
+	const v0 = getClass_('script');
 	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
 
 	if (v0.major > v1.major) return 0;
@@ -96,7 +96,7 @@ function update_() {
 		beta: r.b
 	};
 
-	optSetClass_('script', cell);
+	setClass_('script', cell);
 	nodeControl_('sign');
 
 	return 0;

@@ -65,16 +65,16 @@ function seamlessUpdate_() {
 }
 
 
-function optGetClass_(o) {
+function getClass_(o) {
 	var c = getPropertiesService_('document', 'json', 'class_version2');
 
 	return c[o];
 }
 
 
-function optSetClass_(o, v) {
+function setClass_(o, v) {
 	if (o !== 'script' && o !== 'template') {
-		consoleLog_('error', 'optSetClass_(): Switch case is default', {o:o, v:v});
+		consoleLog_('error', 'setClass_(): Switch case is default', {o:o, v:v});
 		return;
 	}
 
