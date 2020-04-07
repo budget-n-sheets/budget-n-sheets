@@ -27,7 +27,7 @@ function onlineUpdate_() {
 			"Add-on Update",
 			"Please re-open the spreadsheet to update the add-on.",
 			ui.ButtonSet.OK);
-		return true;
+		return 1;
 	}
 
 	var r = update_();
@@ -44,7 +44,7 @@ function onlineUpdate_() {
 		showDialogErrorMessage();
 	}
 
-	return true;
+	return 1;
 }
 
 
@@ -53,7 +53,7 @@ function seamlessUpdate_() {
 		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
 		consoleLog_('warn', 'seamlessUpdate_()', err);
-		return true;
+		return 1;
 	}
 
 	var r = update_();
@@ -61,7 +61,7 @@ function seamlessUpdate_() {
 	if (r === 0) return;
 	if (r > 1) uninstall_();
 
-	return true;
+	return 1;
 }
 
 
