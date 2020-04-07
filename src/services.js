@@ -60,7 +60,6 @@ function daily_Main_(e) {
 		uninstall_();
 		return;
 	}
-	if (isMissingSheet()) return;
 	if (seamlessUpdate_()) return;
 
 	var financial_year = getUserConstSettings_('financial_year');
@@ -112,7 +111,6 @@ function weekly_Foo_(e) {
 		uninstall_();
 		return;
 	}
-	if (isMissingSheet()) return;
 
 	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() != getUserSettings_('spreadsheet_locale')) {
 		if (!update_DecimalSepartor_()) return;
@@ -128,7 +126,6 @@ function weekly_Bar_(e) {
 		uninstall_();
 		return;
 	}
-	if (isMissingSheet()) return;
 
 	var date, a;
 
