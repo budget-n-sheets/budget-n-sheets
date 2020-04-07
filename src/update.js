@@ -17,27 +17,51 @@ var PATCH_THIS_ = Object.freeze({
 
 
 function onlineUpdate_() {
+	const v0 = getClass_("script");
+	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
+
+	if (v0.major > v1.major) return;
+	if (v0.major == v1.major) {
+		if (v0.minor > v1.minor) return;
+		if (v0.minor == v1.minor) {
+			if (v0.patch > v1.patch) return;
+			if (v0.patch == v1.patch) {
+				if (PATCH_THIS_["beta_list"].length == 0 || v0.beta >= PATCH_THIS_["beta_list"].length) return;
+			}
+		}
+	}
+
 	var ui = SpreadsheetApp.getUi();
+
 	try {
 		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
 		consoleLog_('warn', 'onlineUpdate_()', err);
 
 		ui.alert(
-			"Add-on Update",
-			"Please re-open the spreadsheet to update the add-on.",
+			"New version available",
+			"Please, re-open the spreadsheet to update the add-on.",
 			ui.ButtonSet.OK);
 		return 1;
 	}
 
+	if (v1.patch === 0) showDialogUpdate();
+
 	var r = update_();
 
 	if (r === 0) {
+		ui.alert(
+			"Update successful",
+			"The update process is complete!",
+			ui.ButtonSet.OK);
 		return;
+
 	} else if (r === 1) {
-		ui.alert("Budget n Sheets",
+		ui.alert(
+			"Budget n Sheets",
 			"The add-on is busy. Try again in a moment.",
 			ui.ButtonSet.OK);
+
 	} else if (r > 1) {
 		uninstall_();
 		onOpen();

@@ -144,6 +144,15 @@ function showDialogErrorMessage(err) {
 }
 
 
+function showDialogUpdate() {
+	var htmlDialog = HtmlService.createHtmlOutputFromFile("htmlUpdateScreen")
+		.setWidth(263)
+		.setHeight(113);
+
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Budget n Sheets");
+}
+
+
 function showDialogQuickMessage(title, text, button, bar) {
 	var htmlTemplate, htmlDialog;
 	var list;

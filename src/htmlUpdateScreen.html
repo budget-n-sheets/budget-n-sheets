@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base target="_top">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+		<style>
+			.wait_load_wrapper {
+				width: 137px;
+				height: 5px;
+				background-color: #efefef;
+				position: relative;
+				overflow: hidden;
+			}
+			.wait_load_bar {
+				width: 79px;
+				height: 5px;
+				background-color: #4a86e8;
+				position: absolute;
+				animation-name: animate;
+				animation-duration: 1201ms;
+				animation-timing-function: linear;
+				animation-iteration-count: infinite;
+			}
+			@keyframes animate {
+				from {left: -137px;}
+				to {left: 137px;}
+			}
+		</style>
+	</head>
+	<body>
+		<div style="width: 100%;height: 100%;margin: auto;" align="center">
+			<span style="font-size: 1.1em;">Updating add-on...</span>
+			<br>
+			<br>
+			<div class="wait_load_wrapper">
+				<div class="wait_load_bar"></div>
+			</div>
+		</div>
+		<div id="timeout" style="display: none;margin-top: 2em;">
+			It is taking too long. You can try again or <a href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank">report a problem</a>.
+			<br>
+			<br>
+			<button onclick="google.script.host.close()">Close</button>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				setTimeout(function() {
+						google.script.host.setHeight(173);
+						$("#timeout").fadeIn();
+					}, 60000);
+			});
+		</script>
+	</body>
+</html>
