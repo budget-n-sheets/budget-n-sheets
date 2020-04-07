@@ -576,7 +576,11 @@ function setupCards_() {
 		sheet.getRange(3, 1 + 6*i).setFormula(formula);
 
 
-		formula = "MAX(0; OFFSET(" + cell + "; 4; 1 + 5*" + head + "; 1; 1)); {\"charttype\"" + dec_c + "\"bar\"; \"max\"" + dec_c + "OFFSET(" + cell + "; 0; 1 + 5*" + head + "; 1; 1); \"color1\"" + dec_c + "\"#45818e\"}";
+		expr1 = "MAX(0; OFFSET(" + cell + "; 4; 1 + 5*" + head + "; 1; 1))";
+		expr2 = "OFFSET(" + cell + "; 1; 1 + 5*" + head + "; 1; 1)";
+		expr3 = "{\"charttype\"" + dec_c + "\"bar\"; \"max\"" + dec_c + "OFFSET(" + cell + "; 0; 1 + 5*" + head + "; 1; 1); \"color1\"" + dec_c + "\"#45818e\"; \"color2\"" + dec_c + "\"#e69138\"}";
+
+		formula = "{" + expr1 + dec_c + expr2 + "}; " + expr3;
 		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(" + formula + "))";
 		sheet.getRange(4, 1 + 6*i).setFormula(formula);
 
