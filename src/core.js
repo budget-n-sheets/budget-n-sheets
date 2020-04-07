@@ -153,30 +153,6 @@ function showDialogUpdate() {
 }
 
 
-function showDialogQuickMessage(title, text, button, bar) {
-	var htmlTemplate, htmlDialog;
-	var list;
-
-	if (Array.isArray(text)) list = text;
-	else list = [ text ];
-
-	if (title === "") title = "Budget n Sheets";
-
-	htmlTemplate = HtmlService.createTemplateFromFile('htmlQuickMessage');
-
-	htmlTemplate.text = list;
-	htmlTemplate.button = button;
-	htmlTemplate.bar = bar;
-
-	htmlDialog = htmlTemplate.evaluate()
-		.setWidth(307)
-		.setHeight(127);
-
-	SpreadsheetApp.getUi()
-		.showModalDialog(htmlDialog, title);
-}
-
-
 function showSetupAddon_() {
 	console.info("add-on/intent");
 	var Ui = SpreadsheetApp.getUi();
