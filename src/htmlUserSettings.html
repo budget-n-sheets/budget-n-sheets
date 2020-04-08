@@ -3,10 +3,13 @@
 	<head>
 		<base target="_top">
 		<meta charset="UTF-8">
-		<?!= htmlInclude('htmlStyles'); ?>
+		<?!= htmlInclude("htmlStyles"); ?>
 		<style>
+			tr.advanced {
+				display: none;
+			}
 			td.comment {
-				border-bottom:none;
+				border-bottom: none;
 				padding-bottom: 0;
 			}
 			.MainMenu-bot_title {
@@ -29,146 +32,130 @@
 	<body>
 		<div id="MainPanel_wrapper">
 			<div id="MainPanel_content" style="margin-bottom:4.3em;">
-				<div class="panel" id="panel_Book">
-					<form accept-charset="UTF-8" onSubmit="optSettings_Save()">
-						<div>
-							<table style="width:100%;">
-								<tr>
-									<th colspan="2"><span style="font-size:1.2em;">General</span></th>
-								</tr>
-								<tr>
-									<td class="name" style="width:43%;"><label for="docName">Spreadsheet</label></td>
-									<td><span class="docName"></span></td>
-								</tr>
-								<tr>
-									<td class="name"><label>Financial year</label></td>
-									<td id="financial_year"></td>
-								</tr>
-								<tr>
-									<td class="name"><label for="initial_month">Initial month</label></td>
-									<td>
-										<select class="Form-Settings_lock" id="initial_month">
-											<option value="0" selected>January</option>
-											<option value="1">February</option>
-											<option value="2">March</option>
-											<option value="3">April</option>
-											<option value="4">May</option>
-											<option value="5">June</option>
-											<option value="6">July</option>
-											<option value="7">August</option>
-											<option value="8">September</option>
-											<option value="9">October</option>
-											<option value="10">November</option>
-											<option value="11">December</option>
-										</select>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<div style="margin-top:1.3em;">
-							<table style="width:100%;">
-								<tr>
-									<th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
-								</tr>
-								<? if (calendars_enabled) { ?>
-									<tr>
-										<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
-										<td class="comment">
-											<select class="Form-Settings_lock" id="financial_calendar">
-												<option value="" selected>Disabled</option>
-												<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
-													<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
-												<? } ?>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td class="secondary" colspan="2">
-											* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="post_day_events"><label for="post_day_events">Sync calendar to spreadsheet</label></td>
-									</tr>
-								<? } else { ?>
-									<tr>
-										<td>It seems like Google Calendar is not enable for your account. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar" target="_blank"><b>Learn more</b></a></td>
-									</tr>
-								<? } ?>
-							</table>
-						</div>
-						<div style="margin-top:1.3em;">
-							<table style="width:100%;">
-								<tr>
-									<th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
-								</tr>
-								<? if (calendars_enabled) { ?>
-									<tr>
-										<td colspan="2"><input class="Form-Settings_lock Form-Settings_calendar" type="checkbox" id="cash_flow_events"><label for="cash_flow_events">Sync calendar to cash flow</label></td>
-									</tr>
-								<? } ?>
-								<tr>
-									<td colspan="2"><input class="Form-Settings_lock" type="checkbox" id="override_zero"><label for="override_zero">Tag zeros</label></td>
-								</tr>
-							</table>
-						</div>
-						<input id="Form-Settings_submit" style="display:none;" type="submit">
-					</form>
-					<div style="margin-top:1.3em;">
-						<table style="width:100%;">
+				<form accept-charset="UTF-8">
+					<table style="width:100%;">
+						<tr>
+							<th colspan="2"><span style="font-size:1.2em;">General</span></th>
+						</tr>
+						<tr>
+							<td class="name" style="width:43%;"><label>Spreadsheet</label></td>
+							<td><?= doc_name ?></td>
+						</tr>
+						<tr>
+							<td class="name"><label>Financial year</label></td>
+							<td><?= financial_year ?></td>
+						</tr>
+						<tr>
+							<td class="name"><label for="initial_month">Initial month</label></td>
+							<td>
+								<select id="initial_month" required>
+									<option value="0" selected>January</option>
+									<option value="1">February</option>
+									<option value="2">March</option>
+									<option value="3">April</option>
+									<option value="4">May</option>
+									<option value="5">June</option>
+									<option value="6">July</option>
+									<option value="7">August</option>
+									<option value="8">September</option>
+									<option value="9">October</option>
+									<option value="10">November</option>
+									<option value="11">December</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+					<table style="width:100%;margin-top:1.3em;">
+						<tr>
+							<th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
+						</tr>
+						<? if (calendars_enabled) { ?>
 							<tr>
-								<th style="width:100%;"><span style="font-size:1.2em;">Advanced</span></th>
-								<th style="text-align:right;"><a id="b-ShowAdvanced" href="javascript:void(0)">Show</a></th>
-							</tr>
-
-							<tr class="tr-hidden">
-								<td class="comment name"><label>Reset protected ranges</label></td>
-								<td class="comment"><button id="b-Reset" class="create">Reset</button></td>
-							</tr>
-							<tr class="tr-hidden">
-								<td colspan="2">
-										This can fix issues related with editable ranges affected by protection.
+								<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
+								<td class="comment">
+									<select id="financial_calendar" required>
+										<option value="" selected>Disabled</option>
+										<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
+											<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
+										<? } ?>
+									</select>
 								</td>
 							</tr>
-
-							<tr class="tr-hidden">
-								<td class="comment name"><label>Reinstall triggers</label></td>
-								<td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
-							</tr>
-							<tr class="tr-hidden">
-								<td colspan="2">
-										This can fix issues related with the add-on's automatic update and maintenance.<br />
-										<a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>Learn more</b></a>
+							<tr>
+								<td class="secondary" colspan="2">
+									* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
 								</td>
 							</tr>
-
-							<tr class="tr-hidden">
-								<td class="comment name"><label>Deactivate add-on</label></td>
-								<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
-							</tr>
-							<tr class="tr-hidden">
+							<tr>
 								<td colspan="2">
-										Once you deactivate the add-on for spreadsheet <span class="docName" style="font-weight:bold;"></span>, there is no going back! Please be certain.<br />
-										<a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>Learn more</b></a>
+									<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to spreadsheet</label>
 								</td>
 							</tr>
-						</table>
-					</div>
-				</div>
-
-				<div class="panel active" id="panel_WaitLoad">
-					<div class="animation_WaitLoad_wrapper">
-						<div class="animation_WaitLoad_bar"></div>
-					</div>
-				</div>
+						<? } else { ?>
+							<tr>
+								<td>
+									It seems like Google Calendar is not enable for your account. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar" target="_blank"><b>Learn more</b></a>
+								</td>
+							</tr>
+						<? } ?>
+					</table>
+					<table style="width:100%;margin-top:1.3em;">
+						<tr>
+							<th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
+						</tr>
+						<? if (calendars_enabled) { ?>
+							<tr>
+								<td colspan="2">
+									<input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
+								</td>
+							</tr>
+						<? } ?>
+						<tr>
+							<td colspan="2"><input type="checkbox" id="override_zero"><label for="override_zero">Tag zeros</label></td>
+						</tr>
+					</table>
+				</form>
+				<table style="width:100%;margin-top:1.3em;">
+					<tr>
+						<th style="width:100%;"><span style="font-size:1.2em;">Advanced</span></th>
+						<th style="text-align:right;"><a id="b-ShowAdvanced">Show</a></th>
+					</tr>
+					<tr class="advanced">
+						<td class="comment name"><label>Reset protected ranges</label></td>
+						<td class="comment"><button id="b-Reset" class="create">Reset</button></td>
+					</tr>
+					<tr class="advanced">
+						<td colspan="2">
+								This can fix issues related with editable ranges affected by protection.
+						</td>
+					</tr>
+					<tr class="advanced">
+						<td class="comment name"><label>Reinstall triggers</label></td>
+						<td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
+					</tr>
+					<tr class="advanced">
+						<td colspan="2">
+								This can fix issues related with the add-on's automatic update and maintenance.<br />
+								<a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>Learn more</b></a>
+						</td>
+					</tr>
+					<tr class="advanced">
+						<td class="comment name"><label>Deactivate add-on</label></td>
+						<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
+					</tr>
+					<tr class="advanced">
+						<td colspan="2">
+								Once you deactivate the add-on for spreadsheet <span style="font-weight:bold;"><?= doc_name ?></span>, there is no going back! Please be certain.<br />
+								<a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>Learn more</b></a>
+						</td>
+					</tr>
+				</table>
 			</div>
-
-
 			<div id="MainPanel_footer">
-				<div class="current" id="p-footer_FastResponse" style="padding:0 7px;"></div>
+				<div class="current" id="footer_response" style="padding:0 7px;"></div>
 				<div class="MainMenu-bot_title"><div class="MainMenu_row">
 						<div class="m-footer left" style="width:100%;">
-							<button class="action Form-Settings_lock" onclick="$('#Form-Settings_submit').click()" disabled>Save</button>
+							<button class="action" id="b-Save" disabled>Save</button>
 						</div>
 						<div class="m-footer right">
 							<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
@@ -176,140 +163,116 @@
 				</div></div>
 			</div>
 		</div>
-		<?!= htmlInclude('htmlJavaScript'); ?>
-	<script>
-		/* ---------- Control ------------------------------ */
-		$(document).ready(function() {
-			$(".tr-hidden").hide();
-			$('#b-ShowAdvanced').click(Show_Advanced);
-			$('#b-Deactivate').click(Deactivate_Submit);
-			$('#b-Reinstall').click(Reinstall_Submit);
-			$('#b-Reset').click(Reset_Submit);
+		<?!= htmlInclude("htmlJavaScript"); ?>
+		<script>
+			$(document).ready(function() {
+				$("#b-ShowAdvanced").click(function(e) {
+					this.remove();
+					$("tr.advanced").fadeIn();
+				});
 
-			google.script.run
-				.withSuccessHandler(Settings_Post)
-				.withFailureHandler(showError)
-				.retrieveUserSettings();
-		});
-		<? if (calendars_enabled) { ?>
-			$("#financial_calendar").change(function() {
-				if ($(this).val() === "") {
-					$('.Form-Settings_calendar').prop('disabled', true);
-					$('.Form-Settings_calendar').prop('checked', false);
-				} else {
-					$('.Form-Settings_calendar').prop('disabled', false);
-				}
-				return;
+				$("#b-Save").click(saveSettings);
+				$("#b-Deactivate").click(deactivateAddon);
+				$("#b-Reinstall").click(reinstallTriggers);
+				$("#b-Reset").click(resetProtection);
+
+				google.script.run.withSuccessHandler(loadSettings)
+					.withFailureHandler(showError)
+					.retrieveUserSettings();
 			});
-		<? } ?>
-		function Settings_Post(user_settings) { /* -------------------- */
-			try {
-				$('.docName').append(user_settings.docName); // Spreadsheet title
-				$('#financial_year').append(user_settings.financial_year + ""); // Financial year
-				$('#initial_month').val(user_settings.initial_month); // Initial month
-
-				<? if (calendars_enabled) { ?>
-					$('#financial_calendar').val(user_settings.financial_calendar);
-					if (user_settings.post_day_events) $('#post_day_events').prop('checked', true);
-					if (user_settings.cash_flow_events) $('#cash_flow_events').prop('checked', true);
-				<? } ?>
-				if (user_settings.override_zero) $('#override_zero').prop('checked', true);
-			} catch (err) {
-				showError();
-				return;
-			}
-
-			$('.Form-Settings_lock').prop('disabled', false);
-			<? if (calendars_enabled) { ?>
-				if (user_settings.financial_calendar === "") {
-					$('.Form-Settings_calendar').prop('disabled', true);
-				}
-			<? } ?>
-			$('#panel_Book').fadeIn('fast')
-				.siblings()
-				.hide();
-		}
-
-		function Show_Advanced() {
-			$("#b-ShowAdvanced").remove();
-			$(".tr-hidden").fadeIn();
-		}
-
-		function Deactivate_Submit() {
-			google.script.run
-				.withSuccessHandler(Deactivate_Aftermath)
-				.withFailureHandler(showError)
-				.askDeactivation();
-			$('#b-Deactivate').prop('disabled', true);
-		}
-
-		function Deactivate_Aftermath(p) {
-			if (!p) $('#b-Deactivate').prop('disabled', false);
-			else google.script.host.close();
-		}
-
-		function Reset_Submit() {
-			$('#b-Reset').prop('disabled', true);
-			google.script.run.withSuccessHandler(Reset_Aftermath)
-				.withFailureHandler(showError)
-				.askResetProtection();
-		}
-		function Reset_Aftermath() {
-			$('#b-Reset').prop('disabled', false);
-			$('#p-footer_FastResponse').empty().append('Protected ranges reseted.');
-		}
-
-		function Reinstall_Submit() {
-			$('#b-Reinstall').prop('disabled', true);
-			google.script.run
-				.withSuccessHandler(Reinstall_Aftermath)
-				.withFailureHandler(showError)
-				.askReinstall();
-		}
-		function Reinstall_Aftermath() {
-			$('#b-Reinstall').prop('disabled', false);
-			$('#p-footer_FastResponse').empty()
-				.append('Triggers reinstalled.');
-		}
-
-		function optSettings_Save() {
-			$('.Form-Settings_lock').prop('disabled', true);
-			$('#p-footer_FastResponse').empty().append('Saving...');
-
-			var settings = {
-				initial_month: $("#initial_month").val(),
-
-				<? if (calendars_enabled) { ?>
-					financial_calendar: $("#financial_calendar").val(),
-					post_day_events: $("#post_day_events").prop("checked"),
-					cash_flow_events: $("#cash_flow_events").prop("checked"),
-				<? } else { ?>
-					financial_calendar: "",
-					post_day_events: false,
-					cash_flow_events: false,
-				<? } ?>
-				override_zero: $("#override_zero").prop("checked")
-			};
-
-			google.script.run.withSuccessHandler(optSettings_Aftermath)
-				.withFailureHandler(showError)
-				.saveUserSettings(settings);
-		}
-		function optSettings_Aftermath(p) {
-			if (p === 1) {
-				showError();
-				return;
-			}
-
-			$(".Form-Settings_lock").prop("disabled", false);
-			$("#p-footer_FastResponse").empty().append("Settings saved.");
 
 			<? if (calendars_enabled) { ?>
-				if ($("#financial_calendar").val() === "") {
-					$(".Form-Settings_calendar").prop("disabled", true);
-				}
+				$("#financial_calendar").change(function() {
+					if ($(this).val() === "") {
+						$(".options-calendar").prop("disabled", true);
+						$(".options-calendar").prop("checked", false);
+					} else {
+						$(".options-calendar").prop("disabled", false);
+					}
+					return;
+				});
+
 			<? } ?>
-		}
-	</script>
+			function deactivateAddon() {
+				this.disabled = true;
+				$("#footer_response").empty();
+
+				google.script.run.withSuccessHandler(function(r, o) {
+							if (r) google.script.host.close();
+							o.disabled = false;
+						})
+					.withFailureHandler(showError)
+					.withUserObject(this)
+					.askDeactivation();
+			}
+
+			function resetProtection() {
+				this.disabled = true;
+				$("#footer_response").empty();
+
+				google.script.run.withSuccessHandler(function(r, o) {
+							showStatus("Reseted protection");
+							o.disabled = false;
+						})
+					.withFailureHandler(showError)
+					.withUserObject(this)
+					.askResetProtection();
+			}
+
+			function reinstallTriggers() {
+				this.disabled = true;
+				$("#footer_response").empty();
+
+				google.script.run.withSuccessHandler(function(r, o) {
+							showStatus("Reinstalled triggers");
+							o.disabled = false;
+						})
+					.withFailureHandler(showError)
+					.withUserObject(this)
+					.askReinstall();
+			}
+
+			function loadSettings(user_settings) {
+				$("#initial_month").val(user_settings.initial_month);
+				if (user_settings.override_zero) $("#override_zero").prop("checked", true);
+				<? if (calendars_enabled) { ?>
+					$("#financial_calendar").val(user_settings.financial_calendar);
+					if (user_settings.financial_calendar != "") {
+						if (user_settings.post_day_events) $("#post_day_events").prop("checked", true);
+						if (user_settings.cash_flow_events) $("#cash_flow_events").prop("checked", true);
+						$(".options-calendar").prop("disabled", false);
+					}
+				<? } ?>
+
+				$("#b-Save").prop("disabled", false);
+			}
+
+			function saveSettings() {
+				this.disabled = true;
+				$("#footer_response").empty();
+
+				var user_settings = {
+					initial_month: $("#initial_month").val(),
+					override_zero: $("#override_zero").prop("checked"),
+					<? if (calendars_enabled) { ?>
+						financial_calendar: $("#financial_calendar").val(),
+						post_day_events: $("#post_day_events").prop("checked"),
+						cash_flow_events: $("#cash_flow_events").prop("checked")
+					<? } ?>
+				};
+
+				google.script.run.withSuccessHandler(function(r, o) {
+							showStatus("Saved settings");
+							o.disabled = false;
+						})
+					.withFailureHandler(showError)
+					.withUserObject(this)
+					.saveUserSettings(user_settings);
+			}
+
+			function showStatus(msg) {
+				$("#footer_response").empty().append(msg);
+			}
+		</script>
 	</body>
 </html>

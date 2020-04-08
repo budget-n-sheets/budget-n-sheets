@@ -99,6 +99,8 @@ function showSidebarMainSettings() {
 	var htmlSidebar;
 	var calendars = getAllOwnedCalendars();
 
+	htmlTemplate.doc_name = SpreadsheetApp.getActiveSpreadsheet().getName();
+	htmlTemplate.financial_year = getUserConstSettings_("financial_year");
 	htmlTemplate.calendars_data = calendars;
 	htmlTemplate.calendars_enabled = calendars.md5.length > 0;
 
@@ -142,27 +144,12 @@ function showDialogErrorMessage(err) {
 }
 
 
-function showDialogQuickMessage(title, text, button, bar) {
-	var htmlTemplate, htmlDialog;
-	var list;
+function showDialogUpdate() {
+	var htmlDialog = HtmlService.createHtmlOutputFromFile("htmlUpdateScreen")
+		.setWidth(263)
+		.setHeight(113);
 
-	if (Array.isArray(text)) list = text;
-	else list = [ text ];
-
-	if (title === "") title = "Budget n Sheets";
-
-	htmlTemplate = HtmlService.createTemplateFromFile('htmlQuickMessage');
-
-	htmlTemplate.text = list;
-	htmlTemplate.button = button;
-	htmlTemplate.bar = bar;
-
-	htmlDialog = htmlTemplate.evaluate()
-		.setWidth(307)
-		.setHeight(127);
-
-	SpreadsheetApp.getUi()
-		.showModalDialog(htmlDialog, title);
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Budget n Sheets");
 }
 
 
