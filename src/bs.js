@@ -26,7 +26,7 @@ function importAboutPage_() {
 
 	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
-	if (spreadsheet.getSheetByName("_About BnS")) return -1;
+	if (spreadsheet.getSheetByName("_About BnS")) return;
 
 	template.getSheetByName("_About BnS")
 		.copyTo(spreadsheet)
@@ -35,8 +35,6 @@ function importAboutPage_() {
 		.hideSheet()
 		.protect()
 		.setWarningOnly(true);
-
-	return -1;
 }
 
 
@@ -47,11 +45,10 @@ function signDoc_() {
 	if (!sheet) return 1;
 
 	sig = makeSign_();
-	if (!sig) return 2;
-	sheet.getRange(8, 2).setValue(sig);
+	if (!sig) return 1;
 
+	sheet.getRange(8, 2).setValue(sig);
 	SpreadsheetApp.flush();
-	return -1;
 }
 
 
@@ -74,9 +71,7 @@ function makeSign_() {
 		return;
 	}
 
-	var data, sig;
-
-	data = {
+	var data = {
 		spreadsheet_id: SpreadsheetApp.getActiveSpreadsheet().getId(),
 
 		addon_version: class_version.script,
@@ -89,16 +84,16 @@ function makeSign_() {
 	data = JSON.stringify(data);
 	data = Utilities.base64EncodeWebSafe(data, Utilities.Charset.UTF_8);
 
-	sig = computeHmacSignature("SHA_256", data, key, "UTF_8");
+	const sig = computeHmacSignature("SHA_256", data, key, "UTF_8");
 
 	return data + ":" + sig;
 }
 
 
 function verifySig_(data) {
-	if (typeof data != "string") {
+	if (!data || typeof data != "string") {
 		consoleLog_("warn", "verifySig_(): type of parameter is incorrect.", {typeof:typeof data});
-		return 2;
+		return 1;
 	}
 
 	const key = PropertiesService.getScriptProperties().getProperty("inner_lock");
@@ -107,14 +102,10 @@ function verifySig_(data) {
 		return 1;
 	}
 
-	var sig;
-
 	data = data.split(":");
-	if (data.length != 2) return 2;
+	if (data.length != 2) return 1;
 
-	sig = computeHmacSignature("SHA_256", data[0], key, "UTF_8");
+	const sig = computeHmacSignature("SHA_256", data[0], key, "UTF_8");
 
-	if (sig !== data[1]) return -10;
-
-	return -1;
+	if (sig !== data[1]) return 1;
 }

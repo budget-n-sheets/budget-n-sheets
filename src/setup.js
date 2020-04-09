@@ -224,8 +224,9 @@ function setup_(settings, listAcc) {
 	a.script.beta = PATCH_THIS_["beta_list"].length;
 	setPropertiesService_("document", "json", "class_version2", a);
 
-	a = nodeControl_("sign");
-	if (a !== -1) throw new Error("Failed to sign document.");
+	if (nodeControl_("sign")) {
+		throw new Error("Failed to sign document.");
+	}
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(CONST_SETUP_SPREADSHEET_.getSheetByName("Summary"));
 	console.timeEnd("add-on/install");
