@@ -42,7 +42,12 @@ function signDoc_() {
 	var sheet, sig;
 
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_About BnS");
-	if (!sheet) return 1;
+	if (!sheet) {
+		if (importAboutPage_()) return 1;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_About BnS");
+		if (!sheet) return 1;
+	}
 
 	sig = makeSign_();
 	if (!sig) return 1;
