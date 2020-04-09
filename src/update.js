@@ -18,6 +18,8 @@ var PATCH_THIS_ = Object.freeze({
 
 
 function onlineUpdate_() {
+	if (reviseVersion_()) return;
+
 	const v0 = getClass_("script");
 	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
 

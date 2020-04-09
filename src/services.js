@@ -61,6 +61,8 @@ function daily_Main_(e) {
 		return;
 	}
 
+	if (reviseVersion_()) return;
+
 	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
 		updateDecimalSepartor_();
 	}
@@ -113,6 +115,8 @@ function weekly_Foo_(e) {
 		return;
 	}
 
+	if (reviseVersion_()) return;
+
 	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
 		updateDecimalSepartor_();
 	}
@@ -127,6 +131,8 @@ function weekly_Bar_(e) {
 		uninstall_();
 		return;
 	}
+
+	if (reviseVersion_()) return;
 
 	var date, a;
 
@@ -163,4 +169,16 @@ function weekly_Bar_(e) {
 	}
 
 	monthly_TreatLayout_(a["year"], a["month"]);
+}
+
+
+function reviseVersion_() {
+	var documentProperties = PropertiesService.getDocumentProperties();
+
+	if (documentProperties.getProperty("class_version2") == null ||
+			documentProperties.getProperty("user_const_settings") == null) {
+				console.log("Version revision failed: uninstall.");
+				uninstall_();
+				return 1;
+	}
 }
