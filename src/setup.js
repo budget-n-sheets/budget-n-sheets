@@ -199,7 +199,7 @@ function setup_(settings, listAcc) {
 		spreadsheet_name: settings.spreadsheet_name,
 		spreadsheet_locale: CONST_SETUP_SPREADSHEET_.getSpreadsheetLocale(),
 		financial_year: Number(settings.financial_year),
-		init_month: Number(settings.init_month),
+		init_month: Number(settings.initial_month),
 		number_accounts: Number(settings.number_accounts),
 		list_acc: listAcc,
 		decimal_separator: null
