@@ -9,7 +9,8 @@ var PATCH_THIS_ = Object.freeze({
 			[ null, null ],
 			[ null, null, null, update_v0m24p3_, null, null ],
 			[ update_v0m25p0_, null, update_v0m25p2_, null ],
-			[ update_v0m26p0_, update_v0m26p1_, null, update_v0m26p3_ ]
+			[ update_v0m26p0_, update_v0m26p1_, null, null ],
+			[ update_v0m27p0_ ]
 		]
 	],
 	beta_list: [ ]
@@ -131,18 +132,156 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Update Cards headers.
  * Update cash flow range referencing.
+ * Add credit limit difference equation.
  *
- * 0.26.3
+ * 0.27.0
  */
-function update_v0m26p3_() {
+function update_v0m27p0_() {
+	try {
+		update_v0m27p0s0_();
+		update_v0m27p0s1_();
+		update_v0m27p0s2_();
+		update_v0m27p0s3_();
+	} catch (err) {
+		consoleLog_("error", "update_v0m27p0_()", err);
+	}
+}
+
+/**
+ * Update Cards headers.
+ */
+function update_v0m27p0s0_() {
+	try {
+		var sheet, formula;
+		var head, cell, max;
+		var expr1, expr2, expr3;
+		var i;
+
+		const h_ = TABLE_DIMENSION_.height;
+		const w_ = TABLE_DIMENSION_.width;
+
+		const num_acc = getUserConstSettings_("number_accounts");
+		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
+
+		const col = 2 + w_ + w_*num_acc;
+		const dec_c = (dec_p ? "," : "\\");
+		const header = rollA1Notation(1, col, 1, w_*11);
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+		if (!sheet) return;
+
+		max = sheet.getMaxColumns() + 1;
+
+		i = 0;
+		while (i < 12) {
+			head = rollA1Notation(2, 1 + 6*i);
+			cell = "\'_Backstage\'!" + rollA1Notation(2 + h_*i, col);
+
+			formula = "OFFSET(" + cell + "; 4; 1 + 5*" + head + "; 1; 1)";
+			formula = "TEXT(" + formula + "; \"#,##0.00;(#,##0.00)\")";
+			formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; " + formula + ")";
+			formula = "CONCATENATE(\"AVAIL credit: \"; " + formula + ")";
+			sheet.getRange(3, 1 + 6*i).setFormula(formula);
+
+
+			expr1 = "MAX(0; OFFSET(" + cell + "; 4; 1 + 5*" + head + "; 1; 1))";
+			expr2 = "OFFSET(" + cell + "; 1; 1 + 5*" + head + "; 1; 1)";
+			expr3 = "{\"charttype\"" + dec_c + "\"bar\"; \"max\"" + dec_c + "OFFSET(" + cell + "; 0; 1 + 5*" + head + "; 1; 1); \"color1\"" + dec_c + "\"#45818e\"; \"color2\"" + dec_c + "\"#e69138\"}";
+
+			formula = "{" + expr1 + dec_c + expr2 + "}; " + expr3;
+			formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; SPARKLINE(" + formula + "))";
+			sheet.getRange(4, 1 + 6*i).setFormula(formula);
+
+			formula = "REGEXMATCH(\'_Backstage\'!" + header + "; \"\\^\"&" + rollA1Notation(2, 2 + 6*i) + "&\"\\$\")";
+			formula = "FILTER(\'_Backstage\'!" + header + "; " + formula + ")";
+			formula = "INDEX(" + formula + "; 0; 1)";
+			formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; 1; MATCH(" + formula + "; \'_Backstage\'!" + header + "; 0))";
+			formula = "IFERROR((" + formula + " - 1)/5; \"\")";
+			sheet.getRange(2, 1 + 6*i).setFormula(formula);
+
+
+			expr1 = "OFFSET(" + cell + "; 1; 5*" + head + "; 1; 1)";
+			expr1 = "\"Credit: \"; TEXT(" + expr1 + "; \"#,##0.00;(#,##0.00)\"); \"\n\"; ";
+
+			expr2 = "OFFSET(" + cell + "; 3; 5*" + head + "; 1; 1)";
+			expr2 = "\"Expenses: \"; TEXT(" + expr2 + "; \"#,##0.00;(#,##0.00)\"); \"\n\"; ";
+
+			expr3 = "OFFSET(" + cell + "; 4; 5*" + head + "; 1; 1)";
+			expr3 = "\"Balance: \"; TEXT(" + expr3 + "; \"#,##0.00;(#,##0.00)\")";
+
+			formula = "CONCATENATE(" + expr1 + expr2 + "\"\n\"; " + expr3 + ")";
+			sheet.getRange(2, 4 + 6*i).setFormula(formula);
+			i++;
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m27p0s0_()", err);
+	}
+}
+
+/**
+ * Add credit limit difference equation.
+ */
+function update_v0m27p0s1_() {
+	try {
+		var sheet, ranges, header;
+		var maxColumns, maxRows;
+		var i, k;
+
+		const h_ = TABLE_DIMENSION_.height;
+		const w_ = TABLE_DIMENSION_.width;
+
+		const num_acc = getUserConstSettings_("number_accounts");
+
+		const col = 2 + w_ + w_*num_acc + w_;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+		if (!sheet) return;
+
+		maxRows = sheet.getMaxRows() + 1;
+		maxColumns = sheet.getMaxColumns() + 1;
+
+		ranges = [ ];
+
+		k = 0;
+		while (k < 10) {
+			header = rollA1Notation(1, col + w_*k);
+
+			i = 0;
+			while (i < 12) {
+				ranges[12*k + i] = rollA1Notation(3 + h_*i, col + 1 + w_*k);
+				i++;
+			}
+
+			k++;
+		}
+
+		sheet.getRangeList(ranges).setFormulaR1C1("MIN(R[-1]C; R[-1]C - R[3]C)");
+	} catch (err) {
+		consoleLog_("error", "update_v0m27p0s1_()", err);
+	}
+}
+
+function update_v0m27p0s2_() {
+	try {
+		cardsRefresh_();
+	} catch (err) {
+		consoleLog_("error", "update_v0m27p0s2_()", err);
+	}
+}
+
+/**
+ * Update cash flow range referencing.
+ */
+function update_v0m27p0s3_() {
 	try {
 		optAccount_UpdateTableRef_();
 	} catch (err) {
-		consoleLog_('error', 'update_v0m26p3_()', err);
-		return 1;
+		consoleLog_("error", "update_v0m27p0s3_()", err);
 	}
 }
+
 
 /**
  * Add BSCARDPART() in backstage.
