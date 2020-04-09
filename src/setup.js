@@ -313,7 +313,7 @@ function setupEast_(yyyy_mm) {
 	spreadsheet.getSheetByName("_Backstage").setTabColor("#cc0000");
 	spreadsheet.getSheetByName("_Settings").setTabColor("#cc0000");
 	spreadsheet.getSheetByName("Quick Actions").setTabColor("#6aa84f");
-	spreadsheet.getSheetByName("About").setTabColor("#6aa84f");
+	spreadsheet.getSheetByName("_About BnS").setTabColor("#6aa84f");
 
 	if (t) {
 		for (i = 0; i < 12; i++) {
@@ -333,7 +333,7 @@ function setupEast_(yyyy_mm) {
 
 	spreadsheet.getSheetByName("_Backstage").hideSheet();
 	spreadsheet.getSheetByName("_Settings").hideSheet();
-	spreadsheet.getSheetByName("About").hideSheet();
+	spreadsheet.getSheetByName("_About BnS").hideSheet();
 
 	SpreadsheetApp.flush();
 	console.timeEnd("add-on/setup/east");
@@ -344,7 +344,7 @@ function setupWest_() {
 	console.time("add-on/setup/west");
 	var sheet, ranges;
 
-	CONST_SETUP_SPREADSHEET_.getSheetByName("About")
+	CONST_SETUP_SPREADSHEET_.getSheetByName("_About BnS")
 		.protect()
 		.setWarningOnly(true);
 

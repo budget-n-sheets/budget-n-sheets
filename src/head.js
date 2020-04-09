@@ -24,7 +24,7 @@ var APPS_SCRIPT_GLOBAL_ = Object.freeze({
 	},
 
 	template_id: "",
-	template_sheets: [ "_Settings", "Cards", "Summary", "TTT", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "About" ],
+	template_sheets: [ "_Settings", "Cards", "Summary", "TTT", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "_About BnS" ],
 
 	cool_gallery: {
 		stats_for_tags: {

@@ -26,11 +26,11 @@ function importAboutPage_() {
 
 	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
-	if (spreadsheet.getSheetByName("About")) return -1;
+	if (spreadsheet.getSheetByName("_About BnS")) return -1;
 
-	template.getSheetByName("About")
+	template.getSheetByName("_About BnS")
 		.copyTo(spreadsheet)
-		.setName("About")
+		.setName("_About BnS")
 		.setTabColor('#6aa84f')
 		.hideSheet()
 		.protect()
@@ -43,7 +43,7 @@ function importAboutPage_() {
 function signDoc_() {
 	var sheet, sig;
 
-	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("About");
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_About BnS");
 	if (!sheet) return 1;
 
 	sig = makeSign_();
