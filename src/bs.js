@@ -20,7 +20,7 @@ function importAboutPage_() {
 	try {
 		template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
-		consoleLog_('warn', 'importAboutPage_()', err);
+		consoleLog_("warn", "importAboutPage_()", err);
 		return 1;
 	}
 
@@ -31,7 +31,7 @@ function importAboutPage_() {
 	template.getSheetByName("_About BnS")
 		.copyTo(spreadsheet)
 		.setName("_About BnS")
-		.setTabColor('#6aa84f')
+		.setTabColor("#6aa84f")
 		.hideSheet()
 		.protect()
 		.setWarningOnly(true);
@@ -56,19 +56,19 @@ function signDoc_() {
 
 
 function makeSign_() {
-	const key = PropertiesService.getScriptProperties().getProperty('inner_lock');
+	const key = PropertiesService.getScriptProperties().getProperty("inner_lock");
 	if (!key) {
 		console.warn("Key 'inner_lock' was not found!");
 		return;
 	}
 
-	const user_const_settings = getPropertiesService_('document', 'json', 'user_const_settings');
+	const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
 	if (!user_const_settings) {
 		console.warn("Property 'user_const_settings' is undefined!");
 		return;
 	}
 
-	const class_version = getPropertiesService_('document', 'json', 'class_version2');
+	const class_version = getPropertiesService_("document", "json", "class_version2");
 	if (!class_version) {
 		console.warn("Property 'class_version' is undefined!");
 		return;
@@ -97,11 +97,11 @@ function makeSign_() {
 
 function verifySig_(data) {
 	if (typeof data != "string") {
-		consoleLog_('warn', 'verifySig_(): type of parameter is incorrect.', {typeof:typeof data});
+		consoleLog_("warn", "verifySig_(): type of parameter is incorrect.", {typeof:typeof data});
 		return 2;
 	}
 
-	const key = PropertiesService.getScriptProperties().getProperty('inner_lock');
+	const key = PropertiesService.getScriptProperties().getProperty("inner_lock");
 	if (!key) {
 		console.warn("Key 'inner_lock' was not found!");
 		return 1;
