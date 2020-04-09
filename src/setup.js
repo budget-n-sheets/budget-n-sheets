@@ -374,8 +374,12 @@ function setupCashFlow_() {
 	const h_ = TABLE_DIMENSION_.height;
 
 	const init_month = SETUP_SETTINGS["init_month"];
+	const dec_p = SETUP_SETTINGS["decimal_separator"];
 	const num_acc = SETUP_SETTINGS["number_accounts"];
 	const financial_year = SETUP_SETTINGS["financial_year"];
+
+	const dec_c = (dec_p == "[ ]" ? "," : "\\");
+	const options = "{\"charttype\"" + dec_c + "\"column\"; \"color\"" + dec_c + "\"#93c47d\"; \"negcolor\"" + dec_c + "\"#e06666\"; \"empty\"" + dec_c + "\"ignore\"; \"nan\"" + dec_c + "\"ignore\"}";
 
 	ranges = [ ];
 	for (i = 0; i < 12; i++) {
@@ -410,6 +414,9 @@ function setupCashFlow_() {
 			b_f3f3f3.push([ rollA1Notation(3 + d, 2 + 4*i, 31 - d, 3) ]);
 		}
 
+		formula = "SPARKLINE(" + rollA1Notation(4, 3 + 4*i, d, 1) + "; " + options + ")";
+		sheet.getRange(2, 2 + 4*i).setFormula(formula);
+
 		j = 0;
 		s = new Date(financial_year, 0, 1).getDay();
 		while (j < d) {
@@ -439,6 +446,9 @@ function setupCashFlow_() {
 			if (d < 31) {
 				b_f3f3f3.push([ rollA1Notation(3 + d, 2 + 4*i, 31 - d, 3) ]);
 			}
+
+			formula = "SPARKLINE(" + rollA1Notation(4, 3 + 4*i, d, 1) + "; " + options + ")";
+			sheet.getRange(2, 2 + 4*i).setFormula(formula);
 
 			j = 0;
 			s = new Date(financial_year, i, 1).getDay();
