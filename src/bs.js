@@ -97,7 +97,7 @@ function makeSign_() {
 
 function verifySig_(data) {
 	if (typeof data != "string") {
-		consoleLog_('warn', 'verifySig_(): type of parameter is incorrect.', {data:data, type:typeof data});
+		consoleLog_('warn', 'verifySig_(): type of parameter is incorrect.', {type:typeof data});
 		return 2;
 	}
 
