@@ -36,7 +36,7 @@ function onlineUpdate_() {
 	try {
 		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
-		consoleLog_('warn', 'onlineUpdate_()', err);
+		consoleLog_("warn", "onlineUpdate_()", err);
 
 		ui.alert(
 			"New version available",
@@ -76,7 +76,7 @@ function seamlessUpdate_() {
 	try {
 		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
 	} catch (err) {
-		consoleLog_('warn', 'seamlessUpdate_()', err);
+		consoleLog_("warn", "seamlessUpdate_()", err);
 		return 1;
 	}
 
@@ -94,7 +94,7 @@ function getClass_(o) {
 
 	c = getCacheService_("document", "class_version2", "json");
 	if (!c) {
-		c = getPropertiesService_('document', 'json', 'class_version2');
+		c = getPropertiesService_("document", "json", "class_version2");
 		putCacheService_("document", "class_version2", "json", c);
 	}
 
@@ -103,16 +103,16 @@ function getClass_(o) {
 
 
 function setClass_(o, v) {
-	if (o !== 'script' && o !== 'template') {
-		consoleLog_('error', 'setClass_(): Switch case is default', {o:o, v:v});
+	if (o !== "script" && o !== "template") {
+		consoleLog_("error", "setClass_(): Switch case is default", {o:o, v:v});
 		return;
 	}
 
-	var c = getPropertiesService_('document', 'json', 'class_version2');
+	var c = getPropertiesService_("document", "json", "class_version2");
 
 	c[o] = v;
 
-	setPropertiesService_('document', 'json', 'class_version2', c);
+	setPropertiesService_("document", "json", "class_version2", c);
 	putCacheService_("document", "class_version2", "json", c);
 }
 
@@ -125,7 +125,7 @@ function setClass_(o, v) {
 function update_v0m0p0_() {
 	try {
 	} catch (err) {
-		consoleLog_('error', 'update_v0m0p0_()', err);
+		consoleLog_("error", "update_v0m0p0_()", err);
 		return 1;
 	}
 }*/
