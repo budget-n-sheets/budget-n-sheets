@@ -12,10 +12,10 @@ var APPS_SCRIPT_GLOBAL_ = Object.freeze({
 	script_version: {
 		number: {
 			major: 0,
-			minor: 26,
-			patch: 3
+			minor: 27,
+			patch: 0
 		},
-		name: "0.26.3"
+		name: "0.27.0"
 	},
 
 	template_version: {
