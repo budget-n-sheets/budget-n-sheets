@@ -383,8 +383,8 @@ function setupCashFlow_() {
 
 	ranges = [ ];
 	for (i = 0; i < 12; i++) {
-		ranges[2*i] = sheet.getRange(3, 2 + 4*i, 31);
-		ranges[2*i + 1] = sheet.getRange(3, 4 + 4*i, 31);
+		ranges[2*i] = sheet.getRange(4, 2 + 4*i, 31);
+		ranges[2*i + 1] = sheet.getRange(4, 4 + 4*i, 31);
 	}
 
 	sheet.protect()
@@ -400,7 +400,7 @@ function setupCashFlow_() {
 	//
 	// 	for (i = 1; i < 12; i++) {
 	// 		d = new Date(financial_year, i, 0).getDate();
-	// 		sheet.getRange(3, 3 + 4*i).setFormulaR1C1("=R[" + (d - 1) + "]C[-4] + RC[-1]");
+	// 		sheet.getRange(4, 3 + 4*i).setFormulaR1C1("=R[" + (d - 1) + "]C[-4] + RC[-1]");
 	// 	}
 	// } else {
 		ranges = [ ];
@@ -409,9 +409,9 @@ function setupCashFlow_() {
 
 		i = 0;
 		d = new Date(financial_year, 1 + i, 0).getDate();
-		ranges.push([ rollA1Notation(4, 3 + 4*i, d - 1) ]);
+		ranges.push([ rollA1Notation(5, 3 + 4*i, d - 1) ]);
 		if (d < 31) {
-			b_f3f3f3.push([ rollA1Notation(3 + d, 2 + 4*i, 31 - d, 3) ]);
+			b_f3f3f3.push([ rollA1Notation(4 + d, 2 + 4*i, 31 - d, 3) ]);
 		}
 
 		formula = "SPARKLINE(" + rollA1Notation(4, 3 + 4*i, d, 1) + "; " + options + ")";
@@ -422,12 +422,12 @@ function setupCashFlow_() {
 		while (j < d) {
 			switch (s) {
 				case 0:
-					b_d9ead3.push([ rollA1Notation(3 + j, 2, 1, 3) ]);
+					b_d9ead3.push([ rollA1Notation(4 + j, 2, 1, 3) ]);
 					s += 6;
 					j += 6;
 					break;
 				case 6:
-					b_d9ead3.push([ rollA1Notation(3 + j, 2, 1, 3) ]);
+					b_d9ead3.push([ rollA1Notation(4 + j, 2, 1, 3) ]);
 					s = 0;
 					j++;
 					break;
@@ -439,12 +439,12 @@ function setupCashFlow_() {
 		}
 
 		for (i = 1; i < 12; i++) {
-			sheet.getRange(3, 3 + 4*i).setFormulaR1C1("=R[" + (d - 1) + "]C[-4] + RC[-1]");
+			sheet.getRange(4, 3 + 4*i).setFormulaR1C1("=R[" + (d - 1) + "]C[-4] + RC[-1]");
 
 			d = new Date(financial_year, 1 + i, 0).getDate();
-			ranges.push([ rollA1Notation(4, 3 + 4*i, d - 1) ]);
+			ranges.push([ rollA1Notation(5, 3 + 4*i, d - 1) ]);
 			if (d < 31) {
-				b_f3f3f3.push([ rollA1Notation(3 + d, 2 + 4*i, 31 - d, 3) ]);
+				b_f3f3f3.push([ rollA1Notation(4 + d, 2 + 4*i, 31 - d, 3) ]);
 			}
 
 			formula = "SPARKLINE(" + rollA1Notation(4, 3 + 4*i, d, 1) + "; " + options + ")";
@@ -455,12 +455,12 @@ function setupCashFlow_() {
 			while (j < d) {
 				switch (s) {
 					case 0:
-						b_d9ead3.push([ rollA1Notation(3 + j, 2 + 4*i, 1, 3) ]);
+						b_d9ead3.push([ rollA1Notation(4 + j, 2 + 4*i, 1, 3) ]);
 						s = 6;
 						j += 6;
 						break;
 					case 6:
-						b_d9ead3.push([ rollA1Notation(3 + j, 2 + 4*i, 1, 3) ]);
+						b_d9ead3.push([ rollA1Notation(4 + j, 2 + 4*i, 1, 3) ]);
 						s = 0;
 						j++;
 						break;
@@ -479,19 +479,19 @@ function setupCashFlow_() {
 
 	ranges = [ "G", "L", "Q", "V", "AA" ];
 
-	sheet.getRange(3, 3).setFormula("=0 + B3");
+	sheet.getRange(4, 3).setFormula("=0 + B4");
 
 	if (init_month == 0) {
-		formula = "=0 + B3";
+		formula = "=0 + B4";
 	} else {
 		d = new Date(financial_year, init_month, 0).getDate();
-		formula = "=" + rollA1Notation(2 + d, 4*init_month - 1) + " + " + rollA1Notation(3, 2 + 4*init_month);
+		formula = "=" + rollA1Notation(3 + d, 4*init_month - 1) + " + " + rollA1Notation(4, 2 + 4*init_month);
 	}
 
 	for (k = 0; k < num_acc; k++) {
 		 formula += " + \'_Backstage\'!" + ranges[k] + (2 + h_*init_month);
 	}
-	sheet.getRange(3, 3 + 4*init_month).setFormula(formula);
+	sheet.getRange(4, 3 + 4*init_month).setFormula(formula);
 
 	SpreadsheetApp.flush();
 	console.timeEnd("add-on/setup/cash-flow");
