@@ -490,7 +490,7 @@ function setupCashFlow_() {
 
 
 function setupSummary_() {
-	console.time("add-on/setup/part9");
+	console.time("add-on/setup/summary");
 	var sheet = CONST_SETUP_SPREADSHEET_.getSheetByName("Summary");
 	var chart, options;
 
@@ -529,7 +529,7 @@ function setupSummary_() {
 	sheet.insertChart( chart.build() );
 
 	SpreadsheetApp.flush();
-	console.timeEnd("add-on/setup/part9");
+	console.timeEnd("add-on/setup/summary");
 }
 
 
