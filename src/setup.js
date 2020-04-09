@@ -841,6 +841,7 @@ function setupBackstage_() {
 	if (num_acc < 5) {
 		sheet.deleteColumns(7 + w_*num_acc, w_*(5 - num_acc));
 	}
+	SpreadsheetApp.flush();
 
 	for (k = 0; k < num_acc; k++) {
 		sheet.getRange(1, 7 + w_*k).setValue(list_acc[k]);
@@ -899,7 +900,6 @@ function setupBackstage_() {
 	}
 	sheet.getRange(2, 7, 120, w_*num_acc).setFormulas(formulas);
 
-	SpreadsheetApp.flush();
 	console.timeEnd("add-on/setup/backstage");
 }
 
@@ -927,6 +927,7 @@ function setupMonthSheet_() {
 	if (num_acc < 5) {
 		sheetTTT.deleteColumns(6 + 5*num_acc, 5*(5 - num_acc));
 	}
+	SpreadsheetApp.flush();
 
 	i = 11;
 	while (i > -1) {
@@ -982,6 +983,5 @@ function setupMonthSheet_() {
 
 	CONST_SETUP_SPREADSHEET_.deleteSheet(sheetTTT);
 
-	SpreadsheetApp.flush();
 	console.timeEnd("add-on/setup/month-sheet");
 }
