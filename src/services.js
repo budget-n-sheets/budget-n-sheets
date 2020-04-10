@@ -61,7 +61,7 @@ function daily_Main_(e) {
 		return;
 	}
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
 		updateDecimalSepartor_();
 	}
 
@@ -88,7 +88,7 @@ function daily_Main_(e) {
 		deleteScriptAppTriggers_('document', 'dailyMainId');
 		Utilities.sleep(300);
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
-		setPropertiesService_('document', 'string', 'OperationMode', "passive");
+		setSpreadsheetSettings_("operation_mode", "passive");
 
 		console.info("add-on/mode-passive");
 		return;
@@ -113,7 +113,7 @@ function weekly_Foo_(e) {
 		return;
 	}
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
 		updateDecimalSepartor_();
 	}
 
@@ -143,7 +143,7 @@ function weekly_Bar_(e) {
 		date: date.getDate()
 	};
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
 		updateDecimalSepartor_();
 	}
 

@@ -121,17 +121,17 @@ function askReinstall() {
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
 
 	if (financial_year < date.getFullYear()) {
-		setPropertiesService_("document", "string", "OperationMode", "passive");
+		setSpreadsheetSettings_("operation_mode", "passive");
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
 
 	} else if (financial_year === date.getFullYear()) {
-		setPropertiesService_("document", "string", "OperationMode", "active");
+		setSpreadsheetSettings_("operation_mode", "active");
 		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
 
 	} else if (financial_year > date.getFullYear()) {
 		d = new Date(financial_year, 0, 2);
 		d = d.getDay();
-		setPropertiesService_("document", "string", "OperationMode", "passive");
+		setSpreadsheetSettings_("operation_mode", "passive");
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
 	}
 }
@@ -199,7 +199,7 @@ function setup_(settings, list_acc) {
 		init_month: Number(settings.initial_month),
 		number_accounts: Number(settings.number_accounts),
 		list_acc: list_acc,
-		decimal_separator: null
+		decimal_separator: "[ ]"
 	};
 
 	console.time("add-on/install");
@@ -546,7 +546,7 @@ function setupCards_() {
 	const num_acc = SETUP_SETTINGS["number_accounts"];
 
 	const col = 2 + w_ + w_*num_acc;
-	const dec_c = (dec_p == "[ ]" ? "," : "\\");
+	const dec_c = (dec_p === "[ ]" ? "," : "\\");
 	const header = rollA1Notation(1, col, 1, w_*11);
 
 	SPREADSHEET.setActiveSheet(sheet);
