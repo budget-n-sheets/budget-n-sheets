@@ -246,6 +246,7 @@ function setup_ExecutePatial_() {
 	};
 
 	setupSettings_(yyyy_mm);
+	setupProperties_(yyyy_mm);
 	setupTables_();
 	setupMonthSheet_();
 	setupBackstage_();
@@ -731,10 +732,51 @@ function setupTables_() {
 }
 
 
+function setupProperties_(yyyy_mm) {
+	console.time("add-on/setup/properties");
+	var properties, d;
+
+	properties = {
+		initial_month: CONST_SETUP_SETTINGS_["init_month"],
+		financial_calendar: "",
+		post_day_events: false,
+		cash_flow_events: false,
+		override_zero: false,
+		spreadsheet_locale: CONST_SETUP_SETTINGS_["spreadsheet_locale"]
+	};
+	setPropertiesService_("document", "json", "user_settings", properties);
+
+	properties = {
+		date_created: CONST_SETUP_SETTINGS_["date_created"].getTime(),
+		number_accounts: CONST_SETUP_SETTINGS_["number_accounts"],
+		financial_year: CONST_SETUP_SETTINGS_["financial_year"]
+	};
+	setPropertiesService_("document", "obj", "user_const_settings", properties);
+
+	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
+	if (CONST_SETUP_SETTINGS_["financial_year"] < yyyy_mm.yyyy) {
+		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
+		setPropertiesService_("document", "string", "OperationMode", "passive");
+
+	} else if (CONST_SETUP_SETTINGS_["financial_year"] == yyyy_mm.yyyy) {
+		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
+		setPropertiesService_("document", "string", "OperationMode", "active");
+
+	} else if (CONST_SETUP_SETTINGS_["financial_year"] > yyyy_mm.yyyy) {
+		d = new Date(CONST_SETUP_SETTINGS_["financial_year"], 0, 2);
+		d = d.getDay();
+		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
+		setPropertiesService_("document", "string", "OperationMode", "passive");
+	}
+
+	console.timeEnd("add-on/setup/properties");
+}
+
+
 function setupSettings_(yyyy_mm) {
 	console.time("add-on/setup/settings");
 	var sheet = CONST_SETUP_SPREADSHEET_.getSheetByName("_Settings");
-	var cell, d;
+	var cell;
 
 	CONST_SETUP_SPREADSHEET_.setActiveSheet(sheet);
 	CONST_SETUP_SPREADSHEET_.moveActiveSheet(7);
@@ -742,8 +784,8 @@ function setupSettings_(yyyy_mm) {
 	sheet.protect().setWarningOnly(true);
 
 	cell = sheet.getRange(8, 2);
-	cell.setValue(0.1);
 	cell.setNumberFormat("0.0");
+	cell.setValue(0.1);
 	SpreadsheetApp.flush();
 
 	cell = cell.getDisplayValue();
@@ -764,39 +806,6 @@ function setupSettings_(yyyy_mm) {
 		[ "=RAND()" ]
 	];
 	sheet.getRange(2, 2, 7, 1).setFormulas(cell);
-
-	cell = {
-		initial_month: CONST_SETUP_SETTINGS_["init_month"],
-		financial_calendar: "",
-		post_day_events: false,
-		cash_flow_events: false,
-		override_zero: false,
-		spreadsheet_locale: CONST_SETUP_SETTINGS_["spreadsheet_locale"]
-	};
-	setPropertiesService_("document", "json", "user_settings", cell);
-
-	cell = {
-		date_created: CONST_SETUP_SETTINGS_["date_created"].getTime(),
-		number_accounts: CONST_SETUP_SETTINGS_["number_accounts"],
-		financial_year: CONST_SETUP_SETTINGS_["financial_year"]
-	};
-	setPropertiesService_("document", "obj", "user_const_settings", cell);
-
-	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
-	if (CONST_SETUP_SETTINGS_["financial_year"] < yyyy_mm.yyyy) {
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
-		setPropertiesService_("document", "string", "OperationMode", "passive");
-
-	} else if (CONST_SETUP_SETTINGS_["financial_year"] == yyyy_mm.yyyy) {
-		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
-		setPropertiesService_("document", "string", "OperationMode", "active");
-
-	} else if (CONST_SETUP_SETTINGS_["financial_year"] > yyyy_mm.yyyy) {
-		d = new Date(CONST_SETUP_SETTINGS_["financial_year"], 0, 2);
-		d = d.getDay();
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
-		setPropertiesService_("document", "string", "OperationMode", "passive");
-	}
 
 	SpreadsheetApp.flush();
 	console.timeEnd("add-on/setup/settings");
