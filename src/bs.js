@@ -64,9 +64,9 @@ function makeSign_() {
 		return;
 	}
 
-	const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
-	if (!user_const_settings) {
-		console.warn("Property 'user_const_settings' is undefined!");
+	const const_properties = getPropertiesService_("document", "json", "const_properties");
+	if (!const_properties) {
+		console.warn("Property 'const_properties' is undefined!");
 		return;
 	}
 
@@ -82,8 +82,8 @@ function makeSign_() {
 		addon_version: class_version.script,
 		template_version: class_version.template,
 
-		financial_year: user_const_settings.financial_year,
-		number_accounts: user_const_settings.number_accounts
+		financial_year: const_properties.financial_year,
+		number_accounts: const_properties.number_accounts
 	};
 
 	data = JSON.stringify(data);

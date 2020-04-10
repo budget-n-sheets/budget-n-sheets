@@ -146,13 +146,13 @@ function setUserSettings_(select, value) {
 
 
 function getUserConstSettings_(select) {
-	var user_const_settings = getPropertiesService_('document', 'obj', 'user_const_settings');
+	var const_properties = getPropertiesService_('document', 'obj', 'const_properties');
 
 	switch (select) {
 		case 'financial_year':
 		case 'number_accounts':
 		case 'date_created':
-			return user_const_settings[select];
+			return const_properties[select];
 
 		default:
 			console.error("getUserConstSettings_(): Switch case is default.", select);

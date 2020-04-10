@@ -779,7 +779,7 @@ function setupProperties_(yyyy_mm) {
 		number_accounts: CONST_SETUP_SETTINGS_["number_accounts"],
 		financial_year: CONST_SETUP_SETTINGS_["financial_year"]
 	};
-	setPropertiesService_("document", "obj", "user_const_settings", properties);
+	setPropertiesService_("document", "obj", "const_properties", properties);
 
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
 	if (CONST_SETUP_SETTINGS_["financial_year"] < yyyy_mm.yyyy) {
