@@ -161,6 +161,41 @@ function setUserSettings_(select, value) {
 }
 
 
+function getSpreadsheetSettings_(select) {
+	var spreadsheet_settings = getPropertiesService_("document", "json", "spreadsheet_settings");
+
+	switch (select) {
+	case "operation_mode":
+	case "decimal_separator":
+	case "spreadsheet_locale":
+		return spreadsheet_settings[select];
+
+	default:
+		console.error("getSpreadsheetSettings_(): Switch case is default.", select);
+		break;
+	}
+}
+
+
+function setSpreadsheetSettings_(select, value) {
+	var spreadsheet_settings = getPropertiesService_("document", "json", "spreadsheet_settings");
+
+	switch (select) {
+	case "operation_mode":
+	case "decimal_separator":
+	case "spreadsheet_locale":
+		spreadsheet_settings[select] = value;
+		break;
+
+	default:
+		console.error("setSpreadsheetSettings_() : Switch case is default.", select);
+		return 1;
+	}
+
+	setPropertiesService_("document", "json", "spreadsheet_settings", spreadsheet_settings);
+}
+
+
 function getConstProperties_(select) {
 	var const_properties;
 
