@@ -807,7 +807,7 @@ function setupProperties_(yyyy_mm) {
 function setupSettings_(yyyy_mm) {
 	console.time("add-on/setup/settings");
 	var sheet = SPREADSHEET.getSheetByName("_Settings");
-	var cell;
+	var cell, dec_p;
 
 	SPREADSHEET.setActiveSheet(sheet);
 	SPREADSHEET.moveActiveSheet(7);
@@ -820,16 +820,15 @@ function setupSettings_(yyyy_mm) {
 	SpreadsheetApp.flush();
 
 	cell = cell.getDisplayValue();
-	if ( /\./.test(cell) ) {
-		SETUP_SETTINGS["decimal_separator"] = "[ ]";
-	} else {
-		SETUP_SETTINGS["decimal_separator"] = "] [";
-	}
+	if ( /\./.test(cell) ) dec_p = "[ ]";
+	else dec_p = "] [";
+
+	SETUP_SETTINGS["decimal_separator"] = dec_p;
 
 	cell = [
-		[ "=" + SETUP_SETTINGS["financial_year"].formatLocaleSignal() ],
+		[ "=" + SETUP_SETTINGS["financial_year"].formatLocaleSignal(dec_p) ],
 		[ "=IF(YEAR(TODAY()) = $B2; MONTH(TODAY()); IF(YEAR(TODAY()) < $B2; 0; 12))" ],
-		[ "=" + (SETUP_SETTINGS["init_month"] + 1).formatLocaleSignal() ],
+		[ "=" + (SETUP_SETTINGS["init_month"] + 1).formatLocaleSignal(dec_p) ],
 		[ "=IF($B4 > $B3; 0; $B3 - $B4 + 1)" ],
 		[ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))" ],
 		[ "=COUNTIF(\'Tags\'!$E1:$E; \"<>\") - 1" ],
