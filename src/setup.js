@@ -730,15 +730,14 @@ function setupTables_() {
 function setupProperties_(yyyy_mm) {
 	console.time("add-on/setup/properties");
 	var properties, d;
-	var user, owner;
+	var user, owner, operation;
 
 	properties = {
 		initial_month: SETUP_SETTINGS["init_month"],
 		financial_calendar: "",
 		post_day_events: false,
 		cash_flow_events: false,
-		override_zero: false,
-		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale()
+		override_zero: false
 	};
 	setPropertiesService_("document", "json", "user_settings", properties);
 
@@ -781,18 +780,25 @@ function setupProperties_(yyyy_mm) {
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
 	if (SETUP_SETTINGS["financial_year"] < yyyy_mm.yyyy) {
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
-		setPropertiesService_("document", "string", "OperationMode", "passive");
+		operation = "passive";
 
 	} else if (SETUP_SETTINGS["financial_year"] == yyyy_mm.yyyy) {
 		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
-		setPropertiesService_("document", "string", "OperationMode", "active");
+		operation = "active";
 
 	} else if (SETUP_SETTINGS["financial_year"] > yyyy_mm.yyyy) {
 		d = new Date(SETUP_SETTINGS["financial_year"], 0, 2);
 		d = d.getDay();
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
-		setPropertiesService_("document", "string", "OperationMode", "passive");
+		operation = "passive";
 	}
+
+	properties = {
+		operation_mode: operation,
+		decimal_separator: SETUP_SETTINGS["decimal_separator"],
+		spreadsheet_locale: SETUP_SETTINGS["spreadsheet_locale"]
+	};
+	setPropertiesService_("document", "json", "spreadsheet_settings", properties);
 
 	console.timeEnd("add-on/setup/properties");
 }
@@ -816,7 +822,6 @@ function setupSettings_(yyyy_mm) {
 	cell = cell.getDisplayValue();
 	if ( /\./.test(cell) ) {
 		SETUP_SETTINGS["decimal_separator"] = "[ ]";
-		setPropertiesService_("document", "", "decimal_separator", "[ ]");
 	} else {
 		SETUP_SETTINGS["decimal_separator"] = "] [";
 	}

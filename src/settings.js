@@ -48,7 +48,6 @@ function saveUserSettings(settings) {
 	}
 
 	user_settings = {
-		spreadsheet_locale: spreadsheet.getSpreadsheetLocale(),
 		initial_month: init,
 		override_zero: settings.override_zero,
 
@@ -82,7 +81,6 @@ function getUserSettings_(select) {
 	user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
 	switch (select) {
-		case 'spreadsheet_locale':
 		case 'financial_calendar':
 		case 'post_day_events':
 		case 'override_zero':
@@ -145,7 +143,6 @@ function setUserSettings_(select, value) {
 
 	switch (select) {
 		case 'initial_month':
-		case 'spreadsheet_locale':
 		case 'financial_calendar':
 		case 'post_day_events':
 		case 'cash_flow_events':
