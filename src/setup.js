@@ -735,6 +735,7 @@ function setupTables_() {
 function setupProperties_(yyyy_mm) {
 	console.time("add-on/setup/properties");
 	var properties, d;
+	var user, owner;
 
 	properties = {
 		initial_month: CONST_SETUP_SETTINGS_["init_month"],
@@ -746,7 +747,34 @@ function setupProperties_(yyyy_mm) {
 	};
 	setPropertiesService_("document", "json", "user_settings", properties);
 
+	try {
+		user = Session.getActiveUser().getEmail();
+	} catch (err) {
+		user = "";
+	}
+
+	if (user && user != "") {
+		user = computeDigest("SHA_256", user, "UTF_8");
+	} else {
+		user = "";
+	}
+
+	try {
+		owner = CONST_SETUP_SPREADSHEET_.getOwner().getEmail();
+	} catch (err) {
+		owner = "";
+	}
+
+	if (owner && owner != "") {
+		owner = computeDigest("SHA_256", owner, "UTF_8");
+	} else {
+		owner = "";
+	}
+
 	properties = {
+		addon_user: user,
+		spreadsheet_owner: owner,
+		spreadsheet_id: CONST_SETUP_SPREADSHEET_.getId(),
 		date_created: CONST_SETUP_SETTINGS_["date_created"].getTime(),
 		number_accounts: CONST_SETUP_SETTINGS_["number_accounts"],
 		financial_year: CONST_SETUP_SETTINGS_["financial_year"]
