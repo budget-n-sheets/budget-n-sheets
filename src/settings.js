@@ -68,7 +68,7 @@ function getUserSettings_(select) {
 	var tmp;
 
 	user_settings = getPropertiesService_('document', 'json', 'user_settings');
-	financial_year = getUserConstSettings_('financial_year');
+	financial_year = getConstProperties_('financial_year');
 
 	switch (select) {
 		case 'docName': // Spreadsheet file name
@@ -145,7 +145,7 @@ function setUserSettings_(select, value) {
 }
 
 
-function getUserConstSettings_(select) {
+function getConstProperties_(select) {
 	var const_properties = getPropertiesService_('document', 'obj', 'const_properties');
 
 	switch (select) {
@@ -155,7 +155,7 @@ function getUserConstSettings_(select) {
 			return const_properties[select];
 
 		default:
-			console.error("getUserConstSettings_(): Switch case is default.", select);
+			console.error("getConstProperties_(): Switch case is default.", select);
 			break;
 	}
 }

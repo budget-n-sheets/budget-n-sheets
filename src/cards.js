@@ -7,7 +7,7 @@ function cardsGetData_() {
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
 
-	n = getUserConstSettings_('number_accounts');
+	n = getConstProperties_('number_accounts');
 
 	db_cards = getPropertiesService_("document", "obj", "DB_TABLES");
 	db_cards = db_cards.cards;
@@ -191,7 +191,7 @@ function cardsRefresh_() {
 	const h_ = TABLE_DIMENSION_.height;
 	const w_ = TABLE_DIMENSION_.width;
 
-	const num_acc = getUserConstSettings_('number_accounts');
+	const num_acc = getConstProperties_('number_accounts');
 
 	db_cards = getPropertiesService_("document", "obj", "DB_TABLES");
 	db_cards = db_cards.cards;

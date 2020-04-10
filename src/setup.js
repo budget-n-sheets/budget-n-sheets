@@ -31,7 +31,7 @@ function askResetProtection() {
 	var protections, protection;
 	var n, i, j, k;
 
-	number_accounts = getUserConstSettings_("number_accounts");
+	number_accounts = getConstProperties_("number_accounts");
 
 	for (i = 0; i < 12; i++) {
 		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
@@ -112,7 +112,7 @@ function askResetProtection() {
 function askReinstall() {
 	if (!getPropertiesService_("document", "", "is_installed")) return;
 
-	var financial_year = getUserConstSettings_("financial_year");
+	var financial_year = getConstProperties_("financial_year");
 	var date = getSpreadsheetDate();
 	var d;
 

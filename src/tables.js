@@ -145,8 +145,8 @@ function optAccount_UpdateTableRef_() {
 
 	const ranges = [ "G", "L", "Q", "V", "AA" ];
 
-	const num_acc = getUserConstSettings_("number_accounts");
-	const yyyy = getUserConstSettings_("financial_year");
+	const num_acc = getConstProperties_("number_accounts");
+	const yyyy = getConstProperties_("financial_year");
 
 	db_accounts = getPropertiesService_("document", "json", "DB_TABLES");
 	db_accounts = db_accounts.accounts;
