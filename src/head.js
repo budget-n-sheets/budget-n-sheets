@@ -37,8 +37,8 @@ var APPS_SCRIPT_GLOBAL_ = Object.freeze({
 		},
 		filter_by_tag: {
 			id: "",
-			version_name: "v0.1.1",
-			version_date: "2020-03-23",
+			version_name: "v0.2.0",
+			version_date: "2020-04-11",
 			name: "Filter by Tag",
 			sheet_name: "Filter by Tag"
 		}
