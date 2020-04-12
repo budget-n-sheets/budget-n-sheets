@@ -64,6 +64,9 @@ function coolFilterByTag_(info) {
 
 	const header = "C8";
 	const num_acc = getUserConstSettings_('number_accounts');
+	const dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
+
+	const dec_c = (dec_p == "[ ]" ? "," : "\\");
 
 	sheet.getRange("B8").setFormula("IF(C8 = \"\"; \"\"; \"#\")");
 
@@ -81,8 +84,8 @@ function coolFilterByTag_(info) {
 		text = "REGEXMATCH({\'" + MN_SHORT_[i] + "\'!D5:D" + aux2 + "}; " + header + ")";
 		text = "FILTER({\'" + MN_SHORT_[i] + "\'!A5:D" + aux1 + "}; " + text + ")";
 		text = "SORT(" + text + "; 1; TRUE; 3; FALSE)";
-		text = "IFERROR(" + text + "; {\"\", \"\", \"\", \"\"})";
-		text = "{\"\", \"" + MN_FULL_[i] + "\", \"\", \"\"}; " + text + "; ";
+		text = "IFERROR(" + text + "; {\"\" " + dec_c + " \"\" " + dec_c + " \"\" " + dec_c + " \"\"})";
+		text = "{\"\" " + dec_c + " \"" + MN_FULL_[i] + "\" " + dec_c + " \"\" " + dec_c + " \"\"}; " + text + "; ";
 		formula += text;
 
 		i++;
