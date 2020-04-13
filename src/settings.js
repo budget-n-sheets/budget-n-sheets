@@ -146,7 +146,13 @@ function setUserSettings_(select, value) {
 
 
 function getConstProperties_(select) {
-	var const_properties = getPropertiesService_('document', 'obj', 'const_properties');
+	var const_properties;
+
+	const_properties = getCacheService_("document", "const_properties", "json");
+	if (!const_properties) {
+		const_properties = getPropertiesService_("document", "json", "const_properties");
+		putCacheService_("document", "const_properties", "json", const_properties);
+	}
 
 	switch (select) {
 		case 'financial_year':
