@@ -150,7 +150,7 @@ function uninstall_() {
 }
 
 
-function setup_ui(settings, listAcc) {
+function setup_ui(settings, list_acc) {
 	if (getPropertiesService_("document", "", "is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
@@ -170,7 +170,7 @@ function setup_ui(settings, listAcc) {
 		return;
 	}
 
-	setup_(settings, listAcc);
+	setup_(settings, list_acc);
 
 	setPropertiesService_("document", "string", "is_installed", "[ ]");
 	showDialogSetupEnd();
@@ -188,7 +188,7 @@ function setup_ui(settings, listAcc) {
 }
 
 
-function setup_(settings, listAcc) {
+function setup_(settings, list_acc) {
 	var a;
 
 	SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
@@ -198,7 +198,7 @@ function setup_(settings, listAcc) {
 		financial_year: Number(settings.financial_year),
 		init_month: Number(settings.initial_month),
 		number_accounts: Number(settings.number_accounts),
-		list_acc: listAcc,
+		list_acc: list_acc,
 		decimal_separator: null
 	};
 
@@ -695,8 +695,6 @@ function setupTables_() {
 			data: [ ]
 		}
 	};
-
-	if (num_acc !== list_acc.length) throw new Error("Number number_accounts and list_acc length are differ.");
 
 	r = randomString(7, "lonum");
 	ids = [ r ];
