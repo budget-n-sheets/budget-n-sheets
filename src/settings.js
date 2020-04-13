@@ -162,7 +162,13 @@ function setUserSettings_(select, value) {
 
 
 function getSpreadsheetSettings_(select) {
-	var spreadsheet_settings = getPropertiesService_("document", "json", "spreadsheet_settings");
+	var spreadsheet_settings;
+
+	spreadsheet_settings = getCacheService_("document", "spreadsheet_settings", "json");
+	if (!spreadsheet_settings) {
+		spreadsheet_settings = getPropertiesService_("document", "json", "spreadsheet_settings");
+		putCacheService_("document", "spreadsheet_settings", "json", spreadsheet_settings);
+	}
 
 	switch (select) {
 	case "operation_mode":
@@ -193,6 +199,7 @@ function setSpreadsheetSettings_(select, value) {
 	}
 
 	setPropertiesService_("document", "json", "spreadsheet_settings", spreadsheet_settings);
+	putCacheService_("document", "spreadsheet_settings", "json", spreadsheet_settings);
 }
 
 
