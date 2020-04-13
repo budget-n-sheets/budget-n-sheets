@@ -176,15 +176,15 @@ function setup_ui(settings, list_acc) {
 	showDialogSetupEnd();
 	onOpen();
 
-	try {
-		var stats = {
-			financial_year: Number(settings.financial_year),
-			number_accounts: Number(settings.number_accounts)
-		};
-		console.info("add-on/Stats", stats);
-	} catch (err) {
-		consoleLog_("error", "setup_ui()/stats", err);
-	}
+	// try {
+	// 	var stats = {
+	// 		financial_year: Number(settings.financial_year),
+	// 		number_accounts: Number(settings.number_accounts)
+	// 	};
+	// 	console.info("add-on/Stats", stats);
+	// } catch (err) {
+	// 	consoleLog_("error", "setup_ui()/stats", err);
+	// }
 }
 
 
