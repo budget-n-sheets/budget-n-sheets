@@ -151,11 +151,11 @@ function optAccount_UpdateTableRef_() {
 	db_accounts = getPropertiesService_("document", "json", "DB_TABLES");
 	db_accounts = db_accounts.accounts;
 
-	formulas = [ "=0 + B3" ];
+	formulas = [ "=0 + B4" ];
 
 	for (i = 1; i < 12; i++) {
 		dd = new Date(yyyy, i, 0).getDate();
-		formulas[i] = "=" + rollA1Notation(2 + dd, 4*i - 1) + " + " + rollA1Notation(3, 2 + 4*i);
+		formulas[i] = "=" + rollA1Notation(3 + dd, 4*i - 1) + " + " + rollA1Notation(4, 2 + 4*i);
 	}
 
 	for (k = 0; k < num_acc; k++) {
@@ -164,7 +164,7 @@ function optAccount_UpdateTableRef_() {
 	}
 
 	for (i = 0; i < 12; i++) {
-		sheet.getRange(3, 3 + 4*i).setFormula(formulas[i]);
+		sheet.getRange(4, 3 + 4*i).setFormula(formulas[i]);
 	}
 
 	return -1;

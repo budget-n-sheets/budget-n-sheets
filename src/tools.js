@@ -427,8 +427,8 @@ function foo_UpdateCashFlow_(mm) {
 	cf_flow = transpose([cf_flow]);
 	cf_transaction = transpose([cf_transaction]);
 
-	sheetCashFlow.getRange(3, 2 + 4*mm, dd, 1).setFormulas(cf_flow);
-	sheetCashFlow.getRange(3, 4 + 4*mm, dd, 1).setValues(cf_transaction);
+	sheetCashFlow.getRange(4, 2 + 4*mm, dd, 1).setFormulas(cf_flow);
+	sheetCashFlow.getRange(4, 4 + 4*mm, dd, 1).setValues(cf_transaction);
 	SpreadsheetApp.flush();
 	console.timeEnd("tool/update-cash-flow");
 }
