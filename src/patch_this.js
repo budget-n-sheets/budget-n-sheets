@@ -85,8 +85,10 @@ function update_() {
 		if (r.p == -1) r.p = pp;
 
 		console.info("add-on/update/fail", r);
+		r.r = 2;
 	} else {
 		if (r.m == -1) r.m = 0;
+		r.r = 0;
 	}
 
 	var cell = {
@@ -99,7 +101,7 @@ function update_() {
 	setClass_('script', cell);
 	nodeControl_('sign');
 
-	return 0;
+	return r.r;
 }
 
 

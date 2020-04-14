@@ -59,11 +59,17 @@ function onlineUpdate_() {
 
 	} else if (r === 1) {
 		ui.alert(
-			"Budget n Sheets",
+			"Can't update",
 			"The add-on is busy. Try again in a moment.",
 			ui.ButtonSet.OK);
 
-	} else if (r > 1) {
+	} else if (r === 2) {
+		ui.alert(
+			"Update failed",
+			"Something went wrong. Please, try again later.",
+			ui.ButtonSet.OK);
+
+	} else if (r > 2) {
 		uninstall_();
 		onOpen();
 		showDialogErrorMessage();
@@ -84,7 +90,7 @@ function seamlessUpdate_() {
 	var r = update_();
 
 	if (r === 0) return;
-	if (r > 1) uninstall_();
+	if (r > 2) uninstall_();
 
 	return 1;
 }
