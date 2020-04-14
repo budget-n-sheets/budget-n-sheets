@@ -10,7 +10,7 @@ var PATCH_THIS_ = Object.freeze({
 			[ null, null, null, update_v0m24p3_, null, null ],
 			[ update_v0m25p0_, null, update_v0m25p2_, null ],
 			[ update_v0m26p0_, update_v0m26p1_, null, null ],
-			[ update_v0m27p0_, null, null, null, null ]
+			[ update_v0m27p0_, null, null, null, null, update_v0m27p5_ ]
 		]
 	],
 	beta_list: [ ]
@@ -132,6 +132,27 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Copy user_const_settings to const_properties.
+ * Add spreadshet ID, and blank user and owner to const_properties.
+ *
+ * 0.27.5
+ */
+function update_v0m27p5_() {
+	try {
+		var const_properties = getPropertiesService_("document", "json", "user_const_settings");
+
+		const_properties.user = "";
+		const_properties.owner = "";
+		const_properties.spreadsheet_id = SpreadsheetApp.getActiveSpreadsheet().getId();
+
+		setPropertiesService_("document", "json", "const_properties", cell);
+	} catch (err) {
+		consoleLog_("error", "update_v0m27p5_()", err);
+		return 1;
+	}
+}
 
 /**
  * Update Cards headers.
