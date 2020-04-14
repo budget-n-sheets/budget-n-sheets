@@ -71,9 +71,6 @@ function getUserSettings_(select) {
 	financial_year = getConstProperties_('financial_year');
 
 	switch (select) {
-		case 'docName': // Spreadsheet file name
-			return spreadsheet.getName();
-
 		case 'spreadsheet_locale':
 		case 'financial_calendar':
 		case 'post_day_events':
