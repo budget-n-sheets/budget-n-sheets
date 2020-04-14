@@ -147,7 +147,7 @@ function update_v0m27p5_() {
 		const_properties.owner = "";
 		const_properties.spreadsheet_id = SpreadsheetApp.getActiveSpreadsheet().getId();
 
-		setPropertiesService_("document", "json", "const_properties", cell);
+		setPropertiesService_("document", "json", "const_properties", const_properties);
 	} catch (err) {
 		consoleLog_("error", "update_v0m27p5_()", err);
 		return 1;
