@@ -781,6 +781,11 @@ function setupSettings_(yyyy_mm) {
 	};
 	setPropertiesService_("document", "obj", "user_const_settings", cell);
 
+	cell.user = "";
+	cell.owner = "";
+	cell = CONST_SETUP_SPREADSHEET_.getId();
+	setPropertiesService_("document", "json", "const_properties", cell);
+
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
 	if (CONST_SETUP_SETTINGS_["financial_year"] < yyyy_mm.yyyy) {
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
