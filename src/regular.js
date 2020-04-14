@@ -22,8 +22,7 @@ function daily_PostEvents_(date) {
 
 	number_accounts = getConstProperties_('number_accounts');
 
-	dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
-	if (!dec_p) dec_p = "] [";
+	dec_p = getSpreadsheetSettings_("decimal_separator");
 
 	data = [ ];
 	for (k = 0; k < 2 + number_accounts; k++) {
@@ -117,7 +116,7 @@ function daily_PostEvents_(date) {
 
 function updateDecimalSepartor_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet, cell;
+	var sheet, cell, v;
 
 	sheet = spreadsheet.getSheetByName("_Settings");
 	if (!sheet) return;
@@ -129,13 +128,11 @@ function updateDecimalSepartor_() {
 	SpreadsheetApp.flush();
 
 	cell = cell.getDisplayValue();
-	if ( /\./.test(cell) ) {
-		setPropertiesService_("document", "", "decimal_separator", "[ ]");
-	} else {
-		deletePropertiesService_("document", "decimal_separator");
-	}
+	if ( /\./.test(cell) ) v = "[ ]";
+	else v = "] [";
 
-	setUserSettings_("spreadsheet_locale", spreadsheet.getSpreadsheetLocale());
+	setSpreadsheetSettings_("decimal_separator", v);
+	setSpreadsheetSettings_("spreadsheet_locale", spreadsheet.getSpreadsheetLocale());
 }
 
 

@@ -121,17 +121,17 @@ function askReinstall() {
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
 
 	if (financial_year < date.getFullYear()) {
-		setPropertiesService_("document", "string", "OperationMode", "passive");
+		setSpreadsheetSettings_("operation_mode", "passive");
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
 
 	} else if (financial_year === date.getFullYear()) {
-		setPropertiesService_("document", "string", "OperationMode", "active");
+		setSpreadsheetSettings_("operation_mode", "active");
 		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
 
 	} else if (financial_year > date.getFullYear()) {
 		d = new Date(financial_year, 0, 2);
 		d = d.getDay();
-		setPropertiesService_("document", "string", "OperationMode", "passive");
+		setSpreadsheetSettings_("operation_mode", "passive");
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
 	}
 }
@@ -199,7 +199,7 @@ function setup_(settings, list_acc) {
 		init_month: Number(settings.initial_month),
 		number_accounts: Number(settings.number_accounts),
 		list_acc: list_acc,
-		decimal_separator: null
+		decimal_separator: "[ ]"
 	};
 
 	console.time("add-on/install");
@@ -546,7 +546,7 @@ function setupCards_() {
 	const num_acc = SETUP_SETTINGS["number_accounts"];
 
 	const col = 2 + w_ + w_*num_acc;
-	const dec_c = (dec_p == "[ ]" ? "," : "\\");
+	const dec_c = (dec_p === "[ ]" ? "," : "\\");
 	const header = rollA1Notation(1, col, 1, w_*11);
 
 	SPREADSHEET.setActiveSheet(sheet);
@@ -730,15 +730,14 @@ function setupTables_() {
 function setupProperties_(yyyy_mm) {
 	console.time("add-on/setup/properties");
 	var properties, d;
-	var user, owner;
+	var user, owner, operation;
 
 	properties = {
 		initial_month: SETUP_SETTINGS["init_month"],
 		financial_calendar: "",
 		post_day_events: false,
 		cash_flow_events: false,
-		override_zero: false,
-		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale()
+		override_zero: false
 	};
 	setPropertiesService_("document", "json", "user_settings", properties);
 
@@ -781,18 +780,25 @@ function setupProperties_(yyyy_mm) {
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
 	if (SETUP_SETTINGS["financial_year"] < yyyy_mm.yyyy) {
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
-		setPropertiesService_("document", "string", "OperationMode", "passive");
+		operation = "passive";
 
 	} else if (SETUP_SETTINGS["financial_year"] == yyyy_mm.yyyy) {
 		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
-		setPropertiesService_("document", "string", "OperationMode", "active");
+		operation = "active";
 
 	} else if (SETUP_SETTINGS["financial_year"] > yyyy_mm.yyyy) {
 		d = new Date(SETUP_SETTINGS["financial_year"], 0, 2);
 		d = d.getDay();
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
-		setPropertiesService_("document", "string", "OperationMode", "passive");
+		operation = "passive";
 	}
+
+	properties = {
+		operation_mode: operation,
+		decimal_separator: SETUP_SETTINGS["decimal_separator"],
+		spreadsheet_locale: SETUP_SETTINGS["spreadsheet_locale"]
+	};
+	setPropertiesService_("document", "json", "spreadsheet_settings", properties);
 
 	console.timeEnd("add-on/setup/properties");
 }
@@ -801,7 +807,7 @@ function setupProperties_(yyyy_mm) {
 function setupSettings_(yyyy_mm) {
 	console.time("add-on/setup/settings");
 	var sheet = SPREADSHEET.getSheetByName("_Settings");
-	var cell;
+	var cell, dec_p;
 
 	SPREADSHEET.setActiveSheet(sheet);
 	SPREADSHEET.moveActiveSheet(7);
@@ -814,17 +820,15 @@ function setupSettings_(yyyy_mm) {
 	SpreadsheetApp.flush();
 
 	cell = cell.getDisplayValue();
-	if ( /\./.test(cell) ) {
-		SETUP_SETTINGS["decimal_separator"] = "[ ]";
-		setPropertiesService_("document", "", "decimal_separator", "[ ]");
-	} else {
-		SETUP_SETTINGS["decimal_separator"] = "] [";
-	}
+	if ( /\./.test(cell) ) dec_p = "[ ]";
+	else dec_p = "] [";
+
+	SETUP_SETTINGS["decimal_separator"] = dec_p;
 
 	cell = [
-		[ "=" + SETUP_SETTINGS["financial_year"].formatLocaleSignal() ],
+		[ "=" + SETUP_SETTINGS["financial_year"].formatLocaleSignal(dec_p) ],
 		[ "=IF(YEAR(TODAY()) = $B2; MONTH(TODAY()); IF(YEAR(TODAY()) < $B2; 0; 12))" ],
-		[ "=" + (SETUP_SETTINGS["init_month"] + 1).formatLocaleSignal() ],
+		[ "=" + (SETUP_SETTINGS["init_month"] + 1).formatLocaleSignal(dec_p) ],
 		[ "=IF($B4 > $B3; 0; $B3 - $B4 + 1)" ],
 		[ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))" ],
 		[ "=COUNTIF(\'Tags\'!$E1:$E; \"<>\") - 1" ],

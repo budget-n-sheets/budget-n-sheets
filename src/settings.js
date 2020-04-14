@@ -48,7 +48,6 @@ function saveUserSettings(settings) {
 	}
 
 	user_settings = {
-		spreadsheet_locale: spreadsheet.getSpreadsheetLocale(),
 		initial_month: init,
 		override_zero: settings.override_zero,
 
@@ -82,7 +81,6 @@ function getUserSettings_(select) {
 	user_settings = getPropertiesService_('document', 'json', 'user_settings');
 
 	switch (select) {
-		case 'spreadsheet_locale':
 		case 'financial_calendar':
 		case 'post_day_events':
 		case 'override_zero':
@@ -145,7 +143,6 @@ function setUserSettings_(select, value) {
 
 	switch (select) {
 		case 'initial_month':
-		case 'spreadsheet_locale':
 		case 'financial_calendar':
 		case 'post_day_events':
 		case 'cash_flow_events':
@@ -161,6 +158,48 @@ function setUserSettings_(select, value) {
 	setPropertiesService_('document', 'json', 'user_settings', user_settings);
 	putCacheService_("document", "user_settings", "json", user_settings);
 	return true;
+}
+
+
+function getSpreadsheetSettings_(select) {
+	var spreadsheet_settings;
+
+	spreadsheet_settings = getCacheService_("document", "spreadsheet_settings", "json");
+	if (!spreadsheet_settings) {
+		spreadsheet_settings = getPropertiesService_("document", "json", "spreadsheet_settings");
+		putCacheService_("document", "spreadsheet_settings", "json", spreadsheet_settings);
+	}
+
+	switch (select) {
+	case "operation_mode":
+	case "decimal_separator":
+	case "spreadsheet_locale":
+		return spreadsheet_settings[select];
+
+	default:
+		console.error("getSpreadsheetSettings_(): Switch case is default.", select);
+		break;
+	}
+}
+
+
+function setSpreadsheetSettings_(select, value) {
+	var spreadsheet_settings = getPropertiesService_("document", "json", "spreadsheet_settings");
+
+	switch (select) {
+	case "operation_mode":
+	case "decimal_separator":
+	case "spreadsheet_locale":
+		spreadsheet_settings[select] = value;
+		break;
+
+	default:
+		console.error("setSpreadsheetSettings_() : Switch case is default.", select);
+		return 1;
+	}
+
+	setPropertiesService_("document", "json", "spreadsheet_settings", spreadsheet_settings);
+	putCacheService_("document", "spreadsheet_settings", "json", spreadsheet_settings);
 }
 
 

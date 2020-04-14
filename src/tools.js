@@ -259,9 +259,7 @@ function foo_UpdateCashFlow_(mm) {
 	var a, b, c, i, j, k, n, ma, t, x;
 	var h_, w_;
 
-	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
-
-	if (!dec_p) dec_p = "] [";
+	var dec_p = getSpreadsheetSettings_("decimal_separator");
 
 	console.time("tool/update-cash-flow/load");
 	h_ = TABLE_DIMENSION_.height;
