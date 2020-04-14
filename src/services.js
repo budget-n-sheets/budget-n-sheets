@@ -69,7 +69,7 @@ function daily_Main_(e) {
 
 	if (seamlessUpdate_()) return;
 
-	var financial_year = getUserConstSettings_('financial_year');
+	var financial_year = getConstProperties_('financial_year');
 	var date, a;
 
 	if (e) {
@@ -155,7 +155,7 @@ function weekly_Bar_(e) {
 
 	if (seamlessUpdate_()) return;
 
-	var financial_year = getUserConstSettings_('financial_year');
+	var financial_year = getConstProperties_('financial_year');
 
 	if (a["year"] > financial_year) return;
 

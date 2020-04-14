@@ -63,7 +63,7 @@ function coolFilterByTag_(info) {
 	var n, i, k;
 
 	const header = "C8";
-	const num_acc = getUserConstSettings_('number_accounts');
+	const num_acc = getConstProperties_('number_accounts');
 	const dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
 
 	const dec_c = (dec_p == "[ ]" ? "," : "\\");

@@ -21,7 +21,7 @@ function onlineUpdate_() {
 	if (reviseVersion_()) return;
 
 	const v0 = getClass_("script");
-	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
+	const v1 = APPS_SCRIPT_GLOBAL_.script_version;
 
 	if (v0.major > v1.major) return;
 	if (v0.major == v1.major) {
@@ -61,11 +61,17 @@ function onlineUpdate_() {
 
 	} else if (r === 1) {
 		ui.alert(
-			"Budget n Sheets",
+			"Can't update",
 			"The add-on is busy. Try again in a moment.",
 			ui.ButtonSet.OK);
 
-	} else if (r > 1) {
+	} else if (r === 2) {
+		ui.alert(
+			"Update failed",
+			"Something went wrong. Please, try again later.",
+			ui.ButtonSet.OK);
+
+	} else if (r > 2) {
 		uninstall_();
 		onOpen();
 		showDialogErrorMessage();
@@ -86,7 +92,7 @@ function seamlessUpdate_() {
 	var r = update_();
 
 	if (r === 0) return;
-	if (r > 1) uninstall_();
+	if (r > 2) uninstall_();
 
 	return 1;
 }
@@ -185,7 +191,7 @@ function update_v0m27p0s0_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const num_acc = getConstProperties_("number_accounts");
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		const col = 2 + w_ + w_*num_acc;
@@ -255,7 +261,7 @@ function update_v0m27p0s1_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const num_acc = getConstProperties_("number_accounts");
 
 		const col = 2 + w_ + w_*num_acc + w_;
 
@@ -322,7 +328,7 @@ function update_v0m26p1_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const num_acc = getConstProperties_("number_accounts");
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		col = 2 + w_ + w_*num_acc + w_;
@@ -389,7 +395,7 @@ function update_v0m26p0s2_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const num_acc = getConstProperties_("number_accounts");
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		ranges = [ ];
@@ -484,7 +490,7 @@ function update_v0m26p0s1_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_('number_accounts');
+		const num_acc = getConstProperties_('number_accounts');
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		col = 1 + w_ + w_*num_acc;
@@ -556,7 +562,7 @@ function update_v0m25p0_() {
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 		if (!sheet) return;
 
-		const number_accounts = getUserConstSettings_('number_accounts');
+		const number_accounts = getConstProperties_('number_accounts');
 
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
@@ -976,7 +982,7 @@ function update_v0m21p2_() {
 function update_v0m20p6_() {
 	try {
 		var a = {
-			script: APPS_SCRIPT_GLOBAL_.script_version.number,
+			script: APPS_SCRIPT_GLOBAL_.script_version,
 			template: APPS_SCRIPT_GLOBAL_.template_version.number
 		};
 
@@ -999,7 +1005,7 @@ function update_v0m20p2_() {
 
 		if (getPropertiesService_('document', 'string', 'OperationMode') === 'active') return;
 
-		financial_year = getUserConstSettings_('financial_year');
+		financial_year = getConstProperties_('financial_year');
 		date = getSpreadsheetDate();
 
 		if (date.getFullYear() < financial_year || financial_year >= 2020) {

@@ -20,7 +20,7 @@ function daily_PostEvents_(date) {
 	mm = date.getMonth();
 	dd = date.getDate();
 
-	number_accounts = getUserConstSettings_('number_accounts');
+	number_accounts = getConstProperties_('number_accounts');
 
 	dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
 	if (!dec_p) dec_p = "] [";
@@ -143,7 +143,7 @@ function updateDecimalSepartor_() {
 function monthly_TreatLayout_(yyyy, mm) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
 			sheetTags = spreadsheet.getSheetByName('Tags');
-	var financial_year = getUserConstSettings_('financial_year');
+	var financial_year = getConstProperties_('financial_year');
 	var md, a, i;
 
 	if (financial_year > yyyy) return; // Too soon to format the spreadsheet.
@@ -189,7 +189,7 @@ function monthly_TreatLayout_(yyyy, mm) {
 
 function foo_ColorTabs_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var financial_year = getUserConstSettings_('financial_year'),
+	var financial_year = getConstProperties_('financial_year'),
 			init_month = getUserSettings_('initial_month');
 	var date = getSpreadsheetDate();
 	var mm, md, i;

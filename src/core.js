@@ -100,7 +100,7 @@ function showSidebarMainSettings() {
 	var calendars = getAllOwnedCalendars();
 
 	htmlTemplate.doc_name = SpreadsheetApp.getActiveSpreadsheet().getName();
-	htmlTemplate.financial_year = getUserConstSettings_("financial_year");
+	htmlTemplate.financial_year = getConstProperties_("financial_year");
 	htmlTemplate.calendars_data = calendars;
 	htmlTemplate.calendars_enabled = calendars.md5.length > 0;
 
@@ -120,10 +120,12 @@ function showDialogAboutAddon() {
 	}
 
 	var htmlDialog, htmlTemplate;
+	var v0;
 
 	htmlTemplate = HtmlService.createTemplateFromFile('htmlAboutAddon')
 
-	htmlTemplate.version = APPS_SCRIPT_GLOBAL_.script_version.name;
+	v0 = APPS_SCRIPT_GLOBAL_.script_version;
+	htmlTemplate.version = v0.major + "." + v0.minor + "." + v0.patch;
 
 	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(281)

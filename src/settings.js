@@ -1,10 +1,17 @@
 function retrieveUserSettings() {
-	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
+	var user_settings;
 
-	if (user_settings.financial_calendar != "") {
-		user_settings.financial_calendar = computeDigest(
-				"MD5", user_settings.financial_calendar, "UTF_8"
-			);
+	user_settings = getCacheService_("document", "user_settings", "json");
+	if (!user_settings) {
+		user_settings = getPropertiesService_("document", "json", "user_settings");
+
+		if (user_settings.financial_calendar != "") {
+			user_settings.financial_calendar = computeDigest(
+					"MD5", user_settings.financial_calendar, "UTF_8"
+				);
+		}
+
+		putCacheService_("document", "user_settings", "json", user_settings);
 	}
 
 	return user_settings;
@@ -51,6 +58,13 @@ function saveUserSettings(settings) {
 	};
 	setPropertiesService_("document", "json", "user_settings", user_settings);
 
+	if (user_settings.financial_calendar != "") {
+		user_settings.financial_calendar = computeDigest(
+				"MD5", user_settings.financial_calendar, "UTF_8"
+			);
+	}
+	putCacheService_("document", "user_settings", "json", user_settings);
+
 	updateDecimalSepartor_();
 
 	if (mm !== init) {
@@ -63,17 +77,11 @@ function saveUserSettings(settings) {
 
 
 function getUserSettings_(select) {
-	var user_settings, financial_year;
-	var dateToday, dateTodayYear, dateTodayMonth;
-	var tmp;
+	var user_settings;
 
 	user_settings = getPropertiesService_('document', 'json', 'user_settings');
-	financial_year = getUserConstSettings_('financial_year');
 
 	switch (select) {
-		case 'docName': // Spreadsheet file name
-			return spreadsheet.getName();
-
 		case 'spreadsheet_locale':
 		case 'financial_calendar':
 		case 'post_day_events':
@@ -82,42 +90,52 @@ function getUserSettings_(select) {
 		case 'initial_month': // Number in 0-11 range
 			return user_settings[select];
 
-		case 'ActualMonth': // Number in 0-12 range
-			dateToday = getSpreadsheetDate();
-
-			if (dateToday.getFullYear() == financial_year) return dateToday.getMonth() + 1;
-			else if (dateToday.getFullYear() < financial_year) return 0;
-			else return 12;
-
-		case 'ActiveMonths': // Number in 0-12 range
-			dateToday = getSpreadsheetDate();
-			dateTodayMonth;
-
-			if (dateToday.getFullYear() == financial_year) dateTodayMonth = dateToday.getMonth() + 1;
-			else if (dateToday.getFullYear() < financial_year) dateTodayMonth = 0;
-			else dateTodayMonth = 12;
-
-			user_settings.initial_month++;
-			if (user_settings.initial_month > dateTodayMonth) return 0;
-			else return (dateTodayMonth - user_settings.initial_month + 1);
-
-		case 'MFactor': // Number in 0-12 range
-			dateTodayYear = getSpreadsheetDate().getFullYear();
-			tmp = getUserSettings_('ActiveMonths');
-
-			if (dateTodayYear == financial_year) {
-				tmp--;
-				if (tmp > 0) return tmp;
-				else return 0;
-			} else if (dateTodayYear < financial_year) {
-				return 0;
-			} else {
-				return tmp;
-			}
-
 		default:
 			console.error("getUserSettings_(): Switch case is default.", select);
 			break;
+	}
+}
+
+
+function getMonthFactored_(select) {
+	var date = getSpreadsheetDate();
+	var yyyy, mm;
+
+	const financial_year = getConstProperties_("financial_year");
+
+	if (select == "actual_month") {
+		yyyy = date.getFullYear();
+
+		if (yyyy == financial_year) return date.getMonth() + 1;
+		else if (yyyy < financial_year) return 0;
+		else return 12;
+
+	} else if (select == "active_months") {
+		if (date.getFullYear() == financial_year) mm = date.getMonth() + 1;
+		else if (date.getFullYear() < financial_year) mm = 0;
+		else mm = 12;
+
+		user_settings.initial_month++;
+
+		if (user_settings.initial_month > mm) return 0;
+		else return (mm - user_settings.initial_month + 1);
+
+	} else if (select == "m_factor") {
+		yyyy = date.getFullYear();
+		mm = getMonthFactored_("active_months");
+
+		if (yyyy == financial_year) {
+			mm--;
+			if (mm > 0) return mm;
+			else return 0;
+		} else if (yyyy < financial_year) {
+			return 0;
+		} else {
+			return mm;
+		}
+
+	} else {
+		console.error("getMonthFactored_(): Switch case is default.", select);
 	}
 }
 
@@ -141,21 +159,28 @@ function setUserSettings_(select, value) {
 	}
 
 	setPropertiesService_('document', 'json', 'user_settings', user_settings);
+	putCacheService_("document", "user_settings", "json", user_settings);
 	return true;
 }
 
 
-function getUserConstSettings_(select) {
-	var user_const_settings = getPropertiesService_('document', 'obj', 'user_const_settings');
+function getConstProperties_(select) {
+	var const_properties;
+
+	const_properties = getCacheService_("document", "const_properties", "json");
+	if (!const_properties) {
+		const_properties = getPropertiesService_("document", "json", "const_properties");
+		putCacheService_("document", "const_properties", "json", const_properties);
+	}
 
 	switch (select) {
 		case 'financial_year':
 		case 'number_accounts':
 		case 'date_created':
-			return user_const_settings[select];
+			return const_properties[select];
 
 		default:
-			console.error("getUserConstSettings_(): Switch case is default.", select);
+			console.error("getConstProperties_(): Switch case is default.", select);
 			break;
 	}
 }
