@@ -745,6 +745,7 @@ function setupProperties_(yyyy_mm) {
 	try {
 		user = Session.getActiveUser().getEmail();
 	} catch (err) {
+		console.warn(err);
 		user = "";
 	}
 
@@ -757,6 +758,7 @@ function setupProperties_(yyyy_mm) {
 	try {
 		owner = SPREADSHEET.getOwner().getEmail();
 	} catch (err) {
+		console.warn(err);
 		owner = "";
 	}
 
