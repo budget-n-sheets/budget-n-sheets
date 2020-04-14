@@ -24,7 +24,7 @@ function update_() {
 	try {
 		lock.waitLock(200);
 	} catch (err) {
-		console.warn("update_ExecutePatial_(): Wait lock time out.");
+		console.warn("update_(): Wait lock time out.");
 		return 1;
 	}
 
