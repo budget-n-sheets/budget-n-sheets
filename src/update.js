@@ -19,7 +19,7 @@ var PATCH_THIS_ = Object.freeze({
 
 function onlineUpdate_() {
 	const v0 = getClass_("script");
-	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
+	const v1 = APPS_SCRIPT_GLOBAL_.script_version;
 
 	if (v0.major > v1.major) return;
 	if (v0.major == v1.major) {
@@ -953,7 +953,7 @@ function update_v0m21p2_() {
 function update_v0m20p6_() {
 	try {
 		var a = {
-			script: APPS_SCRIPT_GLOBAL_.script_version.number,
+			script: APPS_SCRIPT_GLOBAL_.script_version,
 			template: APPS_SCRIPT_GLOBAL_.template_version.number
 		};
 

@@ -29,7 +29,7 @@ function update_() {
 	}
 
 	const v0 = getClass_('script');
-	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
+	const v1 = APPS_SCRIPT_GLOBAL_.script_version;
 
 	if (v0.major > v1.major) return 0;
 	if (v0.major == v1.major) {

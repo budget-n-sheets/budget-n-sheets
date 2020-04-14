@@ -12,12 +12,9 @@ var TABLE_DIMENSION_ = Object.freeze({height: 10, width: 5});
 
 var APPS_SCRIPT_GLOBAL_ = Object.freeze({
 	script_version: {
-		number: {
-			major: 0,
-			minor: 27,
-			patch: 2
-		},
-		name: "0.27.2"
+		major: 0,
+		minor: 27,
+		patch: 2
 	},
 
 	template_version: {

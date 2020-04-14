@@ -215,7 +215,7 @@ function setup_(settings, list_acc) {
 	setup_ExecutePatial_();
 
 	a = {
-		script: APPS_SCRIPT_GLOBAL_.script_version.number,
+		script: APPS_SCRIPT_GLOBAL_.script_version,
 		template: APPS_SCRIPT_GLOBAL_.template_version.number
 	};
 	a.script.beta = PATCH_THIS_["beta_list"].length;
