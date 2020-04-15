@@ -253,9 +253,14 @@ function update_v0m28p0s0_() {
 			else pos = 15;
 		}
 
-		template.getSheetByName("Cash Flow")
+		sheet = template.getSheetByName("Cash Flow")
 			.copyTo(spreadsheet)
-			.setName("Cash Flow");
+			.setName("Cash Flow")
+			.setTabColor("#e69138");
+
+		spreadsheet.setActiveSheet(sheet);
+		spreadsheet.moveActiveSheet(pos);
+
 		SpreadsheetApp.flush();
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0s0_()", err);
