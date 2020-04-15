@@ -140,6 +140,68 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Import new Cash Flow page.
+ *
+ * 0.28.0
+ */
+function update_v0m28p0_() {
+	try {
+		var r;
+
+		r = update_v0m28p0s0_();
+		if (r) return 1;
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0_()", err);
+		return 1;
+	}
+}
+
+/**
+ * Backup Cash Flow page.
+ * Import new Cash Flow page.
+ */
+function update_v0m28p0s0_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
+		var sheet;
+		var name, pos, n, i;
+
+		i = 0;
+		do {
+			i++;
+			name = "_Backup_Cash_Flow_" + i;
+			sheet = spreadsheet.getSheetByName(name);
+		} while (!sheet && i < 100);
+		if (i >= 100) throw new Error("Can't rename page.");
+
+		sheet = spreadsheet.getSheetByName("Cash Flow");
+		if (sheet) {
+			pos = sheet.getIndex();
+			n = spreadsheet.getNumSheets();
+			if (n == 1) spreadsheet.insertSheet();
+
+			spreadsheet.setActiveSheet(sheet);
+			spreadsheet.moveActiveSheet(n);
+			sheet.setName(name).hideSheet();
+		} else {
+			n = spreadsheet.getNumSheets();
+			if (n < 15) pos = n;
+			else pos = 15;
+		}
+
+		sheet = template.getSheetByName("Cash Flow")
+			.copyTo(spreadsheet)
+			.setName("Cash Flow");
+
+		SpreadsheetApp.flush();
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s0_()", err);
+		return 1;
+	}
+}
+
+/**
  * Copy user_const_settings to const_properties.
  * Add spreadshet ID, and blank user and owner to const_properties.
  *
