@@ -141,6 +141,7 @@ function update_v0m0p0_() {
 
 /**
  * Import new Cash Flow page.
+ * Rename page About to _About BnS.
  *
  * 0.28.0
  */
@@ -148,11 +149,30 @@ function update_v0m28p0_() {
 	try {
 		var r;
 
+		update_v0m28p0s1_();
+
 		r = update_v0m28p0s0_();
 		if (r) return 1;
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0_()", err);
 		return 1;
+	}
+}
+
+/**
+ * Rename page About to _About BnS.
+ */
+function update_v0m28p0s1_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var sheet = spreadsheet.getSheetByName("About");
+
+		if (sheet) {
+			if (spreadsheet.getSheetByName("_About BnS")) return;
+			sheet.setName("_About BnS");
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s1_()", err);
 	}
 }
 
