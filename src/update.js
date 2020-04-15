@@ -151,10 +151,48 @@ function update_v0m28p0_() {
 
 		update_v0m28p0s1_();
 
+		if ( update_v0m28p0s2_() ) return 1;
+
 		r = update_v0m28p0s0_();
 		if (r) return 1;
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0_()", err);
+		return 1;
+	}
+}
+
+/**
+ * Set spreadsheet_settings property.
+ */
+function update_v0m28p0s2_() {
+	try {
+		var date, yyyy;
+		var operation, decimal_separator, dec_p;
+
+		date = getSpreadsheetDate(DATE_NOW);
+		yyyy = date.getFullYear();
+
+		const financial_year = getConstProperties_("financial_year");
+		const decimal_separator = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
+
+		const dec_p = decimal_separator != null;
+
+		if (financial_year < yyyy) {
+			operation = "passive";
+		} else if (financial_year == yyyy) {
+			operation = "active";
+		} else if (financial_year > yyyy) {
+			operation = "passive";
+		}
+
+		const spreadsheet_settings = {
+			operation_mode: operation,
+			decimal_separator: dec_p,
+			spreadsheet_locale: SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale()
+		};
+		setPropertiesService_("document", "json", "spreadsheet_settings", spreadsheet_settings);
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s2_()", err);
 		return 1;
 	}
 }
