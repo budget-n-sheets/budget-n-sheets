@@ -142,19 +142,15 @@ function update_v0m0p0_() {
 /**
  * Import new Cash Flow page.
  * Rename page About to _About BnS.
+ * Set spreadsheet_settings property.
  *
  * 0.28.0
  */
 function update_v0m28p0_() {
 	try {
-		var r;
-
 		update_v0m28p0s1_();
-
-		if ( update_v0m28p0s2_() ) return 1;
-
-		r = update_v0m28p0s0_();
-		if (r) return 1;
+		if (update_v0m28p0s2_()) return 1;
+		if (update_v0m28p0s0_()) return 1;
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0_()", err);
 		return 1;
