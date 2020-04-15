@@ -783,7 +783,7 @@ function setupSettings_(yyyy_mm) {
 
 	cell.user = "";
 	cell.owner = "";
-	cell = CONST_SETUP_SPREADSHEET_.getId();
+	cell.spreadsheet_id = CONST_SETUP_SPREADSHEET_.getId();
 	setPropertiesService_("document", "json", "const_properties", cell);
 
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
