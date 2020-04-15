@@ -806,7 +806,7 @@ function setupProperties_(yyyy_mm) {
 	properties = {
 		operation_mode: operation,
 		decimal_separator: SETUP_SETTINGS["decimal_separator"],
-		spreadsheet_locale: SETUP_SETTINGS["spreadsheet_locale"]
+		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale()
 	};
 	setPropertiesService_("document", "json", "spreadsheet_settings", properties);
 
