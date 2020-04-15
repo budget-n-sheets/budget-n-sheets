@@ -143,6 +143,7 @@ function update_v0m0p0_() {
  * Import new Cash Flow page.
  * Rename page About to _About BnS.
  * Set spreadsheet_settings property.
+ * Transfer data from old Cash Flow.
  *
  * 0.28.0
  */
@@ -153,6 +154,7 @@ function update_v0m28p0_() {
 		if (update_v0m28p0s0_()) return 1;
 		if (update_v0m28p0s3_()) return 1;
 		update_v0m28p0s4_();
+		update_v0m28p0s5_();
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0_()", err);
 		return 1;
@@ -379,6 +381,44 @@ function update_v0m28p0s4_() {
 		optMainTables("UpdateTableRef");
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0s4_()", err);
+	}
+}
+
+/**
+ * Transfer data from old Cash Flow.
+ */
+function update_v0m28p0s5_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var source, destination;
+		var n, i;
+
+		const type = SpreadsheetApp.CopyPasteType.PASTE_VALUES;
+		const financial_year = getConstProperties_("financial_year");
+
+		destination = spreadsheet.getSheetByName("Cash Flow");
+		if (!destination) return;
+
+		i = 100;
+		do {
+			i--;
+			source = spreadsheet.getSheetByName("_Backup_Cash_Flow_" + i);
+		} while (!source && i > 0);
+		if (i <= 0) return;
+
+		i = 0;
+		while (i < 12) {
+			n = new Date(financial_year, i + 1, 0).getDate();
+
+			source.getRange(3, 2 + 4*i, n, 1)
+				.copyTo(destination.getRange(4, 2 + 4*i, n, 1), type);
+			source.getRange(3, 4 + 4*i, n, 1)
+				.copyTo(destination.getRange(4, 4 + 4*i, n, 1), type);
+
+			i++;
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s5_()", err);
 	}
 }
 
