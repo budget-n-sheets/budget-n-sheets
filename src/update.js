@@ -203,10 +203,15 @@ function update_v0m28p0s2_() {
 function update_v0m28p0s1_() {
 	try {
 		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-		var sheet = spreadsheet.getSheetByName("About");
+		var sheet;
 
+		sheet = spreadsheet.getSheetByName("About");
 		if (sheet) {
-			if (spreadsheet.getSheetByName("_About BnS")) return;
+			if (spreadsheet.getSheetByName("_About BnS")) {
+				spreadsheet.deleteSheet(sheet);
+				return;
+			}
+
 			sheet.setName("_About BnS");
 		}
 	} catch (err) {
