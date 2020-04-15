@@ -233,7 +233,7 @@ function update_v0m28p0s0_() {
 			i++;
 			name = "_Backup_Cash_Flow_" + i;
 			sheet = spreadsheet.getSheetByName(name);
-		} while (!sheet && i < 100);
+		} while (sheet && i < 100);
 		if (i >= 100) throw new Error("Can't rename page.");
 
 		sheet = spreadsheet.getSheetByName("Cash Flow");
