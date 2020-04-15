@@ -251,10 +251,9 @@ function update_v0m28p0s0_() {
 			else pos = 15;
 		}
 
-		sheet = template.getSheetByName("Cash Flow")
+		template.getSheetByName("Cash Flow")
 			.copyTo(spreadsheet)
 			.setName("Cash Flow");
-
 		SpreadsheetApp.flush();
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0s0_()", err);
