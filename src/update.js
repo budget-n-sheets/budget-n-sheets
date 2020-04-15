@@ -151,6 +151,7 @@ function update_v0m28p0_() {
 		update_v0m28p0s1_();
 		if (update_v0m28p0s2_()) return 1;
 		if (update_v0m28p0s0_()) return 1;
+		if (update_v0m28p0s3_()) return 1;
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0_()", err);
 		return 1;
@@ -256,6 +257,119 @@ function update_v0m28p0s0_() {
 		SpreadsheetApp.flush();
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0s0_()", err);
+		return 1;
+	}
+}
+
+/**
+ * Install Cash Flow page.
+ */
+function update_v0m28p0s3_() {
+	try {
+		var sheet, ranges, formula;
+		var b_f3f3f3, b_d9ead3;
+		var d, s;
+		var i, j, k;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cash Flow");
+		if (!sheet) return 1;
+
+		const h_ = TABLE_DIMENSION_.height;
+
+		const init_month = setUserSettings_("initial_month");
+		const dec_p = getSpreadsheetSettings_("decimal_separator");
+		const num_acc = getConstProperties_("number_accounts");
+		const financial_year = getConstProperties_("financial_year");
+
+		const dec_c = (dec_p ? "," : "\\");
+		const options = "{\"charttype\"" + dec_c + "\"column\"; \"color\"" + dec_c + "\"#93c47d\"; \"negcolor\"" + dec_c + "\"#e06666\"; \"empty\"" + dec_c + "\"ignore\"; \"nan\"" + dec_c + "\"ignore\"}";
+
+		ranges = [ ];
+		for (i = 0; i < 12; i++) {
+			ranges[2*i] = sheet.getRange(4, 2 + 4*i, 31);
+			ranges[2*i + 1] = sheet.getRange(4, 4 + 4*i, 31);
+		}
+
+		sheet.protect()
+			.setUnprotectedRanges(ranges)
+			.setWarningOnly(true);
+
+		ranges = [ ];
+		b_f3f3f3 = [ ];
+		b_d9ead3 = [ ];
+
+		i = 0;
+		d = new Date(financial_year, 1 + i, 0).getDate();
+		ranges.push([ rollA1Notation(5, 3 + 4*i, d - 1) ]);
+		if (d < 31) {
+			b_f3f3f3.push([ rollA1Notation(4 + d, 2 + 4*i, 31 - d, 3) ]);
+		}
+
+		formula = "SPARKLINE(" + rollA1Notation(4, 3 + 4*i, d, 1) + "; " + options + ")";
+		sheet.getRange(2, 2 + 4*i).setFormula(formula);
+
+		j = 0;
+		s = new Date(financial_year, 0, 1).getDay();
+		while (j < d) {
+			switch (s) {
+				case 0:
+					b_d9ead3.push([ rollA1Notation(4 + j, 2, 1, 3) ]);
+					s += 6;
+					j += 6;
+					break;
+				case 6:
+					b_d9ead3.push([ rollA1Notation(4 + j, 2, 1, 3) ]);
+					s = 0;
+					j++;
+					break;
+				default:
+					s = (s + 1)%7;
+					j++;
+					break;
+			}
+		}
+
+		for (i = 1; i < 12; i++) {
+			sheet.getRange(4, 3 + 4*i).setFormulaR1C1("=R[" + (d - 1) + "]C[-4] + RC[-1]");
+
+			d = new Date(financial_year, 1 + i, 0).getDate();
+			ranges.push([ rollA1Notation(5, 3 + 4*i, d - 1) ]);
+			if (d < 31) {
+				b_f3f3f3.push([ rollA1Notation(4 + d, 2 + 4*i, 31 - d, 3) ]);
+			}
+
+			formula = "SPARKLINE(" + rollA1Notation(4, 3 + 4*i, d, 1) + "; " + options + ")";
+			sheet.getRange(2, 2 + 4*i).setFormula(formula);
+
+			j = 0;
+			s = new Date(financial_year, i, 1).getDay();
+			while (j < d) {
+				switch (s) {
+					case 0:
+						b_d9ead3.push([ rollA1Notation(4 + j, 2 + 4*i, 1, 3) ]);
+						s = 6;
+						j += 6;
+						break;
+					case 6:
+						b_d9ead3.push([ rollA1Notation(4 + j, 2 + 4*i, 1, 3) ]);
+						s = 0;
+						j++;
+						break;
+					default:
+						s = (s + 1)%7;
+						j++;
+						break;
+				}
+			}
+		}
+
+		sheet.getRangeList(ranges).setFormulaR1C1("=R[-1]C + RC[-1]");
+		sheet.getRangeList(b_f3f3f3).setBackground("#f3f3f3");
+		sheet.getRangeList(b_d9ead3).setBackground("#d9ead3");
+
+		SpreadsheetApp.flush();
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s3_()", err);
 		return 1;
 	}
 }
