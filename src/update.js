@@ -167,7 +167,7 @@ function update_v0m28p0_() {
 function update_v0m28p0s2_() {
 	try {
 		var date, yyyy;
-		var operation, decimal_separator, dec_p;
+		var operation;
 
 		date = getSpreadsheetDate(DATE_NOW);
 		yyyy = date.getFullYear();
