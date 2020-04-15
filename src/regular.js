@@ -128,8 +128,7 @@ function updateDecimalSepartor_() {
 	SpreadsheetApp.flush();
 
 	cell = cell.getDisplayValue();
-	if ( /\./.test(cell) ) v = "[ ]";
-	else v = "] [";
+	v = /\./.test(cell);
 
 	setSpreadsheetSettings_("decimal_separator", v);
 	setSpreadsheetSettings_("spreadsheet_locale", spreadsheet.getSpreadsheetLocale());

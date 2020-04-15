@@ -64,9 +64,9 @@ function coolFilterByTag_(info) {
 
 	const header = "C8";
 	const num_acc = getConstProperties_('number_accounts');
-	const dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
+	const dec_p = getSpreadsheetSettings_("decimal_separator");
 
-	const dec_c = (dec_p == "[ ]" ? "," : "\\");
+	const dec_c = (dec_p ? "," : "\\");
 
 	sheet.getRange("B8").setFormula("IF(C8 = \"\"; \"\"; \"#\")");
 

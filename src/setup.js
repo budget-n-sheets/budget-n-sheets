@@ -199,7 +199,7 @@ function setup_(settings, list_acc) {
 		init_month: Number(settings.initial_month),
 		number_accounts: Number(settings.number_accounts),
 		list_acc: list_acc,
-		decimal_separator: "[ ]"
+		decimal_separator: true
 	};
 
 	console.time("add-on/install");
@@ -378,7 +378,7 @@ function setupCashFlow_() {
 	const num_acc = SETUP_SETTINGS["number_accounts"];
 	const financial_year = SETUP_SETTINGS["financial_year"];
 
-	const dec_c = (dec_p == "[ ]" ? "," : "\\");
+	const dec_c = (dec_p ? "," : "\\");
 	const options = "{\"charttype\"" + dec_c + "\"column\"; \"color\"" + dec_c + "\"#93c47d\"; \"negcolor\"" + dec_c + "\"#e06666\"; \"empty\"" + dec_c + "\"ignore\"; \"nan\"" + dec_c + "\"ignore\"}";
 
 	ranges = [ ];
@@ -556,7 +556,7 @@ function setupCards_() {
 	const num_acc = SETUP_SETTINGS["number_accounts"];
 
 	const col = 2 + w_ + w_*num_acc;
-	const dec_c = (dec_p === "[ ]" ? "," : "\\");
+	const dec_c = (dec_p ? "," : "\\");
 	const header = rollA1Notation(1, col, 1, w_*11);
 
 	SPREADSHEET.setActiveSheet(sheet);
@@ -830,8 +830,7 @@ function setupSettings_(yyyy_mm) {
 	SpreadsheetApp.flush();
 
 	cell = cell.getDisplayValue();
-	if ( /\./.test(cell) ) dec_p = "[ ]";
-	else dec_p = "] [";
+	dec_p = /\./.test(cell);
 
 	SETUP_SETTINGS["decimal_separator"] = dec_p;
 
@@ -872,7 +871,7 @@ function setupBackstage_() {
 	const balance2 = [ "0", "0", "0", "0", "0", "G3", "L3", "Q3", "V3", "AA3", "G13", "L13", "Q13", "V13", "AA13", "G23", "L23", "Q23", "V23", "AA23", "G33", "L33", "Q33", "V33", "AA33", "G43", "L43", "Q43", "V43", "AA43", "G53", "L53", "Q53", "V53", "AA53", "G63", "L63", "Q63", "V63", "AA63", "G73", "L73", "Q73", "V73", "AA73", "G83", "L83", "Q83", "V83", "AA83", "G93", "L93", "Q93", "V93", "AA93", "G103", "L103", "Q103", "V103", "AA103" ];
 
 	const col = 2 + w_ + w_*num_acc + w_;
-	const dec_c = (dec_p == "[ ]" ? "," : "\\");
+	const dec_c = (dec_p ? "," : "\\");
 
 	n = w_*num_acc;
 	formulas = new Array(120);
