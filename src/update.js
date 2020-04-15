@@ -152,6 +152,7 @@ function update_v0m28p0_() {
 		if (update_v0m28p0s2_()) return 1;
 		if (update_v0m28p0s0_()) return 1;
 		if (update_v0m28p0s3_()) return 1;
+		update_v0m28p0s4_();
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0_()", err);
 		return 1;
@@ -371,6 +372,14 @@ function update_v0m28p0s3_() {
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0s3_()", err);
 		return 1;
+	}
+}
+
+function update_v0m28p0s4_() {
+	try {
+		optMainTables("UpdateTableRef");
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s4_()", err);
 	}
 }
 
