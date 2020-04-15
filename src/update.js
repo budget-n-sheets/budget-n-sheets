@@ -203,7 +203,7 @@ function update_v0m28p0s0_() {
 
 /**
  * Copy user_const_settings to const_properties.
- * Add spreadshet ID, and blank user and owner to const_properties.
+ * Add spreadsheet ID, and blank user and owner to const_properties.
  *
  * 0.27.5
  */
