@@ -2,8 +2,7 @@ var PATCH_THIS_ = Object.freeze({
 	patch_list: [
 		[
 			null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-			[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-			[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
+			[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 			[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
 			[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
 			[ null, null ],
@@ -1265,71 +1264,5 @@ function update_v0m21p2_() {
 		}
 	} catch (err) {
 		consoleLog_('error', 'update_v0m21p2_()', err);
-	}
-}
-
-/**
- * Transition to new update system.
- *
- * 0.20.6
- */
-function update_v0m20p6_() {
-	try {
-		var a = {
-			script: APPS_SCRIPT_GLOBAL_.script_version,
-			template: APPS_SCRIPT_GLOBAL_.template_version.number
-		};
-
-		setPropertiesService_('document', 'json', 'class_version2', a);
-	} catch (err) {
-		consoleLog_('error', 'update_v0m20p6_()', err);
-		return 1;
-	}
-}
-
-/**
- * Reinstall weekly_Bar_() trigger to fix week day.
- *
- * 0.20.2
- */
-function update_v0m20p2_() {
-	try {
-		var financial_year;
-		var date, day;
-
-		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
-
-		if (getPropertiesService_('document', 'string', 'OperationMode') === 'active') return;
-
-		financial_year = user_const_settings.financial_year;
-		date = getSpreadsheetDate();
-
-		if (date.getFullYear() < financial_year || financial_year >= 2020) {
-			day = new Date(financial_year, 0, 2);
-			day = day.getDay();
-
-			deleteScriptAppTriggers_('document', 'weeklyMainId');
-			createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', day);
-		}
-	} catch (err) {
-		consoleLog_('error', 'update_v0m20p2_()', err);
-		return 1;
-	}
-}
-
-
-/**
- * Import cool sheet Stats for Tags.
- *
- * 0.20.0
- */
-function update_v0m20p0_() {
-	try {
-		if (!SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Stats for Tags')) {
-			coolGallery('tags');
-		}
-	} catch (err) {
-		consoleLog_('error', 'update_v0m20p0_()', err);
-		return 1;
 	}
 }
