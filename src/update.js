@@ -479,7 +479,8 @@ function update_v0m27p0s0_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		const col = 2 + w_ + w_*num_acc;
@@ -549,7 +550,8 @@ function update_v0m27p0s1_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const num_acc = user_const_settings.number_accounts;
 
 		const col = 2 + w_ + w_*num_acc + w_;
 
@@ -616,7 +618,8 @@ function update_v0m26p1_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		col = 2 + w_ + w_*num_acc + w_;
@@ -683,7 +686,8 @@ function update_v0m26p0s2_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		ranges = [ ];
@@ -778,7 +782,8 @@ function update_v0m26p0s1_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_('number_accounts');
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		col = 1 + w_ + w_*num_acc;
@@ -850,7 +855,8 @@ function update_v0m25p0_() {
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 		if (!sheet) return;
 
-		const number_accounts = getUserConstSettings_('number_accounts');
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const number_accounts = user_const_settings.number_accounts;
 
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
@@ -1291,9 +1297,11 @@ function update_v0m20p2_() {
 		var financial_year;
 		var date, day;
 
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+
 		if (getPropertiesService_('document', 'string', 'OperationMode') === 'active') return;
 
-		financial_year = getUserConstSettings_('financial_year');
+		financial_year = user_const_settings.financial_year;
 		date = getSpreadsheetDate();
 
 		if (date.getFullYear() < financial_year || financial_year >= 2020) {
