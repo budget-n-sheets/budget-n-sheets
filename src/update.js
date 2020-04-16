@@ -458,8 +458,6 @@ function update_v0m27p0_() {
 	try {
 		update_v0m27p0s0_();
 		update_v0m27p0s1_();
-		update_v0m27p0s2_();
-		update_v0m27p0s3_();
 	} catch (err) {
 		consoleLog_("error", "update_v0m27p0_()", err);
 	}
@@ -578,25 +576,6 @@ function update_v0m27p0s1_() {
 		sheet.getRangeList(ranges).setFormulaR1C1("MIN(R[-1]C; R[-1]C - R[3]C)");
 	} catch (err) {
 		consoleLog_("error", "update_v0m27p0s1_()", err);
-	}
-}
-
-function update_v0m27p0s2_() {
-	try {
-		cardsRefresh_();
-	} catch (err) {
-		consoleLog_("error", "update_v0m27p0s2_()", err);
-	}
-}
-
-/**
- * Update cash flow range referencing.
- */
-function update_v0m27p0s3_() {
-	try {
-		optAccount_UpdateTableRef_();
-	} catch (err) {
-		consoleLog_("error", "update_v0m27p0s3_()", err);
 	}
 }
 
@@ -761,7 +740,6 @@ function update_v0m26p0s0_() {
 		db_tables.cards = db_cards;
 
 		setPropertiesService_("document", "json", "DB_TABLES", db_tables);
-		optMainTables("Refresh");
 	} catch (err) {
 		consoleLog_("error", "update_v0m26p0s0_()", err);
 		return 1;
@@ -1071,23 +1049,8 @@ function update_v0m22p1_() {
 
 		update_v0m22p1s1_();
 		Utilities.sleep(200);
-
-		update_v0m22p1s2_();
-		Utilities.sleep(200);
 	} catch (err) {
 		consoleLog_('error', 'update_v0m22p1_()', err);
-	}
-}
-
-/**
- * Reinstall triggers if transition year service failed.
- *
- */
-function update_v0m22p1s2_() {
-	try {
-		askReinstall();
-	} catch (err) {
-		consoleLog_('error', 'update_v0m22p1s2_()', err);
 	}
 }
 
