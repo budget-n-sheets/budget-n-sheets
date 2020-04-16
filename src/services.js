@@ -175,10 +175,9 @@ function weekly_Bar_(e) {
 function reviseVersion_() {
 	var documentProperties = PropertiesService.getDocumentProperties();
 
-	if (documentProperties.getProperty("class_version2") == null ||
-			documentProperties.getProperty("user_const_settings") == null) {
-				console.log("Version revision failed: uninstall.");
-				uninstall_();
-				return 1;
+	if (documentProperties.getProperty("class_version2") == null) {
+			console.log("Version revision failed: uninstall.");
+			uninstall_();
+			return 1;
 	}
 }
