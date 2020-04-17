@@ -6,16 +6,15 @@ var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 
 var DATE_NOW = new Date();
 
+var SPREADSHEET, SETUP_SETTINGS;
+
 var TABLE_DIMENSION_ = Object.freeze({height: 10, width: 5});
 
 var APPS_SCRIPT_GLOBAL_ = Object.freeze({
 	script_version: {
-		number: {
-			major: 0,
-			minor: 27,
-			patch: 7
-		},
-		name: "0.27.7"
+		major: 0,
+		minor: 27,
+		patch: 7
 	},
 
 	template_version: {
@@ -24,7 +23,7 @@ var APPS_SCRIPT_GLOBAL_ = Object.freeze({
 	},
 
 	template_id: "",
-	template_sheets: [ "_Settings", "Cards", "Summary", "TTT", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "About" ],
+	template_sheets: [ "_Settings", "Cards", "Summary", "TTT", "Cash Flow", "Tags", "Quick Actions", "_Backstage", "_About BnS" ],
 
 	cool_gallery: {
 		stats_for_tags: {

@@ -9,7 +9,7 @@ function calendarDigestListEvents_(listEvents) {
 		cards: 0
 	};
 
-	const dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
+	const dec_p = getSpreadsheetSettings_("decimal_separator");
 	const db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
 
 	list_acc = db_tables.accounts.names;

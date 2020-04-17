@@ -63,13 +63,13 @@ function daily_Main_(e) {
 
 	if (reviseVersion_()) return;
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
 		updateDecimalSepartor_();
 	}
 
 	if (seamlessUpdate_()) return;
 
-	var financial_year = getUserConstSettings_('financial_year');
+	var financial_year = getConstProperties_('financial_year');
 	var date, a;
 
 	if (e) {
@@ -90,7 +90,7 @@ function daily_Main_(e) {
 		deleteScriptAppTriggers_('document', 'dailyMainId');
 		Utilities.sleep(300);
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
-		setPropertiesService_('document', 'string', 'OperationMode', "passive");
+		setSpreadsheetSettings_("operation_mode", "passive");
 
 		console.info("add-on/mode-passive");
 		return;
@@ -117,7 +117,7 @@ function weekly_Foo_(e) {
 
 	if (reviseVersion_()) return;
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
 		updateDecimalSepartor_();
 	}
 
@@ -149,13 +149,13 @@ function weekly_Bar_(e) {
 		date: date.getDate()
 	};
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getUserSettings_("spreadsheet_locale")) {
+	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
 		updateDecimalSepartor_();
 	}
 
 	if (seamlessUpdate_()) return;
 
-	var financial_year = getUserConstSettings_('financial_year');
+	var financial_year = getConstProperties_('financial_year');
 
 	if (a["year"] > financial_year) return;
 
@@ -175,10 +175,9 @@ function weekly_Bar_(e) {
 function reviseVersion_() {
 	var documentProperties = PropertiesService.getDocumentProperties();
 
-	if (documentProperties.getProperty("class_version2") == null ||
-			documentProperties.getProperty("user_const_settings") == null) {
-				console.log("Version revision failed: uninstall.");
-				uninstall_();
-				return 1;
+	if (documentProperties.getProperty("class_version2") == null) {
+			console.log("Version revision failed: uninstall.");
+			uninstall_();
+			return 1;
 	}
 }

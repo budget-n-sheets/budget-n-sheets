@@ -24,12 +24,12 @@ function update_() {
 	try {
 		lock.waitLock(200);
 	} catch (err) {
-		console.warn("update_ExecutePatial_(): Wait lock time out.");
+		console.warn("update_(): Wait lock time out.");
 		return 1;
 	}
 
 	const v0 = getClass_('script');
-	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
+	const v1 = APPS_SCRIPT_GLOBAL_.script_version;
 
 	if (v0.major > v1.major) return 0;
 	if (v0.major == v1.major) {
@@ -84,9 +84,11 @@ function update_() {
 		}
 		if (r.p == -1) r.p = pp;
 
-		console.info("add-on/update/fail", r);
+		console.warn("add-on/update/fail", r);
+		r.r = 2;
 	} else {
 		if (r.m == -1) r.m = 0;
+		r.r = 0;
 	}
 
 	var cell = {
@@ -99,7 +101,7 @@ function update_() {
 	setClass_('script', cell);
 	nodeControl_('sign');
 
-	return 0;
+	return r.r;
 }
 
 

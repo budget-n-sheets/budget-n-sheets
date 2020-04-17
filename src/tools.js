@@ -259,19 +259,17 @@ function foo_UpdateCashFlow_(mm) {
 	var a, b, c, i, j, k, n, ma, t, x;
 	var h_, w_;
 
-	var dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
-
-	if (!dec_p) dec_p = "] [";
+	var dec_p = getSpreadsheetSettings_("decimal_separator");
 
 	console.time("tool/update-cash-flow/load");
 	h_ = TABLE_DIMENSION_.height;
 	w_ = TABLE_DIMENSION_.width;
 
-	yyyy = getUserConstSettings_('financial_year');
+	yyyy = getConstProperties_('financial_year');
 
 	dd = new Date(yyyy, mm + 1, 0).getDate();
 	override_zero = getUserSettings_("override_zero");
-	number_accounts = getUserConstSettings_('number_accounts');
+	number_accounts = getConstProperties_('number_accounts');
 
 	cf_flow = [ ];
 	cf_transaction = [ ];
@@ -429,8 +427,8 @@ function foo_UpdateCashFlow_(mm) {
 	cf_flow = transpose([cf_flow]);
 	cf_transaction = transpose([cf_transaction]);
 
-	sheetCashFlow.getRange(3, 2 + 4*mm, dd, 1).setFormulas(cf_flow);
-	sheetCashFlow.getRange(3, 4 + 4*mm, dd, 1).setValues(cf_transaction);
+	sheetCashFlow.getRange(4, 2 + 4*mm, dd, 1).setFormulas(cf_flow);
+	sheetCashFlow.getRange(4, 4 + 4*mm, dd, 1).setValues(cf_transaction);
 	SpreadsheetApp.flush();
 	console.timeEnd("tool/update-cash-flow");
 }
@@ -449,7 +447,7 @@ function foo_FormatAccounts_(mm) {
 	var c, n, i, k;
 
 	const w_ = TABLE_DIMENSION_.width;
-	const num_acc = getUserConstSettings_('number_accounts');
+	const num_acc = getConstProperties_('number_accounts');
 
 	if (sheet.getMaxColumns() < 5 + 5*num_acc) return;
 
@@ -478,7 +476,7 @@ function foo_FormatAccounts_(mm) {
 	}
 
 	date1 = DATE_NOW.getTime();
-	date2 = getUserConstSettings_('financial_year');
+	date2 = getConstProperties_('financial_year');
 	date2 = new Date(date2, mm + 1, 0).getTime();
 
 	if (c > 0 && c < n && date2 < date1) sheet.hideRows(5 + c, n - c);

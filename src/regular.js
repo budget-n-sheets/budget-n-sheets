@@ -20,10 +20,9 @@ function daily_PostEvents_(date) {
 	mm = date.getMonth();
 	dd = date.getDate();
 
-	number_accounts = getUserConstSettings_('number_accounts');
+	number_accounts = getConstProperties_('number_accounts');
 
-	dec_p = PropertiesService.getDocumentProperties().getProperty('decimal_separator');
-	if (!dec_p) dec_p = "] [";
+	dec_p = getSpreadsheetSettings_("decimal_separator");
 
 	data = [ ];
 	for (k = 0; k < 2 + number_accounts; k++) {
@@ -117,7 +116,7 @@ function daily_PostEvents_(date) {
 
 function updateDecimalSepartor_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet, cell;
+	var sheet, cell, v;
 
 	sheet = spreadsheet.getSheetByName("_Settings");
 	if (!sheet) return;
@@ -129,13 +128,10 @@ function updateDecimalSepartor_() {
 	SpreadsheetApp.flush();
 
 	cell = cell.getDisplayValue();
-	if ( /\./.test(cell) ) {
-		setPropertiesService_("document", "", "decimal_separator", "[ ]");
-	} else {
-		deletePropertiesService_("document", "decimal_separator");
-	}
+	v = /\./.test(cell);
 
-	setUserSettings_("spreadsheet_locale", spreadsheet.getSpreadsheetLocale());
+	setSpreadsheetSettings_("decimal_separator", v);
+	setSpreadsheetSettings_("spreadsheet_locale", spreadsheet.getSpreadsheetLocale());
 }
 
 
@@ -143,7 +139,7 @@ function updateDecimalSepartor_() {
 function monthly_TreatLayout_(yyyy, mm) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
 			sheetTags = spreadsheet.getSheetByName('Tags');
-	var financial_year = getUserConstSettings_('financial_year');
+	var financial_year = getConstProperties_('financial_year');
 	var md, a, i;
 
 	if (financial_year > yyyy) return; // Too soon to format the spreadsheet.
@@ -189,7 +185,7 @@ function monthly_TreatLayout_(yyyy, mm) {
 
 function foo_ColorTabs_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var financial_year = getUserConstSettings_('financial_year'),
+	var financial_year = getConstProperties_('financial_year'),
 			init_month = getUserSettings_('initial_month');
 	var date = getSpreadsheetDate();
 	var mm, md, i;

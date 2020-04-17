@@ -2,8 +2,7 @@ var PATCH_THIS_ = Object.freeze({
 	patch_list: [
 		[
 			null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-			[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
-			[ update_v0m20p0_, null, update_v0m20p2_, null, null, null, update_v0m20p6_ ],
+			[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 			[ null, null, update_v0m21p2_, update_v0m21p3_, null, null ],
 			[ update_v0m22p0_, update_v0m22p1_, update_v0m22p2_ ],
 			[ null, null ],
@@ -21,7 +20,7 @@ function onlineUpdate_() {
 	if (reviseVersion_()) return;
 
 	const v0 = getClass_("script");
-	const v1 = APPS_SCRIPT_GLOBAL_.script_version.number;
+	const v1 = APPS_SCRIPT_GLOBAL_.script_version;
 
 	if (v0.major > v1.major) return;
 	if (v0.major == v1.major) {
@@ -48,7 +47,7 @@ function onlineUpdate_() {
 		return 1;
 	}
 
-	if (v1.patch === 0) showDialogUpdate();
+	showDialogUpdate();
 
 	var r = update_();
 
@@ -61,11 +60,17 @@ function onlineUpdate_() {
 
 	} else if (r === 1) {
 		ui.alert(
-			"Budget n Sheets",
+			"Can't update",
 			"The add-on is busy. Try again in a moment.",
 			ui.ButtonSet.OK);
 
-	} else if (r > 1) {
+	} else if (r === 2) {
+		ui.alert(
+			"Update failed",
+			"Something went wrong. Please, try again later.",
+			ui.ButtonSet.OK);
+
+	} else if (r > 2) {
 		uninstall_();
 		onOpen();
 		showDialogErrorMessage();
@@ -86,7 +91,7 @@ function seamlessUpdate_() {
 	var r = update_();
 
 	if (r === 0) return;
-	if (r > 1) uninstall_();
+	if (r > 2) uninstall_();
 
 	return 1;
 }
@@ -134,8 +139,296 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Import new Cash Flow page.
+ * Rename page About to _About BnS.
+ * Set spreadsheet_settings property.
+ * Transfer data from old Cash Flow.
+ *
+ * 0.28.0
+ */
+function update_v0m28p0_() {
+	try {
+		update_v0m28p0s1_();
+		if (update_v0m28p0s2_()) return 1;
+		if (update_v0m28p0s0_()) return 1;
+		if (update_v0m28p0s3_()) return 1;
+		update_v0m28p0s4_();
+		update_v0m28p0s5_();
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0_()", err);
+		return 1;
+	}
+}
+
+/**
+ * Set spreadsheet_settings property.
+ */
+function update_v0m28p0s2_() {
+	try {
+		var date, yyyy;
+		var operation;
+
+		date = getSpreadsheetDate(DATE_NOW);
+		yyyy = date.getFullYear();
+
+		const financial_year = getConstProperties_("financial_year");
+		const decimal_separator = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
+
+		const dec_p = decimal_separator != null;
+
+		if (financial_year < yyyy) {
+			operation = "passive";
+		} else if (financial_year == yyyy) {
+			operation = "active";
+		} else if (financial_year > yyyy) {
+			operation = "passive";
+		}
+
+		const spreadsheet_settings = {
+			operation_mode: operation,
+			decimal_separator: dec_p,
+			spreadsheet_locale: SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale()
+		};
+		setPropertiesService_("document", "json", "spreadsheet_settings", spreadsheet_settings);
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s2_()", err);
+		return 1;
+	}
+}
+
+/**
+ * Rename page About to _About BnS.
+ */
+function update_v0m28p0s1_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var sheet;
+
+		sheet = spreadsheet.getSheetByName("About");
+		if (sheet) {
+			if (spreadsheet.getSheetByName("_About BnS")) {
+				spreadsheet.deleteSheet(sheet);
+				return;
+			}
+
+			sheet.setName("_About BnS");
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s1_()", err);
+	}
+}
+
+/**
+ * Backup Cash Flow page.
+ * Import new Cash Flow page.
+ */
+function update_v0m28p0s0_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
+		var sheet;
+		var name, pos, n, i;
+
+		i = 0;
+		do {
+			i++;
+			name = "_Backup_Cash_Flow_" + i;
+			sheet = spreadsheet.getSheetByName(name);
+		} while (sheet && i < 100);
+		if (i >= 100) throw new Error("Can't rename page.");
+
+		sheet = spreadsheet.getSheetByName("Cash Flow");
+		if (sheet) {
+			pos = sheet.getIndex();
+			n = spreadsheet.getNumSheets();
+			if (n == 1) spreadsheet.insertSheet();
+
+			spreadsheet.setActiveSheet(sheet);
+			spreadsheet.moveActiveSheet(n);
+			sheet.setName(name).hideSheet();
+		} else {
+			n = spreadsheet.getNumSheets();
+			if (n < 15) pos = n;
+			else pos = 15;
+		}
+
+		sheet = template.getSheetByName("Cash Flow")
+			.copyTo(spreadsheet)
+			.setName("Cash Flow")
+			.setTabColor("#e69138");
+
+		spreadsheet.setActiveSheet(sheet);
+		spreadsheet.moveActiveSheet(pos);
+
+		SpreadsheetApp.flush();
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s0_()", err);
+		return 1;
+	}
+}
+
+/**
+ * Install Cash Flow page.
+ */
+function update_v0m28p0s3_() {
+	try {
+		var sheet, ranges, formula;
+		var b_f3f3f3, b_d9ead3;
+		var d, s;
+		var i, j, k;
+
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cash Flow");
+		if (!sheet) return 1;
+
+		const h_ = TABLE_DIMENSION_.height;
+
+		const init_month = setUserSettings_("initial_month");
+		const dec_p = getSpreadsheetSettings_("decimal_separator");
+		const num_acc = getConstProperties_("number_accounts");
+		const financial_year = getConstProperties_("financial_year");
+
+		const dec_c = (dec_p ? "," : "\\");
+		const options = "{\"charttype\"" + dec_c + "\"column\"; \"color\"" + dec_c + "\"#93c47d\"; \"negcolor\"" + dec_c + "\"#e06666\"; \"empty\"" + dec_c + "\"ignore\"; \"nan\"" + dec_c + "\"ignore\"}";
+
+		ranges = [ ];
+		for (i = 0; i < 12; i++) {
+			ranges[2*i] = sheet.getRange(4, 2 + 4*i, 31);
+			ranges[2*i + 1] = sheet.getRange(4, 4 + 4*i, 31);
+		}
+
+		sheet.protect()
+			.setUnprotectedRanges(ranges)
+			.setWarningOnly(true);
+
+		ranges = [ ];
+		b_f3f3f3 = [ ];
+		b_d9ead3 = [ ];
+
+		i = 0;
+		d = new Date(financial_year, 1 + i, 0).getDate();
+		ranges.push([ rollA1Notation(5, 3 + 4*i, d - 1) ]);
+		if (d < 31) {
+			b_f3f3f3.push([ rollA1Notation(4 + d, 2 + 4*i, 31 - d, 3) ]);
+		}
+
+		formula = "SPARKLINE(" + rollA1Notation(4, 3 + 4*i, d, 1) + "; " + options + ")";
+		sheet.getRange(2, 2 + 4*i).setFormula(formula);
+
+		j = 0;
+		s = new Date(financial_year, 0, 1).getDay();
+		while (j < d) {
+			switch (s) {
+				case 0:
+					b_d9ead3.push([ rollA1Notation(4 + j, 2, 1, 3) ]);
+					s += 6;
+					j += 6;
+					break;
+				case 6:
+					b_d9ead3.push([ rollA1Notation(4 + j, 2, 1, 3) ]);
+					s = 0;
+					j++;
+					break;
+				default:
+					s = (s + 1)%7;
+					j++;
+					break;
+			}
+		}
+
+		for (i = 1; i < 12; i++) {
+			sheet.getRange(4, 3 + 4*i).setFormulaR1C1("=R[" + (d - 1) + "]C[-4] + RC[-1]");
+
+			d = new Date(financial_year, 1 + i, 0).getDate();
+			ranges.push([ rollA1Notation(5, 3 + 4*i, d - 1) ]);
+			if (d < 31) {
+				b_f3f3f3.push([ rollA1Notation(4 + d, 2 + 4*i, 31 - d, 3) ]);
+			}
+
+			formula = "SPARKLINE(" + rollA1Notation(4, 3 + 4*i, d, 1) + "; " + options + ")";
+			sheet.getRange(2, 2 + 4*i).setFormula(formula);
+
+			j = 0;
+			s = new Date(financial_year, i, 1).getDay();
+			while (j < d) {
+				switch (s) {
+					case 0:
+						b_d9ead3.push([ rollA1Notation(4 + j, 2 + 4*i, 1, 3) ]);
+						s = 6;
+						j += 6;
+						break;
+					case 6:
+						b_d9ead3.push([ rollA1Notation(4 + j, 2 + 4*i, 1, 3) ]);
+						s = 0;
+						j++;
+						break;
+					default:
+						s = (s + 1)%7;
+						j++;
+						break;
+				}
+			}
+		}
+
+		sheet.getRangeList(ranges).setFormulaR1C1("=R[-1]C + RC[-1]");
+		sheet.getRangeList(b_f3f3f3).setBackground("#f3f3f3");
+		sheet.getRangeList(b_d9ead3).setBackground("#d9ead3");
+
+		SpreadsheetApp.flush();
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s3_()", err);
+		return 1;
+	}
+}
+
+function update_v0m28p0s4_() {
+	try {
+		optMainTables("UpdateTableRef");
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s4_()", err);
+	}
+}
+
+/**
+ * Transfer data from old Cash Flow.
+ */
+function update_v0m28p0s5_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var source, destination;
+		var n, i;
+
+		const type = SpreadsheetApp.CopyPasteType.PASTE_VALUES;
+		const financial_year = getConstProperties_("financial_year");
+
+		destination = spreadsheet.getSheetByName("Cash Flow");
+		if (!destination) return;
+
+		i = 100;
+		do {
+			i--;
+			source = spreadsheet.getSheetByName("_Backup_Cash_Flow_" + i);
+		} while (!source && i > 0);
+		if (i <= 0) return;
+
+		i = 0;
+		while (i < 12) {
+			n = new Date(financial_year, i + 1, 0).getDate();
+
+			source.getRange(3, 2 + 4*i, n, 1)
+				.copyTo(destination.getRange(4, 2 + 4*i, n, 1), type);
+			source.getRange(3, 4 + 4*i, n, 1)
+				.copyTo(destination.getRange(4, 4 + 4*i, n, 1), type);
+
+			i++;
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p0s5_()", err);
+	}
+}
+
+/**
  * Copy user_const_settings to const_properties.
- * Add spreadshet ID, and blank user and owner to const_properties.
+ * Add spreadsheet ID, and blank user and owner to const_properties.
  *
  * 0.27.5
  */
@@ -165,8 +458,6 @@ function update_v0m27p0_() {
 	try {
 		update_v0m27p0s0_();
 		update_v0m27p0s1_();
-		update_v0m27p0s2_();
-		update_v0m27p0s3_();
 	} catch (err) {
 		consoleLog_("error", "update_v0m27p0_()", err);
 	}
@@ -185,7 +476,8 @@ function update_v0m27p0s0_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		const col = 2 + w_ + w_*num_acc;
@@ -255,7 +547,8 @@ function update_v0m27p0s1_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const num_acc = user_const_settings.number_accounts;
 
 		const col = 2 + w_ + w_*num_acc + w_;
 
@@ -286,25 +579,6 @@ function update_v0m27p0s1_() {
 	}
 }
 
-function update_v0m27p0s2_() {
-	try {
-		cardsRefresh_();
-	} catch (err) {
-		consoleLog_("error", "update_v0m27p0s2_()", err);
-	}
-}
-
-/**
- * Update cash flow range referencing.
- */
-function update_v0m27p0s3_() {
-	try {
-		optAccount_UpdateTableRef_();
-	} catch (err) {
-		consoleLog_("error", "update_v0m27p0s3_()", err);
-	}
-}
-
 
 /**
  * Add BSCARDPART() in backstage.
@@ -322,7 +596,8 @@ function update_v0m26p1_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		col = 2 + w_ + w_*num_acc + w_;
@@ -389,7 +664,8 @@ function update_v0m26p0s2_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_("number_accounts");
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		ranges = [ ];
@@ -464,7 +740,6 @@ function update_v0m26p0s0_() {
 		db_tables.cards = db_cards;
 
 		setPropertiesService_("document", "json", "DB_TABLES", db_tables);
-		optMainTables("Refresh");
 	} catch (err) {
 		consoleLog_("error", "update_v0m26p0s0_()", err);
 		return 1;
@@ -484,7 +759,8 @@ function update_v0m26p0s1_() {
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
 
-		const num_acc = getUserConstSettings_('number_accounts');
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
 		col = 1 + w_ + w_*num_acc;
@@ -556,7 +832,8 @@ function update_v0m25p0_() {
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 		if (!sheet) return;
 
-		const number_accounts = getUserConstSettings_('number_accounts');
+		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const number_accounts = user_const_settings.number_accounts;
 
 		const h_ = TABLE_DIMENSION_.height;
 		const w_ = TABLE_DIMENSION_.width;
@@ -772,23 +1049,8 @@ function update_v0m22p1_() {
 
 		update_v0m22p1s1_();
 		Utilities.sleep(200);
-
-		update_v0m22p1s2_();
-		Utilities.sleep(200);
 	} catch (err) {
 		consoleLog_('error', 'update_v0m22p1_()', err);
-	}
-}
-
-/**
- * Reinstall triggers if transition year service failed.
- *
- */
-function update_v0m22p1s2_() {
-	try {
-		askReinstall();
-	} catch (err) {
-		consoleLog_('error', 'update_v0m22p1s2_()', err);
 	}
 }
 
@@ -965,69 +1227,5 @@ function update_v0m21p2_() {
 		}
 	} catch (err) {
 		consoleLog_('error', 'update_v0m21p2_()', err);
-	}
-}
-
-/**
- * Transition to new update system.
- *
- * 0.20.6
- */
-function update_v0m20p6_() {
-	try {
-		var a = {
-			script: APPS_SCRIPT_GLOBAL_.script_version.number,
-			template: APPS_SCRIPT_GLOBAL_.template_version.number
-		};
-
-		setPropertiesService_('document', 'json', 'class_version2', a);
-	} catch (err) {
-		consoleLog_('error', 'update_v0m20p6_()', err);
-		return 1;
-	}
-}
-
-/**
- * Reinstall weekly_Bar_() trigger to fix week day.
- *
- * 0.20.2
- */
-function update_v0m20p2_() {
-	try {
-		var financial_year;
-		var date, day;
-
-		if (getPropertiesService_('document', 'string', 'OperationMode') === 'active') return;
-
-		financial_year = getUserConstSettings_('financial_year');
-		date = getSpreadsheetDate();
-
-		if (date.getFullYear() < financial_year || financial_year >= 2020) {
-			day = new Date(financial_year, 0, 2);
-			day = day.getDay();
-
-			deleteScriptAppTriggers_('document', 'weeklyMainId');
-			createScriptAppTriggers_('document', 'weeklyMainId', 'onWeekDay', 'weekly_Bar_', day);
-		}
-	} catch (err) {
-		consoleLog_('error', 'update_v0m20p2_()', err);
-		return 1;
-	}
-}
-
-
-/**
- * Import cool sheet Stats for Tags.
- *
- * 0.20.0
- */
-function update_v0m20p0_() {
-	try {
-		if (!SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Stats for Tags')) {
-			coolGallery('tags');
-		}
-	} catch (err) {
-		consoleLog_('error', 'update_v0m20p0_()', err);
-		return 1;
 	}
 }
