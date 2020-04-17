@@ -47,7 +47,7 @@ function onlineUpdate_() {
 		return 1;
 	}
 
-	if (v1.patch === 0) showDialogUpdate();
+	showDialogUpdate();
 
 	var r = update_();
 
