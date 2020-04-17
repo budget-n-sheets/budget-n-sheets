@@ -18,8 +18,8 @@ var APPS_SCRIPT_GLOBAL_ = Object.freeze({
 	},
 
 	template_version: {
-		number: 84,
-		name: "8.3"
+		number: 90,
+		name: "9.0"
 	},
 
 	template_id: "",
