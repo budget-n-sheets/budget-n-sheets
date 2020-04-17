@@ -151,7 +151,7 @@ function showDialogUpdate() {
 		.setWidth(263)
 		.setHeight(113);
 
-	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Budget n Sheets");
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Add-on update");
 }
 
 
