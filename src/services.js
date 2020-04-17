@@ -63,9 +63,9 @@ function daily_Main_(e) {
 
 	if (reviseVersion_()) return;
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
-		updateDecimalSepartor_();
-	}
+	// if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
+	// 	updateDecimalSepartor_();
+	// }
 
 	if (seamlessUpdate_()) return;
 
@@ -117,9 +117,9 @@ function weekly_Foo_(e) {
 
 	if (reviseVersion_()) return;
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
-		updateDecimalSepartor_();
-	}
+	// if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
+	// 	updateDecimalSepartor_();
+	// }
 
 	seamlessUpdate_();
 }
@@ -149,9 +149,9 @@ function weekly_Bar_(e) {
 		date: date.getDate()
 	};
 
-	if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
-		updateDecimalSepartor_();
-	}
+	// if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
+	// 	updateDecimalSepartor_();
+	// }
 
 	if (seamlessUpdate_()) return;
 
