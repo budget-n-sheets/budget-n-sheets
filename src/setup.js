@@ -752,7 +752,7 @@ function setupProperties_(yyyy_mm) {
 	setPropertiesService_("document", "json", "user_settings", properties);
 
 	try {
-		user = Session.getActiveUser().getEmail();
+		user = Session.getEffectiveUser().getEmail();
 	} catch (err) {
 		console.warn(err);
 		user = "";
