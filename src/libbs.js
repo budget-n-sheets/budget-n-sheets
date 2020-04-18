@@ -18,7 +18,7 @@ Number.prototype.formatCurrency = function() {
 Number.prototype.formatFinancial = function(p_dec_p) {
 	var DEC_P, DEC_PS;
 
-	if (p_dec_p) {
+	if (p_dec_p != null) {
 		DEC_P = p_dec_p ? "." : ",";
 	} else {
 		DEC_P = getSpreadsheetSettings_("decimal_separator") ? "." : ",";
@@ -45,7 +45,7 @@ Number.prototype.formatFinancial = function(p_dec_p) {
 Number.prototype.formatLocaleSignal = function(p_dec_p) {
 	var DEC_P, DEC_PS;
 
-	if (p_dec_p) {
+	if (p_dec_p != null) {
 		DEC_P = p_dec_p ? "." : ",";
 	} else {
 		DEC_P = getSpreadsheetSettings_("decimal_separator") ? "." : ",";
