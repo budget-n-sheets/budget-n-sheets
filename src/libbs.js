@@ -1,9 +1,16 @@
 /**
  * Number format $ x,xx0.00;-$ x,xx0.00
  */
-Number.prototype.formatCurrency = function() {
-	var DEC_P = getSpreadsheetSettings_("decimal_separator") ? "." : ",";
-	var DEC_PS = (DEC_P === "." ? "," : ".");
+Number.prototype.formatCurrency = function(p_dec_p) {
+	var DEC_P, DEC_PS;
+
+	if (p_dec_p != null) {
+		DEC_P = p_dec_p ? "." : ",";
+	} else {
+		DEC_P = getSpreadsheetSettings_("decimal_separator") ? "." : ",";
+	}
+
+	DEC_PS = (DEC_P === "." ? "," : ".");
 
 	var n = this;
 	var s = n < 0 ? '-$ ' : '$ ';
