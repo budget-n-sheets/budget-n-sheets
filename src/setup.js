@@ -760,7 +760,7 @@ function setupProperties_(yyyy_mm) {
 		owner = "";
 	}
 
-	if (owner && owner != "") {
+	if (owner) {
 		owner = computeDigest("SHA_256", owner, "UTF_8");
 	} else {
 		owner = "";
