@@ -10,7 +10,7 @@ var PATCH_THIS_ = Object.freeze({
 			[ update_v0m25p0_, null, update_v0m25p2_, null ],
 			[ update_v0m26p0_, update_v0m26p1_, null, null ],
 			[ update_v0m27p0_, null, null, null, null, null, null, update_v0m27p5_ ],
-			[ update_v0m28p0_, null, null ]
+			[ update_v0m28p0_, null, null, update_v0m28p3_ ]
 		]
 	],
 	beta_list: [ ]
@@ -138,6 +138,19 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Set user_id.
+ *
+ * 0.28.3
+ */
+function update_v0m28p3_() {
+	try {
+		reviseUser_();
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p3_()", err);
+	}
+}
 
 /**
  * Import new Cash Flow page.
