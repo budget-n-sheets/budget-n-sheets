@@ -181,3 +181,20 @@ function reviseVersion_() {
 			return 1;
 	}
 }
+
+
+function reviseUser_() {
+	var user = getPropertiesService_("user", "string", "user_id");
+	if (user) return;
+
+	try {
+		user = Session.getEffectiveUser().getEmail();
+	} catch (err) {
+		console.warn(err);
+		user = "";
+	}
+
+	if (user) user = computeDigest("SHA_256", user, "UTF_8");
+
+	setPropertiesService_("user", "string", "user_id", user);
+}

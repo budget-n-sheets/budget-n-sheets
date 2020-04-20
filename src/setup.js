@@ -751,18 +751,7 @@ function setupProperties_(yyyy_mm) {
 	};
 	setPropertiesService_("document", "json", "user_settings", properties);
 
-	try {
-		user = Session.getEffectiveUser().getEmail();
-	} catch (err) {
-		console.warn(err);
-		user = "";
-	}
-
-	if (user && user != "") {
-		user = computeDigest("SHA_256", user, "UTF_8");
-	} else {
-		user = "";
-	}
+	user = getPropertiesService_("user", "string", "user_id");
 
 	try {
 		owner = SPREADSHEET.getOwner().getEmail();

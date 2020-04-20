@@ -185,6 +185,8 @@ function showSetupAddon_() {
 		return;
 	}
 
+	reviseUser_();
+
 	var htmlDialog = HtmlService.createTemplateFromFile('htmlSetupAddon')
 		.evaluate()
 		.setWidth(353)
