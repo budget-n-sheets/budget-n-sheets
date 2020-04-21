@@ -114,8 +114,10 @@ function rollA1Notation(posRow, posCol, height, width, mode1, mode2) {
 	mode1--;
 	mode2--;
 
-	var f_ = 26, s_ = 4;
 	var str, c, m;
+
+	const f_ = 26;
+	const s_ = 4;
 
 	m = mode1%s_;
 	str = ((m === 1 || m === 3) ? "$" : "");

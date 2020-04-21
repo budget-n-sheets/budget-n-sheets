@@ -10,14 +10,14 @@
  * @return {String} String.
  */
 function byte2string(b) {
-	var r = '';
+	var r = "";
 	var v, i;
 
 	for (i = 0; i < b.length; i++) {
 		v = b[i];
 		if (v < 0) v += 256;
 		v = v.toString(16);
-		if (v.length === 1) v = '0' + v;
+		if (v.length === 1) v = "0" + v;
 		r += v;
 	}
 

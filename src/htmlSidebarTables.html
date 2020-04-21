@@ -86,7 +86,7 @@
 		</style>
 	</head>
 	<body>
-		<div id="MainPanel_wrapper">
+		<div id="wrapper">
 			<div class="panel active" id="MainPanel_header" align="center">
 				<div class="MainMenu-top_title">
 					<div class="MainMenu_row">
@@ -100,7 +100,7 @@
 				</div>
 			</div>
 
-			<div id="MainPanel_content" style="margin-bottom:4.7em;">
+			<div id="content" style="margin-bottom:4.7em;">
 				<div class="panel active" id="panel_Accounts">
 					<div id="box_Accounts">
 					</div>
@@ -189,15 +189,15 @@
 					</form>
 				</div>
 
-				<div class="panel" id="panel_WaitLoad">
-					<div class="animation_WaitLoad_wrapper">
-						<div class="animation_WaitLoad_bar"></div>
+				<div class="panel" id="wait_load">
+					<div class="wait_load-wrapper">
+						<div class="wait_load-bar"></div>
 					</div>
 				</div>
 			</div>
 
 
-			<div id="MainPanel_footer">
+			<div id="footer">
 				<div class="current" id="p-footer_FastResponse" style="padding:0 7px;"></div>
 				<div class="MainMenu-bot_title"><div class="MainMenu_row">
 						<div class="m-footer left" style="width:100%;">
@@ -227,7 +227,7 @@
 		$(document).on('click', '.m-li', function() {
 			htmlVarGlobal.Id = $(this).parent().attr('id');
 
-			g2("panel_WaitLoad");
+			g2("wait_load");
 
 			google.script.run.withSuccessHandler(EditAccount_Panel)
 				.withFailureHandler(showError)
@@ -238,7 +238,7 @@
 			htmlVarGlobal.Id = $(this).parent().attr('id');
 			htmlVarGlobal.Action = 'edit';
 
-			g2("panel_WaitLoad");
+			g2("wait_load");
 
 			google.script.run.withSuccessHandler(EditCard_Panel)
 				.withFailureHandler(showError)
@@ -251,7 +251,7 @@
 			var response = confirm("Click OK to confirm and remove the card.");
 			if (!response) return;
 
-			g2("panel_WaitLoad");
+			g2("wait_load");
 			$('#p-footer_FastResponse').empty().append("Removing card...");
 
 			google.script.run.withSuccessHandler(RemoveCard_Aftermath)
@@ -546,8 +546,8 @@
 						.hide();
 					break;
 
-				case 'panel_WaitLoad':
-					$('#panel_WaitLoad').fadeIn('fast')
+				case 'wait_load':
+					$('#wait_load').fadeIn('fast')
 						.siblings()
 						.hide();
 					break;

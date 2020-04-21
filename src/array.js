@@ -11,12 +11,11 @@
  */
 function transpose(src) {
 	var dest = [ ];
-	var i, j;
 
-	for (i = 0; i < src[0].length; i++) {
-		dest.push([ ]);
-		for (j = 0; j < src.length; j++) {
-			dest[i].push(src[j][i]);
+	for (var i = 0; i < src[0].length; i++) {
+		dest[i] = [ ];
+		for (var j = 0; j < src.length; j++) {
+			dest[i][j] = src[j][i];
 		}
 	}
 

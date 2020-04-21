@@ -45,9 +45,9 @@
 		</style>
 	</head>
 	<body>
-		<div id="MainPanel_wrapper">
+		<div id="wrapper">
 
-			<div id="MainPanel_content" style="margin-bottom:4.7em;">
+			<div id="content" style="margin-bottom:4.7em;">
 				<div class="panel active" id="panel_List">
 					<? for (var i in list) { ?>
 					<div class="table">
@@ -71,16 +71,16 @@
 				</div>
 
 
-				<div class="panel" id="panel_WaitLoad" align="center">
+				<div class="panel" id="wait_load" align="center">
 					<b>Importing now...</b><br>
 
-					<div class="animation_WaitLoad_wrapper">
-						<div class="animation_WaitLoad_bar"></div>
+					<div class="wait_load-wrapper">
+						<div class="wait_load-bar"></div>
 					</div>
 				</div>
 			</div>
 
-			<div id="MainPanel_footer">
+			<div id="footer">
 				<div class="MainMenu-bot_title"><div class="MainMenu_row">
 					<div class="m-footer left"style="width: 100%;">
 						<span class="current" id="p-Response"></span>
@@ -98,7 +98,7 @@
 				var id = $(this).attr('id');
 
 				$("#p-Response").empty();
-				$('#panel_WaitLoad').fadeIn('fast')
+				$('#wait_load').fadeIn('fast')
 					.siblings()
 					.hide();
 				google.script.run.withSuccessHandler(response)
