@@ -10,7 +10,7 @@ var PATCH_THIS_ = Object.freeze({
 			[ update_v0m25p0_, null, update_v0m25p2_, null ],
 			[ update_v0m26p0_, update_v0m26p1_, null, null ],
 			[ update_v0m27p0_, null, null, null, null, null, null, update_v0m27p5_ ],
-			[ update_v0m28p0_, null, null, update_v0m28p3_ ]
+			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_ ]
 		]
 	],
 	beta_list: [ ]
@@ -138,6 +138,35 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Update SPARKLINE function.
+ *
+ * 0.28.4
+ */
+function update_v0m28p4_() {
+	try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cash Flow");
+		var formula, d, i;
+
+		const dec_p = getSpreadsheetSettings_("decimal_separator");
+		const financial_year = getConstProperties_("financial_year");
+
+		const dec_c = (dec_p ? "," : "\\");
+		const options = "{\"charttype\"" + dec_c + "\"column\"; \"color\"" + dec_c + "\"#93c47d\"; \"negcolor\"" + dec_c + "\"#e06666\"; \"empty\"" + dec_c + "\"zero\"; \"nan\"" + dec_c + "\"convert\"}";
+
+		if (!sheet) return;
+
+		for (i = 0; i < 12; i++) {
+			d = new Date(financial_year, 1 + i, 0).getDate();
+
+			formula = "SPARKLINE(" + rollA1Notation(4, 3 + 4*i, d, 1) + "; " + options + ")";
+			sheet.getRange(2, 2 + 4*i).setFormula(formula);
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m28p4_()", err);
+	}
+}
 
 /**
  * Set user_id.
