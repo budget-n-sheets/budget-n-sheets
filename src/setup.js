@@ -379,7 +379,7 @@ function setupCashFlow_() {
 	const financial_year = SETUP_SETTINGS["financial_year"];
 
 	const dec_c = (dec_p ? "," : "\\");
-	const options = "{\"charttype\"" + dec_c + "\"column\"; \"color\"" + dec_c + "\"#93c47d\"; \"negcolor\"" + dec_c + "\"#e06666\"; \"empty\"" + dec_c + "\"ignore\"; \"nan\"" + dec_c + "\"ignore\"}";
+	const options = "{\"charttype\"" + dec_c + "\"column\"; \"color\"" + dec_c + "\"#93c47d\"; \"negcolor\"" + dec_c + "\"#e06666\"; \"empty\"" + dec_c + "\"zero\"; \"nan\"" + dec_c + "\"convert\"}";
 
 	ranges = [ ];
 	for (i = 0; i < 12; i++) {
