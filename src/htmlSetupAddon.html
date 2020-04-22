@@ -22,6 +22,41 @@
 				to {left: 257px;}
 			}
 
+			.fancy_box {
+				width: 263px;
+				height: 41px;
+				margin-top: 41px;
+				padding: 11px 19px;
+				font-size: 17px;
+				border: 1px solid #cccccc;
+				border-left: none;
+				border-right: none;
+				position: relative;
+				overflow: hidden;
+			}
+			.fancy_box div {
+				width: 300px;
+				left: 300px;
+				position: absolute;
+				word-wrap: break-word;
+				animation-name: slidein;
+				animation-duration: 48s;
+				animation-iteration-count: infinite;
+			}
+
+			@keyframes slidein {
+				from { left: 400px; }
+				1.04% { left: 0px; }
+				23.92% { left: 0px; }
+				24.96% { left: -400px; }
+				to { left: -400px; }
+			}
+
+			.fancy_box div:nth-child(1) { animation-delay: 0s; }
+			.fancy_box div:nth-child(2) { animation-delay: 12s; }
+			.fancy_box div:nth-child(3) { animation-delay: 24s; }
+			.fancy_box div:nth-child(4) { animation-delay: 36s; }
+
 			#content {
 				padding: 7px 5px;
 				margin-bottom: 4.7em;
@@ -162,14 +197,20 @@
 				</div>
 
 				<div class="panel" id="setup-panel">
-					<div style="width:100%;margin:40px auto;" align="center">
+					<div style="width:100%;margin:40px auto 0 auto;" align="center">
 						<h2>Assembling your spreadsheet</h2>
 						<br>
 						<div class="wait_load-wrapper">
 							<div class="wait_load-bar"></div>
 						</div>
-						<div style="width:263px;margin-top:30px;">
+						<div style="width:263px;margin-top:19px;">
 							This process takes up to two minutes. Do not edit the spreadsheet until it is finished.
+						</div>
+						<div class="fancy_box">
+							<div>Join the <a href="https://groups.google.com/d/forum/add-on-budget-n-sheets-forum" target="_blank"><b>forum</b></a> to post questions and discussions.</div>
+							<div>Visit the <a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>wiki</b></a> for a full review of the features.</div>
+							<div>Send valuable <a href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank">feedback</a>.</div>
+							<div>Budget n Sheets is free, ad-free and open source.</div>
 						</div>
 					</div>
 				</div>
