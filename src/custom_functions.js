@@ -113,12 +113,3 @@ function BSCARDPART(data) {
 
 	return sum;
 }
-
-function BSINFCARD() {
-	return "";
-}
-
-
-function BSINF() {
-	return "";
-}
