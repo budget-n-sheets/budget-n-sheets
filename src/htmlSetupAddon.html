@@ -206,7 +206,7 @@
 						<div style="width:263px;margin-top:19px;">
 							This process takes up to two minutes. Do not edit the spreadsheet until it is finished.
 						</div>
-						<div class="fancy_box">
+						<div id="the_box">
 							<div>Join the <a href="https://groups.google.com/d/forum/add-on-budget-n-sheets-forum" target="_blank"><b>forum</b></a> to post questions and discussions.</div>
 							<div>Visit the <a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>wiki</b></a> for a full review of the features.</div>
 							<div>Send valuable <a href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank">feedback</a>.</div>
@@ -262,6 +262,7 @@
 					break;
 				case 2:
 					$("#setup-panel").fadeIn("fast");
+					$("#the_box").addClass("fancy_box");
 					fireSetup();
 					break;
 
