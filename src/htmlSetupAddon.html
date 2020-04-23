@@ -213,6 +213,9 @@
 							<div>Budget n Sheets is free, ad-free and open source.</div>
 						</div>
 					</div>
+					<div id="timeout" style="display: none;margin-top: 2em;">
+						It is taking too long. You can try again or <a href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank">report a problem</a>.
+					</div>
 				</div>
 			</div>
 
@@ -284,6 +287,12 @@
 				var list_names = names.map(function() {
 					return $(this).val();
 				}).get();
+
+				setTimeout(function() {
+						google.script.host.setHeight(397);
+						$("#timeout").fadeIn();
+						$("#footer-buttons").append("<button onclick=\"google.script.host.close()\">Close</button>");
+					}, 120000);
 
 				google.script.run
 					.withSuccessHandler(function() {
