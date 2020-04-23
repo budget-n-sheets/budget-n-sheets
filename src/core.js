@@ -172,7 +172,14 @@ function showSetupAddon_() {
 		return;
 	}
 
-	if (getPropertiesService_("document", "", "is_installed")) {
+	if (getPropertiesService_("document", "", "lock_spreadsheet")) {
+		Ui.alert(
+			"Can't create budget sheet",
+			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
+			Ui.ButtonSet.OK);
+		return;
+
+	} else if (getPropertiesService_("document", "", "is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
 		return;

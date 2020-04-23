@@ -10,7 +10,7 @@ function askDeactivation() {
 	var button = result.getSelectedButton();
 	var text = result.getResponseText();
 	if (button == Ui.Button.OK && text === s) {
-		uninstall_();
+		uninstallAndLock_();
 		onOpen();
 		console.info("add-on/deactivate");
 		return true;
@@ -147,6 +147,18 @@ function uninstall_() {
 	PropertiesService.getDocumentProperties().deleteAllProperties();
 
 	console.info("add-on/uninstall");
+}
+
+
+function uninstallAndLock_() {
+	var list = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
+
+	for (var i = 0; i < list.length; i++) {
+		ScriptApp.deleteTrigger(list[i]);
+	}
+
+	PropertiesService.getDocumentProperties().setProperties({lock_spreadsheet: "true"}, true);
+	console.info("add-on/uninstall-with-lock");
 }
 
 
