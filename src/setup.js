@@ -184,7 +184,7 @@ function setup_ui(settings, list_acc) {
 
 	setup_(settings, list_acc);
 
-	setPropertiesService_("document", "string", "is_installed", "[ ]");
+	setPropertiesService_("document", "boolean", "is_installed", true);
 	showDialogSetupEnd();
 	onOpen();
 
