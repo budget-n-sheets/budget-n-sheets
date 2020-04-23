@@ -71,7 +71,7 @@
 					<h2 style="margin-bottom:0.3em;">Budget n Sheets</h2>
 					<span class="gray" style="font-style:italic;">Mind your budget</span>
 					<div style="margin-top:2.3em;">
-						<button class="action" style="width:13em;" onclick="clickNext(0)">Start</button>
+						<button class="action" style="width:13em;" onclick="clickNext()">Start</button>
 					</div>
 					<div style="margin-top:0.7em;">
 						<a href="https://sites.google.com/view/guimspace/budget-n-sheets/privacy-policy" target="_blank">Privacy Policy</a> and <a href="https://sites.google.com/view/guimspace/budget-n-sheets/terms-of-service" target="_blank">Terms of Service</a>
@@ -236,7 +236,7 @@
 				}
 
 				$(".num_acc").slice(1).hide();
-				$("#main-panel").fadeIn();
+				$("#main-panel").fadeIn().addClass("active");
 			});
 
 			$("#number_accounts").change(function() {
@@ -249,28 +249,30 @@
 				$(".account_name").slice(num_acc).attr("required", false).val("");
 			});
 
-			function clickNext(p) {
+			function clickNext() {
 				window.scrollTo(0, 0);
+
+				var p = $(".active").attr("id");
+				$("#" + p).removeClass("active");
+
 				$(".panel").hide();
 				$("#footer-buttons button").remove();
 
 				switch (p) {
-				case 0:
-					$("#note-panel").fadeIn("fast");
-					$("#footer-buttons").append("<button class=\"action\" onclick=\"clickNext(1)\">Continue</button>");
+				case "main-panel":
+					$("#note-panel").fadeIn("fast").addClass("active");
+					$("#footer-buttons").append("<button class=\"action\" onclick=\"clickNext()\">Continue</button>");
 					break;
-				case 1:
-					$("#form-panel").fadeIn("fast");
-					$("#footer-buttons").append("<button class=\"create\" onclick=\"clickNext(2)\">Build</button>");
+				case "note-panel":
+					$("#form-panel").fadeIn("fast").addClass("active");
+					$("#footer-buttons").append("<button class=\"create\" onclick=\"clickNext()\">Build</button>");
 					break;
-				case 2:
-					$("#setup-panel").fadeIn("fast");
+				case "form-panel":
+					$("#setup-panel").fadeIn("fast").addClass("active");
 					$("#the_box").addClass("fancy_box");
 					fireSetup();
 					break;
-
 				default:
-					showError();
 					break;
 				}
 			}
