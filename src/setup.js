@@ -178,7 +178,7 @@ function setup_ui(settings, list_acc) {
 			"A budget spreadsheet setup is in progress. Try again later.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 
-		consoleLog_("warn", "setup_ui(): Wait lock time out.()", err);
+		consoleLog_("warn", "setup_ui(): Wait lock time out.", err);
 		return;
 	}
 
