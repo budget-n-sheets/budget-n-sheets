@@ -171,11 +171,11 @@ function setup_ui(settings, list_acc) {
 
 	var lock = LockService.getDocumentLock();
 	try {
-		lock.waitLock(2000);
+		lock.waitLock(200);
 	} catch (err) {
 		SpreadsheetApp.getUi().alert(
 			"Add-on is busy",
-			"A budget spreadsheet setup is in progress. Try again later.",
+			"A budget spreadsheet setup is in progress.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 
 		consoleLog_("warn", "setup_ui(): Wait lock time out.", err);
