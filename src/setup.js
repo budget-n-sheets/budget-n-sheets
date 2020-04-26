@@ -191,7 +191,7 @@ function setup_ui(settings, list_acc) {
 
 
 function setup_(settings, list_acc) {
-	var a;
+	var class_version2, yyyy_mm;
 
 	SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
 	SETUP_SETTINGS = {
@@ -214,30 +214,7 @@ function setup_(settings, list_acc) {
 	deleteAllSheets_();
 	copySheetsFromTemplate_();
 
-	setup_ExecutePatial_();
-
-	a = {
-		script: APPS_SCRIPT_GLOBAL_.script_version,
-		template: APPS_SCRIPT_GLOBAL_.template_version.number
-	};
-	a.script.beta = PATCH_THIS_["beta_list"].length;
-	setPropertiesService_("document", "json", "class_version2", a);
-
-	if (nodeControl_("sign")) {
-		throw new Error("Failed to sign document.");
-	}
-
-	SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName("Summary"));
-	console.timeEnd("add-on/install");
-
-	SPREADSHEET = null;
-	SETUP_SETTINGS = null;
-	return true;
-}
-
-
-function setup_ExecutePatial_() {
-	var yyyy_mm = SETUP_SETTINGS["date_created"];
+	yyyy_mm = SETUP_SETTINGS["date_created"];
 
 	yyyy_mm = {
 		yyyy: yyyy_mm.getFullYear(),
@@ -256,7 +233,23 @@ function setup_ExecutePatial_() {
 	setupWest_();
 	setupEast_(yyyy_mm);
 
+	class_version2 = {
+		script: APPS_SCRIPT_GLOBAL_.script_version,
+		template: APPS_SCRIPT_GLOBAL_.template_version.number
+	};
+	class_version2.script.beta = PATCH_THIS_["beta_list"].length;
+	setPropertiesService_("document", "json", "class_version2", class_version2);
+
+	if (nodeControl_("sign")) {
+		throw new Error("Failed to sign document.");
+	}
+
+	SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName("Summary"));
+	console.timeEnd("add-on/install");
+
+	SPREADSHEET = null;
 	SETUP_SETTINGS = null;
+	return true;
 }
 
 
