@@ -249,7 +249,6 @@ function setup_(settings, list_acc) {
 
 	SPREADSHEET = null;
 	SETUP_SETTINGS = null;
-	return true;
 }
 
 
