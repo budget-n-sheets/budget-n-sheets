@@ -195,7 +195,6 @@ function setup_(settings, list_acc) {
 
 	SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
 	SETUP_SETTINGS = {
-		date_created: DATE_NOW,
 		spreadsheet_name: settings.spreadsheet_name,
 		financial_year: Number(settings.financial_year),
 		init_month: Number(settings.initial_month),
@@ -214,11 +213,10 @@ function setup_(settings, list_acc) {
 	deleteAllSheets_();
 	copySheetsFromTemplate_();
 
-	yyyy_mm = SETUP_SETTINGS["date_created"];
-
 	yyyy_mm = {
-		yyyy: yyyy_mm.getFullYear(),
-		mm: yyyy_mm.getMonth()
+		time: DATE_NOW.getTime(),
+		yyyy: DATE_NOW.getFullYear(),
+		mm: DATE_NOW.getMonth()
 	};
 
 	setupSettings_(yyyy_mm);
@@ -764,7 +762,7 @@ function setupProperties_(yyyy_mm) {
 		addon_user: user,
 		spreadsheet_owner: owner,
 		spreadsheet_id: SPREADSHEET.getId(),
-		date_created: SETUP_SETTINGS["date_created"].getTime(),
+		date_created: yyyy_mm.time,
 		number_accounts: SETUP_SETTINGS["number_accounts"],
 		financial_year: SETUP_SETTINGS["financial_year"]
 	};
