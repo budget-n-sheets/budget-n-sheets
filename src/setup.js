@@ -43,8 +43,8 @@ function askResetProtection() {
 
 		protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
 		for (j = 0; j < protections.length; j++) {
-		  protection = protections[j];
-		  if (protection.canEdit()) protection.remove();
+			protection = protections[j];
+			if (protection.canEdit()) protection.remove();
 		}
 
 		ranges = [ ];
@@ -67,8 +67,8 @@ function askResetProtection() {
 	if (n > 0 && sheet.getMaxColumns() >= 72) {
 		protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
 		for (j = 0; j < protections.length; j++) {
-		  protection = protections[j];
-		  if (protection.canEdit()) protection.remove();
+			protection = protections[j];
+			if (protection.canEdit()) protection.remove();
 		}
 
 		ranges = [ ];
@@ -95,8 +95,8 @@ function askResetProtection() {
 	if (n > 0) {
 		protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
 		for (j = 0; j < protections.length; j++) {
-		  protection = protections[j];
-		  if (protection.canEdit()) protection.remove();
+			protection = protections[j];
+			if (protection.canEdit()) protection.remove();
 		}
 
 		range = sheet.getRange(2, 1, n, 5);
