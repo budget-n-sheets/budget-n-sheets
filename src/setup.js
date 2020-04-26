@@ -166,7 +166,7 @@ function setup_ui(settings, list_acc) {
 	if (getPropertiesService_("document", "", "is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
-		return;
+		return 1;
 	}
 
 	var lock = LockService.getDocumentLock();
@@ -179,8 +179,10 @@ function setup_ui(settings, list_acc) {
 			SpreadsheetApp.getUi().ButtonSet.OK);
 
 		consoleLog_("warn", "setup_ui(): Wait lock time out.", err);
-		return;
+		return 1;
 	}
+
+	if (!settings && !list_acc) return;
 
 	setup_(settings, list_acc);
 
