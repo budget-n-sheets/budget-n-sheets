@@ -1,3 +1,35 @@
+function onOpenInstallable_(e) {
+	if (e.authMode != ScriptApp.AuthMode.FULL) return;
+
+	loadCache_();
+}
+
+
+function loadCache_() {
+	console.time("add-on/onOpen/load-cache");
+	var cache = getCacheService_("document", "load_cache", "boolean");
+	if (cache) return;
+
+	const list = [ "class_version2", "spreadsheet_settings", "const_properties"];
+
+	for (i = 0; i < list.length; i++) {
+		cache = getPropertiesService_("document", "json", list[i]);
+		if (!cache) continue;
+
+		putCacheService_("document", list[i], "json", cache);
+	}
+
+	cache = getPropertiesService_("document", "json", "user_settings");
+	if (cache.financial_calendar) {
+		cache.financial_calendar = computeDigest("MD5", cache.financial_calendar, "UTF_8");
+	}
+	putCacheService_("document", "user_settings", "json", cache);
+
+	putCacheService_("document", "load_cache", "boolean", true);
+	console.timeEnd("add-on/onOpen/load-cache");
+}
+
+
 function onEdit_Main_(e) {
 	if (e.authMode != ScriptApp.AuthMode.FULL) return;
 	else if (e.value == "") return;

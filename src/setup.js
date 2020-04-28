@@ -119,6 +119,7 @@ function askReinstall() {
 	purgeScriptAppTriggers_();
 
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
+	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
 
 	if (financial_year < date.getFullYear()) {
 		setSpreadsheetSettings_("operation_mode", "passive");
@@ -771,6 +772,7 @@ function setupProperties_(yyyy_mm) {
 	setPropertiesService_("document", "obj", "const_properties", properties);
 
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
+	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
 	if (SETUP_SETTINGS["financial_year"] < yyyy_mm.yyyy) {
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
 		operation = "passive";
