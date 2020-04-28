@@ -35,7 +35,7 @@ function isReAuthorizationRequired_() {
 
 	if (!documentProperties.getProperty("auth_request_sent") && MailApp.getRemainingDailyQuota() > 0) {
 		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-		htmlTemplate = HtmlService.createTemplateFromFile("htmlAuthorizationEmail");
+		htmlTemplate = HtmlService.createTemplateFromFile("gas-common/htmlAuthorizationEmail");
 
 		htmlTemplate.spreadsheet_url = spreadsheet.getUrl();
 		htmlTemplate.spreadsheet_name = spreadsheet.getName();
