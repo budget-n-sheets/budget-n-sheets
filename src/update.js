@@ -10,7 +10,8 @@ var PATCH_THIS_ = Object.freeze({
 			[ update_v0m25p0_, null, update_v0m25p2_, null ],
 			[ update_v0m26p0_, update_v0m26p1_, null, null ],
 			[ update_v0m27p0_, null, null, null, null, null, null, update_v0m27p5_ ],
-			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_, null, null ]
+			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_, null, null ],
+			[ update_v0m29p0_ ]
 		]
 	],
 	beta_list: [ ]
@@ -138,6 +139,19 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Install trigger onOpenInstallable_().
+ *
+ * 0.29.0
+ */
+function update_v0m29p0_() {
+	try {
+		createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
+	} catch (err) {
+		consoleLog_("error", "update_v0m29p0_()", err);
+	}
+}
 
 /**
  * Update SPARKLINE function.
