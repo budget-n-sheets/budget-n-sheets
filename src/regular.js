@@ -140,24 +140,30 @@ function monthly_TreatLayout_(yyyy, mm) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet(),
 			sheetTags = spreadsheet.getSheetByName('Tags');
 	var financial_year = getConstProperties_('financial_year');
+	var sheets;
 	var md, a, i;
 
 	if (financial_year > yyyy) return; // Too soon to format the spreadsheet.
 	else if (financial_year < yyyy) mm = 0; // Last time to format the spreadsheet.
 
+	sheets = [ ];
+	for (i = 0; i < 12; i++) {
+		sheets[i] = spreadsheet.getSheetByName(MN_SHORT_[i]);
+	}
+
 	if (mm === 0) {
 		if (yyyy === financial_year) {
 			for (i = 0; i < 4; i++) {
-				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
+				if (sheets[i]) sheets[i].showSheet();
 			}
 			for (; i < 12; i++) {
-				spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
+				if (sheets[i]) sheets[i].hideSheet();
 			}
 
 			a = 0;
 		} else {
 			for (i = 0; i < 12; i++) {
-				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
+				if (sheets[i]) sheets[i].showSheet();
 			}
 
 			a = 11;
@@ -167,9 +173,9 @@ function monthly_TreatLayout_(yyyy, mm) {
 
 		for (i = 0; i < 12; i++) {
 			if (i < mm + md[0] || i > mm + md[1]) {
-				spreadsheet.getSheetByName(MN_SHORT_[i]).hideSheet();
+				if (sheets[i]) sheets[i].hideSheet();
 			} else {
-				spreadsheet.getSheetByName(MN_SHORT_[i]).showSheet();
+				if (sheets[i]) sheets[i].showSheet();
 			}
 		}
 
