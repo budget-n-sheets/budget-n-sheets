@@ -141,7 +141,7 @@ function monthly_TreatLayout_(yyyy, mm) {
 			sheetTags = spreadsheet.getSheetByName('Tags');
 	var financial_year = getConstProperties_('financial_year');
 	var sheets;
-	var md, a, i;
+	var month, i;
 
 	if (financial_year > yyyy) return; // Too soon to format the spreadsheet.
 	else if (financial_year < yyyy) mm = 0; // Last time to format the spreadsheet.
@@ -152,6 +152,23 @@ function monthly_TreatLayout_(yyyy, mm) {
 	}
 
 	if (mm === 0) {
+		if (yyyy === financial_year) month = 0;
+		else month = 11;
+	} else {
+		month = mm - 1;
+	}
+
+	updateHideShowSheets(sheets, financial_year, yyyy, mm);
+	foo_ColorTabs_();
+	foo_FormatAccounts_(month);
+	foo_FormatCards_(month);
+}
+
+
+function updateHideShowSheets(sheets, financial_year, yyyy, mm) {
+	var delta;
+
+	if (mm === 0) {
 		if (yyyy === financial_year) {
 			for (i = 0; i < 4; i++) {
 				if (sheets[i]) sheets[i].showSheet();
@@ -159,35 +176,23 @@ function monthly_TreatLayout_(yyyy, mm) {
 			for (; i < 12; i++) {
 				if (sheets[i]) sheets[i].hideSheet();
 			}
-
-			a = 0;
 		} else {
 			for (i = 0; i < 12; i++) {
 				if (sheets[i]) sheets[i].showSheet();
 			}
-
-			a = 11;
 		}
 	} else {
-		md = getMonthDelta(mm);
+		delta = getMonthDelta(mm);
 
 		for (i = 0; i < 12; i++) {
-			if (i < mm + md[0] || i > mm + md[1]) {
+			if (i < mm + delta[0] || i > mm + delta[1]) {
 				if (sheets[i]) sheets[i].hideSheet();
 			} else {
 				if (sheets[i]) sheets[i].showSheet();
 			}
 		}
-
-		a = mm - 1;
 	}
-
-	foo_ColorTabs_();
-	foo_FormatAccounts_(a);
-	foo_FormatCards_(a);
 }
-
-
 
 function foo_ColorTabs_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
