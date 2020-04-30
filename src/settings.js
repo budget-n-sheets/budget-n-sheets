@@ -70,7 +70,7 @@ function saveUserSettings(settings) {
 		sheet.getRange("B4").setFormula("=" + (init + 1).formatLocaleSignal());
 		SpreadsheetApp.flush();
 
-		foo_ColorTabs_();
+		updateTabsColors();
 	}
 }
 

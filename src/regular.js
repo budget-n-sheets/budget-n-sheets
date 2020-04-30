@@ -158,7 +158,7 @@ function monthly_TreatLayout_(yyyy, mm) {
 	}
 
 	updateHideShowSheets(sheets, financial_year, yyyy, mm);
-	foo_ColorTabs_();
+	updateTabsColors();
 	foo_FormatAccounts_(month);
 	foo_FormatCards_(month);
 }
@@ -193,7 +193,8 @@ function updateHideShowSheets(sheets, financial_year, yyyy, mm) {
 	}
 }
 
-function foo_ColorTabs_() {
+
+function updateTabsColors() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var financial_year = getConstProperties_('financial_year'),
 			init_month = getUserSettings_('initial_month');
