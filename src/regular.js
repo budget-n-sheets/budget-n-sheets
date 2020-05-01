@@ -158,7 +158,7 @@ function monthly_TreatLayout_(yyyy, mm) {
 	}
 
 	updateHideShowSheets(sheets, financial_year, yyyy, mm);
-	updateTabsColors(sheets);
+	updateTabsColors(sheets, financial_year, yyyy, mm);
 	foo_FormatAccounts_(month);
 	foo_FormatCards_(month);
 }
@@ -194,30 +194,34 @@ function updateHideShowSheets(sheets, financial_year, yyyy, mm) {
 }
 
 
-function updateTabsColors(sheets) {
+function updateTabsColors(sheets, financial_year, yyyy, mm) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var financial_year = getConstProperties_('financial_year'),
-			init_month = getUserSettings_('initial_month');
-	var date = getSpreadsheetDate();
-	var mm, md, i;
+	var date, delta, i;
+
+	const init_month = getUserSettings_("initial_month");
 
 	if (!sheets) {
+		date = getSpreadsheetDate();
+		yyyy = date.getFullYear();
+		mm = date.getMonth();
+
 		sheets = [ ];
 		for (i = 0; i < 12; i++) {
 			sheets[i] = spreadsheet.getSheetByName(MN_SHORT_[i]);
 		}
+
+		financial_year = getConstProperties_("financial_year");
 	}
 
 	for (i = 0; i < init_month; i++) {
 		if (sheets[i]) sheets[i].setTabColor('#b7b7b7');
 	}
 
-	if (financial_year === date.getFullYear()) {
-		mm = date.getMonth();
-		md = getMonthDelta(mm);
+	if (financial_year === yyyy) {
+		delta = getMonthDelta(mm);
 
 		for (; i < 12; i++) {
-			if (i < mm + md[0] || i > mm + md[1]) {
+			if (i < mm + delta[0] || i > mm + delta[1]) {
 				if (sheets[i]) sheets[i].setTabColor('#a4c2f4');
 			} else {
 				if (sheets[i]) sheets[i].setTabColor('#3c78d8');
