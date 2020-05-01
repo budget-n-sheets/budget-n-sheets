@@ -153,7 +153,7 @@
 									<span class="gray">Name</span>
 								</td>
 								<td>
-									<input type="text" class="account_name" style="width: 100%;" required>
+									<input type="text" name="account_name" style="width: 100%;" required>
 								</td>
 							</tr>
 							<tr class="num_acc">
@@ -162,7 +162,7 @@
 									<span class="gray">Name</span>
 								</td>
 								<td>
-									<input type="text" class="account_name" style="width: 100%;">
+									<input type="text" name="account_name" style="width: 100%;">
 								</td>
 							</tr>
 							<tr class="num_acc">
@@ -171,7 +171,7 @@
 									<span class="gray">Name</span>
 								</td>
 								<td>
-									<input type="text" class="account_name" style="width: 100%;">
+									<input type="text" name="account_name" style="width: 100%;">
 								</td>
 							</tr>
 							<tr class="num_acc">
@@ -180,7 +180,7 @@
 									<span class="gray">Name</span>
 								</td>
 								<td>
-									<input type="text" class="account_name" style="width: 100%;">
+									<input type="text" name="account_name" style="width: 100%;">
 								</td>
 							</tr>
 							<tr class="num_acc">
@@ -189,7 +189,7 @@
 									<span class="gray">Name</span>
 								</td>
 								<td>
-									<input type="text" class="account_name" style="width: 100%;">
+									<input type="text" name="account_name" style="width: 100%;">
 								</td>
 							</tr>
 						</table>
@@ -245,8 +245,8 @@
 				$(".num_acc").show();
 				$(".num_acc").slice(num_acc).hide();
 
-				$(".account_name").attr("required", true);
-				$(".account_name").slice(num_acc).attr("required", false).val("");
+				$("input[name=account_name]").attr("required", true);
+				$("input[name=account_name]").slice(num_acc).attr("required", false).val("");
 			});
 
 			function clickNext() {
@@ -285,10 +285,11 @@
 					number_accounts: $("#number_accounts").val()
 				};
 
-				var names = $(".account_name");
-				var list_names = names.map(function() {
-					return $(this).val();
-				}).get();
+				var list_names = [ ];
+
+				$(":input[required][name=account_name]").each(function(i) {
+					list_names[i] = $(this).val();
+				});
 
 				setTimeout(function() {
 						google.script.host.setHeight(397);
