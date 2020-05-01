@@ -152,8 +152,6 @@ function getAllOwnedCalendars() {
 		db_calendars.md5[i] = digest;
 	}
 
-	putCacheService_('document', 'DB_CALENDARS', 'json', db_calendars);
-
 	return db_calendars;
 }
 

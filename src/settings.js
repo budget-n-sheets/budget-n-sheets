@@ -36,7 +36,10 @@ function saveUserSettings(settings) {
 
 	if (settings.financial_calendar != "") {
 		db_calendars = getCacheService_("document", "DB_CALENDARS", "json");
-		if (!db_calendars) db_calendars = getAllOwnedCalendars();
+		if (!db_calendars) {
+			db_calendars = getAllOwnedCalendars();
+			putCacheService_("document", "DB_CALENDARS", "json", db_calendars);
+		}
 
 		c = db_calendars.md5.indexOf(settings.financial_calendar);
 		if (c != -1) {
