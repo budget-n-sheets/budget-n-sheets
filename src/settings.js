@@ -4,13 +4,12 @@ function retrieveUserSettings() {
 	user_settings = getCacheService_("document", "user_settings", "json");
 	if (!user_settings) {
 		user_settings = getPropertiesService_("document", "json", "user_settings");
-
-		if (user_settings.financial_calendar != "") {
-			user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
-			user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
-		}
-
 		putCacheService_("document", "user_settings", "json", user_settings);
+	}
+
+	if (user_settings.financial_calendar) {
+		user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
+		user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
 	}
 
 	return user_settings;
@@ -34,7 +33,7 @@ function saveUserSettings(settings) {
 		cash_flow_events: false
 	};
 
-	if (settings.financial_calendar != "") {
+	if (settings.financial_calendar) {
 		db_calendars = getCacheService_("document", "DB_CALENDARS", "json");
 		if (!db_calendars) {
 			db_calendars = getAllOwnedCalendars();
@@ -42,7 +41,7 @@ function saveUserSettings(settings) {
 		}
 
 		c = db_calendars.md5.indexOf(settings.financial_calendar);
-		if (c != -1) {
+		if (c !== -1) {
 			calendar.financial_calendar = db_calendars.id[c];
 			calendar.post_day_events = settings.post_day_events;
 			calendar.cash_flow_events = settings.cash_flow_events;
@@ -58,11 +57,6 @@ function saveUserSettings(settings) {
 		cash_flow_events: calendar.cash_flow_events
 	};
 	setPropertiesService_("document", "json", "user_settings", user_settings);
-
-	if (user_settings.financial_calendar != "") {
-		user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
-		user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
-	}
 	putCacheService_("document", "user_settings", "json", user_settings);
 
 	updateDecimalSepartor_();
