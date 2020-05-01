@@ -158,7 +158,7 @@ function monthly_TreatLayout_(yyyy, mm) {
 	}
 
 	updateHideShowSheets(sheets, financial_year, yyyy, mm);
-	updateTabsColors();
+	updateTabsColors(sheets);
 	foo_FormatAccounts_(month);
 	foo_FormatCards_(month);
 }
@@ -194,15 +194,22 @@ function updateHideShowSheets(sheets, financial_year, yyyy, mm) {
 }
 
 
-function updateTabsColors() {
+function updateTabsColors(sheets) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var financial_year = getConstProperties_('financial_year'),
 			init_month = getUserSettings_('initial_month');
 	var date = getSpreadsheetDate();
 	var mm, md, i;
 
+	if (!sheets) {
+		sheets = [ ];
+		for (i = 0; i < 12; i++) {
+			sheets[i] = spreadsheet.getSheetByName(MN_SHORT_[i]);
+		}
+	}
+
 	for (i = 0; i < init_month; i++) {
-		spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#b7b7b7');
+		if (sheets[i]) sheets[i].setTabColor('#b7b7b7');
 	}
 
 	if (financial_year === date.getFullYear()) {
@@ -211,16 +218,16 @@ function updateTabsColors() {
 
 		for (; i < 12; i++) {
 			if (i < mm + md[0] || i > mm + md[1]) {
-				spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#a4c2f4');
+				if (sheets[i]) sheets[i].setTabColor('#a4c2f4');
 			} else {
-				spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#3c78d8');
+				if (sheets[i]) sheets[i].setTabColor('#3c78d8');
 			}
 		}
 
-		spreadsheet.getSheetByName(MN_SHORT_[mm]).setTabColor('#6aa84f');
+		if (sheets[mm]) sheets[mm].setTabColor('#6aa84f');
 	} else {
 		for (; i < 12; i++) {
-			spreadsheet.getSheetByName(MN_SHORT_[i]).setTabColor('#a4c2f4');
+			if (sheets[i]) sheets[i].setTabColor('#a4c2f4');
 		}
 	}
 }
