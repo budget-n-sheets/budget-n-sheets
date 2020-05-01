@@ -147,9 +147,9 @@ function getAllOwnedCalendars() {
 		name = calendars[i].getName();
 		if (! calendars[i].isOwnedByMe()) name += " *";
 
-		db_calendars.name.push(name);
-		db_calendars.id.push(id);
-		db_calendars.md5.push(digest);
+		db_calendars.name[i] = name;
+		db_calendars.id[i] = id;
+		db_calendars.md5[i] = digest;
 	}
 
 	putCacheService_('document', 'DB_CALENDARS', 'json', db_calendars);
