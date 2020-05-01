@@ -449,6 +449,7 @@ function foo_FormatAccounts_(mm) {
 	const w_ = TABLE_DIMENSION_.width;
 	const num_acc = getConstProperties_('number_accounts');
 
+	if (!sheet) return;
 	if (sheet.getMaxColumns() < 5 + 5*num_acc) return;
 
 	n = sheet.getMaxRows() - 4;
@@ -494,6 +495,8 @@ function foo_FormatCards_(mm) {
 	var table, card;
 	var c, n, w_;
 	var i, j;
+
+	if (!sheet) return;
 
 	w_ = 6;
 	n = sheet.getMaxRows() - 5;
