@@ -12,7 +12,7 @@ function loadCache_() {
 
 	const list = [ "class_version2", "user_settings", "spreadsheet_settings", "const_properties"];
 
-	for (i = 0; i < list.length; i++) {
+	for (var i = 0; i < list.length; i++) {
 		cache = getPropertiesService_("document", "json", list[i]);
 		if (!cache) continue;
 
