@@ -11,7 +11,7 @@ var PATCH_THIS_ = Object.freeze({
 			[ update_v0m26p0_, update_v0m26p1_, null, null ],
 			[ update_v0m27p0_, null, null, null, null, null, null, update_v0m27p5_ ],
 			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_, null, null ],
-			[ update_v0m29p0_, null ]
+			[ update_v0m29p0_, null, update_v0m29p2_ ]
 		]
 	],
 	beta_list: [ ]
@@ -139,6 +139,19 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Clear 'load_cache' and 'user_settings' from cache.
+ *
+ * 0.29.2
+ */
+function update_v0m29p2_() {
+	try {
+		CacheService.getDocumentCache().removeAll([ "load_cache", "user_settings" ]);
+	} catch (err) {
+		consoleLog_("error", "update_v0m29p2_()", err);
+	}
+}
 
 /**
  * Install trigger onOpenInstallable_().
