@@ -6,9 +6,8 @@ function retrieveUserSettings() {
 		user_settings = getPropertiesService_("document", "json", "user_settings");
 
 		if (user_settings.financial_calendar != "") {
-			user_settings.financial_calendar = computeDigest(
-					"MD5", user_settings.financial_calendar, "UTF_8"
-				);
+			user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
+			user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
 		}
 
 		putCacheService_("document", "user_settings", "json", user_settings);
@@ -58,9 +57,8 @@ function saveUserSettings(settings) {
 	setPropertiesService_("document", "json", "user_settings", user_settings);
 
 	if (user_settings.financial_calendar != "") {
-		user_settings.financial_calendar = computeDigest(
-				"MD5", user_settings.financial_calendar, "UTF_8"
-			);
+		user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
+		user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
 	}
 	putCacheService_("document", "user_settings", "json", user_settings);
 

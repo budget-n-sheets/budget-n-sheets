@@ -22,6 +22,7 @@ function loadCache_() {
 	cache = getPropertiesService_("document", "json", "user_settings");
 	if (cache.financial_calendar) {
 		cache.financial_calendar = computeDigest("MD5", cache.financial_calendar, "UTF_8");
+		cache.financial_calendar = cache.financial_calendar.substring(0, 12);
 	}
 	putCacheService_("document", "user_settings", "json", cache);
 

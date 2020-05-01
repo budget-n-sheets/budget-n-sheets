@@ -142,6 +142,7 @@ function getAllOwnedCalendars() {
 	for (i = 0; i < calendars.length; i++) {
 		id = calendars[i].getId();
 		digest = computeDigest("MD5", id, "UTF_8");
+		digest = digest.substring(0, 12);
 
 		name = calendars[i].getName();
 		if (! calendars[i].isOwnedByMe()) name += " *";
