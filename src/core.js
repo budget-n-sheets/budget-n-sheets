@@ -70,7 +70,7 @@ function showPanelTables() {
 		return;
 	}
 
-	var htmlSidebar = HtmlService.createTemplateFromFile('htmlSidebarTables')
+	var htmlSidebar = HtmlService.createTemplateFromFile("html/htmlSidebarTables")
 		.evaluate()
 		.setTitle('Accounts & Cards');
 	SpreadsheetApp.getUi()
@@ -81,7 +81,7 @@ function showPanelTables() {
 function showPanelAnalytics() {
 	if (onlineUpdate_()) return;
 
-	var htmlTemplate = HtmlService.createTemplateFromFile("htmlCoolGallery");
+	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlCoolGallery");
 	var htmlSidebar;
 
 	htmlTemplate.list = APPS_SCRIPT_GLOBAL_.cool_gallery;
@@ -95,7 +95,7 @@ function showPanelAnalytics() {
 function showSidebarMainSettings() {
 	if (onlineUpdate_()) return;
 
-	var htmlTemplate = HtmlService.createTemplateFromFile('htmlUserSettings');
+	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUserSettings");
 	var htmlSidebar;
 	var calendars = getAllOwnedCalendars();
 
@@ -124,7 +124,7 @@ function showDialogAboutAddon() {
 	var htmlDialog, htmlTemplate;
 	var v0;
 
-	htmlTemplate = HtmlService.createTemplateFromFile('htmlAboutAddon')
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAboutAddon")
 
 	v0 = APPS_SCRIPT_GLOBAL_.script_version;
 	htmlTemplate.version = v0.major + "." + v0.minor + "." + v0.patch;
@@ -140,7 +140,7 @@ function showDialogAboutAddon() {
 function showDialogErrorMessage(err) {
 	if (err) consoleLog_('error', 'showDialogErrorMessage()', err);
 
-	var htmlDialog = HtmlService.createHtmlOutputFromFile("htmlExceptionMessage")
+	var htmlDialog = HtmlService.createHtmlOutputFromFile("html/htmlExceptionMessage")
 		.setWidth(373)
 		.setHeight(113);
 
@@ -149,7 +149,7 @@ function showDialogErrorMessage(err) {
 
 
 function showDialogUpdate() {
-	var htmlDialog = HtmlService.createHtmlOutputFromFile("htmlUpdateScreen")
+	var htmlDialog = HtmlService.createHtmlOutputFromFile("html/htmlUpdateScreen")
 		.setWidth(263)
 		.setHeight(113);
 
@@ -197,7 +197,7 @@ function showSetupAddon_() {
 	reviseUser_();
 	if (setup_ui()) return;
 
-	var htmlDialog = HtmlService.createTemplateFromFile('htmlSetupAddon')
+	var htmlDialog = HtmlService.createTemplateFromFile("html/htmlSetupAddon")
 		.evaluate()
 		.setWidth(353)
 		.setHeight(359);
@@ -207,7 +207,7 @@ function showSetupAddon_() {
 
 
 function showDialogSetupEnd() {
-	var htmlDialog = HtmlService.createTemplateFromFile("htmlSetupEnd")
+	var htmlDialog = HtmlService.createTemplateFromFile("html/htmlSetupEnd")
 		.evaluate()
 		.setWidth(353)
 		.setHeight(359);
