@@ -67,7 +67,7 @@ function onEdit_Main_(e) {
 			break;
 
 		case 13:
-			if (e.value == "Collapse") optNavTools_("hide", "[ ]");
+			if (e.value == "Collapse") optNavTools_("hide", 1);
 			else if (e.value == "Expand") optNavTools_("show");
 			break;
 

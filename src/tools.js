@@ -87,7 +87,7 @@ function optMainTools_(p, mm) {
 
 function optTool_HideSheets_(r) {
 	var spreadsheet, sheet;
-	var mm, d, i;
+	var delta, mm, i;
 
 	if (r) {
 		mm = DATE_NOW.getMonth();
@@ -104,14 +104,14 @@ function optTool_HideSheets_(r) {
 	}
 
 	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	d = getMonthDelta(mm);
+	delta = getMonthDelta(mm);
 
 	for (i = 0; i < 12; i++) {
 		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
-		if (!sheet) continue;
-
-		if (i < mm + d[0] || i > mm + d[1]) sheet.hideSheet();
-		else sheet.showSheet();
+		if (sheet) {
+			if (i < mm + delta[0] || i > mm + delta[1]) sheet.hideSheet();
+			else sheet.showSheet();
+		}
 	}
 }
 
@@ -122,9 +122,7 @@ function optTool_ShowSheets_() {
 
 	for (i = 0; i < 12; i++) {
 		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
-		if (!sheet) continue;
-
-		sheet.showSheet();
+		if (sheet) sheet.showSheet();
 	}
 }
 
