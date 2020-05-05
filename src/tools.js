@@ -132,6 +132,8 @@ function optTool_AddBlankRows_(mm) {
 
 	if (typeof mm != "number" || isNaN(mm)) {
 		sheet = SpreadsheetApp.getActiveSheet();
+		if (!sheet) return;
+
 		c = sheet.getSheetName();
 
 		if (MN_SHORT_.indexOf(c) !== -1) c = 4;
@@ -154,6 +156,8 @@ function optTool_AddBlankRows_(mm) {
 		showDialogErrorMessage();
 		return;
 	}
+
+	if (!sheet) return;
 
 	var maxRows = sheet.getMaxRows(),
 			maxCols = sheet.getMaxColumns();
@@ -528,6 +532,8 @@ function getTagData_() {
 	var n, i, j, k, v;
 
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+	if (!sheet) return;
+
 	lastRow = sheet.getLastRow();
 	if (lastRow < 2) return;
 	if (sheet.getMaxColumns() < 20) return;
