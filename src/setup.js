@@ -236,7 +236,7 @@ function setup_(settings, list_acc) {
 
 	class_version2 = {
 		script: APPS_SCRIPT_GLOBAL_.script_version,
-		template: APPS_SCRIPT_GLOBAL_.template_version.number
+		template: APPS_SCRIPT_GLOBAL_.template_version
 	};
 	class_version2.script.beta = PATCH_THIS_["beta_list"].length;
 	setPropertiesService_("document", "json", "class_version2", class_version2);
