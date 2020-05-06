@@ -99,7 +99,8 @@ function update_() {
 	};
 
 	classService_("set", "script", cell);
-	nodeControl_('sign');
+	classService_("set", "template", APPS_SCRIPT_GLOBAL_.template_version);
 
+	nodeControl_("sign");
 	return r.r;
 }
