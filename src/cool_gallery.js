@@ -59,7 +59,7 @@ function coolFilterByTag_(info) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet = spreadsheet.getSheetByName(info.sheet_name);
 	var sheetTags, formula, range, rule;
-	var text, aux1, aux2;
+	var text, aux1, aux2, aux3;
 	var n, i, k;
 
 	const header = "C8";
@@ -76,16 +76,30 @@ function coolFilterByTag_(info) {
 		aux1 = "";
 		aux2 = "";
 
+		aux3 = "{";
+		aux3 += "{\'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 1, -1, 2) + "}, ";
+		aux3 += "{\'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 5, -1, 1) + "}, ";
+		aux3 += "{\'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 3, -1, 2) + "}";
+		aux3 += "}";
+
 		for (k = 0; k < num_acc; k++) {
-			aux1 += "; \'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 6 + 5*k, -1, 4);
-			aux2 += "; \'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 9 + 5*k, -1);
+			aux1 += "; {";
+			aux1 += "{\'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 6 + 5*k, -1, 2) + "}, ";
+			aux1 += "{\'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 10 + 5*k, -1, 1) + "}, ";
+			aux1 += "{\'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 8 + 5*k, -1, 2) + "}";
+			aux1 += "}";
+
+			aux2 += "; \'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 9 + 5*k, -1, 1);
 		}
 
-		text = "REGEXMATCH({\'" + MN_SHORT_[i] + "\'!D5:D" + aux2 + "}; " + header + ")";
-		text = "FILTER({\'" + MN_SHORT_[i] + "\'!A5:D" + aux1 + "}; " + text + ")";
-		text = "SORT(" + text + "; 1; TRUE; 3; FALSE)";
-		text = "IFERROR(" + text + "; {\"\" " + dec_c + " \"\" " + dec_c + " \"\" " + dec_c + " \"\"})";
-		text = "{\"\" " + dec_c + " \"" + MN_FULL_[i] + "\" " + dec_c + " \"\" " + dec_c + " \"\"}; " + text + "; ";
+		aux1 += "; \'Cards\'!" + rollA1Notation(6, 1 + 6*i, -1, 5);
+		aux2 += "; \'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1, 1);
+
+		text = "REGEXMATCH({\'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 4, -1, 1) + aux2 + "}; " + header + ")";
+		text = "FILTER({" + aux3 + aux1 + "}; " + text + ")";
+		text = "SORT(" + text + "; 1; TRUE; 3; TRUE; 4; TRUE)";
+		text = "IFERROR(" + text + "; {\"\" " + dec_c + " \"\" " + dec_c + " \"\" " + dec_c + " \"\" " + dec_c + " \"\"})";
+		text = "{\"\" " + dec_c + " \"" + MN_FULL_[i] + "\" " + dec_c + " \"\" " + dec_c + " \"\" " + dec_c + " \"\"}; " + text + "; ";
 		formula += text;
 
 		i++;
