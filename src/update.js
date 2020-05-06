@@ -21,7 +21,7 @@ var PATCH_THIS_ = Object.freeze({
 function onlineUpdate_() {
 	if (reviseVersion_()) return;
 
-	const v0 = getClass_("script");
+	const v0 = classService_("get", "script");
 	const v1 = APPS_SCRIPT_GLOBAL_.script_version;
 
 	if (v0.major > v1.major) return;
@@ -99,31 +99,53 @@ function seamlessUpdate_() {
 }
 
 
-function getClass_(o) {
-	var c;
-
-	c = getCacheService_("document", "class_version2", "json");
-	if (!c) {
-		c = getPropertiesService_("document", "json", "class_version2");
-		putCacheService_("document", "class_version2", "json", c);
+function classService_(select, property, value) {
+	var lock = LockService.getDocumentLock();
+	try {
+		lock.waitLock(1000);
+	} catch (err) {
+		consoleLog_("warn", "classService_(): Wait lock time out.", err);
+		return 1;
 	}
 
-	return c[o];
+	if (property !== "script" && property !== "template") {
+		consoleLog_("error", "classService_(): Invalid property.", property);
+		return 1;
+	}
+
+	switch (select) {
+	case "get":
+		return getClass_(property);
+	case "set":
+		setClass_(property, value);
+		break;
+
+	default:
+		consoleLog_("error", "classService_(): Switch case is default", select);
+		return 1;
+	}
 }
 
 
-function setClass_(o, v) {
-	if (o !== "script" && o !== "template") {
-		consoleLog_("error", "setClass_(): Switch case is default", {o:o, v:v});
-		return;
+function getClass_(property) {
+	var class_version2 = getCacheService_("document", "class_version2", "json");
+
+	if (!class_version2) {
+		class_version2 = getPropertiesService_("document", "json", "class_version2");
+		putCacheService_("document", "class_version2", "json", class_version2);
 	}
 
-	var c = getPropertiesService_("document", "json", "class_version2");
+	return class_version2[property];
+}
 
-	c[o] = v;
 
-	setPropertiesService_("document", "json", "class_version2", c);
-	putCacheService_("document", "class_version2", "json", c);
+function setClass_(property, value) {
+	var class_version2 = getPropertiesService_("document", "json", "class_version2");
+
+	class_version2[property] = value;
+
+	setPropertiesService_("document", "json", "class_version2", class_version2);
+	putCacheService_("document", "class_version2", "json", class_version2);
 }
 
 

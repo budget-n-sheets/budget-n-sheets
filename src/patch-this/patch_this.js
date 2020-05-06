@@ -28,7 +28,7 @@ function update_() {
 		return 1;
 	}
 
-	const v0 = getClass_('script');
+	const v0 = classService_("get", "script");
 	const v1 = APPS_SCRIPT_GLOBAL_.script_version;
 
 	if (v0.major > v1.major) return 0;
@@ -98,7 +98,7 @@ function update_() {
 		beta: r.b
 	};
 
-	setClass_('script', cell);
+	classService_("set", "script", cell);
 	nodeControl_('sign');
 
 	return r.r;
