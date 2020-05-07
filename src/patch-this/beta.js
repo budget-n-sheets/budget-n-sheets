@@ -18,7 +18,7 @@
  */
 
 function update_beta_(beta) {
-	var list = PATCH_THIS_["beta_list"];
+	var list = PATCH_THIS["beta_list"];
 	var b = beta;
 
 	while (b < list.length) {

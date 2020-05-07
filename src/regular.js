@@ -92,7 +92,7 @@ function daily_PostEvents_(date) {
 
 	data.splice(0, 1);
 
-	sheet = spreadsheet.getSheetByName(MN_SHORT_[mm]);
+	sheet = spreadsheet.getSheetByName(MN_SHORT[mm]);
 	if (!sheet) return;
 	if (sheet.getMaxRows() < 4) return;
 
@@ -147,7 +147,7 @@ function monthly_TreatLayout_(yyyy, mm) {
 
 	sheets = [ ];
 	for (i = 0; i < 12; i++) {
-		sheets[i] = spreadsheet.getSheetByName(MN_SHORT_[i]);
+		sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
 	}
 
 	if (mm === 0) {
@@ -207,7 +207,7 @@ function updateTabsColors(sheets, financial_year, yyyy, mm) {
 
 		sheets = [ ];
 		for (i = 0; i < 12; i++) {
-			sheets[i] = spreadsheet.getSheetByName(MN_SHORT_[i]);
+			sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
 		}
 
 		financial_year = getConstProperties_("financial_year");

@@ -1,4 +1,4 @@
-var PATCH_THIS_ = Object.freeze({
+var PATCH_THIS = Object.freeze({
 	patch_list: [
 		[
 			null, [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
@@ -22,7 +22,7 @@ function onlineUpdate_() {
 	if (reviseVersion_()) return;
 
 	const v0 = classService_("get", "script");
-	const v1 = APPS_SCRIPT_GLOBAL_.script_version;
+	const v1 = APPS_SCRIPT_GLOBAL.script_version;
 
 	if (v0.major > v1.major) return;
 	if (v0.major == v1.major) {
@@ -30,7 +30,7 @@ function onlineUpdate_() {
 		if (v0.minor == v1.minor) {
 			if (v0.patch > v1.patch) return;
 			if (v0.patch == v1.patch) {
-				if (PATCH_THIS_["beta_list"].length == 0 || v0.beta >= PATCH_THIS_["beta_list"].length) return;
+				if (PATCH_THIS["beta_list"].length == 0 || v0.beta >= PATCH_THIS["beta_list"].length) return;
 			}
 		}
 	}
@@ -38,7 +38,7 @@ function onlineUpdate_() {
 	var ui = SpreadsheetApp.getUi();
 
 	try {
-		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
+		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 	} catch (err) {
 		consoleLog_("warn", "onlineUpdate_()", err);
 
@@ -84,7 +84,7 @@ function onlineUpdate_() {
 
 function seamlessUpdate_() {
 	try {
-		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
+		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 	} catch (err) {
 		consoleLog_("warn", "seamlessUpdate_()", err);
 		return 1;
@@ -317,7 +317,7 @@ function update_v0m28p0s1_() {
 function update_v0m28p0s0_() {
 	try {
 		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-		var template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
+		var template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 		var sheet;
 		var name, pos, n, i;
 
@@ -372,7 +372,7 @@ function update_v0m28p0s3_() {
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cash Flow");
 		if (!sheet) return 1;
 
-		const h_ = TABLE_DIMENSION_.height;
+		const h_ = TABLE_DIMENSION.height;
 
 		const init_month = setUserSettings_("initial_month");
 		const dec_p = getSpreadsheetSettings_("decimal_separator");
@@ -565,8 +565,8 @@ function update_v0m27p0s0_() {
 		var expr1, expr2, expr3;
 		var i;
 
-		const h_ = TABLE_DIMENSION_.height;
-		const w_ = TABLE_DIMENSION_.width;
+		const h_ = TABLE_DIMENSION.height;
+		const w_ = TABLE_DIMENSION.width;
 
 		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
 		const num_acc = user_const_settings.number_accounts;
@@ -636,8 +636,8 @@ function update_v0m27p0s1_() {
 		var maxColumns, maxRows;
 		var i, k;
 
-		const h_ = TABLE_DIMENSION_.height;
-		const w_ = TABLE_DIMENSION_.width;
+		const h_ = TABLE_DIMENSION.height;
+		const w_ = TABLE_DIMENSION.width;
 
 		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
 		const num_acc = user_const_settings.number_accounts;
@@ -685,8 +685,8 @@ function update_v0m26p1_() {
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
 		if (!sheet) return;
 
-		const h_ = TABLE_DIMENSION_.height;
-		const w_ = TABLE_DIMENSION_.width;
+		const h_ = TABLE_DIMENSION.height;
+		const w_ = TABLE_DIMENSION.width;
 
 		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
 		const num_acc = user_const_settings.number_accounts;
@@ -753,8 +753,8 @@ function update_v0m26p0s2_() {
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
 		if (!sheet) return;
 
-		const h_ = TABLE_DIMENSION_.height;
-		const w_ = TABLE_DIMENSION_.width;
+		const h_ = TABLE_DIMENSION.height;
+		const w_ = TABLE_DIMENSION.width;
 
 		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
 		const num_acc = user_const_settings.number_accounts;
@@ -848,8 +848,8 @@ function update_v0m26p0s1_() {
 
 		if (!sheet) return;
 
-		const h_ = TABLE_DIMENSION_.height;
-		const w_ = TABLE_DIMENSION_.width;
+		const h_ = TABLE_DIMENSION.height;
+		const w_ = TABLE_DIMENSION.width;
 
 		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
 		const num_acc = user_const_settings.number_accounts;
@@ -927,8 +927,8 @@ function update_v0m25p0_() {
 		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
 		const number_accounts = user_const_settings.number_accounts;
 
-		const h_ = TABLE_DIMENSION_.height;
-		const w_ = TABLE_DIMENSION_.width;
+		const h_ = TABLE_DIMENSION.height;
+		const w_ = TABLE_DIMENSION.width;
 
 		protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
 		for (i = 0; i < protections.length; i++) {

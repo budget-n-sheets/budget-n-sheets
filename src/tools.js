@@ -93,7 +93,7 @@ function optTool_HideSheets_(r) {
 		mm = DATE_NOW.getMonth();
 	} else {
 		sheet = SpreadsheetApp.getActiveSheet();
-		mm = MN_SHORT_.indexOf( sheet.getName() );
+		mm = MN_SHORT.indexOf( sheet.getName() );
 		if (mm === -1) {
 			SpreadsheetApp.getUi().alert(
 				"Can't collapse pages view",
@@ -107,7 +107,7 @@ function optTool_HideSheets_(r) {
 	delta = getMonthDelta(mm);
 
 	for (i = 0; i < 12; i++) {
-		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+		sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
 		if (sheet) {
 			if (i < mm + delta[0] || i > mm + delta[1]) sheet.hideSheet();
 			else sheet.showSheet();
@@ -121,7 +121,7 @@ function optTool_ShowSheets_() {
 	var sheet, i;
 
 	for (i = 0; i < 12; i++) {
-		sheet = spreadsheet.getSheetByName(MN_SHORT_[i]);
+		sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
 		if (sheet) sheet.showSheet();
 	}
 }
@@ -136,7 +136,7 @@ function optTool_AddBlankRows_(mm) {
 
 		c = sheet.getSheetName();
 
-		if (MN_SHORT_.indexOf(c) !== -1) c = 4;
+		if (MN_SHORT.indexOf(c) !== -1) c = 4;
 		else if (c === "Cards") c = 5;
 		else {
 			SpreadsheetApp.getUi().alert(
@@ -147,7 +147,7 @@ function optTool_AddBlankRows_(mm) {
 		}
 	} else if (mm >= 0 && mm < 12) {
 		c = 4;
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT_[mm]);
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
 	} else if (mm === 12) {
 		c = 5;
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
@@ -189,7 +189,7 @@ function optTool_UpdateCashFlow_(mm) {
 		sheet = range.getSheet();
 		name = sheet.getSheetName();
 
-		mm = MN_SHORT_.indexOf(name);
+		mm = MN_SHORT.indexOf(name);
 
 		if (mm === -1) {
 			if (name === 'Cash Flow') {
@@ -215,7 +215,7 @@ function optTool_FormatRegistry_() {
 	var name = sheet.getSheetName();
 	var mm;
 
-	mm = MN_SHORT_.indexOf(name);
+	mm = MN_SHORT.indexOf(name);
 
 	if (mm !== -1) {
 		foo_FormatAccounts_(mm);
@@ -245,7 +245,7 @@ function foo_UpdateCashFlow_(mm) {
 	console.time("tool/update-cash-flow");
 
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheetMonth = spreadsheet.getSheetByName(MN_SHORT_[mm]),
+	var sheetMonth = spreadsheet.getSheetByName(MN_SHORT[mm]),
 			sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
 	var sheetBackstage;
 
@@ -264,8 +264,8 @@ function foo_UpdateCashFlow_(mm) {
 	var dec_p = getSpreadsheetSettings_("decimal_separator");
 
 	console.time("tool/update-cash-flow/load");
-	h_ = TABLE_DIMENSION_.height;
-	w_ = TABLE_DIMENSION_.width;
+	h_ = TABLE_DIMENSION.height;
+	w_ = TABLE_DIMENSION.width;
 
 	yyyy = getConstProperties_('financial_year');
 
@@ -443,12 +443,12 @@ function foo_FormatAccounts_(mm) {
 		return;
 	}
 
-	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT_[mm]);
+	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
 	var date1, date2;
 	var table, nd;
 	var c, n, i, k;
 
-	const w_ = TABLE_DIMENSION_.width;
+	const w_ = TABLE_DIMENSION.width;
 	const num_acc = getConstProperties_('number_accounts');
 
 	if (!sheet) return;

@@ -4,8 +4,8 @@ function cardsGetData_() {
 	var c, n, v, i, k;
 	var h_, w_;
 
-	h_ = TABLE_DIMENSION_.height;
-	w_ = TABLE_DIMENSION_.width;
+	h_ = TABLE_DIMENSION.height;
+	w_ = TABLE_DIMENSION.width;
 
 	n = getConstProperties_('number_accounts');
 
@@ -188,8 +188,8 @@ function cardsRefresh_() {
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
 	if (!sheet) return;
 
-	const h_ = TABLE_DIMENSION_.height;
-	const w_ = TABLE_DIMENSION_.width;
+	const h_ = TABLE_DIMENSION.height;
+	const w_ = TABLE_DIMENSION.width;
 
 	const num_acc = getConstProperties_('number_accounts');
 

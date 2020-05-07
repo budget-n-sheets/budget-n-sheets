@@ -1,11 +1,11 @@
 function copySheetsFromTemplate_() {
 	console.time("add-on/setup/copy-template");
-	var source = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL_.template_id);
+	var source = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 	var destination = SpreadsheetApp.getActiveSpreadsheet();
 	var sheets = destination.getSheets();
 	var i;
 
-	const list = APPS_SCRIPT_GLOBAL_.template_sheets;
+	const list = APPS_SCRIPT_GLOBAL.template_sheets;
 
 	for (i = 0; i < list.length; i++) {
 		source.getSheetByName(list[i])

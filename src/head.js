@@ -1,16 +1,16 @@
-var MN_SHORT_ = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-		MN_FULL_ = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+var MN_SHORT = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+		MN_FULL = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
-var TC_CODE_ = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
-		TC_NAME_ = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
+var TC_CODE = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
+		TC_NAME = [ "Food and supply", "Shopping and clothing", "Hobby", "Leisure time", "Home", "Other", "Health and insurance", "Services", "Transport", "Traveling" ];
 
 var DATE_NOW = new Date();
 
 var SPREADSHEET, SETUP_SETTINGS;
 
-var TABLE_DIMENSION_ = Object.freeze({height: 10, width: 5});
+var TABLE_DIMENSION = Object.freeze({height: 10, width: 5});
 
-var APPS_SCRIPT_GLOBAL_ = Object.freeze({
+var APPS_SCRIPT_GLOBAL = Object.freeze({
 	script_version: {
 		major: 0,
 		minor: 29,

@@ -2,7 +2,7 @@ function coolGallery(option) {
 	var lock, s;
 	var info;
 
-	info = APPS_SCRIPT_GLOBAL_.cool_gallery;
+	info = APPS_SCRIPT_GLOBAL.cool_gallery;
 	info = info[option];
 	if (!info) {
 		consoleLog_('warn', 'getCoolSheet_(): Details of page not found.', {"option":option, "info":info});
@@ -77,15 +77,15 @@ function coolFilterByTag_(info) {
 		aux2 = "";
 
 		for (k = 0; k < num_acc; k++) {
-			aux1 += "; \'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 6 + 5*k, -1, 4);
-			aux2 += "; \'" + MN_SHORT_[i] + "\'!" + rollA1Notation(5, 9 + 5*k, -1);
+			aux1 += "; \'" + MN_SHORT[i] + "\'!" + rollA1Notation(5, 6 + 5*k, -1, 4);
+			aux2 += "; \'" + MN_SHORT[i] + "\'!" + rollA1Notation(5, 9 + 5*k, -1);
 		}
 
-		text = "REGEXMATCH({\'" + MN_SHORT_[i] + "\'!D5:D" + aux2 + "}; " + header + ")";
-		text = "FILTER({\'" + MN_SHORT_[i] + "\'!A5:D" + aux1 + "}; " + text + ")";
+		text = "REGEXMATCH({\'" + MN_SHORT[i] + "\'!D5:D" + aux2 + "}; " + header + ")";
+		text = "FILTER({\'" + MN_SHORT[i] + "\'!A5:D" + aux1 + "}; " + text + ")";
 		text = "SORT(" + text + "; 1; TRUE; 3; FALSE)";
 		text = "IFERROR(" + text + "; {\"\" " + dec_c + " \"\" " + dec_c + " \"\" " + dec_c + " \"\"})";
-		text = "{\"\" " + dec_c + " \"" + MN_FULL_[i] + "\" " + dec_c + " \"\" " + dec_c + " \"\"}; " + text + "; ";
+		text = "{\"\" " + dec_c + " \"" + MN_FULL[i] + "\" " + dec_c + " \"\" " + dec_c + " \"\"}; " + text + "; ";
 		formula += text;
 
 		i++;

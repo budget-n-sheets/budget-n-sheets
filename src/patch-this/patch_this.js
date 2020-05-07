@@ -29,7 +29,7 @@ function update_() {
 	}
 
 	const v0 = classService_("get", "script");
-	const v1 = APPS_SCRIPT_GLOBAL_.script_version;
+	const v1 = APPS_SCRIPT_GLOBAL.script_version;
 
 	if (v0.major > v1.major) return 0;
 	if (v0.major == v1.major) {
@@ -37,7 +37,7 @@ function update_() {
 		if (v0.minor == v1.minor) {
 			if (v0.patch > v1.patch) return 0;
 			if (v0.patch == v1.patch) {
-				if (PATCH_THIS_["beta_list"].length == 0 || v0.beta >= PATCH_THIS_["beta_list"].length) return 0;
+				if (PATCH_THIS["beta_list"].length == 0 || v0.beta >= PATCH_THIS["beta_list"].length) return 0;
 			}
 		}
 	}
@@ -46,7 +46,7 @@ function update_() {
 	var mm, pp, r, t;
 
 	const beta = v0.beta == null ? 0 : v0.beta;
-	const patch_list = PATCH_THIS_.patch_list;
+	const patch_list = PATCH_THIS.patch_list;
 
 	major = v0.major;
 	minor = v0.minor;
@@ -99,7 +99,7 @@ function update_() {
 	};
 
 	classService_("set", "script", cell);
-	classService_("set", "template", APPS_SCRIPT_GLOBAL_.template_version);
+	classService_("set", "template", APPS_SCRIPT_GLOBAL.template_version);
 
 	nodeControl_("sign");
 	return r.r;

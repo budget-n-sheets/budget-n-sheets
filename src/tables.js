@@ -141,7 +141,7 @@ function optAccount_UpdateTableRef_() {
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cash Flow");
 	if (!sheet) return 2;
 
-	const h_ = TABLE_DIMENSION_.height;
+	const h_ = TABLE_DIMENSION.height;
 
 	const ranges = [ "G", "L", "Q", "V", "AA" ];
 
@@ -184,8 +184,8 @@ function optAccount_Update_(input) {
 	db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
 	db_accounts = db_tables.accounts;
 
-	h_ = TABLE_DIMENSION_.height;
-	w_ = TABLE_DIMENSION_.width;
+	h_ = TABLE_DIMENSION.height;
+	w_ = TABLE_DIMENSION.width;
 
 	k = db_accounts.ids.indexOf(input.id);
 	if (k == -1) return 2;
