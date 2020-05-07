@@ -68,8 +68,6 @@ function coolFilterByTag_(info) {
 
 	const dec_c = (dec_p ? ", " : " \\ ");
 
-	sheet.getRange("C8").setFormula("IF(D8 = \"\"; \"\"; \"#\")");
-
 	i = 0;
 	formula = "";
 	while (i < 12) {
