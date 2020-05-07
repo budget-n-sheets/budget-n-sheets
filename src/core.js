@@ -217,6 +217,24 @@ function showDialogSetupEnd() {
 }
 
 
+function showDialogEditAccount(acc_id) {
+	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlEditAccount");
+	var account;
+
+	account = optMainTables("GetInfo", acc_id);
+	if (account === 2) throw new Error("showDialogEditAccount(): Invalid account ID or account not found.");
+
+	for (var key in account) {
+		htmlTemplate["acc_" + key] = account[key];
+	}
+
+	var htmlDialog = htmlTemplate.evaluate()
+		.setWidth(300)
+		.setHeight(359);
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Edit Account");
+}
+
+
 function showDialogAddCard() {
 	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAddEditCard");
 	var card;

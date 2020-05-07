@@ -119,42 +119,6 @@
 					</div>
 				</div>
 
-				<div class="panel" id="panel_EditAccount">
-					<h2>Edit account</h2>
-					<form id="Form-EditAccount" onSubmit="EditAccount_Save();" accept-charset="UTF-8">
-						<table style="width:100%;">
-							<tr>
-								<td class="name"><label for="Form-EditAccount_Name">Name</label></td>
-								<td><input class="Form-EditAccount_lock" type="text" id="Form-EditAccount_Name" maxlength="90" required></td>
-							</tr>
-							<tr>
-								<td class="name"><label for="Form-EditAccount_TimeA">Initial month</label></td>
-								<td>
-									<select class="Form-EditAccount_lock" id="Form-EditAccount_TimeA" style="width:83px;">
-										<option value="0" selected>January</option>
-										<option value="1">February</option>
-										<option value="2">March</option>
-										<option value="3">April</option>
-										<option value="4">May</option>
-										<option value="5">June</option>
-										<option value="6">July</option>
-										<option value="7">August</option>
-										<option value="8">September</option>
-										<option value="9">October</option>
-										<option value="10">November</option>
-										<option value="11">December</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td class="name"><label for="Form-EditAccount_Balance">Initial balance</label></td>
-								<td>$ <input class="Form-EditAccount_lock" type="number" id="Form-EditAccount_Balance" style="width:7.3em;" value="0" step="0.01" placeholder="0.00" required></td>
-							</tr>
-						</table>
-						<input id="Form-EditAccount_submit" style="display:none;" type="submit">
-					</form>
-				</div>
-
 				<div class="panel" id="wait_load">
 					<div class="wait_load-wrapper">
 						<div class="wait_load-bar"></div>
@@ -196,13 +160,10 @@
 		});
 
 		$(document).on('click', '.m-li', function() {
-			htmlVarGlobal.Id = $(this).parent().attr('id');
-
-			g2("wait_load");
-
-			google.script.run.withSuccessHandler(EditAccount_Panel)
+			$('#p-footer_FastResponse').empty();
+			google.script.run
 				.withFailureHandler(showError)
-				.optMainTables('GetInfo', htmlVarGlobal.Id);
+				.showDialogEditAccount($(this).parent().attr("id"));
 		});
 
 		$(document).on('click', '.m-la', function() {
@@ -236,56 +197,6 @@
 			if ($(this).attr('id') === "tab_accounts") g2("panel_Accounts");
 			else if ($(this).attr('id') === "tab_cards") g2("panel_Cards");
 		});
-
-		function EditAccount_Panel(r) {
-			if (r === 0) {
-				g2("panel_Accounts");
-				$('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
-				return;
-			} else if (r > 0) {
-				showError();
-				return;
-			}
-
-			$('#Form-EditAccount_Name').val(r.name);
-			$('#Form-EditAccount_TimeA').val(r.time_a);
-			$('#Form-EditAccount_Balance').val(r.balance);
-
-			g2("panel_EditAccount");
-		}
-
-		function EditAccount_Save() {
-			$('.Form-EditAccount_lock').prop('disabled', true);
-			$('#p-footer_FastResponse').empty().append('Saving changes...');
-
-			var output = {
-				id: htmlVarGlobal.Id,
-				name: $('#Form-EditAccount_Name').val(),
-				time_a: $('#Form-EditAccount_TimeA').val(),
-				balance: $('#Form-EditAccount_Balance').val()
-			};
-
-			google.script.run.withSuccessHandler(EditTable_Aftermath)
-				.withFailureHandler(showError)
-				.optMainTables('UpdateAccount', output);
-		}
-		function EditTable_Aftermath(input) {
-			if (input === 0) {
-				$('.Form-EditAccount_lock').prop('disabled', false);
-				$('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
-				return;
-			} else if (input > 0) {
-				showError();
-				return;
-			}
-
-			google.script.run.withSuccessHandler(ListTables_Post)
-				.withFailureHandler(showError)
-				.optMainTables('GetList');
-
-			$('.Form-EditAccount_lock').prop('disabled', false);
-			$('#p-footer_FastResponse').empty().append('Changes saved.');
-		}
 
 		function RemoveCard_Aftermath(r) {
 			if (r === 0) {
@@ -374,23 +285,13 @@
 
 				case 'panel_ClearCards':
 					$("#box_Cards").empty();
+
 				case 'panel_Cards':
 					htmlVarGlobal.Id = "";
 					htmlVarGlobal.Action = "";
 
 					$('#tab_cards').addClass('active');
 					$('#panel_Cards').fadeIn('fast')
-						.siblings()
-						.hide();
-					break;
-
-				case 'panel_EditAccount':
-					$('.Form-EditAccount_lock').prop('disabled', false);
-
-					$('.m-footer.left').append('<button type="button" class="action Form-EditAccount_lock" onclick="$(\'#Form-EditAccount_submit\').click()">Save</button>');
-					$('.m-footer.left').append('<button class="Form-EditAccount_lock" onclick="g2(\'panel_Accounts\');">Back</button>');
-
-					$('#panel_EditAccount').fadeIn('fast')
 						.siblings()
 						.hide();
 					break;
