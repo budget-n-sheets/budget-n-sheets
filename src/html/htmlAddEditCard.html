@@ -22,7 +22,7 @@
 	<body>
 		<div id="wrapper">
 			<div id="content" style="margin-bottom:4.7em;">
-				<form accept-charset="UTF-8">
+				<form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
 					<table style="width:100%;">
 						<tr>
 							<th colspan="2" style="font-size:1.3em;">
@@ -75,9 +75,9 @@
 				<div id="footer2">
 					<div id="footer3">
 						<? if (is_edit) { ?>
-							<button class="action" id="b-Submit">Save</button>
+							<button class="action" id="b-Submit" type="submit" form="the_form">Save</button>
 						<? } else { ?>
-							<button class="create" id="b-Submit">Add</button>
+							<button class="create" id="b-Submit" type="submit" form="the_form">Add</button>
 						<? } ?>
 						<button onclick="google.script.host.close();">Close</button>
 					</div>
@@ -87,14 +87,12 @@
 		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
 		<script>
 			$(document).ready(function() {
-				$("#b-Submit").click(submitForm);
-
 				$("#card_limit").val(Number(<?= card_limit ?>));
 			});
 
 			function submitForm() {
 				$("#response").empty();
-				this.disabled = true;
+				$("#b-Submit").prop("disabled", true);
 
 				const card = {
 					id: $("#card_id").val(),
@@ -107,7 +105,6 @@
 				google.script.run
 					.withSuccessHandler(submitAftermath)
 					.withFailureHandler(showError)
-					.withUserObject(this)
 					<? if (is_edit) { ?>
 						.optMainTables("UpdateCard", card);
 					<? } else { ?>
@@ -115,7 +112,7 @@
 					<? } ?>
 			}
 
-			function submitAftermath(r, user_object) {
+			function submitAftermath(r) {
 				var response;
 
 				$("#response").empty();
@@ -140,7 +137,7 @@
 					}
 
 					$("#response").append(response);
-					user_object.disabled = false;
+					$("#b-Submit").prop("disabled", false);
 					return;
 				}
 

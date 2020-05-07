@@ -22,7 +22,7 @@
 	<body>
 		<div id="wrapper">
 			<div id="content" style="margin-bottom:4.7em;">
-				<form accept-charset="UTF-8">
+				<form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
 					<table style="width:100%;">
 						<tr>
 							<th colspan="2" style="font-size:1.3em;">
@@ -75,7 +75,7 @@
 				<div class="current" id="response" style="padding:0 7px;"></div>
 				<div id="footer2">
 					<div id="footer3">
-						<button class="action" id="b-Submit">Save</button> <button onclick="google.script.host.close();">Close</button>
+						<button class="action" id="b-Submit" type="submit" form="the_form">Save</button> <button onclick="google.script.host.close();">Close</button>
 					</div>
 				</div>
 			</div>
@@ -83,14 +83,12 @@
 		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
 		<script>
 			$(document).ready(function() {
-				$("#b-Submit").click(submitForm);
-
 				$("#acc_time_a").val(Number(<?= acc_time_a ?>));
 				$("#acc_balance").val(Number(<?= acc_balance ?>));
 			});
 
 			function submitForm() {
-				this.disabled = true;
+				$("#b-Submit").prop("disabled", true);
 
 				const account = {
 					id: $("#acc_id").val(),
