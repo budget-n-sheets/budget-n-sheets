@@ -34,7 +34,7 @@
 								<label for="card_name">Name</label>
 							</td>
 							<td>
-								<input id="card_name" type="text" maxlength="90" value="<?= card_name ?>" required>
+								<input id="card_name" type="text" maxlength="43" value="<?= card_name ?>" required>
 							</td>
 						</tr>
 						<tr>
@@ -42,7 +42,7 @@
 								<label for="card_code">Code</label>
 							</td>
 							<td>
-								<input id="card_code" type="text" pattern="^\w+$" value="<?= card_code ?>" required>
+								<input id="card_code" type="text" maxlength="17" pattern="^\w+$" value="<?= card_code ?>" required>
 								<br>
 								<span class="gray">Charset: 0-9, a-z, A-Z, _</span>
 							</td>
@@ -52,7 +52,7 @@
 								<label for="card_aliases">Code aliases</label>
 							</td>
 							<td>
-								<input id="card_aliases" type="text" pattern="^\w+(\s*,\s*\w+)*$" value="<?= card_aliases ?>">
+								<input id="card_aliases" type="text" maxlength="191" pattern="^\w+(\s*,\s*\w+)*$" value="<?= card_aliases ?>">
 								<br>
 								<span class="gray">Separate aliases with commas.<br>Charset: 0-9, a-z, A-Z, _</span>
 							</td>
