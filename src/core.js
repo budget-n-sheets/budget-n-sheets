@@ -215,3 +215,46 @@ function showDialogSetupEnd() {
 	SpreadsheetApp.getUi()
 		.showModalDialog(htmlDialog, "Add-on Budget n Sheets");
 }
+
+
+function showDialogAddCard() {
+	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAddEditCard");
+	var card;
+
+	htmlTemplate.is_edit = false;
+
+	card = { id: "", name: "", code: "", aliases: "", limit: 0 };
+
+	for (var key in card) {
+		htmlTemplate["card_" + key] = card[key];
+	}
+
+	var htmlDialog = htmlTemplate.evaluate()
+		.setWidth(300)
+		.setHeight(359);
+
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Add Card");
+}
+
+
+function showDialogEditCard(card_id) {
+	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAddEditCard");
+	var card;
+
+	htmlTemplate.is_edit = true;
+
+	card = optMainTables("GetInfo", card_id);
+	if (card === 2) throw new Error("showDialogEditCard(): Invalid card ID or card not found.");
+
+	card.aliases = card.aliases.join(", ");
+
+	for (var key in card) {
+		htmlTemplate["card_" + key] = card[key];
+	}
+
+	var htmlDialog = htmlTemplate.evaluate()
+		.setWidth(300)
+		.setHeight(359);
+
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Edit Card");
+}

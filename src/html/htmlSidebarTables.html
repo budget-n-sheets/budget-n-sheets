@@ -119,40 +119,6 @@
 					</div>
 				</div>
 
-				<div class="panel" id="panel_AddEditCard">
-					<h2 id="Panel-AddEditCard_Title"></h2>
-					<form id="Form-AddEditCard" onSubmit="AddEditCard_Push()" accept-charset="UTF-8">
-						<table id="Table-AddEditCard" style="width:100%;">
-							<tr>
-								<th colspan="2" style="font-size:1.3em;">
-									Details
-								</th>
-							</tr>
-							<tr>
-								<td class="name"><label for="Form-AddEditCard_Name">Name</label></td>
-								<td><input class="Form-AddEditCard_lock" type="text" id="Form-AddEditCard_Name" maxlength="90" required></td>
-							</tr>
-							<tr>
-								<td class="name"><label for="Form-AddEditCard_Code">Code</label></td>
-								<td><input class="Form-AddEditCard_lock" type="text" pattern="^\w+$" id="Form-AddEditCard_Code" required></td>
-							</tr>
-							<tr>
-								<td class="name"><label for="Form-AddEditCard_Aliases">Code aliases</label></td>
-								<td>
-									<input class="Form-AddEditCard_lock" type="text" name="aliases" pattern="^\w+(\s*,\s*\w+)*$" id="Form-AddEditCard_Aliases">
-									<br>
-									<span class="gray">Separate aliases with commas.<br>Charset 0-9, a-z, A-Z</span>
-								</td>
-							</tr>
-							<tr>
-								<td class="name"><label for="Form-AddEditCard_Limit">Limit</label></td>
-								<td>$ <input class="Form-AddEditCard_lock" type="number" style="width:7.3em;" value="0" min="0" step="0.01" placeholder="0.00" id="Form-AddEditCard_Limit" required></td>
-							</tr>
-						</table>
-						<input id="Form-AddEditCard_submit" style="display:none;" type="submit">
-					</form>
-				</div>
-
 				<div class="panel" id="panel_EditAccount">
 					<h2>Edit account</h2>
 					<form id="Form-EditAccount" onSubmit="EditAccount_Save();" accept-charset="UTF-8">
@@ -217,7 +183,12 @@
 		};
 
 		$(document).ready(function() {
-			$("#b-AddCard").click(AddCard_Panel);
+			$("#b-AddCard").click(function(e) {
+				$('#p-footer_FastResponse').empty();
+				google.script.run
+					.withFailureHandler(showError)
+					.showDialogAddCard();
+			});
 
 			google.script.run.withSuccessHandler(ListTables_Post)
 				.withFailureHandler(showError)
@@ -235,14 +206,10 @@
 		});
 
 		$(document).on('click', '.m-la', function() {
-			htmlVarGlobal.Id = $(this).parent().attr('id');
-			htmlVarGlobal.Action = 'edit';
-
-			g2("wait_load");
-
-			google.script.run.withSuccessHandler(EditCard_Panel)
+			$('#p-footer_FastResponse').empty();
+			google.script.run
 				.withFailureHandler(showError)
-				.optMainTables("GetInfo", htmlVarGlobal.Id);
+				.showDialogEditCard($(this).parent().attr("id"));
 		});
 
 		$(document).on('click', '.b-DeleteCard', function() {
@@ -320,98 +287,6 @@
 			$('#p-footer_FastResponse').empty().append('Changes saved.');
 		}
 
-		function EditCard_Panel(r) {
-			if (r === 0) {
-				g2("panel_Cards")
-				$('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
-				return;
-			} else if (r > 0) {
-				showError();
-				return;
-			}
-
-			$('#Form-AddEditCard_Name').val(r.name);
-			$('#Form-AddEditCard_Code').val(r.code);
-			$('#Form-AddEditCard_Limit').val(r.limit);
-			$("#Form-AddEditCard_Aliases").val(r.aliases.join(", "));
-
-			g2("panel_EditCard");
-		}
-		function AddCard_Panel() {
-			$('#Form-AddEditCard_Name').val('');
-			$('#Form-AddEditCard_Code').val('');
-			$('#Form-AddEditCard_Limit').val(0);
-			$("#Form-AddEditCard_Aliases").val("");
-
-			htmlVarGlobal.Action = 'add';
-
-			g2("panel_AddCard");
-		}
-		function AddEditCard_Push() {
-			if (htmlVarGlobal.Action === 'add') $('#p-footer_FastResponse').empty().append('Adding card...');
-			else $('#p-footer_FastResponse').empty().append('Saving changes...');
-			$('.Form-AddEditCard_lock').prop('disabled', true);
-
-			var cell = {
-				id: htmlVarGlobal.Id,
-				name: $('#Form-AddEditCard_Name').val(),
-				code: $('#Form-AddEditCard_Code').val(),
-				limit: $('#Form-AddEditCard_Limit').val(),
-				aliases: $("#Form-AddEditCard_Aliases").val()
-			};
-
-			if (htmlVarGlobal.Action === 'add') {
-				google.script.run.withSuccessHandler(AddEditCard_Aftermath)
-					.withFailureHandler(showError)
-					.optMainTables('AddCard', cell);
-			} else {
-				google.script.run.withSuccessHandler(AddEditCard_Aftermath)
-					.withFailureHandler(showError)
-					.optMainTables('UpdateCard', cell);
-			}
-		}
-		function AddEditCard_Aftermath(r) {
-			if (r !== -1) {
-				switch (r) {
-				case 10:
-					$('#p-footer_FastResponse').empty().append('Invalid code format.');
-					$('.Form-AddEditCard_lock').prop('disabled', false);
-					break;
-				case 20:
-					$('#p-footer_FastResponse').empty().append('Code is already in use.');
-					$('.Form-AddEditCard_lock').prop('disabled', false);
-					break;
-				case 30:
-					backToBook();
-					$('#p-footer_FastResponse').append('Limit of 10 cards reached.');
-					break;
-				case 40:
-					$('#p-footer_FastResponse').empty().append('Aliases have an invalid code format.');
-					$('.Form-AddEditCard_lock').prop('disabled', false);
-					break;
-				case 0:
-					backToBook();
-					$('#p-footer_FastResponse').append('Add-on is busy. Try again in a moment.');
-					break;
-				default:
-					showError();
-					break;
-				}
-				return;
-			}
-
-			var a = htmlVarGlobal.Action;
-
-			google.script.run.optMainTables("Refresh");
-			google.script.run.withSuccessHandler(ListTables_Post)
-				.withFailureHandler(showError)
-				.optMainTables('GetList');
-
-			g2("panel_ClearCards");
-
-			if (a === 'add') $('#p-footer_FastResponse').empty().append('Card added.');
-			else $('#p-footer_FastResponse').empty().append('Changes saved.');
-		}
 		function RemoveCard_Aftermath(r) {
 			if (r === 0) {
 				$('.Form-AddEditCard_lock').prop('disabled', false);
@@ -516,32 +391,6 @@
 					$('.m-footer.left').append('<button class="Form-EditAccount_lock" onclick="g2(\'panel_Accounts\');">Back</button>');
 
 					$('#panel_EditAccount').fadeIn('fast')
-						.siblings()
-						.hide();
-					break;
-
-				case 'panel_AddCard':
-					$('.Form-AddEditCard_lock').prop('disabled', false);
-
-					$('#Panel-AddEditCard_Title').empty().append('Add card');
-
-					$('.m-footer.left').append('<button class="create Form-AddEditCard_lock" onclick="$(\'#Form-AddEditCard_submit\').click()">Add</button>');
-					$('.m-footer.left').append('<button class="Form-AddEditCard_lock" onclick="g2(\'panel_Cards\');">Cancel</button>');
-
-					$('#panel_AddEditCard').fadeIn('fast')
-						.siblings()
-						.hide();
-					break;
-
-				case 'panel_EditCard':
-					$('.Form-AddEditCard_lock').prop('disabled', false);
-
-					$('#Panel-AddEditCard_Title').empty().append('Edit card');
-
-					$('.m-footer.left').append('<button class="action Form-AddEditCard_lock" onclick="$(\'#Form-AddEditCard_submit\').click()">Save</button>');
-					$('.m-footer.left').append('<button class="Form-EditAccount_lock" onclick="g2(\'panel_Cards\');">Cancel</button>');
-
-					$('#panel_AddEditCard').fadeIn('fast')
 						.siblings()
 						.hide();
 					break;
