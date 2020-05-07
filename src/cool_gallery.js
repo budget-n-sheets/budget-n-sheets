@@ -110,7 +110,7 @@ function coolFilterByTag_(info) {
 	formula = formula.slice(0, -3);
 	formula = "IF(D8 = \"\"; \"\"; QUERY({\n" + formula + "\n}; \"select * where Col6 is not null\"))";
 
-	sheet.getRange("B11").setFormula(formula);
+	sheet.getRange("B12").setFormula(formula);
 
 	sheetTags = spreadsheet.getSheetByName('Tags');
 	if (sheetTags) n = sheetTags.getMaxRows();
