@@ -686,6 +686,8 @@ function setupTables_() {
 	const list_acc = SETUP_SETTINGS["list_acc"];
 	const num_acc = SETUP_SETTINGS["number_accounts"];
 
+	r = randomString(7, "lonum");
+
 	db_tables = {
 		wallet: r,
 		accounts: {
@@ -701,7 +703,6 @@ function setupTables_() {
 		}
 	};
 
-	r = randomString(7, "lonum");
 	ids = [ r ];
 
 	for (k = 0; k < num_acc; k++) {
