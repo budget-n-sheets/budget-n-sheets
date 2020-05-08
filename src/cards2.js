@@ -97,6 +97,64 @@ function deleteCard_(card_id) {
 }
 
 
+function getCardsBalances_() {
+	var sheet;
+	var balances, data, code;
+	var v, i, k;
+
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+	if (!sheet) return;
+
+	const h_ = TABLE_DIMENSION.height;
+	const w_ = TABLE_DIMENSION.width;
+
+	const num_acc = getConstProperties_("number_accounts");
+	const db_cards = getDbTables_("cards");
+
+	const col = 2 + w_ + w_*num_acc;
+	const num_cards = db_cards.count;
+
+	if (db_cards.count == 0) return;
+
+	balances = {
+		cards: [ "All" ],
+		balance: [
+			[ 0, 0, 0, 0, 0, 0, 0, 0,	0, 0, 0, 0 ]
+		]
+	};
+
+	data = sheet.getRange(1, col, 1 + 12*h_, w_).getValues();
+	for (i = 0; i < 12; i++) {
+		balances.balance[0][i] = data[5 + h_*i][0];
+	}
+
+	data = sheet.getRange(1, col + w_, 1 + 12*h_, w_*num_cards).getValues();
+
+	for (k = 0; k < num_cards; k++) {
+		if (data[0][w_*k] == "") continue;
+
+		code = data[0][w_*k].match(/\w+/g);
+		if (code == null) continue;
+
+		for (i = 0; i < code.length; i++) {
+			if (db_cards.codes.indexOf(code[i]) !== -1) break;
+		}
+		if (i == code.length) continue;
+
+		balances.cards.push(code[i]);
+
+		v = [ ];
+		for (i = 0; i < 12; i++) {
+			v[i] = data[5 + h_*i][w_*k];
+		}
+
+		balances.balance.push(v);
+	}
+
+	return balances;
+}
+
+
 function refreshCardsRules_() {
 	var sheet, ranges, rule1, rule2;
 	var card, list1, list2;

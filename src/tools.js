@@ -362,7 +362,7 @@ function foo_UpdateCashFlow_(mm) {
 		hasCards = number_cards > 0;
 	}
 	if (hasCards) {
-		data_cards = cardsGetData_();
+		data_cards = getTablesService_("cardsbalances");
 	}
 
 	for (i = 0; i < listEventos.length; i++) {

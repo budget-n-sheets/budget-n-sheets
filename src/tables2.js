@@ -60,6 +60,8 @@ function getTablesService_(select, param) {
 		return getAccountById_(param);
 	case "card":
 		return getCardById_(param);
+	case "cardsbalances":
+		return getCardsBalances_();
 
 	default:
 		consoleLog_("warn", "getTablesService_(): Switch case is default.", select);
