@@ -76,10 +76,10 @@
 			<div id="header" align="center">
 				<div class="header_table">
 					<div class="table_row">
-						<div class="header_tab active" id="tab_accounts">
+						<div class="header_tab <?= tab_acc ?>" id="tab_accounts">
 							<i class="material-icons" title="Accounts">account_balance</i>
 						</div>
-						<div class="header_tab" id="tab_cards">
+						<div class="header_tab <?= tab_cards ?>" id="tab_cards">
 							<i class="material-icons" title="Cards">credit_card</i>
 						</div>
 					</div>
@@ -87,12 +87,12 @@
 			</div>
 
 			<div id="content" style="margin-bottom:4.7em;">
-				<div class="panel active" id="panel_Accounts">
+				<div class="panel <?= tab_acc ?>" id="panel_Accounts">
 					<div id="box_Accounts">
 					</div>
 				</div>
 
-				<div class="panel" id="panel_Cards">
+				<div class="panel <?= tab_cards ?>" id="panel_Cards">
 					<div id="box_Cards">
 					</div>
 

@@ -60,7 +60,7 @@ function onOpen(e) {
 }
 
 
-function showPanelTables() {
+function showPanelTables(tab) {
 	if (onlineUpdate_()) return;
 	else if (optMainTables('isBusy') !== -1) {
 		SpreadsheetApp.getUi().alert(
@@ -70,11 +70,18 @@ function showPanelTables() {
 		return;
 	}
 
-	var htmlSidebar = HtmlService.createTemplateFromFile("html/htmlSidebarTables")
-		.evaluate()
-		.setTitle('Accounts & Cards');
-	SpreadsheetApp.getUi()
-		.showSidebar(htmlSidebar);
+	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlSidebarTables");
+
+	if (tab) {
+		htmlTemplate.tab_acc = "";
+		htmlTemplate.tab_cards = "active";
+	} else {
+		htmlTemplate.tab_acc = "active";
+		htmlTemplate.tab_cards = "";
+	}
+
+	var htmlSidebar = htmlTemplate.evaluate().setTitle("Accounts & Cards");
+	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
 
 
