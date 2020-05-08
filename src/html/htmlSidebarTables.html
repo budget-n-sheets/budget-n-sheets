@@ -3,10 +3,63 @@
 	<head>
 		<base target="_top">
 		<meta charset="UTF-8">
-		<?!= htmlInclude('gas-common/htmlStyles'); ?>
+		<?!= htmlInclude("gas-common/htmlStyles"); ?>
 		<style>
-			td > label {
-				width: 37%;
+			#header {
+				height: 3.7em;
+				width: 100%;
+				background-color: #efefef;
+				border-bottom: 2px solid #d9d9d9;
+			}
+
+			.header_table {
+				display: table;
+				width: inherit;
+				height: inherit;
+				border-collapse: separate;
+				border-spacing: 13px 7px;
+			}
+			.header_tab {
+				cursor: pointer;
+				display: table-cell;
+				vertical-align:middle;
+				color: #7a7a7a;
+				font-size: 24px;
+			}
+
+			.footer_table {
+				background-color: #efefef;
+				width: 100%;
+				display: table;
+				border-collapse: separate;
+				border-spacing: 7px;
+				border-top: 2px solid #d9d9d9;
+			}
+			.footer_cell {
+				display: table-cell;
+				vertical-align: middle;
+			}
+
+			.item_table {
+				width: 100%;
+				margin-bottom: 17px;
+				display: table;
+				border: 1px solid #d9d9d9;
+				border-radius: 7px;
+			}
+			.item_cell {
+				width: 100%;
+				padding: 11px;
+				display: table-cell;
+			}
+
+			.item_menu {
+				font-weight: bold;
+				word-spacing: 11px;
+			}
+
+			.table_row {
+				display: table-row;
 			}
 
 			#tab_accounts { color: #b6d7a8; }
@@ -16,84 +69,17 @@
 			#tab_cards { color: #a4c2f4; }
 			#tab_cards:hover { color: #3c78d8; }
 			#tab_cards.active { color: #3c78d8; border-bottom: solid 2px; }
-
-			.m-tool { color: #6d9eeb; cursor: pointer; }
-			.m-tool:hover { color: #3c78d8; cursor: pointer; }
-
-			#MainPanel_header {
-				height: 3.7em;
-				width: 100%;
-				background-color: #efefef;
-				border-bottom: 2px solid #d9d9d9;
-			}
-
-			.MainMenu-top_title {
-				display: table;
-				width: inherit;
-				height: inherit;
-				border-collapse: separate;
-				border-spacing: 13px 7px;
-			}
-			.MainMenu-bot_title {
-				display: table;
-				width: 100%;
-				border-collapse: separate;
-				border-spacing: 7px;
-				background-color: #efefef;
-				border-top: 2px solid #d9d9d9;
-			}
-			.MainMenu_row {
-				display: table-row;
-			}
-			.m-tab {
-				cursor: pointer;
-				display: table-cell;
-				vertical-align:middle;
-				color: #7a7a7a;
-				font-size: 24px;
-			}
-			.m-footer {
-				display: table-cell;
-				vertical-align: middle;
-			}
-
-			.a-disabled { color: #7a7a7a !important; }
-
-			.Table-head {
-				display: table;
-				width: 100%;
-				margin-bottom: 17px;
-				border: 1px solid #d9d9d9;
-				border-radius: 7px;
-			}
-			.Table-row {
-				display: table-row;
-			}
-			.Table-name {
-				width: 100%;
-				display: table-cell;
-				padding: 11px;
-			}
-			.Table-menu {
-				width: 100%;
-				display: table-cell;
-				text-align: right;
-				padding: 11px;
-				font-weight: bold;
-				border-top: 1px solid #d9d9d9;
-				word-spacing: 11px;
-			}
 		</style>
 	</head>
 	<body>
 		<div id="wrapper">
-			<div class="panel active" id="MainPanel_header" align="center">
-				<div class="MainMenu-top_title">
-					<div class="MainMenu_row">
-						<div class="m-tab active" id="tab_accounts">
+			<div id="header" align="center">
+				<div class="header_table">
+					<div class="table_row">
+						<div class="header_tab active" id="tab_accounts">
 							<i class="material-icons" title="Accounts">account_balance</i>
 						</div>
-						<div class="m-tab" id="tab_cards">
+						<div class="header_tab" id="tab_cards">
 							<i class="material-icons" title="Cards">credit_card</i>
 						</div>
 					</div>
@@ -110,202 +96,139 @@
 					<div id="box_Cards">
 					</div>
 
-					<div class="Table-head" id="b-CheckQuota" style="border: 1px dashed #d9d9d9;">
-						<div class="Table-row">
-							<div class="Table-name" style="height: 2.3em;vertical-align: middle;">
+					<div class="item_table" id="item-AddCard" style="display: none;border: 1px dashed #d9d9d9;">
+						<div class="table_row">
+							<div class="item_cell" style="height: 2.3em;vertical-align: middle;">
 								<a id="b-AddCard"><i class="material-icons">add</i> Add card</a>
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<div class="panel" id="wait_load">
-					<div class="wait_load-wrapper">
-						<div class="wait_load-bar"></div>
+			<div id="footer">
+				<div class="current" id="response" style="padding:0 7px;"></div>
+				<div class="footer_table">
+					<div class="table_row">
+						<div class="footer_cell" style="width:100%;">
+						</div>
+						<div class="footer_cell">
+							<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
+						</div>
 					</div>
 				</div>
 			</div>
-
-
-			<div id="footer">
-				<div class="current" id="p-footer_FastResponse" style="padding:0 7px;"></div>
-				<div class="MainMenu-bot_title"><div class="MainMenu_row">
-						<div class="m-footer left" style="width:100%;">
-						</div>
-						<div class="m-footer right">
-							<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
-						</div>
-				</div></div>
-			</div>
 		</div>
-		<?!= htmlInclude('gas-common/htmlJavaScript'); ?>
-	<script>
-		var htmlVarGlobal = {
-			Id: "",
-			Code: "",
-			Action: ""
-		};
+		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+		<script>
+			$(document).ready(function() {
+				$("#b-AddCard").click(function(e) {
+					$("#response").empty();
+					google.script.run
+						.withFailureHandler(showError)
+						.showDialogAddCard();
+				});
 
-		$(document).ready(function() {
-			$("#b-AddCard").click(function(e) {
-				$('#p-footer_FastResponse').empty();
 				google.script.run
+					.withSuccessHandler(listTableItems)
 					.withFailureHandler(showError)
-					.showDialogAddCard();
+					.optMainTables("GetList");
 			});
 
-			google.script.run.withSuccessHandler(ListTables_Post)
-				.withFailureHandler(showError)
-				.optMainTables('GetList');
-		});
+			$(document).on("click", ".header_tab", function() {
+				if ($(this).hasClass("active")) return;
 
-		$(document).on('click', '.m-li', function() {
-			$('#p-footer_FastResponse').empty();
-			google.script.run
-				.withFailureHandler(showError)
-				.showDialogEditAccount($(this).parent().attr("id"));
-		});
+				$(this).addClass("active")
+					.siblings()
+					.removeClass("active");
 
-		$(document).on('click', '.m-la', function() {
-			$('#p-footer_FastResponse').empty();
-			google.script.run
-				.withFailureHandler(showError)
-				.showDialogEditCard($(this).parent().attr("id"));
-		});
-
-		$(document).on('click', '.b-DeleteCard', function() {
-			htmlVarGlobal.Id = $(this).parent().attr('id');
-
-			var response = confirm("Click OK to confirm and remove the card.");
-			if (!response) return;
-
-			g2("wait_load");
-			$('#p-footer_FastResponse').empty().append("Removing card...");
-
-			google.script.run.withSuccessHandler(RemoveCard_Aftermath)
-				.withFailureHandler(showError)
-				.optMainTables("RemoveCard", htmlVarGlobal.Id);
-		});
-
-		$(document).on('click', '.m-tab', function() {
-			if ( $(this).hasClass('active') ) return;
-
-			$(this).addClass('active')
-				.siblings()
-				.removeClass('active');
-
-			if ($(this).attr('id') === "tab_accounts") g2("panel_Accounts");
-			else if ($(this).attr('id') === "tab_cards") g2("panel_Cards");
-		});
-
-		function RemoveCard_Aftermath(r) {
-			if (r === 0) {
-				$('.Form-AddEditCard_lock').prop('disabled', false);
-				$('#p-footer_FastResponse').empty().append('Add-on is busy. Try again in a moment.');
-				return;
-			} else if (r > 0) {
-				showError();
-				return;
-			}
-
-			google.script.run.optMainTables("Refresh");
-			google.script.run.withSuccessHandler(ListTables_Post)
-				.withFailureHandler(showError)
-				.optMainTables('GetList');
-
-			g2("panel_Cards");
-			$('#p-footer_FastResponse').append('Card removed.');
-		}
-
-		function ListTables_Post(db) {
-			var c, k, s;
-
-			$("#b-CheckQuota").hide();
-			$("#box_Accounts").empty();
-			$("#box_Cards").empty();
-
-			c = 0;
-			for (k = 0; k < db.accounts.length; k++) {
-				s = ' \
-					<div class="Table-head"> \
-						<div class="Table-row"> \
-							<div class="Table-name" style="font-size: 23px;">' + db.accounts[k].name + '</div> \
-						</div> \
-						<div class="Table-row"> \
-							<div class="Table-menu" id="' + db.accounts[k].id + '"> \
-								<a class="m-li">Edit</a> \
-							</div> \
-						</div> \
-					</div>';
-
-				$('#box_Accounts').append(s);
-			}
-
-			for (k = 0; k < db.cards.length; k++) {
-				s = ' \
-					<div class="Table-head"> \
-						<div class="Table-row"> \
-							<div class="Table-name" style="font-size: 23px;">' + db.cards[k].name + '</div> \
-						</div> \
-						<div class="Table-row"> \
-							<div class="Table-name gray" style="padding-top: 0;">' + db.cards[k].code + '</div> \
-						</div> \
-						<div class="Table-row"> \
-							<div class="Table-menu" id="' + db.cards[k].id + '"> \
-								<a class="b-DeleteCard">Remove</a> <a class="m-la">Edit</a> \
-							</div> \
-						</div> \
-					</div>';
-
-				$('#box_Cards').append(s);
-				c++;
-			}
-
-			if (c < 10) $("#b-CheckQuota").show();
-		}
-
-		function g2(p) {
-			window.scrollTo(0, 0);
-
-			$(".m-tab").removeClass('active');
-
-			$('#p-footer_FastResponse').empty();
-			$('.MainMenu-bot_title button').remove();
-
-			switch (p) {
-				case 'panel_Accounts':
-					htmlVarGlobal.Id = "";
-					htmlVarGlobal.Action = "";
-
-					$('#tab_accounts').addClass('active');
-					$('#panel_Accounts').fadeIn('fast')
+				window.scrollTo(0, 0);
+				if ($(this).attr("id") === "tab_accounts") {
+					$("#panel_Accounts").fadeIn("fast")
 						.siblings()
 						.hide();
-					break;
-
-				case 'panel_ClearCards':
-					$("#box_Cards").empty();
-
-				case 'panel_Cards':
-					htmlVarGlobal.Id = "";
-					htmlVarGlobal.Action = "";
-
-					$('#tab_cards').addClass('active');
-					$('#panel_Cards').fadeIn('fast')
+				} else if ($(this).attr("id") === "tab_cards") {
+					$("#panel_Cards").fadeIn("fast")
 						.siblings()
 						.hide();
-					break;
+				}
+			});
 
-				case 'wait_load':
-					$('#wait_load').fadeIn('fast')
-						.siblings()
-						.hide();
-					break;
+			$(document).on("click", ".a-edit", function(e) {
+				$("#response").empty();
+				google.script.run
+					.withFailureHandler(showError)
+					.showDialogEditAccount($(this).attr("id"));
+			});
 
-				default:
-					break;
+			$(document).on("click", ".c-edit", function(e) {
+				$("#response").empty();
+				google.script.run
+					.withFailureHandler(showError)
+					.showDialogEditCard($(this).parent().attr("id"));
+			});
+
+			$(document).on("click", ".c-remove", function(e) {
+				var response = confirm("Click OK to confirm and remove the card.");
+				if (!response) return;
+				google.script.run
+					.withSuccessHandler(reloadTableItems)
+					.withFailureHandler(showError)
+					.optMainTables("RemoveCard", $(this).parent().attr("id"));
+			});
+
+			function reloadTableItems() {
+				$("#item-AddCard").hide();
+				$("#box_Accounts").empty();
+				$("#box_Cards").empty();
+
+				google.script.run
+					.withSuccessHandler(listTableItems)
+					.withFailureHandler(showError)
+					.optMainTables("GetList");
 			}
-		}
-	</script>
+
+			function listTableItems(db_tables) {
+				var item, n, k;
+
+				for (k = 0; k < db_tables.accounts.length; k++) {
+					item = "<div class=\"table_row\">";
+					item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_tables.accounts[k].name + "</div>";
+					item += "</div>"
+
+					item += "<div class=\"table_row\">";
+					item += "</div>";
+
+					item += "<div class=\"table_row\">";
+					item += "<div class=\"item_cell item_menu\">";
+					item += "<a class=\"a-edit\" id=\"" + db_tables.accounts[k].id + "\">Edit</a>";
+					item += "</div>";
+					item += "</div>";
+
+					item = "<div class=\"item_table\">" + item + "</div>"
+					$("#box_Accounts").append(item);
+				}
+
+				n = 0;
+				for (k = 0; k < db_tables.cards.length; k++) {
+					item = "<div class=\"table_row\">";
+					item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_tables.cards[k].name + "</div>";
+					item += "</div>";
+
+					item += "<div class=\"table_row\">";
+					item += "<div class=\"item_cell item_menu\" id=\"" + db_tables.cards[k].id + "\">";
+					item += "<a class=\"c-edit\">Edit</a> ";
+					item += "<a class=\"c-remove\">Remove</a>";
+					item += "</div>";
+					item += "</div>";
+
+					item = "<div class=\"item_table\">" + item + "</div>"
+					$("#box_Cards").append(item);
+					n++;
+				}
+
+				if (n < 10) $("#item-AddCard").show();
+			}
+		</script>
 	</body>
 </html>
