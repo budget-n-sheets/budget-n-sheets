@@ -96,7 +96,7 @@
 						</div>
 					</div>
 
-					<form accept-charset="UTF-8">
+					<form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
 						<table style="width: 100%;">
 							<tr>
 								<td class="name" style="width:50%;"><label for="spreadsheet_name">Spreadsheet title</label></td>
@@ -261,23 +261,29 @@
 				switch (p) {
 				case "main-panel":
 					$("#note-panel").fadeIn("fast").addClass("active");
-					$("#footer-buttons").append("<button class=\"action\" onclick=\"clickNext()\">Continue</button>");
+					$("#footer-buttons").append("<button class=\"action\" onclick=\"clickNext();\">Continue</button>");
 					break;
 				case "note-panel":
 					$("#form-panel").fadeIn("fast").addClass("active");
-					$("#footer-buttons").append("<button class=\"create\" onclick=\"clickNext()\">Build</button>");
+					$("#footer-buttons").append("<button class=\"create\" type=\"submit\" form=\"the_form\">Build</button>");
 					break;
-				case "form-panel":
-					$("#setup-panel").fadeIn("fast").addClass("active");
-					$("#the_box").addClass("fancy_box");
-					fireSetup();
-					break;
+
 				default:
 					break;
 				}
 			}
 
-			function fireSetup() {
+			function submitForm() {
+				window.scrollTo(0, 0);
+
+				var p = $(".active").attr("id");
+				$("#" + p).removeClass("active");
+
+				$(".panel").hide();
+				$("#footer-buttons button").remove();
+				$("#setup-panel").fadeIn("fast").addClass("active");
+				$("#the_box").addClass("fancy_box");
+
 				var settings = {
 					spreadsheet_name: $("#spreadsheet_name").val(),
 					financial_year: $("#financial_year").val(),
