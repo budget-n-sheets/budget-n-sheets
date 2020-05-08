@@ -184,7 +184,7 @@ function refreshAccountName_(c, account, prev_time_a) {
 
 function refreshCashFlowReferences_() {
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cash Flow");
-	var formulas, db_accounts;
+	var formulas;
 	var string, mm, dd, i, k;
 
 	if (!sheet) return 1;
