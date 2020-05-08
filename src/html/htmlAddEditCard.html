@@ -106,9 +106,9 @@
 					.withSuccessHandler(submitAftermath)
 					.withFailureHandler(showError)
 					<? if (is_edit) { ?>
-						.optMainTables("UpdateCard", card);
+						.tablesService("set", "setcard", card);
 					<? } else { ?>
-						.optMainTables("AddCard", card);
+						.tablesService("set", "addcard", card);
 					<? } ?>
 			}
 

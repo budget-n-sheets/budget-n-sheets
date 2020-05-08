@@ -100,7 +100,7 @@
 				google.script.run
 					.withSuccessHandler(submitAftermath)
 					.withFailureHandler(showError)
-					.optMainTables("UpdateAccount", account);
+					.tablesService("set", "account", account);
 			}
 
 			function submitAftermath(r) {

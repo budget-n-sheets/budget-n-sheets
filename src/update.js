@@ -474,7 +474,7 @@ function update_v0m28p0s3_() {
 
 function update_v0m28p0s4_() {
 	try {
-		optMainTables("UpdateTableRef");
+		tablesService("refresh", "cashflow");
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0s4_()", err);
 	}

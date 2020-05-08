@@ -228,7 +228,7 @@ function showDialogEditAccount(acc_id) {
 	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlEditAccount");
 	var account;
 
-	account = optMainTables("GetInfo", acc_id);
+	account = tablesService("get", "account", acc_id);
 	if (account === 2) throw new Error("showDialogEditAccount(): Invalid account ID or account not found.");
 
 	for (var key in account) {
@@ -268,7 +268,7 @@ function showDialogEditCard(card_id) {
 
 	htmlTemplate.is_edit = true;
 
-	card = optMainTables("GetInfo", card_id);
+	card = tablesService("get", "card", card_id);
 	if (card === 2) throw new Error("showDialogEditCard(): Invalid card ID or card not found.");
 
 	card.aliases = card.aliases.join(", ");

@@ -179,7 +179,7 @@
 				google.script.run
 					.withSuccessHandler(reloadListCards)
 					.withFailureHandler(showError)
-					.optMainTables("RemoveCard", $(this).parent().attr("id"));
+					.tablesService("set", "deletecard", $(this).parent().attr("id"));
 			});
 
 			function reloadListCards() {
