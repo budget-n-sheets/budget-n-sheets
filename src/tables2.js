@@ -1,3 +1,31 @@
+function getDbTables_(select) {
+	var db_tables = getCacheService_("document", "DB_TABLES", "json");
+
+	if (!db_tables) {
+		db_tables = getPropertiesService_("document", "json", "DB_TABLES");
+		putCacheService_("document", "DB_TABLES", "json", db_tables);
+	}
+
+	if (select) return db_tables[select];
+	return db_tables;
+}
+
+
+function setDbTables_(db, select) {
+	var db_tables;
+
+	if (select) {
+		db_tables = getPropertiesService_("document", "json", "DB_TABLES");
+		db_tables[select] = db;
+	} else {
+		db_tables = db;
+	}
+
+	setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+	putCacheService_("document", "DB_TABLES", "json", db_tables);
+}
+
+
 function tablesService(action, select, param) {
 	switch (action) {
 	case "get":
@@ -70,7 +98,7 @@ function refreshTablesService_(select, param) {
 
 
 function getTables_() {
-	const db_tables = getPropertiesService_("document", "json", "DB_TABLES");
+	const db_tables = getDbTables_();
 
 	var db = {
 		accounts: db_tables.accounts.data,
@@ -82,10 +110,10 @@ function getTables_() {
 
 
 function getAccountById_(acc_id) {
-	const db_tables = getPropertiesService_("document", "json", "DB_TABLES");
+	const db_accounts = getDbTables_("accounts");
 
-	var c = db_tables.accounts.ids.indexOf(acc_id);
-	if (c !== -1) return db_tables.accounts.data[c];
+	var c = db_accounts.ids.indexOf(acc_id);
+	if (c !== -1) return db_accounts.data[c];
 
 	console.warn("getAccountById_(): Account was not found.");
 }
@@ -94,8 +122,7 @@ function getAccountById_(acc_id) {
 function setAccount_(account) {
 	var prev_time_a, c;
 
-	const db_tables = getPropertiesService_("document", "json", "DB_TABLES");
-	const db_accounts = db_tables.accounts;
+	const db_accounts = getDbTables_("accounts");
 
 	c = db_accounts.ids.indexOf(account.id);
 	if (c === -1) return 1;
@@ -111,8 +138,7 @@ function setAccount_(account) {
 	db_accounts.data[c].time_a = account.time_a;
 	db_accounts.data[c].balance = account.balance;
 
-	db_tables.accounts = db_accounts;
-	setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+	setDbTables_(db_accounts, "accounts");
 
 	refreshAccountName_(c, account, prev_time_a);
 	refreshCashFlowReferences_();
@@ -161,8 +187,7 @@ function refreshCashFlowReferences_() {
 	const num_acc = getConstProperties_("number_accounts");
 	const yyyy = getConstProperties_("financial_year");
 
-	const db_accounts = getPropertiesService_("document", "json", "DB_TABLES");
-	db_accounts = db_accounts.accounts;
+	const db_accounts = getDbTables_("accounts");
 
 	formulas = [ "=0 + B4" ];
 

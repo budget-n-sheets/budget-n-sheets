@@ -1,8 +1,8 @@
 function getCardById_(card_id) {
-	const db_tables = getPropertiesService_("document", "json", "DB_TABLES");
+	const db_tables = getDbTables_("cards");
 
-	var c = db_tables.cards.ids.indexOf(card_id);
-	if (c !== -1) return db_tables.cards.data[c];
+	var c = db_tables.ids.indexOf(card_id);
+	if (c !== -1) return db_tables.data[c];
 
 	console.warn("getCardById_(): Card was not found.");
 }
@@ -13,8 +13,7 @@ function addCard_(card) {
 
 	if (! /^\w+$/.test(card.code)) return 1;
 
-	const db_tables = getPropertiesService_("document", "json", "DB_TABLES");
-	const db_cards = db_tables.cards;
+	const db_cards = getDbTables_("cards");
 
 	if (db_cards.count >= 10) return 1;
 	if (db_cards.codes.indexOf(card.code) !== -1) return 1;
@@ -38,8 +37,7 @@ function addCard_(card) {
 	db_cards.codes[c] = card.code;
 	db_cards.data[c] = card;
 
-	db_tables.cards = db_cards;
-	setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+	setDbTables_(db_cards, "cards");
 }
 
 
@@ -49,8 +47,7 @@ function setCard_(card) {
 
 	if (! /^\w+$/.test(card.code)) return 1;
 
-	const db_tables = getPropertiesService_("document", "json", "DB_TABLES");
-	const db_cards = db_tables.cards;
+	const db_cards = getDbTables_("cards");
 
 	pos = db_cards.ids.indexOf(card.id);
 	if (pos === -1) return 1;
@@ -78,16 +75,14 @@ function setCard_(card) {
 		limit: Number(card.limit)
 	};
 
-	db_tables.cards = db_cards;
-	setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+	setDbTables_(db_cards, "cards");
 }
 
 
 function deleteCard_(card_id) {
 	var c;
 
-	const db_tables = getPropertiesService_("document", "json", "DB_TABLES");
-	const db_cards = db_tables.cards;
+	const db_cards = getDbTables_("cards");
 
 	c = db_cards.ids.indexOf(input);
 	if (c === -1) return 1;
@@ -98,7 +93,7 @@ function deleteCard_(card_id) {
 	db_cards.data.splice(c, 1);
 
 	db_tables.cards = db_cards;
-	setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+	setDbTables_(db_cards, "cards");
 }
 
 
