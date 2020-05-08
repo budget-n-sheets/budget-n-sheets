@@ -27,6 +27,14 @@ function setDbTables_(db, select) {
 
 
 function tablesService(action, select, param) {
+	var lock = LockService.getDocumentLock();
+	try {
+		lock.waitLock(2000);
+	} catch (err) {
+		consoleLog_("warn", "tablesService(): Wait lock time out.", err);
+		return 1;
+	}
+
 	switch (action) {
 	case "get":
 		return getTablesService_(select, param);
@@ -57,14 +65,6 @@ function getTablesService_(select, param) {
 }
 
 function setTablesService_(select, param) {
-	var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(2000);
-	} catch (err) {
-		consoleLog_("warn", "setTablesService_(): Wait lock time out.", err);
-		return 1;
-	}
-
 	switch (select) {
 	case "account":
 		return setAccount_(param);
