@@ -52,7 +52,10 @@ function tablesService(action, select, param) {
 function getTablesService_(select, param) {
 	switch (select) {
 	case "all":
-		return getTables_(param);
+		return getTables_();
+	case "accounts":
+	case "cards":
+		return getSelectedData_(select);
 	case "account":
 		return getAccountById_(param);
 	case "card":
@@ -106,6 +109,12 @@ function getTables_() {
 	};
 
 	return db;
+}
+
+
+function getSelectedData_(select) {
+	var db = getDbTables_(select);
+	return db.data;
 }
 
 
