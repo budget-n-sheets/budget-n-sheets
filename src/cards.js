@@ -115,7 +115,7 @@ function optCard_Update_(input) {
 		c = aliases.indexOf(input.code);
 	}
 
-	db_cards.codes[k] == input.code;
+	db_cards.codes[k] = input.code;
 
 	db_cards.data[k].name = input.name;
 	db_cards.data[k].code = input.code;
