@@ -130,9 +130,14 @@
 				});
 
 				google.script.run
-					.withSuccessHandler(listTableItems)
+					.withSuccessHandler(listAccounts)
 					.withFailureHandler(showError)
-					.optMainTables("GetList");
+					.tablesService("get", "accounts");
+
+				google.script.run
+					.withSuccessHandler(listCards)
+					.withFailureHandler(showError)
+					.tablesService("get", "cards");
 			});
 
 			$(document).on("click", ".header_tab", function() {
@@ -172,28 +177,27 @@
 				var response = confirm("Click OK to confirm and remove the card.");
 				if (!response) return;
 				google.script.run
-					.withSuccessHandler(reloadTableItems)
+					.withSuccessHandler(reloadListCards)
 					.withFailureHandler(showError)
 					.optMainTables("RemoveCard", $(this).parent().attr("id"));
 			});
 
-			function reloadTableItems() {
+			function reloadListCards() {
 				$("#item-AddCard").hide();
-				$("#box_Accounts").empty();
 				$("#box_Cards").empty();
 
 				google.script.run
-					.withSuccessHandler(listTableItems)
+					.withSuccessHandler(listCards)
 					.withFailureHandler(showError)
-					.optMainTables("GetList");
+					.tablesService("get", "cards");
 			}
 
-			function listTableItems(db_tables) {
-				var item, n, k;
+			function listAccounts(db_accounts) {
+				var item, k;
 
-				for (k = 0; k < db_tables.accounts.length; k++) {
+				for (k = 0; k < db_accounts.length; k++) {
 					item = "<div class=\"table_row\">";
-					item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_tables.accounts[k].name + "</div>";
+					item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_accounts[k].name + "</div>";
 					item += "</div>"
 
 					item += "<div class=\"table_row\">";
@@ -201,22 +205,26 @@
 
 					item += "<div class=\"table_row\">";
 					item += "<div class=\"item_cell item_menu\">";
-					item += "<a class=\"a-edit\" id=\"" + db_tables.accounts[k].id + "\">Edit</a>";
+					item += "<a class=\"a-edit\" id=\"" + db_accounts[k].id + "\">Edit</a>";
 					item += "</div>";
 					item += "</div>";
 
 					item = "<div class=\"item_table\">" + item + "</div>"
 					$("#box_Accounts").append(item);
 				}
+			}
+
+			function listCards(db_cards) {
+				var item, k, n;
 
 				n = 0;
-				for (k = 0; k < db_tables.cards.length; k++) {
+				for (k = 0; k < db_cards.length; k++) {
 					item = "<div class=\"table_row\">";
-					item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_tables.cards[k].name + "</div>";
+					item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_cards[k].name + "</div>";
 					item += "</div>";
 
 					item += "<div class=\"table_row\">";
-					item += "<div class=\"item_cell item_menu\" id=\"" + db_tables.cards[k].id + "\">";
+					item += "<div class=\"item_cell item_menu\" id=\"" + db_cards[k].id + "\">";
 					item += "<a class=\"c-edit\">Edit</a> ";
 					item += "<a class=\"c-remove\">Remove</a>";
 					item += "</div>";
