@@ -48,7 +48,7 @@ var CacheService2 = {
 			value = value.toString();
 			break;
 		case "boolean":
-			value = value ? "true" ? "false";
+			value = value ? "true" : "false";
 			break;
 		case "json":
 			value = JSON.stringify(value);
