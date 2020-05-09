@@ -104,25 +104,22 @@ function refreshTablesService_(select, param) {
 
 function getTables_() {
 	const db_tables = getDbTables_();
-
-	var db = {
+	const db = {
 		accounts: db_tables.accounts.data,
 		cards: db_tables.cards.data
 	};
-
 	return db;
 }
 
 
 function getSelectedData_(select) {
-	var db = getDbTables_(select);
+	const db = getDbTables_(select);
 	return db.data;
 }
 
 
 function getAccountById_(acc_id) {
 	const db_accounts = getDbTables_("accounts");
-
 	var c = db_accounts.ids.indexOf(acc_id);
 	if (c !== -1) return db_accounts.data[c];
 }
@@ -154,17 +151,17 @@ function setAccount_(account) {
 }
 
 
-function refreshAccountName_(c, account, prev_time_a) {
+function refreshAccountName_(index, account, prev_time_a) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet = spreadsheet.getSheetByName("_Backstage");
-	var spreadsheet, sheet, formula;
+	var formula;
 
 	if (!sheet) return 1;
 
 	const h_ = TABLE_DIMENSION.height;
 	const w_ = TABLE_DIMENSION.width;
 
-	const col = 2 + w_ + w_*c;
+	const col = 2 + w_ + w_*index;
 	const time_a = account.time_a;
 
 	if (time_a > 0) formula = "=R[-" + (h_ - 1) + "]C";
@@ -174,10 +171,9 @@ function refreshAccountName_(c, account, prev_time_a) {
 	sheet.getRange(2 + h_*prev_time_a, col).setFormulaR1C1(formula);
 	sheet.getRange(2 + h_*time_a, col).setFormula("=" + account.balance.formatLocaleSignal());
 
-	if (spreadsheet.getSheetByName("Jan")) {
-		spreadsheet.getSheetByName("Jan")
-			.getRange(1, 6 + 5*c)
-			.setValue(account.name);
+	sheet = spreadsheet.getSheetByName("Jan");
+	if (sheet) {
+		sheet.getRange(1, 6 + 5*index).setValue(account.name);
 	}
 }
 

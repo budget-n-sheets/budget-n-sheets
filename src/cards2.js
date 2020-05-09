@@ -1,6 +1,5 @@
 function getCardById_(card_id) {
 	const db_tables = getDbTables_("cards");
-
 	var c = db_tables.ids.indexOf(card_id);
 	if (c !== -1) return db_tables.data[c];
 }
@@ -78,11 +77,9 @@ function setCard_(card) {
 
 
 function deleteCard_(card_id) {
-	var c;
-
 	const db_cards = getDbTables_("cards");
 
-	c = db_cards.ids.indexOf(input);
+	var c = db_cards.ids.indexOf(input);
 	if (c === -1) return;
 
 	db_cards.count--;
@@ -90,17 +87,15 @@ function deleteCard_(card_id) {
 	db_cards.codes.splice(c, 1);
 	db_cards.data.splice(c, 1);
 
-	db_tables.cards = db_cards;
 	setDbTables_(db_cards, "cards");
 }
 
 
 function getCardsBalances_() {
-	var sheet;
+	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
 	var balances, data, code;
 	var v, i, k;
 
-	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
 	if (!sheet) return;
 
 	const h_ = TABLE_DIMENSION.height;
@@ -167,7 +162,6 @@ function refreshCardsRules_() {
 	const num_acc = getConstProperties_("number_accounts");
 
 	const db_cards = getPropertiesService_("document", "obj", "DB_TABLES");
-	db_cards = db_cards.cards;
 
 	col = 2 + w_ + w_*num_acc;
 
