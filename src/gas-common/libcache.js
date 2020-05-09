@@ -40,7 +40,7 @@ var CacheService2 = {
 		}
 	},
 
-	put: function(scope, key, value, type, expiration) {
+	put: function(scope, key, type, value, expiration) {
 		this.loadScope(scope);
 		if (!expiration) expiration = 600;
 		switch (type) {
