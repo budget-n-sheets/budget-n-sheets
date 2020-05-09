@@ -164,7 +164,6 @@ function refreshCardName_(action, index, card) {
 	const w_ = TABLE_DIMENSION.width;
 
 	const num_acc = getConstProperties_("number_accounts");
-	const db_cards = getDbTables_("cards");
 
 	const col = 2 + w_ + w_*num_acc + w_;
 
