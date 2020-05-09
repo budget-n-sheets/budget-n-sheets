@@ -213,7 +213,7 @@ function setup_(settings, list_acc) {
 	purgePropertiesService_("document");
 	purgeScriptAppTriggers_();
 	CacheService.getDocumentCache().removeAll([
-		"class_version2", "user_settings", "spreadsheet_settings", "const_properties"
+		"load_cache", "class_version2", "user_settings", "spreadsheet_settings", "const_properties", "DB_TABLES"
 	]);
 
 	deleteAllSheets_();
