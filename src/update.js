@@ -11,7 +11,7 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m26p0_, update_v0m26p1_, null, null ],
 			[ update_v0m27p0_, null, null, null, null, null, null, update_v0m27p5_ ],
 			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_, null, null ],
-			[ update_v0m29p0_, null, update_v0m29p2_, null ]
+			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ]
 		]
 	],
 	beta_list: [ ]
@@ -161,6 +161,29 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Fix list of codes in db_cards.
+ * Fix undefined id of Wallet.
+ *
+ * 0.29.4
+ */
+function update_v0m29p4_() {
+	try {
+		const db_tables = getPropertiesService_("document", "json", "DB_TABLES");
+
+		db_tables.wallet = randomString(7, "lonum");
+
+		for (var i = 0; i < db_tables.cards.count; i++) {
+			db_tables.cards.codes[i] = db_tables.cards.data[i].id;
+		}
+
+		setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+	} catch (err) {
+		consoleLog_("error", "update_v0m29p4_()", err);
+		return 1;
+	}
+}
 
 /**
  * Clear 'load_cache' and 'user_settings' from cache.
