@@ -357,12 +357,8 @@ function foo_UpdateCashFlow_(mm) {
 		sheetBackstage = spreadsheet.getSheetByName("_Backstage");
 	}
 	if (sheetBackstage) {
-		number_cards = getPropertiesService_("document", "obj", "DB_TABLES");
-		number_cards = number_cards.cards.count;
-		hasCards = number_cards > 0;
-	}
-	if (hasCards) {
 		data_cards = getTablesService_("cardsbalances");
+		if (data_cards && data_cards !== 1) hasCards = true;
 	}
 
 	for (i = 0; i < listEventos.length; i++) {
