@@ -22,18 +22,15 @@ function onInstall(e) {
 function onOpen(e) {
 	try { trial_onOpen(); } catch (err) { }
 
+	var menu = SpreadsheetApp.getUi().createAddonMenu();
+
 	if (e && e.authMode == ScriptApp.AuthMode.NONE) {
-		SpreadsheetApp.getUi()
-			.createAddonMenu()
-			.addItem('Start budget sheet', 'showSetupAddon_')
+		menu.addItem('Start budget sheet', 'showSetupAddon_')
 			.addSeparator()
-			.addItem('About the add-on', 'showDialogAboutAddon')
-			.addToUi();
+			.addItem('About the add-on', 'showDialogAboutAddon');
 	} else {
 		if (PropertiesService.getDocumentProperties().getProperty('is_installed')) {
-			SpreadsheetApp.getUi()
-				.createAddonMenu()
-				.addItem('Add blank lines', 'toolAddBlankRows')
+			menu.addItem('Add blank lines', 'toolAddBlankRows')
 				.addItem('Sort registry', 'toolFormatRegistry')
 				.addItem('Update cash flow', 'toolUpdateCashFlow')
 				.addSubMenu(SpreadsheetApp.getUi().createMenu("Pages view")
@@ -44,19 +41,17 @@ function onOpen(e) {
 				.addItem('Open Cool Gallery panel', 'showPanelAnalytics')
 				.addSeparator()
 				.addItem('About the add-on', 'showDialogAboutAddon')
-				.addItem('Edit settings', 'showSidebarMainSettings')
-				.addToUi();
+				.addItem('Edit settings', 'showSidebarMainSettings');
 
 			console.info("add-on/open");
 		} else {
-			SpreadsheetApp.getUi()
-				.createAddonMenu()
-				.addItem('Start budget sheet', 'showSetupAddon_')
+			menu.addItem('Start budget sheet', 'showSetupAddon_')
 				.addSeparator()
-				.addItem('About the add-on', 'showDialogAboutAddon')
-				.addToUi();
+				.addItem('About the add-on', 'showDialogAboutAddon');
 		}
 	}
+
+	menu.addToUi();
 }
 
 
