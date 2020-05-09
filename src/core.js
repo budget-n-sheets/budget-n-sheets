@@ -55,21 +55,21 @@ function onOpen(e) {
 }
 
 
-function showPanelTables() {
+function showPanelTables(tab) {
 	if (onlineUpdate_()) return;
-	else if (optMainTables('isBusy') !== -1) {
-		SpreadsheetApp.getUi().alert(
-			"Add-on is busy",
-			"The add-on is busy. Try again a moment.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
-		return;
+
+	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlSidebarTables");
+
+	if (tab) {
+		htmlTemplate.tab_acc = "";
+		htmlTemplate.tab_cards = "active";
+	} else {
+		htmlTemplate.tab_acc = "active";
+		htmlTemplate.tab_cards = "";
 	}
 
-	var htmlSidebar = HtmlService.createTemplateFromFile("html/htmlSidebarTables")
-		.evaluate()
-		.setTitle('Accounts & Cards');
-	SpreadsheetApp.getUi()
-		.showSidebar(htmlSidebar);
+	var htmlSidebar = htmlTemplate.evaluate().setTitle("Accounts & Cards");
+	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
 
 
@@ -209,4 +209,66 @@ function showDialogSetupEnd() {
 
 	SpreadsheetApp.getUi()
 		.showModalDialog(htmlDialog, "Add-on Budget n Sheets");
+}
+
+
+function showDialogEditAccount(acc_id) {
+	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlEditAccount");
+	var account;
+
+	account = tablesService("get", "account", acc_id);
+	if (!account) return 1;
+
+	for (var key in account) {
+		htmlTemplate["acc_" + key] = account[key];
+	}
+
+	var htmlDialog = htmlTemplate.evaluate()
+		.setWidth(300)
+		.setHeight(359);
+
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Edit Account");
+}
+
+
+function showDialogAddCard() {
+	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAddEditCard");
+	var card;
+
+	htmlTemplate.is_edit = false;
+
+	card = { id: "", name: "", code: "", aliases: "", limit: 0 };
+
+	for (var key in card) {
+		htmlTemplate["card_" + key] = card[key];
+	}
+
+	var htmlDialog = htmlTemplate.evaluate()
+		.setWidth(300)
+		.setHeight(359);
+
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Add Card");
+}
+
+
+function showDialogEditCard(card_id) {
+	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAddEditCard");
+	var card;
+
+	htmlTemplate.is_edit = true;
+
+	card = tablesService("get", "card", card_id);
+	if (!card) return 1;
+
+	card.aliases = card.aliases.join(", ");
+
+	for (var key in card) {
+		htmlTemplate["card_" + key] = card[key];
+	}
+
+	var htmlDialog = htmlTemplate.evaluate()
+		.setWidth(300)
+		.setHeight(359);
+
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Edit Card");
 }

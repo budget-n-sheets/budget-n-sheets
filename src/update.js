@@ -474,7 +474,7 @@ function update_v0m28p0s3_() {
 
 function update_v0m28p0s4_() {
 	try {
-		optMainTables("UpdateTableRef");
+		tablesService("refresh", "cashflow");
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0s4_()", err);
 	}
@@ -817,11 +817,9 @@ function update_v0m26p0s2_() {
  */
 function update_v0m26p0s0_() {
 	try {
-		var db_tables, db_cards;
 		var i;
 
-		db_tables = getPropertiesService_("document", "json", "DB_TABLES");
-		db_cards = db_tables.cards;
+		const db_cards = getDbTables_("cards");
 
 		if (db_cards.count == 0) return;
 
@@ -829,9 +827,7 @@ function update_v0m26p0s0_() {
 			db_cards.data[i].aliases = [ ];
 		}
 
-		db_tables.cards = db_cards;
-
-		setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+		setDbTables_(db_cards, "cards");
 	} catch (err) {
 		consoleLog_("error", "update_v0m26p0s0_()", err);
 		return 1;
@@ -1276,7 +1272,7 @@ function update_v0m21p3_() {
 			db_tables.cards.data.push(cell);
 		}
 
-		setPropertiesService_('document', 'json', 'DB_TABLES', db_tables);
+		setDbTables_(db_tables);
 	} catch (err) {
 		consoleLog_('error', 'update_v0m21p3_()', err);
 		return 1;

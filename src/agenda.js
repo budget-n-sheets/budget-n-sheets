@@ -10,7 +10,7 @@ function calendarDigestListEvents_(listEvents) {
 	};
 
 	const dec_p = getSpreadsheetSettings_("decimal_separator");
-	const db_tables = getPropertiesService_('document', 'json', 'DB_TABLES');
+	const db_tables = getDbTables_();
 
 	list_acc = db_tables.accounts.names;
 	list_acc.splice(0, 0, "Wallet");
