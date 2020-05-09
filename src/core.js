@@ -62,13 +62,6 @@ function onOpen(e) {
 
 function showPanelTables(tab) {
 	if (onlineUpdate_()) return;
-	else if (optMainTables('isBusy') !== -1) {
-		SpreadsheetApp.getUi().alert(
-			"Add-on is busy",
-			"The add-on is busy. Try again a moment.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
-		return;
-	}
 
 	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlSidebarTables");
 
