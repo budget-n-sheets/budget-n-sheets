@@ -18,10 +18,10 @@ function addCard_(card) {
 	aliases = card.aliases.match(/\w+/g);
 	if (aliases == null) aliases = [ ];
 
-	c = aliases.indexOf(input.code);
+	c = aliases.indexOf(card.code);
 	while (c !== -1) {
 		aliases.splice(c, 1);
-		c = aliases.indexOf(input.code);
+		c = aliases.indexOf(card.code);
 	}
 
 	card.id = randomString(7, "lonum");
@@ -79,7 +79,7 @@ function setCard_(card) {
 function deleteCard_(card_id) {
 	const db_cards = getDbTables_("cards");
 
-	var c = db_cards.ids.indexOf(input);
+	var c = db_cards.ids.indexOf(card_id);
 	if (c === -1) return;
 
 	db_cards.count--;
