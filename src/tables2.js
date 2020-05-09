@@ -92,6 +92,8 @@ function refreshTablesService_(select, param) {
 		return refreshAccountName_(param);
 	case "cashflow":
 		return refreshCashFlowReferences_();
+	case "cardname":
+		return refreshCardName_();
 	case "cardsrules":
 		return refreshCardsRules_();
 

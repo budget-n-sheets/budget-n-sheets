@@ -148,30 +148,57 @@ function getCardsBalances_() {
 }
 
 
-function refreshCardsRules_() {
-	var sheet, ranges, rule1, rule2;
-	var card, list1, list2;
-	var text, col, n1, i, j, k;
+function refreshCardName_(action, index, card) {
+	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+	var ranges, text, limit, i;
 
-	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
 	if (!sheet) return;
 
 	const h_ = TABLE_DIMENSION.height;
 	const w_ = TABLE_DIMENSION.width;
 
 	const num_acc = getConstProperties_("number_accounts");
+	const db_cards = getDbTables_("cards");
 
-	const db_cards = getPropertiesService_("document", "obj", "DB_TABLES");
+	const col = 2 + w_ + w_*num_acc + w_;
 
-	col = 2 + w_ + w_*num_acc;
+	ranges = [ ];
+	for (i = 0; i < 12; i++) {
+		ranges[i] = rollA1Notation(2 + h_*i, col + w_*index);
+	}
+
+	if (action === "set") {
+		limit = "=" + card.limit.formatLocaleSignal();
+		text = "^" + card.code + "$";
+		for (i = 0; i < card.aliases.length; i++) {
+			text += "|^" + card.aliases[i] + "$";
+		}
+	} else if (action === "delete") {
+		text = "";
+		limit = "";
+	}
+
+	sheet.getRange(1, col + w_*index).setValue(text);
+	sheet.getRangeList(ranges).setValue(limit);
+}
+
+
+function refreshCardsRules_() {
+	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
+	var card, list1, list2;
+	var rule1, rule2;
+	var n, i, j;
+
+	if (!sheet) return;
+
+	const h_ = TABLE_DIMENSION.height;
+	const w_ = TABLE_DIMENSION.width;
+
+	const num_acc = getConstProperties_("number_accounts");
+	const db_cards = getDbTables_("cards");
 
 	list1 = [ "All" ];
 	list2 = [ ];
-
-	sheet.getRange(1, col, 1, 11*w_).setValue("");
-	sheet.getRange(1, col).setValue("All");
-
-	col += w_;
 
 	for (i = 0; i < db_cards.count; i++) {
 		card = db_cards.data[i];
@@ -182,26 +209,10 @@ function refreshCardsRules_() {
 		for (j = 0; j < card.aliases.length; j++) {
 			list2.push(card.aliases[j]);
 		}
-
-		ranges = [ ];
-		for (j = 0; j < 12; j++) {
-			ranges[j] = rollA1Notation(2 + h_*j, 1 + col + w_*i);
-		}
-
-		text = "^" + card.code + "$";
-		for (j = 0; j < card.aliases.length; j++) {
-			text += "|^" + card.aliases[j] + "$";
-		}
-
-		sheet.getRange(1, col + w_*i).setValue(text);
-		sheet.getRangeList(ranges).setValue("=" + Number(card.limit).formatLocaleSignal());
 	}
 
-	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
-	if (!sheet) return;
-
-	n1 = sheet.getMaxRows() - 5;
-	if (n1 < 1) return;
+	n = sheet.getMaxRows() - 5;
+	if (n < 1) return;
 
 	rule1 = SpreadsheetApp.newDataValidation()
 						.requireValueInList(list1, true)
@@ -218,7 +229,7 @@ function refreshCardsRules_() {
 			.clearDataValidations()
 			.setDataValidation(rule1);
 
-		sheet.getRange(6, 3 + 6*i, n1, 1)
+		sheet.getRange(6, 3 + 6*i, n, 1)
 			.clearDataValidations()
 			.setDataValidation(rule2);
 	}
