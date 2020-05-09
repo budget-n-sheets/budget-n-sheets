@@ -22,7 +22,8 @@ function onInstall(e) {
 function onOpen(e) {
 	try { trial_onOpen(); } catch (err) { }
 
-	var menu = SpreadsheetApp.getUi().createAddonMenu();
+	var ui = SpreadsheetApp.getUi();
+	var menu = ui.createAddonMenu();
 
 	if (e && e.authMode == ScriptApp.AuthMode.NONE) {
 		menu.addItem('Start budget sheet', 'showSetupAddon_')
@@ -33,7 +34,7 @@ function onOpen(e) {
 			menu.addItem('Add blank lines', 'toolAddBlankRows')
 				.addItem('Sort registry', 'toolFormatRegistry')
 				.addItem('Update cash flow', 'toolUpdateCashFlow')
-				.addSubMenu(SpreadsheetApp.getUi().createMenu("Pages view")
+				.addSubMenu(ui.createMenu("Pages view")
 					.addItem("Collapse", "toolHideSheets_")
 					.addItem("Expand", "toolShowSheets_"))
 				.addSeparator()
