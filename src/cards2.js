@@ -35,6 +35,8 @@ function addCard_(card) {
 	db_cards.data[c] = card;
 
 	setDbTables_(db_cards, "cards");
+	refreshCardName_("set", c, card);
+	refreshCardsRules_();
 }
 
 
@@ -73,21 +75,25 @@ function setCard_(card) {
 	};
 
 	setDbTables_(db_cards, "cards");
+	refreshCardName_("set", pos, db_cards.data[pos]);
+	refreshCardsRules_();
 }
 
 
 function deleteCard_(card_id) {
 	const db_cards = getDbTables_("cards");
 
-	var c = db_cards.ids.indexOf(card_id);
-	if (c === -1) return;
+	var pos = db_cards.ids.indexOf(card_id);
+	if (pos === -1) return;
 
 	db_cards.count--;
-	db_cards.ids.splice(c, 1);
-	db_cards.codes.splice(c, 1);
-	db_cards.data.splice(c, 1);
+	db_cards.ids.splice(pos, 1);
+	db_cards.codes.splice(pos, 1);
+	db_cards.data.splice(pos, 1);
 
 	setDbTables_(db_cards, "cards");
+	refreshCardName_("delete", pos);
+	refreshCardsRules_();
 }
 
 
