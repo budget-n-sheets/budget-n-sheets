@@ -222,7 +222,7 @@ function showDialogEditAccount(acc_id) {
 	var account;
 
 	account = tablesService("get", "account", acc_id);
-	if (account === 2) throw new Error("showDialogEditAccount(): Invalid account ID or account not found.");
+	if (!account) return 1;
 
 	for (var key in account) {
 		htmlTemplate["acc_" + key] = account[key];
@@ -231,6 +231,7 @@ function showDialogEditAccount(acc_id) {
 	var htmlDialog = htmlTemplate.evaluate()
 		.setWidth(300)
 		.setHeight(359);
+
 	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Edit Account");
 }
 
@@ -262,7 +263,7 @@ function showDialogEditCard(card_id) {
 	htmlTemplate.is_edit = true;
 
 	card = tablesService("get", "card", card_id);
-	if (card === 2) throw new Error("showDialogEditCard(): Invalid card ID or card not found.");
+	if (!card) return 1;
 
 	card.aliases = card.aliases.join(", ");
 

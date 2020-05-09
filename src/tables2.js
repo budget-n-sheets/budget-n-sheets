@@ -125,8 +125,6 @@ function getAccountById_(acc_id) {
 
 	var c = db_accounts.ids.indexOf(acc_id);
 	if (c !== -1) return db_accounts.data[c];
-
-	console.warn("getAccountById_(): Account was not found.");
 }
 
 

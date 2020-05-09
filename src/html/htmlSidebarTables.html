@@ -162,6 +162,7 @@
 			$(document).on("click", ".a-edit", function(e) {
 				$("#response").empty();
 				google.script.run
+					.withSuccessHandler(responseHandler)
 					.withFailureHandler(showError)
 					.showDialogEditAccount($(this).attr("id"));
 			});
@@ -169,6 +170,7 @@
 			$(document).on("click", ".c-edit", function(e) {
 				$("#response").empty();
 				google.script.run
+					.withSuccessHandler(responseHandler)
 					.withFailureHandler(showError)
 					.showDialogEditCard($(this).parent().attr("id"));
 			});
@@ -182,7 +184,11 @@
 					.tablesService("set", "deletecard", $(this).parent().attr("id"));
 			});
 
-			function reloadListCards() {
+			function reloadListCards(r) {
+				if (r) {
+					responseHandler(1);
+					return;
+				}
 				$("#item-AddCard").hide();
 				$("#box_Cards").empty();
 
@@ -236,6 +242,10 @@
 				}
 
 				if (n < 10) $("#item-AddCard").show();
+			}
+
+			function responseHandler(r) {
+				if (r) $("#response").empty().append("Sorry, something went wrong. Please, try again.");
 			}
 		</script>
 	</body>

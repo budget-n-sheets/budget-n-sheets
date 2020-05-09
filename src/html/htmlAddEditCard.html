@@ -113,29 +113,25 @@
 			}
 
 			function submitAftermath(r) {
-				var response;
-
 				$("#response").empty();
 
-				if (r !== -1) {
-					switch (r) {
-					case 10:
-						response = "Invalid code format.";
-						break;
-					case 20:
-						response = "Code is already in use.";
-						break;
-					case 40:
-						response = "Aliases have an invalid code format.";
-						break;
-					case 0:
-						response = "Add-on is busy. Try again in a moment.";
-						break;
+				var response;
+				switch (r) {
+				case 1:
+					response = "Sorry, something went wrong. Please, try again.";
+					break;
+				case 10:
+					response = "The code has an invalid format.";
+					break;
+				case 11:
+					response = "The code is already in use.";
+					break;
 
-					default:
-						break;
-					}
+				default:
+					break;
+				}
 
+				if (r) {
 					$("#response").append(response);
 					$("#b-Submit").prop("disabled", false);
 					return;

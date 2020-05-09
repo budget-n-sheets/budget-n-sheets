@@ -104,6 +104,11 @@
 			}
 
 			function submitAftermath(r) {
+				if (r) {
+					$("#response").empty().append("Sorry, something went wrong. Please, try again.");
+					$("#b-Submit").prop("disabled", false);
+					return;
+				}
 				google.script.run
 					.withSuccessHandler(function(e) {
 							google.script.host.close();

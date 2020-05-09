@@ -3,20 +3,18 @@ function getCardById_(card_id) {
 
 	var c = db_tables.ids.indexOf(card_id);
 	if (c !== -1) return db_tables.data[c];
-
-	console.warn("getCardById_(): Card was not found.");
 }
 
 
 function addCard_(card) {
 	var aliases, c;
 
-	if (! /^\w+$/.test(card.code)) return 1;
+	if (! /^\w+$/.test(card.code)) return 10;
 
 	const db_cards = getDbTables_("cards");
 
-	if (db_cards.count >= 10) return 1;
-	if (db_cards.codes.indexOf(card.code) !== -1) return 1;
+	if (db_cards.count >= 10) return 12;
+	if (db_cards.codes.indexOf(card.code) !== -1) return 11;
 
 	aliases = card.aliases.match(/\w+/g);
 	if (aliases == null) aliases = [ ];
@@ -45,7 +43,7 @@ function setCard_(card) {
 	var aliases;
 	var pos, c, i;
 
-	if (! /^\w+$/.test(card.code)) return 1;
+	if (! /^\w+$/.test(card.code)) return 10;
 
 	const db_cards = getDbTables_("cards");
 
@@ -53,7 +51,7 @@ function setCard_(card) {
 	if (pos === -1) return 1;
 
 	for (i = 0; i < db_cards.codes.length; i++) {
-		if (i !== pos && db_cards.codes[i] === card.code) return 1;
+		if (i !== pos && db_cards.codes[i] === card.code) return 11;
 	}
 
 	aliases = card.aliases.match(/\w+/g);
@@ -85,7 +83,7 @@ function deleteCard_(card_id) {
 	const db_cards = getDbTables_("cards");
 
 	c = db_cards.ids.indexOf(input);
-	if (c === -1) return 1;
+	if (c === -1) return;
 
 	db_cards.count--;
 	db_cards.ids.splice(c, 1);
