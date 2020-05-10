@@ -684,15 +684,23 @@ function setupTables_() {
 	console.time("add-on/setup/tables");
 	var ids, acc, r, i, k;
 
-	const w_ = TABLE_DIMENSION.width;
-
+	const init_month = SETUP_SETTINGS["init_month"];
 	const list_acc = SETUP_SETTINGS["list_acc"];
 	const num_acc = SETUP_SETTINGS["number_accounts"];
 
-	r = randomString(7, "lonum");
+	i = 0;
+	ids = [ ];
+	while (i < 1 + num_acc && i < 99) {
+		r = randomString(7, "lonum");
+		if (ids.indexOf(r) === -1) {
+			ids[i] = r;
+			i++;
+		}
+	}
+	if (ids.length < 1 + num_acc) throw new Error("Could not generate unique IDs.");
 
 	db_tables = {
-		wallet: r,
+		wallet: ids[0],
 		accounts: {
 			ids: [ ],
 			names: [ ],
@@ -706,29 +714,19 @@ function setupTables_() {
 		}
 	};
 
-	ids = [ r ];
-
 	for (k = 0; k < num_acc; k++) {
-		i = 0;
-		do {
-			r = "" + randomString(7, "lonum");
-			i++;
-		} while (ids.indexOf(r) != -1 && i < 99);
-		if (i >= 99) throw new Error("Could not generate unique ID for account.");
-
-		ids.push(r);
-		db_tables.accounts.ids.push(r);
+		db_tables.accounts.ids[k] = ids[1 + k];
 
 		acc = {
-			id: r,
+			id: ids[1 + k],
 			name: list_acc[k],
 			balance: 0,
-			time_a: SETUP_SETTINGS["init_month"],
+			time_a: init_month,
 			time_z: 11
 		};
 
-		db_tables.accounts.names.push(list_acc[k]);
-		db_tables.accounts.data.push(acc);
+		db_tables.accounts.names[k] = list_acc[k];
+		db_tables.accounts.data[k] = acc;
 	}
 
 	setPropertiesService_("document", "json", "DB_TABLES", db_tables);
