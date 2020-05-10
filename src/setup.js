@@ -700,7 +700,6 @@ function setupTables_() {
 	if (ids.length < 1 + num_acc) throw new Error("Could not generate unique IDs.");
 
 	db_tables = {
-		wallet: ids[0],
 		accounts: {
 			ids: [ ],
 			names: [ ],

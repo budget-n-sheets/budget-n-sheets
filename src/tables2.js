@@ -220,7 +220,7 @@ function genUniqueTableId_() {
 	const db_acc = getDbTables_("accounts");
 	const db_cards = getDbTables_("cards");
 
-	var ids = db_acc.ids.concat(db_cards.ids, [ db_acc.wallet ]);
+	var ids = db_acc.ids.concat(db_cards.ids);
 	var i = 0;
 	do {
 		var random = randomString(7, "lonum");
