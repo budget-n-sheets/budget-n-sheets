@@ -4,68 +4,6 @@
  * <https://github.com/guimspace/gas-common>
  */
 
-var CacheService2 = {
-	document: null,
-	script: null,
-	user: null,
-
-	loadScope: function(scope) {
-		if (this[scope]) return;
-		switch (scope) {
-		case "document":
-			this.document = CacheService.getDocumentCache();
-			break;
-		case "script":
-			this.script = CacheService.getScriptCache();
-			break;
-		case "user":
-			this.user = CacheService.getUserCache();
-			break;
-		}
-	},
-
-	get: function(scope, key, type) {
-		this.loadScope(scope);
-		var value = this[scope].get(key);
-		switch (type) {
-		case "number":
-			return Number(value);
-		case "boolean":
-			return value === "true";
-		case "json":
-			return JSON.parse(value);
-		case "string":
-		default:
-			return value;
-		}
-	},
-
-	put: function(scope, key, type, value, expiration) {
-		this.loadScope(scope);
-		if (!expiration) expiration = 600;
-		switch (type) {
-		case "number":
-			value = value.toString();
-			break;
-		case "boolean":
-			value = value ? "true" : "false";
-			break;
-		case "json":
-			value = JSON.stringify(value);
-			break;
-		case "string":
-		default:
-			break;
-		}
-		this[scope].put(key, value, expiration);
-	},
-
-	remove: function(scope, key) {
-		this.loadScope(scope);
-		this[scope].remove(key);
-	}
-};
-
 /**
  * Gets the cached value for the given key, or null if none is found.
  * @param  {String} method The method to get a cache instance
