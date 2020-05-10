@@ -62,6 +62,8 @@ function getTablesService_(select, param) {
 		return getCardById_(param);
 	case "cardsbalances":
 		return getCardsBalances_();
+	case "uniqueid":
+		return genUniqueTableId_();
 
 	default:
 		consoleLog_("warn", "getTablesService_(): Switch case is default.", select);
@@ -211,4 +213,18 @@ function refreshCashFlowReferences_() {
 	for (i = 0; i < 12; i++) {
 		sheet.getRange(4, 3 + 4*i).setFormula(formulas[i]);
 	}
+}
+
+
+function genUniqueTableId_() {
+	const db_acc = getDbTables_("accounts");
+	const db_cards = getDbTables_("cards");
+
+	var ids = db_acc.ids.concat(db_cards.ids, [ db_acc.wallet ]);
+	var i = 0;
+	do {
+		var random = randomString(7, "lonum");
+		i++;
+	} while (ids.indexOf(random) === -1 && i < 99);
+	if (i < 99) return random;
 }

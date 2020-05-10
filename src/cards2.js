@@ -6,7 +6,7 @@ function getCardById_(card_id) {
 
 
 function addCard_(card) {
-	var aliases, c;
+	var aliases, random, c;
 
 	if (! /^\w+$/.test(card.code)) return 10;
 
@@ -24,7 +24,10 @@ function addCard_(card) {
 		c = aliases.indexOf(card.code);
 	}
 
-	card.id = randomString(7, "lonum");
+	random = genUniqueTableId_();
+	if (!random) return 1;
+
+	card.id = random;
 	card.aliases = aliases;
 	card.limit = Number(card.limit);
 
