@@ -7,19 +7,12 @@ function onOpenInstallable_(e) {
 
 function loadCache_() {
 	console.time("add-on/onOpen/load-cache");
-	var cache = CacheService2.get("document", "load_cache", "boolean");
-	if (cache) return;
-
 	const list = [ "class_version2", "user_settings", "spreadsheet_settings", "const_properties"];
 
 	for (var i = 0; i < list.length; i++) {
-		cache = getPropertiesService_("document", "json", list[i]);
-		if (!cache) continue;
-
-		CacheService2.put("document", list[i], "json", cache);
+		var cache = getPropertiesService_("document", "json", list[i]);
+		if (cache) CacheService2.put("document", list[i], "json", cache);
 	}
-
-	CacheService2.put("document", "load_cache", "boolean", true);
 	console.timeEnd("add-on/onOpen/load-cache");
 }
 
