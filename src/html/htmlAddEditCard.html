@@ -66,7 +66,9 @@
 							</td>
 						</tr>
 					</table>
-					<input id="card_id" style="display: none;" type="text" value="<?= card_id ?>">
+					<? if (is_edit) { ?>
+						<input id="card_id" style="display: none;" type="text" value="<?= card_id ?>">
+					<? } ?>
 				</form>
 			</div>
 
@@ -95,7 +97,9 @@
 				$("#b-Submit").prop("disabled", true);
 
 				const card = {
-					id: $("#card_id").val(),
+					<? if (is_edit) { ?>
+						id: $("#card_id").val(),
+					<? } ?>
 					name: $("#card_name").val(),
 					code: $("#card_code").val(),
 					aliases: $("#card_aliases").val(),
