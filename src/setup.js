@@ -118,22 +118,22 @@ function askReinstall() {
 
 	purgeScriptAppTriggers_();
 
-	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
+	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEditInstallable_");
 	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
 
 	if (financial_year < date.getFullYear()) {
 		setSpreadsheetSettings_("operation_mode", "passive");
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
+		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weeklyTriggerPos_", 2);
 
 	} else if (financial_year === date.getFullYear()) {
 		setSpreadsheetSettings_("operation_mode", "active");
-		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
+		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "dailyTrigger_", 1, 2);
 
 	} else if (financial_year > date.getFullYear()) {
 		d = new Date(financial_year, 0, 2);
 		d = d.getDay();
 		setSpreadsheetSettings_("operation_mode", "passive");
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
+		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weeklyTriggerPre_", d);
 	}
 }
 
@@ -782,20 +782,20 @@ function setupProperties_(yyyy_mm) {
 	};
 	setPropertiesService_("document", "obj", "const_properties", properties);
 
-	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEdit_Main_");
+	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEditInstallable_");
 	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
 	if (SETUP_SETTINGS["financial_year"] < yyyy_mm.yyyy) {
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
+		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weeklyTriggerPos_", 2);
 		operation = "passive";
 
 	} else if (SETUP_SETTINGS["financial_year"] == yyyy_mm.yyyy) {
-		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
+		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "dailyTrigger_", 1, 2);
 		operation = "active";
 
 	} else if (SETUP_SETTINGS["financial_year"] > yyyy_mm.yyyy) {
 		d = new Date(SETUP_SETTINGS["financial_year"], 0, 2);
 		d = d.getDay();
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Bar_", d);
+		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weeklyTriggerPre_", d);
 		operation = "passive";
 	}
 

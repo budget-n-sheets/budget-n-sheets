@@ -18,6 +18,9 @@ function loadCache_() {
 
 
 function onEdit_Main_(e) {
+	onEditInstallable_(e);
+}
+function onEditInstallable_(e) {
 	if (e.authMode != ScriptApp.AuthMode.FULL) return;
 	else if (e.value == "") return;
 
@@ -72,8 +75,10 @@ function onEdit_Main_(e) {
 }
 
 
-
 function daily_Main_(e) {
+	dailyTrigger_(e);
+}
+function dailyTrigger_(e) {
 	if (isReAuthorizationRequired_()) return;
 	if (!getPropertiesService_('document', '', 'is_installed')) {
 		uninstall_();
@@ -128,6 +133,9 @@ function daily_Main_(e) {
 
 
 function weekly_Foo_(e) {
+	weeklyTriggerPos_(e);
+}
+function weeklyTriggerPos_(e) {
 	if (isReAuthorizationRequired_()) return;
 	if (!getPropertiesService_('document', '', 'is_installed')) {
 		uninstall_();
@@ -145,6 +153,9 @@ function weekly_Foo_(e) {
 
 
 function weekly_Bar_(e) {
+	weeklyTriggerPre_(e);
+}
+function weeklyTriggerPre_(e) {
 	if (isReAuthorizationRequired_()) return;
 	if (!getPropertiesService_('document', '', 'is_installed')) {
 		uninstall_();
