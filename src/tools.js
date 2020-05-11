@@ -1,12 +1,12 @@
 function toolShowSheets_() {
-	optNavTools_("show");
+	pagesView_("show");
 }
 
 function toolHideSheets_() {
-	optNavTools_("hide");
+	pagesView_("hide");
 }
 
-function optNavTools_(p, r) {
+function pagesView_(p, r) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
@@ -16,26 +16,26 @@ function optNavTools_(p, r) {
 			"The add-on is busy. Try again in a moment.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 
-		consoleLog_('warn', 'optNavTools_(): Wait lock time out.', err);
+		consoleLog_('warn', 'pagesView_(): Wait lock time out.', err);
 		return;
 	}
 
 	switch (p) {
 		case "show":
-			optTool_ShowSheets_();
+			showSheets_();
 			break;
 		case "hide":
-			optTool_HideSheets_(r);
+			hideSheets_(r);
 			break;
 
 		default:
-			console.error("optNavTools_(): Switch case is default.", p);
+			console.error("pagesView_(): Switch case is default.", p);
 			break;
 	}
 }
 
 
-function optTool_HideSheets_(r) {
+function hideSheets_(r) {
 	var spreadsheet, sheet;
 	var delta, mm, i;
 
@@ -66,7 +66,7 @@ function optTool_HideSheets_(r) {
 }
 
 
-function optTool_ShowSheets_() {
+function showSheets_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet, i;
 
@@ -78,18 +78,18 @@ function optTool_ShowSheets_() {
 
 
 function toolAddBlankRows() {
-	optMainTools_("AddBlankRows");
+	toolPicker_("AddBlankRows");
 }
 
 function toolUpdateCashFlow() {
-	optMainTools_("UpdateCashFlow");
+	toolPicker_("UpdateCashFlow");
 }
 
 function toolFormatRegistry() {
-	optMainTools_("FormatRegistry");
+	toolPicker_("FormatRegistry");
 }
 
-function optMainTools_(p, mm) {
+function toolPicker_(p, mm) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
@@ -99,35 +99,35 @@ function optMainTools_(p, mm) {
 			"The add-on is busy. Try again in a moment.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 
-		consoleLog_('warn', 'optMainTools_(): Wait lock time out.', err);
+		consoleLog_('warn', 'toolPicker_(): Wait lock time out.', err);
 		return;
 	}
 
 	switch (p) {
 		case 'AddBlankRows':
-			optTool_AddBlankRows_(mm);
+			addBlankRows_(mm);
 			break;
 		case 'UpdateCashFlow':
-			optTool_UpdateCashFlow_(mm);
+			validateUpdateCashFlow_(mm);
 			break;
 		case 'FormatRegistry':
-			optTool_FormatRegistry_();
+			validateFormatRegistry_();
 			break;
 		case 'FormatAccount':
-			foo_FormatAccounts_(mm);
+			formatAccounts_(mm);
 			break;
 		case 'FormatCards':
-			foo_FormatCards_(mm);
+			formatCards_(mm);
 			break;
 
 		default:
-			console.error("optMainTools_(): Switch case is default.", p);
+			console.error("toolPicker_(): Switch case is default.", p);
 			break;
 	}
 }
 
 
-function optTool_AddBlankRows_(mm) {
+function addBlankRows_(mm) {
 	var sheet, c;
 
 	if (typeof mm != "number" || isNaN(mm)) {
@@ -152,7 +152,7 @@ function optTool_AddBlankRows_(mm) {
 		c = 5;
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 	} else {
-		console.error("optTool_AddBlankRows_(): Internal error.", mm);
+		console.error("addBlankRows_(): Internal error.", mm);
 		showDialogErrorMessage();
 		return;
 	}
@@ -178,7 +178,7 @@ function optTool_AddBlankRows_(mm) {
 }
 
 
-function optTool_UpdateCashFlow_(mm) {
+function validateUpdateCashFlow_(mm) {
 	if (onlineUpdate_()) return;
 
 	var sheet, range;
@@ -205,11 +205,11 @@ function optTool_UpdateCashFlow_(mm) {
 		}
 	}
 
-	foo_UpdateCashFlow_(mm);
+	updateCashFlow_(mm);
 }
 
 
-function optTool_FormatRegistry_() {
+function validateFormatRegistry_() {
 	var range = SpreadsheetApp.getActiveRange();
 	var sheet = range.getSheet();
 	var name = sheet.getSheetName();
@@ -218,13 +218,13 @@ function optTool_FormatRegistry_() {
 	mm = MN_SHORT.indexOf(name);
 
 	if (mm !== -1) {
-		foo_FormatAccounts_(mm);
+		formatAccounts_(mm);
 
 	} else if (name === 'Cards') {
 		mm = range.getColumn();
 		mm = (mm - (mm % 6)) / 6;
 
-		foo_FormatCards_(mm);
+		formatCards_(mm);
 
 	} else {
 		SpreadsheetApp.getUi().alert(
@@ -235,9 +235,9 @@ function optTool_FormatRegistry_() {
 }
 
 
-function foo_UpdateCashFlow_(mm) {
+function updateCashFlow_(mm) {
 	if (typeof mm !== 'number' || isNaN(mm)) {
-		console.warn("foo_UpdateCashFlow_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
+		console.warn("updateCashFlow_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
 		showDialogErrorMessage();
 		return;
 	}
@@ -394,7 +394,7 @@ function foo_UpdateCashFlow_(mm) {
 
 			switch (evento.TranslationType) {
 				default:
-					console.warn("foo_UpdateCashFlow_(): Switch case is default.", evento.TranslationType);
+					console.warn("updateCashFlow_(): Switch case is default.", evento.TranslationType);
 				case "Avg":
 				case "":
 					value = data_tags.average[c];
@@ -432,9 +432,9 @@ function foo_UpdateCashFlow_(mm) {
 }
 
 
-function foo_FormatAccounts_(mm) {
+function formatAccounts_(mm) {
 	if (typeof mm != "number" || isNaN(mm)) {
-		consoleLog_('warn', 'foo_FormatAccounts_(): type of parameter is incorrect.', {mm:mm, type:typeof mm});
+		consoleLog_('warn', 'formatAccounts_(): type of parameter is incorrect.', {mm:mm, type:typeof mm});
 		showDialogErrorMessage();
 		return;
 	}
@@ -482,9 +482,9 @@ function foo_FormatAccounts_(mm) {
 }
 
 
-function foo_FormatCards_(mm) {
+function formatCards_(mm) {
 	if (typeof mm !== "number" || isNaN(mm)) {
-		consoleLog_('warn', 'foo_FormatCards_(): type of parameter is incorrect.', {mm:mm, type:typeof mm});
+		consoleLog_('warn', 'formatCards_(): type of parameter is incorrect.', {mm:mm, type:typeof mm});
 		showDialogErrorMessage();
 		return;
 	}

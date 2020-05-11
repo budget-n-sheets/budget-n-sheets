@@ -40,28 +40,28 @@ function onEdit_Main_(e) {
 	switch (row) {
 		case 4:
 			if (mm === -1) break;
-			optMainTools_("AddBlankRows", mm);
+			toolPicker_("AddBlankRows", mm);
 			break;
 		case 5:
 			if (mm === -1) break;
-			optMainTools_("FormatAccount", mm);
+			toolPicker_("FormatAccount", mm);
 			break;
 		case 6:
 			if (mm === -1) break;
-			optMainTools_("UpdateCashFlow", mm);
+			toolPicker_("UpdateCashFlow", mm);
 			break;
 
 		case 9:
-			optMainTools_("AddBlankRows", 12);
+			toolPicker_("AddBlankRows", 12);
 			break;
 		case 10:
 			if (mm === -1) break;
-			optMainTools_("FormatCards", mm);
+			toolPicker_("FormatCards", mm);
 			break;
 
 		case 13:
-			if (e.value == "Collapse") optNavTools_("hide", 1);
-			else if (e.value == "Expand") optNavTools_("show");
+			if (e.value == "Collapse") pagesView_("hide", 1);
+			else if (e.value == "Expand") pagesView_("show");
 			break;
 
 		default:
