@@ -65,10 +65,10 @@ function showPanelTables(tab) {
 
 	if (dec_p) {
 		htmlTemplate.dec_p = ".";
-		htmlTemplate.dc_ps = ",";
+		htmlTemplate.dec_ps = ",";
 	} else {
 		htmlTemplate.dec_p = ",";
-		htmlTemplate.dc_ps = ".";
+		htmlTemplate.dec_ps = ".";
 	}
 
 	if (tab) {
