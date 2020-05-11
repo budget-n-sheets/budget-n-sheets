@@ -225,6 +225,6 @@ function genUniqueTableId_() {
 	do {
 		var random = randomString(7, "lonum");
 		i++;
-	} while (ids.indexOf(random) === -1 && i < 99);
+	} while (ids.indexOf(random) !== -1 && i < 99);
 	if (i < 99) return random;
 }
