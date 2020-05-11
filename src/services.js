@@ -40,7 +40,7 @@ function onEdit_Main_(e) {
 	switch (row) {
 		case 4:
 			if (mm === -1) break;
-			toolPicker_("AddBlankRows", mm);
+			toolPicker_("AddBlankRows", MN_SHORT[mm]);
 			break;
 		case 5:
 			if (mm === -1) break;
@@ -52,7 +52,7 @@ function onEdit_Main_(e) {
 			break;
 
 		case 9:
-			toolPicker_("AddBlankRows", 12);
+			toolPicker_("AddBlankRows", "Cards");
 			break;
 		case 10:
 			if (mm === -1) break;

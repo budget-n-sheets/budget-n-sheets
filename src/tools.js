@@ -6,7 +6,7 @@ function toolHideSheets_() {
 	pagesView_("hide");
 }
 
-function pagesView_(p, r) {
+function pagesView_(select, a) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
@@ -20,26 +20,26 @@ function pagesView_(p, r) {
 		return;
 	}
 
-	switch (p) {
+	switch (select) {
 		case "show":
 			showSheets_();
 			break;
 		case "hide":
-			hideSheets_(r);
+			hideSheets_(a);
 			break;
 
 		default:
-			console.error("pagesView_(): Switch case is default.", p);
+			console.error("pagesView_(): Switch case is default.", select);
 			break;
 	}
 }
 
 
-function hideSheets_(r) {
+function hideSheets_(a) {
 	var spreadsheet, sheet;
 	var delta, mm, i;
 
-	if (r) {
+	if (a) {
 		mm = DATE_NOW.getMonth();
 	} else {
 		sheet = SpreadsheetApp.getActiveSheet();
@@ -89,7 +89,7 @@ function toolFormatRegistry() {
 	toolPicker_("FormatRegistry");
 }
 
-function toolPicker_(p, mm) {
+function toolPicker_(select, value) {
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(2000);
@@ -103,61 +103,52 @@ function toolPicker_(p, mm) {
 		return;
 	}
 
-	switch (p) {
+	switch (select) {
 		case 'AddBlankRows':
-			addBlankRows_(mm);
+			addBlankRows_(value);
 			break;
 		case 'UpdateCashFlow':
-			validateUpdateCashFlow_(mm);
+			validateUpdateCashFlow_(value);
 			break;
 		case 'FormatRegistry':
 			validateFormatRegistry_();
 			break;
 		case 'FormatAccount':
-			formatAccounts_(mm);
+			formatAccounts_(value);
 			break;
 		case 'FormatCards':
-			formatCards_(mm);
+			formatCards_(value);
 			break;
 
 		default:
-			console.error("toolPicker_(): Switch case is default.", p);
+			console.error("toolPicker_(): Switch case is default.", select);
 			break;
 	}
 }
 
 
-function addBlankRows_(mm) {
+function addBlankRows_(name) {
 	var sheet, c;
 
-	if (typeof mm != "number" || isNaN(mm)) {
+	if (!name) {
 		sheet = SpreadsheetApp.getActiveSheet();
-		if (!sheet) return;
+		name = sheet.getSheetName();
+	}
 
-		c = sheet.getSheetName();
-
-		if (MN_SHORT.indexOf(c) !== -1) c = 4;
-		else if (c === "Cards") c = 5;
-		else {
-			SpreadsheetApp.getUi().alert(
-				"Can't add rows",
-				"Select a month or Cards to add rows.",
-				SpreadsheetApp.getUi().ButtonSet.OK);
-			return;
-		}
-	} else if (mm >= 0 && mm < 12) {
-		c = 4;
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
-	} else if (mm === 12) {
-		c = 5;
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
-	} else {
-		console.error("addBlankRows_(): Internal error.", mm);
-		showDialogErrorMessage();
+	if (name === "Cards") c = 5;
+	else if (MN_SHORT.indexOf(name) !== -1) c = 4;
+	else {
+		SpreadsheetApp.getUi().alert(
+			"Can't add rows",
+			"Select a month or Cards to add rows.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
 		return;
 	}
 
-	if (!sheet) return;
+	if (!sheet) {
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
+		if (!sheet) return;
+	}
 
 	var maxRows = sheet.getMaxRows(),
 			maxCols = sheet.getMaxColumns();
@@ -189,13 +180,12 @@ function validateUpdateCashFlow_(mm) {
 		sheet = range.getSheet();
 		name = sheet.getSheetName();
 
-		mm = MN_SHORT.indexOf(name);
-
-		if (mm === -1) {
-			if (name === 'Cash Flow') {
-				mm = range.getColumn() - 1;
-				mm = (mm - (mm % 4)) / 4;
-			} else {
+		if (name === "Cash Flow") {
+			mm = range.getColumn() - 1;
+			mm = (mm - (mm % 4)) / 4;
+		} else {
+			mm = MN_SHORT.indexOf(name);
+			if (mm === -1) {
 				SpreadsheetApp.getUi().alert(
 					"Can't update cash flow",
 					"Select a month or Cash Flow to update cash flow.",
@@ -205,7 +195,12 @@ function validateUpdateCashFlow_(mm) {
 		}
 	}
 
-	updateCashFlow_(mm);
+	if (!sheet) {
+		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
+		if (!sheet) return;
+	}
+
+	updateCashFlow_(sheet, mm);
 }
 
 
@@ -215,41 +210,31 @@ function validateFormatRegistry_() {
 	var name = sheet.getSheetName();
 	var mm;
 
-	mm = MN_SHORT.indexOf(name);
-
-	if (mm !== -1) {
-		formatAccounts_(mm);
-
-	} else if (name === 'Cards') {
+	if (name === "Cards") {
 		mm = range.getColumn();
 		mm = (mm - (mm % 6)) / 6;
-
 		formatCards_(mm);
 
 	} else {
-		SpreadsheetApp.getUi().alert(
-			"Can't sort registry",
-			"Select a month to sort the registry.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
+		mm = MN_SHORT.indexOf(name);
+		if (mm === -1) {
+			SpreadsheetApp.getUi().alert(
+				"Can't sort registry",
+				"Select a month or Cards to sort the registry.",
+				SpreadsheetApp.getUi().ButtonSet.OK);
+			return;
+		}
+		formatAccounts_(mm);
 	}
 }
 
 
-function updateCashFlow_(mm) {
-	if (typeof mm !== 'number' || isNaN(mm)) {
-		console.warn("updateCashFlow_(): type of parameter is incorrect.", {mm:mm, type:typeof mm});
-		showDialogErrorMessage();
-		return;
-	}
-
+function updateCashFlow_(sheetMonth, mm) {
 	console.time("tool/update-cash-flow");
-
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheetMonth = spreadsheet.getSheetByName(MN_SHORT[mm]),
-			sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
+	var sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
 	var sheetBackstage;
 
-	if (!sheetMonth) return;
 	if (!sheetCashFlow) return;
 
 	var calendar, listEventos, evento, day, yyyy, dd;
@@ -433,12 +418,6 @@ function updateCashFlow_(mm) {
 
 
 function formatAccounts_(mm) {
-	if (typeof mm != "number" || isNaN(mm)) {
-		consoleLog_('warn', 'formatAccounts_(): type of parameter is incorrect.', {mm:mm, type:typeof mm});
-		showDialogErrorMessage();
-		return;
-	}
-
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
 	var date1, date2;
 	var table, nd;
@@ -483,12 +462,6 @@ function formatAccounts_(mm) {
 
 
 function formatCards_(mm) {
-	if (typeof mm !== "number" || isNaN(mm)) {
-		consoleLog_('warn', 'formatCards_(): type of parameter is incorrect.', {mm:mm, type:typeof mm});
-		showDialogErrorMessage();
-		return;
-	}
-
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
 	var table, card;
 	var c, n, w_;
