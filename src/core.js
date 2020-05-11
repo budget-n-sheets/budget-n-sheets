@@ -283,3 +283,20 @@ function showDialogEditCard(card_id) {
 
 	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Edit Card");
 }
+
+
+function showDialogDeleteCard(card_id) {
+	var card = tablesService("get", "card", card_id);
+	if (!card) return 1;
+
+	var ui = SpreadsheetApp.getUi();
+	var response = ui.alert(
+		"Delete card",
+		"Are you sure you want to delete " + card.name + "?",
+		ui.ButtonSet.YES_NO);
+
+	if (response == ui.Button.YES) {
+		tablesService("set", "deletecard", card_id);
+		return 1;
+	}
+}

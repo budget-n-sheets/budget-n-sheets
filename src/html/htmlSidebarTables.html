@@ -185,22 +185,17 @@
 			});
 
 			$(document).on("click", ".c-remove", function(e) {
-				var response = confirm("Click OK to confirm and remove the card.");
-				if (!response) return;
+				$("#response").empty();
 				google.script.run
 					.withSuccessHandler(reloadListCards)
 					.withFailureHandler(showError)
-					.tablesService("set", "deletecard", $(this).parent().attr("id"));
+					.showDialogDeleteCard($(this).parent().attr("id"));
 			});
 
 			function reloadListCards(r) {
-				if (r) {
-					responseHandler(1);
-					return;
-				}
+				if (!r) return;
 				$("#item-AddCard").hide();
 				$("#box_Cards").empty();
-
 				google.script.run
 					.withSuccessHandler(listCards)
 					.withFailureHandler(showError)
