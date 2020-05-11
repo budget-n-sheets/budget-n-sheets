@@ -293,7 +293,7 @@
 
 				var list_names = [ ];
 
-				$(":input[required][name=account_name]").each(function(i) {
+				$("input[required][name=account_name]").each(function(i) {
 					list_names[i] = $(this).val();
 				});
 
@@ -304,11 +304,27 @@
 					}, 120000);
 
 				google.script.run
-					.withSuccessHandler(function() {
+					.withSuccessHandler(function(e) {
 							google.script.host.close();
 						})
-					.withFailureHandler(showError)
-					.setup_ui(settings, list_names);
+					.withFailureHandler(failureHandler)
+					.setupUi(settings, list_names);
+			}
+
+			function failureHandler(err) {
+				const payload = {
+					title: "htmlSetupAddon"
+				};
+
+				for (var i in err) {
+					payload[i] = err[i];
+				}
+
+				google.script.run
+					.withSuccessHandler(function(e) {
+							google.script.host.close();
+						})
+					.showDialogErrorMessage(payload);
 			}
 		</script>
 	</body>

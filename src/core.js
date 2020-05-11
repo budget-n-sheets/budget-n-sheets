@@ -191,7 +191,7 @@ function showSetupAddon_() {
 	}
 
 	reviseUser_();
-	if (setup_ui()) return;
+	if (setupUi()) return;
 
 	var htmlDialog = HtmlService.createTemplateFromFile("html/htmlSetupAddon")
 		.evaluate()

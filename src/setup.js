@@ -163,31 +163,41 @@ function uninstallAndLock_() {
 }
 
 
-function setup_ui(settings, list_acc) {
-	if (getPropertiesService_("document", "", "is_installed")) {
+function setupUi(settings, list_acc) {
+	var ui = SpreadsheetApp.getUi();
+	var documentProperties = PropertiesService.getDocumentProperties();
+
+	if (documentProperties.getProperty("is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
+		return 1;
+
+	} else if (documentProperties.getProperty("lock_spreadsheet")) {
+		ui.alert(
+			"Can't create budget sheet",
+			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
+			ui.ButtonSet.OK);
 		return 1;
 	}
 
 	var lock = LockService.getDocumentLock();
 	try {
-		lock.waitLock(200);
+		lock.waitLock(1000);
 	} catch (err) {
-		SpreadsheetApp.getUi().alert(
+		ui.alert(
 			"Add-on is busy",
 			"A budget spreadsheet setup is in progress.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
+			ui.ButtonSet.OK);
 
-		consoleLog_("warn", "setup_ui(): Wait lock time out.", err);
+		consoleLog_("warn", "setupUi(): Wait lock time out.", err);
 		return 1;
 	}
 
-	if (!settings && !list_acc) return;
+	if (!settings || !list_acc) return;
 
 	setup_(settings, list_acc);
 
-	setPropertiesService_("document", "boolean", "is_installed", true);
+	documentProperties.setProperty("is_installed", "true");
 	showDialogSetupEnd();
 	onOpen();
 }
