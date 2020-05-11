@@ -35,6 +35,48 @@ function optNavTools_(p, r) {
 }
 
 
+function optTool_HideSheets_(r) {
+	var spreadsheet, sheet;
+	var delta, mm, i;
+
+	if (r) {
+		mm = DATE_NOW.getMonth();
+	} else {
+		sheet = SpreadsheetApp.getActiveSheet();
+		mm = MN_SHORT.indexOf( sheet.getName() );
+		if (mm === -1) {
+			SpreadsheetApp.getUi().alert(
+				"Can't collapse pages view",
+				"Select a month to collapse pages view.",
+				SpreadsheetApp.getUi().ButtonSet.OK);
+			return;
+		}
+	}
+
+	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	delta = getMonthDelta(mm);
+
+	for (i = 0; i < 12; i++) {
+		sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+		if (sheet) {
+			if (i < mm + delta[0] || i > mm + delta[1]) sheet.hideSheet();
+			else sheet.showSheet();
+		}
+	}
+}
+
+
+function optTool_ShowSheets_() {
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var sheet, i;
+
+	for (i = 0; i < 12; i++) {
+		sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+		if (sheet) sheet.showSheet();
+	}
+}
+
+
 function toolAddBlankRows() {
 	optMainTools_("AddBlankRows");
 }
@@ -81,48 +123,6 @@ function optMainTools_(p, mm) {
 		default:
 			console.error("optMainTools_(): Switch case is default.", p);
 			break;
-	}
-}
-
-
-function optTool_HideSheets_(r) {
-	var spreadsheet, sheet;
-	var delta, mm, i;
-
-	if (r) {
-		mm = DATE_NOW.getMonth();
-	} else {
-		sheet = SpreadsheetApp.getActiveSheet();
-		mm = MN_SHORT.indexOf( sheet.getName() );
-		if (mm === -1) {
-			SpreadsheetApp.getUi().alert(
-				"Can't collapse pages view",
-				"Select a month to collapse pages view.",
-				SpreadsheetApp.getUi().ButtonSet.OK);
-			return;
-		}
-	}
-
-	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	delta = getMonthDelta(mm);
-
-	for (i = 0; i < 12; i++) {
-		sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
-		if (sheet) {
-			if (i < mm + delta[0] || i > mm + delta[1]) sheet.hideSheet();
-			else sheet.showSheet();
-		}
-	}
-}
-
-
-function optTool_ShowSheets_() {
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet, i;
-
-	for (i = 0; i < 12; i++) {
-		sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
-		if (sheet) sheet.showSheet();
 	}
 }
 
