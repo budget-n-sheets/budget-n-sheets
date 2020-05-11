@@ -222,6 +222,15 @@ function refreshCardsRules_() {
 	n = sheet.getMaxRows() - 5;
 	if (n < 1) return;
 
+	if (list2.length === 0) {
+		for (i = 0; i < 12; i++) {
+			sheet.getRange(2, 2 + 6*i).clearDataValidations();
+			sheet.getRange(6, 3 + 6*i, n, 1).clearDataValidations();
+		}
+		SpreadsheetApp.flush();
+		return;
+	}
+
 	rule1 = SpreadsheetApp.newDataValidation()
 						.requireValueInList(list1, true)
 						.setAllowInvalid(true)
