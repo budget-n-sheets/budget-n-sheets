@@ -61,6 +61,16 @@ function showPanelTables(tab) {
 
 	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlSidebarTables");
 
+	const dec_p = getSpreadsheetSettings_("decimal_separator");
+
+	if (dec_p) {
+		htmlTemplate.dec_p = ".";
+		htmlTemplate.dc_ps = ",";
+	} else {
+		htmlTemplate.dec_p = ",";
+		htmlTemplate.dc_ps = ".";
+	}
+
 	if (tab) {
 		htmlTemplate.tab_acc = "";
 		htmlTemplate.tab_cards = "active";
