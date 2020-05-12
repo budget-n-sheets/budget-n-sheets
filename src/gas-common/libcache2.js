@@ -6,7 +6,6 @@
 
 var CacheService2 = {
 	document: null,
-	script: null,
 	user: null,
 
 	loadScope: function(scope) {
@@ -14,9 +13,6 @@ var CacheService2 = {
 		switch (scope) {
 		case "document":
 			this.document = CacheService.getDocumentCache();
-			break;
-		case "script":
-			this.script = CacheService.getScriptCache();
 			break;
 		case "user":
 			this.user = CacheService.getUserCache();

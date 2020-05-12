@@ -1,9 +1,9 @@
 function getDbTables_(select) {
-	var db_tables = getCacheService_("document", "DB_TABLES", "json");
+	var db_tables = CacheService2.get("document", "DB_TABLES", "json");
 
 	if (!db_tables) {
-		db_tables = getPropertiesService_("document", "json", "DB_TABLES");
-		putCacheService_("document", "DB_TABLES", "json", db_tables);
+		db_tables = PropertiesService2.getProperty("document", "DB_TABLES", "json");
+		CacheService2.put("document", "DB_TABLES", "json", db_tables);
 	}
 
 	if (select) return db_tables[select];
@@ -15,14 +15,14 @@ function setDbTables_(db, select) {
 	var db_tables;
 
 	if (select) {
-		db_tables = getPropertiesService_("document", "json", "DB_TABLES");
+		db_tables = PropertiesService2.getProperty("document", "DB_TABLES", "json");
 		db_tables[select] = db;
 	} else {
 		db_tables = db;
 	}
 
-	setPropertiesService_("document", "json", "DB_TABLES", db_tables);
-	putCacheService_("document", "DB_TABLES", "json", db_tables);
+	PropertiesService2.setProperty("document", "DB_TABLES", "json", db_tables);
+	CacheService2.put("document", "DB_TABLES", "json", db_tables);
 }
 
 

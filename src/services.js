@@ -10,7 +10,7 @@ function loadCache_() {
 	const list = [ "class_version2", "user_settings", "spreadsheet_settings", "const_properties"];
 
 	for (var i = 0; i < list.length; i++) {
-		var cache = getPropertiesService_("document", "json", list[i]);
+		var cache = PropertiesService2.getProperty("document", list[i], "json");
 		if (cache) CacheService2.put("document", list[i], "json", cache);
 	}
 	console.timeEnd("add-on/onOpen/load-cache");
@@ -80,7 +80,7 @@ function daily_Main_(e) {
 }
 function dailyTrigger_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (!getPropertiesService_('document', '', 'is_installed')) {
+	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) {
 		uninstall_();
 		return;
 	}
@@ -137,7 +137,7 @@ function weekly_Foo_(e) {
 }
 function weeklyTriggerPos_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (!getPropertiesService_('document', '', 'is_installed')) {
+	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) {
 		uninstall_();
 		return;
 	}
@@ -157,7 +157,7 @@ function weekly_Bar_(e) {
 }
 function weeklyTriggerPre_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (!getPropertiesService_('document', '', 'is_installed')) {
+	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) {
 		uninstall_();
 		return;
 	}
@@ -214,7 +214,7 @@ function reviseVersion_() {
 
 
 function reviseUser_() {
-	var user = getPropertiesService_("user", "string", "user_id");
+	var user = PropertiesService2.getProperty("user", "user_id", "string");
 	if (user) return;
 
 	try {
@@ -226,5 +226,5 @@ function reviseUser_() {
 
 	if (user) user = computeDigest("SHA_256", user, "UTF_8");
 
-	setPropertiesService_("user", "string", "user_id", user);
+	PropertiesService2.setProperty("user", "user_id", "string", user);
 }

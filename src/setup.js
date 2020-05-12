@@ -110,7 +110,7 @@ function askResetProtection() {
 
 
 function askReinstall() {
-	if (!getPropertiesService_("document", "", "is_installed")) return;
+	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) return;
 
 	var financial_year = getConstProperties_("financial_year");
 	var date = getSpreadsheetDate();
@@ -220,7 +220,7 @@ function setup_(settings, list_acc) {
 
 	SPREADSHEET.rename(SETUP_SETTINGS["spreadsheet_name"]);
 
-	purgePropertiesService_("document");
+	PropertiesService2.deleteAllProperties("document");
 	purgeScriptAppTriggers_();
 	CacheService.getDocumentCache().removeAll([
 		"load_cache", "class_version2", "user_settings", "spreadsheet_settings", "const_properties", "DB_TABLES"
@@ -252,7 +252,7 @@ function setup_(settings, list_acc) {
 		template: APPS_SCRIPT_GLOBAL.template_version
 	};
 	class_version2.script.beta = PATCH_THIS["beta_list"].length;
-	setPropertiesService_("document", "json", "class_version2", class_version2);
+	PropertiesService2.setProperty("document", "class_version2", "json", class_version2);
 
 	if (nodeControl_("sign")) {
 		throw new Error("Failed to sign document.");
@@ -738,7 +738,7 @@ function setupTables_() {
 		db_tables.accounts.data[k] = acc;
 	}
 
-	setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+	PropertiesService2.setProperty("document", "DB_TABLES", "json", db_tables);
 	console.timeEnd("add-on/setup/tables");
 }
 
@@ -755,9 +755,9 @@ function setupProperties_(yyyy_mm) {
 		cash_flow_events: false,
 		override_zero: false
 	};
-	setPropertiesService_("document", "json", "user_settings", properties);
+	PropertiesService2.setProperty("document", "user_settings", "json", properties);
 
-	user = getPropertiesService_("user", "string", "user_id");
+	user = PropertiesService2.getProperty("user", "user_id", "string");
 
 	try {
 		owner = SPREADSHEET.getOwner().getEmail();
@@ -780,7 +780,7 @@ function setupProperties_(yyyy_mm) {
 		number_accounts: SETUP_SETTINGS["number_accounts"],
 		financial_year: SETUP_SETTINGS["financial_year"]
 	};
-	setPropertiesService_("document", "obj", "const_properties", properties);
+	PropertiesService2.setProperty("document", "const_properties", "json", properties);
 
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEditInstallable_");
 	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
@@ -804,7 +804,7 @@ function setupProperties_(yyyy_mm) {
 		decimal_separator: SETUP_SETTINGS["decimal_separator"],
 		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale()
 	};
-	setPropertiesService_("document", "json", "spreadsheet_settings", properties);
+	PropertiesService2.setProperty("document", "spreadsheet_settings", "json", properties);
 
 	console.timeEnd("add-on/setup/properties");
 }

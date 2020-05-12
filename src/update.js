@@ -129,11 +129,11 @@ function classService_(select, property, value) {
 
 
 function getClass_(property) {
-	var class_version2 = getCacheService_("document", "class_version2", "json");
+	var class_version2 = CacheService2.get("document", "class_version2", "json");
 
 	if (!class_version2) {
-		class_version2 = getPropertiesService_("document", "json", "class_version2");
-		putCacheService_("document", "class_version2", "json", class_version2);
+		class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
+		CacheService2.put("document", "class_version2", "json", class_version2);
 	}
 
 	return class_version2[property];
@@ -141,12 +141,12 @@ function getClass_(property) {
 
 
 function setClass_(property, value) {
-	var class_version2 = getPropertiesService_("document", "json", "class_version2");
+	var class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
 
 	class_version2[property] = value;
 
-	setPropertiesService_("document", "json", "class_version2", class_version2);
-	putCacheService_("document", "class_version2", "json", class_version2);
+	PropertiesService2.setProperty("document", "class_version2", "json", class_version2);
+	CacheService2.put("document", "class_version2", "json", class_version2);
 }
 
 
@@ -171,7 +171,7 @@ function update_v0m0p0_() {
  */
 function update_v0m29p4_() {
 	try {
-		const db_tables = getPropertiesService_("document", "json", "DB_TABLES");
+		const db_tables = PropertiesService2.getProperty("document", "DB_TABLES", "json");
 
 		db_tables.wallet = randomString(7, "lonum");
 
@@ -179,7 +179,7 @@ function update_v0m29p4_() {
 			db_tables.cards.codes[i] = db_tables.cards.data[i].id;
 		}
 
-		setPropertiesService_("document", "json", "DB_TABLES", db_tables);
+		PropertiesService2.setProperty("document", "DB_TABLES", "json", db_tables);
 	} catch (err) {
 		consoleLog_("error", "update_v0m29p4_()", err);
 		return 1;
@@ -305,7 +305,7 @@ function update_v0m28p0s2_() {
 			decimal_separator: dec_p,
 			spreadsheet_locale: SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale()
 		};
-		setPropertiesService_("document", "json", "spreadsheet_settings", spreadsheet_settings);
+		PropertiesService2.setProperty("document", "spreadsheet_settings", "json", spreadsheet_settings);
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p0s2_()", err);
 		return 1;
@@ -550,13 +550,13 @@ function update_v0m28p0s5_() {
  */
 function update_v0m27p5_() {
 	try {
-		var const_properties = getPropertiesService_("document", "json", "user_const_settings");
+		var const_properties = PropertiesService2.getProperty("document", "user_const_settings", "json");
 
 		const_properties.user = "";
 		const_properties.owner = "";
 		const_properties.spreadsheet_id = SpreadsheetApp.getActiveSpreadsheet().getId();
 
-		setPropertiesService_("document", "json", "const_properties", const_properties);
+		PropertiesService2.setProperty("document", "const_properties", "json", const_properties);
 	} catch (err) {
 		consoleLog_("error", "update_v0m27p5_()", err);
 		return 1;
@@ -592,7 +592,7 @@ function update_v0m27p0s0_() {
 		const h_ = TABLE_DIMENSION.height;
 		const w_ = TABLE_DIMENSION.width;
 
-		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const user_const_settings = PropertiesService2.getProperty("document", "user_const_settings", "json");
 		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
@@ -663,7 +663,7 @@ function update_v0m27p0s1_() {
 		const h_ = TABLE_DIMENSION.height;
 		const w_ = TABLE_DIMENSION.width;
 
-		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const user_const_settings = PropertiesService2.getProperty("document", "user_const_settings", "json");
 		const num_acc = user_const_settings.number_accounts;
 
 		const col = 2 + w_ + w_*num_acc + w_;
@@ -712,7 +712,7 @@ function update_v0m26p1_() {
 		const h_ = TABLE_DIMENSION.height;
 		const w_ = TABLE_DIMENSION.width;
 
-		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const user_const_settings = PropertiesService2.getProperty("document", "user_const_settings", "json");
 		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
@@ -780,7 +780,7 @@ function update_v0m26p0s2_() {
 		const h_ = TABLE_DIMENSION.height;
 		const w_ = TABLE_DIMENSION.width;
 
-		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const user_const_settings = PropertiesService2.getProperty("document", "user_const_settings", "json");
 		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
@@ -871,7 +871,7 @@ function update_v0m26p0s1_() {
 		const h_ = TABLE_DIMENSION.height;
 		const w_ = TABLE_DIMENSION.width;
 
-		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const user_const_settings = PropertiesService2.getProperty("document", "user_const_settings", "json");
 		const num_acc = user_const_settings.number_accounts;
 		const dec_p = PropertiesService.getDocumentProperties().getProperty("decimal_separator");
 
@@ -918,7 +918,7 @@ function update_v0m26p0s1_() {
  */
 function update_v0m25p2_() {
 	try {
-		const user_settings = getPropertiesService_('document', 'json', 'user_settings');
+		const user_settings = PropertiesService2.getProperty("document", "user_settings", "json");
 
 		setUserSettings_("override_zero", user_settings.OverrideZero);
 		setUserSettings_("post_day_events", user_settings.PostDayEvents);
@@ -944,7 +944,7 @@ function update_v0m25p0_() {
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 		if (!sheet) return;
 
-		const user_const_settings = getPropertiesService_("document", "json", "user_const_settings");
+		const user_const_settings = PropertiesService2.getProperty("document", "user_const_settings", "json");
 		const number_accounts = user_const_settings.number_accounts;
 
 		const h_ = TABLE_DIMENSION.height;
@@ -1172,7 +1172,7 @@ function update_v0m22p1_() {
  */
 function update_v0m22p1s1_() {
 	try {
-		deletePropertiesService_('document', 'DB_CALENDARS');
+		PropertiesService2.deleteProperty("document", "DB_CALENDARS");
 	} catch (err) {
 		consoleLog_('error', 'update_v0m22p1s1_()', err);
 	}
@@ -1184,7 +1184,7 @@ function update_v0m22p1s1_() {
  */
 function update_v0m22p1s0_() {
 	try {
-		const user_settings = getPropertiesService_('document', 'json', 'user_settings');
+		const user_settings = PropertiesService2.getProperty("document", "user_settings", "json");
 		var mm;
 
 		if (user_settings.initial_month == null) {
@@ -1196,7 +1196,7 @@ function update_v0m22p1s0_() {
 			user_settings.spreadsheet_locale = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale();
 		}
 
-		setPropertiesService_('document', 'json', 'user_settings', user_settings);
+		PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
 	} catch (err) {
 		consoleLog_('error', 'update_v0m22p1s0_()', err);
 	}
@@ -1209,7 +1209,7 @@ function update_v0m22p1s0_() {
  */
 function update_v0m22p0_() {
 	try {
-		if (getPropertiesService_('document', '', 'DB_TABLES')) return;
+		if (PropertiesService.getDocumentProperties().getProperty("DB_TABLES")) return;
 
 		update_v0m21p3_();
 	} catch (err) {
@@ -1246,8 +1246,8 @@ function update_v0m21p3_() {
 			}
 		};
 
-		const db_accounts = getPropertiesService_('document', 'json', 'DB_ACCOUNT');
-		const db_cards = getPropertiesService_('document', 'json', 'DB_CARD');
+		const db_accounts = PropertiesService2.getProperty("document", "DB_ACCOUNT", "json");
+		const db_cards = PropertiesService2.getProperty("document", "DB_CARD", "json");
 
 		for (k = 0; k < db_accounts.length; k++) {
 			i = 0;
@@ -1316,13 +1316,13 @@ function update_v0m21p2_() {
 		var db_calendars, calendars;
 		var digest, i;
 
-		user_settings = getPropertiesService_('document', 'json', 'user_settings');
+		user_settings = PropertiesService2.getProperty("document", "user_settings", "json");
 
 		user_settings.initial_month = user_settings.InitialMonth;
 		user_settings.financial_calendar = user_settings.FinancialCalendar;
 		user_settings.spreadsheet_locale = user_settings.SpreadsheetLocale;
 
-		setPropertiesService_('document', 'json', 'user_settings', user_settings);
+		PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
 
 		db_calendars = getAllOwnedCalendars();
 

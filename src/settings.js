@@ -1,10 +1,10 @@
 function retrieveUserSettings() {
 	var user_settings;
 
-	user_settings = getCacheService_("document", "user_settings", "json");
+	user_settings = CacheService2.get("document", "user_settings", "json");
 	if (!user_settings) {
-		user_settings = getPropertiesService_("document", "json", "user_settings");
-		putCacheService_("document", "user_settings", "json", user_settings);
+		user_settings = PropertiesService2.getProperty("document", "user_settings", "json");
+		CacheService2.put("document", "user_settings", "json", user_settings);
 	}
 
 	if (user_settings.financial_calendar) {
@@ -29,10 +29,10 @@ function saveUserSettings(settings) {
 	const init_month = getUserSettings_("initial_month");
 
 	if (settings.financial_calendar) {
-		db_calendars = getCacheService_("document", "DB_CALENDARS", "json");
+		db_calendars = CacheService2.get("document", "DB_CALENDARS", "json");
 		if (!db_calendars) {
 			db_calendars = getAllOwnedCalendars();
-			putCacheService_("document", "DB_CALENDARS", "json", db_calendars);
+			CacheService2.put("document", "DB_CALENDARS", "json", db_calendars);
 		}
 
 		c = db_calendars.md5.indexOf(settings.financial_calendar);
@@ -51,8 +51,8 @@ function saveUserSettings(settings) {
 		post_day_events: calendar.post_day_events,
 		cash_flow_events: calendar.cash_flow_events
 	};
-	setPropertiesService_("document", "json", "user_settings", user_settings);
-	putCacheService_("document", "user_settings", "json", user_settings);
+	PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
+	CacheService2.put("document", "user_settings", "json", user_settings);
 
 	updateDecimalSepartor_();
 
@@ -71,7 +71,7 @@ function saveUserSettings(settings) {
 function getUserSettings_(select) {
 	var user_settings;
 
-	user_settings = getPropertiesService_('document', 'json', 'user_settings');
+	user_settings = PropertiesService2.getProperty("document", "user_settings", "json");
 
 	switch (select) {
 		case 'financial_calendar':
@@ -89,7 +89,7 @@ function getUserSettings_(select) {
 
 
 function setUserSettings_(select, value) {
-	var user_settings = getPropertiesService_('document', 'json', 'user_settings');
+	var user_settings = PropertiesService2.getProperty("document", "user_settings", "json");
 
 	switch (select) {
 		case 'initial_month':
@@ -105,8 +105,8 @@ function setUserSettings_(select, value) {
 			return false;
 	}
 
-	setPropertiesService_('document', 'json', 'user_settings', user_settings);
-	putCacheService_("document", "user_settings", "json", user_settings);
+	PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
+	CacheService2.put("document", "user_settings", "json", user_settings);
 	return true;
 }
 
@@ -114,10 +114,10 @@ function setUserSettings_(select, value) {
 function getSpreadsheetSettings_(select) {
 	var spreadsheet_settings;
 
-	spreadsheet_settings = getCacheService_("document", "spreadsheet_settings", "json");
+	spreadsheet_settings = CacheService2.get("document", "spreadsheet_settings", "json");
 	if (!spreadsheet_settings) {
-		spreadsheet_settings = getPropertiesService_("document", "json", "spreadsheet_settings");
-		putCacheService_("document", "spreadsheet_settings", "json", spreadsheet_settings);
+		spreadsheet_settings = PropertiesService2.getProperty("document", "spreadsheet_settings", "json");
+		CacheService2.put("document", "spreadsheet_settings", "json", spreadsheet_settings);
 	}
 
 	switch (select) {
@@ -134,7 +134,7 @@ function getSpreadsheetSettings_(select) {
 
 
 function setSpreadsheetSettings_(select, value) {
-	var spreadsheet_settings = getPropertiesService_("document", "json", "spreadsheet_settings");
+	var spreadsheet_settings = PropertiesService2.getProperty("document", "spreadsheet_settings", "json");
 
 	switch (select) {
 	case "operation_mode":
@@ -148,18 +148,18 @@ function setSpreadsheetSettings_(select, value) {
 		return 1;
 	}
 
-	setPropertiesService_("document", "json", "spreadsheet_settings", spreadsheet_settings);
-	putCacheService_("document", "spreadsheet_settings", "json", spreadsheet_settings);
+	PropertiesService2.setProperty("document", "spreadsheet_settings", "json", spreadsheet_settings);
+	CacheService2.put("document", "spreadsheet_settings", "json", spreadsheet_settings);
 }
 
 
 function getConstProperties_(select) {
 	var const_properties;
 
-	const_properties = getCacheService_("document", "const_properties", "json");
+	const_properties = CacheService2.get("document", "const_properties", "json");
 	if (!const_properties) {
-		const_properties = getPropertiesService_("document", "json", "const_properties");
-		putCacheService_("document", "const_properties", "json", const_properties);
+		const_properties = PropertiesService2.getProperty("document", "const_properties", "json");
+		CacheService2.put("document", "const_properties", "json", const_properties);
 	}
 
 	switch (select) {
