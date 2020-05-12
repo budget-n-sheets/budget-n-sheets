@@ -114,7 +114,7 @@ function daily_PostEvents_(date) {
 }
 
 
-function updateDecimalSepartor_() {
+function updateDecimalSeparator_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet, cell, v;
 

@@ -54,7 +54,7 @@ function saveUserSettings(settings) {
 	PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
 	CacheService2.put("document", "user_settings", "json", user_settings);
 
-	updateDecimalSepartor_();
+	updateDecimalSeparator_();
 
 	if (init_month == new_init_month) return;
 
