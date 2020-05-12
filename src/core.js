@@ -105,7 +105,7 @@ function showSidebarMainSettings() {
 	var htmlSidebar;
 	var calendars = getAllOwnedCalendars();
 
-	putCacheService_("document", "DB_CALENDARS", "json", calendars);
+	CacheService2.put("document", "DB_CALENDARS", "json", calendars);
 
 	htmlTemplate.doc_name = SpreadsheetApp.getActiveSpreadsheet().getName();
 	htmlTemplate.financial_year = getConstProperties_("financial_year");

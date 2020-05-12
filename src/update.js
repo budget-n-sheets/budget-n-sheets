@@ -129,11 +129,11 @@ function classService_(select, property, value) {
 
 
 function getClass_(property) {
-	var class_version2 = getCacheService_("document", "class_version2", "json");
+	var class_version2 = CacheService2.get("document", "class_version2", "json");
 
 	if (!class_version2) {
 		class_version2 = getPropertiesService_("document", "json", "class_version2");
-		putCacheService_("document", "class_version2", "json", class_version2);
+		CacheService2.put("document", "class_version2", "json", class_version2);
 	}
 
 	return class_version2[property];
@@ -146,7 +146,7 @@ function setClass_(property, value) {
 	class_version2[property] = value;
 
 	setPropertiesService_("document", "json", "class_version2", class_version2);
-	putCacheService_("document", "class_version2", "json", class_version2);
+	CacheService2.put("document", "class_version2", "json", class_version2);
 }
 
 
