@@ -17,7 +17,7 @@ function retrieveUserSettings() {
 
 
 function saveUserSettings(settings) {
-	var sheet, c;
+	var db_calendars, sheet, c;
 
 	var calendar = {
 		financial_calendar: "",
@@ -29,7 +29,7 @@ function saveUserSettings(settings) {
 	const init_month = getUserSettings_("initial_month");
 
 	if (settings.financial_calendar) {
-		const db_calendars = getCacheService_("document", "DB_CALENDARS", "json");
+		db_calendars = getCacheService_("document", "DB_CALENDARS", "json");
 		if (!db_calendars) {
 			db_calendars = getAllOwnedCalendars();
 			putCacheService_("document", "DB_CALENDARS", "json", db_calendars);
