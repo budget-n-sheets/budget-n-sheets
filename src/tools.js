@@ -232,50 +232,47 @@ function validateFormatRegistry_() {
 
 function updateCashFlow_(sheetMonth, mm) {
 	console.time("tool/update-cash-flow");
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
-	var sheetBackstage;
+	var spreadsheet, sheetCashFlow, sheetBackstage;
+	var calendar, listEventos, evento, day;
+	var metaTags;
+	var data_cards, data_tags, value, maxRows;
+	var table, hasCards, hasTags;
+	var cf_flow, cf_transactions;
+	var a, b, c, i, j, k, n, ma, t, x;
+
+	console.time("tool/update-cash-flow/load");
+	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	sheetCashFlow = spreadsheet.getSheetByName("Cash Flow");
 
 	if (!sheetCashFlow) return;
 
-	var calendar, listEventos, evento, day, yyyy, dd;
-	var number_accounts, number_cards;
-	var metaTags, override_zero;
-	var data_cards, data_tags, value, maxRows;
-	var table, hasCards, hasTags;
-	var cf_flow, cf_transaction;
-	var a, b, c, i, j, k, n, ma, t, x;
-	var h_, w_;
+	const h_ = TABLE_DIMENSION.height;
+	const w_ = TABLE_DIMENSION.width;
 
-	var dec_p = getSpreadsheetSettings_("decimal_separator");
+	const num_acc = getConstProperties_("number_accounts");
+	const financial_year = getConstProperties_("financial_year");
+	const override_zero = getUserSettings_("override_zero");
+	const dec_p = getSpreadsheetSettings_("decimal_separator");
 
-	console.time("tool/update-cash-flow/load");
-	h_ = TABLE_DIMENSION.height;
-	w_ = TABLE_DIMENSION.width;
-
-	yyyy = getConstProperties_('financial_year');
-
-	dd = new Date(yyyy, mm + 1, 0).getDate();
-	override_zero = getUserSettings_("override_zero");
-	number_accounts = getConstProperties_('number_accounts');
+	const dd = new Date(financial_year, mm + 1, 0).getDate();
 
 	cf_flow = [ ];
-	cf_transaction = [ ];
+	cf_transactions = [ ];
 	for (i = 0; i < 31; i++) {
 		cf_flow[i] = "";
-		cf_transaction[i] = "";
+		cf_transactions[i] = "";
 	}
 
 	listEventos = [ ];
 	t = getSpreadsheetDate();
-	b = new Date(yyyy, mm + 1, 1);
+	b = new Date(financial_year, mm + 1, 1);
 	if (getUserSettings_("cash_flow_events") && t.getTime() < b.getTime()) {
 		calendar = getFinancialCalendar_();
 
 		if (calendar) {
-			a = new Date(yyyy, mm, 1);
+			a = new Date(financial_year, mm, 1);
 			if (a.getTime() < t.getTime()) {
-				a = new Date(yyyy, mm, t.getDate() + 1);
+				a = new Date(financial_year, mm, t.getDate() + 1);
 			}
 
 			x = getSpreadsheetDate(a);
@@ -305,7 +302,7 @@ function updateCashFlow_(sheetMonth, mm) {
 	if (maxRows > 0) {
 		k = 0;
 		table = sheetMonth.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
-		for (i = 0; k < number_accounts; i++) {
+		for (i = 0; k < num_acc; i++) {
 			if (i >= maxRows || table[i][2] === "") {
 				k++;
 				i = -1;
@@ -332,7 +329,7 @@ function updateCashFlow_(sheetMonth, mm) {
 
 			day--;
 			cf_flow[day] += value.formatLocaleSignal(dec_p);
-			cf_transaction[day] += "@" + table[i][1] + " ";
+			cf_transactions[day] += "@" + table[i][1] + " ";
 		}
 	}
 	console.timeEnd("tool/update-cash-flow/registry");
@@ -400,19 +397,19 @@ function updateCashFlow_(sheetMonth, mm) {
 
 		day = evento.Day - 1;
 		cf_flow[day] += value.formatLocaleSignal(dec_p);
-		cf_transaction[day] += "@" + evento.Title + " ";
+		cf_transactions[day] += "@" + evento.Title + " ";
 	}
 	console.timeEnd("tool/update-cash-flow/calendar");
 
 	if (dd < 31) {
 		cf_flow.splice(dd - 31, 31 - dd);
-		cf_transaction.splice(dd - 31, 31 - dd);
+		cf_transactions.splice(dd - 31, 31 - dd);
 	}
-	cf_flow = transpose([cf_flow]);
-	cf_transaction = transpose([cf_transaction]);
+	cf_flow = transpose([ cf_flow ]);
+	cf_transactions = transpose([ cf_transactions ]);
 
 	sheetCashFlow.getRange(4, 2 + 4*mm, dd, 1).setFormulas(cf_flow);
-	sheetCashFlow.getRange(4, 4 + 4*mm, dd, 1).setValues(cf_transaction);
+	sheetCashFlow.getRange(4, 4 + 4*mm, dd, 1).setValues(cf_transactions);
 	SpreadsheetApp.flush();
 	console.timeEnd("tool/update-cash-flow");
 }
