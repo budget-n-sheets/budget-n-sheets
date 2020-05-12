@@ -64,13 +64,13 @@ function makeSign_() {
 		return;
 	}
 
-	const const_properties = getPropertiesService_("document", "json", "const_properties");
+	const const_properties = PropertiesService2.getProperty("document", "const_properties", "json");
 	if (!const_properties) {
 		console.warn("Property 'const_properties' is undefined!");
 		return;
 	}
 
-	const class_version = getPropertiesService_("document", "json", "class_version2");
+	const class_version = PropertiesService2.getProperty("document", "class_version2", "json");
 	if (!class_version) {
 		console.warn("Property 'class_version' is undefined!");
 		return;

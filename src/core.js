@@ -120,7 +120,7 @@ function showSidebarMainSettings() {
 
 function showDialogAboutAddon() {
 	try {
-		if (getPropertiesService_("document", "", "is_installed")) {
+		if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
 			onlineUpdate_();
 		}
 	} catch (err) {
@@ -180,14 +180,14 @@ function showSetupAddon_() {
 		return;
 	}
 
-	if (getPropertiesService_("document", "", "lock_spreadsheet")) {
+	if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) {
 		Ui.alert(
 			"Can't create budget sheet",
 			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
 			Ui.ButtonSet.OK);
 		return;
 
-	} else if (getPropertiesService_("document", "", "is_installed")) {
+	} else if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
 		return;

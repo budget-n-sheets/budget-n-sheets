@@ -18,7 +18,7 @@
  */
 
 function update_() {
-	if (!getPropertiesService_('document', '', 'is_installed')) return 3;
+	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) return 3;
 
 	var lock = LockService.getDocumentLock();
 	try {
