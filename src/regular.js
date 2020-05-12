@@ -116,10 +116,13 @@ function daily_PostEvents_(date) {
 
 function updateDecimalSeparator_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet, cell, v;
+	var sheet, cell, v, t;
 
 	sheet = spreadsheet.getSheetByName("_Settings");
-	if (!sheet) return;
+	if (!sheet) {
+		sheet = spreadsheet.insertSheet();
+		t = true;
+	}
 
 	cell = sheet.getRange(8, 2);
 
@@ -129,6 +132,8 @@ function updateDecimalSeparator_() {
 
 	cell = cell.getDisplayValue();
 	v = /\./.test(cell);
+
+	if (t) spreadsheet.deleteSheet(sheet);
 
 	setSpreadsheetSettings_("decimal_separator", v);
 	setSpreadsheetSettings_("spreadsheet_locale", spreadsheet.getSpreadsheetLocale());
