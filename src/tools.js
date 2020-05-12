@@ -183,6 +183,7 @@ function validateUpdateCashFlow_(mm) {
 		if (name === "Cash Flow") {
 			mm = range.getColumn() - 1;
 			mm = (mm - (mm % 4)) / 4;
+			sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
 		} else {
 			mm = MN_SHORT.indexOf(name);
 			if (mm === -1) {
