@@ -9,6 +9,32 @@ function htmlInclude(fileName) {
 }
 
 
+function isScriptAuthorized_(select) {
+	var authInfoLevel, authMode;
+
+	switch (select) {
+	case "NONE":
+		authMode = ScriptApp.AuthMode.NONE;
+		break;
+	case "CUSTOM_FUNCTION":
+		authMode = ScriptApp.AuthMode.CUSTOM_FUNCTION;
+		break;
+	case "LIMITED":
+		authMode = ScriptApp.AuthMode.LIMITED;
+		break;
+	case "FULL":
+		authMode = ScriptApp.AuthMode.FULL;
+		break;
+	default:
+		throw new Error("Invalid authMode.");
+	}
+
+	authInfoLevel = ScriptApp.getAuthorizationInfo(authMode);
+
+	return authInfoLevel.getAuthorizationStatus() == ScriptApp.AuthorizationStatus.NOT_REQUIRED;
+}
+
+
 /**
  * Sends an email requesting re-authorization of the script.
  * The property "authorization_status" ensures the recipient receives the email
