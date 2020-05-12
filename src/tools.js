@@ -263,31 +263,7 @@ function updateCashFlow_(sheetMonth, mm) {
 		cf_transactions[i] = "";
 	}
 
-	listEventos = [ ];
-	t = getSpreadsheetDate();
-	b = new Date(financial_year, mm + 1, 1);
-	if (getUserSettings_("cash_flow_events") && t.getTime() < b.getTime()) {
-		calendar = getFinancialCalendar_();
-
-		if (calendar) {
-			a = new Date(financial_year, mm, 1);
-			if (a.getTime() < t.getTime()) {
-				a = new Date(financial_year, mm, t.getDate() + 1);
-			}
-
-			x = getSpreadsheetDate(a);
-			a = a.getTime() + (a.getTime() - x.getTime());
-			a = new Date(a);
-
-			x = getSpreadsheetDate(b);
-			b = b.getTime() + (b.getTime() - x.getTime());
-			b = new Date(b);
-
-			listEventos = calendar.getEvents(a, b);
-			if (listEventos) listEventos = calendarDigestListEvents_(listEventos);
-			else listEventos = [ ];
-		}
-	}
+	listEventos = getCalendarEventsForCashFlow_(financial_year, mm);
 
 	if (override_zero || listEventos.length > 0) {
 		data_tags = getTagData_();

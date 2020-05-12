@@ -168,3 +168,38 @@ function getFinancialCalendar_() {
 	setUserSettings_('post_day_events', false);
 	setUserSettings_('cash_flow_events', false);
 }
+
+
+function getCalendarEventsForCashFlow_(financial_year, mm) {
+	var calendar, eventos;
+	var today;
+	var a, b, x;
+
+	today = DATE_NOW;
+	b = new Date(financial_year, mm + 1, 1);
+
+	if (! getUserSettings_("cash_flow_events")
+				|| today.getTime() >= b.getTime()) return [ ];
+
+	calendar = getFinancialCalendar_();
+	if (!calendar) return [ ];
+
+	a = new Date(financial_year, mm, 1);
+	if (a.getTime() < today.getTime()) {
+		a = new Date(financial_year, mm, today.getDate() + 1);
+	}
+
+	x = getSpreadsheetDate(a);
+	a = a.getTime() + (a.getTime() - x.getTime());
+	a = new Date(a);
+
+	x = getSpreadsheetDate(b);
+	b = b.getTime() + (b.getTime() - x.getTime());
+	b = new Date(b);
+
+	eventos = calendar.getEvents(a, b);
+	if (!eventos) return [ ];
+
+	eventos = calendarDigestListEvents_(eventos);
+	return eventos;
+}
