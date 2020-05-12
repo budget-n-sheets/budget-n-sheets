@@ -17,24 +17,19 @@ function retrieveUserSettings() {
 
 
 function saveUserSettings(settings) {
-	var spreadsheet, sheet;
-	var db_calendars, calendar, c;
-	var user_settings, yyyy, mm, init;
+	var sheet, c;
 
-	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	sheet = spreadsheet.getSheetByName("_Settings");
-
-	mm = getUserSettings_("initial_month");
-	init = Number(settings.initial_month);
-
-	calendar = {
+	var calendar = {
 		financial_calendar: "",
 		post_day_events: false,
 		cash_flow_events: false
 	};
 
+	const new_init_month = Number(settings.initial_month);
+	const init_month = getUserSettings_("initial_month");
+
 	if (settings.financial_calendar) {
-		db_calendars = getCacheService_("document", "DB_CALENDARS", "json");
+		const db_calendars = getCacheService_("document", "DB_CALENDARS", "json");
 		if (!db_calendars) {
 			db_calendars = getAllOwnedCalendars();
 			putCacheService_("document", "DB_CALENDARS", "json", db_calendars);
@@ -48,8 +43,8 @@ function saveUserSettings(settings) {
 		}
 	}
 
-	user_settings = {
-		initial_month: init,
+	const user_settings = {
+		initial_month: new_init_month,
 		override_zero: settings.override_zero,
 
 		financial_calendar: calendar.financial_calendar,
@@ -61,12 +56,15 @@ function saveUserSettings(settings) {
 
 	updateDecimalSepartor_();
 
-	if (mm !== init) {
-		sheet.getRange("B4").setFormula("=" + (init + 1).formatLocaleSignal());
-		SpreadsheetApp.flush();
+	if (init_month == new_init_month) return;
 
-		updateTabsColors();
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
+	if (sheet) {
+		sheet.getRange("B4").setFormula("=" + (new_init_month + 1).formatLocaleSignal());
+		SpreadsheetApp.flush();
 	}
+
+	updateTabsColors();
 }
 
 
