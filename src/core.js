@@ -160,14 +160,30 @@ function showDialogUpdate() {
 
 
 function showSetupAddon_() {
-	if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+	console.info("add-on/intent");
+	var ui = SpreadsheetApp.getUi();
+
+	if (! isTemplateAvailable()) {
+		ui.alert(
+			"New version available",
+			"Please, re-open the spreadsheet to update the add-on.",
+			ui.ButtonSet.OK);
+		return;
+
+	} else if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
 		return;
+
+	} else if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) {
+		ui.alert(
+			"Can't create budget sheet",
+			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
+			ui.ButtonSet.OK);
+		return;
 	}
 
-	console.info("add-on/intent");
-	var ui = SpreadsheetApp.getUi();
+
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var owner, user;
 
@@ -183,24 +199,10 @@ function showSetupAddon_() {
 		user = "";
 	}
 
-	if (! isTemplateAvailable()) {
-		ui.alert(
-			"New version available",
-			"Please, re-open the spreadsheet to update the add-on.",
-			ui.ButtonSet.OK);
-		return;
-
-	} else if (owner !== "" && user !== owner) {
+	if (owner !== "" && user !== owner) {
 		ui.alert(
 			"Permission denied",
 			"You don't own the spreadsheet. Please start in a new spreadsheet.",
-			ui.ButtonSet.OK);
-		return;
-
-	} else if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) {
-		ui.alert(
-			"Can't create budget sheet",
-			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
 			ui.ButtonSet.OK);
 		return;
 
