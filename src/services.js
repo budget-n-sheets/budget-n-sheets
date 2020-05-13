@@ -242,7 +242,7 @@ function askDeactivation() {
 	var button = result.getSelectedButton();
 	var text = result.getResponseText();
 	if (button == Ui.Button.OK && text === s) {
-		uninstallAndLock_();
+		uninstall_(true);
 		onOpen();
 		console.info("add-on/deactivate");
 		return true;

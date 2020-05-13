@@ -1,28 +1,3 @@
-function uninstall_() {
-	var list = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
-
-	for (var i = 0; i < list.length; i++) {
-		ScriptApp.deleteTrigger(list[i]);
-	}
-
-	PropertiesService.getDocumentProperties().deleteAllProperties();
-
-	console.info("add-on/uninstall");
-}
-
-
-function uninstallAndLock_() {
-	var list = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
-
-	for (var i = 0; i < list.length; i++) {
-		ScriptApp.deleteTrigger(list[i]);
-	}
-
-	PropertiesService.getDocumentProperties().setProperties({lock_spreadsheet: "true"}, true);
-	console.info("add-on/uninstall-with-lock");
-}
-
-
 function setupUi(settings, list_acc) {
 	var ui = SpreadsheetApp.getUi();
 	var documentProperties = PropertiesService.getDocumentProperties();
@@ -60,6 +35,21 @@ function setupUi(settings, list_acc) {
 	documentProperties.setProperty("is_installed", "true");
 	showDialogSetupEnd();
 	onOpen();
+}
+
+
+function uninstall_(putLock) {
+	var list = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
+	for (var i = 0; i < list.length; i++) {
+		ScriptApp.deleteTrigger(list[i]);
+	}
+	if (putLock) {
+		PropertiesService.getDocumentProperties().setProperties({lock_spreadsheet: "true"}, true);
+		console.info("add-on/uninstall-with-lock");
+	} else {
+		PropertiesService.getDocumentProperties().deleteAllProperties();
+		console.info("add-on/uninstall");
+	}
 }
 
 
