@@ -1,6 +1,4 @@
-/**
- * @NotOnlyCurrentDoc Limits the script to only accessing the current spreadsheet.
- */
+/** @NotOnlyCurrentDoc */
 
 /**
  * Runs when the add-on is installed; calls onOpen() to ensure menu creation and
@@ -26,29 +24,29 @@ function onOpen(e) {
 	var menu = ui.createAddonMenu();
 
 	if (e && e.authMode == ScriptApp.AuthMode.NONE) {
-		menu.addItem('Start budget sheet', 'showSetupAddon_')
+		menu.addItem("Start budget sheet", "showSetupAddon_")
 			.addSeparator()
-			.addItem('About the add-on', 'showDialogAboutAddon');
+			.addItem("About the add-on", "showDialogAboutAddon");
 	} else {
-		if (PropertiesService.getDocumentProperties().getProperty('is_installed')) {
-			menu.addItem('Add blank lines', 'toolAddBlankRows')
-				.addItem('Sort registry', 'toolFormatRegistry')
-				.addItem('Update cash flow', 'toolUpdateCashFlow')
+		if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+			menu.addItem("Add blank lines", "toolAddBlankRows")
+				.addItem("Sort registry", "toolFormatRegistry")
+				.addItem("Update cash flow", "toolUpdateCashFlow")
 				.addSubMenu(ui.createMenu("Pages view")
 					.addItem("Collapse", "toolHideSheets_")
 					.addItem("Expand", "toolShowSheets_"))
 				.addSeparator()
-				.addItem('Open Accounts & Cards panel', 'showPanelTables')
-				.addItem('Open Cool Gallery panel', 'showPanelAnalytics')
+				.addItem("Open Accounts & Cards panel", "showPanelTables")
+				.addItem("Open Cool Gallery panel", "showPanelAnalytics")
 				.addSeparator()
-				.addItem('About the add-on', 'showDialogAboutAddon')
-				.addItem('Edit settings', 'showSidebarMainSettings');
+				.addItem("About the add-on", "showDialogAboutAddon")
+				.addItem("Edit settings", "showSidebarMainSettings");
 
 			console.info("add-on/open");
 		} else {
-			menu.addItem('Start budget sheet', 'showSetupAddon_')
+			menu.addItem("Start budget sheet", "showSetupAddon_")
 				.addSeparator()
-				.addItem('About the add-on', 'showDialogAboutAddon');
+				.addItem("About the add-on", "showDialogAboutAddon");
 		}
 	}
 
@@ -112,7 +110,7 @@ function showSidebarMainSettings() {
 	htmlTemplate.calendars_data = calendars;
 	htmlTemplate.calendars_enabled = calendars.md5.length > 0;
 
-	htmlSidebar = htmlTemplate.evaluate().setTitle('Edit settings');
+	htmlSidebar = htmlTemplate.evaluate().setTitle("Edit settings");
 
 	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
@@ -124,27 +122,25 @@ function showDialogAboutAddon() {
 			onlineUpdate_();
 		}
 	} catch (err) {
-		consoleLog_('error', 'showDialogAboutAddon()', err);
+		consoleLog_("error", "showDialogAboutAddon()", err);
 	}
 
 	var htmlDialog, htmlTemplate;
-	var v0;
+	const v0 = APPS_SCRIPT_GLOBAL.script_version;
 
 	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAboutAddon")
-
-	v0 = APPS_SCRIPT_GLOBAL.script_version;
 	htmlTemplate.version = v0.major + "." + v0.minor + "." + v0.patch;
 
 	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(281)
 		.setHeight(359);
-	SpreadsheetApp.getUi()
-		.showModalDialog(htmlDialog, 'About the add-on');
+
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "About the add-on");
 }
 
 
 function showDialogErrorMessage(err) {
-	if (err) consoleLog_('error', 'showDialogErrorMessage()', err);
+	if (err) consoleLog_("error", "showDialogErrorMessage()", err);
 
 	var htmlDialog = HtmlService.createHtmlOutputFromFile("html/htmlExceptionMessage")
 		.setWidth(373)
@@ -165,9 +161,9 @@ function showDialogUpdate() {
 
 function showSetupAddon_() {
 	console.info("add-on/intent");
-	var Ui = SpreadsheetApp.getUi();
+	var ui = SpreadsheetApp.getUi();
 
-	Ui.alert(
+	ui.alert(
 		"Notice to X-Frame-Options Policy",
 		"Due to a bug with Google Sheets [1], the setup \"Start budget spreadsheet\" may not be displayed or work correctly.\n\
 		If you experince the issue, please use the browser in private/incognito mode to start a new buget sheet.\n\n\
@@ -175,26 +171,24 @@ function showSetupAddon_() {
 		References\n\
 		[1] - Google Issue Tracker - Bug 69270374 https://issuetracker.google.com/issues/69270374\n\
 		[2] - Google Account Help - https://support.google.com/accounts/answer/1721977",
-		Ui.ButtonSet.OK);
+		ui.ButtonSet.OK);
 
 	try {
 		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 	} catch (err) {
-		consoleLog_('warn', 'showSetupAddon_()', err);
-
-		Ui.alert(
+		consoleLog_("warn", "showSetupAddon_()", err);
+		ui.alert(
 			"Budget n Sheets",
 			"The add-on is updating. Try again later.",
-			Ui.ButtonSet.OK);
-
+			ui.ButtonSet.OK);
 		return;
 	}
 
 	if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) {
-		Ui.alert(
+		ui.alert(
 			"Can't create budget sheet",
 			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
-			Ui.ButtonSet.OK);
+			ui.ButtonSet.OK);
 		return;
 
 	} else if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
@@ -203,10 +197,10 @@ function showSetupAddon_() {
 		return;
 
 	} else if (SpreadsheetApp.getActiveSpreadsheet().getFormUrl() != null) {
-		Ui.alert(
+		ui.alert(
 			"Linked form",
 			"The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.",
-			Ui.ButtonSet.OK);
+			ui.ButtonSet.OK);
 		return;
 	}
 
@@ -217,8 +211,8 @@ function showSetupAddon_() {
 		.evaluate()
 		.setWidth(353)
 		.setHeight(359);
-	SpreadsheetApp.getUi()
-		.showModalDialog(htmlDialog, 'Start budget spreadsheet');
+
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Start budget spreadsheet");
 }
 
 
@@ -228,8 +222,7 @@ function showDialogSetupEnd() {
 		.setWidth(353)
 		.setHeight(359);
 
-	SpreadsheetApp.getUi()
-		.showModalDialog(htmlDialog, "Add-on Budget n Sheets");
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Add-on Budget n Sheets");
 }
 
 
