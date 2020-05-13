@@ -973,10 +973,8 @@ function setupMonthSheet_() {
 	}
 	SpreadsheetApp.flush();
 
-	i = 11;
-	while (i > -1) {
-		SPREADSHEET.setActiveSheet(sheetTTT);
-		sheet = SPREADSHEET.duplicateActiveSheet().setName(MN_SHORT[i]);
+	for (i = 0; i < 12; i++) {
+		sheet = SPREADSHEET.insertSheet(MN_SHORT[i], 3 + i, {template: sheetTTT});
 		sheets[i] = sheet;
 
 		sheet.getRange("A3").setFormula("CONCAT(\"Expenses \"; TO_TEXT(\'_Backstage\'!$B" + (4+h_*i) + "))");
@@ -1010,13 +1008,11 @@ function setupMonthSheet_() {
 		sheet.protect()
 			.setUnprotectedRanges(ranges)
 			.setWarningOnly(true);
-
-		i--;
 	}
 
-	sheet.getRange(1, 1).setValue("Wallet");
+	sheets[0].getRange(1, 1).setValue("Wallet");
 	for (k = 0; k < num_acc; k++) {
-		sheet.getRange(1, 6 + k*5).setValue(list_acc[k]);
+		sheets[0].getRange(1, 6 + k*5).setValue(list_acc[k]);
 	}
 
 	for (i = 1; i < 12; i++) {
