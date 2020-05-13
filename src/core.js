@@ -24,7 +24,7 @@ function onOpen(e) {
 	var menu = ui.createAddonMenu();
 
 	if (e && e.authMode == ScriptApp.AuthMode.NONE) {
-		menu.addItem("Start budget sheet", "showSetupAddon_")
+		menu.addItem("Start budget sheet", "showDialogSetupAddon")
 			.addSeparator()
 			.addItem("About the add-on", "showDialogAboutAddon");
 	} else {
@@ -44,7 +44,7 @@ function onOpen(e) {
 
 			console.info("add-on/open");
 		} else {
-			menu.addItem("Start budget sheet", "showSetupAddon_")
+			menu.addItem("Start budget sheet", "showDialogSetupAddon")
 				.addSeparator()
 				.addItem("About the add-on", "showDialogAboutAddon");
 		}
@@ -159,7 +159,7 @@ function showDialogUpdate() {
 }
 
 
-function showSetupAddon_() {
+function showDialogSetupAddon_() {
 	console.info("add-on/intent");
 	var ui = SpreadsheetApp.getUi();
 
@@ -213,8 +213,6 @@ function showSetupAddon_() {
 			ui.ButtonSet.OK);
 		return;
 	}
-
-	if (setupUi()) return;
 
 	ui.alert(
 		"Notice to X-Frame-Options Policy",

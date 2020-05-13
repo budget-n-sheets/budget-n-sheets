@@ -1,34 +1,54 @@
+function showDialogSetupAddon() {
+	setupFlow_("dialog");
+}
+
 function setupUi(settings, list_acc) {
+	setupFlow_("setup", settings, list_acc);
+}
+
+function setupFlow_(select, settings, list_acc) {
+	var lock = LockService.getDocumentLock();
+	try {
+		lock.waitLock(0);
+	} catch (err) {
+		SpreadsheetApp.getUi().alert(
+			"Add-on setup in progress",
+			"A budget spreadsheet setup is already in progress.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+		consoleLog_("warn", "setupFlow_(): Wait lock time out.", err);
+		return;
+	}
+
+	switch (select) {
+		case "dialog":
+			showDialogSetupAddon_();
+			break;
+		case "setup":
+			setupUi_(settings, list_acc);
+			break;
+
+		default:
+			throw new Error("Switch case is default.");
+	}
+}
+
+
+function setupUi_(settings, list_acc) {
 	var ui = SpreadsheetApp.getUi();
 	var documentProperties = PropertiesService.getDocumentProperties();
 
 	if (documentProperties.getProperty("is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
-		return 1;
+		return;
 
 	} else if (documentProperties.getProperty("lock_spreadsheet")) {
 		ui.alert(
 			"Can't create budget sheet",
 			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
 			ui.ButtonSet.OK);
-		return 1;
+		return;
 	}
-
-	var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(1000);
-	} catch (err) {
-		ui.alert(
-			"Add-on is busy",
-			"A budget spreadsheet setup is in progress.",
-			ui.ButtonSet.OK);
-
-		consoleLog_("warn", "setupUi(): Wait lock time out.", err);
-		return 1;
-	}
-
-	if (!settings || !list_acc) return;
 
 	setup_(settings, list_acc);
 
