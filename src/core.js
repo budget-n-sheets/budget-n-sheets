@@ -236,7 +236,7 @@ function showDialogSetupEnd() {
 	var htmlDialog = HtmlService.createTemplateFromFile("html/htmlSetupEnd")
 		.evaluate()
 		.setWidth(353)
-		.setHeight(359);
+		.setHeight(367);
 
 	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Add-on Budget n Sheets");
 }
