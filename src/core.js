@@ -168,18 +168,6 @@ function showSetupAddon_() {
 
 	console.info("add-on/intent");
 	var ui = SpreadsheetApp.getUi();
-
-	try {
-		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
-	} catch (err) {
-		consoleLog_("warn", "showSetupAddon_()", err);
-		ui.alert(
-			"Budget n Sheets",
-			"The add-on is updating. Try again later.",
-			ui.ButtonSet.OK);
-		return;
-	}
-
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var owner, user;
 
@@ -195,7 +183,14 @@ function showSetupAddon_() {
 		user = "";
 	}
 
-	if (owner !== "" && user !== owner) {
+	if (! isTemplateAvailable()) {
+		ui.alert(
+			"New version available",
+			"Please, re-open the spreadsheet to update the add-on.",
+			ui.ButtonSet.OK);
+		return;
+
+	} else if (owner !== "" && user !== owner) {
 		ui.alert(
 			"Permission denied",
 			"You don't own the spreadsheet. Please start in a new spreadsheet.",

@@ -47,3 +47,15 @@ function isMissingSheet() {
 
 	return false;
 }
+
+
+function isTemplateAvailable() {
+	try {
+		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
+	} catch (err) {
+		console.error("Spreadsheet template is not available!");
+		return false;
+	}
+
+	return true;
+}

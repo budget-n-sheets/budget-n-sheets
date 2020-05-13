@@ -38,11 +38,7 @@ function onlineUpdate_() {
 
 	var ui = SpreadsheetApp.getUi();
 
-	try {
-		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
-	} catch (err) {
-		consoleLog_("warn", "onlineUpdate_()", err);
-
+	if (! isTemplateAvailable()) {
 		ui.alert(
 			"New version available",
 			"Please, re-open the spreadsheet to update the add-on.",
@@ -84,12 +80,7 @@ function onlineUpdate_() {
 
 
 function seamlessUpdate_() {
-	try {
-		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
-	} catch (err) {
-		consoleLog_("warn", "seamlessUpdate_()", err);
-		return 1;
-	}
+	if (! isTemplateAvailable()) return 1;
 
 	var r = update_();
 
