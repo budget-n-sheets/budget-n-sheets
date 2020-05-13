@@ -184,7 +184,29 @@ function showSetupAddon_() {
 		return;
 	}
 
-	if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) {
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var owner, user;
+
+	try {
+		owner = spreadsheet.getOwner();
+		if (owner) owner = owner.getEmail();
+		else owner = "";
+
+		user = Session.getEffectiveUser().getEmail();
+	} catch (err) {
+		console.warn(err);
+		owner = "";
+		user = "";
+	}
+
+	if (owner !== "" && user !== owner) {
+		ui.alert(
+			"Permission denied",
+			"You don't own the spreadsheet. Please start in a new spreadsheet.",
+			ui.ButtonSet.OK);
+		return;
+
+	} else if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) {
 		ui.alert(
 			"Can't create budget sheet",
 			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
@@ -196,7 +218,7 @@ function showSetupAddon_() {
 		onOpen();
 		return;
 
-	} else if (SpreadsheetApp.getActiveSpreadsheet().getFormUrl() != null) {
+	} else if (spreadsheet.getFormUrl() != null) {
 		ui.alert(
 			"Linked form",
 			"The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.",
