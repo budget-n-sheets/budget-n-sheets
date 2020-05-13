@@ -79,7 +79,7 @@ function coolFilterByTag_(info) {
 		aux1 = "{" + aux1 + "}; REGEXMATCH(\'" + MN_SHORT[i] + "\'!" + rollA1Notation(5, 4, -1, 1) + "; " + header + ")";
 		aux1 = "FILTER(" + aux1 + ")";
 		aux1 = "IFNA(" + aux1 + "; {\"\"" + dec_c + "\"\"" + dec_c + "\"\"" + dec_c + "\"\"" + dec_c + "\"\"" + dec_c + "\"\"})";
-		aux1 = "SORT(" + aux1 + "; 2, TRUE, 4, TRUE, 5, TRUE); \n";
+		aux1 = "SORT(" + aux1 + "; 2; TRUE; 4; TRUE; 5; TRUE); \n";
 		formula += aux1;
 
 		for (k = 0; k < num_acc; k++) {
@@ -91,7 +91,7 @@ function coolFilterByTag_(info) {
 			aux2 = "{" + aux2 + "}; REGEXMATCH(\'" + MN_SHORT[i] + "\'!" + rollA1Notation(5, 9 + 5*k, -1, 1) + "; " + header + ")";
 			aux2 = "FILTER(" + aux2 + ")";
 			aux2 = "IFNA(" + aux2 + "; {\"\"" + dec_c + "\"\"" + dec_c + "\"\"" + dec_c + "\"\"" + dec_c + "\"\"" + dec_c + "\"\"})";
-			aux2 = "SORT(" + aux2 + "; 2, TRUE, 4, TRUE, 5, TRUE); \n";
+			aux2 = "SORT(" + aux2 + "; 2; TRUE; 4; TRUE; 5; TRUE); \n";
 			formula += aux2;
 		}
 
@@ -101,7 +101,7 @@ function coolFilterByTag_(info) {
 		aux3 = "{" + aux3 + "}; REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1, 1) + "; " + header + ")";
 		aux3 = "FILTER(" + aux3 + ")";
 		aux3 = "IFNA(" + aux3 + "; {\"\"" + dec_c + "\"\"" + dec_c + "\"\"" + dec_c + "\"\"" + dec_c + "\"\"" + dec_c + "\"\"})";
-		aux3 = "SORT(" + aux3 + "; 2, TRUE, 4, TRUE, 5, TRUE); \n";
+		aux3 = "SORT(" + aux3 + "; 2; TRUE; 4; TRUE; 5; TRUE); \n";
 		formula += aux3;
 
 		i++;
