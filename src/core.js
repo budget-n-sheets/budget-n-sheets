@@ -212,7 +212,6 @@ function showSetupAddon_() {
 		return;
 	}
 
-	reviseUser_();
 	if (setupUi()) return;
 
 	ui.alert(
