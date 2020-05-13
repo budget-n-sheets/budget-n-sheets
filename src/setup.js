@@ -1,4 +1,5 @@
 function showDialogSetupAddon() {
+	console.info("add-on/intent");
 	setupFlow_("dialog");
 }
 
@@ -7,42 +8,33 @@ function setupUi(settings, list_acc) {
 }
 
 function setupFlow_(select, settings, list_acc) {
+	var ui = SpreadsheetApp.getUi();
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(0);
 	} catch (err) {
-		SpreadsheetApp.getUi().alert(
+		ui.alert(
 			"Add-on setup in progress",
 			"A budget spreadsheet setup is already in progress.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
+			ui.ButtonSet.OK);
 		consoleLog_("warn", "setupFlow_(): Wait lock time out.", err);
 		return;
 	}
 
-	switch (select) {
-		case "dialog":
-			showDialogSetupAddon_();
-			break;
-		case "setup":
-			setupUi_(settings, list_acc);
-			break;
 
-		default:
-			throw new Error("Switch case is default.");
-	}
-}
+	if (! isTemplateAvailable()) {
+		ui.alert(
+			"New version available",
+			"Please, re-open the spreadsheet to update the add-on.",
+			ui.ButtonSet.OK);
+		return;
 
-
-function setupUi_(settings, list_acc) {
-	var ui = SpreadsheetApp.getUi();
-	var documentProperties = PropertiesService.getDocumentProperties();
-
-	if (documentProperties.getProperty("is_installed")) {
+	} else if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
 		showDialogSetupEnd();
 		onOpen();
 		return;
 
-	} else if (documentProperties.getProperty("lock_spreadsheet")) {
+	} else if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) {
 		ui.alert(
 			"Can't create budget sheet",
 			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
@@ -50,11 +42,48 @@ function setupUi_(settings, list_acc) {
 		return;
 	}
 
-	setup_(settings, list_acc);
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var owner, user;
 
-	documentProperties.setProperty("is_installed", "true");
-	showDialogSetupEnd();
-	onOpen();
+	try {
+		owner = spreadsheet.getOwner();
+		if (owner) owner = owner.getEmail();
+		else owner = "";
+
+		user = Session.getEffectiveUser().getEmail();
+	} catch (err) {
+		console.warn(err);
+		owner = "";
+		user = "";
+	}
+
+	if (owner != "" && user !== owner) {
+		ui.alert(
+			"Permission denied",
+			"You don't own the spreadsheet. Please start in a new spreadsheet.",
+			ui.ButtonSet.OK);
+		return;
+
+	} else if (spreadsheet.getFormUrl()) {
+		ui.alert(
+			"Linked form",
+			"The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.",
+			ui.ButtonSet.OK);
+		return;
+	}
+
+
+	switch (select) {
+		case "dialog":
+			showDialogSetupAddon_();
+			break;
+		case "setup":
+			setup_(settings, list_acc);
+			break;
+
+		default:
+			throw new Error("Switch case is default.");
+	}
 }
 
 
@@ -130,6 +159,10 @@ function setup_(settings, list_acc) {
 
 	SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName("Summary"));
 	console.timeEnd("add-on/install");
+
+	PropertiesService.getDocumentProperties().setProperty("is_installed", "true");
+	showDialogSetupEnd();
+	onOpen();
 
 	SPREADSHEET = null;
 	SETUP_SETTINGS = null;
