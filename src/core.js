@@ -163,7 +163,7 @@ function showDialogSetupAddon_() {
 	SpreadsheetApp.getUi().alert(
 		"Notice to X-Frame-Options Policy",
 		"Due to a bug with Google Sheets [1], the setup \"Start budget spreadsheet\" may not be displayed or work correctly.\n\
-		If you experince the issue, please use the browser in private/incognito mode to start a new buget sheet.\n\n\
+		If you experience the issue, please use the browser in private/incognito mode to start a new budget sheet.\n\n\
 		Learn more: https://github.com/guimspace/budget-n-sheets/wiki/Notice-to-X-Frame-Options-Policy\n\n\
 		References\n\
 		[1] - Google Issue Tracker - Bug 69270374 https://issuetracker.google.com/issues/69270374\n\
