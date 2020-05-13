@@ -169,16 +169,6 @@ function showSetupAddon_() {
 	console.info("add-on/intent");
 	var ui = SpreadsheetApp.getUi();
 
-	ui.alert(
-		"Notice to X-Frame-Options Policy",
-		"Due to a bug with Google Sheets [1], the setup \"Start budget spreadsheet\" may not be displayed or work correctly.\n\
-		If you experince the issue, please use the browser in private/incognito mode to start a new buget sheet.\n\n\
-		Learn more: https://github.com/guimspace/budget-n-sheets/wiki/Notice-to-X-Frame-Options-Policy\n\n\
-		References\n\
-		[1] - Google Issue Tracker - Bug 69270374 https://issuetracker.google.com/issues/69270374\n\
-		[2] - Google Account Help - https://support.google.com/accounts/answer/1721977",
-		ui.ButtonSet.OK);
-
 	try {
 		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 	} catch (err) {
@@ -229,6 +219,16 @@ function showSetupAddon_() {
 
 	reviseUser_();
 	if (setupUi()) return;
+
+	ui.alert(
+		"Notice to X-Frame-Options Policy",
+		"Due to a bug with Google Sheets [1], the setup \"Start budget spreadsheet\" may not be displayed or work correctly.\n\
+		If you experince the issue, please use the browser in private/incognito mode to start a new buget sheet.\n\n\
+		Learn more: https://github.com/guimspace/budget-n-sheets/wiki/Notice-to-X-Frame-Options-Policy\n\n\
+		References\n\
+		[1] - Google Issue Tracker - Bug 69270374 https://issuetracker.google.com/issues/69270374\n\
+		[2] - Google Account Help - https://support.google.com/accounts/answer/1721977",
+		ui.ButtonSet.OK);
 
 	var htmlDialog = HtmlService.createTemplateFromFile("html/htmlSetupAddon")
 		.evaluate()
