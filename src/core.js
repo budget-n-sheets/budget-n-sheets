@@ -160,7 +160,60 @@ function showDialogUpdate() {
 
 
 function showDialogSetupAddon_() {
-	SpreadsheetApp.getUi().alert(
+	var ui = SpreadsheetApp.getUi();
+
+	if (! isTemplateAvailable()) {
+		ui.alert(
+			"New version available",
+			"Please, re-open the spreadsheet to update the add-on.",
+			ui.ButtonSet.OK);
+		return;
+
+	} else if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+		showDialogSetupEnd();
+		onOpen();
+		return;
+
+	} else if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) {
+		ui.alert(
+			"Can't create budget sheet",
+			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
+			ui.ButtonSet.OK);
+		return;
+	}
+
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var owner, user;
+
+	try {
+		owner = spreadsheet.getOwner();
+		if (owner) owner = owner.getEmail();
+		else owner = "";
+
+		user = Session.getEffectiveUser().getEmail();
+	} catch (err) {
+		console.warn(err);
+		owner = "";
+		user = "";
+	}
+
+	if (owner && owner !== user) {
+		ui.alert(
+			"Permission denied",
+			"You don't own the spreadsheet. Please start in a new spreadsheet.",
+			ui.ButtonSet.OK);
+		return;
+
+	} else if (spreadsheet.getFormUrl()) {
+		ui.alert(
+			"Linked form",
+			"The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.",
+			ui.ButtonSet.OK);
+		return;
+	}
+
+
+	ui.alert(
 		"Notice to X-Frame-Options Policy",
 		"Due to a bug with Google Sheets [1], the setup \"Start budget spreadsheet\" may not be displayed or work correctly.\n\
 		If you experience the issue, please use the browser in private/incognito mode to start a new budget sheet.\n\n\
@@ -168,7 +221,7 @@ function showDialogSetupAddon_() {
 		References\n\
 		[1] - Google Issue Tracker - Bug 69270374 https://issuetracker.google.com/issues/69270374\n\
 		[2] - Google Account Help - https://support.google.com/accounts/answer/1721977",
-		SpreadsheetApp.getUi().ButtonSet.OK);
+		ui.ButtonSet.OK);
 
 	var htmlDialog = HtmlService.createTemplateFromFile("html/htmlSetupAddon")
 		.evaluate()

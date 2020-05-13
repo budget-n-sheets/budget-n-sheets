@@ -8,7 +8,6 @@ function setupUi(settings, list_acc) {
 }
 
 function setupFlow_(select, settings, list_acc) {
-	var ui = SpreadsheetApp.getUi();
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(0);
@@ -20,58 +19,6 @@ function setupFlow_(select, settings, list_acc) {
 		consoleLog_("warn", "setupFlow_(): Wait lock time out.", err);
 		return;
 	}
-
-
-	if (! isTemplateAvailable()) {
-		ui.alert(
-			"New version available",
-			"Please, re-open the spreadsheet to update the add-on.",
-			ui.ButtonSet.OK);
-		return;
-
-	} else if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
-		showDialogSetupEnd();
-		onOpen();
-		return;
-
-	} else if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) {
-		ui.alert(
-			"Can't create budget sheet",
-			"The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.",
-			ui.ButtonSet.OK);
-		return;
-	}
-
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var owner, user;
-
-	try {
-		owner = spreadsheet.getOwner();
-		if (owner) owner = owner.getEmail();
-		else owner = "";
-
-		user = Session.getEffectiveUser().getEmail();
-	} catch (err) {
-		console.warn(err);
-		owner = "";
-		user = "";
-	}
-
-	if (owner != "" && user !== owner) {
-		ui.alert(
-			"Permission denied",
-			"You don't own the spreadsheet. Please start in a new spreadsheet.",
-			ui.ButtonSet.OK);
-		return;
-
-	} else if (spreadsheet.getFormUrl()) {
-		ui.alert(
-			"Linked form",
-			"The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.",
-			ui.ButtonSet.OK);
-		return;
-	}
-
 
 	switch (select) {
 		case "dialog":
@@ -103,9 +50,31 @@ function uninstall_(putLock) {
 
 
 function setup_(settings, list_acc) {
+	SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+	var owner, user;
+
+	if (! isTemplateAvailable()) throw new Error("Template is not available.");
+	else if (PropertiesService.getDocumentProperties().getProperty("is_installed")) throw new Error("Add-on is already installed.");
+	else if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) throw new Error("Spreadsheet is locked.");
+
+	try {
+		owner = SPREADSHEET.getOwner();
+		if (owner) owner = owner.getEmail();
+		else owner = "";
+
+		user = Session.getEffectiveUser().getEmail();
+	} catch (err) {
+		console.warn(err);
+		owner = "";
+		user = "";
+	}
+
+	if (owner && owner !== user) throw new Error("Missing ownership rights.");
+	else if (SPREADSHEET.getFormUrl()) throw new Error("Spreadsheet has a form linked.");
+
+
 	var class_version2, yyyy_mm;
 
-	SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
 	SETUP_SETTINGS = {
 		spreadsheet_name: settings.spreadsheet_name,
 		financial_year: Number(settings.financial_year),
@@ -116,12 +85,11 @@ function setup_(settings, list_acc) {
 	};
 
 	console.time("add-on/install");
-
 	SPREADSHEET.rename(SETUP_SETTINGS["spreadsheet_name"]);
 
 	PropertiesService2.deleteAllProperties("document");
 	purgeScriptAppTriggers_();
-	CacheService.getDocumentCache().removeAll([
+	CacheService2.removeAll("document", [
 		"load_cache", "class_version2", "user_settings", "spreadsheet_settings", "const_properties", "DB_TABLES"
 	]);
 
