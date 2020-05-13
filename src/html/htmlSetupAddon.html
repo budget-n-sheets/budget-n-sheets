@@ -307,24 +307,8 @@
 					.withSuccessHandler(function(e) {
 							google.script.host.close();
 						})
-					.withFailureHandler(failureHandler)
+					.withFailureHandler(showError)
 					.setupUi(settings, list_names);
-			}
-
-			function failureHandler(err) {
-				const payload = {
-					title: "htmlSetupAddon"
-				};
-
-				for (var i in err) {
-					payload[i] = err[i];
-				}
-
-				google.script.run
-					.withSuccessHandler(function(e) {
-							google.script.host.close();
-						})
-					.showDialogErrorMessage(payload);
 			}
 		</script>
 	</body>
