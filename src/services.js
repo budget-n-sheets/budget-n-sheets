@@ -213,20 +213,11 @@ function reviseVersion_() {
 }
 
 
-function reviseUser_() {
-	var user = PropertiesService2.getProperty("user", "user_id", "string");
-	if (user) return;
-
-	try {
-		user = Session.getEffectiveUser().getEmail();
-	} catch (err) {
-		console.warn(err);
-		user = "";
-	}
-
-	if (user) user = computeDigest("SHA_256", user, "UTF_8");
-
-	PropertiesService2.setProperty("user", "user_id", "string", user);
+function refreshUserId_() {
+	var user_id = Session.getEffectiveUser().getEmail();
+	user_id = computeDigest("SHA_256", user_id, "UTF_8");
+	PropertiesService2.setProperty("user", "user_id", "string", user_id);
+	return user_id;
 }
 
 

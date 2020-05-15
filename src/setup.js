@@ -629,6 +629,7 @@ function setupProperties_(yyyy_mm) {
 	PropertiesService2.setProperty("document", "user_settings", "json", properties);
 
 	user_id = PropertiesService2.getProperty("user", "user_id", "string");
+	if (!user_id) user_id = refreshUserId_();
 
 	try {
 		owner = SPREADSHEET.getOwner().getEmail();

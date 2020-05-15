@@ -8,8 +8,10 @@
  */
 function onInstall(e) {
 	onOpen(e);
+	refreshUserId_();
 
 	var installationSource = ScriptApp.getInstallationSource();
+
 	switch (installationSource) {
 	case ScriptApp.InstallationSource.NONE:
 		console.info("purchase/NONE");
@@ -24,10 +26,6 @@ function onInstall(e) {
 		console.info("purchase/DEAFULT");
 		break;
 	}
-
-	var user_id = Session.getEffectiveUser().getEmail();
-	user_id = computeDigest("SHA_256", user_id, "UTF_8");
-	PropertiesService2.setProperty("user", "user_id", "string", user_id);
 }
 
 /**

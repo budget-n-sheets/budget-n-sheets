@@ -239,7 +239,7 @@ function update_v0m28p4_() {
  */
 function update_v0m28p3_() {
 	try {
-		reviseUser_();
+		refreshUserId_();
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p3_()", err);
 	}
