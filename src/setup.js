@@ -648,7 +648,6 @@ function setupProperties_(yyyy_mm) {
 	properties = {
 		admin_id: user_id,
 		spreadsheet_owner: owner,
-		spreadsheet_id: SPREADSHEET.getId(),
 		date_created: yyyy_mm.time,
 		number_accounts: SETUP_SETTINGS["number_accounts"],
 		financial_year: SETUP_SETTINGS["financial_year"]
