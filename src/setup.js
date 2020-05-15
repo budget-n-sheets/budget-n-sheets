@@ -617,7 +617,7 @@ function setupTables_() {
 function setupProperties_(yyyy_mm) {
 	console.time("add-on/setup/properties");
 	var properties, d;
-	var user, owner, operation;
+	var user_id, owner, operation;
 
 	properties = {
 		initial_month: SETUP_SETTINGS["init_month"],
@@ -628,7 +628,7 @@ function setupProperties_(yyyy_mm) {
 	};
 	PropertiesService2.setProperty("document", "user_settings", "json", properties);
 
-	user = PropertiesService2.getProperty("user", "user_id", "string");
+	user_id = PropertiesService2.getProperty("user", "user_id", "string");
 
 	try {
 		owner = SPREADSHEET.getOwner().getEmail();
@@ -644,7 +644,7 @@ function setupProperties_(yyyy_mm) {
 	}
 
 	properties = {
-		addon_user: user,
+		admin_id: user_id,
 		spreadsheet_owner: owner,
 		spreadsheet_id: SPREADSHEET.getId(),
 		date_created: yyyy_mm.time,
