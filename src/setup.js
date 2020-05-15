@@ -612,7 +612,7 @@ function setupTables_() {
 function setupProperties_(yyyy_mm) {
 	console.time("add-on/setup/properties");
 	var properties, d;
-	var user_id, owner, operation;
+	var operation;
 
 	properties = {
 		initial_month: SETUP_SETTINGS["init_month"],
@@ -623,19 +623,18 @@ function setupProperties_(yyyy_mm) {
 	};
 	PropertiesService2.setProperty("document", "user_settings", "json", properties);
 
-	user_id = PropertiesService2.getProperty("user", "user_id", "string");
-	if (!user_id) user_id = refreshUserId_();
 
 	properties = {
-		admin_id: user_id,
 		date_created: yyyy_mm.time,
 		number_accounts: SETUP_SETTINGS["number_accounts"],
 		financial_year: SETUP_SETTINGS["financial_year"]
 	};
 	PropertiesService2.setProperty("document", "const_properties", "json", properties);
 
+
 	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEditInstallable_");
 	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
+
 	if (SETUP_SETTINGS["financial_year"] < yyyy_mm.yyyy) {
 		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weeklyTriggerPos_", 2);
 		operation = "passive";
@@ -651,18 +650,9 @@ function setupProperties_(yyyy_mm) {
 		operation = "passive";
 	}
 
-	owner = SPREADSHEET.getOwner();
-	if (owner) {
-		owner = owner.getEmail();
-		owner = computeDigest("SHA_256", owner, "UTF_8");
-	} else {
-		owner = "";
-	}
-
 	properties = {
 		operation_mode: operation,
 		decimal_separator: SETUP_SETTINGS["decimal_separator"],
-		spreadsheet_owner: owner,
 		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale()
 	};
 	PropertiesService2.setProperty("document", "spreadsheet_settings", "json", properties);
