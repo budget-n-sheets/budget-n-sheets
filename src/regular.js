@@ -164,8 +164,8 @@ function monthly_TreatLayout_(yyyy, mm) {
 
 	updateHideShowSheets(sheets, financial_year, yyyy, mm);
 	updateTabsColors(sheets, financial_year, yyyy, mm);
-	foo_FormatAccounts_(month);
-	foo_FormatCards_(month);
+	formatAccounts_(month);
+	formatCards_(month);
 }
 
 
