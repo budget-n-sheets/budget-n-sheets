@@ -40,9 +40,7 @@ function uninstall_(putLock) {
 		ScriptApp.deleteTrigger(list[i]);
 	}
 
-	CacheService2.removeAll("document", [
-		"load_cache", "class_version2", "user_settings", "spreadsheet_settings", "const_properties", "DB_TABLES"
-	]);
+	CacheService2.removeAll("document", CACHE_KEYS);
 
 	if (putLock) {
 		PropertiesService.getDocumentProperties().setProperties({lock_spreadsheet: "true"}, true);
@@ -94,9 +92,7 @@ function setup_(settings, list_acc) {
 
 	PropertiesService2.deleteAllProperties("document");
 	purgeScriptAppTriggers_();
-	CacheService2.removeAll("document", [
-		"load_cache", "class_version2", "user_settings", "spreadsheet_settings", "const_properties", "DB_TABLES"
-	]);
+	CacheService2.removeAll("document", CACHE_KEYS);
 
 	deleteAllSheets_();
 	copySheetsFromTemplate_();

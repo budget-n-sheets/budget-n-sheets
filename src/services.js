@@ -7,7 +7,7 @@ function onOpenInstallable_(e) {
 
 function loadCache_() {
 	console.time("add-on/onOpen/load-cache");
-	const list = [ "class_version2", "user_settings", "spreadsheet_settings", "const_properties"];
+	const list = [ "class_version2", "user_settings", "spreadsheet_settings", "const_properties" ];
 
 	for (var i = 0; i < list.length; i++) {
 		var cache = PropertiesService2.getProperty("document", list[i], "json");
