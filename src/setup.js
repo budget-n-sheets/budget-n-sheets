@@ -60,17 +60,11 @@ function setup_(settings, list_acc) {
 	else if (PropertiesService.getDocumentProperties().getProperty("is_installed")) throw new Error("Add-on is already installed.");
 	else if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) throw new Error("Spreadsheet is locked.");
 
-	try {
-		owner = SPREADSHEET.getOwner();
-		if (owner) owner = owner.getEmail();
-		else owner = "";
+	owner = SPREADSHEET.getOwner();
+	if (owner) owner = owner.getEmail();
+	else owner = "";
 
-		user = Session.getEffectiveUser().getEmail();
-	} catch (err) {
-		console.warn(err);
-		owner = "";
-		user = "";
-	}
+	user = Session.getEffectiveUser().getEmail();
 
 	if (owner && owner !== user) throw new Error("Missing ownership rights.");
 	else if (SPREADSHEET.getFormUrl()) throw new Error("Spreadsheet has a form linked.");

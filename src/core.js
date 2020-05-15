@@ -201,17 +201,11 @@ function showDialogSetupAddon_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var owner, user;
 
-	try {
-		owner = spreadsheet.getOwner();
-		if (owner) owner = owner.getEmail();
-		else owner = "";
+	owner = spreadsheet.getOwner();
+	if (owner) owner = owner.getEmail();
+	else owner = "";
 
-		user = Session.getEffectiveUser().getEmail();
-	} catch (err) {
-		console.warn(err);
-		owner = "";
-		user = "";
-	}
+	user = Session.getEffectiveUser().getEmail();
 
 	if (owner && owner !== user) {
 		ui.alert(
