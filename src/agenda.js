@@ -157,16 +157,9 @@ function getAllOwnedCalendars() {
 
 
 function getFinancialCalendar_() {
-	var financial_calendar = getUserSettings_('financial_calendar');
-	var calendar;
-
-	calendar = CalendarApp.getCalendarById(financial_calendar);
-
-	if (calendar) return calendar;
-
-	setUserSettings_('financial_calendar', '');
-	setUserSettings_('post_day_events', false);
-	setUserSettings_('cash_flow_events', false);
+	const financial_calendar = getUserSettings_("financial_calendar");
+	if (!financial_calendar) return;
+	return CalendarApp.getCalendarById(financial_calendar);
 }
 
 
