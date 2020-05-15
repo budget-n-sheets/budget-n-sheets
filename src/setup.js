@@ -39,6 +39,11 @@ function uninstall_(putLock) {
 	for (var i = 0; i < list.length; i++) {
 		ScriptApp.deleteTrigger(list[i]);
 	}
+
+	CacheService2.removeAll("document", [
+		"load_cache", "class_version2", "user_settings", "spreadsheet_settings", "const_properties", "DB_TABLES"
+	]);
+
 	if (putLock) {
 		PropertiesService.getDocumentProperties().setProperties({lock_spreadsheet: "true"}, true);
 		console.info("add-on/uninstall-with-lock");
