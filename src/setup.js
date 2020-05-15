@@ -632,22 +632,8 @@ function setupProperties_(yyyy_mm) {
 	user_id = PropertiesService2.getProperty("user", "user_id", "string");
 	if (!user_id) user_id = refreshUserId_();
 
-	try {
-		owner = SPREADSHEET.getOwner().getEmail();
-	} catch (err) {
-		console.warn(err);
-		owner = "";
-	}
-
-	if (owner) {
-		owner = computeDigest("SHA_256", owner, "UTF_8");
-	} else {
-		owner = "";
-	}
-
 	properties = {
 		admin_id: user_id,
-		spreadsheet_owner: owner,
 		date_created: yyyy_mm.time,
 		number_accounts: SETUP_SETTINGS["number_accounts"],
 		financial_year: SETUP_SETTINGS["financial_year"]
@@ -671,9 +657,18 @@ function setupProperties_(yyyy_mm) {
 		operation = "passive";
 	}
 
+	owner = SPREADSHEET.getOwner();
+	if (owner) {
+		owner = owner.getEmail();
+		owner = computeDigest("SHA_256", owner, "UTF_8");
+	} else {
+		owner = "";
+	}
+
 	properties = {
 		operation_mode: operation,
 		decimal_separator: SETUP_SETTINGS["decimal_separator"],
+		spreadsheet_owner: owner,
 		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale()
 	};
 	PropertiesService2.setProperty("document", "spreadsheet_settings", "json", properties);
