@@ -8,7 +8,22 @@
  */
 function onInstall(e) {
 	onOpen(e);
-	console.info("purchase");
+
+	var installationSource = ScriptApp.getInstallationSource();
+	switch (installationSource) {
+	case ScriptApp.InstallationSource.NONE:
+		console.info("purchase/NONE");
+		break;
+	case ScriptApp.InstallationSource.WEB_STORE_ADD_ON:
+		console.info("purchase/WEB_STORE_ADD_ON");
+		break;
+	case ScriptApp.InstallationSource.APPS_MARKETPLACE_DOMAIN_ADD_ON:
+		console.info("purchase/APPS_MARKETPLACE_DOMAIN_ADD_ON");
+		break;
+	default:
+		console.info("purchase/DEAFULT");
+		break;
+	}
 
 	var user_id = Session.getEffectiveUser().getEmail();
 	user_id = computeDigest("SHA_256", user_id, "UTF_8");
