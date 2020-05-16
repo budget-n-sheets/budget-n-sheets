@@ -632,21 +632,21 @@ function setupProperties_(yyyy_mm) {
 	PropertiesService2.setProperty("document", "const_properties", "json", properties);
 
 
-	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEditInstallable_");
+	createScriptAppTriggers_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
 	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
 
 	if (SETUP_SETTINGS["financial_year"] < yyyy_mm.yyyy) {
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weeklyTriggerPos_", 2);
+		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
 		operation = "passive";
 
 	} else if (SETUP_SETTINGS["financial_year"] == yyyy_mm.yyyy) {
-		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "dailyTrigger_", 1, 2);
+		createScriptAppTriggers_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
 		operation = "active";
 
 	} else if (SETUP_SETTINGS["financial_year"] > yyyy_mm.yyyy) {
 		d = new Date(SETUP_SETTINGS["financial_year"], 0, 2);
 		d = d.getDay();
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weeklyTriggerPre_", d);
+		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", d);
 		operation = "passive";
 	}
 

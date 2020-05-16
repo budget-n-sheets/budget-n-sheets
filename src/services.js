@@ -111,9 +111,9 @@ function dailyTrigger_(e) {
 
 	if (financial_year < a["year"]) {
 		monthly_TreatLayout_(a["year"], a["month"]);
-		deleteScriptAppTriggers_('document', 'dailyMainId');
+		deleteScriptAppTriggers_('document', 'clockTriggerId');
 		Utilities.sleep(300);
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
+		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weekly_Foo_", 2);
 		setSpreadsheetSettings_("operation_mode", "passive");
 
 		console.info("add-on/mode-passive");
@@ -189,13 +189,13 @@ function weeklyTriggerPre_(e) {
 
 	if (a["year"] > financial_year) return;
 
-	deleteScriptAppTriggers_("document", "weeklyMainId");
+	deleteScriptAppTriggers_("document", "clockTriggerId");
 
 	if (a["year"] == financial_year) {
-		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "daily_Main_", 1, 2);
+		createScriptAppTriggers_("document", "clockTriggerId", "everyDays", "daily_Main_", 1, 2);
 		console.info("add-on/mode-active");
 	} else {
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weekly_Foo_", 2);
+		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weekly_Foo_", 2);
 	}
 
 	monthly_TreatLayout_(a["year"], a["month"]);
@@ -341,21 +341,21 @@ function askReinstall() {
 
 	purgeScriptAppTriggers_();
 
-	createScriptAppTriggers_("document", "onEditMainId", "onEdit", "onEditInstallable_");
+	createScriptAppTriggers_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
 	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
 
 	if (financial_year < date.getFullYear()) {
 		setSpreadsheetSettings_("operation_mode", "passive");
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weeklyTriggerPos_", 2);
+		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
 
 	} else if (financial_year === date.getFullYear()) {
 		setSpreadsheetSettings_("operation_mode", "active");
-		createScriptAppTriggers_("document", "dailyMainId", "everyDays", "dailyTrigger_", 1, 2);
+		createScriptAppTriggers_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
 
 	} else if (financial_year > date.getFullYear()) {
 		d = new Date(financial_year, 0, 2);
 		d = d.getDay();
 		setSpreadsheetSettings_("operation_mode", "passive");
-		createScriptAppTriggers_("document", "weeklyMainId", "onWeekDay", "weeklyTriggerPre_", d);
+		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", d);
 	}
 }
