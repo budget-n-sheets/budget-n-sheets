@@ -12,7 +12,7 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m27p0_, null, null, null, null, null, null, update_v0m27p5_ ],
 			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_, null, null ],
 			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ],
-			[ null, null, null, null, null, null ]
+			[ null, null, null, null, null, null, update_v0m30p6_ ]
 		]
 	],
 	beta_list: [ ]
@@ -153,6 +153,77 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Refresh 'user_id'.
+ * Reinstall clock triggers.
+ *
+ * 0.30.6
+ */
+function update_v0m30p6_() {
+	try {
+		refreshUserId_();
+
+
+		const handlers = [ "onOpenInstallable_", "onEditInstallable_", "dailyTrigger_", "weeklyTriggerPos_", "weeklyTriggerPre_" ];
+		const financial_year = getConstProperties_("financial_year");
+
+		var triggers, yyyy, dd, name;
+		var eventType, installClock, installOnEdit;
+
+		installClock = false;
+		installOnEdit = false;
+		triggers = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
+
+		for (var i = 0; i < triggers.length; i++) {
+			name = triggers[i].getHandlerFunction();
+			if (handlers.indexOf(name) != -1) continue;
+
+			eventType = triggers[i].getEventType();
+			ScriptApp.deleteTrigger(triggers[i]);
+
+			switch (eventType) {
+			case ScriptApp.EventType.CLOCK:
+				installClock = true;
+				break;
+			case ScriptApp.EventType.ON_EDIT:
+				installOnEdit = true;
+				break;
+
+			default:
+				console.log("update_v0m30p6_(): Switch case is default.", eventType);
+				break;
+			}
+		}
+
+		if (installOnEdit) {
+			createScriptAppTriggers_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
+		}
+
+		if (installClock) {
+			yyyy = DATE_NOW.getFullYear();
+			if (financial_year < yyyy) {
+				createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
+
+			} else if (financial_year == yyyy) {
+				createScriptAppTriggers_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
+
+			} else if (financial_year > yyyy) {
+				dd = new Date(financial_year, 0, 2).getDay();
+				createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
+			}
+		}
+
+
+		PropertiesService2.deleteProperty("document", "onEditMainId");
+		PropertiesService2.deleteProperty("document", "dailyMainId");
+		PropertiesService2.deleteProperty("document", "weeklyMainId");
+	} catch (err) {
+		consoleLog_("error", "update_v0m30p6_()", err);
+		return 1;
+	}
+}
+
 
 /**
  * Fix list of codes in db_cards.
