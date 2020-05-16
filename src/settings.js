@@ -175,6 +175,38 @@ function getConstProperties_(select) {
 }
 
 
+function getAdminSettings_(select) {
+	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+
+	switch (select) {
+	case "admin_id":
+	case "locked":
+		return admin_settings[select];
+
+	default:
+		console.error("getAdminSettings_(): Switch case is default.", select);
+		return 1;
+	}
+}
+
+function setAdminSettings_(select, value) {
+	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+
+	switch (select) {
+	case "admin_id":
+	case "locked":
+		admin_settings[select] = value;
+		break;
+
+	default:
+		console.error("setAdminSettings_(): Switch case is default.", select);
+		return 1;
+	}
+
+	PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
+}
+
+
 function getMonthFactored_(select) {
 	var date = getSpreadsheetDate();
 	var yyyy, mm;

@@ -612,7 +612,7 @@ function setupTables_() {
 function setupProperties_(yyyy_mm) {
 	console.time("add-on/setup/properties");
 	var properties, d;
-	var operation;
+	var operation, user_id;
 
 	properties = {
 		initial_month: SETUP_SETTINGS["init_month"],
@@ -622,6 +622,16 @@ function setupProperties_(yyyy_mm) {
 		override_zero: false
 	};
 	PropertiesService2.setProperty("document", "user_settings", "json", properties);
+
+
+	user_id = PropertiesService2.getProperty("user", "user_id", "string");
+	if (!user_id) user_id = refreshUserId_();
+
+	properties = {
+		admin_id: user_id,
+		locked: true
+	};
+	PropertiesService2.setProperty("document", "admin_settings", "json", properties);
 
 
 	properties = {
