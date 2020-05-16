@@ -18,6 +18,7 @@ function loadCache_() {
 
 
 function onEdit_Main_(e) {
+	console.log("onEdit_Main_(): continued.");
 	onEditInstallable_(e);
 }
 function onEditInstallable_(e) {
@@ -76,6 +77,7 @@ function onEditInstallable_(e) {
 
 
 function daily_Main_(e) {
+	console.log("daily_Main_(): continued.");
 	dailyTrigger_(e);
 }
 function dailyTrigger_(e) {
@@ -133,6 +135,7 @@ function dailyTrigger_(e) {
 
 
 function weekly_Foo_(e) {
+	console.log("weekly_Foo_(): continued.");
 	weeklyTriggerPos_(e);
 }
 function weeklyTriggerPos_(e) {
@@ -153,6 +156,7 @@ function weeklyTriggerPos_(e) {
 
 
 function weekly_Bar_(e) {
+	console.log("weekly_Bar_(): continued.");
 	weeklyTriggerPre_(e);
 }
 function weeklyTriggerPre_(e) {
