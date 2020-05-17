@@ -118,13 +118,22 @@ function showSidebarMainSettings() {
 	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUserSettings");
 	var htmlSidebar;
 	var calendars;
+	var isAdmin, isChangeableByEditors;
 
 	const user_id = refreshUserId_();
 	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
 
+	isAdmin = (user_id === admin_settings.admin_id);
+	isChangeableByEditors = "";
 	calendars = getAllOwnedCalendars();
 
-	htmlTemplate.isAdmin = (user_id === admin_settings.admin_id);
+	if (isAdmin && admin_settings.isChangeableByEditors) {
+		isChangeableByEditors = "checked";
+	}
+
+	htmlTemplate.isAdmin = isAdmin;
+	htmlTemplate.isChangeableByEditors = isChangeableByEditors;
+
 	htmlTemplate.doc_name = SpreadsheetApp.getActiveSpreadsheet().getName();
 	htmlTemplate.financial_year = getConstProperties_("financial_year");
 	htmlTemplate.calendars_data = calendars;

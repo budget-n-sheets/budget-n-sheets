@@ -173,6 +173,9 @@ function getConstProperties_(select) {
 
 function getAdminSettings_(select) {
 	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+	const user_id = refreshUserId_();
+
+	if (user_id !== admin_settings.admin_id) return 1;
 
 	switch (select) {
 	case "admin_id":
@@ -185,12 +188,16 @@ function getAdminSettings_(select) {
 	}
 }
 
-function setAdminSettings_(select, value) {
+function setAdminSettings(select, value) {
 	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+	const user_id = refreshUserId_();
+
+	if (user_id !== admin_settings.admin_id) return 1;
 
 	switch (select) {
 	case "admin_id":
 	case "locked":
+	case "isChangeableByEditors":
 		admin_settings[select] = value;
 		break;
 

@@ -5,6 +5,13 @@
 		<meta charset="UTF-8">
 		<?!= htmlInclude("gas-common/htmlStyles"); ?>
 		<style>
+			td p {
+				margin-top: 0;
+				margin-bottom: 0;
+				text-indent: 0;
+				text-align: justify;
+			}
+
 			td.comment {
 				border-bottom: none;
 				padding-bottom: 0;
@@ -69,6 +76,11 @@
 						<div class="header_tab" id="tab_advanced">
 							<i class="material-icons" title="Advanced">build</i>
 						</div>
+						<? if (isAdmin) { ?>
+							<div class="header_tab" id="tab_admin">
+								<i class="material-icons" title="Group">group_work</i>
+							</div>
+						<? } ?>
 					</div>
 				</div>
 			</div>
@@ -193,6 +205,23 @@
 						<? } ?>
 					</table>
 				</div>
+
+				<? if (isAdmin) { ?>
+					<div class="panel" id="panel_Admin">
+						<table style="width:100%;">
+							<tr>
+								<td class="comment" colspan="2">
+									<input id="isChangeableByEditors" type="checkbox" <?= isChangeableByEditors ?>><label for="isChangeableByEditors">Editors can change settings</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<p>Only you can select the <b>calendar</b>, <b>reinstall triggers</b>, and <b>deactivate the add-on</b>.</p>
+								</td>
+							</tr>
+						</table>
+					</div>
+				<? } ?>
 			</div>
 
 			<div id="footer">
@@ -227,21 +256,29 @@
 			$(document).on("click", ".header_tab", function() {
 				if ($(this).hasClass("active")) return;
 
+				var select = $(this).attr("id");
+
 				$(this).addClass("active")
 					.siblings()
 					.removeClass("active");
 				$(".footer_cell.left button").remove();
 
 				window.scrollTo(0, 0);
-				if ($(this).attr("id") === "tab_settings") {
+				if (select === "tab_settings") {
 					$("#panel_Settings").fadeIn("fast")
 						.siblings()
 						.hide();
 					$(".footer_cell.left").append("<button class=\"action\" id=\"b-Save\" disabled>Save</button>");
-				} else if ($(this).attr("id") === "tab_advanced") {
+				} else if (select === "tab_advanced") {
 					$("#panel_Advanced").fadeIn("fast")
 						.siblings()
 						.hide();
+				<? if (isAdmin) { ?>
+					} else if (select === "tab_admin") {
+						$("#panel_Admin").fadeIn("fast")
+							.siblings()
+							.hide();
+				<? } ?>
 				}
 			});
 
@@ -258,31 +295,41 @@
 
 			<? } ?>
 			<? if (isAdmin) { ?>
-			function deactivateAddon() {
-				this.disabled = true;
-				$("#footer_response").empty();
+				$("#isChangeableByEditors").change(function() {
+					this.disabled = true;
+					$("#footer_response").empty();
+					google.script.run.withSuccessHandler(function(r, o) {
+								o.disabled = false;
+							})
+						.withUserObject(this)
+						.setAdminSettings("isChangeableByEditors", $(this).prop("checked"));
+				});
 
-				google.script.run.withSuccessHandler(function(r, o) {
-							if (r) google.script.host.close();
-							o.disabled = false;
-						})
-					.withFailureHandler(showError)
-					.withUserObject(this)
-					.askDeactivation();
-			}
+				function deactivateAddon() {
+					this.disabled = true;
+					$("#footer_response").empty();
 
-			function reinstallTriggers() {
-				this.disabled = true;
-				$("#footer_response").empty();
+					google.script.run.withSuccessHandler(function(r, o) {
+								if (r) google.script.host.close();
+								o.disabled = false;
+							})
+						.withFailureHandler(showError)
+						.withUserObject(this)
+						.askDeactivation();
+				}
 
-				google.script.run.withSuccessHandler(function(r, o) {
-							showStatus("Reinstalled triggers");
-							o.disabled = false;
-						})
-					.withFailureHandler(showError)
-					.withUserObject(this)
-					.askReinstall();
-			}
+				function reinstallTriggers() {
+					this.disabled = true;
+					$("#footer_response").empty();
+
+					google.script.run.withSuccessHandler(function(r, o) {
+								showStatus("Reinstalled triggers");
+								o.disabled = false;
+							})
+						.withFailureHandler(showError)
+						.withUserObject(this)
+						.askReinstall();
+				}
 
 			<? } ?>
 			function resetProtection() {

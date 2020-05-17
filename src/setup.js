@@ -629,7 +629,8 @@ function setupProperties_(yyyy_mm) {
 
 	properties = {
 		admin_id: user_id,
-		locked: true
+		locked: true,
+		isChangeableByEditors: false
 	};
 	PropertiesService2.setProperty("document", "admin_settings", "json", properties);
 
