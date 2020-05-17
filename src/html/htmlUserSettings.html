@@ -219,6 +219,16 @@
 									<p>Only you can select the <b>calendar</b>, <b>reinstall triggers</b>, and <b>deactivate the add-on</b>.</p>
 								</td>
 							</tr>
+							<tr>
+								<td class="comment name" style="width: 100%;">Transfer admin role</td>
+								<td class="comment"><button id="b-Transfer" class="create">Transfer</button></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<p>Transfers admin role to current owner of the spreadsheet.<br>
+									<a href="https://github.com/guimspace/budget-n-sheets/wiki/" target="_blank"><b>Learn more</b></a></p>
+								</td>
+							</tr>
 						</table>
 					</div>
 				<? } ?>
@@ -245,6 +255,7 @@
 				<? if (isAdmin) { ?>
 					$("#b-Deactivate").click(deactivateAddon);
 					$("#b-Reinstall").click(reinstallTriggers);
+					$("#b-Transfer").click(transferAdminRole);
 				<? } ?>
 				$("#b-Reset").click(resetProtection);
 
@@ -331,6 +342,19 @@
 						.withFailureHandler(showError)
 						.withUserObject(this)
 						.askReinstall();
+				}
+
+				function transferAdminRole() {
+					this.disabled = true;
+					$("#footer_response").empty();
+
+					google.script.run.withSuccessHandler(function(r, o) {
+								o.disabled = false;
+								if (!r) google.script.host.close();
+							})
+						.withFailureHandler(showError)
+						.withUserObject(this)
+						.transferAdmin();
 				}
 
 			<? } ?>

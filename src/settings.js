@@ -209,6 +209,38 @@ function setAdminSettings(select, value) {
 	PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
 }
 
+function transferAdmin() {
+	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+	const user_id = refreshUserId_();
+
+	if (user_id !== admin_settings.admin_id) return 1;
+
+	var ui = SpreadsheetApp.getUi();
+	var owner, owner_id;
+
+	owner = SpreadsheetApp.getActiveSpreadsheet().getOwner();
+	if (owner) {
+		owner = owner.getEmail();
+		owner_id = computeDigest("SHA_256", owner, "UTF_8");
+	}
+
+	if (!owner || user_id === owner_id) return 1;
+
+	var response = ui.alert(
+			"Transfer the admin role?",
+			"You might lose the ability to change settings. You can't undo this action!\n\nNew admin: " + owner,
+			ui.ButtonSet.YES_NO);
+
+	if (response == ui.Button.YES) {
+		admin_settings.admin_id = owner_id;
+		PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
+		console.info("admin-role/transferred");
+		return;
+	}
+
+	return 1;
+}
+
 
 function getMonthFactored_(select) {
 	var date = getSpreadsheetDate();
