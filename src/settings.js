@@ -29,11 +29,7 @@ function saveUserSettings(settings) {
 	const init_month = getUserSettings_("initial_month");
 
 	if (settings.financial_calendar) {
-		db_calendars = CacheService2.get("document", "DB_CALENDARS", "json");
-		if (!db_calendars) {
-			db_calendars = getAllOwnedCalendars();
-			CacheService2.put("document", "DB_CALENDARS", "json", db_calendars);
-		}
+		db_calendars = getAllOwnedCalendars();
 
 		c = db_calendars.md5.indexOf(settings.financial_calendar);
 		if (c !== -1) {

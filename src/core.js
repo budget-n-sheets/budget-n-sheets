@@ -117,9 +117,9 @@ function showSidebarMainSettings() {
 
 	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUserSettings");
 	var htmlSidebar;
-	var calendars = getAllOwnedCalendars();
+	var calendars;
 
-	CacheService2.put("document", "DB_CALENDARS", "json", calendars);
+	calendars = getAllOwnedCalendars();
 
 	htmlTemplate.doc_name = SpreadsheetApp.getActiveSpreadsheet().getName();
 	htmlTemplate.financial_year = getConstProperties_("financial_year");
