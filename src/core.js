@@ -119,8 +119,12 @@ function showSidebarMainSettings() {
 	var htmlSidebar;
 	var calendars;
 
+	const user_id = refreshUserId_();
+	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+
 	calendars = getAllOwnedCalendars();
 
+	htmlTemplate.isAdmin = (user_id === admin_settings.admin_id);
 	htmlTemplate.doc_name = SpreadsheetApp.getActiveSpreadsheet().getName();
 	htmlTemplate.financial_year = getConstProperties_("financial_year");
 	htmlTemplate.calendars_data = calendars;

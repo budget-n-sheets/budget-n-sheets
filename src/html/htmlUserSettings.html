@@ -169,26 +169,28 @@
 									<a href="https://github.com/guimspace/budget-n-sheets/wiki/Step-by-step-Introduction#protected-sheets-and-ranges" target="_blank"><b>Learn more</b></a>
 							</td>
 						</tr>
-						<tr>
-							<td class="comment name"><label>Reinstall triggers</label></td>
-							<td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-									This can fix issues related with the add-on's automatic update and maintenance.<br />
-									<a href="https://github.com/guimspace/budget-n-sheets/wiki/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
-							</td>
-						</tr>
-						<tr>
-							<td class="comment name"><label>Deactivate add-on</label></td>
-							<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-									Once you deactivate the add-on for spreadsheet <span style="font-weight:bold;"><?= doc_name ?></span>, there is no going back! Please be certain.<br />
-									<a href="https://github.com/guimspace/budget-n-sheets/wiki/Deactivate-or-Uninstall-Budget-n-Sheets" target="_blank"><b>Learn more</b></a>
-							</td>
-						</tr>
+						<? if (isAdmin) { ?>
+							<tr>
+								<td class="comment name"><label>Reinstall triggers</label></td>
+								<td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+										This can fix issues related with the add-on's automatic update and maintenance.<br />
+										<a href="https://github.com/guimspace/budget-n-sheets/wiki/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
+								</td>
+							</tr>
+							<tr>
+								<td class="comment name"><label>Deactivate add-on</label></td>
+								<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+										Once you deactivate the add-on for spreadsheet <span style="font-weight:bold;"><?= doc_name ?></span>, there is no going back! Please be certain.<br />
+										<a href="https://github.com/guimspace/budget-n-sheets/wiki/Deactivate-or-Uninstall-Budget-n-Sheets" target="_blank"><b>Learn more</b></a>
+								</td>
+							</tr>
+						<? } ?>
 					</table>
 				</div>
 			</div>
@@ -211,8 +213,10 @@
 		<script>
 			$(document).ready(function() {
 				$("#b-Save").click(saveSettings);
-				$("#b-Deactivate").click(deactivateAddon);
-				$("#b-Reinstall").click(reinstallTriggers);
+				<? if (isAdmin) { ?>
+					$("#b-Deactivate").click(deactivateAddon);
+					$("#b-Reinstall").click(reinstallTriggers);
+				<? } ?>
 				$("#b-Reset").click(resetProtection);
 
 				google.script.run.withSuccessHandler(loadSettings)
@@ -253,6 +257,7 @@
 				});
 
 			<? } ?>
+			<? if (isAdmin) { ?>
 			function deactivateAddon() {
 				this.disabled = true;
 				$("#footer_response").empty();
@@ -266,19 +271,6 @@
 					.askDeactivation();
 			}
 
-			function resetProtection() {
-				this.disabled = true;
-				$("#footer_response").empty();
-
-				google.script.run.withSuccessHandler(function(r, o) {
-							showStatus("Reseted protection");
-							o.disabled = false;
-						})
-					.withFailureHandler(showError)
-					.withUserObject(this)
-					.askResetProtection();
-			}
-
 			function reinstallTriggers() {
 				this.disabled = true;
 				$("#footer_response").empty();
@@ -290,6 +282,20 @@
 					.withFailureHandler(showError)
 					.withUserObject(this)
 					.askReinstall();
+			}
+
+			<? } ?>
+			function resetProtection() {
+				this.disabled = true;
+				$("#footer_response").empty();
+
+				google.script.run.withSuccessHandler(function(r, o) {
+							showStatus("Reseted protection");
+							o.disabled = false;
+						})
+					.withFailureHandler(showError)
+					.withUserObject(this)
+					.askResetProtection();
 			}
 
 			function loadSettings(user_settings) {
