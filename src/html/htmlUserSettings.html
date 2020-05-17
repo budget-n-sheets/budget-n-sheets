@@ -12,7 +12,12 @@
 				border-bottom: none;
 				padding-bottom: 0;
 			}
-			.MainMenu-bot_title {
+
+			.table_row {
+				display: table-row;
+			}
+
+			.footer_table {
 				display: table;
 				width: 100%;
 				border-collapse: separate;
@@ -20,10 +25,7 @@
 				background-color: #efefef;
 				border-top: 2px solid #d9d9d9;
 			}
-			.MainMenu_row {
-				display: table-row;
-			}
-			.m-footer {
+			.footer_cell {
 				display: table-cell;
 				vertical-align: middle;
 			}
@@ -154,14 +156,16 @@
 			</div>
 			<div id="footer">
 				<div class="current" id="footer_response" style="padding:0 7px;"></div>
-				<div class="MainMenu-bot_title"><div class="MainMenu_row">
-						<div class="m-footer left" style="width:100%;">
-							<button class="action" id="b-Save" disabled>Save</button>
-						</div>
-						<div class="m-footer right">
-							<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
-						</div>
-				</div></div>
+					<div class="footer_table">
+						<div class="table_row">
+							<div class="footer_cell left" style="width:100%;">
+								<button class="action" id="b-Save" disabled>Save</button>
+							</div>
+							<div class="footer_cell right">
+								<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
+							</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
