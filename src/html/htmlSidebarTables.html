@@ -152,20 +152,20 @@
 			$(document).on("click", ".header_tab", function() {
 				if ($(this).hasClass("active")) return;
 
+				var id = $(this).attr("id");
+				var panel;
+
+				window.scrollTo(0, 0);
 				$(this).addClass("active")
 					.siblings()
 					.removeClass("active");
 
-				window.scrollTo(0, 0);
-				if ($(this).attr("id") === "tab_accounts") {
-					$("#panel_Accounts").fadeIn("fast")
-						.siblings()
-						.hide();
-				} else if ($(this).attr("id") === "tab_cards") {
-					$("#panel_Cards").fadeIn("fast")
-						.siblings()
-						.hide();
-				}
+				if (id === "tab_accounts") panel = "#panel_Accounts";
+				else if (id === "tab_cards") panel = "#panel_Cards";
+
+				$(panel).fadeIn("fast")
+					.siblings()
+					.hide();
 			});
 
 			$(document).on("click", ".a-edit", function(e) {
