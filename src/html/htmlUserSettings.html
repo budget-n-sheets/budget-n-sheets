@@ -5,9 +5,6 @@
 		<meta charset="UTF-8">
 		<?!= htmlInclude("gas-common/htmlStyles"); ?>
 		<style>
-			tr.advanced {
-				display: none;
-			}
 			td.comment {
 				border-bottom: none;
 				padding-bottom: 0;
@@ -15,6 +12,28 @@
 
 			.table_row {
 				display: table-row;
+			}
+
+			#header {
+				height: 3.7em;
+				width: 100%;
+				background-color: #efefef;
+				border-bottom: 2px solid #d9d9d9;
+			}
+
+			.header_table {
+				display: table;
+				width: inherit;
+				height: inherit;
+				border-collapse: separate;
+				border-spacing: 13px 7px;
+			}
+			.header_tab {
+				cursor: pointer;
+				display: table-cell;
+				vertical-align:middle;
+				color: #7a7a7a;
+				font-size: 24px;
 			}
 
 			.footer_table {
@@ -29,131 +48,151 @@
 				display: table-cell;
 				vertical-align: middle;
 			}
+
+			#tab_settings { color: #a4c2f4; }
+			#tab_settings:hover { color: #3c78d8; }
+			#tab_settings.active { color: #3c78d8; border-bottom: solid 2px; }
+
+			#tab_advanced { color: #cccccc; }
+			#tab_advanced:hover { color: #b7b7b7; }
+			#tab_advanced.active { color: #b7b7b7; border-bottom: solid 2px; }
 		</style>
 	</head>
 	<body>
 		<div id="wrapper">
+			<div id="header" align="center">
+				<div class="header_table">
+					<div class="table_row">
+						<div class="header_tab active" id="tab_settings">
+							<i class="material-icons" title="Settings">settings</i>
+						</div>
+						<div class="header_tab" id="tab_advanced">
+							<i class="material-icons" title="Advanced">build</i>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div id="content" style="margin-bottom:4.3em;">
-				<form accept-charset="UTF-8">
-					<table style="width:100%;">
-						<tr>
-							<th colspan="2"><span style="font-size:1.2em;">General</span></th>
-						</tr>
-						<tr>
-							<td class="name" style="width:43%;"><label>Spreadsheet</label></td>
-							<td><?= doc_name ?></td>
-						</tr>
-						<tr>
-							<td class="name"><label>Financial year</label></td>
-							<td><?= financial_year ?></td>
-						</tr>
-						<tr>
-							<td class="name"><label for="initial_month">Initial month</label></td>
-							<td>
-								<select id="initial_month" required>
-									<option value="0" selected>January</option>
-									<option value="1">February</option>
-									<option value="2">March</option>
-									<option value="3">April</option>
-									<option value="4">May</option>
-									<option value="5">June</option>
-									<option value="6">July</option>
-									<option value="7">August</option>
-									<option value="8">September</option>
-									<option value="9">October</option>
-									<option value="10">November</option>
-									<option value="11">December</option>
-								</select>
-							</td>
-						</tr>
-					</table>
-					<table style="width:100%;margin-top:1.3em;">
-						<tr>
-							<th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
-						</tr>
-						<? if (calendars_enabled) { ?>
+				<div class="panel active" id="panel_Settings">
+					<form accept-charset="UTF-8">
+						<table style="width:100%;">
 							<tr>
-								<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
-								<td class="comment">
-									<select id="financial_calendar" required>
-										<option value="" selected>Disabled</option>
-										<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
-											<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
-										<? } ?>
+								<td class="name" style="width:43%;"><label>Spreadsheet</label></td>
+								<td><?= doc_name ?></td>
+							</tr>
+							<tr>
+								<td class="name"><label>Financial year</label></td>
+								<td><?= financial_year ?></td>
+							</tr>
+							<tr>
+								<td class="name"><label for="initial_month">Initial month</label></td>
+								<td>
+									<select id="initial_month" required>
+										<option value="0" selected>January</option>
+										<option value="1">February</option>
+										<option value="2">March</option>
+										<option value="3">April</option>
+										<option value="4">May</option>
+										<option value="5">June</option>
+										<option value="6">July</option>
+										<option value="7">August</option>
+										<option value="8">September</option>
+										<option value="9">October</option>
+										<option value="10">November</option>
+										<option value="11">December</option>
 									</select>
 								</td>
 							</tr>
+						</table>
+						<table style="width:100%;margin-top:1.3em;">
 							<tr>
-								<td class="secondary" colspan="2">
-									* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
-								</td>
+								<th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
 							</tr>
+							<? if (calendars_enabled) { ?>
+								<tr>
+									<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
+									<td class="comment">
+										<select id="financial_calendar" required>
+											<option value="" selected>Disabled</option>
+											<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
+												<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
+											<? } ?>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="secondary" colspan="2">
+										* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to spreadsheet</label>
+									</td>
+								</tr>
+							<? } else { ?>
+								<tr>
+									<td>
+										It seems like Google Calendar is not enable for your account. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar" target="_blank"><b>Learn more</b></a>
+									</td>
+								</tr>
+							<? } ?>
+						</table>
+						<table style="width:100%;margin-top:1.3em;">
 							<tr>
-								<td colspan="2">
-									<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to spreadsheet</label>
-								</td>
+								<th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
 							</tr>
-						<? } else { ?>
+							<? if (calendars_enabled) { ?>
+								<tr>
+									<td colspan="2">
+										<input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
+									</td>
+								</tr>
+							<? } ?>
 							<tr>
-								<td>
-									It seems like Google Calendar is not enable for your account. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar" target="_blank"><b>Learn more</b></a>
-								</td>
+								<td colspan="2"><input type="checkbox" id="override_zero"><label for="override_zero">Tag zeros</label></td>
 							</tr>
-						<? } ?>
-					</table>
-					<table style="width:100%;margin-top:1.3em;">
+						</table>
+					</form>
+				</div>
+
+				<div class="panel" id="panel_Advanced">
+					<table style="width:100%;">
 						<tr>
-							<th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
+							<td class="comment name"><label>Reset protected ranges</label></td>
+							<td class="comment"><button id="b-Reset" class="create">Reset</button></td>
 						</tr>
-						<? if (calendars_enabled) { ?>
-							<tr>
-								<td colspan="2">
-									<input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
-								</td>
-							</tr>
-						<? } ?>
 						<tr>
-							<td colspan="2"><input type="checkbox" id="override_zero"><label for="override_zero">Tag zeros</label></td>
+							<td colspan="2">
+									This can fix issues related with editable ranges affected by protection.<br>
+									<a href="https://github.com/guimspace/budget-n-sheets/wiki/Step-by-step-Introduction#protected-sheets-and-ranges" target="_blank"><b>Learn more</b></a>
+							</td>
+						</tr>
+						<tr>
+							<td class="comment name"><label>Reinstall triggers</label></td>
+							<td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+									This can fix issues related with the add-on's automatic update and maintenance.<br />
+									<a href="https://github.com/guimspace/budget-n-sheets/wiki/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
+							</td>
+						</tr>
+						<tr>
+							<td class="comment name"><label>Deactivate add-on</label></td>
+							<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+									Once you deactivate the add-on for spreadsheet <span style="font-weight:bold;"><?= doc_name ?></span>, there is no going back! Please be certain.<br />
+									<a href="https://github.com/guimspace/budget-n-sheets/wiki/Frequently-Asked-Questions#how-do-i-deactivateuninstall-the-add-on" target="_blank"><b>Learn more</b></a>
+							</td>
 						</tr>
 					</table>
-				</form>
-				<table style="width:100%;margin-top:1.3em;">
-					<tr>
-						<th style="width:100%;"><span style="font-size:1.2em;">Advanced</span></th>
-						<th style="text-align:right;"><a id="b-ShowAdvanced">Show</a></th>
-					</tr>
-					<tr class="advanced">
-						<td class="comment name"><label>Reset protected ranges</label></td>
-						<td class="comment"><button id="b-Reset" class="create">Reset</button></td>
-					</tr>
-					<tr class="advanced">
-						<td colspan="2">
-								This can fix issues related with editable ranges affected by protection.<br>
-								<a href="https://github.com/guimspace/budget-n-sheets/wiki/Step-by-step-Introduction#protected-sheets-and-ranges" target="_blank"><b>Learn more</b></a>
-						</td>
-					</tr>
-					<tr class="advanced">
-						<td class="comment name"><label>Reinstall triggers</label></td>
-						<td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
-					</tr>
-					<tr class="advanced">
-						<td colspan="2">
-								This can fix issues related with the add-on's automatic update and maintenance.<br />
-								<a href="https://github.com/guimspace/budget-n-sheets/wiki/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
-						</td>
-					</tr>
-					<tr class="advanced">
-						<td class="comment name"><label>Deactivate add-on</label></td>
-						<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
-					</tr>
-					<tr class="advanced">
-						<td colspan="2">
-								Once you deactivate the add-on for spreadsheet <span style="font-weight:bold;"><?= doc_name ?></span>, there is no going back! Please be certain.<br />
-								<a href="https://github.com/guimspace/budget-n-sheets/wiki/Frequently-Asked-Questions#how-do-i-deactivateuninstall-the-add-on" target="_blank"><b>Learn more</b></a>
-						</td>
-					</tr>
-				</table>
+				</div>
 			</div>
+
 			<div id="footer">
 				<div class="current" id="footer_response" style="padding:0 7px;"></div>
 					<div class="footer_table">
@@ -171,11 +210,6 @@
 		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
 		<script>
 			$(document).ready(function() {
-				$("#b-ShowAdvanced").click(function(e) {
-					this.remove();
-					$("tr.advanced").fadeIn();
-				});
-
 				$("#b-Save").click(saveSettings);
 				$("#b-Deactivate").click(deactivateAddon);
 				$("#b-Reinstall").click(reinstallTriggers);
@@ -184,6 +218,25 @@
 				google.script.run.withSuccessHandler(loadSettings)
 					.withFailureHandler(showError)
 					.retrieveUserSettings();
+			});
+
+			$(document).on("click", ".header_tab", function() {
+				if ($(this).hasClass("active")) return;
+
+				$(this).addClass("active")
+					.siblings()
+					.removeClass("active");
+
+				window.scrollTo(0, 0);
+				if ($(this).attr("id") === "tab_settings") {
+					$("#panel_Settings").fadeIn("fast")
+						.siblings()
+						.hide();
+				} else if ($(this).attr("id") === "tab_advanced") {
+					$("#panel_Advanced").fadeIn("fast")
+						.siblings()
+						.hide();
+				}
 			});
 
 			<? if (calendars_enabled) { ?>
