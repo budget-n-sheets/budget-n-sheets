@@ -226,12 +226,14 @@
 				$(this).addClass("active")
 					.siblings()
 					.removeClass("active");
+				$(".footer_cell.left button").remove();
 
 				window.scrollTo(0, 0);
 				if ($(this).attr("id") === "tab_settings") {
 					$("#panel_Settings").fadeIn("fast")
 						.siblings()
 						.hide();
+					$(".footer_cell.left").append("<button class=\"action\" id=\"b-Save\" disabled>Save</button>");
 				} else if ($(this).attr("id") === "tab_advanced") {
 					$("#panel_Advanced").fadeIn("fast")
 						.siblings()
