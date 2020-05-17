@@ -56,7 +56,7 @@ function onOpen(e) {
 				.addItem("Open Cool Gallery panel", "showPanelAnalytics")
 				.addSeparator()
 				.addItem("About the add-on", "showDialogAboutAddon")
-				.addItem("Edit settings", "showSidebarMainSettings");
+				.addItem("Change settings", "showSidebarMainSettings");
 
 			console.info("add-on/open");
 		} else {
@@ -126,7 +126,7 @@ function showSidebarMainSettings() {
 	htmlTemplate.calendars_data = calendars;
 	htmlTemplate.calendars_enabled = calendars.md5.length > 0;
 
-	htmlSidebar = htmlTemplate.evaluate().setTitle("Edit settings");
+	htmlSidebar = htmlTemplate.evaluate().setTitle("Settings");
 
 	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
