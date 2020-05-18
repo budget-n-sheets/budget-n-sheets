@@ -117,24 +117,33 @@ function showSidebarMainSettings() {
 
 	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUserSettings");
 	var htmlSidebar;
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var editors = spreadsheet.getEditors();
 	var calendars;
-	var isAdmin, isChangeableByEditors;
+	var hasEditors, isAdmin, isChangeableByEditors;
 
-	const user_id = refreshUserId_();
-	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
-
-	isAdmin = (user_id === admin_settings.admin_id);
 	isChangeableByEditors = "";
 	calendars = getAllOwnedCalendars();
+	hasEditors = (editors.length > 1);
 
-	if (isAdmin && admin_settings.isChangeableByEditors) {
-		isChangeableByEditors = "checked";
+	if (hasEditors) {
+		const user_id = refreshUserId_();
+		const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+
+		isAdmin = (user_id === admin_settings.admin_id);
+
+		if (isAdmin && admin_settings.isChangeableByEditors) {
+			isChangeableByEditors = "checked";
+		}
+	} else {
+		isAdmin = true;
 	}
 
+	htmlTemplate.hasEditors = hasEditors;
 	htmlTemplate.isAdmin = isAdmin;
 	htmlTemplate.isChangeableByEditors = isChangeableByEditors;
 
-	htmlTemplate.doc_name = SpreadsheetApp.getActiveSpreadsheet().getName();
+	htmlTemplate.doc_name = spreadsheet.getName();
 	htmlTemplate.financial_year = getConstProperties_("financial_year");
 	htmlTemplate.calendars_data = calendars;
 	htmlTemplate.calendars_enabled = calendars.md5.length > 0;

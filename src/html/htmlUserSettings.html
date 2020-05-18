@@ -76,7 +76,7 @@
 						<div class="header_tab" id="tab_advanced">
 							<i class="material-icons" title="Advanced">build</i>
 						</div>
-						<? if (isAdmin) { ?>
+						<? if (hasEditors && isAdmin) { ?>
 							<div class="header_tab" id="tab_admin">
 								<i class="material-icons" title="Group">group_work</i>
 							</div>
@@ -206,7 +206,7 @@
 					</table>
 				</div>
 
-				<? if (isAdmin) { ?>
+				<? if (hasEditors && isAdmin) { ?>
 					<div class="panel" id="panel_Admin">
 						<table style="width:100%;">
 							<tr>
@@ -273,7 +273,7 @@
 					$("#panel_Advanced").fadeIn("fast")
 						.siblings()
 						.hide();
-				<? if (isAdmin) { ?>
+				<? if (hasEditors && isAdmin) { ?>
 					} else if (select === "tab_admin") {
 						$("#panel_Admin").fadeIn("fast")
 							.siblings()
@@ -295,16 +295,18 @@
 
 			<? } ?>
 			<? if (isAdmin) { ?>
-				$("#isChangeableByEditors").change(function() {
-					this.disabled = true;
-					$("#footer_response").empty();
-					google.script.run.withSuccessHandler(function(r, o) {
-								o.disabled = false;
-							})
-						.withUserObject(this)
-						.setAdminSettings("isChangeableByEditors", $(this).prop("checked"));
-				});
+				<? if (hasEditors) { ?>
+					$("#isChangeableByEditors").change(function() {
+						this.disabled = true;
+						$("#footer_response").empty();
+						google.script.run.withSuccessHandler(function(r, o) {
+									o.disabled = false;
+								})
+							.withUserObject(this)
+							.setAdminSettings("isChangeableByEditors", $(this).prop("checked"));
+					});
 
+				<? } ?>
 				function deactivateAddon() {
 					this.disabled = true;
 					$("#footer_response").empty();
