@@ -396,3 +396,73 @@ function askTransferAdmin() {
 
 	return 1;
 }
+
+
+function askTransferAdminSd() {
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var editors, email, digest;
+	var user = Session.getEffectiveUser().getEmail();
+
+	if (spreadsheet.getowner() || refreshUserId_() !== classAdminSettings_("get", "admin_id")) return 1;
+
+	editors = spreadsheet.getEditors();
+	if (editors.length == 1) {
+		SpreadsheetApp.getUi().alert(
+			"Can't transfer admin role",
+			"You are only editor of the spreadsheet.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+		return 1;
+	}
+
+	for (var i = 0; i < editors.length; i++) {
+		email = editors[i].getEmail();
+		if (user === email) continue;
+
+		digest = computeDigest("MD5", email, "UTF_8");
+		digest = digest.substring(0, 12);
+
+		editors[i] = {
+			digest: digest,
+			email: email
+		};
+	}
+
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlSelectEditor");
+	htmlTemplate.editors = editors;
+	htmlDialog = htmlTemplate.evaluate()
+		.setWidth(281)
+		.setHeight(233);
+
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Transfer the admin role");
+}
+
+function continuedTransferAdminSd(editor) {
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var editors, email, digest;
+	var user = Session.getEffectiveUser().getEmail();
+
+	if (spreadsheet.getowner() || refreshUserId_() !== classAdminSettings_("get", "admin_id")) return 1;
+
+	editors = spreadsheet.getEditors();
+	if (editors.length == 1) {
+		SpreadsheetApp.getUi().alert(
+			"Can't transfer admin role",
+			"You are only editor of the spreadsheet.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+		return 1;
+	}
+
+	for (var i = 0; i < editors.length; i++) {
+		email = editors[i].getEmail();
+		if (user === email) continue;
+
+		digest = computeDigest("MD5", email, "UTF_8");
+		digest = digest.substring(0, 12);
+
+		if (digest === editor) {
+			digest = computeDigest("SHA_256", email, "UTF_8");
+			classAdminSettings_("set", "admin_id", digest);
+			return;
+		}
+	}
+}

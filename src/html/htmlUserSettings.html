@@ -247,7 +247,11 @@
 							</tr>
 							<tr>
 								<td colspan="2">
-									<p>Transfers admin role to current owner of the spreadsheet.<br>
+									<? if (isSharedDrive) { ?>
+										<p>Transfers admin role to current owner of the spreadsheet.<br>
+									<? } else { ?>
+										<p>Transfers admin role to an editor of spreadsheet.<br>
+									<? } ?>
 									<a href="https://github.com/guimspace/budget-n-sheets/wiki/" target="_blank"><b>Learn more</b></a></p>
 								</td>
 							</tr>
@@ -354,7 +358,11 @@
 								})
 							.withFailureHandler(showError)
 							.withUserObject(this)
-							.askTransferAdmin();
+							<? if (isSharedDrive) { ?>
+								.askTransferAdminSd();
+							<? } else { ?>
+								.askTransferAdmin();
+							<? } ?>
 					}
 
 				<? } ?>

@@ -126,6 +126,7 @@ function showSidebarMainSettings() {
 	const isAdmin = (user_id === classAdminSettings_("get", "admin_id"));
 
 	htmlTemplate.isAdmin = isAdmin;
+	htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
 	htmlTemplate.isChangeableByEditors = "";
 
 	if (isAdmin) {
