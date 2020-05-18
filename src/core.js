@@ -121,9 +121,9 @@ function showSidebarMainSettings() {
 	var calendars, editors;
 
 	const user_id = refreshUserId_();
-	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+	const isChangeableByEditors = classAdminSettings_("get", "isChangeableByEditors");
 
-	const isAdmin = (user_id === admin_settings.admin_id);
+	const isAdmin = (user_id === classAdminSettings_("get", "admin_id"));
 
 	htmlTemplate.isAdmin = isAdmin;
 	htmlTemplate.isChangeableByEditors = "";
@@ -133,7 +133,7 @@ function showSidebarMainSettings() {
 		hasEditors = (editors.length > 0);
 		calendars = getAllOwnedCalendars();
 
-		if (hasEditors && admin_settings.isChangeableByEditors) {
+		if (hasEditors && isChangeableByEditors) {
 			htmlTemplate.isChangeableByEditors = "checked";
 		}
 
@@ -141,7 +141,7 @@ function showSidebarMainSettings() {
 		htmlTemplate.isCalendarEnabled = (calendars.md5.length > 0);
 		htmlTemplate.calendars_data = calendars;
 
-	} else if (admin_settings.isChangeableByEditors) {
+	} else if (isChangeableByEditors) {
 		htmlTemplate.hasEditors = false;
 		htmlTemplate.isCalendarEnabled = true;
 

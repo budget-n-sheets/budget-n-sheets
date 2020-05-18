@@ -6,15 +6,14 @@ function retrieveUserSettings() {
 	}
 
 	const user_id = refreshUserId_();
-	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
 
-	if (user_id === admin_settings.admin_id) {
+	if (user_id === classAdminSettings_("get", "admin_id")) {
 		if (user_settings.financial_calendar) {
 			user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
 			user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
 		}
 
-	} else if (admin_settings.isChangeableByEditors) {
+	} else if ( classAdminSettings_("get", "isChangeableByEditors") ) {
 		if (user_settings.financial_calendar) {
 			user_settings.financial_calendar = "";
 			user_settings.hasFinancialCalendar = true;
@@ -32,23 +31,15 @@ function retrieveUserSettings() {
 
 function saveUserSettings(settings) {
 	const user_id = refreshUserId_();
-	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
-
-	if (user_id !== admin_settings.admin_id && !admin_settings.isChangeableByEditors) return 1;
 
 	var db_calendars, sheet, c;
-
 	var calendar = {
 		financial_calendar: "",
 		post_day_events: false,
 		cash_flow_events: false
 	};
 
-	const new_init_month = Number(settings.initial_month);
-	const init_month = getUserSettings_("initial_month");
-	const financial_calendar = getUserSettings_("financial_calendar");
-
-	if (user_id === admin_settings.admin_id && settings.financial_calendar) {
+	if (user_id === classAdminSettings_("get", "admin_id") && settings.financial_calendar) {
 		db_calendars = getAllOwnedCalendars();
 
 		c = db_calendars.md5.indexOf(settings.financial_calendar);
@@ -58,11 +49,20 @@ function saveUserSettings(settings) {
 			calendar.cash_flow_events = settings.cash_flow_events;
 		}
 
-	} else if (financial_calendar) {
-		calendar.financial_calendar = financial_calendar;
-		calendar.post_day_events = settings.post_day_events;
-		calendar.cash_flow_events = settings.cash_flow_events;
+	} else if ( classAdminSettings_("get", "isChangeableByEditors") ) {
+		const financial_calendar = getUserSettings_("financial_calendar");
+		if (financial_calendar) {
+			calendar.financial_calendar = financial_calendar;
+			calendar.post_day_events = settings.post_day_events;
+			calendar.cash_flow_events = settings.cash_flow_events;
+		}
+
+	} else {
+		return 1;
 	}
+
+	const new_init_month = Number(settings.initial_month);
+	const init_month = getUserSettings_("initial_month");
 
 	const user_settings = {
 		initial_month: new_init_month,
@@ -195,75 +195,57 @@ function getConstProperties_(select) {
 	}
 }
 
-
-function getAdminSettings_(select) {
-	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
-	const user_id = refreshUserId_();
-
-	if (user_id !== admin_settings.admin_id) return 1;
-
-	switch (select) {
-	case "admin_id":
-	case "locked":
-		return admin_settings[select];
-
-	default:
-		console.error("getAdminSettings_(): Switch case is default.", select);
-		return 1;
-	}
+function setAdminSettings(key, value) {
+	return classAdminSettings_("set", key, value);
 }
 
-function setAdminSettings(select, value) {
-	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
-	const user_id = refreshUserId_();
-
-	if (user_id !== admin_settings.admin_id) return 1;
-
-	switch (select) {
-	case "admin_id":
-	case "locked":
-	case "isChangeableByEditors":
-		admin_settings[select] = value;
-		break;
-
-	default:
-		console.error("setAdminSettings_(): Switch case is default.", select);
+function classAdminSettings_(select, key, value) {
+	var lock = LockService.getDocumentLock();
+	try {
+		lock.waitLock(1000);
+	} catch (err) {
+		consoleLog_("warn", "classAdminSettings_(): Wait lock time out.", err);
 		return 1;
 	}
 
-	PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
-}
-
-function transferAdmin() {
-	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
-	const user_id = refreshUserId_();
-
-	if (user_id !== admin_settings.admin_id) return 1;
-
-	var ui = SpreadsheetApp.getUi();
-	var owner, owner_id;
-
-	owner = SpreadsheetApp.getActiveSpreadsheet().getOwner();
-	if (owner) {
-		owner = owner.getEmail();
-		owner_id = computeDigest("SHA_256", owner, "UTF_8");
+	var admin_settings = CacheService2.get("document", "admin_settings", "json");
+	if (!admin_settings) {
+		admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+		CacheService2.put("document", "admin_settings", "json", admin_settings);
 	}
 
-	if (!owner || user_id === owner_id) return 1;
+	if (refreshUserId_() !== admin_settings.admin_id) return 1;
 
-	var response = ui.alert(
-			"Transfer the admin role?",
-			"You might lose the ability to change settings. You can't undo this action!\n\nNew admin: " + owner,
-			ui.ButtonSet.YES_NO);
+	if (select === "get") {
+		switch (key) {
+		case "admin_id":
+		case "isChangeableByEditors":
+			return admin_settings[key];
 
-	if (response == ui.Button.YES) {
-		admin_settings.admin_id = owner_id;
+		default:
+			consoleLog_("error", "classAdminSettings_(): Switch case is default", key);
+			return 1;
+		}
+
+	} else if (select === "set") {
+		switch (key) {
+		case "admin_id":
+		case "isChangeableByEditors":
+			admin_settings[key] = value;
+			break;
+
+		default:
+			consoleLog_("error", "classAdminSettings_(): Switch case is default", key);
+			return 1;
+		}
+
 		PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
-		console.info("admin-role/transferred");
-		return;
-	}
+		CacheService2.put("document", "admin_settings", "json", admin_settings);
 
-	return 1;
+	} else {
+		consoleLog_("error", "classAdminSettings_(): Select case is default", select);
+		return 1;
+	}
 }
 
 

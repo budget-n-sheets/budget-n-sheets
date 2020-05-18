@@ -363,3 +363,32 @@ function askReinstall() {
 		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
 	}
 }
+
+
+function askTransferAdmin() {
+	const user_id = refreshUserId_();
+
+	var ui = SpreadsheetApp.getUi();
+	var owner, owner_id;
+
+	owner = SpreadsheetApp.getActiveSpreadsheet().getOwner();
+	if (owner) {
+		owner = owner.getEmail();
+		owner_id = computeDigest("SHA_256", owner, "UTF_8");
+	}
+
+	if (!owner || user_id === owner_id) return 1;
+
+	var response = ui.alert(
+			"Transfer the admin role?",
+			"You might lose the ability to change settings. You can't undo this action!\n\nNew admin: " + owner,
+			ui.ButtonSet.YES_NO);
+
+	if (response == ui.Button.YES) {
+		classAdminSettings_("set", "admin_id", owner_id);
+		console.info("admin-role/transferred");
+		return;
+	}
+
+	return 1;
+}
