@@ -118,35 +118,43 @@ function showSidebarMainSettings() {
 	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUserSettings");
 	var htmlSidebar;
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var editors = spreadsheet.getEditors();
-	var calendars;
-	var hasEditors, isAdmin, isChangeableByEditors;
+	var calendars, editors;
 
-	isChangeableByEditors = "";
-	calendars = getAllOwnedCalendars();
-	hasEditors = (editors.length > 1);
+	const user_id = refreshUserId_();
+	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
 
-	if (hasEditors) {
-		const user_id = refreshUserId_();
-		const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+	const isAdmin = (user_id === admin_settings.admin_id);
 
-		isAdmin = (user_id === admin_settings.admin_id);
-
-		if (isAdmin && admin_settings.isChangeableByEditors) {
-			isChangeableByEditors = "checked";
-		}
-	} else {
-		isAdmin = true;
-	}
-
-	htmlTemplate.hasEditors = hasEditors;
 	htmlTemplate.isAdmin = isAdmin;
-	htmlTemplate.isChangeableByEditors = isChangeableByEditors;
+	htmlTemplate.isChangeableByEditors = "";
+
+	if (isAdmin) {
+		editors = spreadsheet.getEditors();
+		hasEditors = (editors.length > 0);
+		calendars = getAllOwnedCalendars();
+
+		if (hasEditors && admin_settings.isChangeableByEditors) {
+			htmlTemplate.isChangeableByEditors = "checked";
+		}
+
+		htmlTemplate.hasEditors = hasEditors;
+		htmlTemplate.isCalendarEnabled = (calendars.md5.length > 0);
+		htmlTemplate.calendars_data = calendars;
+
+	} else if (admin_settings.isChangeableByEditors) {
+		htmlTemplate.hasEditors = false;
+		htmlTemplate.isCalendarEnabled = true;
+
+	} else {
+		SpreadsheetApp.getUi().alert(
+			"Permission denied",
+			"You don't have permission to change the settings.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+		return;
+	}
 
 	htmlTemplate.doc_name = spreadsheet.getName();
 	htmlTemplate.financial_year = getConstProperties_("financial_year");
-	htmlTemplate.calendars_data = calendars;
-	htmlTemplate.calendars_enabled = calendars.md5.length > 0;
 
 	htmlSidebar = htmlTemplate.evaluate().setTitle("Settings");
 

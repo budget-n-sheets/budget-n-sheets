@@ -1,15 +1,29 @@
 function retrieveUserSettings() {
-	var user_settings;
-
-	user_settings = CacheService2.get("document", "user_settings", "json");
+	var user_settings = CacheService2.get("document", "user_settings", "json");
 	if (!user_settings) {
 		user_settings = PropertiesService2.getProperty("document", "user_settings", "json");
 		CacheService2.put("document", "user_settings", "json", user_settings);
 	}
 
-	if (user_settings.financial_calendar) {
-		user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
-		user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
+	const user_id = refreshUserId_();
+	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+
+	if (user_id === admin_settings.admin_id) {
+		if (user_settings.financial_calendar) {
+			user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
+			user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
+		}
+
+	} else if (admin_settings.isChangeableByEditors) {
+		if (user_settings.financial_calendar) {
+			user_settings.financial_calendar = "";
+			user_settings.hasFinancialCalendar = true;
+		} else {
+			user_settings.hasFinancialCalendar = false;
+		}
+
+	} else {
+		return;
 	}
 
 	return user_settings;
@@ -17,6 +31,11 @@ function retrieveUserSettings() {
 
 
 function saveUserSettings(settings) {
+	const user_id = refreshUserId_();
+	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+
+	if (user_id !== admin_settings.admin_id && !admin_settings.isChangeableByEditors) return 1;
+
 	var db_calendars, sheet, c;
 
 	var calendar = {
@@ -27,8 +46,9 @@ function saveUserSettings(settings) {
 
 	const new_init_month = Number(settings.initial_month);
 	const init_month = getUserSettings_("initial_month");
+	const financial_calendar = getUserSettings_("financial_calendar");
 
-	if (settings.financial_calendar) {
+	if (user_id === admin_settings.admin_id && settings.financial_calendar) {
 		db_calendars = getAllOwnedCalendars();
 
 		c = db_calendars.md5.indexOf(settings.financial_calendar);
@@ -37,6 +57,11 @@ function saveUserSettings(settings) {
 			calendar.post_day_events = settings.post_day_events;
 			calendar.cash_flow_events = settings.cash_flow_events;
 		}
+
+	} else if (financial_calendar) {
+		calendar.financial_calendar = financial_calendar;
+		calendar.post_day_events = settings.post_day_events;
+		calendar.cash_flow_events = settings.cash_flow_events;
 	}
 
 	const user_settings = {

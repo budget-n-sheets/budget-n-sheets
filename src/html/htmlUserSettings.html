@@ -121,23 +121,34 @@
 							<tr>
 								<th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
 							</tr>
-							<? if (calendars_enabled) { ?>
-								<tr>
-									<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
-									<td class="comment">
-										<select id="financial_calendar" required>
-											<option value="" selected>Disabled</option>
-											<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
-												<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
-											<? } ?>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td class="secondary" colspan="2">
-										* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
-									</td>
-								</tr>
+							<? if (isCalendarEnabled) { ?>
+								<? if (isAdmin) { ?>
+									<tr>
+										<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
+										<td class="comment">
+											<select id="financial_calendar" required>
+												<option value="" selected>Disabled</option>
+												<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
+													<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
+												<? } ?>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td class="secondary" colspan="2">
+											* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
+										</td>
+									</tr>
+								<? } else { ?>
+									<tr>
+										<td class="name"><label>Calendar</label></td>
+										<td>
+											<select disabled>
+												<option selected>Restrict</option>
+											</select>
+										</td>
+									</tr>
+								<? } ?>
 								<tr>
 									<td colspan="2">
 										<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to spreadsheet</label>
@@ -155,7 +166,7 @@
 							<tr>
 								<th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
 							</tr>
-							<? if (calendars_enabled) { ?>
+							<? if (isCalendarEnabled) { ?>
 								<tr>
 									<td colspan="2">
 										<input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
@@ -255,7 +266,9 @@
 				<? if (isAdmin) { ?>
 					$("#b-Deactivate").click(deactivateAddon);
 					$("#b-Reinstall").click(reinstallTriggers);
-					$("#b-Transfer").click(transferAdminRole);
+					<? if (hasEditors) { ?>
+						$("#b-Transfer").click(transferAdminRole);
+					<? } ?>
 				<? } ?>
 				$("#b-Reset").click(resetProtection);
 
@@ -293,7 +306,7 @@
 				}
 			});
 
-			<? if (calendars_enabled) { ?>
+			<? if (isCalendarEnabled) { ?>
 				$("#financial_calendar").change(function() {
 					if ($(this).val() === "") {
 						$(".options-calendar").prop("disabled", true);
@@ -316,6 +329,19 @@
 							.withUserObject(this)
 							.setAdminSettings("isChangeableByEditors", $(this).prop("checked"));
 					});
+
+					function transferAdminRole() {
+						this.disabled = true;
+						$("#footer_response").empty();
+
+						google.script.run.withSuccessHandler(function(r, o) {
+									o.disabled = false;
+									if (!r) google.script.host.close();
+								})
+							.withFailureHandler(showError)
+							.withUserObject(this)
+							.transferAdmin();
+					}
 
 				<? } ?>
 				function deactivateAddon() {
@@ -344,19 +370,6 @@
 						.askReinstall();
 				}
 
-				function transferAdminRole() {
-					this.disabled = true;
-					$("#footer_response").empty();
-
-					google.script.run.withSuccessHandler(function(r, o) {
-								o.disabled = false;
-								if (!r) google.script.host.close();
-							})
-						.withFailureHandler(showError)
-						.withUserObject(this)
-						.transferAdmin();
-				}
-
 			<? } ?>
 			function resetProtection() {
 				this.disabled = true;
@@ -374,9 +387,13 @@
 			function loadSettings(user_settings) {
 				$("#initial_month").val(user_settings.initial_month);
 				if (user_settings.override_zero) $("#override_zero").prop("checked", true);
-				<? if (calendars_enabled) { ?>
-					$("#financial_calendar").val(user_settings.financial_calendar);
-					if (user_settings.financial_calendar != "") {
+				<? if (isCalendarEnabled) { ?>
+					<? if (isAdmin) { ?>
+						$("#financial_calendar").val(user_settings.financial_calendar);
+						if (user_settings.financial_calendar) {
+					<? } else { ?>
+						if (user_settings.hasFinancialCalendar) {
+					<? } ?>
 						if (user_settings.post_day_events) $("#post_day_events").prop("checked", true);
 						if (user_settings.cash_flow_events) $("#cash_flow_events").prop("checked", true);
 						$(".options-calendar").prop("disabled", false);
@@ -392,12 +409,14 @@
 
 				var user_settings = {
 					initial_month: $("#initial_month").val(),
-					override_zero: $("#override_zero").prop("checked"),
-					<? if (calendars_enabled) { ?>
-						financial_calendar: $("#financial_calendar").val(),
+					<? if (isCalendarEnabled) { ?>
+						<? if (isAdmin) { ?>
+							financial_calendar: $("#financial_calendar").val(),
+						<? } ?>
 						post_day_events: $("#post_day_events").prop("checked"),
-						cash_flow_events: $("#cash_flow_events").prop("checked")
+						cash_flow_events: $("#cash_flow_events").prop("checked"),
 					<? } ?>
+					override_zero: $("#override_zero").prop("checked")
 				};
 
 				google.script.run.withSuccessHandler(function(r, o) {
