@@ -238,7 +238,7 @@ function updateCashFlow_(sheetMonth, mm) {
 	var data_cards, data_tags, value, maxRows;
 	var table, hasCards, hasTags;
 	var cf_flow, cf_transactions;
-	var a, b, c, i, j, k, n, ma, t, x;
+	var a, b, c, i, j, k, n, ma, t, x, i1;
 
 	console.time("tool/update-cash-flow/load");
 	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -371,9 +371,11 @@ function updateCashFlow_(sheetMonth, mm) {
 			continue;
 		}
 
-		day = evento.Day - 1;
-		cf_flow[day] += value.formatLocaleSignal(dec_p);
-		cf_transactions[day] += "@" + evento.Title + " ";
+		for (i1 = 0; i1 < evento.Day.length; i1++) {
+			day = evento.Day[i1] - 1;
+			cf_flow[day] += value.formatLocaleSignal(dec_p);
+			cf_transactions[day] += "@" + evento.Title + " ";
+		}
 	}
 	console.timeEnd("tool/update-cash-flow/calendar");
 
