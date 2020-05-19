@@ -214,8 +214,6 @@ function classAdminSettings_(select, key, value) {
 		CacheService2.put("document", "admin_settings", "json", admin_settings);
 	}
 
-	if (refreshUserId_() !== admin_settings.admin_id) return 1;
-
 	if (select === "get") {
 		switch (key) {
 		case "admin_id":
@@ -228,6 +226,8 @@ function classAdminSettings_(select, key, value) {
 		}
 
 	} else if (select === "set") {
+		if (refreshUserId_() !== admin_settings.admin_id) return 1;
+
 		switch (key) {
 		case "admin_id":
 		case "isChangeableByEditors":
