@@ -326,6 +326,7 @@
 						google.script.run.withSuccessHandler(function(r, o) {
 									o.disabled = false;
 								})
+							.withFailureHandler(showError)
 							.withUserObject(this)
 							.setAdminSettings("isChangeableByEditors", $(this).prop("checked"));
 					});
