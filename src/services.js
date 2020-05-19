@@ -365,6 +365,11 @@ function askReinstall() {
 }
 
 
+function askUninstall() {
+	purgeScriptAppTriggers_();
+}
+
+
 function askTransferAdmin() {
 	var ui = SpreadsheetApp.getUi();
 	var owner, owner_id;

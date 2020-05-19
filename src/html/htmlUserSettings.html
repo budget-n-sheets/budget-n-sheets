@@ -213,6 +213,17 @@
 										<a href="https://github.com/guimspace/budget-n-sheets/wiki/Deactivate-or-Uninstall-Budget-n-Sheets" target="_blank"><b>Learn more</b></a>
 								</td>
 							</tr>
+						<? } else { ?>
+							<tr>
+								<td class="comment name"><label>Uninstall triggers</label></td>
+								<td class="comment"><button id="b-Uninstall" class="create">Uninstall</button></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+										This can fix issues related with the add-on's automatic update and maintenance.<br>
+										<a href="https://github.com/guimspace/budget-n-sheets/wiki/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
+								</td>
+							</tr>
 						<? } ?>
 					</table>
 				</div>
@@ -269,6 +280,8 @@
 					<? if (hasEditors) { ?>
 						$("#b-Transfer").click(transferAdminRole);
 					<? } ?>
+				<? } else { ?>
+					$("#b-Uninstall").click(uninstallTriggers);
 				<? } ?>
 				$("#b-Reset").click(resetProtection);
 
@@ -369,6 +382,20 @@
 						.withFailureHandler(showError)
 						.withUserObject(this)
 						.askReinstall();
+				}
+
+			<? } else { ?>
+				function uninstallTriggers() {
+					this.disabled = true;
+					$("#footer_response").empty();
+
+					google.script.run.withSuccessHandler(function(r, o) {
+								showStatus("Uninstalled triggers");
+								o.disabled = false;
+							})
+						.withFailureHandler(showError)
+						.withUserObject(this)
+						.askUninstall();
 				}
 
 			<? } ?>
