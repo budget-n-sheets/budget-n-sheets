@@ -342,24 +342,26 @@ function askReinstall() {
 	const financial_year = getConstProperties_("financial_year");
 
 	var yyyy = DATE_NOW.getFullYear();
-	var dd;
+	var operation, dd;
 
 	purgeScriptAppTriggers_();
 
-	createScriptAppTriggers_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
-	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
-
 	if (financial_year < yyyy) {
-		setSpreadsheetSettings_("operation_mode", "passive");
 		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
+		operation = "passive";
 
 	} else if (financial_year == yyyy) {
-		setSpreadsheetSettings_("operation_mode", "active");
 		createScriptAppTriggers_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
+		operation = "active";
 
 	} else if (financial_year > yyyy) {
 		dd = new Date(financial_year, 0, 2).getDay();
-		setSpreadsheetSettings_("operation_mode", "passive");
 		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
+		operation = "passive";
 	}
+
+	setSpreadsheetSettings_("operation_mode", operation);
+
+	createScriptAppTriggers_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
+	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
 }
