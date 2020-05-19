@@ -1,4 +1,4 @@
-function daily_PostEvents_(date) {
+function postEventsForDate_(date) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet, data, lastRow;
 
