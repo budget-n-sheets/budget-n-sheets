@@ -226,17 +226,14 @@ function refreshUserId_() {
 
 
 function askDeactivation() {
-	var Ui = SpreadsheetApp.getUi(); // Same variations.
-	var s = randomString(5, "upnum");
+	var ui = SpreadsheetApp.getUi();
 
-	var result = Ui.prompt(
-			"Deactivate add-on",
-			"This action cannot be undone!\nPlease type in the code " + s + " to confirm:",
-			Ui.ButtonSet.OK_CANCEL);
+	var response = ui.alert(
+			"Deactivate the add-on?",
+			"You can't undo this action!",
+			ui.ButtonSet.YES_NO);
 
-	var button = result.getSelectedButton();
-	var text = result.getResponseText();
-	if (button == Ui.Button.OK && text === s) {
+	if (response == ui.Button.YES) {
 		uninstall_(true);
 		onOpen();
 		console.info("add-on/deactivate");
