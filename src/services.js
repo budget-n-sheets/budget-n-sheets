@@ -366,8 +366,6 @@ function askReinstall() {
 
 
 function askTransferAdmin() {
-	const user_id = refreshUserId_();
-
 	var ui = SpreadsheetApp.getUi();
 	var owner, owner_id;
 
@@ -377,7 +375,7 @@ function askTransferAdmin() {
 		owner_id = computeDigest("SHA_256", owner, "UTF_8");
 	}
 
-	if (!owner || user_id === owner_id) return 1;
+	if (!owner || refreshUserId_() === owner_id) return 1;
 
 	var response = ui.alert(
 			"Transfer the admin role?",
