@@ -389,6 +389,7 @@ function askTransferAdmin() {
 
 	if (response == ui.Button.YES) {
 		classAdminSettings_("set", "admin_id", owner_id);
+		purgeScriptAppTriggers_();
 		console.info("admin-role/transferred");
 		return;
 	}
