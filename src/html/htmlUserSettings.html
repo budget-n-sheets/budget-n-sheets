@@ -298,14 +298,14 @@
 				$(this).addClass("active")
 					.siblings()
 					.removeClass("active");
-				$(".footer_cell.left button").remove();
+				$("#b-Save").hide();
 
 				window.scrollTo(0, 0);
 				if (select === "tab_settings") {
 					$("#panel_Settings").fadeIn("fast")
 						.siblings()
 						.hide();
-					$(".footer_cell.left").append("<button class=\"action\" id=\"b-Save\">Save</button>");
+					$("#b-Save").hide();
 				} else if (select === "tab_advanced") {
 					$("#panel_Advanced").fadeIn("fast")
 						.siblings()
