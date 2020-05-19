@@ -44,41 +44,43 @@ function isScriptAuthorized_(select) {
  * @return {Boolean} True if re-authorization is required.
  */
 function isReAuthorizationRequired_(sendEmail) {
-	try {
-		var documentProperties = PropertiesService.getDocumentProperties();
-	} catch (err) {
-		return true;
-	}
-
 	var authInfoLevel = ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL);
+	var requestSent, lock;
 
 	if (authInfoLevel.getAuthorizationStatus() == ScriptApp.AuthorizationStatus.NOT_REQUIRED) {
-		documentProperties.deleteProperty("auth_request_sent");
+		PropertiesService.getDocumentProperties().deleteProperty("auth_request_sent");
 		return false;
 	}
 
-	if (sendEmail && !documentProperties.getProperty("auth_request_sent")) {
-		sendReAuthorizationRequest_(authInfoLevel, documentProperties);
+	if (sendEmail) {
+		lock = LockService.getUserLock();
+		try {
+			lock.waitLock(200);
+			sendReAuthorizationRequest_(authInfoLevel);
+		} catch (e) {
+			console.error("isReAuthorizationRequired_(): " + e);
+			return true;
+		} finally {
+			lock.releaseLock();
+		}
 	}
 
 	return true;
 }
 
 
-function sendReAuthorizationRequest_(authInfoLevel, documentProperties) {
+function sendReAuthorizationRequest_(authInfoLevel) {
+	if (PropertiesService.getDocumentProperties().getProperty("auth_request_sent")) return;
 	if (MailApp.getRemainingDailyQuota() == 0) return;
 
-	var htmlTemplate, htmlMessage;
+	var htmlTemplate = HtmlService.createTemplateFromFile("gas-common/htmlAuthorizationEmail");
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-
-	htmlTemplate = HtmlService.createTemplateFromFile("gas-common/htmlAuthorizationEmail");
 
 	htmlTemplate.spreadsheet_url = spreadsheet.getUrl();
 	htmlTemplate.spreadsheet_name = spreadsheet.getName();
 	htmlTemplate.auth_url = authInfoLevel.getAuthorizationUrl();
 
-	htmlMessage = htmlTemplate.evaluate();
-
+	var htmlMessage = htmlTemplate.evaluate();
 	MailApp.sendEmail(
 		Session.getEffectiveUser().getEmail(),
 		"Authorization Required",
@@ -88,7 +90,7 @@ function sendReAuthorizationRequest_(authInfoLevel, documentProperties) {
 			noReply: true
 		});
 
-	documentProperties.setProperty("auth_request_sent", "true");
+	PropertiesService.getDocumentProperties().setProperty("auth_request_sent", "true");
 }
 
 
