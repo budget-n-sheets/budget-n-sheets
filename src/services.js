@@ -358,6 +358,9 @@ function askReinstall() {
 		dd = new Date(financial_year, 0, 2).getDay();
 		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
 		operation = "passive";
+
+	} else {
+		console.warn("askReinstall(): Case is default.");
 	}
 
 	setSpreadsheetSettings_("operation_mode", operation);
