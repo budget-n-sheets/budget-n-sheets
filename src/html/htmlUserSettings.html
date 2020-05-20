@@ -5,6 +5,13 @@
 		<meta charset="UTF-8">
 		<?!= htmlInclude("gas-common/htmlStyles"); ?>
 		<style>
+			td p {
+				margin-top: 0;
+				margin-bottom: 0;
+				text-indent: 0;
+				text-align: justify;
+			}
+
 			td.comment {
 				border-bottom: none;
 				padding-bottom: 0;
@@ -69,6 +76,11 @@
 						<div class="header_tab" id="tab_advanced">
 							<i class="material-icons" title="Advanced">build</i>
 						</div>
+						<? if (hasEditors && isAdmin) { ?>
+							<div class="header_tab" id="tab_admin">
+								<i class="material-icons" title="Group">group_work</i>
+							</div>
+						<? } ?>
 					</div>
 				</div>
 			</div>
@@ -109,23 +121,34 @@
 							<tr>
 								<th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
 							</tr>
-							<? if (calendars_enabled) { ?>
-								<tr>
-									<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
-									<td class="comment">
-										<select id="financial_calendar" required>
-											<option value="" selected>Disabled</option>
-											<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
-												<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
-											<? } ?>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td class="secondary" colspan="2">
-										* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
-									</td>
-								</tr>
+							<? if (isCalendarEnabled) { ?>
+								<? if (isAdmin) { ?>
+									<tr>
+										<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
+										<td class="comment">
+											<select id="financial_calendar" required>
+												<option value="" selected>Disabled</option>
+												<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
+													<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
+												<? } ?>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td class="secondary" colspan="2">
+											* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
+										</td>
+									</tr>
+								<? } else { ?>
+									<tr>
+										<td class="name"><label>Calendar</label></td>
+										<td>
+											<select disabled>
+												<option selected>Restrict</option>
+											</select>
+										</td>
+									</tr>
+								<? } ?>
 								<tr>
 									<td colspan="2">
 										<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to spreadsheet</label>
@@ -143,7 +166,7 @@
 							<tr>
 								<th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
 							</tr>
-							<? if (calendars_enabled) { ?>
+							<? if (isCalendarEnabled) { ?>
 								<tr>
 									<td colspan="2">
 										<input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
@@ -169,28 +192,72 @@
 									<a href="https://github.com/guimspace/budget-n-sheets/wiki/Step-by-step-Introduction#protected-sheets-and-ranges" target="_blank"><b>Learn more</b></a>
 							</td>
 						</tr>
-						<tr>
-							<td class="comment name"><label>Reinstall triggers</label></td>
-							<td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-									This can fix issues related with the add-on's automatic update and maintenance.<br />
-									<a href="https://github.com/guimspace/budget-n-sheets/wiki/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
-							</td>
-						</tr>
-						<tr>
-							<td class="comment name"><label>Deactivate add-on</label></td>
-							<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-									Once you deactivate the add-on for spreadsheet <span style="font-weight:bold;"><?= doc_name ?></span>, there is no going back! Please be certain.<br />
-									<a href="https://github.com/guimspace/budget-n-sheets/wiki/Deactivate-or-Uninstall-Budget-n-Sheets" target="_blank"><b>Learn more</b></a>
-							</td>
-						</tr>
+						<? if (isAdmin) { ?>
+							<tr>
+								<td class="comment name"><label>Reinstall triggers</label></td>
+								<td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+										This can fix issues related with the add-on's automatic update and maintenance.<br />
+										<a href="https://github.com/guimspace/budget-n-sheets/wiki/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
+								</td>
+							</tr>
+							<tr>
+								<td class="comment name"><label>Deactivate add-on</label></td>
+								<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+										Once you deactivate the add-on for spreadsheet <span style="font-weight:bold;"><?= doc_name ?></span>, there is no going back! Please be certain.<br />
+										<a href="https://github.com/guimspace/budget-n-sheets/wiki/Deactivate-or-Uninstall-Budget-n-Sheets" target="_blank"><b>Learn more</b></a>
+								</td>
+							</tr>
+						<? } else { ?>
+							<tr>
+								<td class="comment name"><label>Uninstall triggers</label></td>
+								<td class="comment"><button id="b-Uninstall" class="create">Uninstall</button></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+										This can fix issues related with the add-on's automatic update and maintenance.<br>
+										<a href="https://github.com/guimspace/budget-n-sheets/wiki/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
+								</td>
+							</tr>
+						<? } ?>
 					</table>
 				</div>
+
+				<? if (hasEditors && isAdmin) { ?>
+					<div class="panel" id="panel_Admin">
+						<table style="width:100%;">
+							<tr>
+								<td class="comment" colspan="2">
+									<input id="isChangeableByEditors" type="checkbox" <?= isChangeableByEditors ?>><label for="isChangeableByEditors">Editors can change settings</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<p>Only you can select the <b>calendar</b>, <b>reinstall triggers</b>, and <b>deactivate the add-on</b>.</p>
+								</td>
+							</tr>
+							<tr>
+								<td class="comment name" style="width: 100%;">Transfer admin role</td>
+								<td class="comment"><button id="b-Transfer" class="create">Transfer</button></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<? if (isSharedDrive) { ?>
+										<p>Transfers admin role to current owner of the spreadsheet.<br>
+									<? } else { ?>
+										<p>Transfers admin role to an editor of spreadsheet.<br>
+									<? } ?>
+									<a href="https://github.com/guimspace/budget-n-sheets/wiki/" target="_blank"><b>Learn more</b></a></p>
+								</td>
+							</tr>
+						</table>
+					</div>
+				<? } ?>
 			</div>
 
 			<div id="footer">
@@ -211,8 +278,15 @@
 		<script>
 			$(document).ready(function() {
 				$("#b-Save").click(saveSettings);
-				$("#b-Deactivate").click(deactivateAddon);
-				$("#b-Reinstall").click(reinstallTriggers);
+				<? if (isAdmin) { ?>
+					$("#b-Deactivate").click(deactivateAddon);
+					$("#b-Reinstall").click(reinstallTriggers);
+					<? if (hasEditors) { ?>
+						$("#b-Transfer").click(transferAdminRole);
+					<? } ?>
+				<? } else { ?>
+					$("#b-Uninstall").click(uninstallTriggers);
+				<? } ?>
 				$("#b-Reset").click(resetProtection);
 
 				google.script.run.withSuccessHandler(loadSettings)
@@ -223,25 +297,33 @@
 			$(document).on("click", ".header_tab", function() {
 				if ($(this).hasClass("active")) return;
 
+				var select = $(this).attr("id");
+
 				$(this).addClass("active")
 					.siblings()
 					.removeClass("active");
-				$(".footer_cell.left button").remove();
+				$("#b-Save").hide();
 
 				window.scrollTo(0, 0);
-				if ($(this).attr("id") === "tab_settings") {
+				if (select === "tab_settings") {
 					$("#panel_Settings").fadeIn("fast")
 						.siblings()
 						.hide();
-					$(".footer_cell.left").append("<button class=\"action\" id=\"b-Save\" disabled>Save</button>");
-				} else if ($(this).attr("id") === "tab_advanced") {
+					$("#b-Save").hide();
+				} else if (select === "tab_advanced") {
 					$("#panel_Advanced").fadeIn("fast")
 						.siblings()
 						.hide();
+				<? if (hasEditors && isAdmin) { ?>
+					} else if (select === "tab_admin") {
+						$("#panel_Admin").fadeIn("fast")
+							.siblings()
+							.hide();
+				<? } ?>
 				}
 			});
 
-			<? if (calendars_enabled) { ?>
+			<? if (isCalendarEnabled) { ?>
 				$("#financial_calendar").change(function() {
 					if ($(this).val() === "") {
 						$(".options-calendar").prop("disabled", true);
@@ -253,19 +335,78 @@
 				});
 
 			<? } ?>
-			function deactivateAddon() {
-				this.disabled = true;
-				$("#footer_response").empty();
+			<? if (isAdmin) { ?>
+				<? if (hasEditors) { ?>
+					$("#isChangeableByEditors").change(function() {
+						this.disabled = true;
+						$("#footer_response").empty();
+						google.script.run.withSuccessHandler(function(r, o) {
+									o.disabled = false;
+								})
+							.withFailureHandler(showError)
+							.withUserObject(this)
+							.setAdminSettings("isChangeableByEditors", $(this).prop("checked"));
+					});
 
-				google.script.run.withSuccessHandler(function(r, o) {
-							if (r) google.script.host.close();
-							o.disabled = false;
-						})
-					.withFailureHandler(showError)
-					.withUserObject(this)
-					.askDeactivation();
-			}
+					function transferAdminRole() {
+						this.disabled = true;
+						$("#footer_response").empty();
 
+						google.script.run.withSuccessHandler(function(r, o) {
+									o.disabled = false;
+									if (!r) google.script.host.close();
+								})
+							.withFailureHandler(showError)
+							.withUserObject(this)
+							<? if (isSharedDrive) { ?>
+								.askTransferAdminSd();
+							<? } else { ?>
+								.askTransferAdmin();
+							<? } ?>
+					}
+
+				<? } ?>
+				function deactivateAddon() {
+					this.disabled = true;
+					$("#footer_response").empty();
+
+					google.script.run.withSuccessHandler(function(r, o) {
+								if (r) google.script.host.close();
+								o.disabled = false;
+							})
+						.withFailureHandler(showError)
+						.withUserObject(this)
+						.askDeactivation();
+				}
+
+				function reinstallTriggers() {
+					this.disabled = true;
+					$("#footer_response").empty();
+
+					google.script.run.withSuccessHandler(function(r, o) {
+								showStatus("Reinstalled triggers");
+								o.disabled = false;
+							})
+						.withFailureHandler(showError)
+						.withUserObject(this)
+						.askReinstall();
+				}
+
+			<? } else { ?>
+				function uninstallTriggers() {
+					this.disabled = true;
+					$("#footer_response").empty();
+
+					google.script.run.withSuccessHandler(function(r, o) {
+								showStatus("Uninstalled triggers");
+								o.disabled = false;
+							})
+						.withFailureHandler(showError)
+						.withUserObject(this)
+						.askUninstall();
+				}
+
+			<? } ?>
 			function resetProtection() {
 				this.disabled = true;
 				$("#footer_response").empty();
@@ -279,25 +420,16 @@
 					.askResetProtection();
 			}
 
-			function reinstallTriggers() {
-				this.disabled = true;
-				$("#footer_response").empty();
-
-				google.script.run.withSuccessHandler(function(r, o) {
-							showStatus("Reinstalled triggers");
-							o.disabled = false;
-						})
-					.withFailureHandler(showError)
-					.withUserObject(this)
-					.askReinstall();
-			}
-
 			function loadSettings(user_settings) {
 				$("#initial_month").val(user_settings.initial_month);
 				if (user_settings.override_zero) $("#override_zero").prop("checked", true);
-				<? if (calendars_enabled) { ?>
-					$("#financial_calendar").val(user_settings.financial_calendar);
-					if (user_settings.financial_calendar != "") {
+				<? if (isCalendarEnabled) { ?>
+					<? if (isAdmin) { ?>
+						$("#financial_calendar").val(user_settings.financial_calendar);
+						if (user_settings.financial_calendar) {
+					<? } else { ?>
+						if (user_settings.hasFinancialCalendar) {
+					<? } ?>
 						if (user_settings.post_day_events) $("#post_day_events").prop("checked", true);
 						if (user_settings.cash_flow_events) $("#cash_flow_events").prop("checked", true);
 						$(".options-calendar").prop("disabled", false);
@@ -313,12 +445,14 @@
 
 				var user_settings = {
 					initial_month: $("#initial_month").val(),
-					override_zero: $("#override_zero").prop("checked"),
-					<? if (calendars_enabled) { ?>
-						financial_calendar: $("#financial_calendar").val(),
+					<? if (isCalendarEnabled) { ?>
+						<? if (isAdmin) { ?>
+							financial_calendar: $("#financial_calendar").val(),
+						<? } ?>
 						post_day_events: $("#post_day_events").prop("checked"),
-						cash_flow_events: $("#cash_flow_events").prop("checked")
+						cash_flow_events: $("#cash_flow_events").prop("checked"),
 					<? } ?>
+					override_zero: $("#override_zero").prop("checked")
 				};
 
 				google.script.run.withSuccessHandler(function(r, o) {

@@ -117,14 +117,45 @@ function showSidebarMainSettings() {
 
 	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUserSettings");
 	var htmlSidebar;
-	var calendars = getAllOwnedCalendars();
+	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	var calendars, editors;
 
-	CacheService2.put("document", "DB_CALENDARS", "json", calendars);
+	const user_id = refreshUserId_();
+	const isChangeableByEditors = classAdminSettings_("get", "isChangeableByEditors");
 
-	htmlTemplate.doc_name = SpreadsheetApp.getActiveSpreadsheet().getName();
+	const isAdmin = (user_id === classAdminSettings_("get", "admin_id"));
+
+	htmlTemplate.isAdmin = isAdmin;
+	htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
+	htmlTemplate.isChangeableByEditors = "";
+
+	if (isAdmin) {
+		editors = spreadsheet.getEditors();
+		hasEditors = (editors.length > 0);
+		calendars = getAllOwnedCalendars();
+
+		if (hasEditors && isChangeableByEditors) {
+			htmlTemplate.isChangeableByEditors = "checked";
+		}
+
+		htmlTemplate.hasEditors = hasEditors;
+		htmlTemplate.isCalendarEnabled = (calendars.md5.length > 0);
+		htmlTemplate.calendars_data = calendars;
+
+	} else if (isChangeableByEditors) {
+		htmlTemplate.hasEditors = false;
+		htmlTemplate.isCalendarEnabled = true;
+
+	} else {
+		SpreadsheetApp.getUi().alert(
+			"Permission denied",
+			"You don't have permission to change the settings.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+		return;
+	}
+
+	htmlTemplate.doc_name = spreadsheet.getName();
 	htmlTemplate.financial_year = getConstProperties_("financial_year");
-	htmlTemplate.calendars_data = calendars;
-	htmlTemplate.calendars_enabled = calendars.md5.length > 0;
 
 	htmlSidebar = htmlTemplate.evaluate().setTitle("Settings");
 

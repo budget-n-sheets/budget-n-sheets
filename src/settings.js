@@ -1,15 +1,28 @@
 function retrieveUserSettings() {
-	var user_settings;
-
-	user_settings = CacheService2.get("document", "user_settings", "json");
+	var user_settings = CacheService2.get("document", "user_settings", "json");
 	if (!user_settings) {
 		user_settings = PropertiesService2.getProperty("document", "user_settings", "json");
 		CacheService2.put("document", "user_settings", "json", user_settings);
 	}
 
-	if (user_settings.financial_calendar) {
-		user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
-		user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
+	const user_id = refreshUserId_();
+
+	if (user_id === classAdminSettings_("get", "admin_id")) {
+		if (user_settings.financial_calendar) {
+			user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
+			user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
+		}
+
+	} else if ( classAdminSettings_("get", "isChangeableByEditors") ) {
+		if (user_settings.financial_calendar) {
+			user_settings.financial_calendar = "";
+			user_settings.hasFinancialCalendar = true;
+		} else {
+			user_settings.hasFinancialCalendar = false;
+		}
+
+	} else {
+		return;
 	}
 
 	return user_settings;
@@ -17,23 +30,17 @@ function retrieveUserSettings() {
 
 
 function saveUserSettings(settings) {
-	var db_calendars, sheet, c;
+	const user_id = refreshUserId_();
 
+	var db_calendars, sheet, c;
 	var calendar = {
 		financial_calendar: "",
 		post_day_events: false,
 		cash_flow_events: false
 	};
 
-	const new_init_month = Number(settings.initial_month);
-	const init_month = getUserSettings_("initial_month");
-
-	if (settings.financial_calendar) {
-		db_calendars = CacheService2.get("document", "DB_CALENDARS", "json");
-		if (!db_calendars) {
-			db_calendars = getAllOwnedCalendars();
-			CacheService2.put("document", "DB_CALENDARS", "json", db_calendars);
-		}
+	if (user_id === classAdminSettings_("get", "admin_id") && settings.financial_calendar) {
+		db_calendars = getAllOwnedCalendars();
 
 		c = db_calendars.md5.indexOf(settings.financial_calendar);
 		if (c !== -1) {
@@ -41,7 +48,21 @@ function saveUserSettings(settings) {
 			calendar.post_day_events = settings.post_day_events;
 			calendar.cash_flow_events = settings.cash_flow_events;
 		}
+
+	} else if ( classAdminSettings_("get", "isChangeableByEditors") ) {
+		const financial_calendar = getUserSettings_("financial_calendar");
+		if (financial_calendar) {
+			calendar.financial_calendar = financial_calendar;
+			calendar.post_day_events = settings.post_day_events;
+			calendar.cash_flow_events = settings.cash_flow_events;
+		}
+
+	} else {
+		return 1;
 	}
+
+	const new_init_month = Number(settings.initial_month);
+	const init_month = getUserSettings_("initial_month");
 
 	const user_settings = {
 		initial_month: new_init_month,
@@ -174,36 +195,57 @@ function getConstProperties_(select) {
 	}
 }
 
-
-function getAdminSettings_(select) {
-	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
-
-	switch (select) {
-	case "admin_id":
-	case "locked":
-		return admin_settings[select];
-
-	default:
-		console.error("getAdminSettings_(): Switch case is default.", select);
-		return 1;
-	}
+function setAdminSettings(key, value) {
+	return classAdminSettings_("set", key, value);
 }
 
-function setAdminSettings_(select, value) {
-	const admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
-
-	switch (select) {
-	case "admin_id":
-	case "locked":
-		admin_settings[select] = value;
-		break;
-
-	default:
-		console.error("setAdminSettings_(): Switch case is default.", select);
+function classAdminSettings_(select, key, value) {
+	var lock = LockService.getDocumentLock();
+	try {
+		lock.waitLock(1000);
+	} catch (err) {
+		consoleLog_("warn", "classAdminSettings_(): Wait lock time out.", err);
 		return 1;
 	}
 
-	PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
+	var admin_settings = CacheService2.get("document", "admin_settings", "json");
+	if (!admin_settings) {
+		admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
+		CacheService2.put("document", "admin_settings", "json", admin_settings);
+	}
+
+	if (select === "get") {
+		switch (key) {
+		case "admin_id":
+		case "isChangeableByEditors":
+			return admin_settings[key];
+
+		default:
+			consoleLog_("error", "classAdminSettings_(): Switch case is default", key);
+			return 1;
+		}
+
+	} else if (select === "set") {
+		if (refreshUserId_() !== admin_settings.admin_id) return 1;
+
+		switch (key) {
+		case "admin_id":
+		case "isChangeableByEditors":
+			admin_settings[key] = value;
+			break;
+
+		default:
+			consoleLog_("error", "classAdminSettings_(): Switch case is default", key);
+			return 1;
+		}
+
+		PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
+		CacheService2.put("document", "admin_settings", "json", admin_settings);
+
+	} else {
+		consoleLog_("error", "classAdminSettings_(): Select case is default", select);
+		return 1;
+	}
 }
 
 
