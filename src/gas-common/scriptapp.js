@@ -17,6 +17,7 @@ function isReAuthorizationRequired_(sendEmail) {
 		lock = LockService.getUserLock();
 		try {
 			lock.waitLock(200);
+			Utilities.sleep(200);
 			sendReAuthorizationRequest_(authInfoLevel);
 		} catch (e) {
 			console.error("isReAuthorizationRequired_(): " + e);
