@@ -4,6 +4,10 @@
  * <https://github.com/guimspace/gas-common>
  */
 
+function htmlInclude(fileName) {
+	return HtmlService.createHtmlOutputFromFile(fileName).getContent();
+}
+
 /**
  * Converts an array of bytes to string.
  * @param  {Object} b Array of bytes.
@@ -166,4 +170,47 @@ function computeHmacSignature(algorithm, value, key, charset, byte) {
 	}
 
 	return digest;
+}
+
+function randomString(n, p) {
+	var a, b;
+	var i;
+
+	a = "";
+	switch (p) {
+		case "digit":
+			b = "0123456789";
+			break;
+		case "lower":
+			b = "abcdefghijklmnopqrstuvwxyz";
+			break;
+		case "upper":
+			b = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			break;
+		case "alpha":
+			b = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+			break;
+		case "lonum":
+			b = "abcdefghijklmnopqrstuvwxyz0123456789";
+			break;
+		case "upnum":
+			b = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			break;
+		case "alnum":
+			b = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			break;
+		case "word":
+			b = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
+			break;
+
+		default:
+			b = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			break;
+	}
+
+	for (i = 0; i < n; i++) {
+		a += b.charAt(Math.floor(Math.random() * b.length));
+	}
+
+	return a;
 }

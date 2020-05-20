@@ -85,11 +85,11 @@ function setup_(settings, list_acc) {
 	SPREADSHEET.rename(SETUP_SETTINGS["spreadsheet_name"]);
 
 	PropertiesService2.deleteAllProperties("document");
-	purgeScriptAppTriggers_();
+	deleteAllTriggers_();
 	CacheService2.removeAll("document", CACHE_KEYS);
 
 	deleteAllSheets_();
-	copySheetsFromTemplate_();
+	copySheetsFromSource_();
 
 	yyyy_mm = {
 		time: DATE_NOW.getTime(),
@@ -642,21 +642,21 @@ function setupProperties_(yyyy_mm) {
 	PropertiesService2.setProperty("document", "const_properties", "json", properties);
 
 
-	createScriptAppTriggers_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
-	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
+	createNewTrigger_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
+	createNewTrigger_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
 
 	if (SETUP_SETTINGS["financial_year"] < yyyy_mm.yyyy) {
-		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
+		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
 		operation = "passive";
 
 	} else if (SETUP_SETTINGS["financial_year"] == yyyy_mm.yyyy) {
-		createScriptAppTriggers_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
+		createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
 		operation = "active";
 
 	} else if (SETUP_SETTINGS["financial_year"] > yyyy_mm.yyyy) {
 		d = new Date(SETUP_SETTINGS["financial_year"], 0, 2);
 		d = d.getDay();
-		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", d);
+		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", d);
 		operation = "passive";
 	}
 

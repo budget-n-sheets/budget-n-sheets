@@ -197,20 +197,20 @@ function update_v0m30p6_() {
 		}
 
 		if (installOnEdit) {
-			createScriptAppTriggers_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
+			createNewTrigger_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
 		}
 
 		if (installClock) {
 			yyyy = DATE_NOW.getFullYear();
 			if (financial_year < yyyy) {
-				createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
+				createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
 
 			} else if (financial_year == yyyy) {
-				createScriptAppTriggers_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
+				createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
 
 			} else if (financial_year > yyyy) {
 				dd = new Date(financial_year, 0, 2).getDay();
-				createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
+				createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
 			}
 		}
 
@@ -268,7 +268,7 @@ function update_v0m29p2_() {
  */
 function update_v0m29p0_() {
 	try {
-		createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
+		createNewTrigger_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
 	} catch (err) {
 		consoleLog_("error", "update_v0m29p0_()", err);
 	}

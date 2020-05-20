@@ -113,9 +113,9 @@ function dailyTrigger_(e) {
 
 	if (financial_year < a["year"]) {
 		monthly_TreatLayout_(a["year"], a["month"]);
-		deleteScriptAppTriggers_('document', 'clockTriggerId');
+		deleteTrigger_('document', 'clockTriggerId');
 		Utilities.sleep(300);
-		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weekly_Foo_", 2);
+		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weekly_Foo_", 2);
 		setSpreadsheetSettings_("operation_mode", "passive");
 
 		console.info("add-on/mode-passive");
@@ -193,13 +193,13 @@ function weeklyTriggerPre_(e) {
 
 	if (a["year"] > financial_year) return;
 
-	deleteScriptAppTriggers_("document", "clockTriggerId");
+	deleteTrigger_("document", "clockTriggerId");
 
 	if (a["year"] == financial_year) {
-		createScriptAppTriggers_("document", "clockTriggerId", "everyDays", "daily_Main_", 1, 2);
+		createNewTrigger_("document", "clockTriggerId", "everyDays", "daily_Main_", 1, 2);
 		console.info("add-on/mode-active");
 	} else {
-		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weekly_Foo_", 2);
+		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weekly_Foo_", 2);
 	}
 
 	monthly_TreatLayout_(a["year"], a["month"]);
@@ -341,19 +341,19 @@ function askReinstall() {
 	var yyyy = DATE_NOW.getFullYear();
 	var operation, dd;
 
-	purgeScriptAppTriggers_();
+	deleteAllTriggers_();
 
 	if (financial_year < yyyy) {
-		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
+		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
 		operation = "passive";
 
 	} else if (financial_year == yyyy) {
-		createScriptAppTriggers_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
+		createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
 		operation = "active";
 
 	} else if (financial_year > yyyy) {
 		dd = new Date(financial_year, 0, 2).getDay();
-		createScriptAppTriggers_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
+		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
 		operation = "passive";
 
 	} else {
@@ -362,6 +362,6 @@ function askReinstall() {
 
 	setSpreadsheetSettings_("operation_mode", operation);
 
-	createScriptAppTriggers_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
-	createScriptAppTriggers_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
+	createNewTrigger_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
+	createNewTrigger_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
 }
