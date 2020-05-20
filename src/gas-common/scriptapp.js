@@ -6,22 +6,37 @@
 
 function isReAuthorizationRequired_(sendEmail) {
 	var authInfoLevel = ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL);
-	var requestSent, lock;
+	var documentProperties, lock;
+
+	try {
+		documentProperties = PropertiesService.getDocumentProperties();
+	} catch (e) {
+		console.error("isReAuthorizationRequired_(): " + e);
+		return true;
+	}
 
 	if (authInfoLevel.getAuthorizationStatus() == ScriptApp.AuthorizationStatus.NOT_REQUIRED) {
-		PropertiesService.getDocumentProperties().deleteProperty("auth_request_sent");
+		documentProperties.deleteProperty("auth_request_sent");
 		return false;
 	}
 
-	if (sendEmail) {
+	if (sendEmail && documentProperties.getProperty("auth_request_sent") == null) {
 		lock = LockService.getUserLock();
+
 		try {
-			lock.waitLock(200);
-			Utilities.sleep(200);
+			lock.waitLock(100);
+
+			if (documentProperties.getProperty("auth_request_sent") != null) {
+				return;
+			}
+
 			sendReAuthorizationRequest_(authInfoLevel);
+			documentProperties.setProperty("auth_request_sent", "true");
+
 		} catch (e) {
 			console.error("isReAuthorizationRequired_(): " + e);
 			return true;
+
 		} finally {
 			lock.releaseLock();
 		}
@@ -32,7 +47,6 @@ function isReAuthorizationRequired_(sendEmail) {
 
 
 function sendReAuthorizationRequest_(authInfoLevel) {
-	if (PropertiesService.getDocumentProperties().getProperty("auth_request_sent")) return;
 	if (MailApp.getRemainingDailyQuota() == 0) return;
 
 	var htmlTemplate = HtmlService.createTemplateFromFile("gas-common/htmlAuthorizationEmail");
@@ -51,6 +65,4 @@ function sendReAuthorizationRequest_(authInfoLevel) {
 			htmlBody: htmlMessage.getContent(),
 			noReply: true
 		});
-
-	PropertiesService.getDocumentProperties().setProperty("auth_request_sent", "true");
 }
