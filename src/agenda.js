@@ -1,7 +1,11 @@
-function calendarDigestListEvents_(listEvents) {
+function calendarDigestListEvents_(listEvents, start, end, offset) {
 	var evento, description;
 	var output, translation, regexp, match;
 	var list_acc, list, cell, s, i, j;
+	var startDate, endDate, end2, a, d;
+
+	end2 = new Date(end);
+	end2.setDate(end2.getDate() - 1);
 
 	output = [ ];
 	regexp = {
@@ -46,7 +50,7 @@ function calendarDigestListEvents_(listEvents) {
 
 		cell = {
 			Id: evento.getId(),
-			Day: evento.getStartTime().getDate(),
+			Day: [ ],
 			Title: evento.getTitle(),
 			Description: description,
 			Table: -1,
@@ -103,6 +107,33 @@ function calendarDigestListEvents_(listEvents) {
 			for (j = 0; j < cell.Tags.length; j++) {
 				cell.Tags[j] = cell.Tags[j].slice(1);
 			}
+		}
+
+		if (evento.isAllDayEvent()) {
+			startDate = evento.getAllDayStartDate();
+			endDate = evento.getAllDayEndDate();
+			a = 0;
+		} else {
+			startDate = evento.getStartTime().getTime() - offset;
+			endDate = evento.getEndTime().getTime() - offset;
+			startDate = new Date(startDate);
+			endDate = new Date(endDate);
+			a = 1;
+		}
+
+		if (startDate < start) startDate = start;
+		if (endDate >= end) {
+			endDate = end2;
+			a = 1;
+		}
+
+		startDate = startDate.getDate();
+		endDate = endDate.getDate() + a;
+
+		j = 0;
+		for (d = startDate; d < endDate; d++) {
+			cell.Day[j] = d;
+			j++;
 		}
 
 		output.push(cell);
@@ -166,33 +197,31 @@ function getFinancialCalendar_() {
 function getCalendarEventsForCashFlow_(financial_year, mm) {
 	var calendar, eventos;
 	var today;
-	var a, b, x;
+	var start, end, offset, a, b;
 
 	today = DATE_NOW;
-	b = new Date(financial_year, mm + 1, 1);
+	end = new Date(financial_year, mm + 1, 1);
 
 	if (! getUserSettings_("cash_flow_events")
-				|| today.getTime() >= b.getTime()) return [ ];
+				|| today.getTime() >= end.getTime()) return [ ];
 
 	calendar = getFinancialCalendar_();
 	if (!calendar) return [ ];
 
-	a = new Date(financial_year, mm, 1);
-	if (a.getTime() < today.getTime()) {
-		a = new Date(financial_year, mm, today.getDate() + 1);
+	start = new Date(financial_year, mm, 1);
+	if (start.getTime() < today.getTime()) {
+		start = new Date(financial_year, mm, today.getDate() + 1);
 	}
 
-	x = getSpreadsheetDate(a);
-	a = a.getTime() + (a.getTime() - x.getTime());
-	a = new Date(a);
+	offset = getSpreadsheetDate(start);
+	offset = start.getTime() - offset.getTime();
 
-	x = getSpreadsheetDate(b);
-	b = b.getTime() + (b.getTime() - x.getTime());
-	b = new Date(b);
+	a = new Date(start.getTime() + offset);
+	b = new Date(end.getTime() + offset);
 
 	eventos = calendar.getEvents(a, b);
 	if (!eventos) return [ ];
 
-	eventos = calendarDigestListEvents_(eventos);
+	eventos = calendarDigestListEvents_(eventos, start, end, offset);
 	return eventos;
 }

@@ -127,7 +127,7 @@ function dailyTrigger_(e) {
 	}
 
 	if (getUserSettings_("post_day_events")) {
-		daily_PostEvents_(date);
+		postEventsForDate_(date);
 	}
 
 	return;
