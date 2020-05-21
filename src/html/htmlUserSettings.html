@@ -24,8 +24,7 @@
 			#header {
 				height: 3.7em;
 				width: 100%;
-				background-color: #efefef;
-				border-bottom: 2px solid #d9d9d9;
+				border-bottom: 1px solid #dadbe0;
 			}
 
 			.header_table {
@@ -48,21 +47,14 @@
 				width: 100%;
 				border-collapse: separate;
 				border-spacing: 7px;
-				background-color: #efefef;
-				border-top: 2px solid #d9d9d9;
+				border-top: 1px solid #dadbe0;
 			}
 			.footer_cell {
 				display: table-cell;
 				vertical-align: middle;
 			}
 
-			#tab_settings { color: #a4c2f4; }
-			#tab_settings:hover { color: #3c78d8; }
-			#tab_settings.active { color: #3c78d8; border-bottom: solid 2px; }
-
-			#tab_advanced { color: #cccccc; }
-			#tab_advanced:hover { color: #b7b7b7; }
-			#tab_advanced.active { color: #b7b7b7; border-bottom: solid 2px; }
+			.header_tab.active { color: #7a7a7a; border-bottom: solid 2px; }
 		</style>
 	</head>
 	<body>
@@ -71,16 +63,16 @@
 				<div class="header_table">
 					<div class="table_row">
 						<div class="header_tab active" id="tab_settings">
-							<i class="material-icons" title="Settings">settings</i>
-						</div>
-						<div class="header_tab" id="tab_advanced">
-							<i class="material-icons" title="Advanced">build</i>
+							<i class="material-icons-outlined" title="Settings">settings</i>
 						</div>
 						<? if (hasEditors && isAdmin) { ?>
 							<div class="header_tab" id="tab_admin">
-								<i class="material-icons" title="Group">group_work</i>
+								<i class="material-icons-outlined" title="Group">group_work</i>
 							</div>
 						<? } ?>
+						<div class="header_tab" id="tab_advanced">
+							<i class="material-icons-outlined" title="Advanced">build</i>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -306,17 +298,17 @@
 
 				window.scrollTo(0, 0);
 				if (select === "tab_settings") {
-					$("#panel_Settings").fadeIn("fast")
+					$("#panel_Settings").show()
 						.siblings()
 						.hide();
 					$("#b-Save").hide();
 				} else if (select === "tab_advanced") {
-					$("#panel_Advanced").fadeIn("fast")
+					$("#panel_Advanced").show()
 						.siblings()
 						.hide();
 				<? if (hasEditors && isAdmin) { ?>
 					} else if (select === "tab_admin") {
-						$("#panel_Admin").fadeIn("fast")
+						$("#panel_Admin").show()
 							.siblings()
 							.hide();
 				<? } ?>

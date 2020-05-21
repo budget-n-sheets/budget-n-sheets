@@ -7,9 +7,9 @@
 		<style>
 			#header {
 				height: 3.7em;
+				margin-bottom: 0.5em;
 				width: 100%;
-				background-color: #efefef;
-				border-bottom: 2px solid #d9d9d9;
+				border-bottom: 1px solid #dadbe0;
 			}
 
 			.header_table {
@@ -28,12 +28,11 @@
 			}
 
 			.footer_table {
-				background-color: #efefef;
 				width: 100%;
 				display: table;
 				border-collapse: separate;
 				border-spacing: 7px;
-				border-top: 2px solid #d9d9d9;
+				border-top: 1px solid #dadbe0;
 			}
 			.footer_cell {
 				display: table-cell;
@@ -44,7 +43,7 @@
 				width: 100%;
 				margin-bottom: 17px;
 				display: table;
-				border: 1px solid #d9d9d9;
+				border: 2px solid #d9d9d9;
 				border-radius: 7px;
 			}
 			.item_cell {
@@ -62,13 +61,7 @@
 				display: table-row;
 			}
 
-			#tab_accounts { color: #b6d7a8; }
-			#tab_accounts:hover { color: #6aa84f; }
-			#tab_accounts.active { color: #6aa84f; border-bottom: solid 2px; }
-
-			#tab_cards { color: #a4c2f4; }
-			#tab_cards:hover { color: #3c78d8; }
-			#tab_cards.active { color: #3c78d8; border-bottom: solid 2px; }
+			.header_tab.active { color: #7a7a7a; border-bottom: solid 2px; }
 		</style>
 	</head>
 	<body>
@@ -77,10 +70,10 @@
 				<div class="header_table">
 					<div class="table_row">
 						<div class="header_tab <?= tab_acc ?>" id="tab_accounts">
-							<i class="material-icons" title="Accounts">account_balance</i>
+							<i class="material-icons-outlined" title="Accounts">account_balance</i>
 						</div>
 						<div class="header_tab <?= tab_cards ?>" id="tab_cards">
-							<i class="material-icons" title="Cards">credit_card</i>
+							<i class="material-icons-outlined" title="Cards">credit_card</i>
 						</div>
 					</div>
 				</div>
@@ -96,7 +89,7 @@
 					<div id="box_Cards">
 					</div>
 
-					<div class="item_table" id="item-AddCard" style="display: none;border: 1px dashed #d9d9d9;">
+					<div class="item_table" id="item-AddCard" style="display: none;border: 2px dashed #d9d9d9;">
 						<div class="table_row">
 							<div class="item_cell" style="height: 2.3em;vertical-align: middle;">
 								<a id="b-AddCard"><i class="material-icons">add</i> Add card</a>
@@ -163,7 +156,7 @@
 				if (id === "tab_accounts") panel = "#panel_Accounts";
 				else if (id === "tab_cards") panel = "#panel_Cards";
 
-				$(panel).fadeIn("fast")
+				$(panel).show()
 					.siblings()
 					.hide();
 			});
