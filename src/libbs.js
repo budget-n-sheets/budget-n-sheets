@@ -68,32 +68,20 @@ Number.prototype.formatLocaleSignal = function(p_dec_p) {
 };
 
 
-function getSpreadsheetDate(d) {
-	var timezone, date;
-
-	if (d) date = d;
-	else date = DATE_NOW;
-
-	try {
-		timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
-	} catch (err) {
-		timezone = "GMT";
-		consoleLog_('error', 'getSpreadsheetDate()', err);
-	}
-
+Date.prototype.getSpreadsheetDate = function() {
+	var timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
 	if (typeof timezone != "string" || timezone == "") {
+		console.info("Date.getSpreadsheetDate(): ugly time zone.", timezone);
 		timezone = "GMT";
 	}
-
-	date = Utilities.formatDate(date, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+	var date = Utilities.formatDate(this, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
 	return new Date(date);
 }
 
 
 function getMonthDelta(mm) {
 	if (mm == null) {
-		mm = getSpreadsheetDate();
-		mm = mm.getMonth();
+		mm = DATE_NOW.getSpreadsheetDate().getMonth();
 	}
 
 	switch (mm) {

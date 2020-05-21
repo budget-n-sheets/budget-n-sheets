@@ -250,7 +250,7 @@ function classAdminSettings_(select, key, value) {
 
 
 function getMonthFactored_(select) {
-	var date = getSpreadsheetDate();
+	var date = DATE_NOW.getSpreadsheetDate();
 	var yyyy, mm;
 
 	const financial_year = getConstProperties_("financial_year");

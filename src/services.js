@@ -99,9 +99,9 @@ function dailyTrigger_(e) {
 
 	if (e) {
 		date = new Date(e["year"], e["month"] - 1, e["day-of-month"], e["hour"]);
-		date = getSpreadsheetDate(date);
+		date = date.getSpreadsheetDate();
 	} else {
-		date = getSpreadsheetDate();
+		date = DATE_NOW.getSpreadsheetDate();
 	}
 
 	a = {
@@ -173,9 +173,9 @@ function weeklyTriggerPre_(e) {
 
 	if (e) {
 		date = new Date(e["year"], e["month"] - 1, e["day-of-month"], e["hour"]);
-		date = getSpreadsheetDate(date);
+		date = date.getSpreadsheetDate();
 	} else {
-		date = getSpreadsheetDate();
+		date = DATE_NOW.getSpreadsheetDate();
 	}
 
 	a = {
