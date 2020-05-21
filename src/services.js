@@ -339,7 +339,7 @@ function askReinstall() {
 
 	const financial_year = getConstProperties_("financial_year");
 
-	var yyyy = DATE_NOW.getFullYear();
+	var yyyy = DATE_NOW.getSpreadsheetDate().getFullYear();
 	var operation, dd;
 
 	deleteAllTriggers_();
