@@ -119,7 +119,7 @@
 										<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
 										<td class="comment">
 											<select id="financial_calendar" required>
-												<option value="" selected>Disabled</option>
+												<option value="" selected>Disable</option>
 												<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
 													<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
 												<? } ?>
@@ -128,7 +128,7 @@
 									</tr>
 									<tr>
 										<td class="secondary" colspan="2">
-											* Calendar is not owned by you. <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar#calendars-and-events-not-owned-by-you" target="_blank"><b>Learn more</b></a>
+											* Calendar is not owned by you.
 										</td>
 									</tr>
 								<? } else { ?>
@@ -143,7 +143,7 @@
 								<? } ?>
 								<tr>
 									<td colspan="2">
-										<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to spreadsheet</label>
+										<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to the spreadsheet</label>
 									</td>
 								</tr>
 							<? } else { ?>
@@ -242,7 +242,7 @@
 									<? if (isSharedDrive) { ?>
 										<p>Transfers admin role to current owner of the spreadsheet.<br>
 									<? } else { ?>
-										<p>Transfers admin role to an editor of spreadsheet.<br>
+										<p>Transfers admin role to an editor of the spreadsheet.<br>
 									<? } ?>
 									<a href="https://github.com/guimspace/budget-n-sheets/wiki/" target="_blank"><b>Learn more</b></a></p>
 								</td>
@@ -302,7 +302,6 @@
 					$("#panel_Settings").show()
 						.siblings()
 						.hide();
-					$("#b-Save").hide();
 				} else if (select === "tab_advanced") {
 					$("#panel_Advanced").show()
 						.siblings()
