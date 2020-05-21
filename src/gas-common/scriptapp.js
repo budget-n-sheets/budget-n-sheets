@@ -65,4 +65,6 @@ function sendReAuthorizationRequest_(authInfoLevel) {
 			htmlBody: htmlMessage.getContent(),
 			noReply: true
 		});
+
+	console.log("reauth-request/sent");
 }
