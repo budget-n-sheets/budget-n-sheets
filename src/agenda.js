@@ -199,18 +199,18 @@ function getCalendarEventsForCashFlow_(financial_year, mm) {
 	var today;
 	var start, end, offset, a, b;
 
-	today = DATE_NOW;
-	end = new Date(financial_year, mm + 1, 1);
-
-	if (! getUserSettings_("cash_flow_events")
-				|| today.getTime() >= end.getTime()) return [ ];
+	if (! getUserSettings_("cash_flow_events")) return [ ];
 
 	calendar = getFinancialCalendar_();
 	if (!calendar) return [ ];
 
+	end = new Date(financial_year, mm + 1, 1);
+	if (DATE_NOW >= end) return [ ];
+
 	start = new Date(financial_year, mm, 1);
-	if (start.getTime() < today.getTime()) {
-		start = new Date(financial_year, mm, today.getDate() + 1);
+	if (start <= DATE_NOW) {
+		start = new Date(financial_year, mm, DATE_NOW.getDate() + 1);
+		if (start > end) return [ ];
 	}
 
 	offset = start.getSpreadsheetDate();
