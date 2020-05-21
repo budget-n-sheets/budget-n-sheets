@@ -12,7 +12,8 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m27p0_, null, null, null, null, null, null, update_v0m27p5_ ],
 			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_, null, null ],
 			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ],
-			[ null, null, null, null, null, null, update_v0m30p6_ ]
+			[ null, null, null, null, null, null, update_v0m30p6_ ],
+			[ update_v0m31p0_ ]
 		]
 	],
 	beta_list: [ ]
@@ -157,6 +158,33 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Define 'admin_id'.
+ * Set 'admin_settings'.
+ *
+ * 0.31.0
+ */
+function update_v0m31p0_() {
+	try {
+		const cp = PropertiesService2.getProperty("document", "const_properties", "json");
+
+		var admin;
+
+		if (cp.addon_user) admin = cp.addon_user;
+		else admin = refreshUserId_();
+
+		properties = {
+			admin_id: admin,
+			isChangeableByEditors: false
+		};
+		PropertiesService2.setProperty("document", "admin_settings", "json", properties);
+	} catch (err) {
+		consoleLog_("error", "update_v0m31p0_()", err);
+		return 1;
+	}
+}
+
 
 /**
  * Refresh 'user_id'.
