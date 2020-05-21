@@ -78,6 +78,7 @@ function onEditInstallable_(e) {
 
 function daily_Main_(e) {
 	console.log("daily_Main_(): continued.");
+	askReinstall();
 	dailyTrigger_(e);
 }
 function dailyTrigger_(e) {
@@ -136,6 +137,7 @@ function dailyTrigger_(e) {
 
 function weekly_Foo_(e) {
 	console.log("weekly_Foo_(): continued.");
+	askReinstall();
 	weeklyTriggerPos_(e);
 }
 function weeklyTriggerPos_(e) {
@@ -157,6 +159,7 @@ function weeklyTriggerPos_(e) {
 
 function weekly_Bar_(e) {
 	console.log("weekly_Bar_(): continued.");
+	askReinstall();
 	weeklyTriggerPre_(e);
 }
 function weeklyTriggerPre_(e) {
