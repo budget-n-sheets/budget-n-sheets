@@ -92,7 +92,7 @@ function daily_Main_(e) {
 	dailyTrigger_(e);
 }
 function dailyTrigger_(e) {
-	if (isReAuthorizationRequired_(true)) return;
+	if (isReAuthorizationRequired_()) return;
 	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) {
 		uninstall_();
 		return;
