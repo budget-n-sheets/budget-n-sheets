@@ -374,6 +374,8 @@ function askUninstall() {
 
 
 function askTransferAdmin() {
+	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) return;
+
 	var ui = SpreadsheetApp.getUi();
 	var owner, owner_id;
 
@@ -408,6 +410,8 @@ function askTransferAdmin() {
 
 
 function askTransferAdminSd() {
+	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) return;
+
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var editors, email, digest;
 	var user = Session.getEffectiveUser().getEmail();
@@ -446,6 +450,8 @@ function askTransferAdminSd() {
 }
 
 function continuedTransferAdminSd(editor) {
+	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) return;
+
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var editors, email, digest;
 	var user = Session.getEffectiveUser().getEmail();
