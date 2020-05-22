@@ -383,7 +383,13 @@ function askTransferAdmin() {
 		owner_id = computeDigest("SHA_256", owner, "UTF_8");
 	}
 
-	if (!owner || refreshUserId_() === owner_id) return 1;
+	if (!owner || refreshUserId_() === owner_id) {
+		ui.alert(
+			"Can't transfer admin role",
+			"You can only transfer the admin role to the owner of the spreadsheet.\nMake an editor the owner and try again.",
+			ui.ButtonSet.OK);
+		return 1;
+	}
 
 	var response = ui.alert(
 			"Transfer the admin role?",
