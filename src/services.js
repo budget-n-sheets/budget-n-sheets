@@ -75,7 +75,19 @@ function onEditInstallable_(e) {
 
 
 function daily_Main_(e) {
-	console.log("daily_Main_(): continued.");
+	console.log("daily_Main_(): continued.", e.authMode);
+
+	try {
+		PropertiesService.getDocumentProperties();
+		if (isReAuthorizationRequired_()) {
+			console.log("weekly_Foo_(): re-authorization is required.");
+			return;
+		}
+	} catch (err) {
+		console.error("daily_Main_()", err);
+		return;
+	}
+
 	askReinstall();
 	dailyTrigger_(e);
 }
@@ -134,7 +146,19 @@ function dailyTrigger_(e) {
 
 
 function weekly_Foo_(e) {
-	console.log("weekly_Foo_(): continued.");
+	console.log("weekly_Foo_(): continued.", e.authMode);
+
+	try {
+		PropertiesService.getDocumentProperties();
+		if (isReAuthorizationRequired_()) {
+			console.log("weekly_Foo_(): re-authorization is required.");
+			return;
+		}
+	} catch (err) {
+		console.error("daily_Main_()", err);
+		return;
+	}
+
 	askReinstall();
 	weeklyTriggerPos_(e);
 }
@@ -156,7 +180,19 @@ function weeklyTriggerPos_(e) {
 
 
 function weekly_Bar_(e) {
-	console.log("weekly_Bar_(): continued.");
+	console.log("weekly_Bar_(): continued.", e.authMode);
+
+	try {
+		PropertiesService.getDocumentProperties();
+		if (isReAuthorizationRequired_()) {
+			console.log("weekly_Bar_(): re-authorization is required.");
+			return;
+		}
+	} catch (err) {
+		console.error("daily_Main_()", err);
+		return;
+	}
+
 	askReinstall();
 	weeklyTriggerPre_(e);
 }
