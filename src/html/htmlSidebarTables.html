@@ -16,6 +16,7 @@
 				display: table;
 				width: inherit;
 				height: inherit;
+				text-align: center;
 				border-collapse: separate;
 				border-spacing: 13px 7px;
 			}
@@ -23,8 +24,10 @@
 				cursor: pointer;
 				display: table-cell;
 				vertical-align:middle;
-				color: #7a7a7a;
-				font-size: 24px;
+				color: rgba(0, 0, 0, 0.54);
+			}
+			.header_tab.active {
+				border-bottom: solid 2px;
 			}
 
 			.footer_table {
@@ -60,20 +63,18 @@
 			.table_row {
 				display: table-row;
 			}
-
-			.header_tab.active { color: #7a7a7a; border-bottom: solid 2px; }
 		</style>
 	</head>
 	<body>
 		<div id="wrapper">
-			<div id="header" align="center">
+			<div id="header">
 				<div class="header_table">
 					<div class="table_row">
 						<div class="header_tab <?= tab_acc ?>" id="tab_accounts">
-							<i class="material-icons-outlined" title="Accounts">account_balance</i>
+							<i class="material-icons-outlined md-24" title="Accounts">account_balance</i>
 						</div>
 						<div class="header_tab <?= tab_cards ?>" id="tab_cards">
-							<i class="material-icons-outlined" title="Cards">credit_card</i>
+							<i class="material-icons-outlined md-24" title="Cards">credit_card</i>
 						</div>
 					</div>
 				</div>
@@ -106,8 +107,8 @@
 						<div class="footer_cell" style="width:100%;">
 						</div>
 						<div class="footer_cell">
-							<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
-						</div>
+							<div class="md-footer"><a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a>
+						</div></div>
 					</div>
 				</div>
 			</div>

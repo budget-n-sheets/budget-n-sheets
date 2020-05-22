@@ -31,6 +31,7 @@
 				display: table;
 				width: inherit;
 				height: inherit;
+				text-align: center;
 				border-collapse: separate;
 				border-spacing: 13px 7px;
 			}
@@ -38,8 +39,10 @@
 				cursor: pointer;
 				display: table-cell;
 				vertical-align:middle;
-				color: #7a7a7a;
-				font-size: 24px;
+				color: rgba(0, 0, 0, 0.54);
+			}
+			.header_tab.active {
+				border-bottom: solid 2px;
 			}
 
 			.footer_table {
@@ -53,25 +56,23 @@
 				display: table-cell;
 				vertical-align: middle;
 			}
-
-			.header_tab.active { color: #7a7a7a; border-bottom: solid 2px; }
 		</style>
 	</head>
 	<body>
 		<div id="wrapper">
-			<div id="header" align="center">
+			<div id="header">
 				<div class="header_table">
 					<div class="table_row">
 						<div class="header_tab active" id="tab_settings">
-							<i class="material-icons-outlined" title="Settings">settings</i>
+							<i class="material-icons-outlined md-24" title="Settings">settings</i>
 						</div>
 						<? if (hasEditors && isAdmin) { ?>
 							<div class="header_tab" id="tab_admin">
-								<i class="material-icons-outlined" title="Group">group_work</i>
+								<i class="material-icons-outlined md-24" title="Group">group_work</i>
 							</div>
 						<? } ?>
 						<div class="header_tab" id="tab_advanced">
-							<i class="material-icons-outlined" title="Advanced">build</i>
+							<i class="material-icons-outlined md-24" title="Advanced">build</i>
 						</div>
 					</div>
 				</div>
@@ -79,10 +80,10 @@
 
 			<div id="content" style="margin-bottom:4.3em;">
 				<div class="panel active" id="panel_Settings">
-					<form accept-charset="UTF-8">
+					<form class="asidebar" accept-charset="UTF-8">
 						<table style="width:100%;">
 							<tr>
-								<td class="name" style="width:43%;"><label>Spreadsheet</label></td>
+								<td class="name"><label>Spreadsheet</label></td>
 								<td><?= doc_name ?></td>
 							</tr>
 							<tr>
@@ -116,9 +117,9 @@
 							<? if (isCalendarEnabled) { ?>
 								<? if (isAdmin) { ?>
 									<tr>
-										<td class="comment name" style="width:37%;"><label for="financial_calendar">Calendar</label></td>
+										<td class="comment name"><label for="financial_calendar">Calendar</label></td>
 										<td class="comment">
-											<select id="financial_calendar" required>
+											<select id="financial_calendar" style="width: 157px" required>
 												<option value="" selected>Disable</option>
 												<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
 													<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
@@ -260,7 +261,7 @@
 								<button class="action" id="b-Save" disabled>Save</button>
 							</div>
 							<div class="footer_cell right">
-								<a id="i-help" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-click md-18">help</i></a>
+								<div class="md-footer"><a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a></div>
 							</div>
 					</div>
 				</div>

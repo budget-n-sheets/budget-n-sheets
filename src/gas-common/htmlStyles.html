@@ -5,6 +5,9 @@
 		text-indent: 13px;
 		text-align: justify;
 	}
+	form.asidebar td.name {
+		width: 43%;
+	}
 	td.name {
 		font-weight: bold;
 	}
@@ -16,19 +19,46 @@
 		display: block;
 	}
 
-	.material-icons {
+	.material-icons,
+	.material-icons-outlined {
 		vertical-align: middle;
+		color: rgba(0, 0, 0, 0.54);
 	}
-	.md-18 { font-size: 18px; }
-	.md-24 { font-size: 24px; }
 
-	.md-click {
-		color: #a4c2f4;
+	.material-icons.md-inactive,
+	.material-icons-outlined.md-inactive {
+		vertical-align: middle;
+		color: rgba(0, 0, 0, 0.26);
+	}
+
+	.material-icons.md-18,
+	.material-icons-outlined.md-18 {
+		font-size: 18px;
+	}
+
+	.material-icons.md-24,
+	.material-icons-outlined.md-24 {
+		font-size: 24px;
+	}
+
+	.material-icons.md-36,
+	.material-icons-outlined.md-36 {
+		font-size: 36px;
+	}
+
+	.material-icons.md-48,
+	.material-icons-outlined.md-48 {
+		font-size: 48px;
+	}
+
+	.material-icons.md-click,
+	.material-icons-outlined.md-click {
 		cursor: pointer;
 	}
-	.md-click:hover {
-		color: #4a86e8;
-		cursor: pointer;
+
+	.md-footer {
+		margin: 3px auto;
+		color: rgba(0, 0, 0, 0.54);
 	}
 
 	#wrapper {

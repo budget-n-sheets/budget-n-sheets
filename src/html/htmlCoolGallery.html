@@ -5,40 +5,36 @@
 		<meta charset="UTF-8">
 		<?!= htmlInclude('gas-common/htmlStyles'); ?>
 		<style>
-			.table {
-				display: table;
-				width: 100%;
-				margin-bottom: 17px;
-				border: 1px solid #d9d9d9;
-				border-radius: 7px;
-			}
 			.table_row {
 				display: table-row;
 			}
-			.table_name {
+
+			.item_table {
 				width: 100%;
-				display: table-cell;
-				padding: 11px;
+				margin-bottom: 17px;
+				display: table;
+				border: 2px solid #d9d9d9;
+				border-radius: 7px;
 			}
-			.table_buttons {
+			.item_cell {
 				width: 100%;
-				display: table-cell;
 				padding: 11px;
+				display: table-cell;
+			}
+
+			.item_menu {
 				font-weight: bold;
-				border-top: 1px solid #d9d9d9;
 				word-spacing: 11px;
 			}
 
-			.MainMenu-bot_title {
+			.footer_table {
 				display: table;
 				width: 100%;
 				border-collapse: separate;
 				border-spacing: 7px;
+				border-top: 1px solid #dadbe0;
 			}
-			.MainMenu_row {
-				display: table-row;
-			}
-			.m-footer {
+			.footer_cell {
 				display: table-cell;
 				vertical-align: middle;
 			}
@@ -50,23 +46,23 @@
 			<div id="content" style="margin-bottom:4.7em;">
 				<div class="panel active" id="panel_List">
 					<? for (var i in list) { ?>
-					<div class="table">
-						<div class="table_row">
-							<div class="table_name">
-								<span style="font-size: 23px;"><?= list[i].name ?></span><br>
-								<span class="gray"><?= list[i].version_date ?></span><br>
-								<span class="gray"><?= list[i].version_name ?></span>
+						<div class="item_table">
+							<div class="table_row">
+								<div class="item_cell">
+									<span style="font-size: 23px;"><?= list[i].name ?></span><br>
+									<span class="gray"><?= list[i].version_date ?></span><br>
+									<span class="gray"><?= list[i].version_name ?></span>
+								</div>
+							</div>
+							<div class="table_row">
+								<div class="item_cell item_menu">
+									<? if (list[i].preview_id != null) { ?>
+										<a href="https://docs.google.com/spreadsheets/d/e/<?= list[i].preview_id ?>/pubhtml" target="_blank">Preview</a>
+									<? } ?>
+									<a class="m-la" id="<?= i ?>">Import</a>
+								</div>
 							</div>
 						</div>
-						<div class="table_row">
-							<div class="table_buttons">
-								<? if (list[i].preview_id != null) { ?>
-									<a href="https://docs.google.com/spreadsheets/d/e/<?= list[i].preview_id ?>/pubhtml" target="_blank">Preview</a>
-								<? } ?>
-								<a class="m-la" id="<?= i ?>">Import</a>
-							</div>
-						</div>
-					</div>
 					<? } ?>
 				</div>
 
@@ -81,14 +77,16 @@
 			</div>
 
 			<div id="footer">
-				<div class="MainMenu-bot_title"><div class="MainMenu_row">
-					<div class="m-footer left"style="width: 100%;">
-						<span class="current" id="p-Response"></span>
+				<div class="footer_table">
+					<div class="table_row">
+						<div class="footer_cell left"style="width: 100%;">
+							<span class="current" id="p-Response"></span>
+						</div>
+						<div class="footer_cell right">
+							<div class="md-footer"><a href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank"><i class="material-icons-outlined md-24 md-click" title="Send feedback">feedback</i></a></div>
+						</div>
 					</div>
-					<div class="m-footer right">
-						<a id="i-help" href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank"><i class="material-icons md-click md-24" title="Send feedback">feedback</i></a>
-					</div>
-				</div></div>
+				</div>
 			</div>
 		</div>
 
