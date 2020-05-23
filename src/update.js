@@ -13,7 +13,7 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_, null, null ],
 			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ],
 			[ null, null, null, null, null, null, update_v0m30p6_ ],
-			[ update_v0m31p0_, null ]
+			[ update_v0m31p0_, null, null ]
 		]
 	],
 	beta_list: [ ]
