@@ -131,7 +131,7 @@ function showSidebarMainSettings() {
 
 	if (isAdmin) {
 		editors = spreadsheet.getEditors();
-		hasEditors = (editors.length > 0);
+		hasEditors = (editors.length > 1);
 		calendars = getAllOwnedCalendars();
 
 		if (hasEditors && isChangeableByEditors) {
