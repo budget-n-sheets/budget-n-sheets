@@ -80,7 +80,7 @@ function daily_Main_(e) {
 	try {
 		PropertiesService.getDocumentProperties();
 		if (isReAuthorizationRequired_()) {
-			console.log("weekly_Foo_(): re-authorization is required.");
+			console.log("daily_Main_(): re-authorization is required.");
 			return;
 		}
 	} catch (err) {
@@ -155,7 +155,7 @@ function weekly_Foo_(e) {
 			return;
 		}
 	} catch (err) {
-		console.error("daily_Main_()", err);
+		console.error("weekly_Foo_()", err);
 		return;
 	}
 
@@ -189,7 +189,7 @@ function weekly_Bar_(e) {
 			return;
 		}
 	} catch (err) {
-		console.error("daily_Main_()", err);
+		console.error("weekly_Bar_()", err);
 		return;
 	}
 
