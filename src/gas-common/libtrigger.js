@@ -12,7 +12,7 @@
  * @param  {String} name   The function to call when the trigger fires
  */
 function createNewTrigger_(method, key, type, name, param1, param2, param3) {
-	var properties, trigger;
+	var trigger;
 	var timezone;
 
 	const weekday = [ ScriptApp.WeekDay.SUNDAY, ScriptApp.WeekDay.MONDAY, ScriptApp.WeekDay.TUESDAY, ScriptApp.WeekDay.WEDNESDAY, ScriptApp.WeekDay.THURSDAY, ScriptApp.WeekDay.FRIDAY, ScriptApp.WeekDay.SATURDAY ];
@@ -104,20 +104,7 @@ function createNewTrigger_(method, key, type, name, param1, param2, param3) {
 
 	trigger = trigger.create();
 
-	if (key) {
-		switch (method) {
-			case "document":
-				properties = PropertiesService.getDocumentProperties();
-				break;
-
-			case "user":
-			default:
-				properties = PropertiesService.getUserProperties();
-				break;
-		}
-
-		properties.setProperty(key, trigger.getUniqueId());
-	}
+	if (key) PropertiesService2.setProperty(method, key, "string", trigger.getUniqueId());
 }
 
 /**
@@ -127,33 +114,19 @@ function createNewTrigger_(method, key, type, name, param1, param2, param3) {
  * @param  {String} name   The name of the function
  */
 function deleteTrigger_(method, key, name) {
-	var properties;
 	var triggers, trigger_id;
 	var i;
-
-	switch (method) {
-		case "document":
-			properties = PropertiesService.getDocumentProperties();
-			break;
-		case "script":
-			properties = PropertiesService.getScriptProperties();
-			break;
-		case "user":
-		default:
-			properties = PropertiesService.getUserProperties();
-			break;
-	}
 
 	triggers = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
 
 	if (key) {
-		trigger_id = properties.getProperty(key);
+		trigger_id = PropertiesService2.getProperty(method, key, "string");
 		if (!trigger_id) return;
 
 		for (i = 0; i < triggers.length; i++) {
 			if (triggers[i].getUniqueId() === trigger_id) {
 				ScriptApp.deleteTrigger(triggers[i]);
-				properties.deleteProperty(key);
+				PropertiesService2.deleteProperty(method, key);
 				break;
 			}
 		}
