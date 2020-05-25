@@ -255,7 +255,9 @@ function reviseVersion_() {
 
 
 function refreshUserId_() {
-	var user_id = Session.getEffectiveUser().getEmail();
+	var userId = PropertiesService2.getProperty("user", "user_id", "string");
+	if (userId) return userId;
+	user_id = Session.getEffectiveUser().getEmail();
 	user_id = computeDigest("SHA_256", user_id, "UTF_8");
 	PropertiesService2.setProperty("user", "user_id", "string", user_id);
 	return user_id;
