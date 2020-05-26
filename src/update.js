@@ -21,11 +21,6 @@ var PATCH_THIS = Object.freeze({
 
 
 function onlineUpdate_() {
-	if (reviseVersion_()) {
-		showDialogErrorMessage();
-		return;
-	}
-
 	const v0 = classService_("get", "script");
 	const v1 = APPS_SCRIPT_GLOBAL.script_version;
 
@@ -84,7 +79,6 @@ function onlineUpdate_() {
 
 
 function seamlessUpdate_() {
-	if (reviseVersion_()) return 1;
 	if (! isTemplateAvailable()) return 1;
 
 	var r = update_();

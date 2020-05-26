@@ -90,8 +90,6 @@ function dailyTrigger_(e) {
 		return;
 	}
 
-	if (reviseVersion_()) return;
-
 	// if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
 	// 	updateDecimalSepartor_();
 	// }
@@ -153,8 +151,6 @@ function weeklyTriggerPos_(e) {
 		return;
 	}
 
-	if (reviseVersion_()) return;
-
 	// if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
 	// 	updateDecimalSepartor_();
 	// }
@@ -178,8 +174,6 @@ function weeklyTriggerPre_(e) {
 		uninstall_();
 		return;
 	}
-
-	if (reviseVersion_()) return;
 
 	var date, a;
 
