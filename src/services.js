@@ -7,11 +7,15 @@ function onOpenInstallable_(e) {
 
 function loadCache_() {
 	const list = [ "class_version2", "user_settings", "spreadsheet_settings", "const_properties" ];
+	var cache;
 
 	for (var i = 0; i < list.length; i++) {
-		var cache = PropertiesService2.getProperty("document", list[i], "json");
+		cache = PropertiesService2.getProperty("document", list[i], "json");
 		if (cache) CacheService2.put("document", list[i], "json", cache);
 	}
+
+	cache = PropertiesService2.getProperty("document", "is_installed", "boolean");
+	if (cache) CacheService2.put("document", "is_installed", "boolean", cache);
 }
 
 

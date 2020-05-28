@@ -7,7 +7,7 @@ var TC_CODE = [ "A", "D", "E", "F", "G", "K", "L", "S", "T", "U" ],
 var DATE_NOW = new Date();
 
 var SPREADSHEET, SETUP_SETTINGS;
-var CACHE_KEYS = [ "class_version2", "user_settings", "spreadsheet_settings", "const_properties", "DB_TABLES", "DB_CALENDARS" ];
+var CACHE_KEYS = [ "class_version2", "user_settings", "spreadsheet_settings", "const_properties", "DB_TABLES", "DB_CALENDARS", "is_installed" ];
 
 var TABLE_DIMENSION = Object.freeze({height: 10, width: 5});
 
