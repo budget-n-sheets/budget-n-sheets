@@ -34,12 +34,7 @@ function setupFlow_(select, settings, list_acc) {
 }
 
 function isInstalled_() {
-	var b = CacheService2.get("document", "is_installed", "boolean");
-	if (b == null) {
-		b = PropertiesService2.getProperty("document", "is_installed", "boolean");
-		CacheService2.put("document", "is_installed", "boolean", b);
-	}
-	return b;
+	return PropertiesService2.getProperty("document", "is_installed", "boolean");
 }
 
 function uninstall_(putLock) {
