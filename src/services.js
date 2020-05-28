@@ -424,7 +424,7 @@ function askTransferAdmin() {
 	if (!owner || refreshUserId_() === owner_id) {
 		ui.alert(
 			"Can't transfer admin role",
-			"You can only transfer the admin role to the owner of the spreadsheet.\nMake an editor the owner and try again.",
+			"The admin role can only be transferred to the owner of the spreadsheet.\nMake an editor the owner and try again.",
 			ui.ButtonSet.OK);
 		return 1;
 	}
@@ -458,7 +458,7 @@ function askTransferAdminSd() {
 	if (editors.length == 1) {
 		SpreadsheetApp.getUi().alert(
 			"Can't transfer admin role",
-			"You are only editor of the spreadsheet.",
+			"You are the only editor of the spreadsheet.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 		return 1;
 	}
@@ -498,7 +498,7 @@ function continuedTransferAdminSd(editor) {
 	if (editors.length == 1) {
 		SpreadsheetApp.getUi().alert(
 			"Can't transfer admin role",
-			"You are only editor of the spreadsheet.",
+			"You are the only editor of the spreadsheet.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 		return 1;
 	}
