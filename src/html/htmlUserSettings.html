@@ -377,7 +377,7 @@
 					$("#footer_response").empty();
 
 					google.script.run.withSuccessHandler(function(r, o) {
-								showStatus("Reinstalled triggers");
+								if (!r) showStatus("Reinstalled triggers");
 								o.disabled = false;
 							})
 						.withFailureHandler(showError)

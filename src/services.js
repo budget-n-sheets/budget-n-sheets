@@ -365,6 +365,14 @@ function askResetProtection() {
 function askReinstall() {
 	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) return;
 
+	if (refreshUserId_() !== classAdminSettings_("get", "admin_id")) {
+		SpreadsheetApp.getUi().alert(
+			"Permission denied",
+			"You don't have permission to reinstall the triggers.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+		return 1;
+	}
+
 	const financial_year = getConstProperties_("financial_year");
 
 	var yyyy = DATE_NOW.getSpreadsheetDate().getFullYear();
