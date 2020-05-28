@@ -33,6 +33,14 @@ function setupFlow_(select, settings, list_acc) {
 	}
 }
 
+function isInstalled_() {
+	var b = CacheService2.get("document", "is_installed", "boolean");
+	if (b == null) {
+		b = PropertiesService2.getProperty("document", "is_installed", "boolean");
+		CacheService2.put("document", "is_installed", "boolean", b);
+	}
+	return b;
+}
 
 function uninstall_(putLock) {
 	var list = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
@@ -57,7 +65,7 @@ function setup_(settings, list_acc) {
 	var owner, user;
 
 	if (! isTemplateAvailable()) throw new Error("Template is not available.");
-	else if (PropertiesService.getDocumentProperties().getProperty("is_installed")) throw new Error("Add-on is already installed.");
+	else if ( isInstalled_() ) throw new Error("Add-on is already installed.");
 	else if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) throw new Error("Spreadsheet is locked.");
 
 	owner = SPREADSHEET.getOwner();
@@ -123,7 +131,7 @@ function setup_(settings, list_acc) {
 	SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName("Summary"));
 	console.timeEnd("add-on/install");
 
-	PropertiesService.getDocumentProperties().setProperty("is_installed", "true");
+	PropertiesService2.setProperty("document", "is_installed", "boolean", true);
 	showDialogSetupEnd();
 	onOpen();
 

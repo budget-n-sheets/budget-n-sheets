@@ -85,7 +85,7 @@ function daily_Main_(e) {
 }
 function dailyTrigger_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+	if (! isInstalled_()) {
 		uninstall_();
 		return;
 	}
@@ -146,7 +146,7 @@ function weekly_Foo_(e) {
 }
 function weeklyTriggerPos_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+	if (! isInstalled_()) {
 		uninstall_();
 		return;
 	}
@@ -170,7 +170,7 @@ function weekly_Bar_(e) {
 }
 function weeklyTriggerPre_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+	if (! isInstalled_()) {
 		uninstall_();
 		return;
 	}
@@ -235,7 +235,7 @@ function refreshUserId_() {
 
 
 function askDeactivation() {
-	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+	if (! isInstalled_()) {
 		uninstall_();
 		onOpen();
 		return true;
@@ -363,7 +363,7 @@ function askResetProtection() {
 
 
 function askReinstall() {
-	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) return;
+	if (! isInstalled_()) return;
 
 	if (refreshUserId_() !== classAdminSettings_("get", "admin_id")) {
 		SpreadsheetApp.getUi().alert(
@@ -410,7 +410,7 @@ function askUninstall() {
 
 
 function askTransferAdmin() {
-	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) return;
+	if (! isInstalled_()) return;
 
 	var ui = SpreadsheetApp.getUi();
 	var owner, owner_id;
@@ -446,7 +446,7 @@ function askTransferAdmin() {
 
 
 function askTransferAdminSd() {
-	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) return;
+	if (! isInstalled_()) return;
 
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var editors, email, digest;
@@ -486,7 +486,7 @@ function askTransferAdminSd() {
 }
 
 function continuedTransferAdminSd(editor) {
-	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) return;
+	if (! isInstalled_()) return;
 
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var editors, email, digest;

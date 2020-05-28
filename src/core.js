@@ -44,7 +44,7 @@ function onOpen(e) {
 			.addSeparator()
 			.addItem("About the add-on", "showDialogAboutAddon");
 	} else {
-		if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+		if ( isInstalled_() ) {
 			menu.addItem("Add blank lines", "toolAddBlankRows")
 				.addItem("Sort registry", "toolFormatRegistry")
 				.addItem("Update cash flow", "toolUpdateCashFlow")
@@ -167,7 +167,7 @@ function showSidebarMainSettings() {
 
 function showDialogAboutAddon() {
 	try {
-		if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+		if ( isInstalled_() ) {
 			onlineUpdate_();
 		}
 	} catch (err) {
@@ -218,7 +218,7 @@ function showDialogSetupAddon_() {
 			ui.ButtonSet.OK);
 		return;
 
-	} else if (PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+	} else if ( isInstalled_() ) {
 		showDialogSetupEnd();
 		onOpen();
 		return;
