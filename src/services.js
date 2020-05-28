@@ -235,7 +235,21 @@ function refreshUserId_() {
 
 
 function askDeactivation() {
+	if (!PropertiesService.getDocumentProperties().getProperty("is_installed")) {
+		uninstall_();
+		onOpen();
+		return true;
+	}
+
 	var ui = SpreadsheetApp.getUi();
+
+	if (refreshUserId_() !== classAdminSettings_("get", "admin_id")) {
+		ui.alert(
+			"Permission denied",
+			"You don't have permission to deactivate the add-on.",
+			ui.ButtonSet.OK);
+		return;
+	}
 
 	var response = ui.alert(
 			"Deactivate the add-on?",
@@ -245,7 +259,13 @@ function askDeactivation() {
 	if (response == ui.Button.YES) {
 		uninstall_(true);
 		onOpen();
-		console.info("add-on/deactivate");
+
+		ui.alert(
+			"Deactivation complete",
+			"The add-on was deactivated.",
+			ui.ButtonSet.OK);
+
+		console.info("deactivate");
 		return true;
 	}
 }

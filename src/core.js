@@ -56,7 +56,9 @@ function onOpen(e) {
 				.addItem("Open Cool Gallery panel", "showPanelAnalytics")
 				.addSeparator()
 				.addItem("About the add-on", "showDialogAboutAddon")
-				.addItem("Change settings", "showSidebarMainSettings");
+				.addItem("Change settings", "showSidebarMainSettings")
+				.addItem("Deactive the add-on", "askDeactivation");
+
 
 			console.info("add-on/open");
 		} else {
