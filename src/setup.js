@@ -34,7 +34,8 @@ function setupFlow_(select, settings, list_acc) {
 }
 
 function isInstalled_() {
-	return PropertiesService2.getProperty("document", "is_installed", "boolean");
+	const is_installed = PropertiesService.getDocumentProperties().getProperty("is_installed");
+	return is_installed != null;
 }
 
 function uninstall_(putLock) {
