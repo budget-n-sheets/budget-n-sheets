@@ -74,7 +74,7 @@
 						<button class="action" style="width:13em;" onclick="clickNext()">Start</button>
 					</div>
 					<div style="margin-top:0.7em;">
-						<a href="https://sites.google.com/view/guimspace/budget-n-sheets/privacy-policy" target="_blank">Privacy Policy</a> and <a href="https://sites.google.com/view/guimspace/budget-n-sheets/terms-of-service" target="_blank">Terms of Service</a>
+						<a href="<?= privacy_policy ?>" target="_blank">Privacy Policy</a> and <a href="<?= terms_of_service ?>" target="_blank">Terms of Service</a>
 					</div>
 				</div>
 
@@ -91,7 +91,7 @@
 								<h2>Spreadsheet specs</h2>
 							</div>
 							<div align="right" style="display:table-cell;vertical-align:middle;">
-								<a style="color: rgba(0, 0, 0, 0.54);" href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a>
+								<a style="color: rgba(0, 0, 0, 0.54);" href="<?= home_wiki ?>" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a>
 							</div>
 						</div>
 					</div>
@@ -207,14 +207,14 @@
 							This process takes up to two minutes. Do not edit the spreadsheet until it is finished.
 						</div>
 						<div id="the_box">
-							<div>Join the <a href="https://groups.google.com/d/forum/add-on-budget-n-sheets-forum" target="_blank"><b>forum</b></a> to post questions and discussions.</div>
-							<div>Visit the <a href="https://github.com/guimspace/budget-n-sheets/wiki" target="_blank"><b>wiki</b></a> for a full review of the features.</div>
-							<div>Send valuable <a href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank">feedback</a>. <a href="https://gsuite.google.com/marketplace/app/budget_n_sheets/628594713587" target="_blank">Rate</a> the add-on.</div>
+							<div>Join the <a href="<?= join_forum ?>" target="_blank"><b>forum</b></a> to post questions and discussions.</div>
+							<div>Visit the <a href="<?= home_wiki ?>" target="_blank"><b>wiki</b></a> for a full review of the features.</div>
+							<div>Send valuable <a href="<?= send_feedback ?>" target="_blank">feedback</a>. <a href="<?= g_marketplace ?>" target="_blank">Rate</a> the add-on.</div>
 							<div>Budget n Sheets is free, ad-free and open source.</div>
 						</div>
 					</div>
 					<div id="timeout" style="display: none;margin-top: 2em;">
-						It is taking too long. You can try again or <a href="https://forms.gle/sVzBD4345hWh5gYB8" target="_blank">report a problem</a>.
+						It is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.
 					</div>
 				</div>
 			</div>

@@ -71,11 +71,18 @@ function onOpen(e) {
 	menu.addToUi();
 }
 
+function printHrefScriptlets(htmlTemplate) {
+	for (var key in RESERVED_HREF) {
+		htmlTemplate[key] = RESERVED_HREF[key];
+	}
+	return htmlTemplate;
+}
 
 function showPanelTables(tab) {
 	if (onlineUpdate_()) return;
 
 	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlSidebarTables");
+	htmlTemplate = printHrefScriptlets(htmlTemplate);
 
 	const dec_p = getSpreadsheetSettings_("decimal_separator");
 
@@ -103,8 +110,10 @@ function showPanelTables(tab) {
 function showPanelAnalytics() {
 	if (onlineUpdate_()) return;
 
-	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlCoolGallery");
-	var htmlSidebar;
+	var htmlTemplate, htmlSidebar;
+
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlCoolGallery");
+	htmlTemplate = printHrefScriptlets(htmlTemplate);
 
 	htmlTemplate.list = APPS_SCRIPT_GLOBAL.cool_gallery;
 
@@ -117,8 +126,7 @@ function showPanelAnalytics() {
 function showSidebarMainSettings() {
 	if (onlineUpdate_()) return;
 
-	var htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUserSettings");
-	var htmlSidebar;
+	var htmlTemplate, htmlSidebar;
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var calendars, editors;
 
@@ -126,6 +134,9 @@ function showSidebarMainSettings() {
 	const isChangeableByEditors = classAdminSettings_("get", "isChangeableByEditors");
 
 	const isAdmin = (user_id === classAdminSettings_("get", "admin_id"));
+
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUserSettings");
+	htmlTemplate = printHrefScriptlets(htmlTemplate);
 
 	htmlTemplate.isAdmin = isAdmin;
 	htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
@@ -177,7 +188,9 @@ function showDialogAboutAddon() {
 	var htmlDialog, htmlTemplate;
 	const v0 = APPS_SCRIPT_GLOBAL.script_version;
 
-	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAboutAddon")
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAboutAddon");
+	htmlTemplate = printHrefScriptlets(htmlTemplate);
+
 	htmlTemplate.version = v0.major + "." + v0.minor + "." + v0.patch;
 
 	htmlDialog = htmlTemplate.evaluate()
@@ -191,7 +204,12 @@ function showDialogAboutAddon() {
 function showDialogErrorMessage(err) {
 	if (err) consoleLog_("error", "showDialogErrorMessage()", err);
 
-	var htmlDialog = HtmlService.createHtmlOutputFromFile("html/htmlExceptionMessage")
+	var htmlTemplate, htmlDialog;
+
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlExceptionMessage")
+	htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(373)
 		.setHeight(113);
 
@@ -200,7 +218,12 @@ function showDialogErrorMessage(err) {
 
 
 function showDialogUpdate() {
-	var htmlDialog = HtmlService.createHtmlOutputFromFile("html/htmlUpdateScreen")
+	var htmlTemplate, htmlDialog;
+
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUpdateScreen");
+	htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(263)
 		.setHeight(113);
 
@@ -266,8 +289,12 @@ function showDialogSetupAddon_() {
 		[2] - Google Account Help - https://support.google.com/accounts/answer/1721977",
 		ui.ButtonSet.OK);
 
-	var htmlDialog = HtmlService.createTemplateFromFile("html/htmlSetupAddon")
-		.evaluate()
+	var htmlTemplate, htmlDialog;
+
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlSetupAddon");
+	htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(353)
 		.setHeight(359);
 
@@ -276,8 +303,12 @@ function showDialogSetupAddon_() {
 
 
 function showDialogSetupEnd() {
-	var htmlDialog = HtmlService.createTemplateFromFile("html/htmlSetupEnd")
-		.evaluate()
+	var htmlTemplate, htmlDialog;
+
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlSetupEnd");
+	htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(353)
 		.setHeight(367);
 

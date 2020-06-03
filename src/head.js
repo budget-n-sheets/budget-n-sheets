@@ -11,6 +11,23 @@ var CACHE_KEYS = [ "class_version2", "user_settings", "spreadsheet_settings", "c
 
 var TABLE_DIMENSION = Object.freeze({height: 10, width: 5});
 
+var RESERVED_HREF = Object.freeze({
+	home_developer: "https://sites.google.com/view/guimspace",
+
+	home_app: "https://sites.google.com/view/guimspace/budget-n-sheets",
+	home_help: "https://sites.google.com/view/guimspace/budget-n-sheets/help",
+
+	privacy_policy: "https://sites.google.com/view/guimspace/budget-n-sheets/privacy-policy",
+	terms_of_service: "https://sites.google.com/view/guimspace/budget-n-sheets/terms-of-service",
+
+	join_forum: "https://groups.google.com/d/forum/add-on-budget-n-sheets-forum",
+	send_feedback: "https://docs.google.com/forms/d/e/1FAIpQLSfS1agp9AHRgRx7NXZrosd7ME6yfR4f_VR5b36NZZ832tRUWw/viewform?usp=sf_link",
+
+	home_wiki: "https://github.com/guimspace/budget-n-sheets/wiki",
+
+	g_marketplace: "https://gsuite.google.com/marketplace/app/budget_n_sheets/628594713587"
+});
+
 var APPS_SCRIPT_GLOBAL = Object.freeze({
 	script_version: {
 		major: 0,

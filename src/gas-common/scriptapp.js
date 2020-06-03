@@ -52,6 +52,8 @@ function sendReAuthorizationRequest_(authInfoLevel) {
 	var htmlTemplate = HtmlService.createTemplateFromFile("gas-common/htmlAuthorizationEmail");
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
+	htmlTemplate = printHrefScriptlets(htmlTemplate);
+
 	htmlTemplate.spreadsheet_url = spreadsheet.getUrl();
 	htmlTemplate.spreadsheet_name = spreadsheet.getName();
 	htmlTemplate.auth_url = authInfoLevel.getAuthorizationUrl();
