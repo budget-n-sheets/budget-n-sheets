@@ -13,7 +13,7 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_, null, null ],
 			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ],
 			[ null, null, null, null, null, null, update_v0m30p6_ ],
-			[ update_v0m31p0_, null, null, null, null, null ]
+			[ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_ ]
 		]
 	],
 	beta_list: [ ]
@@ -152,6 +152,22 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Convert 'is_installed' value '[ ]' to 'true'.
+ *
+ * 0.31.6
+ */
+function update_v0m31p6_() {
+	try {
+		var documentProperties = PropertiesService.getDocumentProperties();
+
+		if (documentProperties.getProperty("is_installed") !== "true") documentProperties.setProperty("is_installed", "true");
+	} catch (err) {
+		consoleLog_("error", "update_v0m31p6_()", err);
+		return 1;
+	}
+}
 
 /**
  * Define 'admin_id'.
