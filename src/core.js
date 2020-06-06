@@ -34,7 +34,7 @@ function onInstall(e) {
 	* @param {Object} e The event parameter for a simple onOpen trigger.
 	*/
 function onOpen(e) {
-	try { trial_onOpen(); } catch (err) { }
+	try { onOpenForTests(); } catch (err) { }
 
 	var ui = SpreadsheetApp.getUi();
 	var menu = ui.createAddonMenu();
