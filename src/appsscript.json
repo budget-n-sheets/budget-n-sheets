@@ -1,0 +1,7 @@
+{
+  "timeZone": "Etc/GMT",
+  "dependencies": {
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "DEPRECATED_ES5"
+}
