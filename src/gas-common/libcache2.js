@@ -25,6 +25,7 @@ var CacheService2 = {
 	get: function(scope, key, type) {
 		this.loadScope(scope);
 		var value = this[scope].get(key);
+		if (value == null) return value;
 		switch (type) {
 		case "number":
 			return Number(value);
