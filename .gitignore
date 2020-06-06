@@ -1,6 +1,5 @@
+src/tests/
+
 clasp.sh
-
 .clasp.json
-appsscript.json
-
-trial_*
+.claspignore
