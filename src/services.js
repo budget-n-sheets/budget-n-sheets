@@ -409,7 +409,7 @@ function askReinstall() {
 
 
 function askUninstall() {
-	purgeScriptAppTriggers_();
+	deleteAllTriggers_();
 }
 
 
@@ -440,7 +440,7 @@ function askTransferAdmin() {
 
 	if (response == ui.Button.YES) {
 		classAdminSettings_("set", "admin_id", owner_id);
-		purgeScriptAppTriggers_();
+		deleteAllTriggers_();
 		console.info("admin-role/transferred");
 		return;
 	}
