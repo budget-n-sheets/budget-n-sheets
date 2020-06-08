@@ -168,7 +168,7 @@ function refreshCardName_(action, index, card) {
 
 	const num_acc = getConstProperties_("number_accounts");
 
-	const col = 2 + w_ + w_*num_acc + w_;
+	const col = 2 + w_ + w_*num_acc + w_ + 1;
 
 	ranges = [ ];
 	for (i = 0; i < 12; i++) {
@@ -186,7 +186,7 @@ function refreshCardName_(action, index, card) {
 		limit = "";
 	}
 
-	sheet.getRange(1, col + w_*index).setValue(text);
+	sheet.getRange(1, col + w_*index - 1).setValue(text);
 	sheet.getRangeList(ranges).setValue(limit);
 }
 
