@@ -13,7 +13,7 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_, null, null ],
 			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ],
 			[ null, null, null, null, null, null, update_v0m30p6_ ],
-			[ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_ ]
+			[ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_ ]
 		]
 	],
 	beta_list: [ ]
@@ -152,6 +152,33 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Update formula of wallet expenses.
+ *
+ * 0.31.7
+ */
+function update_v0m31p7_() {
+	try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+		var formula, i;
+
+		if (!sheet) return;
+
+		const h_ = TABLE_DIMENSION.height;
+
+		for (i = 0; i < 12; i++) {
+			formula = "NOT(REGEXMATCH(\'" + MN_SHORT[i] + "\'!D5:D404; \"#ign\"))";
+			formula = "NOT(ISBLANK(\'" + MN_SHORT[i] + "\'!C5:C404)); " + formula;
+			formula = "FILTER(\'" + MN_SHORT[i] + "\'!C5:C404; " + formula + ")";
+			formula = "SUM(IFNA(" + formula + "; 0))";
+
+			sheet.getRange(4 + h_*i, 2).setFormula(formula);
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m31p7_()", err);
+	}
+}
 
 /**
  * Convert 'is_installed' value '[ ]' to 'true'.
