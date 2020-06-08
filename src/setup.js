@@ -35,8 +35,15 @@ function setupFlow_(select, settings, list_acc) {
 }
 
 function isInstalled_() {
-	const is_installed = PropertiesService.getDocumentProperties().getProperty("is_installed");
-	return is_installed != null;
+	var isInstalled = CacheService2.get("document", "is_installed", "boolean");
+
+	if (isInstalled == null) {
+		isInstalled = PropertiesService2.getProperty("document", "is_installed", "string");
+		isInstalled = (isInstalled ? true : false);
+		CacheService2.put("document", "is_installed", "boolean", isInstalled);
+	}
+
+	return isInstalled;
 }
 
 function uninstall_(putLock) {
