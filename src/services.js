@@ -217,17 +217,6 @@ function weeklyTriggerPre_(e) {
 }
 
 
-function reviseVersion_() {
-	var documentProperties = PropertiesService.getDocumentProperties();
-
-	if (documentProperties.getProperty("class_version2") == null) {
-			console.log("Version revision failed: uninstall.");
-			uninstall_();
-			return 1;
-	}
-}
-
-
 function refreshUserId_() {
 	var userId = PropertiesService2.getProperty("user", "user_id", "string");
 	if (userId) return userId;
