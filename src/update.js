@@ -209,7 +209,7 @@ function update_v0m31p0_() {
 		var admin;
 
 		if (cp.addon_user) admin = cp.addon_user;
-		else admin = refreshUserId_();
+		else admin = setUserId_();
 
 		properties = {
 			admin_id: admin,
@@ -231,7 +231,7 @@ function update_v0m31p0_() {
  */
 function update_v0m30p6_() {
 	try {
-		refreshUserId_();
+		setUserId_();
 
 
 		const handlers = [ "onOpenInstallable_", "onEditInstallable_", "dailyTrigger_", "weeklyTriggerPos_", "weeklyTriggerPre_" ];
@@ -379,7 +379,7 @@ function update_v0m28p4_() {
  */
 function update_v0m28p3_() {
 	try {
-		refreshUserId_();
+		setUserId_();
 	} catch (err) {
 		consoleLog_("error", "update_v0m28p3_()", err);
 	}

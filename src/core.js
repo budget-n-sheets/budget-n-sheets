@@ -8,7 +8,7 @@
  */
 function onInstall(e) {
 	onOpen(e);
-	refreshUserId_();
+	setUserId_();
 
 	var installationSource = ScriptApp.getInstallationSource();
 
@@ -130,7 +130,7 @@ function showSidebarMainSettings() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var calendars, editors;
 
-	const user_id = refreshUserId_();
+	const user_id = getUserId_();
 	const isChangeableByEditors = classAdminSettings_("get", "isChangeableByEditors");
 
 	const isAdmin = (user_id === classAdminSettings_("get", "admin_id"));

@@ -16,6 +16,8 @@ function loadCache_() {
 
 	// cache = PropertiesService2.getProperty("document", "is_installed", "boolean");
 	// if (cache) CacheService2.put("document", "is_installed", "boolean", cache);
+
+	getUserId_();
 }
 
 
@@ -216,17 +218,6 @@ function weeklyTriggerPre_(e) {
 	monthly_TreatLayout_(a["year"], a["month"]);
 }
 
-
-function refreshUserId_() {
-	var userId = PropertiesService2.getProperty("user", "user_id", "string");
-	if (userId) return userId;
-	user_id = Session.getEffectiveUser().getEmail();
-	user_id = computeDigest("SHA_256", user_id, "UTF_8");
-	PropertiesService2.setProperty("user", "user_id", "string", user_id);
-	return user_id;
-}
-
-
 function askDeactivation() {
 	if (! isInstalled_()) {
 		uninstall_();
@@ -236,7 +227,7 @@ function askDeactivation() {
 
 	var ui = SpreadsheetApp.getUi();
 
-	if (refreshUserId_() !== classAdminSettings_("get", "admin_id")) {
+	if (getUserId_() !== classAdminSettings_("get", "admin_id")) {
 		ui.alert(
 			"Permission denied",
 			"You don't have permission to deactivate the add-on.",
@@ -358,7 +349,7 @@ function askResetProtection() {
 function askReinstall() {
 	if (! isInstalled_()) return;
 
-	if (refreshUserId_() !== classAdminSettings_("get", "admin_id")) {
+	if (getUserId_() !== classAdminSettings_("get", "admin_id")) {
 		SpreadsheetApp.getUi().alert(
 			"Permission denied",
 			"You don't have permission to reinstall the triggers.",
@@ -414,7 +405,7 @@ function askTransferAdmin() {
 		owner_id = computeDigest("SHA_256", owner, "UTF_8");
 	}
 
-	if (!owner || refreshUserId_() === owner_id) {
+	if (!owner || getUserId_() === owner_id) {
 		ui.alert(
 			"Can't transfer admin role",
 			"The admin role can only be transferred to the owner of the spreadsheet.\nMake an editor the owner and try again.",
@@ -445,7 +436,7 @@ function askTransferAdminSd() {
 	var editors, email, digest;
 	var user = Session.getEffectiveUser().getEmail();
 
-	if (spreadsheet.getowner() || refreshUserId_() !== classAdminSettings_("get", "admin_id")) return 1;
+	if (spreadsheet.getowner() || getUserId_() !== classAdminSettings_("get", "admin_id")) return 1;
 
 	editors = spreadsheet.getEditors();
 	if (editors.length == 1) {
@@ -485,7 +476,7 @@ function continuedTransferAdminSd(editor) {
 	var editors, email, digest;
 	var user = Session.getEffectiveUser().getEmail();
 
-	if (spreadsheet.getowner() || refreshUserId_() !== classAdminSettings_("get", "admin_id")) return 1;
+	if (spreadsheet.getowner() || getUserId_() !== classAdminSettings_("get", "admin_id")) return 1;
 
 	editors = spreadsheet.getEditors();
 	if (editors.length == 1) {

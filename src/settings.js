@@ -5,7 +5,7 @@ function retrieveUserSettings() {
 		CacheService2.put("document", "user_settings", "json", user_settings);
 	}
 
-	const user_id = refreshUserId_();
+	const user_id = getUserId_();
 
 	if (user_id === classAdminSettings_("get", "admin_id")) {
 		if (user_settings.financial_calendar) {
@@ -30,7 +30,7 @@ function retrieveUserSettings() {
 
 
 function saveUserSettings(settings) {
-	const user_id = refreshUserId_();
+	const user_id = getUserId_();
 
 	var db_calendars, sheet, c;
 	var calendar = {
@@ -194,60 +194,6 @@ function getConstProperties_(select) {
 			break;
 	}
 }
-
-function setAdminSettings(key, value) {
-	return classAdminSettings_("set", key, value);
-}
-
-function classAdminSettings_(select, key, value) {
-	var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(1000);
-	} catch (err) {
-		consoleLog_("warn", "classAdminSettings_(): Wait lock time out.", err);
-		return 1;
-	}
-
-	var admin_settings = CacheService2.get("document", "admin_settings", "json");
-	if (!admin_settings) {
-		admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
-		CacheService2.put("document", "admin_settings", "json", admin_settings);
-	}
-
-	if (select === "get") {
-		switch (key) {
-		case "admin_id":
-		case "isChangeableByEditors":
-			return admin_settings[key];
-
-		default:
-			consoleLog_("error", "classAdminSettings_(): Switch case is default", key);
-			return 1;
-		}
-
-	} else if (select === "set") {
-		if (refreshUserId_() !== admin_settings.admin_id) return 1;
-
-		switch (key) {
-		case "admin_id":
-		case "isChangeableByEditors":
-			admin_settings[key] = value;
-			break;
-
-		default:
-			consoleLog_("error", "classAdminSettings_(): Switch case is default", key);
-			return 1;
-		}
-
-		PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
-		CacheService2.put("document", "admin_settings", "json", admin_settings);
-
-	} else {
-		consoleLog_("error", "classAdminSettings_(): Select case is default", select);
-		return 1;
-	}
-}
-
 
 function getMonthFactored_(select) {
 	var date = DATE_NOW.getSpreadsheetDate();

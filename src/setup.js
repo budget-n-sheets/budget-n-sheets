@@ -1,5 +1,6 @@
 function showDialogSetupAddon() {
 	console.info("add-on/intent");
+	setUserId_();
 	setupFlow_("dialog");
 }
 
@@ -616,7 +617,7 @@ function setupTables_() {
 function setupProperties_(yyyy_mm) {
 	console.time("add-on/setup/properties");
 	var properties, d;
-	var operation, user_id;
+	var operation;
 
 	properties = {
 		initial_month: SETUP_SETTINGS["init_month"],
@@ -628,11 +629,8 @@ function setupProperties_(yyyy_mm) {
 	PropertiesService2.setProperty("document", "user_settings", "json", properties);
 
 
-	user_id = PropertiesService2.getProperty("user", "user_id", "string");
-	if (!user_id) user_id = refreshUserId_();
-
 	properties = {
-		admin_id: user_id,
+		admin_id: getUserId_(),
 		isChangeableByEditors: false
 	};
 	PropertiesService2.setProperty("document", "admin_settings", "json", properties);
