@@ -382,7 +382,7 @@
 							})
 						.withFailureHandler(showError)
 						.withUserObject(this)
-						.askReinstall();
+						.askReinstallTriggersUi();
 				}
 
 			<? } else { ?>
@@ -396,7 +396,7 @@
 							})
 						.withFailureHandler(showError)
 						.withUserObject(this)
-						.askUninstall();
+						.askDeleteAllTriggers();
 				}
 
 			<? } ?>

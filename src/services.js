@@ -83,7 +83,7 @@ function onEditInstallable_(e) {
 
 function daily_Main_(e) {
 	try {
-		askReinstall();
+		reinstallTriggers_();
 	} catch (err) {
 		return;
 	}
@@ -144,7 +144,7 @@ function dailyTrigger_(e) {
 
 function weekly_Foo_(e) {
 	try {
-		askReinstall();
+		reinstallTriggers_();
 	} catch (err) {
 		return;
 	}
@@ -168,7 +168,7 @@ function weeklyTriggerPos_(e) {
 
 function weekly_Bar_(e) {
 	try {
-		askReinstall();
+		reinstallTriggers_();
 	} catch (err) {
 		return;
 	}

@@ -1,4 +1,4 @@
-function askUninstall() {
+function askDeleteAllTriggers() {
 	deleteAllTriggers_();
 }
 
@@ -128,9 +128,7 @@ function askResetProtection() {
 	lock.releaseLock();
 }
 
-function askReinstall() {
-	if (! isInstalled_()) return;
-
+function askReinstallTriggersUi() {
 	if (getUserId_() !== classAdminSettings_("get", "admin_id")) {
 		SpreadsheetApp.getUi().alert(
 			"Permission denied",
@@ -138,6 +136,12 @@ function askReinstall() {
 			SpreadsheetApp.getUi().ButtonSet.OK);
 		return 1;
 	}
+
+	reinstallTriggers_();
+}
+
+function reinstallTriggers_() {
+	if (! isInstalled_()) return;
 
 	const financial_year = getConstProperties_("financial_year");
 
@@ -160,7 +164,7 @@ function askReinstall() {
 		operation = "passive";
 
 	} else {
-		console.warn("askReinstall(): Case is default.");
+		console.warn("reinstallTriggers_(): Case is default.");
 	}
 
 	setSpreadsheetSettings_("operation_mode", operation);
