@@ -13,7 +13,7 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m28p0_, null, null, update_v0m28p3_, update_v0m28p4_, null, null ],
 			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ],
 			[ null, null, null, null, null, null, update_v0m30p6_ ],
-			[ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_ ]
+			[ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_, update_v0m31p8_ ]
 		]
 	],
 	beta_list: [ ]
@@ -152,6 +152,47 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Fix range of card limit.
+ *
+ * 0.31.8
+ */
+function update_v0m31p8_() {
+	try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Backstage");
+		var card, ranges, text, i, j;
+
+		const h_ = TABLE_DIMENSION.height;
+		const w_ = TABLE_DIMENSION.width;
+
+		const db_cards = getDbTables_("cards");
+		const num_acc = getConstProperties_("number_accounts");
+		const col = 2 + w_ + w_*num_acc + w_ + 1;
+
+		if (!sheet) return;
+
+		for (i = 0; i < db_cards.count; i++) {
+			card = db_cards.data[i];
+
+			ranges = [ ];
+			for (j = 0; j < 12; j++) {
+				ranges[j] = rollA1Notation(2 + h_*j, col + w_*i);
+			}
+
+			limit = "=" + card.limit.formatLocaleSignal();
+			text = "^" + card.code + "$";
+			for (j = 0; j < card.aliases.length; j++) {
+				text += "|^" + card.aliases[j] + "$";
+			}
+
+			sheet.getRange(1, col + w_*i - 1).setValue(text);
+			sheet.getRangeList(ranges).setValue(limit);
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m31p8_()", err);
+	}
+}
 
 /**
  * Update formula of wallet expenses.
