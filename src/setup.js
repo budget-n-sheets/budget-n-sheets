@@ -762,7 +762,10 @@ function setupBackstage_() {
 		income = "";
 		expenses = "";
 
-		formula = "IFERROR(SUM(\'" + MN_SHORT[i] + "\'!" + values[k] + "); 0)";
+		formula = "NOT(REGEXMATCH(\'" + MN_SHORT[i] + "\'!" + tags[k] + "; \"#ign\"))";
+		formula = "NOT(ISBLANK(\'" + MN_SHORT[i] + "\'!" + values[k] + ")); " + formula;
+		formula = "FILTER(\'" + MN_SHORT[i] + "\'!" + values[k] + "; " + formula + ")";
+		formula = "SUM(IFNA(" + formula + "; 0))";
 		sheet.getRange(4 + h_*i, 2).setFormula(formula);
 
 		for (; k < num_acc; k++) {
