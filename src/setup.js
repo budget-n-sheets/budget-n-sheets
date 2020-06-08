@@ -789,21 +789,6 @@ function setupBackstage_() {
 			formulas[h_*i][1 + w_*k] = formula;
 		}
 
-		for (k = 0; k < 10; k++) {
-			formula = "REGEXEXTRACT(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\")";
-			formula = "ARRAYFORMULA(SPLIT(" + formula + "; \"/\"))";
-			formula = "{" + formula + dec_c + " \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + "}; ";
-			formula = formula + "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 3 + 6*i, -1) + "; " + rollA1Notation(1, col + w_*k) + "); ";
-
-			formula = formula + "NOT(ISBLANK(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1) + ")); ";
-			formula = formula + "REGEXMATCH(\'Cards\'!" + rollA1Notation(6, 2 + 6*i, -1) + "; \"[0-9]+/[0-9]+\")";
-
-			formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + "); 0)))";
-			formula = "IF(" + rollA1Notation(1, col + w_*k) + " = \"\"; 0; " + formula + ")";
-
-			sheet.getRange(5 + h_*i, 1 + col + w_*k).setFormula(formula);
-		}
-
 		sheet.getRange(3 + h_*i, 2).setFormula(income);
 		sheet.getRange(5 + h_*i, 2).setFormula(expenses);
 	}
