@@ -11,7 +11,7 @@ function setupUi(settings, list_acc) {
 function setupFlow_(select, settings, list_acc) {
 	var lock = LockService.getDocumentLock();
 	try {
-		lock.waitLock(0);
+		lock.waitLock(100);
 	} catch (err) {
 		SpreadsheetApp.getUi().alert(
 			"Add-on setup in progress",
@@ -23,10 +23,12 @@ function setupFlow_(select, settings, list_acc) {
 
 	switch (select) {
 		case "dialog":
+			lock.releaseLock();
 			showDialogSetupAddon_();
 			break;
 		case "setup":
 			setup_(settings, list_acc);
+			lock.releaseLock();
 			break;
 
 		default:
