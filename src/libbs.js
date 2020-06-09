@@ -71,7 +71,6 @@ Number.prototype.formatLocaleSignal = function(p_dec_p) {
 Date.prototype.getSpreadsheetDate = function() {
 	var timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
 	if (typeof timezone != "string" || timezone == "") {
-		console.info("Date.getSpreadsheetDate(): ugly time zone.", timezone);
 		timezone = "GMT";
 	}
 	var date = Utilities.formatDate(this, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
