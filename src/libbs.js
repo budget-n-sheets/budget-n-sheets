@@ -87,13 +87,11 @@ function getMonthDelta(mm) {
 	switch (mm) {
 		case 0:
 			return [ 0, 3 ];
-		case 10:
-			return [ -2, 1 ];
 		case 11:
 			return [ -3, 0 ];
 
 		default:
-			return [ -1, 2 ];
+			return [ -2, 1 ];
 	}
 }
 
