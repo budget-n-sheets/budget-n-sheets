@@ -11,7 +11,6 @@ function isReAuthorizationRequired_(sendEmail) {
 	try {
 		documentProperties = PropertiesService.getDocumentProperties();
 	} catch (e) {
-		console.error("isReAuthorizationRequired_(): " + e);
 		return true;
 	}
 
