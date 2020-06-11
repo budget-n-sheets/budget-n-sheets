@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base target="_top">
+		<meta charset="UTF-8">
+		<?!= htmlInclude("gas-common/htmlStyles"); ?>
+		<style>
+			p {
+				text-indent: 0;
+			}
+
+			.material-icons.md-slow,
+			.material-icons.md-speed,
+			.material-icons-outlined.md-slow,
+			.material-icons-outlined.md-speed {
+				cursor: pointer;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 style="margin-bottom: 5px;">Basics</h1>
+
+		<h2>Decimal separator</h2>
+		<p>Your spreadsheet uses <b><?= dec_p ?></b> (<?= dec_n ?>) as decimal separator.</p>
+
+		<h2>Plus and minus signs</h2>
+		<p><b>Positive numbers:</b> whenever values are <b>towards</b> your balance.</p>
+		<p><b>Negative numbers:</b> whenever values are <b>outwards</b> your balance.</p>
+
+		<h2>Protected sheets and ranges</h2>
+		<p>Do <b>not</b> edit protected sheets and ranges!</p>
+		<p>It is <b>safe</b> to: show/hide tabs, expand/collapse column and row groups, show/hide columns and rows.</p>
+
+		<hr>
+
+
+		<h1 style="margin-bottom: 5px;">Entering statements</h1>
+
+		<p>Expenses with <b>cash</b> <span class="material-icons md-18 md-speed" id="statements1">play_circle_outline</span></p>
+		<p>Expenses with <b>debit card</b> <span class="material-icons md-18 md-speed" id="statements2">play_circle_outline</span></p>
+		<p>Expenses with <b>credit card</b>: See <b>Accounts and Cards</b>.</p>
+		<p>Register income <span class="material-icons md-18 md-speed" id="statements3">play_circle_outline</span></p>
+		<p>Ignore a value <span class="material-icons md-18 md-speed" id="statements4">play_circle_outline</span></p>
+
+		<h2>Account transactions</h2>
+		<p>Deposits <span class="material-icons md-18 md-speed" id="transaction1">play_circle_outline</span></p>
+		<p>Transfer to someone <span class="material-icons md-18 md-speed" id="transaction2">play_circle_outline</span></p>
+		<p>Transfer from someone <span class="material-icons md-18 md-speed" id="transaction3">play_circle_outline</span></p>
+		<p>Withdrawals <span class="material-icons md-18 md-speed" id="transaction4">play_circle_outline</span></p>
+
+		<hr>
+
+
+		<h1 style="margin-bottom: 5px;">Accounts and Cards</h1>
+
+		<p>Set an initial month and balance for each account. From the initial month and onwards, the balance is affected by the transactions. <span class="material-icons md-18 md-speed" id="acc_cards1">play_circle_outline</span></p>
+
+		<p>Create a <b>card</b> for each credit card you own. <span class="material-icons md-18 md-speed" id="acc_cards2">play_circle_outline</span></p>
+		<p>Enter card expenses and refunds <span class="material-icons md-18 md-speed" id="acc_cards3">play_circle_outline</span></p>
+		<p>Enter card bill payment <span class="material-icons md-18 md-speed" id="acc_cards4">play_circle_outline</span></p>
+
+		<hr>
+
+
+		<h1 style="margin-bottom: 5px;">Custom tags</h1>
+
+		<p>Use tags to track specific transactions and generate analytics by tag and category.</p>
+
+		<p>Create a tag <span class="material-icons md-18 md-speed" id="tags1">play_circle_outline</span></p>
+		<p>Tag an expense <span class="material-icons md-18 md-speed" id="tags2">play_circle_outline</span></p>
+		<p>Use subtags <span class="material-icons md-18 md-speed" id="tags3">play_circle_outline</span></p>
+
+		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+		<script>
+			$(document).on("click", ".md-speed", function() {
+				google.script.run
+					.withFailureHandler(showError)
+					.playSpeedQuickstart( $(thi).attr("id") );
+			});
+		</script>
+	</body>
+</html>
