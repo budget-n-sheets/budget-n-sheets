@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base target="_top">
+		<meta charset="UTF-8">
+		<?!= htmlInclude("gas-common/htmlStyles"); ?>
+		<style>
+			p {
+				text-indent: 0;
+			}
+
+			.material-icons.md-slow,
+			.material-icons.md-speed,
+			.material-icons-outlined.md-slow,
+			.material-icons-outlined.md-speed {
+				cursor: pointer;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="speed">
+			<h1 style="margin-bottom: 5px;">Basics</h1>
+
+			<h2>Decimal separator</h2>
+			<p>Your spreadsheet uses <b><?= dec_p ?></b> (<?= dec_n ?>) as decimal separator.</p>
+
+			<h2>Plus and minus signs</h2>
+			<p><b>Positive numbers:</b> whenever values are <b>towards</b> your balance.</p>
+			<p><b>Negative numbers:</b> whenever values are <b>outwards</b> your balance.</p>
+
+			<h2>Protected sheets and ranges</h2>
+			<p>Do <b>not</b> edit protected sheets and ranges!</p>
+			<p>It is <b>safe</b> to: show/hide tabs, expand/collapse column and row groups, show/hide columns and rows.</p>
+
+			<hr>
+
+
+			<h1 style="margin-bottom: 5px;">Entering statements</h1>
+
+			<p>Expenses with <b>cash</b> <span class="material-icons md-18 md-speed" id="statements1">play_circle_outline</span></p>
+			<p>Expenses with <b>debit card</b> <span class="material-icons md-18 md-speed" id="statements2">play_circle_outline</span></p>
+			<p>Expenses with <b>credit card</b>: See <b>Accounts and Cards</b>.</p>
+			<p>Register income <span class="material-icons md-18 md-speed" id="statements3">play_circle_outline</span></p>
+			<p>Ignore a value <span class="material-icons md-18 md-speed" id="statements4">play_circle_outline</span></p>
+
+			<h2>Account transactions</h2>
+			<p>Deposits <span class="material-icons md-18 md-speed" id="transaction1">play_circle_outline</span></p>
+			<p>Transfer to someone <span class="material-icons md-18 md-speed" id="transaction2">play_circle_outline</span></p>
+			<p>Transfer from someone <span class="material-icons md-18 md-speed" id="transaction3">play_circle_outline</span></p>
+			<p>Withdrawals <span class="material-icons md-18 md-speed" id="transaction4">play_circle_outline</span></p>
+
+			<hr>
+
+
+			<h1 style="margin-bottom: 5px;">Accounts and Cards</h1>
+
+			<p>Set an initial month and balance for each account. From the initial month and onwards, the balance is affected by the transactions. <span class="material-icons md-18 md-speed" id="acc_cards1">play_circle_outline</span></p>
+
+			<p>Create a <b>card</b> for each credit card you own. <span class="material-icons md-18 md-speed" id="acc_cards2">play_circle_outline</span></p>
+			<p>Enter card expenses and refunds <span class="material-icons md-18 md-speed" id="acc_cards3">play_circle_outline</span></p>
+			<p>Enter card bill payment <span class="material-icons md-18 md-speed" id="acc_cards4">play_circle_outline</span></p>
+
+			<hr>
+
+
+			<h1 style="margin-bottom: 5px;">Custom tags</h1>
+
+			<p>Use tags to track specific transactions and generate analytics by tag and category.</p>
+
+			<p>Create a tag <span class="material-icons md-18 md-speed" id="tags1">play_circle_outline</span></p>
+			<p>Tag an expense <span class="material-icons md-18 md-speed" id="tags2">play_circle_outline</span></p>
+			<p>Use subtags <span class="material-icons md-18 md-speed" id="tags3">play_circle_outline</span></p>
+		</div>
+
+		<div id="slow_motion" style="display: none;">
+			<div style="display: table-row;">
+				<div style="width: 100%;display: table-cell;">
+					<h1 style="margin-bottom: 5px;">Basics</h1>
+				</div>
+				<div style="display: table-cell;">
+					<span class="material-icons-outlined md-click" id="#basics">expand_less</span>
+				</div>
+			</div>
+			<div id="basics">
+				<div style="display: none;">
+					<h2>The pages</h2>
+					<p><b>Summary</b> This page displays the income and expenses total for each month, and an year overall as well.</p>
+
+					<p><b>Jan, Feb, ..., Dec</b> These pages are where you enter statements, like expenses, income and transactions, with <b>cash</b> and (bank) <b>account</b> balance. These pages are referred to as <b>month page</b>.<p>
+
+					<p><b>Cards</b> This page is where you enter statements, like expenses and refunds, with a (credit) <b>card</b>.<p>
+
+					<p><b>Cash Flow</b> This page shows your combined account balance per day after a cash flow.<p>
+
+					<p><b>Cash Flow</b> Here you can create custom tags to tag your statements.<p>
+				</div>
+
+				<h2>Decimal separator</h2>
+				<p>Your spreadsheet uses <b><?= dec_p ?></b> (<?= dec_n ?>) as decimal separator.</p>
+
+				<h2>Plus and minus signs</h2>
+				<p>Use a <b>positive number</b> whenever a value is <b>towards</b> your balance.<br>Examples: income, deposits, transfers from someone and refunds.</p>
+				<p>Use a <b>negative number</b>, with a <b>-</b> (minus) sign as prefix, whenever the value is <b>outwards</b> your balance.<br>Examples: expenses, withdrawals and transfers to someone.</p>
+
+				<h2>Protected sheets and ranges</h2>
+				<p>Do <b>not</b> edit protected sheets and ranges if it is unnecessary! Editing protected sheets and ranges may break the spreadsheet's functionality, and the add-on may not work properly. Updates to the spreadsheet may come to a failure as well.</p>
+
+				<p>The following actions are <b>safe</b> despite showing a warning: show/hide tabs, expand/collapse column and row groups, show/hide columns and rows.</p>
+			</div>
+
+			<hr>
+
+
+			<div style="display: table-row;">
+				<div style="width: 100%;display: table-cell;">
+					<h1 style="margin-bottom: 5px;">Entering statements</h1>
+				</div>
+				<div style="display: table-cell;">
+					<span class="material-icons-outlined md-click" id="#statements">expand_less</span>
+				</div>
+			</div>
+			<div id="statements">
+				<p>For transactions with <b>cash</b>, enter the statements in the <b>Wallet</b> table.</p>
+				<p>For transactions with account balance (like using debit card), enter the statements in the respective <b>account</b> table.</p>
+				<p>For transactions with credit <b>card</b>, enter the statements in the <b>Cards</b> page.</p>
+
+				<h2>Register income</h2>
+				<p>To mark a statement as income, tag it with the <b>#rct</b> code. If the statement is in an account table, then it also needs a deposit or transfer tag.</p>
+
+				<h2>Ignore a value</h2>
+				<p>The value of a statement can be ignored and not accounted in the sum of expenses by tagging the statement with the <b>#ign</b> code.</p>
+
+				<h2>Account transactions</h2>
+				<p><b>Account</b> statements of deposits, transfers and withdrawals (transactions) requires a built-in tag:</p>
+				<ul>
+					<li><b>Deposits:</b> #dp, only positive values</li>
+					<li><b>Transfers:</b> #trf</li>
+					<li><b>Withdrawals:</b> #wd, only negative values</li>
+				</ul>
+				<p>A summary of transactions is displayed in the header of each account table.</p>
+			</div>
+
+			<hr>
+
+
+			<div style="display: table-row;">
+				<div style="width: 100%;display: table-cell;">
+					<h1 style="margin-bottom: 5px;">Accounts and Cards</h1>
+				</div>
+				<div style="display: table-cell;">
+					<span class="material-icons-outlined md-click" id="#acc_cards">expand_less</span>
+				</div>
+			</div>
+			<div id="acc_cards">
+				<h2>Set account balance</h2>
+				<p>You can set an initial month and balance for each account. From the initial month, the account balance will be affect by the statements.</p>
+				<ol>
+					<li>Click <b>Add-ons > Budget n Sheets > Open Accounts & Cards</b>.</li>
+					<li>Select the <b><i class="material-icons-outlined md-24">account_balance</i> Accounts</b> tab.</li>
+					<li>Click <b>Edit</b> in one of the accounts.</li>
+					<li>Edit name, initial month and initial balance.</li>
+					<li>Click <b>Save</b>.</li>
+				</ol>
+
+				<h2>Add cards</h2>
+				<p>You can create a <b>Card</b> for each credit card you own. The code for that Card is then used to associate the respective statements with your credit card in the <b>Cards</b> page.</p>
+				<ol>
+					<li>Click <b>Add-ons > Budget n Sheets > Open Accounts & Cards</b>.</li>
+					<li>Select the <b><i class="material-icons-outlined">credit_card</i> Cards</b> tab.</li>
+					<li>Click <b><i class="material-icons">add</i> Add card</b>.</li>
+					<li>Enter the name, code, code aliases and credit limit.</li>
+					<li>Click <b>Add</b>.</li>
+				</ol>
+			</div>
+
+			<hr>
+
+
+			<div style="display: table-row;">
+				<div style="width: 100%;display: table-cell;">
+					<h1 style="margin-bottom: 5px;">Custom tags</h1>
+				</div>
+				<div style="display: table-cell;">
+					<span class="material-icons-outlined md-click" id="#tags">expand_less</span>
+				</div>
+			</div>
+			<div id="tags">
+				<p>Use tags to track specific statements and generate analytics by tag and category.</p>
+
+				<h2>Create a tag</h2>
+				<ol>
+					<li>Click the <b>Tags</b> page.</li>
+					<li>Create one tag per row. The options <b>category</b> and <b>code</b> are required.</li>
+				</ol>
+				<h3>Options</h3>
+				<ul>
+					<li><b>category:</b> Category of the tag.</li>
+					<li><b>analytics:</b> If checked, the tag is included in the <b>Stats for Tags</b> report from the <b>Cool Gallery</b>.</li>
+					<li><b>code:</b> The code of the tag. Charset accepted: 0-9, a-z, A-Z, _</li>
+				</ul>
+
+				<h2>Using tags</h2>
+				<p>Use a tag by entering <b>#</b> followed by the tag's code in the <b>tag</b> column. You can combine multiple tags, and sepparation with space or comma is optional.</p>
+
+				<h2>Subsubcategory</h2>
+				<p>A tag can have subtags of its own by appending a sufix to a main tag. For example, for two different trips, you can create the tags <b>#trip</b>, <b>#trip1</b> and <b>#trip2</b>. For each trip, you tag the expenses with tags <b>#trip1</b> and <b>#trip2</b>. Meanwhile, the tag <b>#trip</b> is accounting the sum of both trips, since it uses the same <b>initial</b> code: <b>trip</b>.</p>
+			</div>
+		</div>
+		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+		<script>
+			$(document).on("click", ".md-speed", function() {
+
+			});
+
+			$(document).on("click", ".md-click", function() {
+				if ($(this).text() === "expand_less") {
+					$($(this).attr("id") + " > p").hide();
+					$($(this).attr("id") + " > ul").hide();
+					$($(this).attr("id") + " > ol").hide();
+					$(this).text("expand_more");
+				} else {
+					$($(this).attr("id") + " > p").show();
+					$($(this).attr("id") + " > ul").show();
+					$($(this).attr("id") + " > ol").show();
+					$(this).text("expand_less");
+				}
+			});
+		</script>
+	</body>
+</html>
