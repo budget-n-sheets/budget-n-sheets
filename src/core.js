@@ -54,11 +54,11 @@ function onOpen(e) {
 				.addSeparator()
 				.addItem("Open Accounts & Cards panel", "showPanelTables")
 				.addItem("Open Cool Gallery panel", "showPanelAnalytics")
-				.addItem("Show quickstart", "showPanelQuickstart")
 				.addSeparator()
 				.addItem("About the add-on", "showDialogAboutAddon")
 				.addItem("Change settings", "showSidebarMainSettings")
-				.addItem("Deactive the add-on", "askDeactivation");
+				.addItem("Deactive the add-on", "askDeactivation")
+				.addItem("Show quickstart", "showPanelQuickstart");
 
 
 			console.info("add-on/open");
