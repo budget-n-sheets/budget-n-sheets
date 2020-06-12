@@ -1,3 +1,61 @@
+var QUICKSTART_DATA = Object.freeze({
+	statements: {
+		1: [[ 7, "Coffee shop", null, "" ]],
+		2: [[ 7, "Grocery shop", null, "" ]],
+		3: [
+			[ 7, "Paycheck (in cash)", null, "#rct", null,
+				7, "Income (via transfer #trf)", null, "#trf #rct" ],
+			[	null, null, null, null, null,
+				7, "Income (via deposit #dp)", null, "#dp #rct" ]
+		],
+		4: [
+			[ 7, "Pizza, my share", null, "" ],
+			[ 7, "Pizza, others share (not accounted in expenses)", null, "#ign" ]
+		]
+	},
+	cashflow: {
+
+	},
+	transactions: {
+		1: [[ 7, "Deposit (to my account #dp)", null, "#dp" ]],
+		2: [[ 7, "Transfer (from someone #trf)", null, "#trf" ]],
+		3: [[ 7, "Transfer (to someone #trf)", null, "#trf" ]],
+		4: [[ 7, "Withdrawal (cash dispenser #wd)", null, "#wd" ]]
+	},
+	acc_cards: {
+		3: [
+			[ 7, "Online shopping 1/3 (with instalments in d/d format)", null, null, null, null,
+				-7, "Online shopping 2/3 (with instalments in d/d format)", null, null, null, null,
+				-7, "Online shopping 3/3 (with instalments in d/d format)", null, null, null, null ],
+			[	null, null, null, null, null, null,
+				3, "Grocery shop", null, -10, null, null,
+				null, null, null, null, null, null ],
+			[	null, null, null, null, null, null,
+				5, "Gas station", null, null, null, null,
+				null, null, null, null, null, null ],
+			[	null, null, null, null, null, null,
+				5, "Grocery shop refund", null, 10, null, null,
+				null, null, null, null, null, null ]
+		],
+		4: [[ 7, null, null, "#qcc" ]]
+	},
+	tags: {
+		1: [[ "Coffee", "Food and supply", "My coffee addiction tracker", "TRUE", "coffee" ]],
+		2: [
+			[ 3, "Bus to Abc", null, "#trip1" ],
+			[ 3, "Abc Pizza, lunch", null, "#trip1" ],
+			[ 4, "Coffee Abc", null, "#trip1 #coffee" ],
+			[ 7, "Flight to Def", null, "#trip2" ],
+			[ 8, "Tower Def", null, "#trip2" ]
+		],
+		3: [
+			[ "All trips", "Traveling", "Accounts statements with #trip, #trip1 or #trip2 tag", "TRUE", "trip" ],
+			[ "Trip to Abc", "Traveling", "Accounts statements with #trip1 tag", "FALSE", "trip1" ],
+			[ "Trip to Def", "Traveling", "Accounts statements with #trip1 tag", "FALSE", "trip2" ]
+		]
+	}
+});
+
 function playSpeedQuickstart(id) {
 	var lock = LockService.getDocumentLock();
 	try {
@@ -69,41 +127,31 @@ function playQuickStatements(n) {
 	}
 
 	lastRow = sheet.getLastRow();
+	data = QUICKSTART_DATA.statements[n];
+	if (!data) return;
 
 	switch (n) {
 	case 1:
 		col = 1;
-		data = [
-			[ 7, "Coffee shop", randomValueNegative(2, 2), "" ]
-		];
+		data[0][2] = randomValueNegative(2, 2);
 		break;
 	case 2:
 		col = 6;
-		data = [
-			[ 7, "Grocery shop", randomValueNegative(2, 2), "" ]
-		];
+		data[0][2] = randomValueNegative(2, 2);
 		break;
 	case 3:
 		col = 1;
-		data = [
-			[
-				7, "Paycheck (in cash)", randomValue(3, 2), "#rct", null,
-				7, "Income (via transfer #trf)", randomValue(3, 2), "#trf #rct"
-			],
-			[
-				null, null, null, null, null,
-				7, "Income (via deposit #dp)", randomValue(3, 2), "#dp #rct"
-			]
-		];
+		data[0][2] = randomValue(3, 2);
+		data[0][7] = randomValue(3, 2);
+		data[1][7] = randomValue(3, 2);
 		break;
 	case 4:
-		col = 1 + 5*randomInteger(2);
 		val = -randomInteger(20);
-		data = [
-			[ 7, "Pizza, my share", val, "" ],
-			[ 7, "Pizza, others share (not accounted in expenses)", val*3, "#ign" ]
-		];
+		col = 1 + 5*randomInteger(2);
+		data[0][2] = val;
+		data[1][2] = 3*val;
 		break;
+
 	default:
 		console.warn("playQuickStatements(): Switch case is default " + n);
 		return;
@@ -134,28 +182,23 @@ function playQuickTransactions(n) {
 	}
 
 	lastRow = sheet.getLastRow();
+	data = QUICKSTART_DATA.transactions[n];
+	if (!data) return;
 
 	switch (n) {
 	case 1:
-		data = [
-			[ 7, "Deposit (to my account #dp)", randomValue(3, 2), "#dp" ]
-		];
+		data[0][2] = randomValue(3, 2);
 		break;
 	case 2:
-		data = [
-			[ 7, "Transfer (from someone #trf)", randomValue(3, 2), "#trf" ]
-		];
+		data[0][2] = randomValue(3, 2);
 		break;
 	case 3:
-		data = [
-			[ 7, "Transfer (to someone #trf)", randomValueNegative(3, 2), "#trf" ]
-		];
+		data[0][2] = randomValueNegative(3, 2);
 		break;
 	case 4:
-		data = [
-			[ 7, "Withdrawal (cash dispenser #wd)", randomValueNegative(3, 2), "#wd" ]
-		];
+		data[0][2] = randomValueNegative(3, 2);
 		break;
+
 	default:
 		console.warn("playQuickStatements(): Switch case is default " + n);
 		return;
@@ -201,6 +244,9 @@ function playQuickAccCards(n) {
 
 	const financial_year = getConstProperties_("financial_year");
 
+	data = QUICKSTART_DATA.acc_cards[n];
+	if (!data) return;
+
 	if (n === 3) {
 		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
 		if (!sheet) return;
@@ -216,28 +262,19 @@ function playQuickAccCards(n) {
 		col = 1 + 6*mm - 6;
 		val = randomValueNegative(2, 2);
 
-		data = [
-			[
-				7, "Online shopping 1/3 (with instalments in d/d format)", code, val, null, null,
-				-7, "Online shopping 2/3 (with instalments in d/d format)", code, val, null, null,
-				-7, "Online shopping 3/3 (with instalments in d/d format)", code, val, null, null
-			],
-			[
-				null, null, null, null, null, null,
-				3, "Grocery shop", code, -10, null, null,
-				null, null, null, null, null, null
-			],
-			[
-				null, null, null, null, null, null,
-				5, "Gas station", code, randomValueNegative(3, 2), null, null,
-				null, null, null, null, null, null
-			],
-			[
-				null, null, null, null, null, null,
-				5, "Grocery shop refund", code, 10, null, null,
-				null, null, null, null, null, null
-			]
-		];
+		data[0][2] = code;
+		data[0][3] = val;
+		data[0][8] = code;
+		data[0][9] = val;
+		data[0][14] = code;
+		data[0][15] = val;
+
+		data[1][8] = code;
+
+		data[2][8] = code;
+		data[2][9] = randomValueNegative(3, 2);
+
+		data[3][8] = code;
 	} else if (n === 4) {
 		if (financial_year === DATE_NOW.getFullYear()) {
 			sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[ DATE_NOW.getMonth() ]);
@@ -249,9 +286,8 @@ function playQuickAccCards(n) {
 
 		col = 6;
 
-		data = [
-			[ 7, code + " bill payment", randomValueNegative(3, 2), "#qcc" ]
-		];
+		data[0][1] = code + " bill payment";
+		data[0][2] = randomValueNegative(3, 2);
 	}
 
 	lastRow = sheet.getLastRow();
@@ -272,13 +308,12 @@ function playQuickTags(n) {
 	var sheet, lastRow, range, col;
 	var data, tmp;
 
+	data = QUICKSTART_DATA.tags[n];
+	if (!data) return;
+
 	if (n === 1) {
 		col = 1;
 		sheet = "Tags";
-
-		data = [
-			[ "Coffee", "Food and supply", "My coffee addiction tracker", "TRUE", "coffee" ]
-		];
 
 	} else if (n === 2) {
 		const financial_year = getConstProperties_("financial_year");
@@ -287,23 +322,13 @@ function playQuickTags(n) {
 		if (financial_year === DATE_NOW.getFullYear()) sheet = MN_SHORT[ DATE_NOW.getMonth() ];
 		else sheet = MN_SHORT[0];
 
-		data = [
-			[ 3, "Bus to Abc", randomValueNegative(2, 2), "#trip1" ],
-			[ 3, "Abc Pizza, lunch", randomValueNegative(2, 2), "#trip1" ],
-			[ 4, "Coffee Abc", randomValueNegative(2, 2), "#trip1 #coffee" ],
-			[ 7, "Flight to Def", randomValueNegative(2, 2), "#trip2" ],
-			[ 8, "Tower Def", randomValueNegative(2, 2), "#trip2" ]
-		];
+		for (var i = 0; i < 5; i++) {
+			data[i][2] = randomValueNegative(2, 2);
+		}
 
 	} else if (n === 3) {
 		col = 1;
 		sheet = "Tags";
-
-		data = [
-			[ "All trips", "Traveling", "Accounts statements with #trip, #trip1 or #trip2 tag", "TRUE", "trip" ],
-			[ "Trip to Abc", "Traveling", "Accounts statements with #trip1 tag", "FALSE", "trip1" ],
-			[ "Trip to Def", "Traveling", "Accounts statements with #trip1 tag", "FALSE", "trip2" ]
-		];
 
 	} else {
 		console.warn("playQuickTags(): Switch case is default " + n);
