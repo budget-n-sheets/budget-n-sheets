@@ -44,10 +44,10 @@
 		<p>Ignore a value <span class="material-icons md-18 md-speed" id="statements4">play_circle_outline</span></p>
 
 		<h2>Account transactions</h2>
-		<p>Deposits <span class="material-icons md-18 md-speed" id="transaction1">play_circle_outline</span></p>
-		<p>Transfer to someone <span class="material-icons md-18 md-speed" id="transaction2">play_circle_outline</span></p>
-		<p>Transfer from someone <span class="material-icons md-18 md-speed" id="transaction3">play_circle_outline</span></p>
-		<p>Withdrawals <span class="material-icons md-18 md-speed" id="transaction4">play_circle_outline</span></p>
+		<p>Deposits <span class="material-icons md-18 md-speed" id="transactions1">play_circle_outline</span></p>
+		<p>Transfer to someone <span class="material-icons md-18 md-speed" id="transactions2">play_circle_outline</span></p>
+		<p>Transfer from someone <span class="material-icons md-18 md-speed" id="transactions3">play_circle_outline</span></p>
+		<p>Withdrawals <span class="material-icons md-18 md-speed" id="transactions4">play_circle_outline</span></p>
 
 		<hr>
 
@@ -68,15 +68,15 @@
 		<p>Use tags to track specific transactions and generate analytics by tag and category.</p>
 
 		<p>Create a tag <span class="material-icons md-18 md-speed" id="tags1">play_circle_outline</span></p>
-		<p>Tag an expense <span class="material-icons md-18 md-speed" id="tags2">play_circle_outline</span></p>
-		<p>Use subtags <span class="material-icons md-18 md-speed" id="tags3">play_circle_outline</span></p>
+		<p>Create subtags <span class="material-icons md-18 md-speed" id="tags3">play_circle_outline</span></p>
+		<p>Tag some expenses <span class="material-icons md-18 md-speed" id="tags2">play_circle_outline</span></p>
 
 		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
 		<script>
 			$(document).on("click", ".md-speed", function() {
 				google.script.run
 					.withFailureHandler(showError)
-					.playSpeedQuickstart( $(thi).attr("id") );
+					.playSpeedQuickstart( $(this).attr("id") );
 			});
 		</script>
 	</body>
