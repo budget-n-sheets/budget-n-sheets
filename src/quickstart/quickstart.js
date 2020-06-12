@@ -7,7 +7,7 @@ function playSpeedQuickstart(id) {
 		return;
 	}
 
-	const channel = id.match(/(statements|transactions|acc_cards|tags)(\d)/);
+	const channel = id.match(/(statements|cashflow|transactions|acc_cards|tags)(\d)/);
 	if (!channel) throw new Error("playSpeedQuickstart(): No match found.");
 
 	const job = channel[1];
@@ -16,6 +16,9 @@ function playSpeedQuickstart(id) {
 	switch (job) {
 	case "statements":
 		playQuickStatements(n);
+		break;
+	case "cashflow":
+		playQuickCashFlow(n);
 		break;
 	case "transactions":
 		playQuickTransactions(n);
@@ -31,6 +34,24 @@ function playSpeedQuickstart(id) {
 		console.warn("playSpeedQuickstart(): Switch case is default " + job);
 		break;
 	}
+}
+
+function playQuickCashFlow(n) {
+	var spreadsheet, sheet, mm;
+
+	const financial_year = getConstProperties_("financial_year");
+
+	if (financial_year === DATE_NOW.getFullYear()) mm = DATE_NOW.getMonth();
+	else mm = 0;
+
+	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+	sheet = spreadsheet.getSheetByName("Cash Flow");
+	if (!sheet) return;
+
+	spreadsheet.setActiveSheet(sheet);
+	sheet.getRange(1, 2 + 4*mm, 1, 3).activate();
+
+	validateUpdateCashFlow_();
 }
 
 function playQuickStatements(n) {
