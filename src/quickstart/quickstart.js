@@ -57,6 +57,8 @@ var QUICKSTART_DATA = Object.freeze({
 });
 
 function playSpeedQuickstart(id) {
+	if (! isInstalled_()) return;
+
 	var lock = LockService.getDocumentLock();
 	try {
 		lock.waitLock(200);
@@ -66,35 +68,36 @@ function playSpeedQuickstart(id) {
 	}
 
 	const channel = id.match(/(statements|cashflow|transactions|acc_cards|tags)(\d)/);
-	if (!channel) throw new Error("playSpeedQuickstart(): No match found.");
+	if (!channel) throw new Error("playSpeedQuickstart(): No match found. " + id);
 
 	const job = channel[1];
 	const n = Number(channel[2]);
 
 	switch (job) {
 	case "statements":
-		playQuickStatements(n);
+		playQuickStatements_(n);
 		break;
 	case "cashflow":
-		playQuickCashFlow(n);
+		playQuickCashFlow_(n);
 		break;
 	case "transactions":
-		playQuickTransactions(n);
+		playQuickTransactions_(n);
 		break;
 	case "acc_cards":
-		playQuickAccCards(n);
+		playQuickAccCards_(n);
 		break;
 	case "tags":
-		playQuickTags(n);
+		playQuickTags_(n);
 		break;
 
 	default:
-		console.warn("playSpeedQuickstart(): Switch case is default " + job);
-		break;
+		throw new Error("playSpeedQuickstart(): Switch case is default. " + job);
 	}
+
+	SpreadsheetApp.getActiveSpreadsheet().toast("Done.", "Quickstart");
 }
 
-function playQuickCashFlow(n) {
+function playQuickCashFlow_(n) {
 	var spreadsheet, sheet, mm;
 
 	const financial_year = getConstProperties_("financial_year");
@@ -112,21 +115,19 @@ function playQuickCashFlow(n) {
 	validateUpdateCashFlow_();
 }
 
-function playQuickStatements(n) {
-	n = Number(n);
-
+function playQuickStatements_(n) {
 	var sheet, lastRow;
 	var data, col, val;
 
 	const financial_year = getConstProperties_("financial_year");
 
-	if (financial_year === DATE_NOW.getFullYear()) {
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[ DATE_NOW.getMonth() ]);
-	} else {
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[0]);
-	}
+	if (financial_year === DATE_NOW.getFullYear()) sheet = MN_SHORT[ DATE_NOW.getMonth() ];
+	else sheet = MN_SHORT[0];
 
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheet);
+	if (!sheet) return;
 	lastRow = sheet.getLastRow();
+
 	data = QUICKSTART_DATA.statements[n];
 	if (!data) return;
 
@@ -153,8 +154,7 @@ function playQuickStatements(n) {
 		break;
 
 	default:
-		console.warn("playQuickStatements(): Switch case is default " + n);
-		return;
+		throw new Error("playQuickStatements_(): Switch case is default. " + n);
 	}
 
 	if (sheet.getMaxRows() < lastRow + data.length) {
@@ -167,21 +167,19 @@ function playQuickStatements(n) {
 	SpreadsheetApp.flush();
 }
 
-function playQuickTransactions(n) {
-	n = Number(n);
-
+function playQuickTransactions_(n) {
 	var sheet, lastRow;
 	var data;
 
 	const financial_year = getConstProperties_("financial_year");
 
-	if (financial_year === DATE_NOW.getFullYear()) {
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[ DATE_NOW.getMonth() ]);
-	} else {
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[0]);
-	}
+	if (financial_year === DATE_NOW.getFullYear()) sheet = MN_SHORT[ DATE_NOW.getMonth() ];
+	else sheet = MN_SHORT[0];
 
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheet);
+	if (!sheet) return;
 	lastRow = sheet.getLastRow();
+
 	data = QUICKSTART_DATA.transactions[n];
 	if (!data) return;
 
@@ -200,8 +198,7 @@ function playQuickTransactions(n) {
 		break;
 
 	default:
-		console.warn("playQuickStatements(): Switch case is default " + n);
-		return;
+		throw new Error("playQuickTransactions_(): Switch case is default. " + n);
 	}
 
 	if (sheet.getMaxRows() < lastRow + data.length) {
@@ -214,21 +211,21 @@ function playQuickTransactions(n) {
 	SpreadsheetApp.flush();
 }
 
-function playQuickAccCards(n) {
-	n = Number(n);
-
-	if (n === 1) {
+function playQuickAccCards_(n) {
+	switch (n) {
+	case 1:
 		const db_acc = getDbTables_("accounts");
 		showDialogEditAccount(db_acc.ids[0]);
 		return;
-
-	} else if (n === 2) {
+	case 2:
 		showDialogAddCard();
 		return;
+	case 3:
+	case 4:
+		break;
 
-	} else if (n !== 3 && n !== 4) {
-		console.warn("playQuickAccCards(): Switch case is default " + n);
-		return;
+	default:
+		throw new Error("playQuickAccCards_(): Switch case is default. " + n);
 	}
 
 	const db_cards = getDbTables_("cards");
@@ -248,8 +245,7 @@ function playQuickAccCards(n) {
 	if (!data) return;
 
 	if (n === 3) {
-		sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Cards");
-		if (!sheet) return;
+		sheet = "Cards";
 
 		if (financial_year === DATE_NOW.getFullYear()) {
 			mm = DATE_NOW.getMonth();
@@ -261,35 +257,28 @@ function playQuickAccCards(n) {
 
 		col = 1 + 6*mm - 6;
 		val = randomValueNegative(2, 2);
-
 		data[0][2] = code;
 		data[0][3] = val;
 		data[0][8] = code;
 		data[0][9] = val;
 		data[0][14] = code;
 		data[0][15] = val;
-
 		data[1][8] = code;
-
 		data[2][8] = code;
 		data[2][9] = randomValueNegative(3, 2);
-
 		data[3][8] = code;
-	} else if (n === 4) {
-		if (financial_year === DATE_NOW.getFullYear()) {
-			sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[ DATE_NOW.getMonth() ]);
-		} else {
-			sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[0]);
-		}
 
-		if (!sheet) return;
+	} else if (n === 4) {
+		if (financial_year === DATE_NOW.getFullYear()) sheet = MN_SHORT[ DATE_NOW.getMonth() ];
+		else sheet = MN_SHORT[0];
 
 		col = 6;
-
 		data[0][1] = code + " bill payment";
 		data[0][2] = randomValueNegative(3, 2);
 	}
 
+	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheet);
+	if (!sheet) return;
 	lastRow = sheet.getLastRow();
 
 	if (sheet.getMaxRows() < lastRow + data.length) {
@@ -302,37 +291,33 @@ function playQuickAccCards(n) {
 	SpreadsheetApp.flush();
 }
 
-function playQuickTags(n) {
-	n = Number(n);
-
+function playQuickTags_(n) {
 	var sheet, lastRow, range, col;
 	var data, tmp;
 
 	data = QUICKSTART_DATA.tags[n];
 	if (!data) return;
 
-	if (n === 1) {
+	switch (n) {
+	case 1:
+	case 3:
 		col = 1;
 		sheet = "Tags";
-
-	} else if (n === 2) {
-		const financial_year = getConstProperties_("financial_year");
-
+		break;
+	case 2:
 		col = 6;
+
+		const financial_year = getConstProperties_("financial_year");
 		if (financial_year === DATE_NOW.getFullYear()) sheet = MN_SHORT[ DATE_NOW.getMonth() ];
 		else sheet = MN_SHORT[0];
 
 		for (var i = 0; i < 5; i++) {
 			data[i][2] = randomValueNegative(2, 2);
 		}
+		break;
 
-	} else if (n === 3) {
-		col = 1;
-		sheet = "Tags";
-
-	} else {
-		console.warn("playQuickTags(): Switch case is default " + n);
-		return;
+	default:
+		throw new Error("playQuickTags_(): Switch case is default. " + n);
 	}
 
 	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheet);
