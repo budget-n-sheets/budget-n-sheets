@@ -80,6 +80,8 @@ function printHrefScriptlets(htmlTemplate) {
 }
 
 function showPanelQuickstart() {
+	console.info("quickstart");
+
 	var htmlTemplate = HtmlService.createTemplateFromFile("quickstart/htmlQuickstart");
 	htmlTemplate = printHrefScriptlets(htmlTemplate);
 
