@@ -105,7 +105,7 @@ function playSpeedQuickstart(id) {
 }
 
 function playQuickCashFlow_(n) {
-	var spreadsheet, sheet, mm;
+	var spreadsheet, sheet, values, mm, i;
 
 	const financial_year = getConstProperties_("financial_year");
 
@@ -113,6 +113,22 @@ function playQuickCashFlow_(n) {
 	else mm = 0;
 
 	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+
+	sheet = spreadsheet.getSheetByName(MN_SHORT[mm]);
+	if (!sheet) {
+		alertQuickstartSheetMissing(MN_SHORT[mm]);
+		return;
+	}
+	if (sheet.getMaxRows() < 5) return;
+
+	i = 0;
+	values = sheet.getRange(5, 8, sheet.getMaxRows() - 4, 1).getValues();
+	while (values[i][0] === "") { i++; }
+	if (i > 0) {
+		sheet.getRange(5, 8, i, 1).setValue(0);
+		SpreadsheetApp.flush();
+	}
+
 	sheet = spreadsheet.getSheetByName("Cash Flow");
 	if (!sheet) {
 		alertQuickstartSheetMissing("Cash Flow");
