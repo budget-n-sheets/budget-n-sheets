@@ -1,7 +1,12 @@
 function onOpenInstallable_(e) {
 	if (e.authMode != ScriptApp.AuthMode.FULL) return;
 
-	loadCache_();
+	try {
+		loadCache_();
+	} catch (err) {
+		consoleLog_("error", "onOpenInstallable_()", err);
+		return;
+	}
 }
 
 
