@@ -57,7 +57,8 @@ function onOpen(e) {
 				.addSeparator()
 				.addItem("About the add-on", "showDialogAboutAddon")
 				.addItem("Change settings", "showSidebarMainSettings")
-				.addItem("Deactive the add-on", "askDeactivation");
+				.addItem("Deactive the add-on", "askDeactivation")
+				.addItem("Show quickstart", "showPanelQuickstart");
 
 
 			console.info("add-on/open");
@@ -76,6 +77,24 @@ function printHrefScriptlets(htmlTemplate) {
 		htmlTemplate[key] = RESERVED_HREF[key];
 	}
 	return htmlTemplate;
+}
+
+function showPanelQuickstart() {
+	var htmlTemplate = HtmlService.createTemplateFromFile("quickstart/htmlQuickstart");
+	htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+	const dec_p = getSpreadsheetSettings_("decimal_separator");
+
+	if (dec_p) {
+		htmlTemplate.dec_p = ".";
+		htmlTemplate.dec_n = "dot";
+	} else {
+		htmlTemplate.dec_p = ",";
+		htmlTemplate.dec_n = "comma";
+	}
+
+	var htmlSidebar = htmlTemplate.evaluate().setTitle("Quickstart");
+	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
 
 function showPanelTables(tab) {
