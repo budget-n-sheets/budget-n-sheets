@@ -129,7 +129,7 @@ function playQuickStatements_(n) {
 	lastRow = sheet.getLastRow();
 
 	data = QUICKSTART_DATA.statements[n];
-	if (!data) return;
+	if (!data) throw new Error("Values for quickstart example couldn't be found. statements " + n);
 
 	switch (n) {
 	case 1:
@@ -181,7 +181,7 @@ function playQuickTransactions_(n) {
 	lastRow = sheet.getLastRow();
 
 	data = QUICKSTART_DATA.transactions[n];
-	if (!data) return;
+	if (!data) throw new Error("Values for quickstart example couldn't be found. transactions " + n);
 
 	switch (n) {
 	case 1:
@@ -242,7 +242,7 @@ function playQuickAccCards_(n) {
 	const financial_year = getConstProperties_("financial_year");
 
 	data = QUICKSTART_DATA.acc_cards[n];
-	if (!data) return;
+	if (!data) throw new Error("Values for quickstart example couldn't be found. acc_cards " + n);
 
 	if (n === 3) {
 		sheet = "Cards";
@@ -296,7 +296,7 @@ function playQuickTags_(n) {
 	var data, tmp;
 
 	data = QUICKSTART_DATA.tags[n];
-	if (!data) return;
+	if (!data) throw new Error("Values for quickstart example couldn't be found. tags " + n);
 
 	switch (n) {
 	case 1:
