@@ -11,6 +11,9 @@ function onOpenInstallable_(e) {
 
 
 function loadCache_() {
+	var isLoaded = CacheService2.get("document", "load_cache", "boolean");
+	if (isLoaded) return;
+
 	const list = [ "class_version2", "user_settings", "spreadsheet_settings", "const_properties" ];
 	var cache;
 
@@ -24,6 +27,8 @@ function loadCache_() {
 	CacheService2.put("document", "is_installed", "boolean", cache);
 
 	getUserId_();
+
+	CacheService2.put("document", "load_cache", "boolean", true);
 }
 
 
