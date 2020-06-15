@@ -67,6 +67,27 @@ Number.prototype.formatLocaleSignal = function(p_dec_p) {
 	return s + i.substr(0, j) + DEC_P + Math.abs(n - i).toFixed(2).slice(2);
 };
 
+/**
+ * Number format $0.00;-$0.00
+ */
+Number.prototype.formatCalendarSignal = function(p_dec_p) {
+	var DEC_P, DEC_PS;
+
+	if (p_dec_p != null) {
+		DEC_P = p_dec_p ? "." : ",";
+	} else {
+		DEC_P = getSpreadsheetSettings_("decimal_separator") ? "." : ",";
+	}
+
+	DEC_PS = (DEC_P === "." ? "," : ".");
+
+	var n = this;
+	var s = n < 0 ? '-$' : '$';
+	var i = parseInt(n = Math.abs(n).toFixed(2)) + '';
+	var j = i.length;
+	return s + i.substr(0, j) + DEC_P + Math.abs(n - i).toFixed(2).slice(2);
+};
+
 
 Date.prototype.getSpreadsheetDate = function() {
 	var timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
