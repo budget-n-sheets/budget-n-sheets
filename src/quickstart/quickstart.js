@@ -87,6 +87,8 @@ function playSpeedQuickstart(id) {
 		return;
 	}
 
+	SpreadsheetApp.getActiveSpreadsheet().toast("Playing the example...", "Quickstart");
+
 	const channel = id.match(/(statements|cashflow|transactions|calendar|acc_cards|tags)(\d)/);
 	if (!channel) throw new Error("playSpeedQuickstart(): No match found. " + id);
 
