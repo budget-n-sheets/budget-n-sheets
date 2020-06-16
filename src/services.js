@@ -66,7 +66,7 @@ function quickActions_(range, value) {
 		break;
 	}
 
-	const mm = MN_SHORT.indexOf(value);
+	const mm = MN_FULL.indexOf(value);
 	if (mm === -1) return;
 
 	switch (row) {
