@@ -32,15 +32,15 @@ function loadCache_() {
 
 function onEditInstallable_(e) {
 	if (e.authMode != ScriptApp.AuthMode.FULL) return;
-	else if (e.value == "") return;
 
 	try {
-		if (e.range.getSheet().getName() !== "Quick Actions") return;
+		if (e.value != "" && e.range.getSheet().getName() === "Quick Actions") quickActions_(e);
 	} catch (err) {
-		consoleLog_('warn', '', err);
-		return;
+		consoleLog_("error", "quickActions_()", err);
 	}
+}
 
+function quickActions_(e) {
 	var row = e.range.getRow();
 	var mm = [
 		"January", "February", "March", "April",
