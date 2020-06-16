@@ -86,6 +86,7 @@ function showPanelQuickstart() {
 	htmlTemplate = printHrefScriptlets(htmlTemplate);
 
 	const dec_p = getSpreadsheetSettings_("decimal_separator");
+	const financial_year = getConstProperties_("financial_year");
 
 	if (dec_p) {
 		htmlTemplate.dec_p = ".";
@@ -94,6 +95,8 @@ function showPanelQuickstart() {
 		htmlTemplate.dec_p = ",";
 		htmlTemplate.dec_n = "comma";
 	}
+
+	htmlTemplate.isCurrent = (financial_year === DATE_NOW.getFullYear());
 
 	var htmlSidebar = htmlTemplate.evaluate().setTitle("Quickstart");
 	SpreadsheetApp.getUi().showSidebar(htmlSidebar);

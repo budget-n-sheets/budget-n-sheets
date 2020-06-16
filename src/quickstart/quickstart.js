@@ -161,7 +161,7 @@ function playQuickCalendar_(n) {
 	} else {
 		ui.alert(
 			"Can't create events",
-			"This example is unavailble. Try in a budget sheet for the current year.",
+			"This example is unavailble. Try in a budget sheet of the current year.",
 			ui.ButtonSet.OK);
 		return;
 	}
