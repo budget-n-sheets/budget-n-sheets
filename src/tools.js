@@ -150,22 +150,27 @@ function addBlankRows_(name) {
 		if (!sheet) return;
 	}
 
-	var maxRows = sheet.getMaxRows(),
-			maxCols = sheet.getMaxColumns();
-	var n = 400;
-	var range, values;
+	var maxRows = sheet.getMaxRows();
+	var maxCols = sheet.getMaxColumns();
+	var values;
+
+	const n = 400;
 
 	if (maxRows < c + 3) return;
 
-	values = sheet.getRange(maxRows, 1, 1, maxCols).getValues();
+	if (sheet.getLastRow() === maxRows) {
+		values = sheet.getRange(maxRows, 1, 1, maxCols).getValues();
+	}
+
 	sheet.insertRowsBefore(maxRows, n);
 	maxRows += n;
 
-	sheet.getRange(maxRows - n, 1, 1, maxCols).setValues(values);
-	sheet.getRange(maxRows - n + 1, 1, n - 1, maxCols).clear();
-	sheet.getRange(maxRows, 1, 1, maxCols).clearContent();
-	range = sheet.getRange(maxRows - n, 1, n, maxCols);
-	sheet.getRange(c + 2, 1, 1, maxCols).copyTo(range, {formatOnly:true});
+	if (values) {
+		sheet.getRange(maxRows, 1, 1, maxCols).clearContent();
+		sheet.getRange(maxRows - n, 1, 1, maxCols).setValues(values);
+	}
+
+	SpreadsheetApp.flush();
 }
 
 
