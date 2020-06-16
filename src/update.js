@@ -14,7 +14,7 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ],
 			[ null, null, null, null, null, null, update_v0m30p6_ ],
 			[ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_, update_v0m31p8_, null ],
-			[ null, null ]
+			[ null, null, update_v0m32p2_ ]
 		]
 	],
 	beta_list: [ ]
@@ -153,6 +153,78 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Import new Quick Actions sheet.
+ * Update Tags table header.
+ *
+ * 0.32.2
+ */
+function update_v0m32p2_() {
+	try {
+		update_v0m32p2s0_();
+		if (update_v0m32p2s1_()) return 1;
+	} catch (err) {
+		consoleLog_("error", "update_v0m32p2_()", err);
+		return 1;
+	}
+}
+
+function update_v0m32p2s1_() {
+	try {
+		var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+		var template;
+		var sheet, tmp, ranges, n;
+
+		sheet = spreadsheet.getSheetByName("Quick Actions");
+		if (!sheet) return;
+
+		template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
+
+		if (spreadsheet.getNumSheets() === 1) {
+			tmp = spreadsheet.insertSheet();
+		}
+
+		n = sheet.getIndex();
+		spreadsheet.deleteSheet(sheet);
+
+		sheet = template.getSheetByName("Quick Actions")
+			.copyTo(spreadsheet)
+			.setName("Quick Actions");
+
+		sheet.setTabColor("#6aa84f");
+
+		ranges = [ ];
+		ranges[0] = sheet.getRange(3, 3, 3, 1);
+		ranges[1] = sheet.getRange(8, 3, 2, 1);
+		ranges[2] = sheet.getRange(12, 2, 1, 2);
+
+		sheet.protect()
+			.setUnprotectedRanges(ranges)
+			.setWarningOnly(true);
+
+		spreadsheet.setActiveSheet(sheet);
+		spreadsheet.moveActiveSheet(n);
+
+		if (tmp) spreadsheet.deleteSheet(tmp);
+	} catch (err) {
+		consoleLog_("error", "update_v0m32p2s1_()", err);
+		return 1;
+	}
+}
+
+function update_v0m32p2s0_() {
+	try {
+		var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+		if (!sheet) return;
+
+		sheet.getRange(1, 1, 1, 5).setValues([
+			[ "name", "category", "description", "analytics", "code" ]
+		]);
+	} catch (err) {
+		consoleLog_("error", "update_v0m32p2s0_()", err);
+	}
+}
 
 /**
  * Fix range of card limit.
