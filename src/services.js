@@ -33,11 +33,18 @@ function onEditInstallable_(e) {
 	if (e.authMode != ScriptApp.AuthMode.FULL) return;
 
 	try {
-		if (e.range.getSheet().getName() === "Quick Actions") quickActions_(e.range, e.value);
+		var name = e.range.getSheet().getName();
 	} catch (err) {
-		consoleLog_("error", "quickActions_()", err);
-	} finally {
-		e.range.setValue("");
+	}
+
+	if (name === "Quick Actions") {
+		try {
+			quickActions_(e.range, e.value);
+		} catch (err) {
+			consoleLog_("error", "quickActions_()", err);
+		} finally {
+			e.range.setValue("");
+		}
 	}
 }
 
