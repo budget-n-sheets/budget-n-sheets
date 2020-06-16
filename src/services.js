@@ -84,10 +84,7 @@ function quickActions_(range, value) {
 
 function dailyTrigger_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (! isInstalled_()) {
-		uninstall_();
-		return;
-	}
+	if (! isInstalled_()) return;
 
 	if (seamlessUpdate_()) return;
 
@@ -125,26 +122,18 @@ function dailyTrigger_(e) {
 	if (getUserSettings_("post_day_events")) {
 		postEventsForDate_(date);
 	}
-
-	return;
 }
 
 function weeklyTriggerPos_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (! isInstalled_()) {
-		uninstall_();
-		return;
-	}
+	if (! isInstalled_()) return;
 
 	seamlessUpdate_();
 }
 
 function weeklyTriggerPre_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (! isInstalled_()) {
-		uninstall_();
-		return;
-	}
+	if (! isInstalled_()) return;
 
 	var date, a;
 
