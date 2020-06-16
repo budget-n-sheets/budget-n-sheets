@@ -52,14 +52,14 @@ function onOpen(e) {
 					.addItem("Collapse", "toolHideSheets_")
 					.addItem("Expand", "toolShowSheets_"))
 				.addSeparator()
-				.addItem("Open Accounts & Cards panel", "showPanelTables")
-				.addItem("Open Cool Gallery panel", "showPanelAnalytics")
+				.addItem("Open Accounts & Cards", "showPanelTables")
+				.addItem("Open Cool Gallery", "showPanelAnalytics")
+				.addSeparator()
+				.addItem("Change settings", "showSidebarMainSettings")
+				.addItem("Show quickstart", "showPanelQuickstart")
 				.addSeparator()
 				.addItem("About the add-on", "showDialogAboutAddon")
-				.addItem("Change settings", "showSidebarMainSettings")
-				.addItem("Deactive the add-on", "askDeactivation")
-				.addItem("Show quickstart", "showPanelQuickstart");
-
+				.addItem("Deactive the add-on", "askDeactivation");
 
 			console.info("add-on/open");
 		} else {
