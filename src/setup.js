@@ -554,7 +554,7 @@ function setupTags_() {
 	formula = "ARRAYFORMULA($T$2:$T/\'_Settings\'!B6)";
 	formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; ARRAYFORMULA($F$2:$F * 0))";
 	formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
-	formula = "{\"Average\"; " + formula + "}";
+	formula = "{\"average\"; " + formula + "}";
 	sheet.getRange(1, 19).setFormula(formula);
 
 	formula = "IF(COLUMN(" + rollA1Notation(2, 6, -1, 12) + ") - 5 < \'_Settings\'!$B$4 + \'_Settings\'!$B$6; ROW(" + rollA1Notation(2, 6, -1) + "); 0)";
@@ -562,7 +562,7 @@ function setupTags_() {
 	formula = "ARRAYFORMULA(SUMIF(" + formula + "; ROW(" + rollA1Notation(2, 6, -1) + "); " + rollA1Notation(2, 6, -1) + "))";
 	formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; ARRAYFORMULA($F$2:$F * 0))";
 	formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
-	formula = "{\"Total\"; " + formula + "}";
+	formula = "{\"total\"; " + formula + "}";
 	sheet.getRange(1, 20).setFormula(formula);
 
 	SpreadsheetApp.flush();
