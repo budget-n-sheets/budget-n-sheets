@@ -5,7 +5,6 @@ function onOpenInstallable_(e) {
 		loadCache_();
 	} catch (err) {
 		consoleLog_("error", "loadCache_()", err);
-		return;
 	}
 }
 
