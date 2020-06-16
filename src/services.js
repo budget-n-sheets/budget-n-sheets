@@ -33,54 +33,53 @@ function onEditInstallable_(e) {
 	if (e.authMode != ScriptApp.AuthMode.FULL) return;
 
 	try {
-		if (e.value != "" && e.range.getSheet().getName() === "Quick Actions") quickActions_(e);
+		if (e.range.getSheet().getName() === "Quick Actions") quickActions_(e.range, e.value);
 	} catch (err) {
 		consoleLog_("error", "quickActions_()", err);
+	} finally {
+		e.range.setValue("");
 	}
 }
 
-function quickActions_(e) {
-	var row = e.range.getRow();
-	var mm = [
-		"January", "February", "March", "April",
-		"May", "June", "July", "August",
-		"September", "October", "November", "December"
-	];
+function quickActions_(range, value) {
+	if (value == "") return;
 
-	mm = mm.indexOf(e.value);
+	const row = range.getRow();
 
 	switch (row) {
-		case 4:
-			if (mm === -1) break;
-			toolPicker_("AddBlankRows", MN_SHORT[mm]);
-			break;
-		case 5:
-			if (mm === -1) break;
-			toolPicker_("FormatAccount", mm);
-			break;
-		case 6:
-			if (mm === -1) break;
-			toolPicker_("UpdateCashFlow", mm);
-			break;
+	case 9:
+		toolPicker_("AddBlankRows", "Cards");
+		break;
+	case 13:
+		if (value == "Collapse") pagesView_("hide", 1);
+		else if (value == "Expand") pagesView_("show");
+		break;
 
-		case 9:
-			toolPicker_("AddBlankRows", "Cards");
-			break;
-		case 10:
-			if (mm === -1) break;
-			toolPicker_("FormatCards", mm);
-			break;
-
-		case 13:
-			if (e.value == "Collapse") pagesView_("hide", 1);
-			else if (e.value == "Expand") pagesView_("show");
-			break;
-
-		default:
-			return;
+	default:
+		break;
 	}
 
-	e.range.setValue("");
+	const mm = MN_SHORT.indexOf(value);
+	if (mm === -1) return;
+
+	switch (row) {
+	case 4:
+		toolPicker_("AddBlankRows", MN_SHORT[mm]);
+		break;
+	case 5:
+		toolPicker_("FormatAccount", mm);
+		break;
+	case 6:
+		toolPicker_("UpdateCashFlow", mm);
+		break;
+
+	case 10:
+		toolPicker_("FormatCards", mm);
+		break;
+
+	default:
+		break;
+	}
 }
 
 function dailyTrigger_(e) {
