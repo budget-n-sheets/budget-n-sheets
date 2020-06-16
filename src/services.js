@@ -4,11 +4,10 @@ function onOpenInstallable_(e) {
 	try {
 		loadCache_();
 	} catch (err) {
-		consoleLog_("error", "onOpenInstallable_()", err);
+		consoleLog_("error", "loadCache_()", err);
 		return;
 	}
 }
-
 
 function loadCache_() {
 	var isLoaded = CacheService2.get("document", "load_cache", "boolean");
