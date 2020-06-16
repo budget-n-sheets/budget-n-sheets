@@ -88,35 +88,29 @@ function dailyTrigger_(e) {
 
 	if (seamlessUpdate_()) return;
 
-	var financial_year = getConstProperties_('financial_year');
-	var date, a;
-
-	if (e) {
-		date = new Date(e["year"], e["month"] - 1, e["day-of-month"], e["hour"]);
-		date = date.getSpreadsheetDate();
-	} else {
-		date = DATE_NOW.getSpreadsheetDate();
-	}
-
-	a = {
-		"year": date.getFullYear(),
-		"month": date.getMonth(),
-		"date": date.getDate()
+	var date = DATE_NOW.getSpreadsheetDate();
+	date = {
+		year: date.getFullYear(),
+		month: date.getMonth(),
+		date: date.getDate()
 	};
 
-	if (financial_year < a["year"]) {
-		monthly_TreatLayout_(a["year"], a["month"]);
-		deleteTrigger_('document', 'clockTriggerId');
+	const financial_year = getConstProperties_("financial_year");
+
+	if (financial_year < date.year) {
+		monthly_TreatLayout_(date.year, date.month);
+		deleteTrigger_("document", "clockTriggerId");
 		Utilities.sleep(300);
+
 		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weekly_Foo_", 2);
 		setSpreadsheetSettings_("operation_mode", "passive");
 
-		console.info("add-on/mode-passive");
+		console.info("mode/passive");
 		return;
 	}
 
-	if (a["date"] == 1) {
-		monthly_TreatLayout_(a["year"], a["month"]);
+	if (date.date === 1) {
+		monthly_TreatLayout_(date.year, date.month);
 	}
 
 	if (getUserSettings_("post_day_events")) {
@@ -135,35 +129,26 @@ function weeklyTriggerPre_(e) {
 	if (isReAuthorizationRequired_()) return;
 	if (! isInstalled_()) return;
 
-	var date, a;
-
-	if (e) {
-		date = new Date(e["year"], e["month"] - 1, e["day-of-month"], e["hour"]);
-		date = date.getSpreadsheetDate();
-	} else {
-		date = DATE_NOW.getSpreadsheetDate();
-	}
-
-	a = {
-		year: date.getFullYear(),
-		month: date.getMonth(),
-		date: date.getDate()
-	};
-
 	if (seamlessUpdate_()) return;
 
-	var financial_year = getConstProperties_('financial_year');
+	var date = DATE_NOW.getSpreadsheetDate();
+	date = {
+		year: date.getFullYear(),
+		month: date.getMonth()
+	};
 
-	if (a["year"] > financial_year) return;
+	const financial_year = getConstProperties_("financial_year");
+
+	if (date.year > financial_year) return;
 
 	deleteTrigger_("document", "clockTriggerId");
 
-	if (a["year"] == financial_year) {
+	if (date.year === financial_year) {
 		createNewTrigger_("document", "clockTriggerId", "everyDays", "daily_Main_", 1, 2);
-		console.info("add-on/mode-active");
+		console.info("mode/active");
 	} else {
 		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weekly_Foo_", 2);
 	}
 
-	monthly_TreatLayout_(a["year"], a["month"]);
+	monthly_TreatLayout_(date.year, date.month);
 }
