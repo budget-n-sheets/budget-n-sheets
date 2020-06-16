@@ -181,9 +181,7 @@ function update_v0m32p2s1_() {
 
 		template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 
-		if (spreadsheet.getNumSheets() === 1) {
-			tmp = spreadsheet.insertSheet();
-		}
+		tmp = spreadsheet.insertSheet();
 
 		n = sheet.getIndex();
 		spreadsheet.deleteSheet(sheet);
@@ -206,7 +204,7 @@ function update_v0m32p2s1_() {
 		spreadsheet.setActiveSheet(sheet);
 		spreadsheet.moveActiveSheet(n);
 
-		if (tmp) spreadsheet.deleteSheet(tmp);
+		spreadsheet.deleteSheet(tmp);
 	} catch (err) {
 		consoleLog_("error", "update_v0m32p2s1_()", err);
 		return 1;
