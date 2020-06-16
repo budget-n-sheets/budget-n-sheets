@@ -54,10 +54,10 @@ function quickActions_(range, value) {
 	const row = range.getRow();
 
 	switch (row) {
-	case 9:
+	case 8:
 		toolPicker_("AddBlankRows", "Cards");
 		break;
-	case 13:
+	case 12:
 		if (value == "Collapse") pagesView_("hide", 1);
 		else if (value == "Expand") pagesView_("show");
 		break;
@@ -70,17 +70,17 @@ function quickActions_(range, value) {
 	if (mm === -1) return;
 
 	switch (row) {
-	case 4:
+	case 3:
 		toolPicker_("AddBlankRows", MN_SHORT[mm]);
 		break;
-	case 5:
+	case 4:
 		toolPicker_("FormatAccount", mm);
 		break;
-	case 6:
+	case 5:
 		toolPicker_("UpdateCashFlow", mm);
 		break;
 
-	case 10:
+	case 9:
 		toolPicker_("FormatCards", mm);
 		break;
 
