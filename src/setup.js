@@ -239,9 +239,9 @@ function setupWest_() {
 	sheet = SPREADSHEET.getSheetByName("Quick Actions");
 
 	ranges = [ ];
-	ranges[0] = sheet.getRange(4, 2, 3, 1);
-	ranges[1] = sheet.getRange(9, 2, 2, 1);
-	ranges[2] = sheet.getRange(13, 1, 1, 2);
+	ranges[0] = sheet.getRange(3, 3, 3, 1);
+	ranges[1] = sheet.getRange(8, 3, 2, 1);
+	ranges[2] = sheet.getRange(12, 2, 1, 2);
 
 	sheet.protect()
 		.setUnprotectedRanges(ranges)
