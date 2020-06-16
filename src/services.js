@@ -91,10 +91,6 @@ function dailyTrigger_(e) {
 		return;
 	}
 
-	// if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
-	// 	updateDecimalSepartor_();
-	// }
-
 	if (seamlessUpdate_()) return;
 
 	var financial_year = getConstProperties_('financial_year');
@@ -142,10 +138,6 @@ function weeklyTriggerPos_(e) {
 		return;
 	}
 
-	// if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
-	// 	updateDecimalSepartor_();
-	// }
-
 	seamlessUpdate_();
 }
 
@@ -170,10 +162,6 @@ function weeklyTriggerPre_(e) {
 		month: date.getMonth(),
 		date: date.getDate()
 	};
-
-	// if (SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() !== getSpreadsheetSettings_("spreadsheet_locale")) {
-	// 	updateDecimalSepartor_();
-	// }
 
 	if (seamlessUpdate_()) return;
 
