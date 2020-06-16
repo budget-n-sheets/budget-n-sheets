@@ -30,11 +30,6 @@ function loadCache_() {
 	CacheService2.put("document", "load_cache", "boolean", true);
 }
 
-
-function onEdit_Main_(e) {
-	console.log("onEdit_Main_(): continued.");
-	onEditInstallable_(e);
-}
 function onEditInstallable_(e) {
 	if (e.authMode != ScriptApp.AuthMode.FULL) return;
 	else if (e.value == "") return;
@@ -89,16 +84,6 @@ function onEditInstallable_(e) {
 	e.range.setValue("");
 }
 
-
-function daily_Main_(e) {
-	try {
-		reinstallTriggers_();
-	} catch (err) {
-		return;
-	}
-
-	dailyTrigger_(e);
-}
 function dailyTrigger_(e) {
 	if (isReAuthorizationRequired_()) return;
 	if (! isInstalled_()) {
@@ -150,16 +135,6 @@ function dailyTrigger_(e) {
 	return;
 }
 
-
-function weekly_Foo_(e) {
-	try {
-		reinstallTriggers_();
-	} catch (err) {
-		return;
-	}
-
-	weeklyTriggerPos_(e);
-}
 function weeklyTriggerPos_(e) {
 	if (isReAuthorizationRequired_()) return;
 	if (! isInstalled_()) {
@@ -174,16 +149,6 @@ function weeklyTriggerPos_(e) {
 	seamlessUpdate_();
 }
 
-
-function weekly_Bar_(e) {
-	try {
-		reinstallTriggers_();
-	} catch (err) {
-		return;
-	}
-
-	weeklyTriggerPre_(e);
-}
 function weeklyTriggerPre_(e) {
 	if (isReAuthorizationRequired_()) return;
 	if (! isInstalled_()) {
