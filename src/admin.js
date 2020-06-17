@@ -101,6 +101,9 @@ function askTransferAdmin() {
 	if (response == ui.Button.YES) {
 		classAdminSettings_("set", "admin_id", owner_id);
 		deleteAllTriggers_();
+		setUserSettings_("financial_calendar", "");
+		setUserSettings_("post_day_events", false);
+		setUserSettings_("cash_flow_events", false);
 		console.info("admin-role/transferred");
 		return;
 	}
@@ -176,6 +179,11 @@ function continuedTransferAdminSd(editor) {
 		if (digest === editor) {
 			digest = computeDigest("SHA_256", email, "UTF_8");
 			classAdminSettings_("set", "admin_id", digest);
+			deleteAllTriggers_();
+			setUserSettings_("financial_calendar", "");
+			setUserSettings_("post_day_events", false);
+			setUserSettings_("cash_flow_events", false);
+			console.info("admin-role/transferred");
 			return;
 		}
 	}
