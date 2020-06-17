@@ -96,7 +96,8 @@ function dailyTrigger_(e) {
 	if (seamlessUpdate_()) return;
 
 	var date = DATE_NOW.getSpreadsheetDate();
-	date = {
+
+	const yyyymmdd = {
 		year: date.getFullYear(),
 		month: date.getMonth(),
 		date: date.getDate()
@@ -104,8 +105,8 @@ function dailyTrigger_(e) {
 
 	const financial_year = getConstProperties_("financial_year");
 
-	if (financial_year < date.year) {
-		monthly_TreatLayout_(date.year, date.month);
+	if (financial_year < yyyymmdd.year) {
+		monthly_TreatLayout_(yyyymmdd.year, yyyymmdd.month);
 		deleteTrigger_("document", "clockTriggerId");
 		Utilities.sleep(300);
 
@@ -116,8 +117,8 @@ function dailyTrigger_(e) {
 		return;
 	}
 
-	if (date.date === 1) {
-		monthly_TreatLayout_(date.year, date.month);
+	if (yyyymmdd.date === 1) {
+		monthly_TreatLayout_(yyyymmdd.year, yyyymmdd.month);
 	}
 
 	if (getUserSettings_("post_day_events")) {
@@ -139,23 +140,24 @@ function weeklyTriggerPre_(e) {
 	if (seamlessUpdate_()) return;
 
 	var date = DATE_NOW.getSpreadsheetDate();
-	date = {
+
+	const yyyymm = {
 		year: date.getFullYear(),
 		month: date.getMonth()
 	};
 
 	const financial_year = getConstProperties_("financial_year");
 
-	if (date.year > financial_year) return;
+	if (yyyymm.year > financial_year) return;
 
 	deleteTrigger_("document", "clockTriggerId");
 
-	if (date.year === financial_year) {
+	if (yyyymm.year === financial_year) {
 		createNewTrigger_("document", "clockTriggerId", "everyDays", "daily_Main_", 1, 2);
 		console.info("mode/active");
 	} else {
 		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weekly_Foo_", 2);
 	}
 
-	monthly_TreatLayout_(date.year, date.month);
+	monthly_TreatLayout_(yyyymm.year, yyyymm.month);
 }
