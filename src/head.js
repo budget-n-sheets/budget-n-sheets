@@ -32,7 +32,7 @@ var APPS_SCRIPT_GLOBAL = Object.freeze({
 	script_version: {
 		major: 0,
 		minor: 32,
-		patch: 3
+		patch: 4
 	},
 
 	template_version: {
