@@ -1,3 +1,8 @@
+function BSBLANK(array) {
+	Utilities.sleep(200);
+	return array[0].indexOf("") + 1;
+}
+
 function BSREPORT(data) {
 	Utilities.sleep(300);
 
