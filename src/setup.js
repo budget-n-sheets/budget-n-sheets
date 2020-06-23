@@ -514,7 +514,12 @@ function setupTags_() {
 	var tags, combo;
 	var i, k;
 
+	const h_ = TABLE_DIMENSION.height;
+	const w_ = TABLE_DIMENSION.width;
+
 	const num_acc = SETUP_SETTINGS["number_accounts"];
+
+	const col = 11 + w_*num_acc;
 
 	formulas = [[ ]];
 
@@ -531,16 +536,16 @@ function setupTags_() {
 		.setWarningOnly(true);
 
 	for (i = 0; i < 12; i++) {
-		rg = "{\'" + MN_SHORT[i] + "\'!" + combo[0];
-		cd = "{\'" + MN_SHORT[i] + "\'!" + tags[0];
+		rg = "{ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + combo[0] + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 6) + "; 2)";
+		cd = "{ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + tags[0] + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 6) + "; 1)";
 
 		for (k = 1; k < 1 + num_acc; k++) {
-			rg += "; \'" + MN_SHORT[i] + "\'!" + combo[k];
-			cd += "; \'" + MN_SHORT[i] + "\'!" + tags[k];
+			rg += "; ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + combo[k] + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 6 + w_*k) + "; 2)";
+			cd += "; ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + tags[k] + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 6 + w_*k) + "; 1)";
 		}
 
-		rg += "; \'Cards\'!" + rollA1Notation(6, 4 + 6*i, 400, 2) + "}";
-		cd += "; \'Cards\'!" + rollA1Notation(6, 5 + 6*i, 400, 1) + "}";
+		rg += "; ARRAY_CONSTRAIN(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, 400, 2) + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, col) + "; 2)}";
+		cd += "; ARRAY_CONSTRAIN(\'Cards\'!" + rollA1Notation(6, 5 + 6*i, 400, 1) + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, col) + " ; 1)}";
 
 		formula = "IFERROR(FILTER(" + rg + "; NOT(ISBLANK(" + cd + "))); \"\")";
 		formula = "BSSUMBYTAG(TRANSPOSE($E$1:$E); " + formula + ")";
