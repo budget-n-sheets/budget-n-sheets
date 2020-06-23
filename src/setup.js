@@ -539,8 +539,8 @@ function setupTags_() {
 			cd += "; \'" + MN_SHORT[i] + "\'!" + tags[k];
 		}
 
-		rg += "; \'Cards\'!" + rollA1Notation(6, 4 + 6*i, -1, 2) + "}";
-		cd += "; \'Cards\'!" + rollA1Notation(6, 5 + 6*i, -1, 1) + "}";
+		rg += "; \'Cards\'!" + rollA1Notation(6, 4 + 6*i, 400, 2) + "}";
+		cd += "; \'Cards\'!" + rollA1Notation(6, 5 + 6*i, 400, 1) + "}";
 
 		formula = "IFERROR(FILTER(" + rg + "; NOT(ISBLANK(" + cd + "))); \"\")";
 		formula = "BSSUMBYTAG(TRANSPOSE($E$1:$E); " + formula + ")";
