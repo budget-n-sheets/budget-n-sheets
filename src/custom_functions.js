@@ -50,6 +50,7 @@ function BSSUMBYTAG(tag, range) {
 
 	var sum, regex;
 	var n, i, j;
+	var cr;
 
 	n = tag[0].length;
 	if (n < 2) return;
@@ -58,15 +59,18 @@ function BSSUMBYTAG(tag, range) {
 	tag = tag[0];
 	tag = tag.slice(1);
 
+	cr = 0;
 	sum = [ ];
 	regex = [ ];
 	for (i = 0; i < n; i++) {
 		if (/^\w+$/.test(tag[i])) {
-			sum.push([ 0 ]);
-			regex.push(tag[i]);
+			sum[i] = [ 0 ];
+			regex[cr] = tag[i];
 			tag[i] = "#" + tag[i];
+
+			cr++;
 		} else {
-			sum.push([ null ]);
+			sum[i] = [ null ];
 			tag[i] = null;
 		}
 	}
