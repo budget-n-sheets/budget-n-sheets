@@ -27,7 +27,7 @@ function deleteAllSheets_() {
 	sheets[0].showSheet();
 	spreadsheet.setActiveSheet(sheets[0]);
 
-	for (var i = 1; i < sheets.length; i++) {
+	for (var i = sheets.length - 1; i > 0; i--) {
 		spreadsheet.deleteSheet(sheets[i]);
 	}
 
