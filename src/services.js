@@ -113,7 +113,7 @@ function dailyTrigger_(e) {
 		var day = 1 + randomInteger(28);
 		var hour = 2 + randomInteger(4);
 
-		createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weekly_Foo_", day, hour);
+		createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weeklyTriggerPos_", day, hour);
 		setSpreadsheetSettings_("operation_mode", "passive");
 
 		console.info("mode/passive");
@@ -158,12 +158,12 @@ function weeklyTriggerPre_(e) {
 	var hour = 2 + randomInteger(4);
 
 	if (yyyymm.year === financial_year) {
-		createNewTrigger_("document", "clockTriggerId", "everyDays", "daily_Main_", 1, hour);
+		createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, hour);
 		console.info("mode/active");
 
 	} else {
 		var day = 1 + randomInteger(28);
-		createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weekly_Foo_", day, hour);
+		createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weeklyTriggerPos_", day, hour);
 	}
 
 	monthly_TreatLayout_(yyyymm.year, yyyymm.month);
