@@ -143,24 +143,26 @@ function askReinstallTriggersUi() {
 function reinstallTriggers_() {
 	if (! isInstalled_()) return;
 
-	const financial_year = getConstProperties_("financial_year");
-
 	var yyyy = DATE_NOW.getSpreadsheetDate().getFullYear();
-	var operation, dd;
+	var operation, day;
+
+	const hour = 2 + randomInteger(4);
+	const financial_year = getConstProperties_("financial_year");
 
 	deleteAllTriggers_();
 
 	if (financial_year < yyyy) {
-		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
+		day = 1 + randomInteger(28);
+		createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weeklyTriggerPos_", day, hour);
 		operation = "passive";
 
 	} else if (financial_year == yyyy) {
-		createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
+		createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, hour);
 		operation = "active";
 
 	} else if (financial_year > yyyy) {
-		dd = new Date(financial_year, 0, 2).getDay();
-		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
+		day = new Date(financial_year, 0, 2).getDay();
+		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", day, hour);
 		operation = "passive";
 
 	} else {
