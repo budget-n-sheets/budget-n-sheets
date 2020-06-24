@@ -14,7 +14,7 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ],
 			[ null, null, null, null, null, null, update_v0m30p6_ ],
 			[ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_, update_v0m31p8_, null ],
-			[ null, null, update_v0m32p2_, null, null, null ]
+			[ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_ ]
 		]
 	],
 	beta_list: [ ]
@@ -153,6 +153,44 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Reinstall trigger with new schedules.
+ *
+ * 0.32.6
+ */
+function update_v0m32p6_() {
+	try {
+		var triggers = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
+
+		for (var i = 0; i < triggers.length; i++) {
+			if (triggers[i].getEventType() == ScriptApp.EventType.CLOCK) {
+				ScriptApp.deleteTrigger(triggers[i]);
+			}
+		}
+
+		var yyyy = DATE_NOW.getFullYear();
+		var day;
+
+		const hour = 2 + randomInteger(4);
+		const financial_year = getConstProperties_("financial_year");
+
+		if (financial_year < yyyy) {
+			day = 1 + randomInteger(28);
+			createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weeklyTriggerPos_", day, hour);
+
+		} else if (financial_year == yyyy) {
+			createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, hour);
+
+		} else if (financial_year > yyyy) {
+			day = new Date(financial_year, 0, 2).getDay();
+			createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", day, hour);
+		}
+	} catch (err) {
+		consoleLog_("error", "update_v0m32p6_()", err);
+		return 1;
+	}
+}
 
 /**
  * Import new Quick Actions sheet.
