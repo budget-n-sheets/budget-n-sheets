@@ -177,14 +177,17 @@ function update_v0m32p6_() {
 
 		if (financial_year < yyyy) {
 			day = 1 + randomInteger(28);
-			createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weeklyTriggerPos_", day, hour);
+			trigger = createNewTrigger_('onMonthDay', 'weeklyTriggerPos_', day, hour)
+      saveTriggerId(trigger, 'document', 'clockTriggerId')
 
 		} else if (financial_year == yyyy) {
-			createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, hour);
+			trigger = createNewTrigger_('everyDays', 'dailyTrigger_', 1, hour)
+      saveTriggerId(trigger, 'document', 'clockTriggerId')
 
 		} else if (financial_year > yyyy) {
 			day = new Date(financial_year, 0, 2).getDay();
-			createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", day, hour);
+			trigger = createNewTrigger_('onWeekDay', 'weeklyTriggerPre_', day, hour)
+      saveTriggerId(trigger, 'document', 'clockTriggerId')
 		}
 	} catch (err) {
 		consoleLog_("error", "update_v0m32p6_()", err);
@@ -416,20 +419,24 @@ function update_v0m30p6_() {
 		}
 
 		if (installOnEdit) {
-			createNewTrigger_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
+			trigger = createNewTrigger_('onEdit', 'onEditInstallable_')
+      saveTriggerId(trigger, 'document', 'onEditTriggerId')
 		}
 
 		if (installClock) {
 			yyyy = DATE_NOW.getFullYear();
 			if (financial_year < yyyy) {
-				createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
+				trigger = createNewTrigger_('onWeekDay', 'weeklyTriggerPos_', 2)
+        saveTriggerId(trigger, 'document', 'clockTriggerId')
 
 			} else if (financial_year == yyyy) {
-				createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
+				trigger = createNewTrigger_('everyDays', 'dailyTrigger_', 1, 2)
+        saveTriggerId(trigger, 'document', 'clockTriggerId')
 
 			} else if (financial_year > yyyy) {
 				dd = new Date(financial_year, 0, 2).getDay();
-				createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
+				trigger = createNewTrigger_('onWeekDay', 'weeklyTriggerPre_', dd)
+        saveTriggerId(trigger, 'document', 'clockTriggerId')
 			}
 		}
 
@@ -487,7 +494,8 @@ function update_v0m29p2_() {
  */
 function update_v0m29p0_() {
 	try {
-		createNewTrigger_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
+		trigger = createNewTrigger_('onOpen', 'onOpenInstallable_')
+    saveTriggerId(trigger, 'document', 'onOpenTriggerId')
 	} catch (err) {
 		consoleLog_("error", "update_v0m29p0_()", err);
 	}

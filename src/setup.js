@@ -628,7 +628,7 @@ function setupTables_() {
 function setupProperties_(yyyy_mm) {
 	console.time("add-on/setup/properties");
 	var properties, day;
-	var operation;
+	var trigger, operation;
 
 	const hour = 2 + randomInteger(4);
 
@@ -657,22 +657,28 @@ function setupProperties_(yyyy_mm) {
 	PropertiesService2.setProperty("document", "const_properties", "json", properties);
 
 
-	createNewTrigger_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
-	createNewTrigger_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
+	trigger = createNewTrigger_('onEdit', 'onEditInstallable_')
+  saveTriggerId(trigger, 'document', 'onEditTriggerId')
+
+	trigger = createNewTrigger_('onOpen', 'onOpenInstallable_')
+  saveTriggerId(trigger, 'document', 'onOpenTriggerId')
 
 	if (SETUP_SETTINGS["financial_year"] < yyyy_mm.yyyy) {
 		day = 1 + randomInteger(28);
-		createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weeklyTriggerPos_", day, hour);
+		trigger = createNewTrigger_('onMonthDay', 'weeklyTriggerPos_', day, hour)
+    saveTriggerId(trigger, 'document', 'clockTriggerId')
 		operation = "passive";
 
 	} else if (SETUP_SETTINGS["financial_year"] == yyyy_mm.yyyy) {
-		createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, hour);
+		trigger = createNewTrigger_('everyDays', 'dailyTrigger_', 1, hour)
+    saveTriggerId(trigger, 'document', 'clockTriggerId')
 		operation = "active";
 
 	} else if (SETUP_SETTINGS["financial_year"] > yyyy_mm.yyyy) {
 		day = new Date(SETUP_SETTINGS["financial_year"], 0, 2);
 		day = day.getDay();
-		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", day, hour);
+		trigger = createNewTrigger_('onWeekDay', 'weeklyTriggerPre_', day, hour)
+    saveTriggerId(trigger, 'document', 'clockTriggerId')
 		operation = "passive";
 	}
 
