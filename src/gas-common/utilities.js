@@ -4,8 +4,8 @@
  * <https://github.com/guimspace/gas-common>
  */
 
-function htmlInclude(fileName) {
-	return HtmlService.createHtmlOutputFromFile(fileName).getContent();
+function htmlInclude (fileName) {
+  return HtmlService.createHtmlOutputFromFile(fileName).getContent()
 }
 
 /**
@@ -13,66 +13,54 @@ function htmlInclude(fileName) {
  * @param  {Object} b Array of bytes.
  * @return {String} String.
  */
-function byte2string(b) {
-	var r = "";
-	var v, i;
+function byte2string (b) {
+  var r = ''
+  var v, i
 
-	for (i = 0; i < b.length; i++) {
-		v = b[i];
-		if (v < 0) v += 256;
-		v = v.toString(16);
-		if (v.length === 1) v = "0" + v;
-		r += v;
-	}
+  for (i = 0; i < b.length; i++) {
+    v = b[i]
+    if (v < 0) v += 256
+    v = v.toString(16)
+    if (v.length === 1) v = '0' + v
+    r += v
+  }
 
-	return r;
+  return r
 }
 
-
-function getDigestAlgorithm(v) {
-	switch (v) {
-		case "MD5":
-			return Utilities.DigestAlgorithm.MD5;
-		case "SHA_1":
-			return Utilities.DigestAlgorithm.SHA_1;
-		case "SHA_256":
-			return Utilities.DigestAlgorithm.SHA_256;
-		case "SHA_512":
-			return Utilities.DigestAlgorithm.SHA_512;
-
-		default:
-			return;
-	}
+function getDigestAlgorithm (v) {
+  switch (v) {
+    case 'MD5':
+      return Utilities.DigestAlgorithm.MD5
+    case 'SHA_1':
+      return Utilities.DigestAlgorithm.SHA_1
+    case 'SHA_256':
+      return Utilities.DigestAlgorithm.SHA_256
+    case 'SHA_512':
+      return Utilities.DigestAlgorithm.SHA_512
+  }
 }
 
-
-function getMacAlgorithm(v) {
-	switch (v) {
-		case "MD5":
-			return Utilities.MacAlgorithm.HMAC_MD5;
-		case "SHA_1":
-			return Utilities.MacAlgorithm.HMAC_SHA_1;
-		case "SHA_256":
-			return Utilities.MacAlgorithm.HMAC_SHA_256;
-		case "SHA_512":
-			return Utilities.MacAlgorithm.HMAC_SHA_512;
-
-		default:
-			return;
-	}
+function getMacAlgorithm (v) {
+  switch (v) {
+    case 'MD5':
+      return Utilities.MacAlgorithm.HMAC_MD5
+    case 'SHA_1':
+      return Utilities.MacAlgorithm.HMAC_SHA_1
+    case 'SHA_256':
+      return Utilities.MacAlgorithm.HMAC_SHA_256
+    case 'SHA_512':
+      return Utilities.MacAlgorithm.HMAC_SHA_512
+  }
 }
 
-
-function getCharset(v) {
-	switch (v) {
-		case "US_ASCII":
-			return Utilities.Charset.US_ASCII;
-		case "UTF_8":
-			return Utilities.Charset.UTF_8;
-
-		default:
-			return;
-	}
+function getCharset (v) {
+  switch (v) {
+    case 'US_ASCII':
+      return Utilities.Charset.US_ASCII
+    case 'UTF_8':
+      return Utilities.Charset.UTF_8
+  }
 }
 
 /**
@@ -80,22 +68,22 @@ function getCharset(v) {
  *
  * @param  {string} base64data The string of data to decode.
  * @param  {string} charset    A Charset representing the input character set.
- * @param  {bool} byte       	 A bool to return output true:byte[] or false:string.
+ * @param  {bool} byte         A bool to return output true:byte[] or false:string.
  *
  * @return {byte[]/string}     A byte[]/string representing the output signature.
  */
-function base64Decode(base64data, charset, byte) {
-	var decoded;
+function base64Decode (base64data, charset, byte) {
+  var decoded
 
-	charset = getCharset(charset);
+  charset = getCharset(charset)
 
-	decoded = Utilities.base64Decode(base64data, charset);
+  decoded = Utilities.base64Decode(base64data, charset)
 
-	if (!byte) {
-		decoded = Utilities.newBlob(decoded).getDataAsString();
-	}
+  if (!byte) {
+    decoded = Utilities.newBlob(decoded).getDataAsString()
+  }
 
-	return decoded;
+  return decoded
 }
 
 /**
@@ -103,22 +91,22 @@ function base64Decode(base64data, charset, byte) {
  *
  * @param  {string} base64data The string of web-safe data to decode.
  * @param  {string} charset    A Charset representing the input character set.
- * @param  {bool} byte       	 A bool to return output true:byte[] or false:string.
+ * @param  {bool} byte         A bool to return output true:byte[] or false:string.
  *
  * @return {byte[]/string}     A byte[]/string representing the output signature.
  */
-function base64DecodeWebSafe(base64data, charset, byte) {
-	var decoded;
+function base64DecodeWebSafe (base64data, charset, byte) {
+  var decoded
 
-	charset = getCharset(charset);
+  charset = getCharset(charset)
 
-	decoded = Utilities.base64DecodeWebSafe(base64data, charset);
+  decoded = Utilities.base64DecodeWebSafe(base64data, charset)
 
-	if (!byte) {
-		decoded = Utilities.newBlob(decoded).getDataAsString();
-	}
+  if (!byte) {
+    decoded = Utilities.newBlob(decoded).getDataAsString()
+  }
 
-	return decoded;
+  return decoded
 }
 
 /**
@@ -127,23 +115,23 @@ function base64DecodeWebSafe(base64data, charset, byte) {
  * @param  {string} algorithm A DigestAlgorithm algorithm to use to hash the input value.
  * @param  {string} value     The input value to generate a hash for.
  * @param  {string} charset   A Charset representing the input character set.
- * @param  {bool} byte      	A bool to return output true:byte[] or false:string.
+ * @param  {bool} byte        A bool to return output true:byte[] or false:string.
  *
  * @return {byte[]/string}    A byte[]/string representing the output signature.
  */
-function computeDigest(algorithm, value, charset, byte) {
-	var digest;
+function computeDigest (algorithm, value, charset, byte) {
+  var digest
 
-	algorithm = getDigestAlgorithm(algorithm);
-	charset = getCharset(charset);
+  algorithm = getDigestAlgorithm(algorithm)
+  charset = getCharset(charset)
 
-	digest = Utilities.computeDigest(algorithm, value, charset);
+  digest = Utilities.computeDigest(algorithm, value, charset)
 
-	if (!byte) {
-		digest = byte2string(digest);
-	}
+  if (!byte) {
+    digest = byte2string(digest)
+  }
 
-	return digest;
+  return digest
 }
 
 /**
@@ -153,21 +141,21 @@ function computeDigest(algorithm, value, charset, byte) {
  * @param  {string} value     The input value to generate a hash for.
  * @param  {string} key       A key to use to generate the hash with.
  * @param  {string} charset   A Charset representing the input character set.
- * @param  {bool} byte      	A bool to return output true:byte[] or false:string.
+ * @param  {bool} byte        A bool to return output true:byte[] or false:string.
  *
  * @return {byte[]/string}    A byte[]/string representing the output signature.
  */
-function computeHmacSignature(algorithm, value, key, charset, byte) {
-	var digest;
+function computeHmacSignature (algorithm, value, key, charset, byte) {
+  var digest
 
-	algorithm = getMacAlgorithm(algorithm);
-	charset = getCharset(charset);
+  algorithm = getMacAlgorithm(algorithm)
+  charset = getCharset(charset)
 
-	digest = Utilities.computeHmacSignature(algorithm, value, key, charset);
+  digest = Utilities.computeHmacSignature(algorithm, value, key, charset)
 
-	if (!byte) {
-		digest = byte2string(digest);
-	}
+  if (!byte) {
+    digest = byte2string(digest)
+  }
 
-	return digest;
+  return digest
 }
