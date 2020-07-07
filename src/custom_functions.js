@@ -1,3 +1,9 @@
+function BSBLANK(array) {
+	Utilities.sleep(200);
+	const n = array[0].indexOf("");
+	return (n > -1 ? n + 1 : array[0].length);
+}
+
 function BSREPORT(data) {
 	Utilities.sleep(300);
 
