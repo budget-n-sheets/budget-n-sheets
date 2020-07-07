@@ -41,7 +41,7 @@ function updateCashFlow_(sheetMonth, mm) {
 	var data_cards, data_tags, value, maxRows;
 	var table, hasCards, hasTags;
 	var cf_flow, cf_transactions;
-	var a, b, c, i, j, k, n, ma, t, x, i1;
+	var a, b, c, cc, i, j, k, n, ma, t, x, i1;
 
 	console.time("tool/update-cash-flow/load");
 	spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -79,22 +79,28 @@ function updateCashFlow_(sheetMonth, mm) {
 
 	console.time("tool/update-cash-flow/registry");
 	if (maxRows > 0) {
+    table = sheetMonth.getRange(5, 6, maxRows, 5*num_acc).getValues();
+
+    i = 0;
 		k = 0;
-		table = sheetMonth.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
-		for (i = 0; k < num_acc; i++) {
-			if (i >= maxRows || table[i][2] === "") {
+    cc = 5*k;
+		while (k < num_acc) {
+			if (i >= maxRows || table[i][2 + cc] === "") {
 				k++;
-				i = -1;
-				table = sheetMonth.getRange(5, 1 + 5 + 5*k, maxRows, 4).getValues();
+        cc = 5*k;
+				i = 0;
 				continue;
 			}
 
-			day = table[i][0];
-			if (day <= 0 || day > dd) continue;
+			day = table[i][0 + cc];
+			if (day <= 0 || day > dd) {
+        i++;
+        continue;
+      }
 
-			value = table[i][2];
+			value = table[i][2 + cc];
 			if (hasTags && value === 0 && override_zero) {
-				ma = table[i][3].match(/#\w+/g);
+				ma = table[i][3 + cc].match(/#\w+/g);
 				for (j = 0; j < ma.length; j++) {
 					c = data_tags.tags.indexOf(ma[j].substr(1));
 					if (c !== -1) {
@@ -104,11 +110,16 @@ function updateCashFlow_(sheetMonth, mm) {
 				}
 			}
 
-			if (typeof value !== "number") continue;
+			if (typeof value !== "number") {
+        i++;
+        continue;
+      }
 
 			day--;
 			cf_flow[day] += value.formatLocaleSignal(dec_p);
-			cf_transactions[day] += "@" + table[i][1] + " ";
+			cf_transactions[day] += "@" + table[i][1 + cc] + " ";
+
+      i++;
 		}
 	}
 	console.timeEnd("tool/update-cash-flow/registry");
