@@ -22,14 +22,14 @@ function addBlankRows_(name) {
 	}
 
 	var maxRows = sheet.getMaxRows();
-	var maxCols = sheet.getMaxColumns();
-	var values;
+	var maxCols, values;
 
 	const n = 400;
 
 	if (maxRows < c + 3) return;
 
 	if (sheet.getLastRow() === maxRows) {
+    maxCols = sheet.getMaxColumns();
 		values = sheet.getRange(maxRows, 1, 1, maxCols).getValues();
 	}
 

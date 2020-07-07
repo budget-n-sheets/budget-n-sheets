@@ -25,8 +25,8 @@ function validateFormatRegistry_() {
 function formatAccounts_(mm) {
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
 	var date1, date2;
-	var lastRow, table, nd;
-	var c, n, i, k;
+	var table, snapshot, nd;
+	var c, cc, n, i, k;
 
 	const w_ = TABLE_DIMENSION.width;
 	const num_acc = getConstProperties_('number_accounts');
@@ -34,36 +34,39 @@ function formatAccounts_(mm) {
 	if (!sheet) return;
 	if (sheet.getMaxColumns() < 5 + 5*num_acc) return;
 
-  lastRow = sheet.getLastRow();
-  if (lastRow < 5) return;
+  const lastRow = sheet.getLastRow() - 4;
+  if (lastRow < 1) return;
 
 	c = 0;
-	sheet.showRows(5, lastRow - 4);
+	sheet.showRows(5, lastRow);
+
+  snapshot = sheet.getRange(5, 1, lastRow, w_*(1 + num_acc)).getValues();
 
 	for (k = 0; k < 1 + num_acc; k++) {
     i = 0;
-    n = lastRow - 4;
-    table = sheet.getRange(5, 3 + w_*k, n, 1).getValues();
-    while (i < n && table[i][0] !== '') { i++; }
+    cc = w_*k;
+    while (i < lastRow && snapshot[i][2 + cc] !== '') { i++; }
 
     if (i === 0) continue;
-    n = i;
 
-		sheet.getRange(5, 1 + w_*k, n, 4).sort([
-			{column:(1 + w_*k), ascending:true},
-			{column:(3 + w_*k), ascending:true}
+    n = i;
+    range = sheet.getRange(5, 1 + cc, n, 4);
+
+		range.sort([
+			{column:(1 + cc), ascending:true},
+			{column:(3 + cc), ascending:true}
 		]);
 
 		i = 0;
 		nd = 0;
-		table = sheet.getRange(5, 1 + w_*k, n, 4).getValues();
+		table = range.getValues();
 		while (i < n) {
 			if (table[i][0] < 0) nd++;
 			i++;
 		}
 
 		if (i > c) c = i;
-		if (nd > 1) sheet.getRange(5, 1 + w_*k, nd, 4).sort({column:1 + w_*k, ascending:false});
+		if (nd > 1) sheet.getRange(5, 1 + cc, nd, 4).sort({column:1 + cc, ascending:false});
 	}
 
 	date1 = DATE_NOW.getTime();
