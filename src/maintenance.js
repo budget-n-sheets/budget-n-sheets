@@ -144,7 +144,7 @@ function reinstallTriggers_() {
 	if (! isInstalled_()) return;
 
 	var yyyy = DATE_NOW.getSpreadsheetDate().getFullYear();
-	var operation, day;
+	var trigger, operation, day
 
 	const hour = 2 + randomInteger(4);
 	const financial_year = getConstProperties_("financial_year");
@@ -153,24 +153,28 @@ function reinstallTriggers_() {
 
 	if (financial_year < yyyy) {
 		day = 1 + randomInteger(28);
-		createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weeklyTriggerPos_", day, hour);
+		trigger = createNewTrigger_('onMonthDay', 'weeklyTriggerPos_', day, hour)
 		operation = "passive";
 
 	} else if (financial_year == yyyy) {
-		createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, hour);
+		trigger = createNewTrigger_('everyDays', 'dailyTrigger_', 1, hour)
 		operation = "active";
 
 	} else if (financial_year > yyyy) {
 		day = new Date(financial_year, 0, 2).getDay();
-		createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", day, hour);
+		trigger = createNewTrigger_('onWeekDay', 'weeklyTriggerPre_', day, hour)
 		operation = "passive";
 
 	} else {
 		console.warn("reinstallTriggers_(): Case is default.");
 	}
 
+  saveTriggerId(trigger, 'document', 'clockTriggerId')
 	setSpreadsheetSettings_("operation_mode", operation);
 
-	createNewTrigger_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
-	createNewTrigger_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
+	trigger = createNewTrigger_('onEdit', 'onEditInstallable_')
+  saveTriggerId(trigger, 'document', 'onEditTriggerId')
+
+	trigger = createNewTrigger_('onOpen', 'onOpenInstallable_')
+  saveTriggerId(trigger, 'document', 'onOpenTriggerId')
 }

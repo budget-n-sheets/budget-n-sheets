@@ -4,149 +4,134 @@
  * <https://github.com/guimspace/gas-common>
  */
 
-/**
- * Creates a trigger and store the id in a key of property store.
- * @param  {String} method The method to get a property store
- * @param  {String} key    The key for the property
- * @param  {String} type   The type of the trigger
- * @param  {String} name   The function to call when the trigger fires
- */
-function createNewTrigger_(method, key, type, name, param1, param2, param3) {
-	var trigger;
-	var timezone;
+function getEventType (v) {
+  switch (v) {
+    case 'CLOCK':
+      return ScriptApp.EventType.CLOCK
+    case 'ON_OPEN':
+      return ScriptApp.EventType.ON_OPEN
+    case 'ON_EDIT':
+      return ScriptApp.EventType.ON_EDIT
+    case 'ON_FORM_SUBMIT':
+      return ScriptApp.EventType.ON_FORM_SUBMIT
+    case 'ON_CHANGE':
+      return ScriptApp.EventType.ON_CHANGE
+    case 'ON_EVENT_UPDATED':
+      return ScriptApp.EventType.ON_EVENT_UPDATED
+  }
+}
 
-	const weekday = [ ScriptApp.WeekDay.SUNDAY, ScriptApp.WeekDay.MONDAY, ScriptApp.WeekDay.TUESDAY, ScriptApp.WeekDay.WEDNESDAY, ScriptApp.WeekDay.THURSDAY, ScriptApp.WeekDay.FRIDAY, ScriptApp.WeekDay.SATURDAY ];
-
-	timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
-	if (!timezone) timezone = "GMT";
-
-	trigger = ScriptApp.newTrigger(name);
-
-	if (type === "onOpen") {
-		trigger = trigger.forSpreadsheet( SpreadsheetApp.getActiveSpreadsheet().getId() )
-			.onOpen();
-
-	} else if (type === "onEdit") {
-		trigger = trigger.forSpreadsheet( SpreadsheetApp.getActiveSpreadsheet().getId() )
-			.onEdit();
-
-	} else if (type === "onChange") {
-		trigger = trigger.forSpreadsheet( SpreadsheetApp.getActiveSpreadsheet().getId() )
-			.onChange();
-
-	} else if (type === "onFormSubmit") {
-		trigger = trigger.forSpreadsheet( SpreadsheetApp.getActiveSpreadsheet().getId() )
-			.onFormSubmit();
-
-	} else if (type === "afterMilliseconds") {
-		trigger = trigger.timeBased()
-			.after(param1)
-			.inTimezone(timezone);
-
-	} else if (type === "atTime") {
-		trigger = trigger.timeBased()
-			.at(param1)
-			.inTimezone(timezone);
-
-	} else if (type === "atDate") {
-		trigger = trigger.timeBased()
-			.atDate(param1, param2, param3)
-			.inTimezone(timezone);
-
-	} else if (type === "onMonthDay") {
-		if (param2 == null) param2 = 0;
-		if (param3 == null) param3 = 0;
-
-		trigger = trigger.timeBased()
-			.onMonthDay(param1)
-			.atHour(param2)
-			.nearMinute(param3)
-			.inTimezone(timezone);
-
-	} else if (type === "onWeekDay") {
-		if (param2 == null) param2 = 0;
-		if (param3 == null) param3 = 0;
-
-		trigger = trigger.timeBased()
-			.onWeekDay(weekday[param1])
-			.atHour(param2)
-			.nearMinute(param3)
-			.inTimezone(timezone);
-
-	} else if (type === "everyMinutes") {
-		trigger = trigger.timeBased()
-			.everyMinutes(param1)
-			.inTimezone(timezone);
-
-	} else if (type === "everyHours") {
-		trigger = trigger.timeBased()
-			.everyHours(param1)
-			.inTimezone(timezone);
-
-	} else if (type === "everyDays") {
-		if (param2 == null) param2 = 0;
-		if (param3 == null) param3 = 0;
-
-		trigger = trigger.timeBased()
-			.everyDays(param1)
-			.atHour(param2)
-			.nearMinute(param3)
-			.inTimezone(timezone);
-
-	} else if (type === "everyWeeks") {
-		trigger = trigger.timeBased()
-			.everyWeeks(param1)
-			.inTimezone(timezone);
-
-	} else {
-		throw new Error("createNewTrigger_(): Invalid trigger type.");
-	}
-
-	trigger = trigger.create();
-
-	if (key) PropertiesService2.setProperty(method, key, "string", trigger.getUniqueId());
+function saveTriggerId (trigger, scope, key) {
+  PropertiesService2.setProperty('document', key, 'string', trigger.getUniqueId())
 }
 
 /**
- * Deletes a trigger of id stored in a given key of property store.
- * @param  {String} method The method to get a property store
- * @param  {String} key    The key for the property
- * @param  {String} name   The name of the function
+ * Creates a trigger and store the id in a key of property store.
+ * @param  {String} type   The type of the trigger
+ * @param  {String} name   The function to call when the trigger fires
+ * @return {Trigger}       Return the trigger created
  */
-function deleteTrigger_(method, key, name) {
-	var triggers, trigger_id;
-	var i;
+function createNewTrigger_ (type, name, param1, param2, param3) {
+  const weekday = [ScriptApp.WeekDay.SUNDAY, ScriptApp.WeekDay.MONDAY, ScriptApp.WeekDay.TUESDAY, ScriptApp.WeekDay.WEDNESDAY, ScriptApp.WeekDay.THURSDAY, ScriptApp.WeekDay.FRIDAY, ScriptApp.WeekDay.SATURDAY]
 
-	triggers = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+  var timezone = spreadsheet.getSpreadsheetTimeZone()
+  if (!timezone) timezone = 'GMT'
 
-	if (key) {
-		trigger_id = PropertiesService2.getProperty(method, key, "string");
-		if (!trigger_id) return;
+  var trigger = ScriptApp.newTrigger(name)
 
-		for (i = 0; i < triggers.length; i++) {
-			if (triggers[i].getUniqueId() === trigger_id) {
-				ScriptApp.deleteTrigger(triggers[i]);
-				PropertiesService2.deleteProperty(method, key);
-				break;
-			}
-		}
-	} else {
-		for (i = 0; i < triggers.length; i++) {
-			if (triggers[i].getHandlerFunction() === name) {
-				ScriptApp.deleteTrigger(triggers[i]);
-				break;
-			}
-		}
-	}
+  switch (type) {
+    case 'onOpen':
+    case 'onEdit':
+    case 'onChange':
+    case 'onFormSubmit':
+      return trigger.forSpreadsheet(spreadsheet.getId())[type]().create()
+  }
+
+  trigger = trigger.timeBased()
+
+  switch (type) {
+    case 'afterMilliseconds':
+      trigger.after(param1)
+      break
+    case 'atTime':
+      trigger.at(param1)
+      break
+    case 'atDate':
+      trigger.atDate(param1, param2, param3)
+      break
+    case 'onWeekDay':
+      trigger.onWeekDay(weekday[param1])
+      break
+    case 'everyWeeks':
+      trigger.onWeekDay(weekday[param2])
+    case 'everyHours':
+    case 'onMonthDay':
+    case 'everyDays':
+      if (param2 == null) param2 = 0
+      else if (param2 === -1) param2 = randomInteger(24)
+
+      if (param3 == null) param3 = 0
+      else if (param3 === -1) param3 = randomInteger(60)
+
+      trigger.atHour(param2).nearMinute(param3)
+    case 'everyMinutes':
+      trigger[type](param1)
+      break
+
+    default:
+      throw new Error('Invalid trigger type.')
+  }
+
+  return trigger.inTimezone(timezone).create()
+}
+
+/**
+ * Delete a trigger of category and tested value.
+ * @param  {String} category   The category of search
+ * @param  {String} select     The selected value
+ * @param  {Boolean} onlyFirst Delete all or only first trigger
+ * @return {Number}            Number of triggers deleted
+ */
+function deleteTrigger_ (category, select, onlyFirst) {
+  var method = 'get' + category
+  var n = 0
+  var watch
+
+  switch (category) {
+    case 'EventType':
+      watch = getEventType(select)
+      break
+    case 'KeyId':
+      method = 'getUniqueId'
+      watch = PropertiesService2.getProperty(select.scope, select.key, 'string')
+      break
+    case 'UniqueId':
+    case 'HandlerFunction':
+      watch = select
+      break
+  }
+
+  var triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet())
+
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i][method]() === watch) {
+      ScriptApp.deleteTrigger(triggers[i])
+      n++
+      if (onlyFirst) break
+    }
+  }
+
+  return n
 }
 
 /**
  * Purges all triggers.
  */
-function deleteAllTriggers_() {
-	var triggers = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
+function deleteAllTriggers_ () {
+  var triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet())
 
-	for (var i = 0; i < triggers.length; i++) {
-		ScriptApp.deleteTrigger(triggers[i]);
-	}
+  for (var i = 0; i < triggers.length; i++) {
+    ScriptApp.deleteTrigger(triggers[i])
+  }
 }

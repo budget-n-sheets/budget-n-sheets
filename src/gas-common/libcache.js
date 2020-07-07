@@ -4,6 +4,15 @@
  * <https://github.com/guimspace/gas-common>
  */
 
+function getCacheScope (method) {
+  switch (method) {
+    case 'document':
+      return CacheService.getDocumentCache()
+    case 'user':
+      return CacheService.getUserCache()
+  }
+}
+
 /**
  * Gets the cached value for the given key, or null if none is found.
  * @param  {String} method The method to get a cache instance
@@ -11,36 +20,25 @@
  * @param  {String} type   The type of the value to return
  * @return {Object}        The value associated with the given key in the cache instance
  */
-function getCacheService_(method, key, type) {
-	var cache;
+function getCacheService_ (method, key, type) {
+  var cache = getCacheScope(method)
 
-	switch (method) {
-		case "document":
-			cache = CacheService.getDocumentCache();
-			break;
+  switch (type) {
+    case 'number':
+      return Number(cache.get(key))
+    case 'string':
+      return cache.get(key)
+    case 'boolean':
+      if (cache.get(key) === 'true') return true
+      else return false
+    case 'obj':
+    case 'json':
+      var p = cache.get(key)
+      return JSON.parse(p)
 
-		case "user":
-		default:
-			cache = CacheService.getUserCache();
-			break;
-	}
-
-	switch (type) {
-		case "number":
-			return Number( cache.get(key) );
-		case "string":
-			return cache.get(key);
-		case "boolean":
-			if (cache.get(key) === "true") return true;
-			else return false;
-		case "obj":
-		case "json":
-			var p = cache.get(key);
-			return JSON.parse( p );
-
-		default:
-			return cache.get(key);
-	}
+    default:
+      return cache.get(key)
+  }
 }
 
 /**
@@ -50,39 +48,29 @@ function getCacheService_(method, key, type) {
  * @param  {String} type   The type of the value to convert
  * @param  {Object} value  The value to be cached
  */
-function putCacheService_(method, key, type, value, expiration) {
-	var cache;
+function putCacheService_ (method, key, type, value, expiration) {
+  if (expiration == null) expiration = 600
 
-	if (expiration == null) expiration = 600;
-	switch (method) {
-		case "document":
-			cache = CacheService.getDocumentCache();
-			break;
+  var cache = getCacheScope(method)
 
-		case "user":
-		default:
-			cache = CacheService.getUserCache();
-			break;
-	}
+  switch (type) {
+    case 'number':
+      cache.put(key, value.toString(), expiration)
+      break
+    case 'string':
+      cache.put(key, value, expiration)
+      break
+    case 'boolean':
+      if (value) cache.put(key, 'true', expiration)
+      else cache.put(key, 'false', expiration)
+      break
+    case 'obj':
+    case 'json':
+      cache.put(key, JSON.stringify(value), expiration)
+      break
 
-	switch (type) {
-		case "number":
-			cache.put(key, value.toString(), expiration);
-			break;
-		case "string":
-			cache.put(key, value, expiration);
-			break;
-		case "boolean":
-			if (value) cache.put(key, "true", expiration);
-			else cache.put(key, "false", expiration);
-			break;
-		case "obj":
-		case "json":
-			cache.put(key, JSON.stringify( value ), expiration);
-			break;
-
-		default:
-			cache.put(key, value, expiration);
-			break;
-	}
+    default:
+      cache.put(key, value, expiration)
+      break
+  }
 }
