@@ -219,8 +219,16 @@ function update_v0m32p7_() {
     for (i = 0; i < 12; i++) {
       cards[h_*i] = ['BSBLANK(TRANSPOSE(\'Cards\'!' + rollA1Notation(6, 4 + 6*i, n, 1) + '))']
     }
-
     backstage.getRange(2, 6 + w_*num_acc + w_, height, 1).setFormulas(cards)
+
+    ref = 16 + w_*num_acc
+    for (k = 0; k < 10; k++) {
+      list = []
+      for (i = 0; i < 12; i++) {
+        list[i] = rollA1Notation(2 + h_*i, ref + w_*k)
+      }
+      backstage.getRangeList(list).setFormulaR1C1("RC[-" + (w_ + w_*k) + "]");
+    }
 	} catch (err) {
 		consoleLog_("error", "update_v0m32p7_()", err)
 		return 1
