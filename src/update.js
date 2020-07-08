@@ -155,6 +155,79 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Add BSBLANK() to _Backstage.
+ *
+ * 0.32.7
+ */
+function update_v0m32p7_() {
+	try {
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+    var backstage = spreadsheet.getSheetByName('_Backstage')
+    var wallet, accounts, cards
+    var ref, n, i, k
+
+    if (!backstage) return
+
+    const h_ = TABLE_DIMENSION.height
+    const w_ = TABLE_DIMENSION.width
+
+    const height = 120
+    const num_acc = getConstProperties_('number_accounts')
+
+    wallet = new Array(height)
+    cards = new Array(height)
+
+    accounts = []
+    for (k = 0; k < num_acc; k++) {
+      accounts[k] = new Array(height)
+    }
+
+    n = height;
+    while (n--) {
+      wallet[n] = [null]
+      cards[n] = [null]
+
+      for (k = 0; k < num_acc; k++) {
+        accounts[k][n] = [null]
+      }
+    }
+
+    for (i = 0; i < 12; i++) {
+      sheet = spreadsheet.getSheetByName(MN_SHORT[i])
+      if (!sheet) continue
+      n = sheet.getMaxRows() - 4
+      if (n < 1) continue
+
+      ref = rollA1Notation(5, 3, n, 1)
+
+      wallet[h_*i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + ref + '))']
+      for (k = 0; k < num_acc; k++) {
+        accounts[k][h_*i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + ref + '))']
+      }
+    }
+
+    backstage.getRange(2, 6, height, 1).setFormulas(wallet)
+    for (k = 0; k < num_acc; k++) {
+      backstage.getRange(2, 11 + w_*k, height, 1).setFormulas(accounts[k])
+    }
+
+    sheet = spreadsheet.getSheetByName('Cards')
+    if (!sheet) return
+    n = sheet.getMaxRows() - 5
+    if (n < 1) return
+
+    for (i = 0; i < 12; i++) {
+      cards[h_*i] = ['BSBLANK(TRANSPOSE(\'Cards\'!' + rollA1Notation(6, 4 + 6*i, n, 1) + '))']
+    }
+
+    backstage.getRange(2, 6 + w_*num_acc + w_, height, 1).setFormulas(cards)
+	} catch (err) {
+		consoleLog_("error", "update_v0m32p7_()", err)
+		return 1
+	}
+}
+
+/**
  * Reinstall trigger with new schedules.
  *
  * 0.32.6
