@@ -164,7 +164,7 @@ function update_v0m32p7_() {
     var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
     var backstage = spreadsheet.getSheetByName('_Backstage')
     var wallet, accounts, cards
-    var ref, n, i, k
+    var col, n, i, k
 
     if (!backstage) return
 
@@ -198,11 +198,9 @@ function update_v0m32p7_() {
       n = sheet.getMaxRows() - 4
       if (n < 1) continue
 
-      ref = rollA1Notation(5, 3, n, 1)
-
-      wallet[h_*i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + ref + '))']
+      wallet[h_*i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + rollA1Notation(5, 3, n, 1) + '))']
       for (k = 0; k < num_acc; k++) {
-        accounts[k][h_*i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + ref + '))']
+        accounts[k][h_*i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + rollA1Notation(5, 8 + 5*k, n, 1) + '))']
       }
     }
 
@@ -221,11 +219,11 @@ function update_v0m32p7_() {
     }
     backstage.getRange(2, 6 + w_*num_acc + w_, height, 1).setFormulas(cards)
 
-    ref = 16 + w_*num_acc
+    col = 16 + w_*num_acc
     for (k = 0; k < 10; k++) {
       list = []
       for (i = 0; i < 12; i++) {
-        list[i] = rollA1Notation(2 + h_*i, ref + w_*k)
+        list[i] = rollA1Notation(2 + h_*i, col + w_*k)
       }
       backstage.getRangeList(list).setFormulaR1C1("RC[-" + (w_ + w_*k) + "]");
     }
