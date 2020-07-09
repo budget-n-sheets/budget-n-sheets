@@ -449,6 +449,7 @@
 				};
 
 				google.script.run.withSuccessHandler(function(r, o) {
+              if (r) showError()
 							showStatus("Saved settings");
 							o.disabled = false;
 						})
