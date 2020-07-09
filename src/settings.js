@@ -75,17 +75,21 @@ function saveUserSettings(settings) {
 	PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
 	CacheService2.put("document", "user_settings", "json", user_settings);
 
-	updateDecimalSeparator_();
+  try {
+    updateDecimalSeparator_();
 
-	if (init_month == new_init_month) return;
+    if (init_month == new_init_month) return;
 
-	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
-	if (sheet) {
-		sheet.getRange("B4").setFormula("=" + (new_init_month + 1).formatLocaleSignal());
-		SpreadsheetApp.flush();
-	}
+    sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
+    if (sheet) {
+      sheet.getRange("B4").setFormula("=" + (new_init_month + 1).formatLocaleSignal());
+      SpreadsheetApp.flush();
+    }
 
-	updateTabsColors();
+    updateTabsColors();
+  } catch (err) {
+    console.error('saveUserSettings(): ' + err)
+  }
 }
 
 
