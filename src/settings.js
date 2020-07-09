@@ -39,16 +39,17 @@ function saveUserSettings(settings) {
 		cash_flow_events: false
 	};
 
-	if (user_id === classAdminSettings_("get", "admin_id") && settings.financial_calendar) {
-		db_calendars = getAllOwnedCalendars();
+	if (user_id === classAdminSettings_("get", "admin_id")) {
+    if (settings.financial_calendar) {
+      db_calendars = getAllOwnedCalendars();
 
-		c = db_calendars.md5.indexOf(settings.financial_calendar);
-		if (c !== -1) {
-			calendar.financial_calendar = db_calendars.id[c];
-			calendar.post_day_events = settings.post_day_events;
-			calendar.cash_flow_events = settings.cash_flow_events;
-		}
-
+      c = db_calendars.md5.indexOf(settings.financial_calendar);
+      if (c !== -1) {
+        calendar.financial_calendar = db_calendars.id[c];
+        calendar.post_day_events = settings.post_day_events;
+        calendar.cash_flow_events = settings.cash_flow_events;
+      }
+    }
 	} else if ( classAdminSettings_("get", "isChangeableByEditors") ) {
 		const financial_calendar = getUserSettings_("financial_calendar");
 		if (financial_calendar) {
