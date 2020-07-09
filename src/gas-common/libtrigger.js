@@ -27,17 +27,14 @@ function saveTriggerId (trigger, scope, key) {
 
 /**
  * Creates a trigger and store the id in a key of property store.
- * @param  {String} type   The type of the trigger
  * @param  {String} name   The function to call when the trigger fires
+ * @param  {String} type   The type of the trigger
  * @return {Trigger}       Return the trigger created
  */
-function createNewTrigger_ (type, name, param1, param2, param3) {
+function createNewTrigger_ (name, type, param) {
   const weekday = [ScriptApp.WeekDay.SUNDAY, ScriptApp.WeekDay.MONDAY, ScriptApp.WeekDay.TUESDAY, ScriptApp.WeekDay.WEDNESDAY, ScriptApp.WeekDay.THURSDAY, ScriptApp.WeekDay.FRIDAY, ScriptApp.WeekDay.SATURDAY]
 
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-  var timezone = spreadsheet.getSpreadsheetTimeZone()
-  if (!timezone) timezone = 'GMT'
-
   var trigger = ScriptApp.newTrigger(name)
 
   switch (type) {
@@ -48,40 +45,50 @@ function createNewTrigger_ (type, name, param1, param2, param3) {
       return trigger.forSpreadsheet(spreadsheet.getId())[type]().create()
   }
 
+  var weeks, week, hour, minute
   trigger = trigger.timeBased()
 
-  switch (type) {
-    case 'afterMilliseconds':
-      trigger.after(param1)
-      break
-    case 'atTime':
-      trigger.at(param1)
-      break
-    case 'atDate':
-      trigger.atDate(param1, param2, param3)
-      break
-    case 'onWeekDay':
-      trigger.onWeekDay(weekday[param1])
-      break
-    case 'everyWeeks':
-      trigger.onWeekDay(weekday[param2])
-    case 'everyHours':
-    case 'onMonthDay':
-    case 'everyDays':
-      if (param2 == null) param2 = 0
-      else if (param2 === -1) param2 = randomInteger(24)
+  if (type === 'atDate') {
+    trigger.atDate(param.year, param.month, param.day)
+  } else if (['after', 'at', 'everyMinutes'].indexOf(type) !== -1) {
+    trigger[type](param)
+  } else {
+    if (param.hour == null) hour = 0
+    else if (param.hour === -1) hour = randomInteger(24)
+    else hour = param.hour
 
-      if (param3 == null) param3 = 0
-      else if (param3 === -1) param3 = randomInteger(60)
+    if (param.minute == null) minute = 0
+    else if (param.minute === -1) minute = randomInteger(60)
+    else minute = param.minute
 
-      trigger.atHour(param2).nearMinute(param3)
-    case 'everyMinutes':
-      trigger[type](param1)
-      break
+    switch (type) {
+      case 'everyHours':
+        trigger.nearMinute(minute).everyHours(param.hours)
+        break
+      case 'everyWeeks':
+      case 'onWeekDay':
+        if (param.weeks == null) weeks = 1
+        else weeks = param.weeks
 
-    default:
-      throw new Error('Invalid trigger type.')
+        if (param.week == null) week = 0
+        else if (param.week === -1) week = randomInteger(7)
+        else week = param.week
+
+        trigger.atHour(hour).nearMinute(minute).everyWeeks(weeks).onWeekDay(weekday[week])
+        break
+      case 'onMonthDay':
+      case 'everyDays':
+        trigger.atHour(hour).nearMinute(minute)
+        trigger[type](param.days)
+        break
+
+      default:
+        throw new Error('Invalid trigger type.')
+    }
   }
+
+  var timezone = spreadsheet.getSpreadsheetTimeZone()
+  if (!timezone) timezone = 'GMT'
 
   return trigger.inTimezone(timezone).create()
 }
