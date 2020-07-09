@@ -249,7 +249,7 @@ function update_v0m32p6_() {
 		}
 
 		var yyyy = DATE_NOW.getFullYear();
-		var day;
+		var trigger, day;
 
 		const hour = 2 + randomInteger(4);
 		const financial_year = getConstProperties_("financial_year");
@@ -469,7 +469,7 @@ function update_v0m30p6_() {
 		const handlers = [ "onOpenInstallable_", "onEditInstallable_", "dailyTrigger_", "weeklyTriggerPos_", "weeklyTriggerPre_" ];
 		const financial_year = getConstProperties_("financial_year");
 
-		var triggers, yyyy, dd, name;
+		var triggers, trigger, yyyy, dd, name;
 		var eventType, installClock, installOnEdit;
 
 		installClock = false;
@@ -573,7 +573,7 @@ function update_v0m29p2_() {
  */
 function update_v0m29p0_() {
 	try {
-		trigger = createNewTrigger_('onOpenInstallable_', 'onOpen')
+		var trigger = createNewTrigger_('onOpenInstallable_', 'onOpen')
     saveTriggerId_(trigger, 'document', 'onOpenTriggerId')
 	} catch (err) {
 		consoleLog_("error", "update_v0m29p0_()", err);
