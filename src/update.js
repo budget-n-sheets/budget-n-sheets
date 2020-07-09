@@ -14,7 +14,7 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ],
 			[ null, null, null, null, null, null, update_v0m30p6_ ],
 			[ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_, update_v0m31p8_, null ],
-			[ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_ ]
+			[ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_, update_v0m32p7_ ]
 		]
 	],
 	beta_list: [ ]
@@ -153,6 +153,85 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Add BSBLANK() to _Backstage.
+ *
+ * 0.32.7
+ */
+function update_v0m32p7_() {
+	try {
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+    var backstage = spreadsheet.getSheetByName('_Backstage')
+    var wallet, accounts, cards
+    var col, n, i, k
+
+    if (!backstage) return
+
+    const h_ = TABLE_DIMENSION.height
+    const w_ = TABLE_DIMENSION.width
+
+    const height = 120
+    const num_acc = getConstProperties_('number_accounts')
+
+    wallet = new Array(height)
+    cards = new Array(height)
+
+    accounts = []
+    for (k = 0; k < num_acc; k++) {
+      accounts[k] = new Array(height)
+    }
+
+    n = height;
+    while (n--) {
+      wallet[n] = [null]
+      cards[n] = [null]
+
+      for (k = 0; k < num_acc; k++) {
+        accounts[k][n] = [null]
+      }
+    }
+
+    for (i = 0; i < 12; i++) {
+      sheet = spreadsheet.getSheetByName(MN_SHORT[i])
+      if (!sheet) continue
+      n = sheet.getMaxRows() - 4
+      if (n < 1) continue
+
+      wallet[h_*i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + rollA1Notation(5, 3, n, 1) + '))']
+      for (k = 0; k < num_acc; k++) {
+        accounts[k][h_*i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + rollA1Notation(5, 8 + 5*k, n, 1) + '))']
+      }
+    }
+
+    backstage.getRange(2, 6, height, 1).setFormulas(wallet)
+    for (k = 0; k < num_acc; k++) {
+      backstage.getRange(2, 11 + w_*k, height, 1).setFormulas(accounts[k])
+    }
+
+    sheet = spreadsheet.getSheetByName('Cards')
+    if (!sheet) return
+    n = sheet.getMaxRows() - 5
+    if (n < 1) return
+
+    for (i = 0; i < 12; i++) {
+      cards[h_*i] = ['BSBLANK(TRANSPOSE(\'Cards\'!' + rollA1Notation(6, 4 + 6*i, n, 1) + '))']
+    }
+    backstage.getRange(2, 6 + w_*num_acc + w_, height, 1).setFormulas(cards)
+
+    col = 16 + w_*num_acc
+    for (k = 0; k < 10; k++) {
+      list = []
+      for (i = 0; i < 12; i++) {
+        list[i] = rollA1Notation(2 + h_*i, col + w_*k)
+      }
+      backstage.getRangeList(list).setFormulaR1C1("RC[-" + (w_ + w_*k) + "]");
+    }
+	} catch (err) {
+		consoleLog_("error", "update_v0m32p7_()", err)
+		return 1
+	}
+}
 
 /**
  * Reinstall trigger with new schedules.
