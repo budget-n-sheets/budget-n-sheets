@@ -109,6 +109,15 @@
 									</select>
 								</td>
 							</tr>
+              <tr>
+                <td class="name"><label for="view_mode">View mode</label></td>
+                <td>
+                  <select id="view_mode" required>
+                    <option value="complete" selected>Complete</option>
+                    <option value="simple">Simple</option>
+                  </select>
+                </td>
+              </tr>
 						</table>
 						<table style="width:100%;margin-top:1.3em;">
 							<tr>
@@ -415,6 +424,7 @@
 
 			function loadSettings(user_settings) {
 				$("#initial_month").val(user_settings.initial_month);
+        $("#view_mode").val(user_settings.view_mode);
 				if (user_settings.override_zero) $("#override_zero").prop("checked", true);
 				<? if (isCalendarEnabled) { ?>
 					<? if (isAdmin) { ?>
@@ -438,6 +448,7 @@
 
 				var user_settings = {
 					initial_month: $("#initial_month").val(),
+          view_mode: $("#view_mode").val(),
 					<? if (isCalendarEnabled) { ?>
 						<? if (isAdmin) { ?>
 							financial_calendar: $("#financial_calendar").val(),

@@ -66,6 +66,7 @@ function saveUserSettings(settings) {
 
 	const user_settings = {
 		initial_month: new_init_month,
+    view_mode: settings.view_mode,
 		override_zero: settings.override_zero,
 
 		financial_calendar: calendar.financial_calendar,
@@ -77,6 +78,9 @@ function saveUserSettings(settings) {
 
   try {
     updateDecimalSeparator_();
+
+    if (user_settings.view_mode === 'complete') viewModeComplete()
+    else if (user_settings.view_mode === 'simple') viewModeSimple()
 
     if (init_month == new_init_month) return;
 
