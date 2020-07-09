@@ -4,7 +4,7 @@
  * <https://github.com/guimspace/gas-common>
  */
 
-function getCacheScope (method) {
+function getCacheScope_ (method) {
   switch (method) {
     case 'document':
       return CacheService.getDocumentCache()
@@ -21,7 +21,7 @@ function getCacheScope (method) {
  * @return {Object}        The value associated with the given key in the cache instance
  */
 function getCacheService_ (method, key, type) {
-  var cache = getCacheScope(method)
+  var cache = getCacheScope_(method)
 
   switch (type) {
     case 'number':
@@ -51,7 +51,7 @@ function getCacheService_ (method, key, type) {
 function putCacheService_ (method, key, type, value, expiration) {
   if (expiration == null) expiration = 600
 
-  var cache = getCacheScope(method)
+  var cache = getCacheScope_(method)
 
   switch (type) {
     case 'number':

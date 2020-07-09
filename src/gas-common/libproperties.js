@@ -4,7 +4,7 @@
  * <https://github.com/guimspace/gas-common>
  */
 
-function getPropertiesScope (method) {
+function getPropertiesScope_ (method) {
   switch (method) {
     case 'document':
       return PropertiesService.getDocumentProperties()
@@ -21,7 +21,7 @@ function getPropertiesScope (method) {
  * @return {Object}        The value associated with the given key in the current Properties store
  */
 function getPropertiesService_ (method, key, type) {
-  var properties = getPropertiesScope(method)
+  var properties = getPropertiesScope_(method)
 
   switch (type) {
     case 'number':
@@ -49,7 +49,7 @@ function getPropertiesService_ (method, key, type) {
  * @param  {Object} value  The value to associate with the key
  */
 function setPropertiesService_ (method, key, type, value) {
-  var properties = getPropertiesScope(method)
+  var properties = getPropertiesScope_(method)
 
   switch (type) {
     case 'number':
@@ -79,7 +79,7 @@ function setPropertiesService_ (method, key, type, value) {
  * @param  {String} key    The key for the property
  */
 function deletePropertiesService_ (method, key) {
-  var properties = getPropertiesScope(method)
+  var properties = getPropertiesScope_(method)
 
   properties.deleteProperty(key)
 }

@@ -21,7 +21,7 @@ function getEventType (v) {
   }
 }
 
-function saveTriggerId (trigger, scope, key) {
+function saveTriggerId_ (trigger, scope, key) {
   PropertiesService2.setProperty('document', key, 'string', trigger.getUniqueId())
 }
 

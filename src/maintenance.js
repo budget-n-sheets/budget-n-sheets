@@ -169,12 +169,12 @@ function reinstallTriggers_() {
 		console.warn("reinstallTriggers_(): Case is default.");
 	}
 
-  saveTriggerId(trigger, 'document', 'clockTriggerId')
+  saveTriggerId_(trigger, 'document', 'clockTriggerId')
 	setSpreadsheetSettings_("operation_mode", operation);
 
 	trigger = createNewTrigger_('onEditInstallable_', 'onEdit')
-  saveTriggerId(trigger, 'document', 'onEditTriggerId')
+  saveTriggerId_(trigger, 'document', 'onEditTriggerId')
 
 	trigger = createNewTrigger_('onOpenInstallable_', 'onOpen')
-  saveTriggerId(trigger, 'document', 'onOpenTriggerId')
+  saveTriggerId_(trigger, 'document', 'onOpenTriggerId')
 }
