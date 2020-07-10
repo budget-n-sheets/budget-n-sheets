@@ -48,7 +48,7 @@ function postEventsForDate_(date) {
 		else if (evento.Tags.length > 0) value = 0;
 		else continue;
 
-		value = value.formatLocaleSignal(dec_p);
+		value = numberFormatLocaleSignal.call(value, dec_p);
 
 		tags = "";
 		for (j = 0; j < evento.Tags.length; j++) {

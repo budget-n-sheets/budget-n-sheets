@@ -116,7 +116,7 @@ function updateCashFlow_(sheetMonth, mm) {
       }
 
 			day--;
-			cf_flow[day] += value.formatLocaleSignal(dec_p);
+			cf_flow[day] += numberFormatLocaleSignal.call(value, dec_p);
 			cf_transactions[day] += "@" + table[i][1 + cc] + " ";
 
       i++;
@@ -187,7 +187,7 @@ function updateCashFlow_(sheetMonth, mm) {
 
 		for (i1 = 0; i1 < evento.Day.length; i1++) {
 			day = evento.Day[i1] - 1;
-			cf_flow[day] += value.formatLocaleSignal(dec_p);
+			cf_flow[day] += numberFormatLocaleSignal.call(value, dec_p);
 			cf_transactions[day] += "@" + evento.Title + " ";
 		}
 	}

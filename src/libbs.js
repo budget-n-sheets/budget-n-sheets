@@ -1,7 +1,7 @@
 /**
  * Number format $ x,xx0.00;-$ x,xx0.00
  */
-Number.prototype.formatCurrency = function(p_dec_p) {
+function numberFormatCurrency(p_dec_p) {
 	var DEC_P, DEC_PS;
 
 	if (p_dec_p != null) {
@@ -17,12 +17,12 @@ Number.prototype.formatCurrency = function(p_dec_p) {
 	var i = parseInt(n = Math.abs(+n || 0).toFixed(2)) + '';
 	var j = (j = i.length) > 3 ? j % 3 : 0;
 	return s + (j ? i.substr(0, j) + DEC_PS : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + DEC_PS) + (2 ? DEC_P + Math.abs(n - i).toFixed(2).slice(2) : '');
-};
+}
 
 /**
  * Number format x,xx0.00;(x,xx0.00)
  */
-Number.prototype.formatFinancial = function(p_dec_p) {
+function numberFormatFinancial(p_dec_p) {
 	var DEC_P, DEC_PS;
 
 	if (p_dec_p != null) {
@@ -44,12 +44,12 @@ Number.prototype.formatFinancial = function(p_dec_p) {
 	}
 
 	return a;
-};
+}
 
 /**
  * Number format +0.00;-0.00
  */
-Number.prototype.formatLocaleSignal = function(p_dec_p) {
+function numberFormatLocaleSignal(p_dec_p) {
 	var DEC_P, DEC_PS;
 
 	if (p_dec_p != null) {
@@ -65,12 +65,12 @@ Number.prototype.formatLocaleSignal = function(p_dec_p) {
 	var i = parseInt(n = Math.abs(n).toFixed(2)) + '';
 	var j = i.length;
 	return s + i.substr(0, j) + DEC_P + Math.abs(n - i).toFixed(2).slice(2);
-};
+}
 
 /**
  * Number format $0.00;-$0.00
  */
-Number.prototype.formatCalendarSignal = function(p_dec_p) {
+function numberFormatCalendarSignal(p_dec_p) {
 	var DEC_P, DEC_PS;
 
 	if (p_dec_p != null) {
@@ -86,7 +86,7 @@ Number.prototype.formatCalendarSignal = function(p_dec_p) {
 	var i = parseInt(n = Math.abs(n).toFixed(2)) + '';
 	var j = i.length;
 	return s + i.substr(0, j) + DEC_P + Math.abs(n - i).toFixed(2).slice(2);
-};
+}
 
 
 Date.prototype.getSpreadsheetDate = function() {

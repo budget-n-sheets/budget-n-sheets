@@ -371,7 +371,7 @@ function update_v0m31p8_() {
 				ranges[j] = rollA1Notation(2 + h_*j, col + w_*i);
 			}
 
-			limit = "=" + card.limit.formatLocaleSignal();
+			limit = "=" + numberFormatLocaleSignal.call(card.limit);
 			text = "^" + card.code + "$";
 			for (j = 0; j < card.aliases.length; j++) {
 				text += "|^" + card.aliases[j] + "$";
