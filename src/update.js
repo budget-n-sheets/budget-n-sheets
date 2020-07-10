@@ -652,7 +652,7 @@ function update_v0m28p0s2_() {
 		var date, yyyy;
 		var operation;
 
-		date = DATE_NOW.getSpreadsheetDate();
+		date = getSpreadsheetDate.call(DATE_NOW);
 		yyyy = date.getFullYear();
 
 		const financial_year = getConstProperties_("financial_year");

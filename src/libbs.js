@@ -89,7 +89,7 @@ function numberFormatCalendarSignal(p_dec_p) {
 }
 
 
-Date.prototype.getSpreadsheetDate = function() {
+function getSpreadsheetDate() {
 	var timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
 	if (typeof timezone != "string" || timezone == "") {
 		timezone = "GMT";
@@ -101,7 +101,7 @@ Date.prototype.getSpreadsheetDate = function() {
 
 function getMonthDelta(mm) {
 	if (mm == null) {
-		mm = DATE_NOW.getSpreadsheetDate().getMonth();
+		mm = getSpreadsheetDate.call(DATE_NOW).getMonth();
 	}
 
 	switch (mm) {

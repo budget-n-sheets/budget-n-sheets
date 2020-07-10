@@ -143,7 +143,7 @@ function askReinstallTriggersUi() {
 function reinstallTriggers_() {
 	if (! isInstalled_()) return;
 
-	var yyyy = DATE_NOW.getSpreadsheetDate().getFullYear();
+	var yyyy = getSpreadsheetDate.call(DATE_NOW).getFullYear();
 	var trigger, operation, day
 
 	const hour = 2 + randomInteger(4);
