@@ -64,6 +64,7 @@ function saveUserSettings(settings) {
 
 	const new_init_month = Number(settings.initial_month);
 	const init_month = getUserSettings_("initial_month");
+  const view_mode = getUserSettings_("view_mode");
 
 	const user_settings = {
 		initial_month: new_init_month,
@@ -80,8 +81,10 @@ function saveUserSettings(settings) {
   try {
     updateDecimalSeparator_();
 
-    if (user_settings.view_mode === 'complete') viewModeComplete()
-    else if (user_settings.view_mode === 'simple') viewModeSimple()
+    if (user_settings.view_mode !== view_mode) {
+      if (user_settings.view_mode === 'complete') viewModeComplete()
+      else if (user_settings.view_mode === 'simple') viewModeSimple()
+    }
 
     if (init_month == new_init_month) return;
 
