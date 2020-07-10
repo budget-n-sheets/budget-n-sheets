@@ -30,6 +30,8 @@ function viewModeSimple() {
   if (!sheet) return
   if (sheet.getMaxRows() < 4) return
   sheet.hideRows(2, 3)
+
+  SpreadsheetApp.flush()
 }
 
 function viewModeComplete() {
@@ -77,4 +79,6 @@ function viewModeComplete() {
   if (!sheet) return
   if (sheet.getMaxRows() < 4) return
   sheet.showRows(2, 3)
+
+  SpreadsheetApp.flush()
 }
