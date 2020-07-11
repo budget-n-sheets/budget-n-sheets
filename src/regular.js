@@ -4,9 +4,8 @@ function postEventsForDate_(date) {
   var table
 
 	var calendar, list_eventos, evento;
-	var mm, dd, value, tags;
-	var number_accounts, dec_p;
-	var type, card;
+	var value, tags;
+	var card;
 	var a, i, j, k;
 
 	calendar = getFinancialCalendar_();
@@ -17,17 +16,21 @@ function postEventsForDate_(date) {
 
 	list_eventos = calendarDigestListEvents_(list_eventos);
 
-	mm = date.getMonth();
-	dd = date.getDate();
+	const mm = date.getMonth();
+	const dd = date.getDate();
 
-	number_accounts = getConstProperties_('number_accounts');
-
-	dec_p = getSpreadsheetSettings_("decimal_separator");
+  const dec_p = getSpreadsheetSettings_("decimal_separator");
+	const num_acc = getConstProperties_('number_accounts');
 
 	data = [ ];
-	for (k = 0; k < 2 + number_accounts; k++) {
+	for (k = 0; k < 1 + num_acc; k++) {
 		data.push({data: [ ], value: [ ]});
 	}
+
+  const cards = {
+    table: [],
+    values: []
+  }
 
 	for (i = 0; i < list_eventos.length; i++) {
 		evento = list_eventos[i];
@@ -35,106 +38,85 @@ function postEventsForDate_(date) {
 		if (evento.Description == "") continue;
 		if (evento.hasAtMute) continue;
 
-		if (evento.Table !== -1) {
-			type = 'acc';
-			k = evento.Table;
-		} else if (evento.Card !== -1) {
-			type = 'card';
-			card = evento.Card;
-		} else {
-			continue;
-		}
-
-		if ( !isNaN(evento.Value) ) value = evento.Value;
+    if ( !isNaN(evento.Value) ) value = evento.Value;
 		else if (evento.Tags.length > 0) value = 0;
 		else continue;
+    value = numberFormatLocaleSignal.call(value, dec_p);
 
-		value = numberFormatLocaleSignal.call(value, dec_p);
+    if (evento.Tags.length > 0) tags = '#' + evento.Tags.join(' #')
+    else tags = '';
 
-		tags = "";
-		for (j = 0; j < evento.Tags.length; j++) {
-			tags += "#" + evento.Tags[j] + " ";
-		}
-
-		if (type == 'acc') {
-			data[1 + k].data.push([ dd, evento.Title, "", tags ]);
-			data[1 + k].value.push(value);
-		} else if (type == 'card') {
-			data[0].data.push([ dd, evento.Title, card, "", tags ]);
-			data[0].value.push(value);
-		}
+		if (evento.Table !== -1) {
+      k = evento.Table;
+			data[k].data.push([ dd, evento.Title, "", tags ]);
+			data[k].value.push(value);
+		} else if (evento.Card !== -1) {
+      card = evento.Card;
+			cards.table.push([ dd, evento.Title, card, "", tags ]);
+			cards.values.push(value);
+		} else {
+      continue
+    }
 	}
 
-	if (data[0].data.length > 0) {
+	if (cards.table.length > 0) {
 		sheet = spreadsheet.getSheetByName("Cards");
-  } else {
-    sheet = null
   }
 	if (sheet) {
     maxRows = sheet.getMaxRows()
     lastRow = sheet.getLastRow()
 
-    if (maxRows < lastRow + data[0].data.length) {
+    if (maxRows < lastRow + cards.table.length) {
       addBlankRows_('Cards')
       maxRows += 400
     }
 
     if (lastRow < 6) {
-      sheet.getRange(6, 1 + 6*mm, data[0].data.length, 5).setValues(data[0].data);
-  		value = transpose([ data[0].value ]);
-  		sheet.getRange(6, 4 + 6*mm, value.length, 1).setFormulas(value);
+      i = 0
+      table = cards.table
     } else {
       table = sheet.getRange(6, 1 + 6*mm, lastRow - 5, 5).getValues()
 
       i = 0
       while (i < table.length && table[i][3] !== '') { i++ }
-
       if (i < table.length) {
-        table.splice.apply(table, [i, 0].concat(data[0].data))
+        table.splice.apply(table, [i, 0].concat(cards.table))
       } else {
-        table = table.concat(data[0].data)
+        table = table.concat(cards.table)
       }
-
-      sheet.getRange(6, 1 + 6*mm, table.length, 5).setValues(table)
-
-      value = transpose([ data[0].value ]);
-  		sheet.getRange(6 + i, 4 + 6*mm, value.length, 1).setFormulas(value);
     }
+
+    sheet.getRange(6, 1 + 6*mm, table.length, 5).setValues(table)
+    value = transpose([ cards.values ]);
+    sheet.getRange(6 + i, 4 + 6*mm, value.length, 1).setFormulas(value);
 	}
-
-
-	data.splice(0, 1);
 
 	sheet = spreadsheet.getSheetByName(MN_SHORT[mm]);
 	if (!sheet) return;
 	if (sheet.getMaxRows() < 4) return;
 
   lastRow = sheet.getLastRow();
-	for (k = 0; k < 1 + number_accounts; k++) {
+	for (k = 0; k < 1 + num_acc; k++) {
 		if (data[k].data.length == 0) continue;
 
     if (lastRow < 5) {
-      sheet.getRange(5, 1 + 5*k, data[k].data.length, 4).setValues(data[k].data);
-
-  		value = transpose([ data[k].value ]);
-  		sheet.getRange(5, 3 + 5*k, data[k].value.length, 1).setFormulas(value);
+      i = 0
+      table = data[k].data
     } else {
       table = sheet.getRange(5, 1 + 5*k, lastRow - 4, 4).getValues()
 
       i = 0
       while (i < table.length && table[i][2] !== '') { i++ }
-
       if (i < table.length) {
         table.splice.apply(table, [i, 0].concat(data[k].data))
       } else {
         table = table.concat(data[k].data)
       }
-
-      sheet.getRange(5, 1 + 5*k, table.length, 4).setValues(table)
-
-      value = transpose([ data[k].value ]);
-  		sheet.getRange(5 + i, 3 + 5*k, value.length, 1).setFormulas(value);
     }
+
+    sheet.getRange(5, 1 + 5*k, table.length, 4).setValues(table)
+    value = transpose([ data[k].value ]);
+    sheet.getRange(5 + i, 3 + 5*k, value.length, 1).setFormulas(value);
 	}
 }
 
