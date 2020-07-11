@@ -371,7 +371,7 @@ function update_v0m31p8_() {
 				ranges[j] = rollA1Notation(2 + h_*j, col + w_*i);
 			}
 
-			limit = "=" + card.limit.formatLocaleSignal();
+			limit = "=" + numberFormatLocaleSignal.call(card.limit);
 			text = "^" + card.code + "$";
 			for (j = 0; j < card.aliases.length; j++) {
 				text += "|^" + card.aliases[j] + "$";
@@ -652,7 +652,7 @@ function update_v0m28p0s2_() {
 		var date, yyyy;
 		var operation;
 
-		date = DATE_NOW.getSpreadsheetDate();
+		date = getSpreadsheetDate.call(DATE_NOW);
 		yyyy = date.getFullYear();
 
 		const financial_year = getConstProperties_("financial_year");

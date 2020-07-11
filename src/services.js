@@ -95,7 +95,7 @@ function dailyTrigger_(e) {
 
 	if (seamlessUpdate_()) return;
 
-	var date = DATE_NOW.getSpreadsheetDate();
+	var date = getSpreadsheetDate.call(DATE_NOW);
   var trigger
 
 	const yyyymmdd = {
@@ -145,7 +145,7 @@ function weeklyTriggerPre_(e) {
 
 	if (seamlessUpdate_()) return;
 
-	var date = DATE_NOW.getSpreadsheetDate();
+	var date = getSpreadsheetDate.call(DATE_NOW);
 
 	const yyyymm = {
 		year: date.getFullYear(),

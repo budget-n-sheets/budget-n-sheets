@@ -90,7 +90,7 @@ function saveUserSettings(settings) {
 
     sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
     if (sheet) {
-      sheet.getRange("B4").setFormula("=" + (new_init_month + 1).formatLocaleSignal());
+      sheet.getRange("B4").setFormula("=" + numberFormatLocaleSignal.call(new_init_month + 1));
       SpreadsheetApp.flush();
     }
 
@@ -208,7 +208,7 @@ function getConstProperties_(select) {
 }
 
 function getMonthFactored_(select) {
-	var date = DATE_NOW.getSpreadsheetDate();
+	var date = getSpreadsheetDate.call(DATE_NOW);
 	var yyyy, mm;
 
 	const financial_year = getConstProperties_("financial_year");

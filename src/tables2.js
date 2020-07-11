@@ -173,7 +173,7 @@ function refreshAccountName_(index, account, prev_time_a) {
 
 	sheet.getRange(1, col).setValue(account.name);
 	sheet.getRange(2 + h_*prev_time_a, col).setFormulaR1C1(formula);
-	sheet.getRange(2 + h_*time_a, col).setFormula("=" + account.balance.formatLocaleSignal());
+	sheet.getRange(2 + h_*time_a, col).setFormula("=" + numberFormatLocaleSignal.call(account.balance));
 
 	sheet = spreadsheet.getSheetByName("Jan");
 	if (sheet) {
