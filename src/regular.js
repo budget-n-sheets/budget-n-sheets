@@ -1,6 +1,6 @@
 function postEventsForDate_(date) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet, data, lastRow, maxRows;
+	var sheet, lastRow, maxRows;
   var table
 
 	var calendar, list_eventos, evento;
@@ -21,9 +21,9 @@ function postEventsForDate_(date) {
   const dec_p = getSpreadsheetSettings_("decimal_separator");
 	const num_acc = getConstProperties_('number_accounts');
 
-	data = [ ];
+	const accounts = [ ];
 	for (k = 0; k < 1 + num_acc; k++) {
-		data.push({data: [ ], value: [ ]});
+		accounts.push({ table: [ ], values: [ ] });
 	}
 
   const cards = {
@@ -47,8 +47,8 @@ function postEventsForDate_(date) {
 
 		if (evento.Table !== -1) {
       k = evento.Table;
-			data[k].data.push([ dd, evento.Title, "", tags ]);
-			data[k].value.push(value);
+			accounts[k].table.push([ dd, evento.Title, "", tags ]);
+			accounts[k].values.push(value);
 		} else if (evento.Card !== -1) {
 			cards.table.push([ dd, evento.Title, evento.Card, "", tags ]);
 			cards.values.push(value);
@@ -96,7 +96,7 @@ function postEventsForDate_(date) {
   lastRow = sheet.getLastRow()
 
   for (k = 0; k < 1 + num_acc; k++) {
-    if (maxRows < lastRow + data[k].data.length) {
+    if (maxRows < lastRow + accounts[k].table.length) {
       addBlankRows_(MN_SHORT[mm])
       maxRows += 400
       break
@@ -104,25 +104,25 @@ function postEventsForDate_(date) {
   }
 
 	for (k = 0; k < 1 + num_acc; k++) {
-		if (data[k].data.length == 0) continue;
+		if (accounts[k].table.length == 0) continue;
 
     if (lastRow < 5) {
       i = 0
-      table = data[k].data
+      table = accounts[k].table
     } else {
       table = sheet.getRange(5, 1 + 5*k, lastRow - 4, 4).getValues()
 
       i = 0
       while (i < table.length && table[i][2] !== '') { i++ }
       if (i < table.length) {
-        table.splice.apply(table, [i, 0].concat(data[k].data))
+        table.splice.apply(table, [i, 0].concat(accounts[k].table))
       } else {
-        table = table.concat(data[k].data)
+        table = table.concat(accounts[k].table)
       }
     }
 
     sheet.getRange(5, 1 + 5*k, table.length, 4).setValues(table)
-    value = transpose([ data[k].value ]);
+    value = transpose([ accounts[k].values ]);
     sheet.getRange(5 + i, 3 + 5*k, value.length, 1).setFormulas(value);
 	}
 }
