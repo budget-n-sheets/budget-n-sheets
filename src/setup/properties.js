@@ -1,7 +1,6 @@
 function setupProperties_(yyyy_mm) {
 	console.time("add-on/setup/properties");
-	var properties, day;
-	var trigger, operation;
+	var properties, operation
 
 	const hour = 2 + randomInteger(4);
 
@@ -31,30 +30,8 @@ function setupProperties_(yyyy_mm) {
 	PropertiesService2.setProperty("document", "const_properties", "json", properties);
 
 
-	trigger = createNewTrigger_('onEditInstallable_', 'onEdit')
-  saveTriggerId_(trigger, 'document', 'onEditTriggerId')
-
-	trigger = createNewTrigger_('onOpenInstallable_', 'onOpen')
-  saveTriggerId_(trigger, 'document', 'onOpenTriggerId')
-
-	if (SETUP_SETTINGS["financial_year"] < yyyy_mm.yyyy) {
-		day = 1 + randomInteger(28);
-		trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour, minute: -1 })
-    saveTriggerId_(trigger, 'document', 'clockTriggerId')
-		operation = "passive";
-
-	} else if (SETUP_SETTINGS["financial_year"] == yyyy_mm.yyyy) {
-		trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: hour, minute: -1 })
-    saveTriggerId_(trigger, 'document', 'clockTriggerId')
-		operation = "active";
-
-	} else if (SETUP_SETTINGS["financial_year"] > yyyy_mm.yyyy) {
-		day = new Date(SETUP_SETTINGS["financial_year"], 0, 2);
-		day = day.getDay();
-		trigger = createNewTrigger_('weeklyTriggerPre_', 'onWeekDay', { weeks: 1, week: day, hour: hour, minute: -1 })
-    saveTriggerId_(trigger, 'document', 'clockTriggerId')
-		operation = "passive";
-	}
+  if (SETUP_SETTINGS["financial_year"] === yyyy_mm.yyyy) operation = "active"
+  else operation = "passive"
 
 	properties = {
 		operation_mode: operation,

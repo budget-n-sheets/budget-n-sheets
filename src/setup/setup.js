@@ -123,6 +123,12 @@ function setup_(settings, list_acc) {
 	setupWest_();
 	setupEast_(yyyy_mm);
 
+  try {
+    setupTriggers_(yyyy_mm)
+  } catch (err) {
+    console.error(err)
+  }
+
 	class_version2 = {
 		script: APPS_SCRIPT_GLOBAL.script_version,
 		template: APPS_SCRIPT_GLOBAL.template_version
