@@ -5,7 +5,6 @@ function postEventsForDate_(date) {
 
 	var calendar, list_eventos, evento;
 	var value, tags;
-	var card;
 	var a, i, j, k;
 
 	calendar = getFinancialCalendar_();
@@ -51,8 +50,7 @@ function postEventsForDate_(date) {
 			data[k].data.push([ dd, evento.Title, "", tags ]);
 			data[k].value.push(value);
 		} else if (evento.Card !== -1) {
-      card = evento.Card;
-			cards.table.push([ dd, evento.Title, card, "", tags ]);
+			cards.table.push([ dd, evento.Title, evento.Card, "", tags ]);
 			cards.values.push(value);
 		} else {
       continue
@@ -93,9 +91,18 @@ function postEventsForDate_(date) {
 
 	sheet = spreadsheet.getSheetByName(MN_SHORT[mm]);
 	if (!sheet) return;
-	if (sheet.getMaxRows() < 4) return;
 
-  lastRow = sheet.getLastRow();
+  maxRows = sheet.getMaxRows()
+  lastRow = sheet.getLastRow()
+
+  for (k = 0; k < 1 + num_acc; k++) {
+    if (maxRows < lastRow + data[k].data.length) {
+      addBlankRows_(MN_SHORT[mm])
+      maxRows += 400
+      break
+    }
+  }
+
 	for (k = 0; k < 1 + num_acc; k++) {
 		if (data[k].data.length == 0) continue;
 
