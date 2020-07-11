@@ -111,7 +111,8 @@ function getUserSettings_(select) {
 		case 'post_day_events':
 		case 'override_zero':
 		case 'cash_flow_events':
-		case 'initial_month': // Number in 0-11 range
+		case 'initial_month':
+    case 'view_mode':
 			return user_settings[select];
 
 		default:
@@ -130,6 +131,7 @@ function setUserSettings_(select, value) {
 		case 'post_day_events':
 		case 'cash_flow_events':
 		case 'override_zero':
+    case 'view_mode':
 			user_settings[select] = value;
 			break;
 
