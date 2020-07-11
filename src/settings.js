@@ -78,16 +78,25 @@ function saveUserSettings(settings) {
 	PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
 	CacheService2.put("document", "user_settings", "json", user_settings);
 
+
   try {
     updateDecimalSeparator_();
+  } catch (err) {
+    console.error('settings/decimal-separator ' + err);
+  }
 
+  try {
     if (user_settings.view_mode !== view_mode) {
       if (user_settings.view_mode === 'complete') viewModeComplete()
       else if (user_settings.view_mode === 'simple') viewModeSimple()
     }
+  } catch (err) {
+    console.error('settings/view-mode ' + err);
+  }
 
-    if (init_month == new_init_month) return;
+  if (init_month == new_init_month) return;
 
+  try {
     sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
     if (sheet) {
       sheet.getRange("B4").setFormula("=" + numberFormatLocaleSignal.call(new_init_month + 1));
@@ -96,7 +105,7 @@ function saveUserSettings(settings) {
 
     updateTabsColors();
   } catch (err) {
-    console.error('saveUserSettings(): ' + err)
+    console.error('settings/initial-month ' + err);
   }
 }
 
