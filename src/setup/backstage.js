@@ -65,7 +65,7 @@ function setupBackstage_() {
 		formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + tags[k] + "; " + rollA1Notation(2 + h_*i, 6) + "; 1); \"#ign\"))";
 		formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[k] + "; " + rollA1Notation(2 + h_*i, 6) + "; 1))); " + formula;
 		formula = "FILTER(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[k] + "; " + rollA1Notation(2 + h_*i, 6) + "; 1); " + formula + ")";
-		formula = "SUM(IFNA(" + formula + "; 0))";
+		formula = "SUM(IFERROR(" + formula + "; 0))";
 		wallet[2 + h_*i][0] = formula;
 
 		for (; k < num_acc; k++) {
