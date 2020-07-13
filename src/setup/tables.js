@@ -15,6 +15,7 @@ function setupTables_() {
 			ids[j] = r;
 			j++;
 		}
+    Utilities.sleep(40);
 		i++;
 	}
 	if (ids.length < 1 + num_acc) throw new Error("Could not generate unique IDs.");
