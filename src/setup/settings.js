@@ -19,9 +19,9 @@ function setupSettings_(yyyy_mm) {
 	SETUP_SETTINGS["decimal_separator"] = dec_p;
 
 	cell = [
-		[ "=" + numberFormatLocaleSignal(SETUP_SETTINGS["financial_year"], dec_p) ],
+		[ "=" + numberFormatLocaleSignal.call(SETUP_SETTINGS["financial_year"], dec_p) ],
 		[ "=IF(YEAR(TODAY()) = $B2; MONTH(TODAY()); IF(YEAR(TODAY()) < $B2; 0; 12))" ],
-		[ "=" + numberFormatLocaleSignal(SETUP_SETTINGS["init_month"] + 1, dec_p) ],
+		[ "=" + numberFormatLocaleSignal.call(SETUP_SETTINGS["init_month"] + 1, dec_p) ],
 		[ "=IF($B4 > $B3; 0; $B3 - $B4 + 1)" ],
 		[ "=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))" ],
 		[ "=COUNTIF(\'Tags\'!$E1:$E; \"<>\") - 1" ],
