@@ -27,7 +27,21 @@ function setupFlow_(select, settings, list_acc) {
 			showDialogSetupAddon_();
 			break;
 		case "setup":
-			setup_(settings, list_acc);
+      try {
+        setup_(settings, list_acc);
+      } catch (err) {
+        const parts = {}
+        for (var i in err) {
+          parts[i] = err[i]
+        }
+        const payload = {
+          message: 'setup/fail: setupFlow_()',
+          version: APPS_SCRIPT_GLOBAL.script_version,
+          parts: parts
+        }
+        console.error(payload)
+        showDialogErrorMessage()
+      }
 			lock.releaseLock();
 			break;
 
