@@ -173,3 +173,31 @@ function weeklyTriggerPre_(e) {
 
 	monthly_TreatLayout_(yyyymm.year, yyyymm.month);
 }
+
+function onEdit_Main_(e) {
+  try {
+    deleteTrigger_('UniqueId', e.triggerUid)
+  } catch (err) {
+  }
+}
+
+function daily_Main_(e) {
+  try {
+    deleteTrigger_('UniqueId', e.triggerUid)
+  } catch (err) {
+  }
+}
+
+function weekly_Foo_(e) {
+  try {
+    deleteTrigger_('UniqueId', e.triggerUid)
+  } catch (err) {
+  }
+}
+
+function weekly_Bar_(e) {
+  try {
+    deleteTrigger_('UniqueId', e.triggerUid)
+  } catch (err) {
+  }
+}
