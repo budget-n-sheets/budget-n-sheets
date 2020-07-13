@@ -1,5 +1,4 @@
 function setupCashFlow_() {
-	console.time("add-on/setup/cash-flow");
 	var sheet = SPREADSHEET.getSheetByName("Cash Flow");
 	var ranges, formula, b_f3f3f3, b_d9ead3;
 	var d, s;
@@ -128,5 +127,4 @@ function setupCashFlow_() {
 	sheet.getRange(4, 3 + 4*init_month).setFormula(formula);
 
 	SpreadsheetApp.flush();
-	console.timeEnd("add-on/setup/cash-flow");
 }

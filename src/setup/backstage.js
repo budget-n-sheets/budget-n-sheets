@@ -1,5 +1,4 @@
 function setupBackstage_() {
-	console.time("add-on/setup/backstage");
 	var sheet = SPREADSHEET.getSheetByName("_Backstage");
 	var wallet, accounts, formula;
 	var income, expenses;
@@ -98,6 +97,4 @@ function setupBackstage_() {
 
 	sheet.getRange(2, 2, height, 5).setFormulas(wallet);
 	sheet.getRange(2, 7, height, width).setFormulas(accounts);
-
-	console.timeEnd("add-on/setup/backstage");
 }

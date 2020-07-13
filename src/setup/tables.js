@@ -1,5 +1,4 @@
 function setupTables_() {
-	console.time("add-on/setup/tables");
 	var ids, acc, r, i, j, k;
 
 	const init_month = SETUP_SETTINGS["init_month"];
@@ -50,5 +49,4 @@ function setupTables_() {
 	}
 
 	PropertiesService2.setProperty("document", "DB_TABLES", "json", db_tables);
-	console.timeEnd("add-on/setup/tables");
 }

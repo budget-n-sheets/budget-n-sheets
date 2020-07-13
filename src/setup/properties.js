@@ -1,5 +1,4 @@
 function setupProperties_(yyyy_mm) {
-	console.time("add-on/setup/properties");
 	var properties, operation
 
 	const hour = 2 + randomInteger(4);
@@ -39,6 +38,4 @@ function setupProperties_(yyyy_mm) {
 		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale()
 	};
 	PropertiesService2.setProperty("document", "spreadsheet_settings", "json", properties);
-
-	console.timeEnd("add-on/setup/properties");
 }

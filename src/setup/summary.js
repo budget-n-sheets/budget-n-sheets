@@ -1,5 +1,4 @@
 function setupSummary_() {
-	console.time("add-on/setup/summary");
 	var sheet = SPREADSHEET.getSheetByName("Summary");
 	var chart, options;
 
@@ -38,5 +37,4 @@ function setupSummary_() {
 	sheet.insertChart( chart.build() );
 
 	SpreadsheetApp.flush();
-	console.timeEnd("add-on/setup/summary");
 }

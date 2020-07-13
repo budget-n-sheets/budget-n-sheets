@@ -1,5 +1,4 @@
 function setupTags_() {
-	console.time("add-on/setup/tags");
 	var sheet = SPREADSHEET.getSheetByName("Tags");
 	var ranges, formula, formulas, rg, cd;
 	var tags, combo;
@@ -62,5 +61,4 @@ function setupTags_() {
 	sheet.getRange(1, 20).setFormula(formula);
 
 	SpreadsheetApp.flush();
-	console.timeEnd("add-on/setup/tags");
 }

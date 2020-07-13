@@ -1,5 +1,4 @@
 function setupMonthSheet_() {
-	console.time("add-on/setup/month-sheet");
 	var sheetTTT = SPREADSHEET.getSheetByName("TTT");
 	var sheets, sheet, ranges, formula;
 	var expr1, expr2, expr3, expr4;
@@ -72,6 +71,4 @@ function setupMonthSheet_() {
 	}
 
 	SPREADSHEET.deleteSheet(sheetTTT);
-
-	console.timeEnd("add-on/setup/month-sheet");
 }

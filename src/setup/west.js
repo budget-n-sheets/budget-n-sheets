@@ -1,5 +1,4 @@
 function setupWest_() {
-	console.time("add-on/setup/west");
 	var sheet, ranges;
 
 	SPREADSHEET.getSheetByName("_About BnS")
@@ -19,5 +18,4 @@ function setupWest_() {
 		.setWarningOnly(true);
 
 	SpreadsheetApp.flush();
-	console.timeEnd("add-on/setup/west");
 }

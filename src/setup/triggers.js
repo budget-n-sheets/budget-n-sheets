@@ -1,5 +1,4 @@
 function setupTriggers_(yyyy_mm) {
-  console.time('setup/triggers')
   var trigger, handler, type, parameters, day
 
   const hour = 2 + randomInteger(4)
@@ -31,6 +30,4 @@ function setupTriggers_(yyyy_mm) {
 
   trigger = createNewTrigger_(handler, type, parameters)
   saveTriggerId_(trigger, 'document', 'clockTriggerId')
-
-  console.timeEnd('setup/triggers')
 }

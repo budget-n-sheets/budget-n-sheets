@@ -1,5 +1,4 @@
 function setupSettings_(yyyy_mm) {
-	console.time("add-on/setup/settings");
 	var sheet = SPREADSHEET.getSheetByName("_Settings");
 	var cell, dec_p;
 
@@ -30,5 +29,4 @@ function setupSettings_(yyyy_mm) {
 	sheet.getRange(2, 2, 7, 1).setFormulas(cell);
 
 	SpreadsheetApp.flush();
-	console.timeEnd("add-on/setup/settings");
 }

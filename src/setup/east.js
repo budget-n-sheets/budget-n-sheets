@@ -1,5 +1,4 @@
 function setupEast_(yyyy_mm) {
-	console.time("add-on/setup/east");
 	var spreadsheet = SPREADSHEET;
 	var sheets, sheet;
 	var md, t, i;
@@ -75,5 +74,4 @@ function setupEast_(yyyy_mm) {
 	spreadsheet.getSheetByName("_About BnS").hideSheet();
 
 	SpreadsheetApp.flush();
-	console.timeEnd("add-on/setup/east");
 }

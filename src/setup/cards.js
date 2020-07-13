@@ -1,5 +1,4 @@
 function setupCards_() {
-	console.time("add-on/setup/cards");
 	var sheet = SPREADSHEET.getSheetByName("Cards");
 	var ranges, formula, head, cell;
 	var expr1, expr2, expr3;
@@ -71,5 +70,4 @@ function setupCards_() {
 	}
 
 	SpreadsheetApp.flush();
-	console.timeEnd("add-on/setup/cards");
 }

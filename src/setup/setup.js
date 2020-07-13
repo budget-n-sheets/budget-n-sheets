@@ -81,6 +81,7 @@ function uninstall_(putLock) {
 
 
 function setup_(settings, list_acc) {
+  console.time('setup/time')
 	SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
 	var owner, user;
 
@@ -163,4 +164,5 @@ function setup_(settings, list_acc) {
 
 	SPREADSHEET = null;
 	SETUP_SETTINGS = null;
+  console.timeEnd('setup/time')
 }
