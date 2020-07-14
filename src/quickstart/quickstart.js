@@ -339,6 +339,7 @@ function playQuickStatements_(n) {
 		.setValues(data)
 		.activate();
 	SpreadsheetApp.flush();
+  fillMonthWithZeros(sheet);
 }
 
 function playQuickTransactions_(n) {
@@ -386,6 +387,7 @@ function playQuickTransactions_(n) {
 		.setValues(data)
 		.activate();
 	SpreadsheetApp.flush();
+  fillMonthWithZeros(sheet);
 }
 
 function playQuickAccCards_(n) {
@@ -469,6 +471,8 @@ function playQuickAccCards_(n) {
 		.setValues(data)
 		.activate();
 	SpreadsheetApp.flush();
+  if (n === 4) fillMonthWithZeros(sheet);
+  else fillCardWithZeros(sheet, col);
 }
 
 function playQuickTags_(n) {
@@ -524,4 +528,66 @@ function playQuickTags_(n) {
 		.setValues(data)
 		.activate();
 	SpreadsheetApp.flush();
+  if (n === 2) fillMonthWithZeros(sheet);
+}
+
+function fillMonthWithZeros(sheet) {
+  var values, lastRow;
+  var i, k;
+
+  lastRow = sheet.getLastRow();
+  if (lastRow < 5) return;
+
+  lastRow -= 4;
+  values = sheet.getRange(5, 1, lastRow, 10).getValues();
+
+  var n = 0;
+  const list = [];
+
+  for (k = 0; k < 2; k++) {
+    i = lastRow - 1;
+    while (i > -1 && values[i][2 + 5*k] === '') { i--; }
+
+    while (i > -1) {
+      if (values[i][2 + 5*k] === '') {
+        list[n] = rollA1Notation(5 + i, 3 + 5*k);
+        n++;
+      }
+      i--;
+    }
+  }
+
+  sheet.getRangeList(list).setValue(0);
+  SpreadsheetApp.flush();
+}
+
+function fillCardWithZeros(sheet, col) {
+  var values, lastRow;
+  var i, k;
+
+  lastRow = sheet.getLastRow();
+  if (lastRow < 6) return;
+
+  lastRow -= 5;
+  values = sheet.getRange(6, col, lastRow, 18).getValues();
+  col += 3;
+
+  var n = 0;
+  const list = [];
+
+  for (k = 0; k < 3; k++) {
+    i = lastRow - 1;
+    while (i > -1 && values[i][3 + 6*k] === '') { i--; }
+
+    while (i > -1) {
+      if (values[i][3 + 6*k] === '') {
+        list[n] = rollA1Notation(6 + i, col + 6*k);
+        n++;
+      }
+      i--;
+    }
+  }
+
+  sheet.getRangeList(list).setValue(0);
+  SpreadsheetApp.flush();
 }
