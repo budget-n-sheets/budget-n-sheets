@@ -3,23 +3,23 @@ var QUICKSTART_DATA = Object.freeze({
 		1: [
 			{day: 2, title: "The simplest event", description: "acc_name\nvalue", value: -1.23},
 			{day: 3, title: "Muted event", description: "acc_name\nvalue\n\n@muted", value: -1.23},
-			{day: 5, title: "Pay day", description: "acc_name\nvalue\n\n#trf #rct", value: 1234.56}
+			{day: 5, title: "Payday", description: "acc_name\nvalue\n\n#trf #rct", value: 1234.56}
 		],
 		2: [
 			{day: 7, title: "Card bill payment", description: "card_code\n\n#qcc"}
 		],
 		3: [
-			{day: 11, length: 2, title: "Two days event", description: "acc_name\n-$1.23"}
+			{day: 11, length: 2, title: "Two-days event", description: "acc_name\n-$1.23"}
 		]
 	},
 	statements: {
 		1: [[ 7, "Coffee shop", null, "" ]],
 		2: [[ 7, "Grocery shop", null, "" ]],
 		3: [
-			[ 7, "Paycheck (in cash)", null, "#rct", null,
-				7, "Income (via transfer #trf)", null, "#trf #rct" ],
+			[ 7, "Paycheck (in cash), use #rct tag", null, "#rct", null,
+				7, "Income (via transfer #trf), use #rct tag", null, "#trf #rct" ],
 			[	null, null, null, null, null,
-				7, "Income (via deposit #dp)", null, "#dp #rct" ]
+				7, "Income (via deposit #dp), use #rct tag", null, "#dp #rct" ]
 		],
 		4: [
 			[ 7, "Pizza, my share", null, "" ],
