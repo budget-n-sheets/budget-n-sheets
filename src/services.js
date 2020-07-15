@@ -107,7 +107,7 @@ function dailyTrigger_(e) {
 	const financial_year = getConstProperties_("financial_year");
 
 	if (financial_year < yyyymmdd.year) {
-		monthly_TreatLayout_(yyyymmdd.year, yyyymmdd.month);
+		treatLayout_(yyyymmdd.year, yyyymmdd.month);
 		deleteTrigger_('KeyId', { scope: 'document', key: 'clockTriggerId' })
 		Utilities.sleep(300);
 
@@ -124,7 +124,7 @@ function dailyTrigger_(e) {
 	}
 
 	if (yyyymmdd.date === 1) {
-		monthly_TreatLayout_(yyyymmdd.year, yyyymmdd.month);
+		treatLayout_(yyyymmdd.year, yyyymmdd.month);
 	}
 
 	if (getUserSettings_("post_day_events")) {
@@ -171,7 +171,7 @@ function weeklyTriggerPre_(e) {
     saveTriggerId_(trigger, 'document', 'clockTriggerId')
 	}
 
-	monthly_TreatLayout_(yyyymm.year, yyyymm.month);
+	treatLayout_(yyyymm.year, yyyymm.month);
 }
 
 function onEdit_Main_(e) {

@@ -131,7 +131,7 @@ function updateDecimalSeparator_() {
 
 
 
-function monthly_TreatLayout_(yyyy, mm) {
+function treatLayout_(yyyy, mm) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var financial_year = getConstProperties_('financial_year');
 	var sheets;
