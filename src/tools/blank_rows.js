@@ -7,6 +7,7 @@ function addBlankRows_(name) {
 	}
 
 	if (name === "Cards") c = 5;
+  else if (name === "Tags") c = 1;
 	else if (MN_SHORT.indexOf(name) !== -1) c = 4;
 	else {
 		SpreadsheetApp.getUi().alert(
