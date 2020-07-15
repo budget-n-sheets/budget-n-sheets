@@ -1,7 +1,6 @@
 function postEventsForDate_(date) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var sheet, lastRow, maxRows;
-  var table
+	var sheet;
 
 	var calendar, list_eventos, evento;
 	var value, tags;
@@ -21,14 +20,17 @@ function postEventsForDate_(date) {
 
 	const accounts = [ ];
 	for (k = 0; k < num_acc; k++) {
-		accounts[k] = { table: [], values: [] };
+		accounts[k] = {
+      table: [],
+      values: []
+    };
 	}
 
   c1 = 0;
   const cards = {
     table: [],
     values: []
-  }
+  };
 
   i = -1;
   while (++i < list_eventos.length) {
@@ -58,72 +60,47 @@ function postEventsForDate_(date) {
 
 	if (cards.table.length > 0) {
 		sheet = spreadsheet.getSheetByName("Cards");
+    if (sheet) {
+      mergeEventsInTable_(sheet, cards, 6, 1 + 6*mm, 5, 3);
+    }
   }
-	if (sheet) {
-    maxRows = sheet.getMaxRows()
-    lastRow = sheet.getLastRow()
-
-    if (maxRows < lastRow + cards.table.length) {
-      addBlankRows_('Cards')
-      maxRows += 400
-    }
-
-    if (lastRow < 6) {
-      i = 0
-      table = cards.table
-    } else {
-      table = sheet.getRange(6, 1 + 6*mm, lastRow - 5, 5).getValues()
-
-      i = 0
-      while (i < table.length && table[i][3] !== '') { i++ }
-      if (i < table.length) {
-        table.splice.apply(table, [i, 0].concat(cards.table))
-      } else {
-        table = table.concat(cards.table)
-      }
-    }
-
-    sheet.getRange(6, 1 + 6*mm, table.length, 5).setValues(table)
-    value = transpose([ cards.values ]);
-    sheet.getRange(6 + i, 4 + 6*mm, value.length, 1).setFormulas(value);
-	}
 
 	sheet = spreadsheet.getSheetByName(MN_SHORT[mm]);
 	if (!sheet) return;
 
-  maxRows = sheet.getMaxRows()
-  lastRow = sheet.getLastRow()
+	for (k = 0; k < num_acc; k++) {
+		if (accounts[k].table.length === 0) continue;
+    mergeEventsInTable_(sheet, accounts[k], 5, 1 + 5*k, 4, 2);
+	}
+}
 
-  for (k = 0; k < num_acc; k++) {
-    if (maxRows < lastRow + accounts[k].table.length) {
-      addBlankRows_(MN_SHORT[mm])
-      maxRows += 400
-      break
+function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
+  var lastRow = sheet.getLastRow();
+  var table, value, i;
+
+  if (sheet.getMaxRows() < lastRow + data.table.length) {
+    addBlankRows_(sheet.getName());
+  }
+
+  if (lastRow < row) {
+    i = 0;
+    table = data.table;
+  } else {
+    table = sheet.getRange(row, offset, lastRow - row + 1, width).getValues();
+
+    i = 0;
+    while (i < table.length && table[i][col] !== '') { i++; }
+    if (i < table.length) {
+      table.splice.apply(table, [i, 0].concat(data.table));
+    } else {
+      table = table.concat(data.table);
     }
   }
 
-	for (k = 0; k < num_acc; k++) {
-		if (accounts[k].table.length === 0) continue;
+  sheet.getRange(row, offset, table.length, width).setValues(table);
 
-    if (lastRow < 5) {
-      i = 0
-      table = accounts[k].table
-    } else {
-      table = sheet.getRange(5, 1 + 5*k, lastRow - 4, 4).getValues()
-
-      i = 0
-      while (i < table.length && table[i][2] !== '') { i++ }
-      if (i < table.length) {
-        table.splice.apply(table, [i, 0].concat(accounts[k].table))
-      } else {
-        table = table.concat(accounts[k].table)
-      }
-    }
-
-    sheet.getRange(5, 1 + 5*k, table.length, 4).setValues(table)
-    value = transpose([ accounts[k].values ]);
-    sheet.getRange(5 + i, 3 + 5*k, value.length, 1).setFormulas(value);
-	}
+  value = transpose([data.values]);
+  sheet.getRange(row + i, offset + col, value.length, 1).setFormulas(value);
 }
 
 
