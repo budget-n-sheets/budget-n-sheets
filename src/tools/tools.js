@@ -48,11 +48,11 @@ function toolPicker_(select, value) {
 }
 
 function getTagData_() {
-	var sheet, lastRow;
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+	var lastRow;
 	var output, data;
 	var n, i, j, k, v;
 
-	sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
 	if (!sheet) return;
 
 	lastRow = sheet.getLastRow();
@@ -66,31 +66,30 @@ function getTagData_() {
 		total: [ ]
 	};
 
-	n = lastRow - 1;
-	data = sheet.getRange(2, 5, n, 16).getValues();
+  n = lastRow - 1;
+  data = sheet.getRange(2, 5, n, 16).getValues();
 
-	i = 0;
-	j = 0;
-	while (i < data.length && j < n) {
-		if ( /^\w+$/.test(data[i][0]) ) {
-			output.tags.push(data[i][0]);
+  i = 0;
+  j = -1;
+  while (i < data.length && ++j < n) {
+    if (data[i][0] === '' || !/^\w+$/.test(data[i][0])) {
+      data.splice(i, 1);
+      continue;
+    }
 
-			v = [ ];
-			for (k = 0; k < 12; k++) {
-			v[k] = data[i][1 + k];
-			}
-			output.months.push(v);
+    output.tags[i] = data[i][0];
 
-			output.average.push(data[i][14]);
-			output.total.push(data[i][15]);
-			i++;
-		} else {
-			data.splice(i, 1);
-		}
+    v = [];
+    for (k = 0; k < 12; k++) {
+      v[k] = data[i][1 + k];
+    }
+    output.months[i] = v;
 
-		j++;
-	}
+    output.average[i] = data[i][14];
+    output.total[i] = data[i][15];
+    i++;
+  }
 
-	output.data = data;
-	return output;
+  output.data = data;
+  return output;
 }
