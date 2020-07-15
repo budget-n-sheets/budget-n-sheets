@@ -1,24 +1,18 @@
 function setupTags_() {
 	var sheet = SPREADSHEET.getSheetByName("Tags");
-	var ranges, formula, formulas, rg, cd;
-	var tags, combo;
+	var ranges, formula, rg, cd;
 	var i, k;
 
-	const h_ = TABLE_DIMENSION.height;
-	const w_ = TABLE_DIMENSION.width;
+  const h_ = TABLE_DIMENSION.height;
+  const w_ = TABLE_DIMENSION.width;
 
-	const num_acc = SETUP_SETTINGS["number_accounts"];
+  const tags = [ "D5:D404", "I5:I404", "N5:N404", "S5:S404", "X5:X404", "AC5:AC404" ];
+  const combo = [ "C5:D404", "H5:I404", "M5:N404", "R5:S404", "W5:X404", "AB5:AC404" ];
 
-	const col = 11 + w_*num_acc;
+  const num_acc = SETUP_SETTINGS["number_accounts"];
 
-	formulas = [[ ]];
-
-	tags = [ ];
-	combo = [ ];
-	for (k = 0; k < 1 + num_acc; k++) {
-		tags[k] = rollA1Notation(5, 4 + 5*k, -1, 1);
-		combo[k] = rollA1Notation(5, 3 + 5*k, -1, 2);
-	}
+  const formulas = [[ ]];
+  const col = 11 + w_*num_acc;
 
 	ranges = sheet.getRange(2, 1, 90, 5);
 	sheet.protect()
@@ -43,7 +37,6 @@ function setupTags_() {
 
 		formulas[0][i] = formula;
 	}
-
 	sheet.getRange(1, 6, 1, 12).setFormulas(formulas);
 
 	formula = "ARRAYFORMULA($T$2:$T/\'_Settings\'!B6)";
