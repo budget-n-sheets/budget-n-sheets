@@ -25,8 +25,8 @@ function validateFormatRegistry_() {
 function formatAccounts_(mm) {
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
 	var date1, date2;
-	var table, snapshot, nd;
-	var c, cc, n, i, k;
+	var table, snapshot;
+	var cc, n, i, k;
 
 	const w_ = TABLE_DIMENSION.width;
 	const num_acc = getConstProperties_('number_accounts');
@@ -37,7 +37,6 @@ function formatAccounts_(mm) {
   const lastRow = sheet.getLastRow() - 4;
   if (lastRow < 1) return;
 
-	c = 0;
 	sheet.showRows(5, lastRow);
 
   snapshot = sheet.getRange(5, 1, lastRow, w_*(1 + num_acc)).getValues();
@@ -53,20 +52,15 @@ function formatAccounts_(mm) {
     range = sheet.getRange(5, 1 + cc, n, 4);
 
 		range.sort([
-			{column:(1 + cc), ascending:true},
-			{column:(3 + cc), ascending:true}
+			{ column: (1 + cc), ascending: true },
+			{ column: (3 + cc), ascending: true }
 		]);
 
 		i = 0;
-		nd = 0;
 		table = range.getValues();
-		while (i < n) {
-			if (table[i][0] < 0) nd++;
-			i++;
-		}
+		while (i < n && table[i][0] < 0) { i++; }
 
-		if (i > c) c = i;
-		if (nd > 1) sheet.getRange(5, 1 + cc, nd, 4).sort({column:1 + cc, ascending:false});
+		if (i > 1) sheet.getRange(5, 1 + cc, i, 4).sort({column:1 + cc, ascending:false});
 	}
 
 	date1 = DATE_NOW.getTime();
@@ -86,36 +80,37 @@ function formatCards_(mm) {
 	if (!sheet) return;
 
 	const w_ = 6;
+  const cc = w_*mm;
 
   lastRow = sheet.getLastRow();
   if (lastRow < 6) return;
 
   i = 0;
   n = lastRow - 5;
-  table = sheet.getRange(6, 4 + w_*mm, n, 1).getValues();
+  table = sheet.getRange(6, 4 + cc, n, 1).getValues();
   while (i < n && table[i][0] !== '') { i++; }
 
   if (i === 0) return;
   n = i;
 
 	sheet.getRange(6, 1 + w_*mm, n, 5).sort([
-		{column:(3 + w_*mm), ascending:true},
-		{column:(1 + w_*mm), ascending:true},
-		{column:(4 + w_*mm), ascending:true}
+		{column:(3 + cc), ascending:true},
+		{column:(1 + cc), ascending:true},
+		{column:(4 + cc), ascending:true}
 	]);
 
 	i = 0;
 	j = 0;
-	table = sheet.getRange(6, 1 + w_*mm, n, 5).getValues();
+	table = sheet.getRange(6, 1 + cc, n, 5).getValues();
 	while (i < n) {
-		c = 0;
+		c = j;
 		card = table[i][2];
-		while (j < n && table[j][2] === card) {
-			if (table[j][0] < 0) c++;
-			j++;
-		}
+		while (j < n && table[j][2] === card && table[j][0] < 0) { j++; }
+    c = j - c;
 
-		if (c > 1) sheet.getRange(6 + i, 1 + w_*mm, c, 5).sort({column:1 + w_*mm, ascending:false});
+		if (c > 1) sheet.getRange(6 + i, 1 + cc, c, 5).sort({column:1 + cc, ascending:false});
+
+    while (j < n && table[j][2] === card) { j++; }
 		i = j;
 	}
 }
