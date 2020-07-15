@@ -5,39 +5,39 @@ function postEventsForDate_(date) {
 
 	var calendar, list_eventos, evento;
 	var value, tags;
-	var a, i, j, k;
+	var c1, a, i, j, k;
 
 	calendar = getFinancialCalendar_();
 	if (!calendar) return;
-
 	list_eventos = calendar.getEventsForDay(date);
 	if (list_eventos.length == 0) return;
-
 	list_eventos = calendarDigestListEvents_(list_eventos);
 
 	const mm = date.getMonth();
 	const dd = date.getDate();
 
-  const dec_p = getSpreadsheetSettings_("decimal_separator");
-	const num_acc = getConstProperties_('number_accounts');
+  const dec_p = getSpreadsheetSettings_('decimal_separator');
+	const num_acc = getConstProperties_('number_accounts') + 1;
 
 	const accounts = [ ];
-	for (k = 0; k < 1 + num_acc; k++) {
-		accounts.push({ table: [ ], values: [ ] });
+	for (k = 0; k < num_acc; k++) {
+		accounts[k] = { table: [], values: [] };
 	}
 
+  c1 = 0;
   const cards = {
     table: [],
     values: []
   }
 
-	for (i = 0; i < list_eventos.length; i++) {
+  i = -1;
+  while (++i < list_eventos.length) {
 		evento = list_eventos[i];
 
-		if (evento.Description == "") continue;
+		if (evento.Description === '') continue;
 		if (evento.hasAtMute) continue;
 
-    if ( !isNaN(evento.Value) ) value = evento.Value;
+    if (!isNaN(evento.Value)) value = evento.Value;
 		else if (evento.Tags.length > 0) value = 0;
 		else continue;
     value = numberFormatLocaleSignal.call(value, dec_p);
@@ -47,14 +47,13 @@ function postEventsForDate_(date) {
 
 		if (evento.Table !== -1) {
       k = evento.Table;
-			accounts[k].table.push([ dd, evento.Title, "", tags ]);
+			accounts[k].table.push([ dd, evento.Title, '', tags ]);
 			accounts[k].values.push(value);
 		} else if (evento.Card !== -1) {
-			cards.table.push([ dd, evento.Title, evento.Card, "", tags ]);
-			cards.values.push(value);
-		} else {
-      continue
-    }
+			cards.table[c1] = [ dd, evento.Title, evento.Card, '', tags ];
+			cards.values[c1] = value;
+      c1++;
+		}
 	}
 
 	if (cards.table.length > 0) {
@@ -95,7 +94,7 @@ function postEventsForDate_(date) {
   maxRows = sheet.getMaxRows()
   lastRow = sheet.getLastRow()
 
-  for (k = 0; k < 1 + num_acc; k++) {
+  for (k = 0; k < num_acc; k++) {
     if (maxRows < lastRow + accounts[k].table.length) {
       addBlankRows_(MN_SHORT[mm])
       maxRows += 400
@@ -103,8 +102,8 @@ function postEventsForDate_(date) {
     }
   }
 
-	for (k = 0; k < 1 + num_acc; k++) {
-		if (accounts[k].table.length == 0) continue;
+	for (k = 0; k < num_acc; k++) {
+		if (accounts[k].table.length === 0) continue;
 
     if (lastRow < 5) {
       i = 0
