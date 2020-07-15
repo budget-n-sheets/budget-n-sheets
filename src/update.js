@@ -14,7 +14,8 @@ var PATCH_THIS = Object.freeze({
 			[ update_v0m29p0_, null, update_v0m29p2_, null, update_v0m29p4_ ],
 			[ null, null, null, null, null, null, update_v0m30p6_ ],
 			[ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_, update_v0m31p8_, null ],
-			[ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_, update_v0m32p7_, null ]
+			[ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_, update_v0m32p7_, null ],
+      [ update_v0m33p0_ ]
 		]
 	],
 	beta_list: [ ]
@@ -155,6 +156,237 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Update functions with 'ARRAY_CONSTRAIN'.
+ *
+ * 0.33.0
+ */
+function update_v0m33p0_() {
+  try {
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    var i;
+
+    const limits = [];
+    const sheets = [];
+
+    for (i = 0; i < 12; i++) {
+      sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
+      if (sheets[i]) limits[i] = sheets[i].getMaxRows();
+      else limits[i] = 0;
+    }
+
+    if (update_v0m33p0s0_(spreadsheet, limits)) return 1;
+    if (update_v0m33p0s1_(spreadsheet, limits)) return 1;
+    if (update_v0m33p0s2_(spreadsheet, limits)) return 1;
+  } catch (err) {
+    consoleLog_("error", "update_v0m33p0_()", err);
+    return 1;
+  }
+}
+
+function update_v0m33p0s2_(spreadsheet, limits) {
+  try {
+    var sheet, formula;
+    var header, header2;
+    var limit, i, k;
+
+    sheet = spreadsheet.getSheetByName('Cards');
+    if (!sheet) return;
+    limit = sheet.getMaxRows();
+    if (limit < 7) return;
+    limit -= 5
+
+    sheet = spreadsheet.getSheetByName('_Backstage');
+    if (!sheet) return 1;
+
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const dec_p = getSpreadsheetSettings_('decimal_separator');
+    const num_acc = getConstProperties_('number_accounts');
+
+    const dec_c = (dec_p ? "," : "\\");
+    const col = 2 + w_ + w_*num_acc + w_;
+
+    const range2 = [];
+    const range3 = [];
+    const range4 = [];
+    const range5 = [];
+
+    for (i = 0; i < 12; i++) {
+      range2[i] = rollA1Notation(6, 2 + 6*i, limit);
+      range3[i] = rollA1Notation(6, 3 + 6*i, limit);
+      range4[i] = rollA1Notation(6, 4 + 6*i, limit);
+      range5[i] = rollA1Notation(6, 5 + 6*i, limit);
+    }
+
+    for(k = 0; k < 10; k++) {
+      header = rollA1Notation(1, col + w_*k);
+
+      for(i = 0; i < 12; i++) {
+        header2 = rollA1Notation(2 + h_*i, col + 4 + w_*k);
+
+        formula = "IFERROR(IF(" + header + " = \"\"; \"\"; SUM(FILTER(";
+        formula += "ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1); ";
+        formula += "REGEXMATCH(ARRAY_CONSTRAIN(\'Cards\'!" + range3[i] + "; " + header2 + "; 1); " + header + "); ";
+        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1))); ";
+        formula += "ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1) >= 0";
+        formula += "))); 0)"
+        sheet.getRange(3 + h_*i, col + w_*k).setFormula(formula);
+
+        formula = "IFERROR(IF(" + header + " = \"\"; \"\"; SUM(FILTER(";
+        formula += "ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1); ";
+        formula += "REGEXMATCH(ARRAY_CONSTRAIN(\'Cards\'!" + range3[i] + "; " + header2 + "; 1); " + header + "); ";
+        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1))); ";
+        formula += "ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1) < 0; ";
+        formula += "NOT(REGEXMATCH(ARRAY_CONSTRAIN(\'Cards\'!" + range5[i] + "; " + header2 + "; 1); ";
+        formula += "\"#ign\"))";
+        formula += "))); 0)"
+        sheet.getRange(4 + h_*i, col + w_*k).setFormula(formula);
+
+        formula = "IFERROR(IF(" + header + " = \"\"; \"\"; SUM(FILTER(";
+        formula += "ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1); ";
+        formula += "REGEXMATCH(ARRAY_CONSTRAIN(\'Cards\'!" + range3[i] + "; " + header2 + "; 1); " + header + "); ";
+        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1))); ";
+        formula += "ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1) < 0";
+        formula += "))); 0)"
+        sheet.getRange(5 + h_*i, col + w_*k).setFormula(formula);
+
+        formula = "REGEXEXTRACT(ARRAY_CONSTRAIN(\'Cards\'!" + range2[i] + "; " + header2 + "; 1); \"[0-9]+/[0-9]+\")";
+        formula = "ARRAYFORMULA(SPLIT(" + formula + "; \"/\"))";
+        formula = "{" + formula + dec_c + " ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1)}; ";
+        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN(\'Cards\'!" + range3[i] + "; " + header2 + "; 1); " + rollA1Notation(1, col + w_*k) + "); ";
+
+        formula = formula + "NOT(ISBLANK(ARRAY_CONSTRAIN(\'Cards\'!" + range4[i] + "; " + header2 + "; 1))); ";
+        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN(\'Cards\'!" + range2[i] + "; " + header2 + "; 1); \"[0-9]+/[0-9]+\")";
+
+        formula = "BSCARDPART(TRANSPOSE(IFNA(FILTER(" + formula + "); 0)))";
+        formula = "IF(" + rollA1Notation(1, col + w_*k) + " = \"\"; 0; " + formula + ")";
+
+        sheet.getRange(5 + h_*i, 1 + col + w_*k).setFormula(formula);
+      }
+    }
+
+    SpreadsheetApp.flush();
+  } catch (err) {
+    consoleLog_("error", "update_v0m33p0s2_()", err);
+    return 1;
+  }
+}
+
+function update_v0m33p0s1_(spreadsheet, limits) {
+  try {
+    var sheet, formula, limit, rg, cd;
+    var i, k;
+
+    sheet = spreadsheet.getSheetByName('Cards');
+    if (!sheet) return;
+    limit = sheet.getMaxRows();
+
+    sheet = spreadsheet.getSheetByName('Tags');
+    if (!sheet) return;
+
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const num_acc = getConstProperties_('number_accounts');
+
+    const col = 11 + w_*num_acc;
+
+    const tags = [ "I5:I", "N5:N", "S5:S", "X5:X", "AC5:AC" ];
+    const combo = [ "H5:I", "M5:N", "R5:S", "W5:X", "AB5:AC" ];
+
+    i = -1;
+    while (++i < 12) {
+      if (limits[i] < 6) continue;
+
+      rg = "{ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!C5:D" + limits[i] + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 6) + "; 2)";
+      cd = "{ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!D5:D" + limits[i] + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 6) + "; 1)";
+
+      for (k = 0; k < num_acc; k++) {
+        rg += "; ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + combo[k] + limits[i] + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 6 + w_*k) + "; 2)";
+        cd += "; ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + tags[k] + limits[i] + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 6 + w_*k) + "; 1)";
+      }
+
+      if (limit > 6) {
+        rg += "; ARRAY_CONSTRAIN(\'Cards\'!" + rollA1Notation(6, 4 + 6*i, limit - 5, 2) + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, col) + "; 2)}";
+        cd += "; ARRAY_CONSTRAIN(\'Cards\'!" + rollA1Notation(6, 5 + 6*i, limit - 5, 1) + "; \'_Backstage\'!" + rollA1Notation(2 + h_*i, col) + " ; 1)}";
+      } else {
+        rg += "}";
+        cd += "}"
+      }
+
+      formula = "IFERROR(FILTER(" + rg + "; NOT(ISBLANK(" + cd + "))); \"\")";
+      formula = "BSSUMBYTAG(TRANSPOSE($E$1:$E); " + formula + ")";
+      formula = "{\"" + MN_FULL[i] + "\"; IF(\'_Settings\'!$B$7 > 0; " + formula + "; )}";
+
+      sheet.getRange(1, 6 + i).setFormula(formula);
+    }
+
+    SpreadsheetApp.flush();
+  } catch (err) {
+    consoleLog_("error", "update_v0m33p0s1_()", err);
+    return 1;
+  }
+}
+
+function update_v0m33p0s0_(spreadsheet, limits) {
+  try {
+    var sheet = spreadsheet.getSheetByName('_Backstage');
+    var i, k;
+
+    if (!sheet) return 1;
+
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const num_acc = getConstProperties_('number_accounts');
+    const dec_p = getSpreadsheetSettings_('decimal_separator');
+
+    const col = 2 + w_ + w_*num_acc + w_;
+    const dec_c = (dec_p ? "," : "\\");
+
+    const values = [ "H5:H", "M5:M", "R5:R", "W5:W", "AB5:AB" ];
+    const tags = [ "I5:I", "N5:N", "S5:S", "X5:X", "AC5:AC" ];
+    const combo = [ "H5:I", "M5:N", "R5:S", "W5:X", "AB5:AC" ];
+    const balance1 = [ "G2", "L2", "Q2", "V2", "AA2", "G12", "L12", "Q12", "V12", "AA12", "G22", "L22", "Q22", "V22", "AA22", "G32", "L32", "Q32", "V32", "AA32", "G42", "L42", "Q42", "V42", "AA42", "G52", "L52", "Q52", "V52", "AA52", "G62", "L62", "Q62", "V62", "AA62", "G72", "L72", "Q72", "V72", "AA72", "G82", "L82", "Q82", "V82", "AA82", "G92", "L92", "Q92", "V92", "AA92", "G102", "L102", "Q102", "V102", "AA102", "G112", "L112", "Q112", "V112", "AA112" ];
+
+    i = -1;
+    while (++i < 12) {
+      if (limits[i] < 6) continue;
+
+      formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!D5:D" + limits[i] + "; " + rollA1Notation(2 + h_*i, 6) + "; 1); \"#ign\"))";
+      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!C5:C" + limits[i] + "; " + rollA1Notation(2 + h_*i, 6) + "; 1))); " + formula;
+      formula = "FILTER(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!C5:C" + limits[i] + "; " + rollA1Notation(2 + h_*i, 6) + "; 1); " + formula + ")";
+      formula = "SUM(IFERROR(" + formula + "; 0))";
+      sheet.getRange(4 + h_*i, 2).setFormula(formula);
+
+      for (k = 0; k < num_acc; k++) {
+        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[k] + limits[i] + "; " + rollA1Notation(2 + h_*i, 11 + w_*k) + "; 1)))";
+        formula = "FILTER(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[k] + limits[i] + "; " + rollA1Notation(2 + h_*i, 11 + w_*k) + "; 1); " + formula + ")";
+        formula = balance1[5*i + k] + " + IFERROR(SUM(" + formula + "); 0)";
+        sheet.getRange(3 + h_*i, 7 + w_*k).setFormula(formula);
+
+        formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + tags[k] + limits[i] + "; " + rollA1Notation(2 + h_*i, 11 + w_*k) + "; 1); \"#(dp|wd|qcc|ign|rct|trf)\"))";
+        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[k] + limits[i] + "; " + rollA1Notation(2 + h_*i, 11 + w_*k) + "; 1))); " + formula;
+        formula = "FILTER(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[k] + limits[i] + "; " + rollA1Notation(2 + h_*i, 11 + w_*k) + "; 1); " + formula + ")";
+        formula = "IFERROR(SUM(" + formula + "); 0)";
+        sheet.getRange(4 + h_*i, 7 + w_*k).setFormula(formula);
+
+        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + tags[k] + limits[i] + "; " + rollA1Notation(2 + h_*i, 11 + w_*k) + "; 1)))";
+        formula = "IFERROR(FILTER(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + combo[k] + limits[i] + "; " + rollA1Notation(2 + h_*i, 11 + w_*k) + "; 2); " + formula + "); \"\")";
+        formula = "BSREPORT(TRANSPOSE(" + formula + "))";
+        sheet.getRange(2 + h_*i, 8 + w_*k).setFormula(formula);
+      }
+    }
+
+    SpreadsheetApp.flush();
+  } catch (err) {
+    consoleLog_("error", "update_v0m33p0s0_()", err);
+    return 1;
+  }
+}
+
+/**
  * Add BSBLANK() to _Backstage.
  *
  * 0.32.7
@@ -249,21 +481,24 @@ function update_v0m32p6_() {
 		}
 
 		var yyyy = DATE_NOW.getFullYear();
-		var day;
+		var trigger, day;
 
 		const hour = 2 + randomInteger(4);
 		const financial_year = getConstProperties_("financial_year");
 
 		if (financial_year < yyyy) {
 			day = 1 + randomInteger(28);
-			createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weeklyTriggerPos_", day, hour);
+			trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour })
+      saveTriggerId_(trigger, 'document', 'clockTriggerId')
 
 		} else if (financial_year == yyyy) {
-			createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, hour);
+			trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: hour })
+      saveTriggerId_(trigger, 'document', 'clockTriggerId')
 
 		} else if (financial_year > yyyy) {
 			day = new Date(financial_year, 0, 2).getDay();
-			createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", day, hour);
+			trigger = createNewTrigger_('weeklyTriggerPre_', 'onWeekDay', { weeks: 1, week: day, hour: hour })
+      saveTriggerId_(trigger, 'document', 'clockTriggerId')
 		}
 	} catch (err) {
 		consoleLog_("error", "update_v0m32p6_()", err);
@@ -368,7 +603,7 @@ function update_v0m31p8_() {
 				ranges[j] = rollA1Notation(2 + h_*j, col + w_*i);
 			}
 
-			limit = "=" + card.limit.formatLocaleSignal();
+			limit = "=" + numberFormatLocaleSignal.call(card.limit);
 			text = "^" + card.code + "$";
 			for (j = 0; j < card.aliases.length; j++) {
 				text += "|^" + card.aliases[j] + "$";
@@ -466,7 +701,7 @@ function update_v0m30p6_() {
 		const handlers = [ "onOpenInstallable_", "onEditInstallable_", "dailyTrigger_", "weeklyTriggerPos_", "weeklyTriggerPre_" ];
 		const financial_year = getConstProperties_("financial_year");
 
-		var triggers, yyyy, dd, name;
+		var triggers, trigger, yyyy, dd, name;
 		var eventType, installClock, installOnEdit;
 
 		installClock = false;
@@ -495,20 +730,24 @@ function update_v0m30p6_() {
 		}
 
 		if (installOnEdit) {
-			createNewTrigger_("document", "onEditTriggerId", "onEdit", "onEditInstallable_");
+			trigger = createNewTrigger_('onEditInstallable_', 'onEdit')
+      saveTriggerId_(trigger, 'document', 'onEditTriggerId')
 		}
 
 		if (installClock) {
 			yyyy = DATE_NOW.getFullYear();
 			if (financial_year < yyyy) {
-				createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPos_", 2);
+				trigger = createNewTrigger_('weeklyTriggerPos_', 'onWeekDay', { weeks: 1, week: 2 })
+        saveTriggerId_(trigger, 'document', 'clockTriggerId')
 
 			} else if (financial_year == yyyy) {
-				createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, 2);
+				trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: 2 })
+        saveTriggerId_(trigger, 'document', 'clockTriggerId')
 
 			} else if (financial_year > yyyy) {
 				dd = new Date(financial_year, 0, 2).getDay();
-				createNewTrigger_("document", "clockTriggerId", "onWeekDay", "weeklyTriggerPre_", dd);
+				trigger = createNewTrigger_('weeklyTriggerPre_', 'onWeekDay', { weeks: 1, week: dd })
+        saveTriggerId_(trigger, 'document', 'clockTriggerId')
 			}
 		}
 
@@ -566,7 +805,8 @@ function update_v0m29p2_() {
  */
 function update_v0m29p0_() {
 	try {
-		createNewTrigger_("document", "onOpenTriggerId", "onOpen", "onOpenInstallable_");
+		var trigger = createNewTrigger_('onOpenInstallable_', 'onOpen')
+    saveTriggerId_(trigger, 'document', 'onOpenTriggerId')
 	} catch (err) {
 		consoleLog_("error", "update_v0m29p0_()", err);
 	}
@@ -644,7 +884,7 @@ function update_v0m28p0s2_() {
 		var date, yyyy;
 		var operation;
 
-		date = DATE_NOW.getSpreadsheetDate();
+		date = getSpreadsheetDate.call(DATE_NOW);
 		yyyy = date.getFullYear();
 
 		const financial_year = getConstProperties_("financial_year");

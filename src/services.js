@@ -95,7 +95,8 @@ function dailyTrigger_(e) {
 
 	if (seamlessUpdate_()) return;
 
-	var date = DATE_NOW.getSpreadsheetDate();
+	var date = getSpreadsheetDate.call(DATE_NOW);
+  var trigger
 
 	const yyyymmdd = {
 		year: date.getFullYear(),
@@ -107,13 +108,15 @@ function dailyTrigger_(e) {
 
 	if (financial_year < yyyymmdd.year) {
 		monthly_TreatLayout_(yyyymmdd.year, yyyymmdd.month);
-		deleteTrigger_("document", "clockTriggerId");
+		deleteTrigger_('KeyId', { scope: 'document', key: 'clockTriggerId' })
 		Utilities.sleep(300);
 
 		var day = 1 + randomInteger(28);
 		var hour = 2 + randomInteger(4);
 
-		createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weeklyTriggerPos_", day, hour);
+		trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour, minute: -1 })
+    saveTriggerId_(trigger, 'document', 'clockTriggerId')
+
 		setSpreadsheetSettings_("operation_mode", "passive");
 
 		console.info("mode/passive");
@@ -142,7 +145,7 @@ function weeklyTriggerPre_(e) {
 
 	if (seamlessUpdate_()) return;
 
-	var date = DATE_NOW.getSpreadsheetDate();
+	var date = getSpreadsheetDate.call(DATE_NOW);
 
 	const yyyymm = {
 		year: date.getFullYear(),
@@ -153,18 +156,48 @@ function weeklyTriggerPre_(e) {
 
 	if (yyyymm.year > financial_year) return;
 
-	deleteTrigger_("document", "clockTriggerId");
+	deleteTrigger_('KeyId', { scope: 'document', key: 'clockTriggerId' })
 
 	var hour = 2 + randomInteger(4);
 
 	if (yyyymm.year === financial_year) {
-		createNewTrigger_("document", "clockTriggerId", "everyDays", "dailyTrigger_", 1, hour);
+		trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: hour, minute: -1 })
+    saveTriggerId_(trigger, 'document', 'clockTriggerId')
 		console.info("mode/active");
 
 	} else {
 		var day = 1 + randomInteger(28);
-		createNewTrigger_("document", "clockTriggerId", "onMonthDay", "weeklyTriggerPos_", day, hour);
+		trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour, minute: -1 })
+    saveTriggerId_(trigger, 'document', 'clockTriggerId')
 	}
 
 	monthly_TreatLayout_(yyyymm.year, yyyymm.month);
+}
+
+function onEdit_Main_(e) {
+  try {
+    deleteTrigger_('UniqueId', e.triggerUid)
+  } catch (err) {
+  }
+}
+
+function daily_Main_(e) {
+  try {
+    deleteTrigger_('UniqueId', e.triggerUid)
+  } catch (err) {
+  }
+}
+
+function weekly_Foo_(e) {
+  try {
+    deleteTrigger_('UniqueId', e.triggerUid)
+  } catch (err) {
+  }
+}
+
+function weekly_Bar_(e) {
+  try {
+    deleteTrigger_('UniqueId', e.triggerUid)
+  } catch (err) {
+  }
 }

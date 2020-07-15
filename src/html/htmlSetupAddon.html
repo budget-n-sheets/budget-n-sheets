@@ -303,12 +303,7 @@
 						$("#footer-buttons").append("<button onclick=\"google.script.host.close()\">Close</button>");
 					}, 120000);
 
-				google.script.run
-					.withSuccessHandler(function(e) {
-							google.script.host.close();
-						})
-					.withFailureHandler(showError)
-					.setupUi(settings, list_names);
+				google.script.run.setupUi(settings, list_names);
 			}
 		</script>
 	</body>

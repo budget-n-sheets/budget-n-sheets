@@ -109,6 +109,13 @@
 									</select>
 								</td>
 							</tr>
+              <tr>
+                <td colspan="2">
+                  <b>View mode</b><br>
+                  <input type="radio" id="vm_complete" name="view_mode" value="complete"><label for="vm_complete">Complete</label><br>
+                  <input type="radio" id="vm_simple" name="view_mode" value="simple"><label for="vm_simple">Simple</label>
+                </td>
+              </tr>
 						</table>
 						<table style="width:100%;margin-top:1.3em;">
 							<tr>
@@ -415,6 +422,7 @@
 
 			function loadSettings(user_settings) {
 				$("#initial_month").val(user_settings.initial_month);
+        $("input[name=view_mode][value=" + user_settings.view_mode + "]").prop('checked', true);
 				if (user_settings.override_zero) $("#override_zero").prop("checked", true);
 				<? if (isCalendarEnabled) { ?>
 					<? if (isAdmin) { ?>
@@ -438,6 +446,7 @@
 
 				var user_settings = {
 					initial_month: $("#initial_month").val(),
+          view_mode: $("input[name=view_mode]:checked").val(),
 					<? if (isCalendarEnabled) { ?>
 						<? if (isAdmin) { ?>
 							financial_calendar: $("#financial_calendar").val(),

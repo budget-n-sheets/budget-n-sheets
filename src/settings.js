@@ -64,9 +64,11 @@ function saveUserSettings(settings) {
 
 	const new_init_month = Number(settings.initial_month);
 	const init_month = getUserSettings_("initial_month");
+  const view_mode = getUserSettings_("view_mode");
 
 	const user_settings = {
 		initial_month: new_init_month,
+    view_mode: settings.view_mode,
 		override_zero: settings.override_zero,
 
 		financial_calendar: calendar.financial_calendar,
@@ -76,20 +78,34 @@ function saveUserSettings(settings) {
 	PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
 	CacheService2.put("document", "user_settings", "json", user_settings);
 
+
   try {
     updateDecimalSeparator_();
+  } catch (err) {
+    console.error('settings/decimal-separator ' + err);
+  }
 
-    if (init_month == new_init_month) return;
+  try {
+    if (user_settings.view_mode !== view_mode) {
+      if (user_settings.view_mode === 'complete') viewModeComplete()
+      else if (user_settings.view_mode === 'simple') viewModeSimple()
+    }
+  } catch (err) {
+    console.error('settings/view-mode ' + err);
+  }
 
+  if (init_month == new_init_month) return;
+
+  try {
     sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("_Settings");
     if (sheet) {
-      sheet.getRange("B4").setFormula("=" + (new_init_month + 1).formatLocaleSignal());
+      sheet.getRange("B4").setFormula("=" + numberFormatLocaleSignal.call(new_init_month + 1));
       SpreadsheetApp.flush();
     }
 
     updateTabsColors();
   } catch (err) {
-    console.error('saveUserSettings(): ' + err)
+    console.error('settings/initial-month ' + err);
   }
 }
 
@@ -104,7 +120,8 @@ function getUserSettings_(select) {
 		case 'post_day_events':
 		case 'override_zero':
 		case 'cash_flow_events':
-		case 'initial_month': // Number in 0-11 range
+		case 'initial_month':
+    case 'view_mode':
 			return user_settings[select];
 
 		default:
@@ -123,6 +140,7 @@ function setUserSettings_(select, value) {
 		case 'post_day_events':
 		case 'cash_flow_events':
 		case 'override_zero':
+    case 'view_mode':
 			user_settings[select] = value;
 			break;
 
@@ -201,7 +219,7 @@ function getConstProperties_(select) {
 }
 
 function getMonthFactored_(select) {
-	var date = DATE_NOW.getSpreadsheetDate();
+	var date = getSpreadsheetDate.call(DATE_NOW);
 	var yyyy, mm;
 
 	const financial_year = getConstProperties_("financial_year");

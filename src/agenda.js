@@ -213,7 +213,7 @@ function getCalendarEventsForCashFlow_(financial_year, mm) {
 		if (start > end) return [ ];
 	}
 
-	offset = start.getSpreadsheetDate();
+	offset = getSpreadsheetDate.call(start);
 	offset = start.getTime() - offset.getTime();
 
 	a = new Date(start.getTime() + offset);
