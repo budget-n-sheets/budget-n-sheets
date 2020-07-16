@@ -33,7 +33,8 @@ function onEditInstallable_(e) {
 	if (e.authMode != ScriptApp.AuthMode.FULL) return;
 
 	try {
-		var name = e.range.getSheet().getName();
+    var sheet =  e.range.getSheet();
+		var name = sheet.getName();
 	} catch (err) {
 	}
 
@@ -45,7 +46,37 @@ function onEditInstallable_(e) {
 		} finally {
 			e.range.setValue("");
 		}
+	} else if (name === "Tags") {
+		try {
+			tagsCheckbox_(sheet, e.range);
+		} catch (err) {
+			consoleLog_("error", "tagsCheckbox_()", err);
+		}
 	}
+}
+
+function tagsCheckbox_(sheet, range) {
+  const column = range.getColumn();
+  if (column > 5) return;
+
+  const pos = 4 - column + 1;
+  const values = range.getValues();
+  const row = range.getRow();
+
+  const list1 = [];
+  const list2 = [];
+
+  var i = -1;
+  var n1 = 0;
+  var n2 = 0;
+  while (++i < values.length) {
+    if (values[i][pos] === '') list2[n2++] = 'D' + (row + i);
+    else list1[n1++] = 'D' + (row + i);
+  }
+
+  if (list1.length > 0) sheet.getRangeList(list1).insertCheckboxes();
+  if (list2.length > 0) sheet.getRangeList(list2).removeCheckboxes();
+  SpreadsheetApp.flush();
 }
 
 function quickActions_(range, value) {
