@@ -51,7 +51,7 @@ function getTagData_() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
 	var lastRow;
 	var output, data;
-	var n, i, j, k, v;
+	var n, i, j, k;
 
 	if (!sheet) return;
 
@@ -78,12 +78,7 @@ function getTagData_() {
     }
 
     output.tags[i] = data[i][0];
-
-    v = [];
-    for (k = 0; k < 12; k++) {
-      v[k] = data[i][1 + k];
-    }
-    output.months[i] = v;
+    output.months[i] = data[i].slice(1, 13);
 
     output.average[i] = data[i][14];
     output.total[i] = data[i][15];
