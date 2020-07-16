@@ -40,7 +40,10 @@ function formatTags_() {
   while (++i < table.length) {
     if (table[i][4] === '') n++;
   }
-  if (n === table.length) return;
+  if (n === table.length) {
+    sheet.getRnage(2, 4, table.length, 1).removeCheckboxes();
+    return;
+  }
 
   range.sort([
     { column: 2, ascending: true },
