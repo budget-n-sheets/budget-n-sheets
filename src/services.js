@@ -60,6 +60,7 @@ function onEditInstallable_(e) {
 function tagsCheckbox_(sheet, range) {
   const column = range.getColumn();
   if (column > 5) return;
+  if (range.getLastColumn() < 5) return;
 
   const pos = 4 - column + 1;
   const values = range.getValues();
