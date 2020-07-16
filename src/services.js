@@ -38,6 +38,8 @@ function onEditInstallable_(e) {
 	} catch (err) {
 	}
 
+  if (['Quick Actions', 'Tags'].indexOf(name) === -1) return;
+
 	if (name === "Quick Actions") {
 		try {
 			quickActions_(e.range, e.value);
