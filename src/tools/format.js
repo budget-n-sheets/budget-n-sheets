@@ -15,7 +15,7 @@ function validateFormatRegistry_() {
 		if (mm === -1) {
 			SpreadsheetApp.getUi().alert(
 				"Can't sort registry",
-				"Select a month or Cards to sort the registry.",
+				"Select a month, Cards or Tags to sort the registry.",
 				SpreadsheetApp.getUi().ButtonSet.OK);
 			return;
 		}

@@ -46,7 +46,7 @@ function onOpen(e) {
 	} else {
 		if ( isInstalled_() ) {
 			menu.addItem("Add blank rows", "toolAddBlankRows")
-				.addItem("Sort registry", "toolFormatRegistry")
+				.addItem("Format table", "toolFormatRegistry")
 				.addItem("Update cash flow", "toolUpdateCashFlow")
 				.addSubMenu(ui.createMenu("Pages view")
 					.addItem("Collapse", "toolHideSheets_")

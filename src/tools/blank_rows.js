@@ -12,7 +12,7 @@ function addBlankRows_(name) {
 	else {
 		SpreadsheetApp.getUi().alert(
 			"Can't add rows",
-			"Select a month or Cards to add rows.",
+			"Select a month, Cards or Tags to add rows.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 		return;
 	}
