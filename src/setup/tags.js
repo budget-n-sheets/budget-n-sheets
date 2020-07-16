@@ -14,7 +14,7 @@ function setupTags_() {
   const formulas = [[ ]];
   const col = 11 + w_*num_acc;
 
-	ranges = sheet.getRange(2, 1, 90, 5);
+	ranges = sheet.getRange(2, 1, 50, 5);
 	sheet.protect()
 		.setUnprotectedRanges([ ranges ])
 		.setWarningOnly(true);
