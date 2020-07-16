@@ -8,7 +8,8 @@ function validateFormatRegistry_() {
 		mm = range.getColumn();
 		mm = (mm - (mm % 6)) / 6;
 		formatCards_(mm);
-
+  } else if (name === 'Tags') {
+    formatTags_();
 	} else {
 		mm = MN_SHORT.indexOf(name);
 		if (mm === -1) {
@@ -20,6 +21,37 @@ function validateFormatRegistry_() {
 		}
 		formatAccounts_(mm);
 	}
+}
+
+function formatTags_() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+  var table, rem, i, n;
+
+  if (!sheet) return;
+
+  maxRows = sheet.getMaxRows() - 1;
+  if (maxRows < 1) return;
+
+  range = sheet.getRange(2, 1, maxRows, 5);
+
+  i = -1;
+  n = 0;
+  table = range.getValues();
+  while (++i < table.length) {
+    if (table[i][4] === '') n++;
+  }
+  if (n === table.length) return;
+
+  range.sort([
+    { column: 2, ascending: true },
+    { column: 1, ascending: true }
+  ]);
+
+  sheet.getRange(2, 4, table.length - n, 1).insertCheckboxes();
+  if (n > 0) {
+    sheet.getRange(2 + table.length - n, 4, n, 1).removeCheckboxes();
+  }
+  SpreadsheetApp.flush();
 }
 
 function formatAccounts_(mm) {
