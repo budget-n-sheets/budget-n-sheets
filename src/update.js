@@ -157,6 +157,8 @@ function update_v0m0p0_() {
 
 /**
  * Update functions with 'ARRAY_CONSTRAIN'.
+ * Add conditional formatting.
+ * Format table of tags.
  *
  * 0.33.0
  */
@@ -177,9 +179,37 @@ function update_v0m33p0_() {
     if (update_v0m33p0s0_(spreadsheet, limits)) return 1;
     if (update_v0m33p0s1_(spreadsheet, limits)) return 1;
     if (update_v0m33p0s2_(spreadsheet, limits)) return 1;
+
+    update_v0m33p0s3_(spreadsheet);
   } catch (err) {
     consoleLog_("error", "update_v0m33p0_()", err);
     return 1;
+  }
+}
+
+function update_v0m33p0s3_(spreadsheet) {
+  try {
+    var sheet = spreadsheet.getSheetByName('Tags');
+    if (!sheet) return;
+
+    var n = sheet.getMaxRows() - 1;
+    if (n < 1) return;
+
+    var rules = sheet.getConditionalFormatRules();
+
+    var range = sheet.getRange(2, 5, n, 1);
+    var rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied("=REGEXMATCH($E2; \"^\\w+$\") = FALSE")
+      .setFontColor("#cccccc")
+      .setRanges([range])
+      .build();
+
+    rules.push(rule);
+    sheet.setConditionalFormatRules(rules);
+
+    formatTags_();
+  } catch (err) {
+    consoleLog_("error", "update_v0m33p0s3_()", err);
   }
 }
 
