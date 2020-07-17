@@ -48,13 +48,13 @@ function onEditInstallable_(e) {
 		} finally {
 			e.range.setValue("");
 		}
-	} else if (name === "Tags") {
+	}/* else if (name === "Tags") {
 		try {
 			tagsCheckbox_(sheet, e.range);
 		} catch (err) {
 			consoleLog_("error", "tagsCheckbox_()", err);
 		}
-	}
+	}*/
 }
 
 function tagsCheckbox_(sheet, range) {
