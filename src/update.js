@@ -159,6 +159,7 @@ function update_v0m0p0_() {
  * Update functions with 'ARRAY_CONSTRAIN'.
  * Add conditional formatting.
  * Format table of tags.
+ * Update functions of Average and Total.
  *
  * 0.33.0
  */
@@ -190,6 +191,7 @@ function update_v0m33p0_() {
 function update_v0m33p0s3_(spreadsheet) {
   try {
     var sheet = spreadsheet.getSheetByName('Tags');
+    var formula;
     if (!sheet) return;
 
     var n = sheet.getMaxRows() - 1;
@@ -206,6 +208,20 @@ function update_v0m33p0s3_(spreadsheet) {
 
     rules.push(rule);
     sheet.setConditionalFormatRules(rules);
+
+    formula = "ARRAYFORMULA(IF(E2:E <> \"\"; $T$2:$T/\'_Settings\'!B6; ))";
+    formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; ARRAYFORMULA($F$2:$F * 0))";
+    formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
+    formula = "{\"average\"; " + formula + "}";
+    sheet.getRange(1, 19).setFormula(formula);
+
+    formula = "IF(COLUMN(" + rollA1Notation(2, 6, n, 12) + ") - 5 < \'_Settings\'!$B$4 + \'_Settings\'!$B$6; ROW(" + rollA1Notation(2, 6, n) + "); 0)";
+    formula = "IF(COLUMN(" + rollA1Notation(2, 6, n, 12) + ") - 5 >= \'_Settings\'!$B$4; " + formula + "; 0)";
+    formula = "ARRAYFORMULA(IF(E2:E <> \"\"; SUMIF(" + formula + "; ROW(" + rollA1Notation(2, 6, n) + "); " + rollA1Notation(2, 6, n) + "); ))";
+    formula = "IF(\'_Settings\'!$B$6 > 0; " + formula + "; ARRAYFORMULA($F$2:$F * 0))";
+    formula = "IF(\'_Settings\'!$B$7 > 0; " + formula + "; \"\")";
+    formula = "{\"total\"; " + formula + "}";
+    sheet.getRange(1, 20).setFormula(formula);
 
     formatTags_();
   } catch (err) {
