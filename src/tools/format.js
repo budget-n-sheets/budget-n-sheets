@@ -25,32 +25,16 @@ function validateFormatRegistry_() {
 
 function formatTags_() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
-  var table, rem, i, n;
-
   if (!sheet) return;
 
-  maxRows = sheet.getMaxRows() - 1;
+  var maxRows = sheet.getMaxRows() - 1;
   if (maxRows < 1) return;
 
-  const list = [];
-
-  range = sheet.getRange(2, 1, maxRows, 5);
-  range.sort([
+  sheet.getRange(2, 1, maxRows, 5).sort([
     { column: 2, ascending: true },
     { column: 1, ascending: true }
   ]);
-
-  i = -1;
-  n = 0;
-  table = range.getValues();
-  while (++i < table.length) {
-    if (table[i][4] !== '') list[n++] = 'D' + (2 + i);
-  }
-
-  sheet.getRange(2, 4, table.length, 1).removeCheckboxes();
-  if (n > 0) {
-    sheet.getRangeList(list).insertCheckboxes();
-  }
+  sheet.getRange(2, 4, maxRows, 1).insertCheckboxes();
   SpreadsheetApp.flush();
 }
 
