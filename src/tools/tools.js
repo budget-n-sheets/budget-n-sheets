@@ -49,9 +49,7 @@ function toolPicker_(select, value) {
 
 function getTagData_() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
-	var lastRow;
-	var output, data;
-	var n, i, j, k;
+	var lastRow, i;
 
 	if (!sheet) return;
 
@@ -59,32 +57,23 @@ function getTagData_() {
 	if (lastRow < 2) return;
 	if (sheet.getMaxColumns() < 20) return;
 
-	output = {
+	const data = {
 		tags: [ ],
 		months: [ ],
 		average: [ ],
 		total: [ ]
 	};
 
-  n = lastRow - 1;
-  data = sheet.getRange(2, 5, n, 16).getValues();
+  const table = sheet.getRange(2, 5, lastRow - 1, 16).getValues();
 
-  i = 0;
-  j = -1;
-  while (i < data.length && ++j < n) {
-    if (data[i][0] === '' || !/^\w+$/.test(data[i][0])) {
-      data.splice(i, 1);
-      continue;
-    }
+  for (i = 0; i < data.length; i++) {
+    if (table[i][0] === '' || !/^\w+$/.test(table[i][0])) continue;
 
-    output.tags[i] = data[i][0];
-    output.months[i] = data[i].slice(1, 13);
-
-    output.average[i] = data[i][14];
-    output.total[i] = data[i][15];
-    i++;
+    data.tags[i] = table[i][0];
+    data.months[i] = table[i].slice(1, 13);
+    data.average[i] = table[i][14];
+    data.total[i] = table[i][15];
   }
 
-  output.data = data;
-  return output;
+  return data;
 }
