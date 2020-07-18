@@ -157,17 +157,63 @@ function update_v0m0p0_() {
 
 /**
  * Set uninitialized 'view_mode' value to 'complete'.
+ * Remove conditional formmating from tag code column.
+ * Set data validation in tag code column.
  *
  * 0.33.1
  */
 function update_v0m33p1_() {
   try {
-    if (getUserSettings_('view_mode') == null) {
+    const view_mode = getUserSettings_('view_mode');
+    if (view_mode !== 'complete' && view_mode !== 'simple') {
       setUserSettings_('view_mode', 'complete');
     }
+
+    update_v0m33p1s0_();
   } catch (err) {
     consoleLog_("error", "update_v0m33p1_()", err);
   }
+}
+
+function update_v0m33p1s0_() {
+	try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+    var rules, rule;
+    if (!sheet) return;
+
+    var maxRows = sheet.getMaxRows() - 1;
+    if (maxRows < 1) return;
+
+    rule = SpreadsheetApp.newDataValidation()
+      .requireFormulaSatisfied('=REGEXMATCH($E2; \"^\\w+$\")')
+      .setHelpText('Accepted charset: 0-9, a-z, A-Z, _')
+      .setAllowInvalid(true)
+      .build();
+    sheet.getRange(2, 5, maxRows, 1).clearDataValidations().setDataValidation(rule);
+
+    sheet.clearConditionalFormatRules();
+    rules = sheet.getConditionalFormatRules();
+
+    range = sheet.getRange(2, 6, maxRows, 12);
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied("=COLUMN() - 5 < INDIRECT(\"'_Settings'!B4\")")
+      .setFontColor("#cccccc")
+      .setRanges([range])
+      .build();
+    rules.push(rule);
+
+    range = sheet.getRange(2, 6, maxRows, 12);
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied("=COLUMN() - 5 > INDIRECT(\"'_Settings'!B4\") - 1 + INDIRECT(\"'_Settings'!B6\")")
+      .setFontColor("#999999")
+      .setRanges([range])
+      .build();
+    rules.push(rule);
+
+    sheet.setConditionalFormatRules(rules);
+	} catch (err) {
+    consoleLog_("error", "update_v0m33p1s0_()", err);
+	}
 }
 
 /**
