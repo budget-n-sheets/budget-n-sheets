@@ -15,7 +15,7 @@ var PATCH_THIS = Object.freeze({
 			[ null, null, null, null, null, null, update_v0m30p6_ ],
 			[ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_, update_v0m31p8_, null ],
 			[ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_, update_v0m32p7_, null ],
-      [ update_v0m33p0_ ]
+      [ update_v0m33p0_, update_v0m33p1_ ]
 		]
 	],
 	beta_list: [ ]
@@ -154,6 +154,21 @@ function update_v0m0p0_() {
 		return 1;
 	}
 }*/
+
+/**
+ * Set uninitialized 'view_mode' value to 'complete'.
+ *
+ * 0.33.1
+ */
+function update_v0m33p1_() {
+  try {
+    if (getUserSettings_('view_mode') == null) {
+      setUserSettings_('view_mode', 'complete');
+    }
+  } catch (err) {
+    consoleLog_("error", "update_v0m33p1_()", err);
+  }
+}
 
 /**
  * Update functions with 'ARRAY_CONSTRAIN'.
