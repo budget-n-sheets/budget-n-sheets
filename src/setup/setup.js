@@ -110,7 +110,6 @@ function setup_(settings, list_acc) {
 		decimal_separator: true
 	};
 
-	console.time("add-on/install");
 	SPREADSHEET.rename(SETUP_SETTINGS["spreadsheet_name"]);
 
 	PropertiesService2.deleteAllProperties("document");
@@ -156,8 +155,6 @@ function setup_(settings, list_acc) {
 	}
 
 	SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName("Summary"));
-	console.timeEnd("add-on/install");
-
 	PropertiesService2.setProperty("document", "is_installed", "boolean", true);
 	showDialogSetupEnd();
 	onOpen();

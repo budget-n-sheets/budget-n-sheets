@@ -1,5 +1,4 @@
 function copySheetsFromSource_() {
-	console.time("add-on/setup/copy-template");
 	var source = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 	var destination = SpreadsheetApp.getActiveSpreadsheet();
 	var sheets = destination.getSheets();
@@ -16,7 +15,6 @@ function copySheetsFromSource_() {
 	for (i = 0; i < sheets.length; i++) {
 		destination.deleteSheet(sheets[i]);
 	}
-	console.timeEnd("add-on/setup/copy-template");
 }
 
 
