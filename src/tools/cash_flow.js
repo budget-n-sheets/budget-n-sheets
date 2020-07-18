@@ -68,7 +68,7 @@ function updateCashFlow_(sheetMonth, mm) {
 
 	listEventos = getCalendarEventsForCashFlow_(financial_year, mm);
 
-	if (override_zero || listEventos.length > 0) {
+	if (override_zero) {
 		data_tags = getTagData_();
 		if (data_tags && data_tags.tags.length > 0) hasTags = true;
 		else hasTags = false;
