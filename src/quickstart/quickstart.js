@@ -557,7 +557,7 @@ function fillMonthWithZeros(sheet) {
     }
   }
 
-  sheet.getRangeList(list).setValue(0);
+  if (list.length > 0) sheet.getRangeList(list).setValue(0);
   SpreadsheetApp.flush();
 }
 
@@ -588,6 +588,6 @@ function fillCardWithZeros(sheet, col) {
     }
   }
 
-  sheet.getRangeList(list).setValue(0);
+  if (list.length > 0) sheet.getRangeList(list).setValue(0);
   SpreadsheetApp.flush();
 }
