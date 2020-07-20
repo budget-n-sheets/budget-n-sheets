@@ -137,28 +137,3 @@ var ConsoleLog = {
     console.error(payload);
   }
 }
-
-function consoleLog_ (type, message, error) {
-  const parts = {};
-
-  for (var i in error) {
-    parts[i] = error[i];
-  }
-
-  const payload = {
-    message: message,
-    error: error,
-    parts: parts
-  };
-
-  switch (type) {
-    case 'warn':
-      console.warn(payload);
-      break;
-
-    default:
-    case 'error':
-      console.error(payload);
-      break;
-  }
-}

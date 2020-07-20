@@ -94,7 +94,7 @@ function classService_(select, property, value) {
 	}
 
 	if (property !== "script" && property !== "template") {
-		consoleLog_("error", "classService_(): Invalid property.", property);
+		ConsoleLog.error("classService_(): Invalid property.", { property: property });
 		return 1;
 	}
 
@@ -106,7 +106,7 @@ function classService_(select, property, value) {
 		break;
 
 	default:
-		consoleLog_("error", "classService_(): Switch case is default", select);
+		ConsoleLog.error("classService_(): Switch case is default", { select: select });
 		return 1;
 	}
 }

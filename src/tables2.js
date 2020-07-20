@@ -44,7 +44,7 @@ function tablesService(action, select, param) {
 		return refreshTablesService_(select, param);
 
 	default:
-		consoleLog_("warn", "tablesService(): Switch case is default.", action);
+		ConsoleLog.error("tablesService(): Switch case is default.", { action: action });
 		return 1;
 	}
 }
@@ -66,7 +66,7 @@ function getTablesService_(select, param) {
 		return genUniqueTableId_();
 
 	default:
-		consoleLog_("warn", "getTablesService_(): Switch case is default.", select);
+		ConsoleLog.error("getTablesService_(): Switch case is default.", { select: select });
 		return 1;
 	}
 }
@@ -83,7 +83,7 @@ function setTablesService_(select, param) {
 		return deleteCard_(param);
 
 	default:
-		consoleLog_("warn", "setTablesService_(): Switch case is default.", select);
+		ConsoleLog.error("setTablesService_(): Switch case is default.", { select: select });
 		return 1;
 	}
 }
@@ -100,7 +100,7 @@ function refreshTablesService_(select, param) {
 		return refreshCardsRules_();
 
 	default:
-		consoleLog_("warn", "refreshTablesService_(): Switch case is default.", select);
+		ConsoleLog.error("refreshTablesService_(): Switch case is default.", { select: select });
 		return 1;
 	}
 }

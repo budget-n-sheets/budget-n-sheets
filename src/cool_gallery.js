@@ -5,7 +5,7 @@ function coolGallery(option) {
 	info = APPS_SCRIPT_GLOBAL.cool_gallery;
 	info = info[option];
 	if (!info) {
-		consoleLog_('warn', 'getCoolSheet_(): Details of page not found.', {"option":option, "info":info});
+		ConsoleLog.warn('getCoolSheet_(): Details of page not found.', { option: option, info: info });
 		showDialogErrorMessage();
 		return 2;
 	}

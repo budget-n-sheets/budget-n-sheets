@@ -46,7 +46,7 @@ function classAdminSettings_(select, key, value) {
 			return admin_settings[key];
 
 		default:
-			consoleLog_("error", "classAdminSettings_(): Switch case is default", key);
+			ConsoleLog.error("classAdminSettings_(): Switch case is default", { key: key });
 			return 1;
 		}
 
@@ -60,7 +60,7 @@ function classAdminSettings_(select, key, value) {
 			break;
 
 		default:
-			consoleLog_("error", "classAdminSettings_(): Switch case is default", key);
+			ConsoleLog.error("classAdminSettings_(): Switch case is default", { key: key });
 			return 1;
 		}
 
@@ -68,7 +68,7 @@ function classAdminSettings_(select, key, value) {
 		CacheService2.put("document", "admin_settings", "json", admin_settings);
 
 	} else {
-		consoleLog_("error", "classAdminSettings_(): Select case is default", select);
+		ConsoleLog.error("classAdminSettings_(): Select case is default", { select: select });
 		return 1;
 	}
 }
