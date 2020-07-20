@@ -225,9 +225,7 @@ function showDialogAboutAddon() {
 }
 
 
-function showDialogErrorMessage(err) {
-	if (err) consoleLog_("error", "showDialogErrorMessage()", err);
-
+function showDialogErrorMessage() {
 	var htmlTemplate, htmlDialog;
 
 	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlExceptionMessage")
