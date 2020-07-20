@@ -176,6 +176,12 @@
 						It is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.
 					</div>
 				</div>
+
+        <div class="panel" id="error-panel">
+          <p style="text-indent: 0;font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
+          <p style="text-indent: 0;">An error report was sent anonymously.</p>
+          <a href="<?= send_feedback ?>" target="_blank"><b>Send feedback</b></a>
+        </div>
 			</div>
 
 			<div id="footer" style="display:table;">
@@ -187,6 +193,8 @@
 		</div>
 		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
 		<script>
+      var TIMEOUT_ID;
+
 			$(document).ready(function() {
 				var date = new Date();
 				$("#financial_year").val(date.getFullYear());
@@ -256,14 +264,25 @@
 					list_names[i] = $(this).val();
 				});
 
-				setTimeout(function() {
+				TIMEOUT_ID = setTimeout(function() {
 						google.script.host.setHeight(293);
 						$("#timeout").fadeIn();
 						$("#footer-buttons").append("<button onclick=\"google.script.host.close()\">Close</button>");
 					}, 120000);
 
-				google.script.run.setupUi(settings, list_names);
+				google.script.run
+          .withFailureHandler(panelError)
+          .setupUi(settings, list_names);
 			}
+
+      function panelError(err) {
+        clearTimeout(TIMEOUT_ID);
+        google.script.host.setHeight(197);
+				$("#footer-buttons button").remove();
+        $("#error-panel").siblings().remove();
+        $("#error-panel").fadeIn("fast").addClass("active");
+        $("#footer-buttons").append("<button onclick=\"google.script.host.close();\">OK</button>");
+      }
 		</script>
 	</body>
 </html>
