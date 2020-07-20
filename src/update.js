@@ -140,11 +140,11 @@ function setClass_(property, value) {
  * 0.0.0
  *
 function update_v0m0p0_() {
-	try {
-	} catch (err) {
-		consoleLog_("error", "update_v0m0p0_()", err);
-		return 1;
-	}
+  try {
+  } catch (err) {
+    consoleLog_("error", "update_v0m0p0_()", err);
+    return 2;
+  }
 }*/
 
 /**
@@ -218,6 +218,7 @@ function update_v0m33p1s0_() {
  */
 function update_v0m33p0_() {
   try {
+    var rr;
     var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     var i;
 
@@ -230,14 +231,17 @@ function update_v0m33p0_() {
       else limits[i] = 0;
     }
 
-    if (update_v0m33p0s0_(spreadsheet, limits)) return 1;
-    if (update_v0m33p0s1_(spreadsheet, limits)) return 1;
-    if (update_v0m33p0s2_(spreadsheet, limits)) return 1;
+    rr = update_v0m33p0s0_(spreadsheet, limits);
+    if (rr) return rr;
+    rr = update_v0m33p0s1_(spreadsheet, limits);
+    if (rr) return rr;
+    rr = update_v0m33p0s2_(spreadsheet, limits);
+    if (rr) return rr;
 
     update_v0m33p0s3_(spreadsheet);
   } catch (err) {
     consoleLog_("error", "update_v0m33p0_()", err);
-    return 1;
+    return 2;
   }
 }
 
@@ -368,7 +372,7 @@ function update_v0m33p0s2_(spreadsheet, limits) {
     SpreadsheetApp.flush();
   } catch (err) {
     consoleLog_("error", "update_v0m33p0s2_()", err);
-    return 1;
+    return 2;
   }
 }
 
@@ -424,7 +428,7 @@ function update_v0m33p0s1_(spreadsheet, limits) {
     SpreadsheetApp.flush();
   } catch (err) {
     consoleLog_("error", "update_v0m33p0s1_()", err);
-    return 1;
+    return 2;
   }
 }
 
@@ -481,7 +485,7 @@ function update_v0m33p0s0_(spreadsheet, limits) {
     SpreadsheetApp.flush();
   } catch (err) {
     consoleLog_("error", "update_v0m33p0s0_()", err);
-    return 1;
+    return 2;
   }
 }
 
@@ -560,7 +564,7 @@ function update_v0m32p7_() {
     }
 	} catch (err) {
 		consoleLog_("error", "update_v0m32p7_()", err)
-		return 1
+		return 2;
 	}
 }
 
@@ -601,7 +605,7 @@ function update_v0m32p6_() {
 		}
 	} catch (err) {
 		consoleLog_("error", "update_v0m32p6_()", err);
-		return 1;
+		return 2;
 	}
 }
 
@@ -613,11 +617,15 @@ function update_v0m32p6_() {
  */
 function update_v0m32p2_() {
 	try {
+    var rr;
+
 		update_v0m32p2s0_();
-		if (update_v0m32p2s1_()) return 1;
+
+    rr = update_v0m32p2s1_();
+		if (rr) return rr;
 	} catch (err) {
 		consoleLog_("error", "update_v0m32p2_()", err);
-		return 1;
+		return 2;
 	}
 }
 
@@ -658,7 +666,7 @@ function update_v0m32p2s1_() {
 		spreadsheet.deleteSheet(tmp);
 	} catch (err) {
 		consoleLog_("error", "update_v0m32p2s1_()", err);
-		return 1;
+		return 2;
 	}
 }
 
@@ -755,7 +763,7 @@ function update_v0m31p6_() {
 		if (documentProperties.getProperty("is_installed") !== "true") documentProperties.setProperty("is_installed", "true");
 	} catch (err) {
 		consoleLog_("error", "update_v0m31p6_()", err);
-		return 1;
+		return 2;
 	}
 }
 
@@ -781,7 +789,7 @@ function update_v0m31p0_() {
 		PropertiesService2.setProperty("document", "admin_settings", "json", properties);
 	} catch (err) {
 		consoleLog_("error", "update_v0m31p0_()", err);
-		return 1;
+		return 2;
 	}
 }
 
@@ -856,6 +864,6 @@ function update_v0m30p6_() {
 		PropertiesService2.deleteProperty("document", "weeklyMainId");
 	} catch (err) {
 		consoleLog_("error", "update_v0m30p6_()", err);
-		return 1;
+		return 2;
 	}
 }

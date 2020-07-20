@@ -84,7 +84,7 @@ function update_() {
 		}
 		if (r.p == -1) r.p = pp;
 
-		console.warn("add-on/update/fail", r);
+		if (r.r == 2) console.warn("add-on/update/fail", r);
 		r.r = 2;
 	} else {
 		if (r.m == -1) r.m = 0;
