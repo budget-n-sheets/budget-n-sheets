@@ -20,7 +20,7 @@ function toolPicker_(select, value) {
 			"The add-on is busy. Try again in a moment.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 
-		consoleLog_('warn', 'toolPicker_(): Wait lock time out.', err);
+		ConsoleLog.warn(err);
 		return;
 	}
 

@@ -16,7 +16,7 @@ function pagesView_(select, a) {
 			"The add-on is busy. Try again in a moment.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
 
-		consoleLog_('warn', 'pagesView_(): Wait lock time out.', err);
+		ConsoleLog.warn(err);
 		return;
 	}
 

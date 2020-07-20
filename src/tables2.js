@@ -31,7 +31,7 @@ function tablesService(action, select, param) {
 	try {
 		lock.waitLock(2000);
 	} catch (err) {
-		consoleLog_("warn", "tablesService(): Wait lock time out.", err);
+		ConsoleLog.warn(err);
 		return 1;
 	}
 

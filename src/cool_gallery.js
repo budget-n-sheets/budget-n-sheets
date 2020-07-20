@@ -45,7 +45,7 @@ function getCoolSheet_(info) {
 	try {
 		template = SpreadsheetApp.openById(info.id);
 	} catch (err) {
-		consoleLog_('warn', 'getCoolSheet_()', err);
+		ConsoleLog.error(err);
 		return 1;
 	}
 

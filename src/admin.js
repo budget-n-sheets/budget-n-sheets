@@ -29,7 +29,7 @@ function classAdminSettings_(select, key, value) {
 	try {
 		lock.waitLock(1000);
 	} catch (err) {
-		consoleLog_("warn", "classAdminSettings_(): Wait lock time out.", err);
+		ConsoleLog.warn(err);
 		return 1;
 	}
 

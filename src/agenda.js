@@ -151,7 +151,7 @@ function getAllOwnedCalendars() {
 	try {
 		calendars = CalendarApp.getAllCalendars();
 	} catch (err) {
-		consoleLog_('warn', '', err);
+    ConsoleLog.error(err);
 		calendars = [ ];
 	}
 
@@ -160,7 +160,7 @@ function getAllOwnedCalendars() {
 			calendars = CalendarApp.getAllOwnedCalendars();
 		}
 	} catch (err) {
-		consoleLog_('warn', '', err);
+    ConsoleLog.error(err);
 		calendars = [ ];
 	}
 

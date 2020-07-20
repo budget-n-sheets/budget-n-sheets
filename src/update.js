@@ -89,7 +89,7 @@ function classService_(select, property, value) {
 	try {
 		lock.waitLock(1000);
 	} catch (err) {
-		consoleLog_("warn", "classService_(): Wait lock time out.", err);
+		ConsoleLog.warn(err);
 		return 1;
 	}
 
@@ -142,7 +142,7 @@ function setClass_(property, value) {
 function update_v0m0p0_() {
   try {
   } catch (err) {
-    consoleLog_("error", "update_v0m0p0_()", err);
+    ConsoleLog.error(err);
     return 2;
   }
 }*/
@@ -163,7 +163,7 @@ function update_v0m33p1_() {
 
     update_v0m33p1s0_();
   } catch (err) {
-    consoleLog_("error", "update_v0m33p1_()", err);
+    ConsoleLog.error(err);
   }
 }
 
@@ -204,7 +204,7 @@ function update_v0m33p1s0_() {
 
     sheet.setConditionalFormatRules(rules);
 	} catch (err) {
-    consoleLog_("error", "update_v0m33p1s0_()", err);
+    ConsoleLog.error(err);
 	}
 }
 
@@ -240,7 +240,7 @@ function update_v0m33p0_() {
 
     update_v0m33p0s3_(spreadsheet);
   } catch (err) {
-    consoleLog_("error", "update_v0m33p0_()", err);
+    ConsoleLog.error(err);
     return 2;
   }
 }
@@ -282,7 +282,7 @@ function update_v0m33p0s3_(spreadsheet) {
 
     formatTags_();
   } catch (err) {
-    consoleLog_("error", "update_v0m33p0s3_()", err);
+    ConsoleLog.error(err);
   }
 }
 
@@ -371,7 +371,7 @@ function update_v0m33p0s2_(spreadsheet, limits) {
 
     SpreadsheetApp.flush();
   } catch (err) {
-    consoleLog_("error", "update_v0m33p0s2_()", err);
+    ConsoleLog.error(err);
     return 2;
   }
 }
@@ -427,7 +427,7 @@ function update_v0m33p0s1_(spreadsheet, limits) {
 
     SpreadsheetApp.flush();
   } catch (err) {
-    consoleLog_("error", "update_v0m33p0s1_()", err);
+    ConsoleLog.error(err);
     return 2;
   }
 }
@@ -484,7 +484,7 @@ function update_v0m33p0s0_(spreadsheet, limits) {
 
     SpreadsheetApp.flush();
   } catch (err) {
-    consoleLog_("error", "update_v0m33p0s0_()", err);
+    ConsoleLog.error(err);
     return 2;
   }
 }
@@ -563,7 +563,7 @@ function update_v0m32p7_() {
       backstage.getRangeList(list).setFormulaR1C1("RC[-" + (w_ + w_*k) + "]");
     }
 	} catch (err) {
-		consoleLog_("error", "update_v0m32p7_()", err)
+		ConsoleLog.error(err);
 		return 2;
 	}
 }
@@ -604,7 +604,7 @@ function update_v0m32p6_() {
       saveTriggerId_(trigger, 'document', 'clockTriggerId')
 		}
 	} catch (err) {
-		consoleLog_("error", "update_v0m32p6_()", err);
+		ConsoleLog.error(err);
 		return 2;
 	}
 }
@@ -624,7 +624,7 @@ function update_v0m32p2_() {
     rr = update_v0m32p2s1_();
 		if (rr) return rr;
 	} catch (err) {
-		consoleLog_("error", "update_v0m32p2_()", err);
+		ConsoleLog.error(err);
 		return 2;
 	}
 }
@@ -665,7 +665,7 @@ function update_v0m32p2s1_() {
 
 		spreadsheet.deleteSheet(tmp);
 	} catch (err) {
-		consoleLog_("error", "update_v0m32p2s1_()", err);
+		ConsoleLog.error(err);
 		return 2;
 	}
 }
@@ -679,7 +679,7 @@ function update_v0m32p2s0_() {
 			[ "name", "category", "description", "analytics", "code" ]
 		]);
 	} catch (err) {
-		consoleLog_("error", "update_v0m32p2s0_()", err);
+		ConsoleLog.error(err);
 	}
 }
 
@@ -720,7 +720,7 @@ function update_v0m31p8_() {
 			sheet.getRangeList(ranges).setValue(limit);
 		}
 	} catch (err) {
-		consoleLog_("error", "update_v0m31p8_()", err);
+		ConsoleLog.error(err);
 	}
 }
 
@@ -747,7 +747,7 @@ function update_v0m31p7_() {
 			sheet.getRange(4 + h_*i, 2).setFormula(formula);
 		}
 	} catch (err) {
-		consoleLog_("error", "update_v0m31p7_()", err);
+		ConsoleLog.error(err);
 	}
 }
 
@@ -762,7 +762,7 @@ function update_v0m31p6_() {
 
 		if (documentProperties.getProperty("is_installed") !== "true") documentProperties.setProperty("is_installed", "true");
 	} catch (err) {
-		consoleLog_("error", "update_v0m31p6_()", err);
+		ConsoleLog.error(err);
 		return 2;
 	}
 }
@@ -788,7 +788,7 @@ function update_v0m31p0_() {
 		};
 		PropertiesService2.setProperty("document", "admin_settings", "json", properties);
 	} catch (err) {
-		consoleLog_("error", "update_v0m31p0_()", err);
+		ConsoleLog.error(err);
 		return 2;
 	}
 }
@@ -863,7 +863,7 @@ function update_v0m30p6_() {
 		PropertiesService2.deleteProperty("document", "dailyMainId");
 		PropertiesService2.deleteProperty("document", "weeklyMainId");
 	} catch (err) {
-		consoleLog_("error", "update_v0m30p6_()", err);
+    ConsoleLog.error(err);
 		return 2;
 	}
 }

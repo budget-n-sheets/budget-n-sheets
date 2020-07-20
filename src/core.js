@@ -206,7 +206,7 @@ function showDialogAboutAddon() {
 			onlineUpdate_();
 		}
 	} catch (err) {
-		consoleLog_("error", "showDialogAboutAddon()", err);
+		ConsoleLog.error(err);
 	}
 
 	var htmlDialog, htmlTemplate;

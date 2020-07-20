@@ -20,7 +20,7 @@ function importAboutPage_() {
 	try {
 		template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 	} catch (err) {
-		consoleLog_("warn", "importAboutPage_()", err);
+		ConsoleLog.error(err);
 		return 1;
 	}
 

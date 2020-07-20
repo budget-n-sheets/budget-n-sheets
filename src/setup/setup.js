@@ -17,7 +17,7 @@ function setupFlow_(select, settings, list_acc) {
 			"Add-on setup in progress",
 			"A budget spreadsheet setup is already in progress.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
-		consoleLog_("warn", "setupFlow_(): Wait lock time out.", err);
+		ConsoleLog.warn(err);
 		return;
 	}
 

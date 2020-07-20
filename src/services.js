@@ -4,7 +4,7 @@ function onOpenInstallable_(e) {
 	try {
 		loadCache_();
 	} catch (err) {
-		consoleLog_("error", "loadCache_()", err);
+    ConsoleLog.error(err);
 	}
 }
 
@@ -44,7 +44,7 @@ function onEditInstallable_(e) {
 		try {
 			quickActions_(e.range, e.value);
 		} catch (err) {
-			consoleLog_("error", "quickActions_()", err);
+			ConsoleLog.error(err);
 		} finally {
 			e.range.setValue("");
 		}
@@ -52,7 +52,7 @@ function onEditInstallable_(e) {
 		try {
 			tagsCheckbox_(sheet, e.range);
 		} catch (err) {
-			consoleLog_("error", "tagsCheckbox_()", err);
+			ConsoleLog.error(err);
 		}
 	}*/
 }
