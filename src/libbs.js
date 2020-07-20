@@ -112,21 +112,28 @@ function getMonthDelta (mm) {
 }
 
 var ConsoleLog = {
-  digest: function (error) {
+  digest: function (error, values) {
     const payload = {};
-    for (var key in error) {
-      payload[key] = error[key];
+
+    if (error instanceof Error) {
+      for (var key in error) {
+        payload[key] = error[key];
+      }
+    } else {
+      payload['error'] = error;
     }
+
+    if (values) payload['values'] = values;
     return payload;
   },
 
-  warn: function (error) {
-    const payload = this.digest(error);
+  warn: function (error, values) {
+    const payload = this.digest(error, values);
     console.warn(payload);
   },
 
-  error: function (error) {
-    const payload = this.digest(error);
+  error: function (error, values) {
+    const payload = this.digest(error, values);
     console.error(payload);
   }
 }
