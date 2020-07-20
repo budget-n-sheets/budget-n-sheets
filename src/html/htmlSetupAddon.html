@@ -22,41 +22,6 @@
 				to {left: 257px;}
 			}
 
-			.fancy_box {
-				width: 263px;
-				height: 41px;
-				margin-top: 41px;
-				padding: 11px 19px;
-				font-size: 17px;
-				border: 1px solid #cccccc;
-				border-left: none;
-				border-right: none;
-				position: relative;
-				overflow: hidden;
-			}
-			.fancy_box div {
-				width: 300px;
-				left: 300px;
-				position: absolute;
-				word-wrap: break-word;
-				animation-name: slidein;
-				animation-duration: 48s;
-				animation-iteration-count: infinite;
-			}
-
-			@keyframes slidein {
-				from { left: 400px; }
-				1.04% { left: 0px; }
-				23.92% { left: 0px; }
-				24.96% { left: -400px; }
-				to { left: -400px; }
-			}
-
-			.fancy_box div:nth-child(1) { animation-delay: 0s; }
-			.fancy_box div:nth-child(2) { animation-delay: 12s; }
-			.fancy_box div:nth-child(3) { animation-delay: 24s; }
-			.fancy_box div:nth-child(4) { animation-delay: 36s; }
-
 			#content {
 				padding: 7px 5px;
 				margin-bottom: 4.7em;
@@ -206,12 +171,6 @@
 						<div style="width:263px;margin-top:19px;">
 							This process takes up to two minutes. Do not edit the spreadsheet until it is finished.
 						</div>
-						<div id="the_box">
-							<div>Join the <a href="<?= join_forum ?>" target="_blank"><b>forum</b></a> to post questions and discussions.</div>
-							<div>Visit the <a href="<?= home_wiki ?>" target="_blank"><b>wiki</b></a> for a full review of the features.</div>
-							<div>Send valuable <a href="<?= send_feedback ?>" target="_blank">feedback</a>. <a href="<?= g_marketplace ?>" target="_blank">Rate</a> the add-on.</div>
-							<div>Budget n Sheets is free, ad-free and open source.</div>
-						</div>
 					</div>
 					<div id="timeout" style="display: none;margin-top: 2em;">
 						It is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.
@@ -282,7 +241,7 @@
 				$(".panel").hide();
 				$("#footer-buttons button").remove();
 				$("#setup-panel").fadeIn("fast").addClass("active");
-				$("#the_box").addClass("fancy_box");
+        google.script.host.setHeight(233);
 
 				var settings = {
 					spreadsheet_name: $("#spreadsheet_name").val(),
@@ -298,7 +257,7 @@
 				});
 
 				setTimeout(function() {
-						google.script.host.setHeight(397);
+						google.script.host.setHeight(293);
 						$("#timeout").fadeIn();
 						$("#footer-buttons").append("<button onclick=\"google.script.host.close()\">Close</button>");
 					}, 120000);
