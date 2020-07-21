@@ -45,21 +45,21 @@ function onOpen(e) {
 			.addItem("About the add-on", "showDialogAboutAddon");
 	} else {
 		if ( isInstalled_() ) {
-			menu.addItem("Add blank rows", "toolAddBlankRows")
-				.addItem("Format table", "toolFormatRegistry")
-				.addItem("Update cash flow", "toolUpdateCashFlow")
-				.addSubMenu(ui.createMenu("Pages view")
-					.addItem("Collapse", "toolHideSheets_")
-					.addItem("Expand", "toolShowSheets_"))
-				.addSeparator()
-				.addItem("Open Accounts & Cards", "showPanelTables")
-				.addItem("Open Cool Gallery", "showPanelAnalytics")
-				.addSeparator()
-				.addItem("Change settings", "showSidebarMainSettings")
-				.addItem("Show quickstart", "showPanelQuickstart")
-				.addSeparator()
-				.addItem("About the add-on", "showDialogAboutAddon")
-				.addItem("Deactive the add-on", "askDeactivation");
+      menu.addItem("Add blank rows", "toolAddBlankRows")
+        .addItem("Format table", "toolFormatRegistry")
+        .addItem("Update cash flow", "toolUpdateCashFlow")
+        .addSeparator()
+        .addSubMenu(ui.createMenu("Open panel")
+          .addItem("Accounts & Cards", "showPanelTables")
+          .addItem("Cool Gallery", "showPanelAnalytics"))
+        .addSubMenu(ui.createMenu("Pages view")
+          .addItem("Collapse", "toolHideSheets_")
+          .addItem("Expand", "toolShowSheets_"))
+        .addSeparator()
+        .addItem("About the add-on", "showDialogAboutAddon")
+        .addItem("Change settings", "showSidebarMainSettings")
+        .addItem("Deactive the add-on", "askDeactivation")
+        .addItem("Show quickstart", "showPanelQuickstart");
 
 			console.info("add-on/open");
 		} else {
