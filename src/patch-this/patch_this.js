@@ -101,6 +101,6 @@ function update_() {
 	classService_("set", "script", cell);
 	classService_("set", "template", APPS_SCRIPT_GLOBAL.template_version);
 
-	nodeControl_("sign");
+	bsSignSetup_();
 	return r.r;
 }

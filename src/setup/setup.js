@@ -136,9 +136,7 @@ function setup_(settings, list_acc) {
 	class_version2.script.beta = PATCH_THIS["beta_list"].length;
 	PropertiesService2.setProperty("document", "class_version2", "json", class_version2);
 
-	if (nodeControl_("sign")) {
-		throw new Error("Failed to sign document.");
-	}
+	if (bsSignSetup_()) throw new Error("Failed to sign document.");
 
 	SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName("Summary"));
 	PropertiesService2.setProperty("document", "is_installed", "boolean", true);
