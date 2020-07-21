@@ -1,4 +1,32 @@
-function viewModeSimple() {
+function toggleViewMode_ () {
+  var lock = LockService.getDocumentLock();
+	try {
+		lock.waitLock(2000);
+	} catch (err) {
+		SpreadsheetApp.getUi().alert(
+			"Add-on is busy",
+			"The add-on is busy. Try again in a moment.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+
+		ConsoleLog.warn(err);
+		return;
+	}
+
+  var view_mode = getSpreadsheetSettings_('view_mode');
+
+  if (view_mode === 'complete') {
+    viewModeSimple_();
+    view_mode = 'simple';
+  } else {
+    viewModeComplete_();
+    view_mode = 'complete';
+  }
+
+  setSpreadsheetSettings_('view_mode', view_mode);
+  lock.releaseLock();
+}
+
+function viewModeSimple_ () {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   var sheet, i, k
   var expr, head, cell
@@ -54,7 +82,7 @@ function viewModeSimple() {
   SpreadsheetApp.flush()
 }
 
-function viewModeComplete() {
+function viewModeComplete_ () {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   var sheet, i, k
   var formula, expr1, expr2, expr3, expr4

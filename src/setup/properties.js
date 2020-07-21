@@ -5,7 +5,6 @@ function setupProperties_(yyyy_mm) {
 
 	properties = {
 		initial_month: SETUP_SETTINGS["init_month"],
-    view_mode: 'complete',
 		financial_calendar: "",
 		post_day_events: false,
 		cash_flow_events: false,
@@ -34,6 +33,7 @@ function setupProperties_(yyyy_mm) {
 
 	properties = {
 		operation_mode: operation,
+    view_mode: 'complete',
 		decimal_separator: SETUP_SETTINGS["decimal_separator"],
 		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale()
 	};

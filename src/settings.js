@@ -64,11 +64,9 @@ function saveUserSettings(settings) {
 
 	const new_init_month = Number(settings.initial_month);
 	const init_month = getUserSettings_("initial_month");
-  const view_mode = getUserSettings_("view_mode");
 
 	const user_settings = {
 		initial_month: new_init_month,
-    view_mode: settings.view_mode,
 		override_zero: settings.override_zero,
 
 		financial_calendar: calendar.financial_calendar,
@@ -83,15 +81,6 @@ function saveUserSettings(settings) {
     updateDecimalSeparator_();
   } catch (err) {
     console.error('settings/decimal-separator ' + err);
-  }
-
-  try {
-    if (user_settings.view_mode !== view_mode) {
-      if (user_settings.view_mode === 'complete') viewModeComplete()
-      else if (user_settings.view_mode === 'simple') viewModeSimple()
-    }
-  } catch (err) {
-    console.error('settings/view-mode ' + err);
   }
 
   if (init_month == new_init_month) return;
@@ -121,7 +110,6 @@ function getUserSettings_(select) {
 		case 'override_zero':
 		case 'cash_flow_events':
 		case 'initial_month':
-    case 'view_mode':
 			return user_settings[select];
 
 		default:
@@ -140,7 +128,6 @@ function setUserSettings_(select, value) {
 		case 'post_day_events':
 		case 'cash_flow_events':
 		case 'override_zero':
-    case 'view_mode':
 			user_settings[select] = value;
 			break;
 
@@ -168,6 +155,7 @@ function getSpreadsheetSettings_(select) {
 	case "operation_mode":
 	case "decimal_separator":
 	case "spreadsheet_locale":
+  case 'view_mode':
 		return spreadsheet_settings[select];
 
 	default:
@@ -184,6 +172,7 @@ function setSpreadsheetSettings_(select, value) {
 	case "operation_mode":
 	case "decimal_separator":
 	case "spreadsheet_locale":
+  case 'view_mode':
 		spreadsheet_settings[select] = value;
 		break;
 
