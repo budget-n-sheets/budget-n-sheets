@@ -34,7 +34,8 @@ function updateCashFlow_ (mm) {
   const financial_year = getConstProperties_('financial_year');
 
   const dd = new Date(financial_year, mm + 1, 0).getDate();
-  const tags = (getUserSettings_('override_zero') ? getTagData_() : null);
+  const tags = (getUserSettings_('override_zero') ? getTagData_() : false);
+  const eventos = getCalendarEventsForCashFlow_(financial_year, mm);
 
   const cf_flow = [
     '', '', '', '', '', '', '', '', '', '',
@@ -51,7 +52,7 @@ function updateCashFlow_ (mm) {
     { mm: mm, dd: dd, num_acc: num_acc, dec_p: dec_p },
     cf_flow, cf_transactions);
 
-  cfDigestCalendar_(tags,
+  cfDigestCalendar_(eventos, tags,
     { mm: mm, dec_p: dec_p },
     cf_flow, cf_transactions);
 
@@ -60,28 +61,24 @@ function updateCashFlow_ (mm) {
     cf_transactions.splice(dd - 31, 31 - dd);
   }
 
-  cf_flow = transpose([cf_flow]);
-  cf_transactions = transpose([cf_transactions]);
-
-  sheet.getRange(4, 2 + 4 * mm, dd, 1).setFormulas(cf_flow);
-  sheet.getRange(4, 4 + 4 * mm, dd, 1).setValues(cf_transactions);
+  sheet.getRange(4, 2 + 4 * mm, dd, 1).setFormulas(transpose([cf_flow]));
+  sheet.getRange(4, 4 + 4 * mm, dd, 1).setValues(transpose([cf_transactions]));
 
   SpreadsheetApp.flush();
   console.timeEnd('tool/update-cash-flow');
 }
 
-function cfDigestCalendar_ (tags, more, cf_flow, cf_transactions) {
+function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
   var evento, title, value, day;
   var c, i, j;
 
   const mm = more.mm;
   const dec_p = more.dec_p;
 
-  const eventos = getCalendarEventsForCashFlow_(financial_year, mm);
-  const cards = (mm > 0 ? getTablesService_('cardsbalances') : -1);
+  const cards = (mm > 0 ? getTablesService_('cardsbalances') : false);
 
-  const hasTags = tags.tags.length > 0;
-  const hasCards = cards !== 1;
+  const hasTags = (tags && tags.tags.length > 0);
+  const hasCards = (cards && cards !== 1);
 
   i = -1;
   while (++i < eventos.length) {
@@ -157,7 +154,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
   const dec_p = more.dec_p;
   const num_acc = more.num_acc;
 
-  const hasTags = tags.tags.length > 0;
+  const hasTags = (tags && tags.tags.length > 0);
   const table = sheet.getRange(5, 6, maxRows, 5 * num_acc).getValues();
 
   i = -1;
