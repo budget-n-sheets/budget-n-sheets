@@ -25,26 +25,16 @@ function validateUpdateCashFlow_ (mm) {
 
 function updateCashFlow_ (mm) {
   console.time('tool/update-cash-flow');
-  var spreadsheet, sheetMonth, sheetCashFlow;
-  var listEventos, evento, day;
-  var data_cards, data_tags, value;
-  var table, hasCards, hasTags;
-  var c, cc, i, j, k, n, ma, i1;
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getSheetByName('Cash Flow');
+  if (!sheet) return;
 
-  spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-
-  sheetMonth = spreadsheet.getSheetByName(MN_SHORT[mm]);
-  if (!sheetMonth) return;
-
-  sheetCashFlow = spreadsheet.getSheetByName('Cash Flow');
-  if (!sheetCashFlow) return;
-
+  const dec_p = getSpreadsheetSettings_('decimal_separator');
   const num_acc = getConstProperties_('number_accounts');
   const financial_year = getConstProperties_('financial_year');
-  const override_zero = getUserSettings_('override_zero');
-  const dec_p = getSpreadsheetSettings_('decimal_separator');
 
   const dd = new Date(financial_year, mm + 1, 0).getDate();
+  const tags = (getUserSettings_('override_zero') ? getTagData_() : null);
 
   const cf_flow = [
     '', '', '', '', '', '', '', '', '', '',
@@ -57,25 +47,13 @@ function updateCashFlow_ (mm) {
     '', '', '', '', '', '', '', '', '', '', ''
   ];
 
-  listEventos = getCalendarEventsForCashFlow_(financial_year, mm);
-
-  if (override_zero) {
-    data_tags = getTagData_();
-    if (data_tags && data_tags.tags.length > 0) hasTags = true;
-    else hasTags = false;
-  }
-
-  cfDigestAccounts_(sheetMonth,
-    data_tags,
-    { num_acc: num_acc, dec_p: dec_p, dd: dd },
+  cfDigestAccounts_(spreadsheet, tags,
+    { dd: dd, num_acc: num_acc, dec_p: dec_p },
     cf_flow,
     cf_transactions);
 
-  if (mm > 0) data_cards = getTablesService_('cardsbalances');
-
-  cfDigestCalendar_(listEventos,
-    data_cards, data_tags,
-    { mm: mm, num_acc: num_acc, dec_p: dec_p, dd: dd },
+  cfDigestCalendar_(tags,
+    { mm: mm, dec_p: dec_p },
     cf_flow,
     cf_transactions);
 
@@ -83,35 +61,42 @@ function updateCashFlow_ (mm) {
     cf_flow.splice(dd - 31, 31 - dd);
     cf_transactions.splice(dd - 31, 31 - dd);
   }
+
   cf_flow = transpose([cf_flow]);
   cf_transactions = transpose([cf_transactions]);
 
-  sheetCashFlow.getRange(4, 2 + 4 * mm, dd, 1).setFormulas(cf_flow);
-  sheetCashFlow.getRange(4, 4 + 4 * mm, dd, 1).setValues(cf_transactions);
+  sheet.getRange(4, 2 + 4 * mm, dd, 1).setFormulas(cf_flow);
+  sheet.getRange(4, 4 + 4 * mm, dd, 1).setValues(cf_transactions);
+
   SpreadsheetApp.flush();
   console.timeEnd('tool/update-cash-flow');
 }
 
-function cfDigestCalendar_ (listEventos, data_cards, data_tags, more, cf_flow, cf_transactions) {
-  var evento, value, day;
-  var hasCards, hasTags, c, n, i, j, i1;
+function cfDigestCalendar_ (tags, more, cf_flow, cf_transactions) {
+  var evento, title, value, day;
+  var hasTags, c, i, j;
 
   const mm = more.mm;
   const dec_p = more.dec_p;
 
-  if (data_cards && data_cards !== 1) hasCards = true;
+  const eventos = getCalendarEventsForCashFlow_(financial_year, mm);
+  const cards = (mm > 0 ? getTablesService_('cardsbalances') : -1);
+
+  const hasCards = cards !== 1;
   if (tags && tags.tags.length > 0) hasTags = true;
 
-  for (i = 0; i < listEventos.length; i++) {
-    evento = listEventos[i];
+  i = -1;
+  while (++i < eventos.length) {
+    evento = eventos[i];
 
     if (evento.Description === '') continue;
     if (evento.hasAtMute) continue;
 
-    if (!isNaN(evento.Value)) value = evento.Value;
-    else if (hasCards && evento.hasQcc) {
+    if (!isNaN(evento.Value)) {
+      value = evento.Value;
+    } else if (hasCards && evento.hasQcc) {
       if (evento.Card !== -1) {
-        c = data_cards.cards.indexOf(evento.Card);
+        c = cards.cards.indexOf(evento.Card);
         if (c === -1) continue;
       } else {
         c = 0;
@@ -120,48 +105,50 @@ function cfDigestCalendar_ (listEventos, data_cards, data_tags, more, cf_flow, c
       if (evento.TranslationType === 'M' &&
           mm + evento.TranslationNumber >= 0 &&
           mm + evento.TranslationNumber <= 11) {
-        value = +data_cards.balance[c][mm + evento.TranslationNumber].toFixed(2);
+        value = +cards.balance[c][mm + evento.TranslationNumber].toFixed(2);
       } else {
-        value = +data_cards.balance[c][mm - 1].toFixed(2);
+        value = +cards.balance[c][mm - 1].toFixed(2);
       }
     } else if (hasTags && evento.Tags.length > 0) {
-      n = evento.Tags.length;
-      for (j = 0; j < n; j++) {
-        c = data_tags.tags.indexOf(evento.Tags[j]);
-        if (c !== -1) break;
-      }
-
+      j = 0;
+      do {
+        c = tags.tags.indexOf(evento.Tags[j++]);
+      } while (j < evento.Tags.length && c === -1);
       if (c === -1) continue;
 
       switch (evento.TranslationType) {
         default:
-          console.warn('updateCashFlow_(): Switch case is default.', evento.TranslationType);
-        case 'Avg':
+          console.warn('cfDigestCalendar_(): Switch case is default.', evento.TranslationType);
         case '':
-          value = data_tags.average[c];
+        case 'Avg':
+          value = tags.average[c];
           break;
         case 'Total':
-          value = data_tags.total[c];
+          value = tags.total[c];
           break;
         case 'M':
           if (mm + evento.TranslationNumber < 0 || mm + evento.TranslationNumber > 11) continue;
-
-          value = data_tags.months[c][mm + evento.TranslationNumber];
+          value = tags.months[c][mm + evento.TranslationNumber];
           break;
       }
     } else {
       continue;
     }
 
-    for (i1 = 0; i1 < evento.Day.length; i1++) {
-      day = evento.Day[i1] - 1;
-      cf_flow[day] += numberFormatLocaleSignal.call(value, dec_p);
-      cf_transactions[day] += '@' + evento.Title + ' ';
+    value = numberFormatLocaleSignal.call(value, dec_p);
+    title = '@' + evento.Title + ' ';
+    for (j = 0; j < evento.Day.length; j++) {
+      day = evento.Day[j] - 1;
+      cf_flow[day] += value;
+      cf_transactions[day] += title;
     }
   }
 }
 
-function cfDigestAccounts_ (sheet, tags, more, cf_flow, cf_transactions) {
+function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
+  var sheet = spreadsheet.getSheetByName(MN_SHORT[mm]);
+  if (!sheet) return;
+
   const maxRows = sheet.getLastRow() - 4;
   if (maxRows <= 0) return;
 
@@ -172,31 +159,28 @@ function cfDigestAccounts_ (sheet, tags, more, cf_flow, cf_transactions) {
   const table = sheet.getRange(5, 6, maxRows, 5 * num_acc).getValues();
 
   var day, value, matches;
-  var hasTags, cc, i, j, k;
+  var hasTags, cc, c, i, j, k;
 
   if (tags && tags.tags.length > 0) hasTags = true;
-  else hasTags = false;
 
-  i = 0;
+  i = -1;
   k = 0;
   cc = 0;
 
   while (k < num_acc) {
+    i++;
     if (i >= maxRows || table[i][2 + cc] === '') {
       k++;
       cc = 5 * k;
-      i = 0;
+      i = -1;
       continue;
     }
 
     day = table[i][cc];
-    if (day <= 0 || day > dd) {
-      i++;
-      continue;
-    }
+    if (day <= 0 || day > dd) continue;
 
     value = table[i][2 + cc];
-    if (hasTags && value === 0) {
+    if (value === 0 && hasTags) {
       matches = table[i][3 + cc].match(/#\w+/g);
       for (j = 0; j < matches.length; j++) {
         c = tags.tags.indexOf(matches[j].substr(1));
@@ -207,15 +191,10 @@ function cfDigestAccounts_ (sheet, tags, more, cf_flow, cf_transactions) {
       }
     }
 
-    if (typeof value !== 'number') {
-      i++;
-      continue;
-    }
+    if (typeof value !== 'number') continue;
 
     day--;
     cf_flow[day] += numberFormatLocaleSignal.call(value, dec_p);
     cf_transactions[day] += '@' + table[i][1 + cc] + ' ';
-
-    i++;
   }
 }
