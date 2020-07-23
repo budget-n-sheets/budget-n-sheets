@@ -112,9 +112,14 @@
 		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
 		<script>
 			$(document).on("click", ".md-speed", function() {
+        if ($('.md-speed').hasClass('lock')) return;
+        $('.md-speed').addClass('lock');
 				google.script.run
 					.withFailureHandler(showError)
-					.playSpeedQuickstart( $(this).attr("id") );
+          .withSuccessHandler(function () {
+              $('.md-speed').removeClass('lock');
+            })
+					.playSpeedQuickstart($(this).attr("id"));
 			});
 		</script>
 	</body>
