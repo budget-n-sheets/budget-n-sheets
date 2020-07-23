@@ -48,7 +48,7 @@ function updateCashFlow_ (mm) {
   ];
 
   cfDigestAccounts_(spreadsheet, tags,
-    { dd: dd, num_acc: num_acc, dec_p: dec_p },
+    { mm: mm, dd: dd, num_acc: num_acc, dec_p: dec_p },
     cf_flow, cf_transactions);
 
   cfDigestCalendar_(tags,
@@ -147,7 +147,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
   var day, value, matches;
   var cc, c, i, j, k;
 
-  var sheet = spreadsheet.getSheetByName(MN_SHORT[mm]);
+  var sheet = spreadsheet.getSheetByName(MN_SHORT[more.mm]);
   if (!sheet) return;
 
   const maxRows = sheet.getLastRow() - 4;
