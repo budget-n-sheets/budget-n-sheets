@@ -48,25 +48,23 @@ function toolPicker_(select, value) {
 }
 
 function getTagData_() {
+  const data = {
+    tags: [ ],
+    months: [ ],
+    average: [ ],
+    total: [ ]
+  };
+
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
-	var lastRow, i;
+  if (!sheet) return data;
+  if (sheet.getMaxColumns() < 20) return data;
 
-	if (!sheet) return;
-
-	lastRow = sheet.getLastRow();
-	if (lastRow < 2) return;
-	if (sheet.getMaxColumns() < 20) return;
-
-	const data = {
-		tags: [ ],
-		months: [ ],
-		average: [ ],
-		total: [ ]
-	};
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return data;
 
   const table = sheet.getRange(2, 5, lastRow - 1, 16).getValues();
 
-  for (i = 0; i < data.length; i++) {
+  for (var i = 0; i < data.length; i++) {
     if (table[i][0] === '' || !/^\w+$/.test(table[i][0])) continue;
 
     data.tags[i] = table[i][0];

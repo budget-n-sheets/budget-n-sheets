@@ -49,13 +49,11 @@ function updateCashFlow_ (mm) {
 
   cfDigestAccounts_(spreadsheet, tags,
     { dd: dd, num_acc: num_acc, dec_p: dec_p },
-    cf_flow,
-    cf_transactions);
+    cf_flow, cf_transactions);
 
   cfDigestCalendar_(tags,
     { mm: mm, dec_p: dec_p },
-    cf_flow,
-    cf_transactions);
+    cf_flow, cf_transactions);
 
   if (dd < 31) {
     cf_flow.splice(dd - 31, 31 - dd);
@@ -74,7 +72,7 @@ function updateCashFlow_ (mm) {
 
 function cfDigestCalendar_ (tags, more, cf_flow, cf_transactions) {
   var evento, title, value, day;
-  var hasTags, c, i, j;
+  var c, i, j;
 
   const mm = more.mm;
   const dec_p = more.dec_p;
@@ -82,8 +80,8 @@ function cfDigestCalendar_ (tags, more, cf_flow, cf_transactions) {
   const eventos = getCalendarEventsForCashFlow_(financial_year, mm);
   const cards = (mm > 0 ? getTablesService_('cardsbalances') : -1);
 
+  const hasTags = tags.tags.length > 0;
   const hasCards = cards !== 1;
-  if (tags && tags.tags.length > 0) hasTags = true;
 
   i = -1;
   while (++i < eventos.length) {
@@ -146,6 +144,9 @@ function cfDigestCalendar_ (tags, more, cf_flow, cf_transactions) {
 }
 
 function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
+  var day, value, matches;
+  var cc, c, i, j, k;
+
   var sheet = spreadsheet.getSheetByName(MN_SHORT[mm]);
   if (!sheet) return;
 
@@ -156,12 +157,8 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
   const dec_p = more.dec_p;
   const num_acc = more.num_acc;
 
+  const hasTags = tags.tags.length > 0;
   const table = sheet.getRange(5, 6, maxRows, 5 * num_acc).getValues();
-
-  var day, value, matches;
-  var hasTags, cc, c, i, j, k;
-
-  if (tags && tags.tags.length > 0) hasTags = true;
 
   i = -1;
   k = 0;
