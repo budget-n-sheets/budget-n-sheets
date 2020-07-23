@@ -25,7 +25,7 @@ function validateUpdateCashFlow_ (mm) {
 
 function updateCashFlow_ (mm) {
   console.time('tool/update-cash-flow');
-  var spreadsheet, sheetMonth, sheetCashFlow, sheetBackstage;
+  var spreadsheet, sheetMonth, sheetCashFlow;
   var listEventos, evento, day;
   var data_cards, data_tags, value;
   var table, hasCards, hasTags;
@@ -72,9 +72,6 @@ function updateCashFlow_ (mm) {
     cf_transactions);
 
   if (mm > 0) {
-    sheetBackstage = spreadsheet.getSheetByName('_Backstage');
-  }
-  if (sheetBackstage) {
     data_cards = getTablesService_('cardsbalances');
     if (data_cards && data_cards !== 1) hasCards = true;
   }
