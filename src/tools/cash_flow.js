@@ -1,18 +1,13 @@
 function validateUpdateCashFlow_ (mm) {
   if (onlineUpdate_()) return;
 
-  var sheet, range;
-  var name;
-
   if (mm == null) {
-    range = SpreadsheetApp.getActiveRange();
-    sheet = range.getSheet();
-    name = sheet.getSheetName();
+    var range = SpreadsheetApp.getActiveRange();
+    var name = range.getSheet().getSheetName();
 
     if (name === 'Cash Flow') {
       mm = range.getColumn() - 1;
       mm = (mm - (mm % 4)) / 4;
-      sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
     } else {
       mm = MN_SHORT.indexOf(name);
       if (mm === -1) {
@@ -25,25 +20,23 @@ function validateUpdateCashFlow_ (mm) {
     }
   }
 
-  if (!sheet) {
-    sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
-    if (!sheet) return;
-  }
-
-  updateCashFlow_(sheet, mm);
+  updateCashFlow_(mm);
 }
 
-function updateCashFlow_ (sheetMonth, mm) {
+function updateCashFlow_ (mm) {
   console.time('tool/update-cash-flow');
-  var spreadsheet, sheetCashFlow, sheetBackstage;
+  var spreadsheet, sheetMonth, sheetCashFlow, sheetBackstage;
   var listEventos, evento, day;
   var data_cards, data_tags, value;
   var table, hasCards, hasTags;
   var c, cc, i, j, k, n, ma, i1;
 
   spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  sheetCashFlow = spreadsheet.getSheetByName('Cash Flow');
 
+  sheetMonth = spreadsheet.getSheetByName(MN_SHORT[mm]);
+  if (!sheetMonth) return;
+
+  sheetCashFlow = spreadsheet.getSheetByName('Cash Flow');
   if (!sheetCashFlow) return;
 
   const num_acc = getConstProperties_('number_accounts');
