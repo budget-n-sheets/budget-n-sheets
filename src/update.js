@@ -162,26 +162,12 @@ function update_v0m33p2_() {
 }
 
 /**
- * Set uninitialized 'view_mode' value to 'complete'.
  * Remove conditional formmating from tag code column.
  * Set data validation in tag code column.
  *
  * 0.33.1
  */
 function update_v0m33p1_() {
-  try {
-    const view_mode = getUserSettings_('view_mode');
-    if (view_mode !== 'complete' && view_mode !== 'simple') {
-      setUserSettings_('view_mode', 'complete');
-    }
-
-    update_v0m33p1s0_();
-  } catch (err) {
-    ConsoleLog.error(err);
-  }
-}
-
-function update_v0m33p1s0_() {
 	try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
     var rules, rule;
