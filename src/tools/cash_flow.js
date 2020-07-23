@@ -37,7 +37,7 @@ function updateCashFlow_ (sheetMonth, mm) {
   console.time('tool/update-cash-flow');
   var spreadsheet, sheetCashFlow, sheetBackstage;
   var listEventos, evento, day;
-  var data_cards, data_tags, value, maxRows;
+  var data_cards, data_tags, value;
   var table, hasCards, hasTags;
   var cf_flow, cf_transactions;
   var c, cc, i, j, k, n, ma, i1;
@@ -69,52 +69,11 @@ function updateCashFlow_ (sheetMonth, mm) {
     else hasTags = false;
   }
 
-  maxRows = sheetMonth.getLastRow() - 4;
-
-  if (maxRows > 0) {
-    table = sheetMonth.getRange(5, 6, maxRows, 5 * num_acc).getValues();
-
-    i = 0;
-    k = 0;
-    cc = 5 * k;
-    while (k < num_acc) {
-      if (i >= maxRows || table[i][2 + cc] === '') {
-        k++;
-        cc = 5 * k;
-        i = 0;
-        continue;
-      }
-
-      day = table[i][0 + cc];
-      if (day <= 0 || day > dd) {
-        i++;
-        continue;
-      }
-
-      value = table[i][2 + cc];
-      if (hasTags && value === 0 && override_zero) {
-        ma = table[i][3 + cc].match(/#\w+/g);
-        for (j = 0; j < ma.length; j++) {
-          c = data_tags.tags.indexOf(ma[j].substr(1));
-          if (c !== -1) {
-            value = data_tags.average[c];
-            break;
-          }
-        }
-      }
-
-      if (typeof value !== 'number') {
-        i++;
-        continue;
-      }
-
-      day--;
-      cf_flow[day] += numberFormatLocaleSignal.call(value, dec_p);
-      cf_transactions[day] += '@' + table[i][1 + cc] + ' ';
-
-      i++;
-    }
-  }
+  cfDigestAccounts_(sheetMonth,
+    data_tags,
+    { num_acc: num_acc, dec_p: dec_p, dd: dd },
+    cf_flow,
+    cf_transactions);
 
   if (mm > 0) {
     sheetBackstage = spreadsheet.getSheetByName('_Backstage');
@@ -193,4 +152,63 @@ function updateCashFlow_ (sheetMonth, mm) {
   sheetCashFlow.getRange(4, 4 + 4 * mm, dd, 1).setValues(cf_transactions);
   SpreadsheetApp.flush();
   console.timeEnd('tool/update-cash-flow');
+}
+
+function cfDigestAccounts_ (sheet, tags, more, cf_flow, cf_transactions) {
+  const maxRows = sheet.getLastRow() - 4;
+  if (maxRows <= 0) return;
+
+  const dd = more.dd;
+  const dec_p = more.dec_p;
+  const num_acc = more.num_acc;
+
+  const table = sheet.getRange(5, 6, maxRows, 5 * num_acc).getValues();
+
+  var day, value, matches;
+  var hasTags, cc, i, j, k;
+
+  if (tags && tags.tags.length > 0) hasTags = true;
+  else hasTags = false;
+
+  i = 0;
+  k = 0;
+  cc = 0;
+
+  while (k < num_acc) {
+    if (i >= maxRows || table[i][2 + cc] === '') {
+      k++;
+      cc = 5 * k;
+      i = 0;
+      continue;
+    }
+
+    day = table[i][cc];
+    if (day <= 0 || day > dd) {
+      i++;
+      continue;
+    }
+
+    value = table[i][2 + cc];
+    if (hasTags && value === 0) {
+      matches = table[i][3 + cc].match(/#\w+/g);
+      for (j = 0; j < matches.length; j++) {
+        c = tags.tags.indexOf(matches[j].substr(1));
+        if (c !== -1) {
+          value = tags.average[c];
+          break;
+        }
+      }
+    }
+
+    if (typeof value !== 'number') {
+      i++;
+      continue;
+    }
+
+    day--;
+    cf_flow[day] += numberFormatLocaleSignal.call(value, dec_p);
+    cf_transactions[day] += '@' + table[i][1 + cc] + ' ';
+
+    i++;
+  }
 }
