@@ -111,7 +111,7 @@ function quickActions_(range, value) {
 		toolPicker_("FormatAccount", mm);
 		break;
 	case 5:
-		toolPicker_("UpdateCashFlow", mm);
+		toolPicker_("UpdateCashFlowMm", mm);
 		break;
 
 	case 9:

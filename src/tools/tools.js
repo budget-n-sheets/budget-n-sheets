@@ -29,7 +29,11 @@ function toolPicker_(select, value) {
 			addBlankRows_(value);
 			break;
 		case 'UpdateCashFlow':
-			validateUpdateCashFlow_(value);
+			validateUpdateCashFlow_();
+			break;
+    case 'UpdateCashFlowMm':
+      if (onlineUpdate_()) break;
+      updateCashFlow_(value);
 			break;
 		case 'FormatRegistry':
 			validateFormatRegistry_();

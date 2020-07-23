@@ -232,7 +232,7 @@ function playQuickCalendar_(n) {
 	}
 
 	setUserSettings_("cash_flow_events", true);
-	validateUpdateCashFlow_(mm);
+	updateCashFlow_(mm);
 
 	SpreadsheetApp.getActiveSpreadsheet()
 		.getSheetByName("Cash Flow")
@@ -283,7 +283,7 @@ function playQuickCashFlow_(n) {
 	spreadsheet.setActiveSheet(sheet);
 	sheet.getRange(1, 2 + 4*mm, 1, 3).activate();
 
-	validateUpdateCashFlow_();
+	updateCashFlow_(mm);
 }
 
 function playQuickStatements_(n) {

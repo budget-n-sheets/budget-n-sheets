@@ -1,22 +1,21 @@
-function validateUpdateCashFlow_ (mm) {
+function validateUpdateCashFlow_ () {
   if (onlineUpdate_()) return;
 
-  if (mm == null) {
-    var range = SpreadsheetApp.getActiveRange();
-    var name = range.getSheet().getSheetName();
+  var range = SpreadsheetApp.getActiveRange();
+  var name = range.getSheet().getSheetName();
+  var mm;
 
-    if (name === 'Cash Flow') {
-      mm = range.getColumn() - 1;
-      mm = (mm - (mm % 4)) / 4;
-    } else {
-      mm = MN_SHORT.indexOf(name);
-      if (mm === -1) {
-        SpreadsheetApp.getUi().alert(
-          "Can't update cash flow",
-          'Select a month or Cash Flow to update cash flow.',
-          SpreadsheetApp.getUi().ButtonSet.OK);
-        return;
-      }
+  if (name === 'Cash Flow') {
+    mm = range.getColumn() - 1;
+    mm = (mm - (mm % 4)) / 4;
+  } else {
+    mm = MN_SHORT.indexOf(name);
+    if (mm === -1) {
+      SpreadsheetApp.getUi().alert(
+        "Can't update cash flow",
+        'Select a month or Cash Flow to update cash flow.',
+        SpreadsheetApp.getUi().ButtonSet.OK);
+      return;
     }
   }
 
