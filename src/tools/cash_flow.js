@@ -71,10 +71,36 @@ function updateCashFlow_ (mm) {
     cf_flow,
     cf_transactions);
 
-  if (mm > 0) {
-    data_cards = getTablesService_('cardsbalances');
-    if (data_cards && data_cards !== 1) hasCards = true;
+  if (mm > 0) data_cards = getTablesService_('cardsbalances');
+
+  cfDigestCalendar_(listEventos,
+    data_cards, data_tags,
+    { mm: mm, num_acc: num_acc, dec_p: dec_p, dd: dd },
+    cf_flow,
+    cf_transactions);
+
+  if (dd < 31) {
+    cf_flow.splice(dd - 31, 31 - dd);
+    cf_transactions.splice(dd - 31, 31 - dd);
   }
+  cf_flow = transpose([cf_flow]);
+  cf_transactions = transpose([cf_transactions]);
+
+  sheetCashFlow.getRange(4, 2 + 4 * mm, dd, 1).setFormulas(cf_flow);
+  sheetCashFlow.getRange(4, 4 + 4 * mm, dd, 1).setValues(cf_transactions);
+  SpreadsheetApp.flush();
+  console.timeEnd('tool/update-cash-flow');
+}
+
+function cfDigestCalendar_ (listEventos, data_cards, data_tags, more, cf_flow, cf_transactions) {
+  var evento, value, day;
+  var hasCards, hasTags, c, n, i, j, i1;
+
+  const mm = more.mm;
+  const dec_p = more.dec_p;
+
+  if (data_cards && data_cards !== 1) hasCards = true;
+  if (tags && tags.tags.length > 0) hasTags = true;
 
   for (i = 0; i < listEventos.length; i++) {
     evento = listEventos[i];
@@ -133,18 +159,6 @@ function updateCashFlow_ (mm) {
       cf_transactions[day] += '@' + evento.Title + ' ';
     }
   }
-
-  if (dd < 31) {
-    cf_flow.splice(dd - 31, 31 - dd);
-    cf_transactions.splice(dd - 31, 31 - dd);
-  }
-  cf_flow = transpose([cf_flow]);
-  cf_transactions = transpose([cf_transactions]);
-
-  sheetCashFlow.getRange(4, 2 + 4 * mm, dd, 1).setFormulas(cf_flow);
-  sheetCashFlow.getRange(4, 4 + 4 * mm, dd, 1).setValues(cf_transactions);
-  SpreadsheetApp.flush();
-  console.timeEnd('tool/update-cash-flow');
 }
 
 function cfDigestAccounts_ (sheet, tags, more, cf_flow, cf_transactions) {
