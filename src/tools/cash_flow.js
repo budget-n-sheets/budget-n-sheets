@@ -39,7 +39,6 @@ function updateCashFlow_ (sheetMonth, mm) {
   var listEventos, evento, day;
   var data_cards, data_tags, value;
   var table, hasCards, hasTags;
-  var cf_flow, cf_transactions;
   var c, cc, i, j, k, n, ma, i1;
 
   spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -54,12 +53,16 @@ function updateCashFlow_ (sheetMonth, mm) {
 
   const dd = new Date(financial_year, mm + 1, 0).getDate();
 
-  cf_flow = [];
-  cf_transactions = [];
-  for (i = 0; i < 31; i++) {
-    cf_flow[i] = '';
-    cf_transactions[i] = '';
-  }
+  const cf_flow = [
+    '', '', '', '', '', '', '', '', '', '',
+    '', '', '', '', '', '', '', '', '', '',
+    '', '', '', '', '', '', '', '', '', '', ''
+  ];
+  const cf_transactions = [
+    '', '', '', '', '', '', '', '', '', '',
+    '', '', '', '', '', '', '', '', '', '',
+    '', '', '', '', '', '', '', '', '', '', ''
+  ];
 
   listEventos = getCalendarEventsForCashFlow_(financial_year, mm);
 
