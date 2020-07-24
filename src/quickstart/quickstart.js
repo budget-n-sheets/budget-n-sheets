@@ -12,13 +12,14 @@ function playSpeedQuickstart(id) {
 	try {
 		lock.waitLock(200);
 	} catch (err) {
+    ConsoleLog.warn(err);
 		SpreadsheetApp.getActiveSpreadsheet().toast("The add-on is busy. Try again in a moment.", "Budget n Sheets");
 		return;
 	}
 
 	SpreadsheetApp.getActiveSpreadsheet().toast("Playing the example...", "Quickstart");
 
-	const channel = id.match(/(statements|cashflow|transactions|calendar|acc_cards|tags)(\d)/);
+	const channel = id.match(/([a-z_]+)(\d)/);
 	if (!channel) throw new Error("playSpeedQuickstart(): No match found. " + id);
 
 	const job = channel[1];
