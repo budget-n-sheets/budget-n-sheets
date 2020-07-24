@@ -1,59 +1,59 @@
-function alertQuickstartSheetMissing(name) {
-	SpreadsheetApp.getUi().alert(
-		"Can't show example",
-		"Sheet \"" + name + "\" couldn't be found.",
-		SpreadsheetApp.getUi().ButtonSet.OK);
+function alertQuickstartSheetMissing (name) {
+  SpreadsheetApp.getUi().alert(
+    "Can't show example",
+    'Sheet "' + name + "\" couldn't be found.",
+    SpreadsheetApp.getUi().ButtonSet.OK);
 }
 
-function playSpeedQuickstart(id) {
-	if (! isInstalled_()) return;
+function playSpeedQuickstart (id) {
+  if (!isInstalled_()) return;
 
-	var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(200);
-	} catch (err) {
+  var lock = LockService.getDocumentLock();
+  try {
+    lock.waitLock(200);
+  } catch (err) {
     ConsoleLog.warn(err);
-		SpreadsheetApp.getActiveSpreadsheet().toast("The add-on is busy. Try again in a moment.", "Budget n Sheets");
-		return;
-	}
+    SpreadsheetApp.getActiveSpreadsheet().toast('The add-on is busy. Try again in a moment.', 'Budget n Sheets');
+    return;
+  }
 
-	SpreadsheetApp.getActiveSpreadsheet().toast("Playing the example...", "Quickstart");
+  SpreadsheetApp.getActiveSpreadsheet().toast('Playing the example...', 'Quickstart');
 
-	const channel = id.match(/([a-z_]+)(\d)/);
-	if (!channel) throw new Error("playSpeedQuickstart(): No match found. " + id);
+  const channel = id.match(/([a-z_]+)(\d)/);
+  if (!channel) throw new Error('playSpeedQuickstart(): No match found. ' + id);
 
-	const job = channel[1];
-	const n = Number(channel[2]);
+  const job = channel[1];
+  const n = Number(channel[2]);
 
-	switch (job) {
-	case "statements":
-		playQuickStatements_(n);
-		break;
-	case "cashflow":
-		playQuickCashFlow_(n);
-		break;
-	case "calendar":
-		playQuickCalendar_(n);
-		break;
-	case "transactions":
-		playQuickTransactions_(n);
-		break;
-	case "acc_cards":
-		playQuickAccCards_(n);
-		break;
-	case "tags":
-		playQuickTags_(n);
-		break;
+  switch (job) {
+    case 'statements':
+      playQuickStatements_(n);
+      break;
+    case 'cashflow':
+      playQuickCashFlow_(n);
+      break;
+    case 'calendar':
+      playQuickCalendar_(n);
+      break;
+    case 'transactions':
+      playQuickTransactions_(n);
+      break;
+    case 'acc_cards':
+      playQuickAccCards_(n);
+      break;
+    case 'tags':
+      playQuickTags_(n);
+      break;
 
-	default:
-		throw new Error("playSpeedQuickstart(): Switch case is default. " + job);
-	}
+    default:
+      throw new Error('playSpeedQuickstart(): Switch case is default. ' + job);
+  }
 
   lock.releaseLock();
-	SpreadsheetApp.getActiveSpreadsheet().toast("Done.", "Quickstart");
+  SpreadsheetApp.getActiveSpreadsheet().toast('Done.', 'Quickstart');
 }
 
-function fillMonthWithZeros(sheet) {
+function fillMonthWithZeros (sheet) {
   var values, lastRow;
   var i, k;
 
@@ -68,11 +68,11 @@ function fillMonthWithZeros(sheet) {
 
   for (k = 0; k < 2; k++) {
     i = lastRow - 1;
-    while (i > -1 && values[i][2 + 5*k] === '') { i--; }
+    while (i > -1 && values[i][2 + 5 * k] === '') { i--; }
 
     while (i > -1) {
-      if (values[i][2 + 5*k] === '') {
-        list[n] = rollA1Notation(5 + i, 3 + 5*k);
+      if (values[i][2 + 5 * k] === '') {
+        list[n] = rollA1Notation(5 + i, 3 + 5 * k);
         n++;
       }
       i--;
@@ -83,7 +83,7 @@ function fillMonthWithZeros(sheet) {
   SpreadsheetApp.flush();
 }
 
-function fillCardWithZeros(sheet, col) {
+function fillCardWithZeros (sheet, col) {
   var values, lastRow;
   var i, k;
 
@@ -99,11 +99,11 @@ function fillCardWithZeros(sheet, col) {
 
   for (k = 0; k < 3; k++) {
     i = lastRow - 1;
-    while (i > -1 && values[i][3 + 6*k] === '') { i--; }
+    while (i > -1 && values[i][3 + 6 * k] === '') { i--; }
 
     while (i > -1) {
-      if (values[i][3 + 6*k] === '') {
-        list[n] = rollA1Notation(6 + i, col + 6*k);
+      if (values[i][3 + 6 * k] === '') {
+        list[n] = rollA1Notation(6 + i, col + 6 * k);
         n++;
       }
       i--;
