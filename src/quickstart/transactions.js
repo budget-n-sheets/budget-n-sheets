@@ -6,22 +6,7 @@ var QUICKSTART_DATA_TRANSACTIONS = Object.freeze({
 });
 
 function playQuickTransactions_ (n) {
-  var sheet, lastRow;
-  var data, name;
-
-  const financial_year = getConstProperties_('financial_year');
-
-  if (financial_year === DATE_NOW.getFullYear()) name = MN_SHORT[DATE_NOW.getMonth()];
-  else name = MN_SHORT[0];
-
-  sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
-  if (!sheet) {
-    alertQuickstartSheetMissing(name);
-    return;
-  }
-  lastRow = sheet.getLastRow();
-
-  data = QUICKSTART_DATA_TRANSACTIONS[n];
+  const data = QUICKSTART_DATA_TRANSACTIONS[n];
   if (!data) throw new Error("Values for quickstart example couldn't be found. transactions " + n);
 
   switch (n) {
@@ -42,9 +27,19 @@ function playQuickTransactions_ (n) {
       throw new Error('playQuickTransactions_(): Switch case is default. ' + n);
   }
 
-  if (sheet.getMaxRows() < lastRow + data.length) {
-    toolPicker_('AddBlankRows', sheet.getName());
+  const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MN_SHORT[DATE_NOW.getMonth()] : MN_SHORT[0]);
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName(name);
+  if (!sheet) {
+    alertQuickstartSheetMissing(name);
+    return;
   }
+
+  spreadsheet.setActiveSheet(sheet);
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 4) lastRow = 4;
+
+  if (sheet.getMaxRows() < lastRow + data.length) toolPicker_('AddBlankRows', sheet.getName());
 
   sheet.getRange(lastRow + 1, 6, data.length, data[0].length)
     .setValues(data)

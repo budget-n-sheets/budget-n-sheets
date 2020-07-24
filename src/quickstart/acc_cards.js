@@ -41,19 +41,34 @@ function playQuickAccCards_ (n) {
     return;
   }
 
-  const code = db_cards.codes[0];
-
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheet, lastRow, col;
   var data, name, val, mm;
 
+  const code = db_cards.codes[0];
   const financial_year = getConstProperties_('financial_year');
-
-  data = QUICKSTART_ACC_CARDS[n];
-  if (!data) throw new Error("Values for quickstart example couldn't be found. acc_cards " + n);
 
   if (n === 3) {
     name = 'Cards';
+  } else {
+    if (financial_year === DATE_NOW.getFullYear()) name = MN_SHORT[DATE_NOW.getMonth()];
+    else name = MN_SHORT[0];
+  }
 
+  sheet = spreadsheet.getSheetByName(name);
+  if (!sheet) {
+    alertQuickstartSheetMissing(name);
+    return;
+  }
+
+  spreadsheet.setActiveSheet(sheet);
+  lastRow = sheet.getLastRow();
+
+  data = QUICKSTART_ACC_CARDS[n];
+  if (!data) throw new Error("Values for quickstart example couldn't be found. acc_cards:" + n);
+
+  if (n === 3) {
+    if (lastRow < 5) lastRow = 5;
     if (financial_year === DATE_NOW.getFullYear()) {
       mm = DATE_NOW.getMonth();
       if (mm === 0) mm = 1;
@@ -64,6 +79,7 @@ function playQuickAccCards_ (n) {
 
     col = 1 + 6 * mm - 6;
     val = randomValueNegative(2, 2);
+
     data[0][2] = code;
     data[0][3] = val;
     data[0][8] = code;
@@ -74,21 +90,13 @@ function playQuickAccCards_ (n) {
     data[2][8] = code;
     data[2][9] = randomValueNegative(3, 2);
     data[3][8] = code;
-  } else if (n === 4) {
-    if (financial_year === DATE_NOW.getFullYear()) name = MN_SHORT[DATE_NOW.getMonth()];
-    else name = MN_SHORT[0];
+  } else {
+    if (lastRow < 4) lastRow = 4;
 
     col = 6;
     data[0][1] = code + ' bill payment';
     data[0][2] = randomValueNegative(3, 2);
   }
-
-  sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
-  if (!sheet) {
-    alertQuickstartSheetMissing(name);
-    return;
-  }
-  lastRow = sheet.getLastRow();
 
   if (sheet.getMaxRows() < lastRow + data.length) {
     toolPicker_('AddBlankRows', sheet.getName());

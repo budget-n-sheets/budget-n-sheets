@@ -22,6 +22,7 @@ function playQuickCalendar_ (n) {
       "Can't create events",
       'Select a bill calendar first in the settings.',
       ui.ButtonSet.OK);
+    showSidebarMainSettings();
     return;
   } else if (!calendar.isOwnedByMe()) {
     ui.alert(
@@ -53,13 +54,23 @@ function playQuickCalendar_ (n) {
     return;
   }
 
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getSheetByName('Cash Flow');
+
+  if (!sheet) {
+    alertQuickstartSheetMissing(name);
+    return;
+  }
+
+  spreadsheet.setActiveSheet(sheet);
+
   const dec_p = getSpreadsheetSettings_('decimal_separator');
+  const db_tables = getDbTables_();
   const acc_name = db_tables.accounts.names[0];
   const card_code = (db_tables.cards.count > 0 ? db_tables.cards.codes[0] : '');
-  const db_tables = getDbTables_();
 
   data = QUICKSTART_DATA_CALENDAR[1];
-  if (!data) throw new Error("Values for quickstart example couldn't be found. calendar " + n);
+  if (!data) throw new Error("Values for quickstart example couldn't be found. calendar:" + n);
 
   for (i = 0; i < data.length; i++) {
     description = data[i].description;
@@ -80,7 +91,7 @@ function playQuickCalendar_ (n) {
 
   if (card_code) {
     data = QUICKSTART_DATA_CALENDAR[2];
-    if (!data) throw new Error("Values for quickstart example couldn't be found. calendar " + n);
+    if (!data) throw new Error("Values for quickstart example couldn't be found. calendar:" + n);
 
     for (i = 0; i < data.length; i++) {
       description = data[i].description;
@@ -100,7 +111,7 @@ function playQuickCalendar_ (n) {
   }
 
   data = QUICKSTART_DATA_CALENDAR[3];
-  if (!data) throw new Error("Values for quickstart example couldn't be found. calendar " + n);
+  if (!data) throw new Error("Values for quickstart example couldn't be found. calendar:" + n);
 
   for (i = 0; i < data.length; i++) {
     description = data[i].description;
@@ -122,8 +133,5 @@ function playQuickCalendar_ (n) {
   setUserSettings_('cash_flow_events', true);
   updateCashFlow_(mm);
 
-  SpreadsheetApp.getActiveSpreadsheet()
-    .getSheetByName('Cash Flow')
-    .getRange(1, 2 + 4 * mm, 1, 3)
-    .activate();
+  sheet.getRange(1, 2 + 4 * mm, 1, 3).activate();
 }

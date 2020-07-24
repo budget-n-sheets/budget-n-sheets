@@ -15,58 +15,65 @@ var QUICKSTART_DATA_TAGS = Object.freeze({
 });
 
 function playQuickTags_ (n) {
-  var sheet, lastRow, range, col;
-  var data, name, tmp;
-
-  data = QUICKSTART_DATA_TAGS[n];
-  if (!data) throw new Error("Values for quickstart example couldn't be found. tags " + n);
-
   switch (n) {
     case 1:
     case 3:
-      col = 1;
-      name = 'Tags';
+      playQuickTags0103_(n);
       break;
     case 2:
-      col = 6;
-
-      const financial_year = getConstProperties_('financial_year');
-      if (financial_year === DATE_NOW.getFullYear()) name = MN_SHORT[DATE_NOW.getMonth()];
-      else name = MN_SHORT[0];
-
-      for (var i = 0; i < 5; i++) {
-        data[i][2] = randomValueNegative(2, 2);
-      }
+      playQuickTags02_(n);
       break;
 
     default:
       throw new Error('playQuickTags_(): Switch case is default. ' + n);
   }
+}
 
-  sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
+function playQuickTags0103_ (n) {
+  const data = QUICKSTART_DATA_TAGS[n];
+  if (!data) throw new Error("playQuickTags0103_(): Values for quickstart example couldn't be found. tags:" + n);
+
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName('Tags');
+  if (!sheet) {
+    alertQuickstartSheetMissing('Tags');
+    return;
+  }
+
+  spreadsheet.setActiveSheet(sheet);
+
+  sheet.insertRowsBefore(3, data.length);
+  sheet.getRange(3, 1, data.length, data[0].length)
+    .setValues(data)
+    .activate();
+
+  SpreadsheetApp.flush();
+}
+
+function playQuickTags02_ (n) {
+  const data = QUICKSTART_DATA_TAGS[n];
+  if (!data) throw new Error("playQuickTags2_(): Values for quickstart example couldn't be found. tags:" + n);
+
+  for (var i = 0; i < 5; i++) {
+    data[i][2] = randomValueNegative(2, 2);
+  }
+
+  const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MN_SHORT[DATE_NOW.getMonth()] : MN_SHORT[0]);
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName(name);
   if (!sheet) {
     alertQuickstartSheetMissing(name);
     return;
   }
 
-  if (n === 2) {
-    lastRow = sheet.getLastRow();
-  } else {
-    range = sheet.getRange(2, 4, sheet.getMaxRows() - 1, 2);
-    tmp = range.getValues();
+  spreadsheet.setActiveSheet(sheet);
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 4) lastRow = 4;
 
-    range.clearContent();
-    SpreadsheetApp.flush();
-
-    lastRow = sheet.getLastRow();
-    range.setValues(tmp);
-    SpreadsheetApp.flush();
-  }
-
-  sheet.getRange(lastRow + 1, col, data.length, data[0].length)
+  sheet.getRange(lastRow + 1, 6, data.length, data[0].length)
     .setValues(data)
     .activate();
 
   SpreadsheetApp.flush();
-  if (n === 2) fillMonthWithZeros(sheet);
+  fillMonthWithZeros(sheet);
 }

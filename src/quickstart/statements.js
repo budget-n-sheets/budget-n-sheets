@@ -2,32 +2,32 @@ var QUICKSTART_DATA_STATEMENTS = Object.freeze({
   1: [[7, 'Coffee shop', null, '']],
   2: [[7, 'Grocery shop', null, '']],
   3: [
-    [7, 'Paycheck (in cash), use #rct tag', null, '#rct', null,
-      7, 'Income (via transfer #trf), use #rct tag', null, '#trf #rct'],
+    [7, 'Income (in cash), add #rct tag', null, '#rct', null,
+      7, 'Income (via transfer #trf), add #rct tag', null, '#trf #rct'],
     [null, null, null, null, null,
-      7, 'Income (via deposit #dp), use #rct tag', null, '#dp #rct']
+      7, 'Income (via deposit #dp), add #rct tag', null, '#dp #rct']
   ],
   4: [
     [7, 'Pizza, my share', null, ''],
-    [7, 'Pizza, others share (not accounted in expenses)', null, '#ign']
+    [7, 'Pizza, others share (not accounted in expenses), add #ign tag', null, '#ign']
   ]
 });
 
 function playQuickStatements_ (n) {
-  var sheet, lastRow;
-  var data, name, col, val;
+  var lastRow, data, col, val;
 
-  const financial_year = getConstProperties_('financial_year');
+  const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MN_SHORT[DATE_NOW.getMonth()] : MN_SHORT[0]);
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
-  if (financial_year === DATE_NOW.getFullYear()) name = MN_SHORT[DATE_NOW.getMonth()];
-  else name = MN_SHORT[0];
-
-  sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
+  const sheet = spreadsheet.getSheetByName(name);
   if (!sheet) {
     alertQuickstartSheetMissing(name);
     return;
   }
+
+  spreadsheet.setActiveSheet(sheet);
   lastRow = sheet.getLastRow();
+  if (lastRow < 4) lastRow = 4;
 
   data = QUICKSTART_DATA_STATEMENTS[n];
   if (!data) throw new Error("Values for quickstart example couldn't be found. statements " + n);
@@ -59,7 +59,7 @@ function playQuickStatements_ (n) {
   }
 
   if (sheet.getMaxRows() < lastRow + data.length) {
-    toolPicker_('AddBlankRows', sheet.getName());
+    toolPicker_('AddBlankRows', name);
   }
 
   sheet.getRange(lastRow + 1, col, data.length, data[0].length)
