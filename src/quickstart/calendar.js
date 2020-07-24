@@ -59,6 +59,7 @@ function playQuickCalendar_(n) {
 	const db_tables = getDbTables_();
 	const acc_name = db_tables.accounts.names[0];
 	const card_code = (db_tables.cards.count > 0 ? db_tables.cards.codes[0] : "");
+  const dec_p = getSpreadsheetSettings_('decimal_separator');
 
 	data = QUICKSTART_DATA_CALENDAR[1];
 	if (!data) throw new Error("Values for quickstart example couldn't be found. calendar " + n);
@@ -68,7 +69,7 @@ function playQuickCalendar_(n) {
 		description = description.replace("acc_name", acc_name);
 
 		if (data[i].value) {
-			value = data[i].value.formatCalendarSignal();
+			value = numberFormatCalendarSignal.call(data[i].value, dec_p);
 			description = description.replace("value", value);
 		}
 
@@ -89,7 +90,7 @@ function playQuickCalendar_(n) {
 			description = description.replace("card_code", card_code);
 
 			if (data[i].value) {
-				value = data[i].value.formatCalendarSignal();
+				value = numberFormatCalendarSignal.call(data[i].value, dec_p);
 				description = description.replace("value", value);
 			}
 
@@ -109,7 +110,7 @@ function playQuickCalendar_(n) {
 		description = description.replace("acc_name", acc_name);
 
 		if (data[i].value) {
-			value = data[i].value.formatCalendarSignal();
+			value = numberFormatCalendarSignal.call(data[i].value, dec_p);
 			description = description.replace("value", value);
 		}
 
