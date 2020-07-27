@@ -38,7 +38,7 @@ function onOpen(e) {
 	var menu = ui.createAddonMenu();
 
 	if (e && e.authMode == ScriptApp.AuthMode.NONE) {
-		menu.addItem("Start budget sheet", "showDialogSetupAddon")
+		menu.addItem("Start budget sheet", "showDialogSetupAddon_")
 			.addSeparator()
 			.addItem("About the add-on", "showDialogAboutAddon");
 	} else {
@@ -62,7 +62,7 @@ function onOpen(e) {
 
 			console.info("add-on/open");
 		} else {
-			menu.addItem("Start budget sheet", "showDialogSetupAddon")
+			menu.addItem("Start budget sheet", "showDialogSetupAddon_")
 				.addSeparator()
 				.addItem("About the add-on", "showDialogAboutAddon");
 		}

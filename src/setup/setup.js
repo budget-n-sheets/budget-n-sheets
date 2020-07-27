@@ -1,41 +1,3 @@
-function showDialogSetupAddon() {
-	console.info("add-on/intent");
-	setUserId_();
-	setupFlow_("dialog");
-}
-
-function setupUi(settings, list_acc) {
-	setupFlow_("setup", settings, list_acc);
-}
-
-function setupFlow_(select, settings, list_acc) {
-	var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(100);
-	} catch (err) {
-		SpreadsheetApp.getUi().alert(
-			"Add-on setup in progress",
-			"A budget spreadsheet setup is already in progress.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
-		ConsoleLog.warn(err);
-		return;
-	}
-
-	switch (select) {
-		case "dialog":
-			lock.releaseLock();
-			showDialogSetupAddon_();
-			break;
-		case "setup":
-      setup_(settings, list_acc);
-			lock.releaseLock();
-			break;
-
-		default:
-			throw new Error("Switch case is default.");
-	}
-}
-
 function isInstalled_() {
 	var isInstalled = CacheService2.get("document", "is_installed", "boolean");
 
@@ -65,9 +27,21 @@ function uninstall_(putLock) {
 	}
 }
 
+function setupUi(settings, list_acc) {
+  console.time('setup/time');
 
-function setup_(settings, list_acc) {
-  console.time('setup/time')
+  var lock = LockService.getDocumentLock();
+	try {
+		lock.waitLock(200);
+	} catch (err) {
+		SpreadsheetApp.getUi().alert(
+			"Add-on setup in progress",
+			"A budget spreadsheet setup is already in progress.",
+			SpreadsheetApp.getUi().ButtonSet.OK);
+		ConsoleLog.warn(err);
+		return;
+	}
+
 	SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
 	var owner, user;
 
@@ -140,6 +114,8 @@ function setup_(settings, list_acc) {
 
 	SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName("Summary"));
 	PropertiesService2.setProperty("document", "is_installed", "boolean", true);
+
+  lock.releaseLock();
 	showDialogSetupEnd();
 	onOpen();
 

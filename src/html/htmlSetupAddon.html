@@ -272,6 +272,7 @@
 
 				google.script.run
           .withFailureHandler(panelError)
+          .withSuccessHandler(null)
           .setupUi(settings, list_names);
 			}
 
