@@ -31,6 +31,8 @@ function update_() {
 	const v0 = classService_("get", "script");
 	const v1 = APPS_SCRIPT_GLOBAL.script_version;
 
+  if (v0 === 1) return 1;
+
 	if (v0.major > v1.major) return 0;
 	if (v0.major == v1.major) {
 		if (v0.minor > v1.minor) return 0;

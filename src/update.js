@@ -18,6 +18,8 @@ function onlineUpdate_() {
 	const v0 = classService_("get", "script");
 	const v1 = APPS_SCRIPT_GLOBAL.script_version;
 
+  if (v0 === 1) return 1;
+
 	if (v0.major > v1.major) return;
 	if (v0.major == v1.major) {
 		if (v0.minor > v1.minor) return;
@@ -87,7 +89,7 @@ function seamlessUpdate_() {
 function classService_(select, property, value) {
 	var lock = LockService.getDocumentLock();
 	try {
-		lock.waitLock(1000);
+		lock.waitLock(100);
 	} catch (err) {
 		ConsoleLog.warn(err);
 		return 1;
