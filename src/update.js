@@ -16,20 +16,8 @@ var PATCH_THIS = Object.freeze({
 
 function onlineUpdate_() {
 	const v0 = classService_("get", "script");
-	const v1 = APPS_SCRIPT_GLOBAL.script_version;
-
   if (v0 === 1) return 1;
-
-	if (v0.major > v1.major) return;
-	if (v0.major == v1.major) {
-		if (v0.minor > v1.minor) return;
-		if (v0.minor == v1.minor) {
-			if (v0.patch > v1.patch) return;
-			if (v0.patch == v1.patch) {
-				if (PATCH_THIS["beta_list"].length == 0 || v0.beta >= PATCH_THIS["beta_list"].length) return;
-			}
-		}
-	}
+  else if (isUpToDate_(v0)) return;
 
 	var ui = SpreadsheetApp.getUi();
 
@@ -43,7 +31,7 @@ function onlineUpdate_() {
 
 	showDialogUpdate();
 
-	var r = update_();
+	const r = update_();
 
 	if (r === 0) {
 		ui.alert(
@@ -73,16 +61,30 @@ function onlineUpdate_() {
 	return 1;
 }
 
-
 function seamlessUpdate_() {
 	if (! isTemplateAvailable()) return 1;
 
-	var r = update_();
+	const r = update_();
 
 	if (r === 0) return;
 	if (r > 2) uninstall_();
 
 	return 1;
+}
+
+function isUpToDate_ (v0) {
+  const v1 = APPS_SCRIPT_GLOBAL.script_version;
+
+  if (v0.major > v1.major) return 1;
+  if (v0.major === v1.major) {
+    if (v0.minor > v1.minor) return 1;
+    if (v0.minor === v1.minor) {
+      if (v0.patch > v1.patch) return 1;
+      if (v0.patch === v1.patch) {
+        if (PATCH_THIS['beta_list'].length === 0 || v0.beta >= PATCH_THIS['beta_list'].length) return 1;
+      }
+    }
+  }
 }
 
 function classService_(select, property, value) {
