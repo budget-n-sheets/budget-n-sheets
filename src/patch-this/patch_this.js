@@ -28,12 +28,12 @@ function update_() {
 		return 1;
 	}
 
-  const v0 = classService_("get", "script");
+  const v0 = getClassVersion_('script');
   const v1 = APPS_SCRIPT_GLOBAL.script_version;
 
   if (v0 === 1) {
     lock.releaseLock();
-    return 1;
+    return 2;
   } else if (isUpToDate_(v0)) {
     lock.releaseLock();
     return 0;
@@ -88,15 +88,15 @@ function update_() {
 		r.r = 0;
 	}
 
-	var cell = {
+	const cell = {
 		major: major,
 		minor: r.m,
 		patch: r.p,
 		beta: r.b
 	};
 
-	classService_("set", "script", cell);
-	classService_("set", "template", APPS_SCRIPT_GLOBAL.template_version);
+	setClassVersion_('script', cell);
+	setClassVersion_('', APPS_SCRIPT_GLOBAL.template_version);
   lock.releaseLock();
 
 	bsSignSetup_();

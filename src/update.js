@@ -15,9 +15,13 @@ var PATCH_THIS = Object.freeze({
 
 
 function onlineUpdate_() {
-	const v0 = classService_("get", "script");
-  if (v0 === 1) return 1;
-  else if (isUpToDate_(v0)) return;
+	const v0 = getClassVersion_('script');
+  if (v0 === 1) {
+    showDialogErrorMessage();
+    return 1;
+  } else if (isUpToDate_(v0)) {
+    return;
+  }
 
 	var ui = SpreadsheetApp.getUi();
 
@@ -87,46 +91,36 @@ function isUpToDate_ (v0) {
   }
 }
 
-function classService_(select, property, value) {
-  var lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch (err) {
-    ConsoleLog.warn(err);
-    return 1;
-  }
+function getClassVersion_ (property) {
+  if (property !== 'script' && property !== 'template') return 1;
 
-  if (property !== "script" && property !== "template") {
-    ConsoleLog.error("classService_(): Invalid property.", { property: property });
-    lock.releaseLock();
-    return 1;
-  }
-
-  var class_version2;
-
-  if (select === 'get') {
-    class_version2 = CacheService2.get("document", "class_version2", "json");
-    if (!class_version2) {
-      class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
-      CacheService2.put("document", "class_version2", "json", class_version2);
-    }
-
-    lock.releaseLock();
-    return class_version2[property];
-  } else if (select === 'set') {
+  var class_version2 = CacheService2.get("document", "class_version2", "json");
+  if (!class_version2) {
     class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
-    class_version2[property] = value;
+    if (!class_version2) return 1;
 
-    PropertiesService2.setProperty("document", "class_version2", "json", class_version2);
     CacheService2.put("document", "class_version2", "json", class_version2);
-    lock.releaseLock();
-    return;
   }
 
-  lock.releaseLock();
-  return 1;
+  return class_version2[property];
 }
 
+function setClassVersion_ (property, value) {
+  if (property !== 'script' && property !== 'template') return 1;
+
+  var lock = LockService.getDocumentLock();
+  var hasLock = lock.tryLock(200);
+  if (!hasLock) return 1;
+
+  const class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
+  if (!class_version2) return 1;
+
+  class_version2[property] = value;
+
+  PropertiesService2.setProperty("document", "class_version2", "json", class_version2);
+  CacheService2.put("document", "class_version2", "json", class_version2);
+  lock.releaseLock();
+}
 
 /**
  * Lorem ipsum dolor sit amet, consectetur adipiscing elit.
