@@ -85,62 +85,44 @@ function seamlessUpdate_() {
 	return 1;
 }
 
-
 function classService_(select, property, value) {
-	var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(200);
-	} catch (err) {
-		ConsoleLog.warn(err);
-		return 1;
-	}
+  var lock = LockService.getDocumentLock();
+  try {
+    lock.waitLock(200);
+  } catch (err) {
+    ConsoleLog.warn(err);
+    return 1;
+  }
 
-	if (property !== "script" && property !== "template") {
-		ConsoleLog.error("classService_(): Invalid property.", { property: property });
+  if (property !== "script" && property !== "template") {
+    ConsoleLog.error("classService_(): Invalid property.", { property: property });
     lock.releaseLock();
-		return 1;
-	}
+    return 1;
+  }
 
-  var r;
+  var class_version2;
 
-	switch (select) {
-	case "get":
-		r = getClass_(property);
-    break;
-	case "set":
-		r = setClass_(property, value);
-		break;
+  if (select === 'get') {
+    class_version2 = CacheService2.get("document", "class_version2", "json");
+    if (!class_version2) {
+      class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
+      CacheService2.put("document", "class_version2", "json", class_version2);
+    }
 
-	default:
-    r = 1;
-		ConsoleLog.error("classService_(): Switch case is default", { select: select });
-    break;
-	}
+    lock.releaseLock();
+    return class_version2[property];
+  } else if (select === 'set') {
+    class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
+    class_version2[property] = value;
+
+    PropertiesService2.setProperty("document", "class_version2", "json", class_version2);
+    CacheService2.put("document", "class_version2", "json", class_version2);
+    lock.releaseLock();
+    return;
+  }
 
   lock.releaseLock();
-  return r;
-}
-
-
-function getClass_(property) {
-	var class_version2 = CacheService2.get("document", "class_version2", "json");
-
-	if (!class_version2) {
-		class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
-		CacheService2.put("document", "class_version2", "json", class_version2);
-	}
-
-	return class_version2[property];
-}
-
-
-function setClass_(property, value) {
-	var class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
-
-	class_version2[property] = value;
-
-	PropertiesService2.setProperty("document", "class_version2", "json", class_version2);
-	CacheService2.put("document", "class_version2", "json", class_version2);
+  return 1;
 }
 
 
