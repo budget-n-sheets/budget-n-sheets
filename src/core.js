@@ -255,6 +255,8 @@ function showDialogUpdate() {
 function showDialogSetupAddon_() {
 	var ui = SpreadsheetApp.getUi();
 
+  setUserId_();
+
 	if (! isTemplateAvailable()) {
 		ui.alert(
 			"New version available",
