@@ -15,12 +15,12 @@ var PATCH_THIS = Object.freeze({
 
 
 function onlineUpdate_() {
-	const v0 = getClassVersion_('script');
+	const v0 = isScriptUpToDate_();
   if (v0 === 1) {
+    return;
+  } else if (v0 === 2) {
     showDialogErrorMessage();
     return 1;
-  } else if (isUpToDate_(v0)) {
-    return;
   }
 
 	var ui = SpreadsheetApp.getUi();
@@ -68,6 +68,10 @@ function onlineUpdate_() {
 function seamlessUpdate_() {
 	if (! isTemplateAvailable()) return 1;
 
+  const v0 = isScriptUpToDate_();
+  if (v0 === 1) return;
+  if (v0 === 2) return 1;
+
 	const r = update_();
 
 	if (r === 0) return;
@@ -76,8 +80,11 @@ function seamlessUpdate_() {
 	return 1;
 }
 
-function isUpToDate_ (v0) {
+function isScriptUpToDate_ () {
+  const v0 = getClassVersion_('script');
   const v1 = APPS_SCRIPT_GLOBAL.script_version;
+
+  if (v0 === 1) return 2;
 
   if (v0.major > v1.major) return 1;
   if (v0.major === v1.major) {
@@ -89,15 +96,23 @@ function isUpToDate_ (v0) {
       }
     }
   }
+
+  return 0;
 }
 
 function getClassVersion_ (property) {
-  if (property !== 'script' && property !== 'template') return 1;
+  if (property !== 'script' && property !== 'template') {
+    ConsoleLog.warn("getClassVersion_(): Invalid 'property' value.", { property: property });
+    return 1;
+  }
 
   var class_version2 = CacheService2.get("document", "class_version2", "json");
   if (!class_version2) {
     class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
-    if (!class_version2) return 1;
+    if (!class_version2) {
+      ConsoleLog.warn("getClassVersion_(): Invalid 'class_version2' value.");
+      return 1;
+    }
 
     CacheService2.put("document", "class_version2", "json", class_version2);
   }
@@ -106,14 +121,20 @@ function getClassVersion_ (property) {
 }
 
 function setClassVersion_ (property, value) {
-  if (property !== 'script' && property !== 'template') return 1;
+  if (property !== 'script' && property !== 'template') {
+    ConsoleLog.warn("setClassVersion_(): Invalid 'property' value.", { property: property });
+    return 1;
+  }
 
   var lock = LockService.getDocumentLock();
   var hasLock = lock.tryLock(200);
   if (!hasLock) return 1;
 
   const class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
-  if (!class_version2) return 1;
+  if (!class_version2) {
+    ConsoleLog.warn("setClassVersion_(): Invalid 'class_version2' value.");
+    return 1;
+  }
 
   class_version2[property] = value;
 

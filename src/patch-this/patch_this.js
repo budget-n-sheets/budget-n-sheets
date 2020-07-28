@@ -34,9 +34,6 @@ function update_() {
   if (v0 === 1) {
     lock.releaseLock();
     return 2;
-  } else if (isUpToDate_(v0)) {
-    lock.releaseLock();
-    return 0;
   }
 
 	var ver, major, minor, patch;
