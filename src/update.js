@@ -141,6 +141,7 @@ function setClassVersion_ (property, value) {
   PropertiesService2.setProperty("document", "class_version2", "json", class_version2);
   CacheService2.put("document", "class_version2", "json", class_version2);
   lock.releaseLock();
+  return 0;
 }
 
 /**

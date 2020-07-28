@@ -92,9 +92,20 @@ function update_() {
 		beta: r.b
 	};
 
-	setClassVersion_('script', cell);
-	setClassVersion_('', APPS_SCRIPT_GLOBAL.template_version);
+  var ss, i;
+
+  i = 0;
+  ss = setClassVersion_('script', cell);
+  while (ss && ++i < 3) {
+    Utilities.sleep(i * 1000);
+    ss = setClassVersion_('script', cell);
+  }
+
   lock.releaseLock();
+  if (ss === 1) {
+    ConsoleLog.error('update_(): Update failed to set new script version.');
+    return 2;
+  }
 
 	bsSignSetup_();
 	return r.r;
