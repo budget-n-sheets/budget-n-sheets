@@ -32,7 +32,7 @@ function coolGallery(option) {
 		coolFilterByTag_(info);
 	}
 
-	console.info("add-on/cool_gallery/import/" + info.sheet_name);
+	console.info("add-on/cool_gallery/import/", info.sheet_name);
 	return -1;
 }
 

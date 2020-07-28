@@ -60,7 +60,7 @@ function onOpen(e) {
         .addItem("Deactive the add-on", "askDeactivation")
         .addItem("Show quickstart", "showPanelQuickstart");
 
-			console.info("add-on/open");
+			console.log("open");
 		} else {
 			menu.addItem("Start budget sheet", "showDialogSetupAddon_")
 				.addSeparator()
@@ -79,7 +79,7 @@ function printHrefScriptlets(htmlTemplate) {
 }
 
 function showPanelQuickstart() {
-	console.info("quickstart");
+	console.log("quickstart");
 
 	var htmlTemplate = HtmlService.createTemplateFromFile("quickstart/htmlQuickstart");
 	htmlTemplate = printHrefScriptlets(htmlTemplate);

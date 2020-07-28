@@ -32,7 +32,7 @@ function isReAuthorizationRequired_ (sendEmail) {
       sendReAuthorizationRequest_(authInfoLevel)
       documentProperties.setProperty('auth_request_sent', 'true')
     } catch (e) {
-      console.error('isReAuthorizationRequired_(): ' + e)
+      ConsoleLog.error(e)
       return true
     } finally {
       lock.releaseLock()

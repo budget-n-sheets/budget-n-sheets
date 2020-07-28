@@ -80,7 +80,7 @@ function saveUserSettings(settings) {
   try {
     updateDecimalSeparator_();
   } catch (err) {
-    console.error('settings/decimal-separator ' + err);
+    ConsoleLog.error(err);
   }
 
   if (init_month == new_init_month) return;
@@ -94,7 +94,7 @@ function saveUserSettings(settings) {
 
     updateTabsColors();
   } catch (err) {
-    console.error('settings/initial-month ' + err);
+    ConsoleLog.error(err);
   }
 }
 
@@ -113,7 +113,7 @@ function getUserSettings_(select) {
 			return user_settings[select];
 
 		default:
-			console.error("getUserSettings_(): Switch case is default.", select);
+			ConsoleLog.error("getUserSettings_(): Switch case is default.", select);
 			break;
 	}
 }
@@ -132,7 +132,7 @@ function setUserSettings_(select, value) {
 			break;
 
 		default:
-			console.error("setUserSettings_() : Switch case is default.", select);
+			ConsoleLog.error("setUserSettings_() : Switch case is default.", select);
 			return false;
 	}
 
@@ -159,7 +159,7 @@ function getSpreadsheetSettings_(select) {
 		return spreadsheet_settings[select];
 
 	default:
-		console.error("getSpreadsheetSettings_(): Switch case is default.", select);
+		ConsoleLog.error("getSpreadsheetSettings_(): Switch case is default.", select);
 		break;
 	}
 }
@@ -177,7 +177,7 @@ function setSpreadsheetSettings_(select, value) {
 		break;
 
 	default:
-		console.error("setSpreadsheetSettings_() : Switch case is default.", select);
+		ConsoleLog.error("setSpreadsheetSettings_() : Switch case is default.", select);
 		return 1;
 	}
 
@@ -202,7 +202,7 @@ function getConstProperties_(select) {
 			return const_properties[select];
 
 		default:
-			console.error("getConstProperties_(): Switch case is default.", select);
+			ConsoleLog.error("getConstProperties_(): Switch case is default.", select);
 			break;
 	}
 }
@@ -245,6 +245,6 @@ function getMonthFactored_(select) {
 		}
 
 	} else {
-		console.error("getMonthFactored_(): Switch case is default.", select);
+		ConsoleLog.error("getMonthFactored_(): Switch case is default.", select);
 	}
 }

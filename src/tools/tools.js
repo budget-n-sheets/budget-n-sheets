@@ -46,7 +46,7 @@ function toolPicker_(select, value) {
 			break;
 
 		default:
-			console.error("toolPicker_(): Switch case is default.", select);
+      ConsoleLog.error("toolPicker_(): Switch case is default.", select);
 			break;
 	}
 }

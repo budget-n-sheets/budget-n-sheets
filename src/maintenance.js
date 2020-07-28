@@ -33,7 +33,7 @@ function askDeactivation() {
 			"The add-on was deactivated.",
 			ui.ButtonSet.OK);
 
-		console.info("deactivate");
+		console.log("deactivate");
 		return true;
 	}
 }
@@ -166,7 +166,7 @@ function reinstallTriggers_() {
 		operation = "passive";
 
 	} else {
-		console.warn("reinstallTriggers_(): Case is default.");
+		ConsoleLog.warn("reinstallTriggers_(): Case is default.");
 	}
 
   saveTriggerId_(trigger, 'document', 'clockTriggerId')

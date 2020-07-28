@@ -833,7 +833,7 @@ function update_v0m30p6_() {
 				break;
 
 			default:
-				console.log("update_v0m30p6_(): Switch case is default.", eventType);
+        console.info("update_v0m30p6_(): Switch case is default.", eventType);
 				break;
 			}
 		}

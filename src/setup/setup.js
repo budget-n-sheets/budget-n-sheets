@@ -20,10 +20,10 @@ function uninstall_(putLock) {
 
 	if (putLock) {
 		PropertiesService.getDocumentProperties().setProperties({lock_spreadsheet: "true"}, true);
-		console.info("add-on/uninstall-with-lock");
+		console.log("uninstall-with-lock");
 	} else {
 		PropertiesService.getDocumentProperties().deleteAllProperties();
-		console.info("add-on/uninstall");
+		console.log("uninstall");
 	}
 }
 
@@ -100,7 +100,7 @@ function setupUi(settings, list_acc) {
   try {
     setupTriggers_(yyyy_mm)
   } catch (err) {
-    console.error(err)
+    ConsoleLog.error(err)
   }
 
 	class_version2 = {

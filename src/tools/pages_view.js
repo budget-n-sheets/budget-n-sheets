@@ -29,7 +29,7 @@ function pagesView_(select, a) {
 			break;
 
 		default:
-			console.error("pagesView_(): Switch case is default.", select);
+			ConsoleLog.error("pagesView_(): Switch case is default.", select);
 			break;
 	}
 }

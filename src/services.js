@@ -153,7 +153,7 @@ function dailyTrigger_(e) {
 
 		setSpreadsheetSettings_("operation_mode", "passive");
 
-		console.info("mode/passive");
+		console.log("mode/passive");
 		return;
 	}
 
@@ -197,7 +197,7 @@ function weeklyTriggerPre_(e) {
 	if (yyyymm.year === financial_year) {
 		trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: hour, minute: -1 })
     saveTriggerId_(trigger, 'document', 'clockTriggerId')
-		console.info("mode/active");
+		console.log("mode/active");
 
 	} else {
 		var day = 1 + randomInteger(28);

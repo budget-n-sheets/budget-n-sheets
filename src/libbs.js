@@ -127,6 +127,14 @@ var ConsoleLog = {
     return payload;
   },
 
+  info: function (msg) {
+    console.info(msg);
+  },
+
+  log: function (msg) {
+    console.log(msg);
+  },
+
   warn: function (error, values) {
     const payload = this.digest(error, values);
     console.warn(payload);

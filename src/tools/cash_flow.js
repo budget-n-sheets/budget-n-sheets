@@ -112,7 +112,7 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
 
       switch (evento.TranslationType) {
         default:
-          console.warn('cfDigestCalendar_(): Switch case is default.', evento.TranslationType);
+          ConsoleLog.warn('cfDigestCalendar_(): Switch case is default.', evento.TranslationType);
         case '':
         case 'Avg':
           value = tags.average[c];

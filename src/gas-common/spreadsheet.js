@@ -51,7 +51,7 @@ function isTemplateAvailable() {
 	try {
 		SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 	} catch (err) {
-		console.error("Spreadsheet template is not available!");
+		ConsoleLog.error("Spreadsheet template is not available!");
 		return false;
 	}
 
