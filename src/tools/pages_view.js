@@ -9,7 +9,7 @@ function toolHideSheets_() {
 function pagesView_(select, a) {
 	var lock = LockService.getDocumentLock();
 	try {
-		lock.waitLock(2000);
+		lock.waitLock(200);
 	} catch (err) {
 		SpreadsheetApp.getUi().alert(
 			"Add-on is busy",
@@ -32,6 +32,8 @@ function pagesView_(select, a) {
 			ConsoleLog.error("pagesView_(): Switch case is default.", select);
 			break;
 	}
+
+  lock.releaseLock();
 }
 
 function hideSheets_(a) {

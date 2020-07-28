@@ -13,7 +13,7 @@ function toolFormatRegistry() {
 function toolPicker_(select, value) {
 	var lock = LockService.getDocumentLock();
 	try {
-		lock.waitLock(2000);
+		lock.waitLock(200);
 	} catch (err) {
 		SpreadsheetApp.getUi().alert(
 			"Add-on is busy",
@@ -49,6 +49,8 @@ function toolPicker_(select, value) {
       ConsoleLog.error("toolPicker_(): Switch case is default.", select);
 			break;
 	}
+
+  lock.releaseLock();
 }
 
 function getTagData_() {

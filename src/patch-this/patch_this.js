@@ -31,7 +31,10 @@ function update_() {
 	const v0 = classService_("get", "script");
 	const v1 = APPS_SCRIPT_GLOBAL.script_version;
 
-  if (v0 === 1) return 1;
+  if (v0 === 1) {
+    lock.releaseLock();
+    return 1;
+  }
 
 	if (v0.major > v1.major) return 0;
 	if (v0.major == v1.major) {
@@ -102,6 +105,7 @@ function update_() {
 
 	classService_("set", "script", cell);
 	classService_("set", "template", APPS_SCRIPT_GLOBAL.template_version);
+  lock.releaseLock();
 
 	bsSignSetup_();
 	return r.r;

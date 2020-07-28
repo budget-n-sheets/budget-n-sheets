@@ -1,7 +1,7 @@
 function toggleViewMode_ () {
   var lock = LockService.getDocumentLock();
 	try {
-		lock.waitLock(2000);
+		lock.waitLock(200);
 	} catch (err) {
 		SpreadsheetApp.getUi().alert(
 			"Add-on is busy",

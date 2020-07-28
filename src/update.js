@@ -89,7 +89,7 @@ function seamlessUpdate_() {
 function classService_(select, property, value) {
 	var lock = LockService.getDocumentLock();
 	try {
-		lock.waitLock(100);
+		lock.waitLock(200);
 	} catch (err) {
 		ConsoleLog.warn(err);
 		return 1;
@@ -97,20 +97,28 @@ function classService_(select, property, value) {
 
 	if (property !== "script" && property !== "template") {
 		ConsoleLog.error("classService_(): Invalid property.", { property: property });
+    lock.releaseLock();
 		return 1;
 	}
+
+  var r;
 
 	switch (select) {
 	case "get":
-		return getClass_(property);
+		r = getClass_(property);
+    break;
 	case "set":
-		setClass_(property, value);
+		r = setClass_(property, value);
 		break;
 
 	default:
+    r = 1;
 		ConsoleLog.error("classService_(): Switch case is default", { select: select });
-		return 1;
+    break;
 	}
+
+  lock.releaseLock();
+  return r;
 }
 
 

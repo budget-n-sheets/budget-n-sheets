@@ -27,7 +27,7 @@ function setAdminSettings(key, value) {
 function classAdminSettings_(select, key, value) {
 	var lock = LockService.getDocumentLock();
 	try {
-		lock.waitLock(1000);
+		lock.waitLock(200);
 	} catch (err) {
 		ConsoleLog.warn(err);
 		return 1;
@@ -40,6 +40,8 @@ function classAdminSettings_(select, key, value) {
 	}
 
 	if (select === "get") {
+    lock.releaseLock();
+
 		switch (key) {
 		case "admin_id":
 		case "isChangeableByEditors":
@@ -49,9 +51,11 @@ function classAdminSettings_(select, key, value) {
 			ConsoleLog.error("classAdminSettings_(): Switch case is default", { key: key });
 			return 1;
 		}
-
 	} else if (select === "set") {
-		if (getUserId_() !== admin_settings.admin_id) return 1;
+		if (getUserId_() !== admin_settings.admin_id) {
+      lock.releaseLock();
+      return 1;
+    }
 
 		switch (key) {
 		case "admin_id":
@@ -61,14 +65,16 @@ function classAdminSettings_(select, key, value) {
 
 		default:
 			ConsoleLog.error("classAdminSettings_(): Switch case is default", { key: key });
+      lock.releaseLock();
 			return 1;
 		}
 
 		PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
 		CacheService2.put("document", "admin_settings", "json", admin_settings);
-
+    lock.releaseLock();
 	} else {
 		ConsoleLog.error("classAdminSettings_(): Select case is default", { select: select });
+    lock.releaseLock();
 		return 1;
 	}
 }

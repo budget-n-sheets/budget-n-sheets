@@ -23,17 +23,13 @@ function isReAuthorizationRequired_ (sendEmail) {
     lock = LockService.getUserLock()
 
     try {
-      lock.waitLock(100)
-
-      if (documentProperties.getProperty('auth_request_sent') != null) {
-        return
-      }
+      lock.waitLock(200)
+      if (documentProperties.getProperty('auth_request_sent') != null) return
 
       sendReAuthorizationRequest_(authInfoLevel)
       documentProperties.setProperty('auth_request_sent', 'true')
     } catch (e) {
       ConsoleLog.error(e)
-      return true
     } finally {
       lock.releaseLock()
     }
