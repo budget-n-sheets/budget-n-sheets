@@ -24,6 +24,9 @@ function playSpeedQuickstart (id) {
   const n = Number(channel[2]);
 
   switch (job) {
+    case 'blank_value':
+      playQuickBlankValue_(n);
+      break;
     case 'statements':
       playQuickStatements_(n);
       break;
