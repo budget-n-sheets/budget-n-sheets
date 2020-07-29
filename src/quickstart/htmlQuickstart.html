@@ -80,21 +80,17 @@
 
 		<h1 style="margin-bottom: 5px;">Bill Calendar</h1>
 
-		<p>Visit the wiki to learn how to setup and sync your financial calendar: <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar" target="_blank">Wiki - Bill Calendar</a>.</p>
+		<p>Visit the wiki to learn how to setup, create events and sync your financial calendar: <a href="https://github.com/guimspace/budget-n-sheets/wiki/Bill-Calendar" target="_blank">Wiki - Bill Calendar</a>.</p>
 
 		<? if (isCurrent) { ?>
-		<p><a href="https://calendar.google.com/" target="_blank">Google Calendar <span class="material-icons-outlined md-18">launch</span></a></p>
-
-		<p>Before playing the examples below, open the <b>Settings</b> sidebar, select a calendar and check the option "Sync calendar to the spreadsheet".</p>
 
 		<p>Create calendar events and update the cash flow <span class="material-icons md-18 md-speed" id="calendar1">play_circle_outline</span></p>
-
 
 		<ul>
 			<li><b>The simplest event:</b> This simple event has the name of an account and a number formatted.</li>
 			<li><b>Muted event:</b> This event has the "@muted" indicator, so it is not included in cash flow, nor posted in the table.</li>
-			<li><b>Payday:</b> Similar to <b>The simplest event</b> but with a few tags. While the tags don't play any role in cash flow, they are posted in the table along with the other details.</li>
-			<li><b>Card bill payment:</b> This event has the "#qcc" built-in tag and no number formatted. The add-on gets the card's balance of the previous month and uses it in the cash flow.</li>
+			<li><b>Income:</b> Similar to <b>The simplest event</b> but with a few tags. While the tags don't play any role in cash flow, they are posted in the table along with the other details.</li>
+			<li><b>Card bill payment:</b> This event has the "#qcc" built-in tag and no number formatted. The add-on gets the card's balance of the previous month and puts it in the cash flow.</li>
 			<li><b>Two-day events:</b> Multiple-days events behave like a one-day event.</li>
 		</ul>
 		<? } else { ?>
