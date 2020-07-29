@@ -22,7 +22,6 @@ function playQuickCalendar_ (n) {
       "Can't create events",
       'Select a bill calendar first in the settings.',
       ui.ButtonSet.OK);
-    showSidebarMainSettings();
     return;
   } else if (!calendar.isOwnedByMe()) {
     ui.alert(

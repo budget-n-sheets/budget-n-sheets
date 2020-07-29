@@ -17,8 +17,6 @@ function playSpeedQuickstart (id) {
     return;
   }
 
-  SpreadsheetApp.getActiveSpreadsheet().toast('Playing the example...', 'Quickstart');
-
   const channel = id.match(/([a-z_]+)(\d)/);
   if (!channel) throw new Error('playSpeedQuickstart(): No match found. ' + id);
 
@@ -50,7 +48,6 @@ function playSpeedQuickstart (id) {
   }
 
   lock.releaseLock();
-  SpreadsheetApp.getActiveSpreadsheet().toast('Done.', 'Quickstart');
 }
 
 function fillMonthWithZeros (sheet) {
