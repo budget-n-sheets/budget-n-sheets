@@ -19,23 +19,35 @@ function askDeactivation() {
 		return;
 	}
 
-	var response = ui.alert(
-			"Deactivate the add-on?",
-			"You can't undo this action!",
-			ui.ButtonSet.YES_NO);
+  const response1 = ui.alert(
+    "Deactivate the add-on",
+    "The deactivation affects only this spreadsheet: " + SpreadsheetApp.getActiveSpreadsheet().getName() + ".\n\n" +
+    "By deactivating the add-on:\n" +
+    "- All add-on features are disabled.\n" +
+    "- Updates and maintenance cease.\n" +
+    "- Data and functions are unaffected.\n" +
+    "- This action cannot be undone.\n\n" +
+    "For more information, visit the wiki.\n" +
+    "Click Ok to continue.",
+    ui.ButtonSet.OK_CANCEL);
+  if (response1 !== ui.Button.OK) return;
 
-	if (response == ui.Button.YES) {
-		uninstall_(true);
-		onOpen();
+  const response2 = ui.alert(
+    "Deactivate the add-on?",
+    "You can't undo this action!",
+    ui.ButtonSet.YES_NO);
+  if (response2 !== ui.Button.YES) return;
 
-		ui.alert(
-			"Deactivation complete",
-			"The add-on was deactivated.",
-			ui.ButtonSet.OK);
+  uninstall_(true);
+  onOpen();
 
-		console.log("deactivate");
-		return true;
-	}
+  ui.alert(
+    "Deactivation complete",
+    "The add-on was deactivated.",
+    ui.ButtonSet.OK);
+
+	console.log("deactivate");
+	return true;
 }
 
 function askResetProtection() {
