@@ -135,7 +135,7 @@ function showPanelAnalytics() {
 
 	var htmlTemplate, htmlSidebar;
 
-	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlCoolGallery");
+	htmlTemplate = HtmlService.createTemplateFromFile("cool_gallery/htmlCoolGallery");
 	htmlTemplate = printHrefScriptlets(htmlTemplate);
 
 	htmlTemplate.list = APPS_SCRIPT_GLOBAL.cool_gallery;
