@@ -127,8 +127,12 @@ function setClassVersion_ (property, value) {
   }
 
   var lock = LockService.getDocumentLock();
-  var hasLock = lock.tryLock(200);
-  if (!hasLock) return 1;
+  try {
+    lock.waitLock(200);
+  } catch (err) {
+    ConsoleLog.warn(err);
+    return 1;
+  }
 
   const class_version2 = PropertiesService2.getProperty("document", "class_version2", "json");
   if (!class_version2) {
