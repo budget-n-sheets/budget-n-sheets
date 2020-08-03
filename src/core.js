@@ -253,9 +253,10 @@ function showDialogUpdate() {
 
 
 function showDialogSetupAddon_() {
-	var ui = SpreadsheetApp.getUi();
-
+  console.log('setup/intent');
   setUserId_();
+
+  var ui = SpreadsheetApp.getUi();
 
 	if (! isTemplateAvailable()) {
 		ui.alert(
