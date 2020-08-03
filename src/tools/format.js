@@ -41,7 +41,7 @@ function formatTags_() {
 function formatAccounts_(mm) {
 	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
 	var date1, date2;
-	var table, snapshot;
+	var table;
 	var cc, n, i, k;
 
 	const w_ = TABLE_DIMENSION.width;
@@ -55,7 +55,7 @@ function formatAccounts_(mm) {
 
 	sheet.showRows(5, lastRow);
 
-  snapshot = sheet.getRange(5, 1, lastRow, w_*(1 + num_acc)).getValues();
+  const snapshot = sheet.getRange(5, 1, lastRow, w_*(1 + num_acc)).getValues();
 
 	for (k = 0; k < 1 + num_acc; k++) {
     i = 0;
@@ -84,7 +84,7 @@ function formatAccounts_(mm) {
 	date2 = new Date(date2, mm + 1, 0).getTime();
 
   n = sheet.getMaxRows();
-	if (lastRow > 4 && lastRow < n && date2 < date1) sheet.hideRows(lastRow + 1, n - lastRow);
+	if (lastRow + 4 < n && date2 < date1) sheet.hideRows(lastRow + 5, n - lastRow - 4);
 }
 
 function formatCards_(mm) {
