@@ -97,7 +97,7 @@ function update_() {
   i = 0;
   ss = setClassVersion_('script', cell);
   while (ss && ++i < 3) {
-    Utilities.sleep(i * 1000);
+    Utilities.sleep(Math.pow(3, i) * 1000);
     ss = setClassVersion_('script', cell);
   }
 
