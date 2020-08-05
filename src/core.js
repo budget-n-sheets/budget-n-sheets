@@ -232,7 +232,7 @@ function showDialogErrorMessage() {
 
 	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(373)
-		.setHeight(113);
+		.setHeight(137);
 
 	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Something went wrong");
 }
