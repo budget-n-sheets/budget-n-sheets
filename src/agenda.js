@@ -59,6 +59,7 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
       TranslationType: '',
       TranslationNumber: 0,
       Tags: [ ],
+      TagImportant: '',
       hasAtMute: true,
       hasQcc: false,
       isRecurring: evento.isRecurringEvent()
@@ -100,6 +101,9 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
         cell.TranslationNumber = Number(translation[2] + translation[3]);
       }
     }
+
+    match = cell.Description.match(/!#\w+/);
+    cell.TagImportant = (match ? match[0].slice(2) : '');
 
     cell.Tags = cell.Description.match(/#\w+/g);
     if (!cell.Tags) cell.Tags = [ ];
