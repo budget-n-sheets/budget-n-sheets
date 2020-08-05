@@ -147,6 +147,11 @@
 										<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to the spreadsheet</label>
 									</td>
 								</tr>
+                <tr>
+                  <td colspan="2">
+                    <input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
+                  </td>
+                </tr>
 							<? } else { ?>
 								<tr>
 									<td>
@@ -159,13 +164,6 @@
 							<tr>
 								<th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
 							</tr>
-							<? if (isCalendarEnabled) { ?>
-								<tr>
-									<td colspan="2">
-										<input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
-									</td>
-								</tr>
-							<? } ?>
 							<tr>
 								<td colspan="2"><input type="checkbox" id="override_zero"><label for="override_zero">Tag zeros</label></td>
 							</tr>
