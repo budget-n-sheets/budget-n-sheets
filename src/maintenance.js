@@ -28,7 +28,7 @@ function askDeactivation() {
     "- Data and functions are unaffected.\n" +
     "- This action cannot be undone.\n\n" +
     "For more information, visit the wiki.\n" +
-    "Click Ok to continue.",
+    "Click OK to continue.",
     ui.ButtonSet.OK_CANCEL);
   if (response1 !== ui.Button.OK) return;
 
