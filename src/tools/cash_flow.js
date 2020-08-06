@@ -100,8 +100,10 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
           mm + evento.TranslationNumber >= 0 &&
           mm + evento.TranslationNumber <= 11) {
         value = +cards.balance[c][mm + evento.TranslationNumber].toFixed(2);
-      } else {
+      } else if (mm > 0) {
         value = +cards.balance[c][mm - 1].toFixed(2);
+      } else {
+        value = 0;
       }
     } else if (hasTags && evento.Tags.length > 0) {
       c = (evento.TagImportant ? tags.tags.indexOf(evento.TagImportant) : -1);
