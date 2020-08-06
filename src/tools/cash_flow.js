@@ -105,7 +105,7 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
       }
     } else if (hasTags && evento.Tags.length > 0) {
       j = 0;
-      c = (cell.TagImportant ? tags.tags.indexOf(evento.TagImportant) : -1);
+      c = (evento.TagImportant ? tags.tags.indexOf(evento.TagImportant) : -1);
 
       while (j < evento.Tags.length && c === -1) {
         c = tags.tags.indexOf(evento.Tags[j++]);
