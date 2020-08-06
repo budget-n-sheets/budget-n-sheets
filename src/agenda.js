@@ -92,15 +92,9 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
     if (cell.Value) cell.Value = Number(cell.Value[0].replace('\$', ''));
     else cell.Value = NaN;
 
-    translation = cell.Description.match(/@(M(\+|-)(\d+)|Avg|Total)/);
-    if (translation) {
-      if (translation[1] === 'Total' || translation[1] === 'Avg') {
-        cell.TranslationType = translation[1];
-      } else {
-        cell.TranslationType = 'M';
-        cell.TranslationNumber = Number(translation[2] + translation[3]);
-      }
-    }
+    translation = getTranslation.call(cell.Description);
+    cell.TranslationType = translation.type;
+    cell.TranslationNumber = translation.number;
 
     match = cell.Description.match(/!#\w+/);
     cell.TagImportant = (match ? match[0].slice(2) : '');

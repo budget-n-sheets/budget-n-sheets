@@ -86,6 +86,21 @@ function numberFormatCalendarSignal (p_dec_p) {
   return s + i.substr(0, j) + DEC_P + Math.abs(n - i).toFixed(2).slice(2);
 }
 
+function getTranslation () {
+  const translation = { type: '', number: 0 };
+  const match = this.match(/@(M(\+|-)(\d+)|Avg|Total)/);
+  if (match) {
+    if (match[1] === 'Total' || match[1] === 'Avg') {
+      translation.type = match[1];
+    } else {
+      translation.type = 'M';
+      translation.number = Number(match[2] + match[3]);
+    }
+  }
+
+  return translation;
+}
+
 function getSpreadsheetDate () {
   var timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
   if (typeof timezone !== 'string' || timezone === '') {
