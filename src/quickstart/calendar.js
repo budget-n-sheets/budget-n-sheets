@@ -21,7 +21,7 @@ function playQuickCalendar_ (n) {
   if (!calendar) {
     ui.alert(
       "Can't create events",
-      'Select a bill calendar first in the settings.',
+      'Select a financial calendar first in the settings.',
       ui.ButtonSet.OK);
     return;
   } else if (!calendar.isOwnedByMe()) {
