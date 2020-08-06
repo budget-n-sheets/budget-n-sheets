@@ -104,9 +104,9 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
         value = +cards.balance[c][mm - 1].toFixed(2);
       }
     } else if (hasTags && evento.Tags.length > 0) {
-      j = 0;
       c = (evento.TagImportant ? tags.tags.indexOf(evento.TagImportant) : -1);
 
+      j = 0;
       while (j < evento.Tags.length && c === -1) {
         c = tags.tags.indexOf(evento.Tags[j++]);
       }
@@ -143,7 +143,7 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
 }
 
 function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
-  var day, value, matches;
+  var day, value, match, translation, important;
   var start, end, offset, first;
   var cc, c, i, j, k;
 
@@ -197,13 +197,47 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
 
     value = table[i][2 + cc];
 
-    if (value === 0 && hasTags && day >= first) {
-      matches = table[i][3 + cc].match(/#\w+/g);
-      for (j = 0; j < matches.length; j++) {
-        c = tags.tags.indexOf(matches[j].substr(1));
+    if (value === 0 && day >= first && table[i][3 + cc] && hasTags) {
+      translation = getTranslation.call(table[i][1 + cc]);
+
+      if (translation.type) {
+        important = table[i][3 + cc].match(/!#\w+/);
+        important = (important ? important[0].slice(2) : '');
+
+        match = table[i][3 + cc].match(/#\w+/g);
+        match = (match ? match : []);
+        for (j = 0; j < match.length; j++) {
+          match[j] = match[j].slice(1);
+        }
+      } else {
+        match = [];
+      }
+
+      if (match.length > 0) {
+        c = (important ? tags.tags.indexOf(important) : -1);
+
+        j = 0;
+        while (j < match.length && c === -1) {
+          c = tags.tags.indexOf(match[j++]);
+        }
+
         if (c !== -1) {
-          value = tags.average[c];
-          break;
+          switch (translation.type) {
+            default:
+              ConsoleLog.warn('cfDigestAccounts_(): Switch case is default.', translation.type);
+            case '':
+            case 'Avg':
+              value = tags.average[c];
+              break;
+            case 'Total':
+              value = tags.total[c];
+              break;
+            case 'M':
+              if (more.mm + translation.number >= 0 && more.mm + translation.number <= 11) {
+                value = tags.months[c][more.mm + translation.number];
+              }
+              break;
+          }
         }
       }
     }
