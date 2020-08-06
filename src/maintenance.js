@@ -1,3 +1,7 @@
+function askOptimizeAll () {
+  switchActivity_('suspend');
+}
+
 function askSetRecalculation () {
   SpreadsheetApp.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.HOUR);
 }

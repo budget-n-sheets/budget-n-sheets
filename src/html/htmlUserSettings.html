@@ -110,6 +110,7 @@
 								</td>
 							</tr>
 						</table>
+            <? if (isOperationActive) { ?>
 						<table style="width:100%;margin-top:1.3em;">
 							<tr>
 								<th colspan="2"><span style="font-size:1.2em;">Financial Calendar</span></th>
@@ -160,25 +161,39 @@
 								</tr>
 							<? } ?>
 						</table>
+            <? } ?>
             <table style="width:100%;margin-top:1.3em;">
               <tr>
                 <th colspan="2"><span style="font-size:1.2em;">Performance</span></th>
               </tr>
-              <tr>
-                <td class="comment name" style="width: 100%;"><label for="optimize_load">Optimize spreadsheet load</label></td>
-                <td class="comment">
-                  <select id="optimize_load" required>
-                    <option value="enable" selected>Enable</option>
-                    <option value="disable">Disable</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  This can improve overall spreadsheet performance and loading time.<br>
-                  <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a>
-                </td>
-              </tr>
+              <? if (isOperationActive) { ?>
+                <tr>
+                  <td class="comment name" style="width: 100%;"><label for="optimize_load">Optimize spreadsheet load</label></td>
+                  <td class="comment">
+                    <select id="optimize_load" required>
+                      <option value="enable" selected>Enable</option>
+                      <option value="disable">Disable</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    Suspend calculations of old activities. This can improve overall spreadsheet performance and loading time.<br>
+                    <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a>
+                  </td>
+                </tr>
+              <? } else { ?>
+                <tr>
+                  <td class="comment name" style="width: 100%;"><label>Optimize spreadsheet load</label></td>
+                  <td class="comment"><button id="b-Optimize" class="create">Optimize</button></td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    Suspend all calculations. This can improve overall spreadsheet performance and loading time.<br>
+                    <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a>
+                  </td>
+                </tr>
+              <? } ?>
               <tr>
                 <td class="comment name" style="width: 100%;"><label>Recalculation</label></td>
                 <td class="comment"><button id="b-Recalculation" class="create">Set</button></td>
@@ -301,6 +316,9 @@
 				<? } else { ?>
 					$("#b-Uninstall").click(uninstallTriggers);
 				<? } ?>
+        <? if (!isOperationActive) { ?>
+          $("#b-Optimize").click(optimizeAll);
+        <? } ?>
 				$("#b-Reset").click(resetProtection);
 
 				google.script.run.withSuccessHandler(loadSettings)
@@ -445,6 +463,19 @@
           .withFailureHandler(showError)
           .withUserObject(this)
           .askSetRecalculation();
+      }
+
+      function optimizeAll () {
+        this.disabled = true;
+        $("#footer_response").empty();
+
+        google.script.run.withSuccessHandler(function(r, o) {
+              if (!r) showStatus("Spreadsheet optimized");
+              o.disabled = false;
+            })
+          .withFailureHandler(showError)
+          .withUserObject(this)
+          .askOptimizeAll();
       }
 
 			function loadSettings(user_settings) {

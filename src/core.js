@@ -150,12 +150,13 @@ function showPanelAnalytics() {
 function showSidebarMainSettings() {
 	if (onlineUpdate_()) return;
 
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var htmlTemplate, htmlSidebar;
-	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-	var calendars, editors;
 
 	const user_id = getUserId_();
 	const isChangeableByEditors = classAdminSettings_("get", "isChangeableByEditors");
+  const financial_year = getConstProperties_('financial_year');
+  const isOperationActive = (financial_year >= DATE_NOW.getFullYear());
 
 	const isAdmin = (user_id === classAdminSettings_("get", "admin_id"));
 
@@ -165,20 +166,25 @@ function showSidebarMainSettings() {
 	htmlTemplate.isAdmin = isAdmin;
 	htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
 	htmlTemplate.isChangeableByEditors = "";
+  htmlTemplate.isOperationActive = isOperationActive;
 
 	if (isAdmin) {
-		editors = spreadsheet.getEditors();
-		hasEditors = (editors.length > 1);
-		calendars = getAllOwnedCalendars();
+		const editors = spreadsheet.getEditors();
+		const hasEditors = (editors.length > 1);
 
 		if (hasEditors && isChangeableByEditors) {
 			htmlTemplate.isChangeableByEditors = "checked";
 		}
 
 		htmlTemplate.hasEditors = hasEditors;
-		htmlTemplate.isCalendarEnabled = (calendars.md5.length > 0);
-		htmlTemplate.calendars_data = calendars;
 
+    if (isOperationActive) {
+      const calendars = getAllOwnedCalendars();
+      htmlTemplate.isCalendarEnabled = (calendars.md5.length > 0);
+      htmlTemplate.calendars_data = calendars;
+    } else {
+      htmlTemplate.isCalendarEnabled = false;
+    }
 	} else if (isChangeableByEditors) {
 		htmlTemplate.hasEditors = false;
 		htmlTemplate.isCalendarEnabled = true;
@@ -192,7 +198,7 @@ function showSidebarMainSettings() {
 	}
 
 	htmlTemplate.doc_name = spreadsheet.getName();
-	htmlTemplate.financial_year = getConstProperties_("financial_year");
+	htmlTemplate.financial_year = financial_year;
 
 	htmlSidebar = htmlTemplate.evaluate().setTitle("Settings");
 
