@@ -53,6 +53,7 @@ function onOpen(e) {
         .addSubMenu(ui.createMenu("Pages view")
           .addItem("Collapse", "toolHideSheets_")
           .addItem("Expand", "toolShowSheets_"))
+        .addItem("Resume month", "toolResumeActivity_")
         .addItem("Toggle view mode", "toggleViewMode_")
         .addSeparator()
         .addItem("About the add-on", "showDialogAboutAddon")
