@@ -33,7 +33,7 @@ function updateCashFlow_ (mm) {
   const financial_year = getConstProperties_('financial_year');
 
   const dd = new Date(financial_year, mm + 1, 0).getDate();
-  const tags = (getUserSettings_('override_zero') ? getTagData_() : false);
+  const tags = getTagData_();
   const eventos = getCalendarEventsForCashFlow_(financial_year, mm);
 
   const cf_flow = [
