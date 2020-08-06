@@ -48,7 +48,7 @@ function updateCashFlow_ (mm) {
   ];
 
   cfDigestAccounts_(spreadsheet, tags,
-    { mm: mm, dd: dd, num_acc: num_acc, dec_p: dec_p },
+    { yyyy: financial_year, mm: mm, dd: dd, num_acc: num_acc, dec_p: dec_p },
     cf_flow, cf_transactions);
 
   cfDigestCalendar_(eventos, tags,
@@ -144,6 +144,7 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
 
 function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
   var day, value, matches;
+  var start, end, offset, first;
   var cc, c, i, j, k;
 
   var sheet = spreadsheet.getSheetByName(MN_SHORT[more.mm]);
@@ -158,6 +159,25 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
 
   const hasTags = (tags && tags.tags.length > 0);
   const table = sheet.getRange(5, 6, maxRows, 5 * num_acc).getValues();
+
+  end = new Date(more.yyyy, more.mm + 1, 1);
+  if (DATE_NOW >= end) first = 99;
+  else {
+    start = new Date(more.yyyy, more.mm, 1);
+    if (start <= DATE_NOW) {
+      start = new Date(more.yyyy, more.mm, DATE_NOW.getDate() + 1);
+      if (start > end) first = 99;
+    } else {
+      first = 0;
+    }
+    if (first !== 0 && first !== 99) {
+      offset = getSpreadsheetDate.call(start);
+      offset = start.getTime() - offset.getTime();
+
+      start = new Date(start.getTime() + offset);
+      first = start.getDate();
+    }
+  }
 
   i = -1;
   k = 0;
@@ -176,7 +196,8 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
     if (day <= 0 || day > dd) continue;
 
     value = table[i][2 + cc];
-    if (value === 0 && hasTags) {
+
+    if (value === 0 && hasTags && day >= first) {
       matches = table[i][3 + cc].match(/#\w+/g);
       for (j = 0; j < matches.length; j++) {
         c = tags.tags.indexOf(matches[j].substr(1));
