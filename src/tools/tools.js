@@ -70,7 +70,7 @@ function getTagData_() {
 
   const table = sheet.getRange(2, 5, lastRow - 1, 16).getValues();
 
-  for (var i = 0; i < data.length; i++) {
+  for (var i = 0; i < table.length; i++) {
     if (table[i][0] === '' || !/^\w+$/.test(table[i][0])) continue;
 
     data.tags[i] = table[i][0];
