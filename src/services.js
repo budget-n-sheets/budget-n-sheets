@@ -125,13 +125,10 @@ function quickActions_(range, value) {
 
 function dailyTrigger_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (! isInstalled_()) return;
-
+	if (!isInstalled_()) return;
 	if (seamlessUpdate_()) return;
 
-	var date = getSpreadsheetDate.call(DATE_NOW);
-  var trigger
-
+	const date = getSpreadsheetDate.call(DATE_NOW);
 	const yyyymmdd = {
 		year: date.getFullYear(),
 		month: date.getMonth(),
@@ -140,22 +137,11 @@ function dailyTrigger_(e) {
 
 	const financial_year = getConstProperties_("financial_year");
 
-	if (financial_year < yyyymmdd.year) {
-		treatLayout_(yyyymmdd.year, yyyymmdd.month);
-		deleteTrigger_('KeyId', { scope: 'document', key: 'clockTriggerId' })
-		Utilities.sleep(300);
-
-		var day = 1 + randomInteger(28);
-		var hour = 2 + randomInteger(4);
-
-		trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour, minute: -1 })
-    saveTriggerId_(trigger, 'document', 'clockTriggerId')
-
-		setSpreadsheetSettings_("operation_mode", "passive");
-
-		console.log("mode/passive");
-		return;
-	}
+  if (financial_year < yyyymmdd.year) {
+    treatLayout_(yyyymmdd.year, yyyymmdd.month);
+    rollOperationMode_('passive');
+    return;
+  }
 
 	if (yyyymmdd.date === 1) {
 		treatLayout_(yyyymmdd.year, yyyymmdd.month);
@@ -168,44 +154,31 @@ function dailyTrigger_(e) {
 
 function weeklyTriggerPos_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (! isInstalled_()) return;
+	if (!isInstalled_()) return;
 
 	seamlessUpdate_();
 }
 
 function weeklyTriggerPre_(e) {
 	if (isReAuthorizationRequired_()) return;
-	if (! isInstalled_()) return;
-
+	if (!isInstalled_()) return;
 	if (seamlessUpdate_()) return;
 
-	var date = getSpreadsheetDate.call(DATE_NOW);
-
+  var mode;
+  const financial_year = getConstProperties_('financial_year');
+	const date = getSpreadsheetDate.call(DATE_NOW);
 	const yyyymm = {
 		year: date.getFullYear(),
 		month: date.getMonth()
 	};
 
-	const financial_year = getConstProperties_("financial_year");
-
 	if (yyyymm.year > financial_year) return;
 
-	deleteTrigger_('KeyId', { scope: 'document', key: 'clockTriggerId' })
+  treatLayout_(yyyymm.year, yyyymm.month);
+  if (yyyymm.year === financial_year) mode = 'active';
+  else mode = 'passive'
 
-	var hour = 2 + randomInteger(4);
-
-	if (yyyymm.year === financial_year) {
-		trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: hour, minute: -1 })
-    saveTriggerId_(trigger, 'document', 'clockTriggerId')
-		console.log("mode/active");
-
-	} else {
-		var day = 1 + randomInteger(28);
-		trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour, minute: -1 })
-    saveTriggerId_(trigger, 'document', 'clockTriggerId')
-	}
-
-	treatLayout_(yyyymm.year, yyyymm.month);
+  rollOperationMode_(mode);
 }
 
 function onEdit_Main_(e) {
