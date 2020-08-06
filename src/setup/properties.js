@@ -8,7 +8,8 @@ function setupProperties_(yyyy_mm) {
 		financial_calendar: "",
 		post_day_events: false,
 		cash_flow_events: false,
-		override_zero: false
+		override_zero: false,
+    optimize_load: true
 	};
 	PropertiesService2.setProperty("document", "user_settings", "json", properties);
 

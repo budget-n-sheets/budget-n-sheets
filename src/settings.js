@@ -64,10 +64,12 @@ function saveUserSettings(settings) {
 
 	const new_init_month = Number(settings.initial_month);
 	const init_month = getUserSettings_("initial_month");
+  const optimize_load = settings.optimize_load === 'enable';
 
 	const user_settings = {
 		initial_month: new_init_month,
 		override_zero: false,
+    optimize_load: optimize_load,
 
 		financial_calendar: calendar.financial_calendar,
 		post_day_events: calendar.post_day_events,
@@ -110,6 +112,7 @@ function getUserSettings_(select) {
 		case 'override_zero':
 		case 'cash_flow_events':
 		case 'initial_month':
+    case 'optimize_load':
 			return user_settings[select];
 
 		default:
@@ -128,6 +131,7 @@ function setUserSettings_(select, value) {
 		case 'post_day_events':
 		case 'cash_flow_events':
 		case 'override_zero':
+    case 'optimize_load':
 			user_settings[select] = value;
 			break;
 
