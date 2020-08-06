@@ -7,6 +7,9 @@ function toolResumeActivity_ () {
 }
 
 function switchActivityUi_ (select) {
+  if (!isInstalled_()) return;
+  if (onlineUpdate_()) return;
+
   const r = switchActivity_(select);
 
   if (r === 1) {
@@ -22,9 +25,6 @@ function switchActivityUi_ (select) {
 }
 
 function switchActivity_ (select) {
-  if (!isInstalled_()) return;
-  if (onlineUpdate_()) return;
-
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
