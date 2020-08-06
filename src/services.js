@@ -145,6 +145,10 @@ function dailyTrigger_(e) {
 
 	if (yyyymmdd.date === 1) {
 		treatLayout_(yyyymmdd.year, yyyymmdd.month);
+
+    if (getUserSettings_('optimize_load') && yyyymd.month > 2) {
+      switchActivity_('suspend');
+    }
 	}
 
 	if (getUserSettings_("post_day_events")) {
