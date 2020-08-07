@@ -76,6 +76,18 @@ function resumeActivity_ (mm) {
   sheet.getRange(2 + h_ * mm, 7, h_, width).setFormulas(accounts);
   SpreadsheetApp.flush();
 
+  const db_accounts = getDbTables_('accounts');
+  var account;
+  for (k = 0; k < num_acc; k++) {
+    account = db_accounts.data[k];
+    if (account.time_a === mm) {
+      formula = '=' + numberFormatLocaleSignal.call(account.balance);
+      sheet.getRange(2 + h_ * account.time_a, 2 + w_ + w_ * k).setFormula(formula);
+    } else {
+      sheet.getRange(2 + h_ * account.time_a, 2 + w_ + w_ * k).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
+    }
+  }
+
   const list1 = [];
   const list2 = [];
   const list3 = [];
@@ -160,4 +172,10 @@ function resumeActivity_ (mm) {
   sheet.getRangeList(list3).setFormulaR1C1('MIN(R[-1]C; R[-1]C - R[3]C)');
   sheet.getRangeList(list4).setFormula(rollA1Notation(2 + h_ * mm, 4 + col - w_));
   SpreadsheetApp.flush();
+
+  const db_cards = getDbTables_('cards');
+  for (k = 0; k < db_cards.count; k++) {
+    formula = '=' + numberFormatLocaleSignal.call(db_cards.data[k].limit);
+    sheet.getRange(2 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
+  }
 }
