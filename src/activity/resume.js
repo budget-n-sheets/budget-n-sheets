@@ -78,16 +78,30 @@ function resumeActivity_ (mm) {
   sheet.getRange(2 + h_ * mm, 7, h_, width).setFormulas(accounts);
   SpreadsheetApp.flush();
 
+  const actual_month = getMonthFactored_('actual_month');
+  var rangeList;
+  for (k = 0; k < num_acc; k++) {
+    rangeList = [];
+    for (i = 1 + mm; i < actual_month; i++) {
+      rangeList[i - 1 - mm] = rollA1Notation(2 + h_ * i, 2 + w_ + w_ * k);
+
+      range1A1 = rollA1Notation(2 + h_ * i, 11 + w_ * k);
+      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[1 + k] + '; ' + range1A1 + '; 1)))';
+      formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
+      formula = balance1[5 * i + k] + ' + IFERROR(SUM(' + formula + '); 0)';
+      sheet.getRange(3 + h_ * i, 2 + w_ + w_ * k).setFormula(formula);
+    }
+    sheet.getRangeList(rangeList).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
+  }
+
   const db_accounts = getDbTables_('accounts');
   var account;
   for (k = 0; k < num_acc; k++) {
     account = db_accounts.data[k];
-    if (account.time_a === mm) {
-      formula = '=' + numberFormatLocaleSignal.call(account.balance);
-      sheet.getRange(2 + h_ * account.time_a, 2 + w_ + w_ * k).setFormula(formula);
-    } else {
-      sheet.getRange(2 + h_ * account.time_a, 2 + w_ + w_ * k).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
-    }
+    if (account.time_a < mm) continue;
+
+    formula = '=' + numberFormatLocaleSignal.call(account.balance);
+    sheet.getRange(2 + h_ * account.time_a, 2 + w_ + w_ * k).setFormula(formula);
   }
 
   const list1 = [];
