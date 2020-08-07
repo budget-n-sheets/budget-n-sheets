@@ -53,13 +53,13 @@ function onOpen(e) {
         .addSubMenu(ui.createMenu("Pages view")
           .addItem("Collapse", "toolHideSheets_")
           .addItem("Expand", "toolShowSheets_"))
-        .addItem("Resume month", "toolResumeActivity_")
         .addItem("Toggle view mode", "toggleViewMode_")
         .addSeparator()
         .addItem("Change settings", "showSidebarMainSettings")
         .addSubMenu(ui.createMenu("More")
           .addItem("About the add-on", "showDialogAboutAddon")
           .addItem("Deactive the add-on", "askDeactivation")
+          .addItem("Resume month", "toolResumeActivity_")
           .addItem("Show Quickstart", "showPanelQuickstart"));
 
 			console.log("open");
