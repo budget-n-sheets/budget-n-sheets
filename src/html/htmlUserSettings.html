@@ -176,8 +176,8 @@
                 </tr>
                 <tr>
                   <td colspan="2">
-                    Suspend calculations of old activities. This can improve overall spreadsheet performance and loading time.<br>
-                    <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a>
+                    <p>Suspend calculations of old activities. This can improve overall spreadsheet performance and loading time.<br>
+                    <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a></p>
                   </td>
                 </tr>
             </table>
@@ -194,51 +194,51 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  Suspend all calculations. This can improve overall spreadsheet performance and loading time.<br>
-                  <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a>
+                  <p>Suspend all calculations. This can improve overall spreadsheet performance and loading time.<br>
+                  <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a></p>
                 </td>
               </tr>
             <? } ?>
 						<tr>
-							<td class="comment name"><label>Reset protected ranges</label></td>
+							<td class="comment name" style="width: 100%;"><label>Reset protected ranges</label></td>
 							<td class="comment"><button id="b-Reset" class="create">Reset</button></td>
 						</tr>
 						<tr>
 							<td colspan="2">
-									This can fix issues related with editable ranges affected by protection.<br>
-									<a href="<?= home_wiki ?>/Step-by-step-Introduction#protected-sheets-and-ranges" target="_blank"><b>Learn more</b></a>
+								<p>This can fix issues related with editable ranges affected by protection.<br>
+								<a href="<?= home_wiki ?>/Step-by-step-Introduction#protected-sheets-and-ranges" target="_blank"><b>Learn more</b></a></p>
 							</td>
 						</tr>
 						<? if (isAdmin) { ?>
 							<tr>
-								<td class="comment name"><label>Reinstall triggers</label></td>
+								<td class="comment name" style="width: 100%;"><label>Reinstall triggers</label></td>
 								<td class="comment"><button id="b-Reinstall" class="create">Reinstall</button></td>
 							</tr>
 							<tr>
 								<td colspan="2">
-										This can fix issues related with the add-on's automatic update and maintenance.<br />
-										<a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
+									<p>This can fix issues related with the add-on's automatic update and maintenance.<br />
+									<a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a></p>
 								</td>
 							</tr>
 							<tr>
-								<td class="comment name"><label>Deactivate add-on</label></td>
+								<td class="comment name" style="width: 100%;"><label>Deactivate add-on</label></td>
 								<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
 							</tr>
 							<tr>
 								<td colspan="2">
-										Once you deactivate the add-on for spreadsheet <span style="font-weight:bold;"><?= doc_name ?></span>, there is no going back! Please be certain.<br />
-										<a href="<?= home_wiki ?>/Deactivate-or-Uninstall-Budget-n-Sheets" target="_blank"><b>Learn more</b></a>
+									<p>Once you deactivate the add-on for spreadsheet <span style="font-weight:bold;"><?= doc_name ?></span>, there is no going back! Please be certain.<br />
+									<a href="<?= home_wiki ?>/Deactivate-or-Uninstall-Budget-n-Sheets" target="_blank"><b>Learn more</b></a></p>
 								</td>
 							</tr>
 						<? } else { ?>
 							<tr>
-								<td class="comment name"><label>Uninstall triggers</label></td>
+								<td class="comment name" style="width: 100%;"><label>Uninstall triggers</label></td>
 								<td class="comment"><button id="b-Uninstall" class="create">Uninstall</button></td>
 							</tr>
 							<tr>
 								<td colspan="2">
-										This can fix issues related with the add-on's automatic update and maintenance.<br>
-										<a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
+									<p>This can fix issues related with the add-on's automatic update and maintenance.<br>
+									<a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a></p>
 								</td>
 							</tr>
 						<? } ?>
