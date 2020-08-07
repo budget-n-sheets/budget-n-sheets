@@ -194,16 +194,6 @@
                   </td>
                 </tr>
               <? } ?>
-              <tr>
-                <td class="comment name" style="width: 100%;"><label>Recalculation</label></td>
-                <td class="comment"><button id="b-Recalculation" class="create">Set</button></td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  Set spreadsheet <b>Recalculation</b> settings to "On change and every hour". This can improve overall spreadsheet performance and loading time.<br>
-                  <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a>
-                </td>
-              </tr>
             </table>
 					</form>
 				</div>
@@ -306,7 +296,6 @@
 		<script>
 			$(document).ready(function() {
 				$("#b-Save").click(saveSettings);
-        $("#b-Recalculation").click(setRecalculation);
 				<? if (isAdmin) { ?>
 					$("#b-Deactivate").click(deactivateAddon);
 					$("#b-Reinstall").click(reinstallTriggers);
@@ -451,19 +440,6 @@
 					.withUserObject(this)
 					.askResetProtection();
 			}
-
-      function setRecalculation () {
-        this.disabled = true;
-        $("#footer_response").empty();
-
-        google.script.run.withSuccessHandler(function(r, o) {
-              if (!r) showStatus("Recalculation set");
-              o.disabled = false;
-            })
-          .withFailureHandler(showError)
-          .withUserObject(this)
-          .askSetRecalculation();
-      }
 
       function optimizeAll () {
         this.disabled = true;
