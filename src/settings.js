@@ -67,7 +67,7 @@ function saveUserSettings(settings) {
 
 	const user_settings = {
 		initial_month: new_init_month,
-		override_zero: settings.override_zero,
+		override_zero: false,
 
 		financial_calendar: calendar.financial_calendar,
 		post_day_events: calendar.post_day_events,

@@ -1,3 +1,24 @@
+function rollOperationMode_ (mode) {
+  const hour = 2 + randomInteger(4);
+  var trigger;
+
+  deleteTrigger_('EventType', 'CLOCK');
+
+  if (mode === 'passive') {
+    const day = 1 + randomInteger(28);
+
+    trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour, minute: -1 });
+    saveTriggerId_(trigger, 'document', 'clockTriggerId');
+    console.log('mode/passive');
+  } else {
+    trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: hour, minute: -1 });
+    saveTriggerId_(trigger, 'document', 'clockTriggerId');
+    console.log('mode/active');
+  }
+
+  setSpreadsheetSettings_('operation_mode', 'mode');
+}
+
 function askDeleteAllTriggers() {
 	deleteAllTriggers_();
 }
@@ -28,7 +49,7 @@ function askDeactivation() {
     "- Data and functions are unaffected.\n" +
     "- This action cannot be undone.\n\n" +
     "For more information, visit the wiki.\n" +
-    "Click Ok to continue.",
+    "Click OK to continue.",
     ui.ButtonSet.OK_CANCEL);
   if (response1 !== ui.Button.OK) return;
 

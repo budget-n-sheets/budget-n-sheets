@@ -55,10 +55,11 @@ function onOpen(e) {
           .addItem("Expand", "toolShowSheets_"))
         .addItem("Toggle view mode", "toggleViewMode_")
         .addSeparator()
-        .addItem("About the add-on", "showDialogAboutAddon")
         .addItem("Change settings", "showSidebarMainSettings")
-        .addItem("Deactive the add-on", "askDeactivation")
-        .addItem("Show quickstart", "showPanelQuickstart");
+        .addSubMenu(ui.createMenu("More")
+          .addItem("About the add-on", "showDialogAboutAddon")
+          .addItem("Deactive the add-on", "askDeactivation")
+          .addItem("Show Quickstart", "showPanelQuickstart"));
 
 			console.log("open");
 		} else {
@@ -232,7 +233,7 @@ function showDialogErrorMessage() {
 
 	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(373)
-		.setHeight(113);
+		.setHeight(137);
 
 	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Something went wrong");
 }

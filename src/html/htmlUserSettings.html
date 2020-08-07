@@ -112,7 +112,7 @@
 						</table>
 						<table style="width:100%;margin-top:1.3em;">
 							<tr>
-								<th colspan="2"><span style="font-size:1.2em;">Bill Calendar</span></th>
+								<th colspan="2"><span style="font-size:1.2em;">Financial Calendar</span></th>
 							</tr>
 							<? if (isCalendarEnabled) { ?>
 								<? if (isAdmin) { ?>
@@ -147,28 +147,18 @@
 										<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to the spreadsheet</label>
 									</td>
 								</tr>
+                <tr>
+                  <td colspan="2">
+                    <input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
+                  </td>
+                </tr>
 							<? } else { ?>
 								<tr>
 									<td>
-										It seems like Google Calendar is not enable for your account. <a href="<?= home_wiki ?>/Bill-Calendar" target="_blank"><b>Learn more</b></a>
+										It seems like Google Calendar is not enable for your account. <a href="<?= home_wiki ?>/Financial-Calendar" target="_blank"><b>Learn more</b></a>
 									</td>
 								</tr>
 							<? } ?>
-						</table>
-						<table style="width:100%;margin-top:1.3em;">
-							<tr>
-								<th colspan="2"><span style="font-size:1.2em;">Cash Flow</span></th>
-							</tr>
-							<? if (isCalendarEnabled) { ?>
-								<tr>
-									<td colspan="2">
-										<input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
-									</td>
-								</tr>
-							<? } ?>
-							<tr>
-								<td colspan="2"><input type="checkbox" id="override_zero"><label for="override_zero">Tag zeros</label></td>
-							</tr>
 						</table>
 					</form>
 				</div>
@@ -415,7 +405,6 @@
 
 			function loadSettings(user_settings) {
 				$("#initial_month").val(user_settings.initial_month);
-				if (user_settings.override_zero) $("#override_zero").prop("checked", true);
 				<? if (isCalendarEnabled) { ?>
 					<? if (isAdmin) { ?>
 						$("#financial_calendar").val(user_settings.financial_calendar);
@@ -437,7 +426,6 @@
 				$("#footer_response").empty();
 
 				var user_settings = {
-					initial_month: $("#initial_month").val(),
 					<? if (isCalendarEnabled) { ?>
 						<? if (isAdmin) { ?>
 							financial_calendar: $("#financial_calendar").val(),
@@ -445,7 +433,7 @@
 						post_day_events: $("#post_day_events").prop("checked"),
 						cash_flow_events: $("#cash_flow_events").prop("checked"),
 					<? } ?>
-					override_zero: $("#override_zero").prop("checked")
+          initial_month: $("#initial_month").val()
 				};
 
 				google.script.run.withSuccessHandler(function(r, o) {

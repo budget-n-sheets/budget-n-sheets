@@ -1,14 +1,15 @@
 var QUICKSTART_DATA_CALENDAR = Object.freeze({
   1: [
-    { day: 2, title: 'The simplest event', description: 'acc_name\nvalue', value: -1.23 },
-    { day: 3, title: 'Muted event', description: 'acc_name\nvalue\n\n@muted', value: -1.23 },
-    { day: 5, title: 'Payday', description: 'acc_name\nvalue\n\n#trf #rct', value: 1234.56 }
+    { day: 2, title: 'The simplest event', description: 'acc_name\nvalue\n---\nThis simple event has the name of an account and a number formatted.', value: -1.23 },
+    { day: 3, title: 'Muted event', description: 'acc_name\nvalue\n\n@muted\n---\nThis event has the "@muted" indicator, so it is not included in cash flow, nor posted in the table.', value: -1.23 },
+    { day: 5, title: 'Income', description: 'acc_name\nvalue\n\n#trf #rct\n---\nSimilar to <b>The simplest event</b> but with a few tags. While the tags don\'t play any role in cash flow, they are posted in the table along with the other details.', value: 1234.56 }
   ],
   2: [
-    { day: 7, title: 'Card bill payment', description: 'card_code\n\n#qcc' }
+    { day: 2, title: 'The simplest card event', description: 'card_code\nvalue\n---\nThis simple event has the code of a card and a number formatted. This event is not synced with the cash flow.', value: -1.23 },
+    { day: 7, title: 'Card bill payment', description: 'card_code\n\n#qcc\n---\nThis event has the "#qcc" built-in tag and no number formatted. The add-on gets the card\'s balance of the previous month and puts it in the cash flow.' }
   ],
   3: [
-    { day: 11, length: 2, title: 'Two-days event', description: 'acc_name\n-$1.23' }
+    { day: 11, length: 2, title: 'Two-days event', description: 'acc_name\n-$1.23\n---\nMultiple-days events behave like a one-day event.' }
   ]
 });
 
@@ -20,7 +21,7 @@ function playQuickCalendar_ (n) {
   if (!calendar) {
     ui.alert(
       "Can't create events",
-      'Select a bill calendar first in the settings.',
+      'Select a financial calendar first in the settings.',
       ui.ButtonSet.OK);
     return;
   } else if (!calendar.isOwnedByMe()) {
@@ -33,7 +34,7 @@ function playQuickCalendar_ (n) {
 
   const response = ui.alert(
     'Authorization Required',
-    'Add-on Budget n Sheets needs your permission to create calendar events.\nClick Ok to authorize and continue with the demo.',
+    'Add-on Budget n Sheets needs your permission to create calendar events.\nClick OK to authorize and continue with the demo.',
     ui.ButtonSet.OK_CANCEL);
   if (response !== ui.Button.OK) return;
 

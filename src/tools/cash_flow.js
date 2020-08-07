@@ -33,7 +33,7 @@ function updateCashFlow_ (mm) {
   const financial_year = getConstProperties_('financial_year');
 
   const dd = new Date(financial_year, mm + 1, 0).getDate();
-  const tags = (getUserSettings_('override_zero') ? getTagData_() : false);
+  const tags = getTagData_();
   const eventos = getCalendarEventsForCashFlow_(financial_year, mm);
 
   const cf_flow = [
@@ -48,7 +48,7 @@ function updateCashFlow_ (mm) {
   ];
 
   cfDigestAccounts_(spreadsheet, tags,
-    { mm: mm, dd: dd, num_acc: num_acc, dec_p: dec_p },
+    { yyyy: financial_year, mm: mm, dd: dd, num_acc: num_acc, dec_p: dec_p },
     cf_flow, cf_transactions);
 
   cfDigestCalendar_(eventos, tags,
@@ -106,10 +106,13 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
         value = 0;
       }
     } else if (hasTags && evento.Tags.length > 0) {
+      c = (evento.TagImportant ? tags.tags.indexOf(evento.TagImportant) : -1);
+
       j = 0;
-      do {
+      while (j < evento.Tags.length && c === -1) {
         c = tags.tags.indexOf(evento.Tags[j++]);
-      } while (j < evento.Tags.length && c === -1);
+      }
+
       if (c === -1) continue;
 
       switch (evento.TranslationType) {
@@ -142,7 +145,8 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
 }
 
 function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
-  var day, value, matches;
+  var day, value, match, translation, important;
+  var start, end, offset, first;
   var cc, c, i, j, k;
 
   var sheet = spreadsheet.getSheetByName(MN_SHORT[more.mm]);
@@ -157,6 +161,25 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
 
   const hasTags = (tags && tags.tags.length > 0);
   const table = sheet.getRange(5, 6, maxRows, 5 * num_acc).getValues();
+
+  end = new Date(more.yyyy, more.mm + 1, 1);
+  if (DATE_NOW >= end) first = 99;
+  else {
+    start = new Date(more.yyyy, more.mm, 1);
+    if (start <= DATE_NOW) {
+      start = new Date(more.yyyy, more.mm, DATE_NOW.getDate() + 1);
+      if (start > end) first = 99;
+    } else {
+      first = 0;
+    }
+    if (first !== 0 && first !== 99) {
+      offset = getSpreadsheetDate.call(start);
+      offset = start.getTime() - offset.getTime();
+
+      start = new Date(start.getTime() + offset);
+      first = start.getDate();
+    }
+  }
 
   i = -1;
   k = 0;
@@ -175,13 +198,48 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
     if (day <= 0 || day > dd) continue;
 
     value = table[i][2 + cc];
-    if (value === 0 && hasTags) {
-      matches = table[i][3 + cc].match(/#\w+/g);
-      for (j = 0; j < matches.length; j++) {
-        c = tags.tags.indexOf(matches[j].substr(1));
+
+    if (value === 0 && day >= first && table[i][3 + cc] && hasTags) {
+      translation = getTranslation.call(table[i][1 + cc]);
+
+      if (translation.type) {
+        important = table[i][3 + cc].match(/!#\w+/);
+        important = (important ? important[0].slice(2) : '');
+
+        match = table[i][3 + cc].match(/#\w+/g);
+        match = (match ? match : []);
+        for (j = 0; j < match.length; j++) {
+          match[j] = match[j].slice(1);
+        }
+      } else {
+        match = [];
+      }
+
+      if (match.length > 0) {
+        c = (important ? tags.tags.indexOf(important) : -1);
+
+        j = 0;
+        while (j < match.length && c === -1) {
+          c = tags.tags.indexOf(match[j++]);
+        }
+
         if (c !== -1) {
-          value = tags.average[c];
-          break;
+          switch (translation.type) {
+            default:
+              ConsoleLog.warn('cfDigestAccounts_(): Switch case is default.', translation.type);
+            case '':
+            case 'Avg':
+              value = tags.average[c];
+              break;
+            case 'Total':
+              value = tags.total[c];
+              break;
+            case 'M':
+              if (more.mm + translation.number >= 0 && more.mm + translation.number <= 11) {
+                value = tags.months[c][more.mm + translation.number];
+              }
+              break;
+          }
         }
       }
     }
