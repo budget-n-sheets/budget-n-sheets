@@ -161,12 +161,10 @@
 								</tr>
 							<? } ?>
 						</table>
-            <? } ?>
             <table style="width:100%;margin-top:1.3em;">
               <tr>
                 <th colspan="2"><span style="font-size:1.2em;">Performance</span></th>
               </tr>
-              <? if (isOperationActive) { ?>
                 <tr>
                   <td class="comment name" style="width: 100%;"><label for="optimize_load">Optimize spreadsheet load</label></td>
                   <td class="comment">
@@ -182,24 +180,25 @@
                     <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a>
                   </td>
                 </tr>
-              <? } else { ?>
-                <tr>
-                  <td class="comment name" style="width: 100%;"><label>Optimize spreadsheet load</label></td>
-                  <td class="comment"><button id="b-Optimize" class="create">Optimize</button></td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    Suspend all calculations. This can improve overall spreadsheet performance and loading time.<br>
-                    <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a>
-                  </td>
-                </tr>
-              <? } ?>
             </table>
+            <? }?>
 					</form>
 				</div>
 
 				<div class="panel" id="panel_Advanced">
 					<table style="width:100%;">
+            <? if (!isOperationActive) { ?>
+              <tr>
+                <td class="comment name" style="width: 100%;"><label>Optimize spreadsheet load</label></td>
+                <td class="comment"><button id="b-Optimize" class="create">Optimize</button></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  Suspend all calculations. This can improve overall spreadsheet performance and loading time.<br>
+                  <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a>
+                </td>
+              </tr>
+            <? } ?>
 						<tr>
 							<td class="comment name"><label>Reset protected ranges</label></td>
 							<td class="comment"><button id="b-Reset" class="create">Reset</button></td>
