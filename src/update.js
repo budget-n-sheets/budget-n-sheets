@@ -7,7 +7,7 @@ var PATCH_THIS = Object.freeze({
       [ null, null, null, null, null, null, update_v0m30p6_ ],
       [ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_, update_v0m31p8_, null ],
       [ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_, update_v0m32p7_, null ],
-      [ update_v0m33p0_, update_v0m33p1_, update_v0m33p2_, null, null, null, null, null, null ]
+      [ update_v0m33p0_, update_v0m33p1_, update_v0m33p2_, null, null, null, null, null, null, update_v0m33p9_ ]
     ]
   ],
   beta_list: [ ]
@@ -160,6 +160,41 @@ function update_v0m0p0_() {
     return 2;
   }
 }*/
+
+/**
+ * Fix all accounts balance range referencing.
+ *
+ * 0.33.9
+ */
+function update_v0m33p9_() {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    if (!sheet) return 1;
+
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const db_accounts = getDbTables_('accounts');
+    var account, list, col, i, k;
+
+    for (k = 0; k < db_accounts.data.length; k++) {
+      account = db_accounts.data[k];
+      col = 2 + w_ + w_*k;
+      list = [];
+
+      for (i = 1; i < 12; i++) {
+        list[i - 1] = rollA1Notation(2 + h_ * i, col);
+      }
+
+      sheet.getRange(2, col).setFormula('0');
+      sheet.getRangeList(list).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
+      sheet.getRange(2 + h_ * account.time_a, col).setFormula('=' + numberFormatLocaleSignal.call(account.balance));
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
 
 /**
  * Set spreadsheet settings 'view_mode'.
