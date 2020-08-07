@@ -130,11 +130,9 @@ function getAccountById_(acc_id) {
 
 
 function setAccount_(account) {
-	var prev_time_a, c;
-
 	const db_accounts = getDbTables_("accounts");
 
-	c = db_accounts.ids.indexOf(account.id);
+	const c = db_accounts.ids.indexOf(account.id);
 	if (c === -1) return 1;
 
 	prev_time_a = account.time_a;
@@ -150,30 +148,33 @@ function setAccount_(account) {
 
 	setDbTables_(db_accounts, "accounts");
 
-	refreshAccountName_(c, account, prev_time_a);
+	refreshAccountName_(c, account);
 	refreshCashFlowReferences_();
 }
 
 
-function refreshAccountName_(index, account, prev_time_a) {
+function refreshAccountName_(index, account) {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet = spreadsheet.getSheetByName("_Backstage");
-	var formula;
+	var i;
 
 	if (!sheet) return 1;
 
 	const h_ = TABLE_DIMENSION.height;
 	const w_ = TABLE_DIMENSION.width;
 
+  const list = [];
 	const col = 2 + w_ + w_*index;
-	const time_a = account.time_a;
 
-	if (time_a > 0) formula = "=R[-" + (h_ - 1) + "]C";
-	else formula = "=0";
+  for (i = 1; i < 12; i++) {
+    list[i - 1] = rollA1Notation(2 + h_ * i, col);
+  }
+
+  sheet.getRange(2, col).setFormula('0');
+  sheet.getRangeList(list).setFormulaR1C1("R[-" + (h_ - 1) + "]C");
 
 	sheet.getRange(1, col).setValue(account.name);
-	sheet.getRange(2 + h_*prev_time_a, col).setFormulaR1C1(formula);
-	sheet.getRange(2 + h_*time_a, col).setFormula("=" + numberFormatLocaleSignal.call(account.balance));
+	sheet.getRange(2 + h_ * account.time_a, col).setFormula("=" + numberFormatLocaleSignal.call(account.balance));
 
 	sheet = spreadsheet.getSheetByName("Jan");
 	if (sheet) {
