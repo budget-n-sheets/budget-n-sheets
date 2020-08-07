@@ -7,7 +7,8 @@ var PATCH_THIS = Object.freeze({
       [ null, null, null, null, null, null, update_v0m30p6_ ],
       [ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_, update_v0m31p8_, null ],
       [ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_, update_v0m32p7_, null ],
-      [ update_v0m33p0_, update_v0m33p1_, update_v0m33p2_, null, null, null, null, null, null, update_v0m33p9_ ]
+      [ update_v0m33p0_, update_v0m33p1_, update_v0m33p2_, null, null, null, null, null, null, update_v0m33p9_ ],
+      [ update_v0m34p0_ ]
     ]
   ],
   beta_list: [ ]
@@ -160,6 +161,19 @@ function update_v0m0p0_() {
     return 2;
   }
 }*/
+
+/**
+ * Set 'optimize_load' initial value to 'false'.
+ *
+ * 0.34.0
+ */
+function update_v0m34p0_() {
+  try {
+    setUserSettings_('optimize_load', false);
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
 
 /**
  * Fix all accounts balance range referencing.
