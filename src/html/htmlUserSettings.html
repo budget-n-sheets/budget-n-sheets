@@ -169,8 +169,8 @@
                   <td class="comment name" style="width: 100%;"><label for="optimize_load">Optimize spreadsheet load</label></td>
                   <td class="comment">
                     <select id="optimize_load" required>
-                      <option value="enable" selected>Enable</option>
-                      <option value="disable">Disable</option>
+                      <option value="enable">Enable</option>
+                      <option value="disable" selected>Disable</option>
                     </select>
                   </td>
                 </tr>
@@ -454,7 +454,9 @@
 
 			function loadSettings(user_settings) {
 				$("#initial_month").val(user_settings.initial_month);
-        $("#optimize_load").val(user_settings.optimize_load);
+
+        if (user_settings.optimize_load) $("#optimize_load").val('enable');
+
 				<? if (isCalendarEnabled) { ?>
 					<? if (isAdmin) { ?>
 						$("#financial_calendar").val(user_settings.financial_calendar);
