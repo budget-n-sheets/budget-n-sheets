@@ -86,7 +86,8 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
     if (evento.Description === '') continue;
     if (evento.hasAtMute) continue;
 
-    if (!isNaN(evento.Value) && evento.Table > 0) {
+    if (!isNaN(evento.Value)) {
+      if (evento.Table === -1) continue;
       value = evento.Value;
     } else if (hasCards && evento.hasQcc) {
       if (evento.Card !== -1) {
