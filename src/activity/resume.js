@@ -123,6 +123,8 @@ function resumeActivity_ (mm) {
     }
   }
 
+  const dec_c = (getSpreadsheetSettings_("decimal_separator") ? ';' : '\\');
+
   const col = 2 + w_ + w_ * num_acc + w_;
   const max2 = spreadsheet.getSheetByName('Cards').getMaxRows() - 5;
 
@@ -172,7 +174,7 @@ function resumeActivity_ (mm) {
 
     formula = "REGEXEXTRACT(ARRAY_CONSTRAIN(\'Cards\'!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
     formula = 'ARRAYFORMULA(SPLIT(' + formula + '; "/"))';
-    formula = '{' + formula + ';' + " ARRAY_CONSTRAIN(\'Cards\'!" + range1A1 + '; ' + header2 + '; 1)}; ';
+    formula = '{' + formula + dec_c + " ARRAY_CONSTRAIN(\'Cards\'!" + range1A1 + '; ' + header2 + '; 1)}; ';
     formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN(\'Cards\'!" + range2A1 + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
 
     formula = formula + "NOT(ISBLANK(ARRAY_CONSTRAIN(\'Cards\'!" + range1A1 + '; ' + header2 + '; 1))); ';
