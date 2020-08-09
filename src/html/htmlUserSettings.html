@@ -187,18 +187,6 @@
 
 				<div class="panel" id="panel_Advanced">
 					<table style="width:100%;">
-            <? if (!isOperationActive) { ?>
-              <tr>
-                <td class="comment name" style="width: 100%;"><label>Optimize spreadsheet load</label></td>
-                <td class="comment"><button id="b-Optimize" class="create">Optimize</button></td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <p>Suspend all calculations. This can improve overall spreadsheet performance and loading time.<br>
-                  <a href="<?= home_wiki ?>" target="_blank"><b>Learn more</b></a></p>
-                </td>
-              </tr>
-            <? } ?>
 						<tr>
 							<td class="comment name" style="width: 100%;"><label>Reset protected ranges</label></td>
 							<td class="comment"><button id="b-Reset" class="create">Reset</button></td>
@@ -303,9 +291,6 @@
 				<? } else { ?>
 					$("#b-Uninstall").click(uninstallTriggers);
 				<? } ?>
-        <? if (!isOperationActive) { ?>
-          $("#b-Optimize").click(optimizeAll);
-        <? } ?>
 				$("#b-Reset").click(resetProtection);
 
 				google.script.run.withSuccessHandler(loadSettings)
@@ -438,19 +423,6 @@
 					.withUserObject(this)
 					.askResetProtection();
 			}
-
-      function optimizeAll () {
-        this.disabled = true;
-        $("#footer_response").empty();
-
-        google.script.run.withSuccessHandler(function(r, o) {
-              if (!r) showStatus("Spreadsheet optimized");
-              o.disabled = false;
-            })
-          .withFailureHandler(showError)
-          .withUserObject(this)
-          .askOptimizeAll();
-      }
 
 			function loadSettings(user_settings) {
 				$("#initial_month").val(user_settings.initial_month);

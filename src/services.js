@@ -161,6 +161,10 @@ function weeklyTriggerPos_(e) {
 	if (!isInstalled_()) return;
 
 	seamlessUpdate_();
+
+  if (DATE_NOW.getMonth() % 4 === 0) {
+    switchActivity_('suspend');
+  }
 }
 
 function weeklyTriggerPre_(e) {
