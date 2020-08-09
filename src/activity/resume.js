@@ -188,7 +188,7 @@ function resumeActivity_ (mm) {
     list4[k] = rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
   }
 
-  sheet.getRange(2, col, h_, 10 * w_).setFormulas(cards);
+  sheet.getRange(2 + h_ * mm, col, h_, 10 * w_).setFormulas(cards);
 
   sheet.getRangeList(list1).setFormulaR1C1('R[-1]C + R[-3]C');
   sheet.getRangeList(list2).setFormulaR1C1('R[-1]C + R[-4]C + RC[-1]');
