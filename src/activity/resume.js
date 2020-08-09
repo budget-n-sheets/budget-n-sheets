@@ -82,6 +82,7 @@ function resumeActivity_ (mm) {
   var rangeList;
   for (k = 0; k < num_acc; k++) {
     rangeList = [];
+
     for (i = 1 + mm; i < actual_month; i++) {
       rangeList[i - 1 - mm] = rollA1Notation(2 + h_ * i, 2 + w_ + w_ * k);
 
@@ -91,7 +92,10 @@ function resumeActivity_ (mm) {
       formula = balance1[5 * i + k] + ' + IFERROR(SUM(' + formula + '); 0)';
       sheet.getRange(3 + h_ * i, 2 + w_ + w_ * k).setFormula(formula);
     }
-    sheet.getRangeList(rangeList).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
+
+    if (rangeList.length > 0) {
+      sheet.getRangeList(rangeList).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
+    }
   }
 
   const db_accounts = getDbTables_('accounts');
