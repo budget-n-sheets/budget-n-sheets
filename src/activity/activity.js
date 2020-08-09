@@ -42,9 +42,14 @@ function switchActivity_ (select) {
 
     const financial_year = getConstProperties_('financial_year');
 
-    if (yyyy < financial_year) return;
-    else if (yyyy === financial_year) mm = date.getMonth() + 1;
-    else mm = 12;
+    if (yyyy < financial_year) {
+      return;
+    } else if (yyyy === financial_year) {
+      if (date.getMonth() < 3) return;
+      mm = date.getMonth() - 3 + 1;
+    } else {
+      mm = 12;
+    }
 
     suspendActivity_(mm);
   } else if (select === 'resume') {
