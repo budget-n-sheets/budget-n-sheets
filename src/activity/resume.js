@@ -131,7 +131,7 @@ function resumeActivity_ (mm) {
     formula += ' + RC[' + w_ * k + ']';
   }
 
-  sheet.getRange(2 + h_ * mm, 4 + col - w_).setFormula('BSBLANK(TRANSPOSE(\'Cards\'!' + rollA1Notation(6 + 6 * mm, 4, max2, 1) + '))');
+  sheet.getRange(2 + h_ * mm, 4 + col - w_).setFormula('BSBLANK(TRANSPOSE(\'Cards\'!' + rollA1Notation(6, 4 + 6 * mm, max2, 1) + '))');
   sheet.getRange(3 + h_ * mm, col - w_, 4, 1).setFormulaR1C1(formula);
 
 
