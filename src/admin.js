@@ -20,6 +20,12 @@ function getUserId_() {
 	return userId;
 }
 
+function retrieveAdminSettings () {
+  const admin_settings = classAdminSettings_('retrieve');
+  delete admin_settings.admin_id;
+  return admin_settings;
+}
+
 function setAdminSettings(key, value) {
 	return classAdminSettings_("set", key, value);
 }
@@ -72,7 +78,10 @@ function classAdminSettings_(select, key, value) {
 		PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
 		CacheService2.put("document", "admin_settings", "json", admin_settings);
     lock.releaseLock();
-	} else {
+  } else if (select === 'retrieve') {
+    lock.releaseLock();
+    return admin_settings;
+  } else {
 		ConsoleLog.error("classAdminSettings_(): Select case is default", { select: select });
     lock.releaseLock();
 		return 1;

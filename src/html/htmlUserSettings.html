@@ -237,7 +237,7 @@
 						<table style="width:100%;">
 							<tr>
 								<td class="comment" colspan="2">
-									<input id="isChangeableByEditors" type="checkbox" <?= isChangeableByEditors ?>><label for="isChangeableByEditors">Editors can change settings</label>
+									<input id="isChangeableByEditors" type="checkbox"><label for="isChangeableByEditors">Editors can change settings</label>
 								</td>
 							</tr>
 							<tr>
@@ -288,12 +288,17 @@
 					<? if (hasEditors) { ?>
 						$("#b-Transfer").click(transferAdminRole);
 					<? } ?>
+
+          google.script.run
+            .withSuccessHandler(loadAdminSettings)
+            .withFailureHandler(showError)
+            .retrieveAdminSettings();
 				<? } else { ?>
 					$("#b-Uninstall").click(uninstallTriggers);
 				<? } ?>
 				$("#b-Reset").click(resetProtection);
 
-				google.script.run.withSuccessHandler(loadSettings)
+				google.script.run.withSuccessHandler(loadUserSettings)
 					.withFailureHandler(showError)
 					.retrieveUserSettings();
 			});
@@ -340,6 +345,10 @@
 
 			<? } ?>
 			<? if (isAdmin) { ?>
+        function loadAdminSettings(admin_settings) {
+          if (admin_settings.isChangeableByEditors) $("#isChangeableByEditors").prop("checked", true);
+        }
+
 				<? if (hasEditors) { ?>
 					$("#isChangeableByEditors").change(function() {
 						this.disabled = true;
@@ -424,7 +433,7 @@
 					.askResetProtection();
 			}
 
-			function loadSettings(user_settings) {
+			function loadUserSettings(user_settings) {
 				$("#initial_month").val(user_settings.initial_month);
 
         if (user_settings.optimize_load) $("#optimize_load").val('enable');

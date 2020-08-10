@@ -166,16 +166,11 @@ function showSidebarMainSettings() {
 
 	htmlTemplate.isAdmin = isAdmin;
 	htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
-	htmlTemplate.isChangeableByEditors = "";
   htmlTemplate.isOperationActive = isOperationActive;
 
 	if (isAdmin) {
 		const editors = spreadsheet.getEditors();
 		const hasEditors = (editors.length > 1);
-
-		if (hasEditors && isChangeableByEditors) {
-			htmlTemplate.isChangeableByEditors = "checked";
-		}
 
 		htmlTemplate.hasEditors = hasEditors;
 
