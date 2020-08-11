@@ -51,6 +51,7 @@ function classAdminSettings_(select, key, value) {
 		switch (key) {
 		case "admin_id":
 		case "isChangeableByEditors":
+    case 'automatic_backup':
 			return admin_settings[key];
 
 		default:
@@ -66,6 +67,7 @@ function classAdminSettings_(select, key, value) {
 		switch (key) {
 		case "admin_id":
 		case "isChangeableByEditors":
+    case 'automatic_backup':
 			admin_settings[key] = value;
 			break;
 
