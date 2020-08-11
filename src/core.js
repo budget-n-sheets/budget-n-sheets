@@ -155,11 +155,11 @@ function showSidebarMainSettings() {
 	var htmlTemplate, htmlSidebar;
 
 	const user_id = getUserId_();
-	const isChangeableByEditors = classAdminSettings_("get", "isChangeableByEditors");
+	const isChangeableByEditors = getAdminSettings_('isChangeableByEditors');
   const financial_year = getConstProperties_('financial_year');
   const isOperationActive = (financial_year >= DATE_NOW.getFullYear());
 
-	const isAdmin = (user_id === classAdminSettings_("get", "admin_id"));
+	const isAdmin = (user_id === getAdminSettings_('admin_id'));
 
 	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUserSettings");
 	htmlTemplate = printHrefScriptlets(htmlTemplate);

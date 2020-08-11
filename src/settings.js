@@ -7,13 +7,13 @@ function retrieveUserSettings() {
 
 	const user_id = getUserId_();
 
-	if (user_id === classAdminSettings_("get", "admin_id")) {
+	if (user_id === getAdminSettings_("admin_id")) {
 		if (user_settings.financial_calendar) {
 			user_settings.financial_calendar = computeDigest("MD5", user_settings.financial_calendar, "UTF_8");
 			user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
 		}
 
-	} else if ( classAdminSettings_("get", "isChangeableByEditors") ) {
+	} else if ( getAdminSettings_("isChangeableByEditors") ) {
 		if (user_settings.financial_calendar) {
 			user_settings.financial_calendar = "";
 			user_settings.hasFinancialCalendar = true;
@@ -39,7 +39,7 @@ function saveUserSettings(settings) {
 		cash_flow_events: false
 	};
 
-	if (user_id === classAdminSettings_("get", "admin_id")) {
+	if (user_id === getAdminSettings_("admin_id")) {
     if (settings.financial_calendar) {
       db_calendars = getAllOwnedCalendars();
 
@@ -50,7 +50,7 @@ function saveUserSettings(settings) {
         calendar.cash_flow_events = settings.cash_flow_events;
       }
     }
-	} else if ( classAdminSettings_("get", "isChangeableByEditors") ) {
+	} else if ( getAdminSettings_("isChangeableByEditors") ) {
 		const financial_calendar = getUserSettings_("financial_calendar");
 		if (financial_calendar) {
 			calendar.financial_calendar = financial_calendar;

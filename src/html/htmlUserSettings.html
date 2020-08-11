@@ -358,7 +358,7 @@
 								})
 							.withFailureHandler(showError)
 							.withUserObject(this)
-							.setAdminSettings("isChangeableByEditors", $(this).prop("checked"));
+							.saveAdminSettings("isChangeableByEditors", $(this).prop("checked"));
 					});
 
 					function transferAdminRole() {

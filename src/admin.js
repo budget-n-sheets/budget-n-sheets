@@ -21,71 +21,57 @@ function getUserId_() {
 }
 
 function retrieveAdminSettings () {
-  const admin_settings = classAdminSettings_('retrieve');
+  var admin_settings = CacheService2.get('document', 'admin_settings', 'json');
+  if (!admin_settings) {
+    admin_settings = PropertiesService2.getProperty('document', 'admin_settings', 'json');
+    CacheService2.put('document', 'admin_settings', 'json', admin_settings);
+  }
+
+  if (getUserId_() !== admin_settings.admin_id) return 1;
   delete admin_settings.admin_id;
+
   return admin_settings;
 }
 
-function setAdminSettings(key, value) {
-	return classAdminSettings_("set", key, value);
+function saveAdminSettings (key, value) {
+  if (getUserId_() !== getAdminSettings_('admin_id')) return 1;
+	return setAdminSettings_(key, value);
 }
 
-function classAdminSettings_(select, key, value) {
-	var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(200);
-	} catch (err) {
-		ConsoleLog.warn(err);
-		return 1;
-	}
+function getAdminSettings_ (select) {
+  var admin_settings = CacheService2.get('document', 'admin_settings', 'json');
+  if (!admin_settings) {
+    admin_settings = PropertiesService2.getProperty('document', 'admin_settings', 'json');
+    CacheService2.put('document', 'admin_settings', 'json', admin_settings);
+  }
 
-	var admin_settings = CacheService2.get("document", "admin_settings", "json");
-	if (!admin_settings) {
-		admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
-		CacheService2.put("document", "admin_settings", "json", admin_settings);
-	}
+  switch (select) {
+    case 'admin_id':
+    case 'isChangeableByEditors':
+      return admin_settings[select];
 
-	if (select === "get") {
-    lock.releaseLock();
+    default:
+      ConsoleLog.error('getAdminSettings_(): Switch case is default.', select);
+      break;
+  }
+}
 
-		switch (key) {
-		case "admin_id":
-		case "isChangeableByEditors":
-			return admin_settings[key];
+function setAdminSettings_ (select, value) {
+  var admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
 
-		default:
-			ConsoleLog.error("classAdminSettings_(): Switch case is default", { key: key });
-			return 1;
-		}
-	} else if (select === "set") {
-		if (getUserId_() !== admin_settings.admin_id) {
-      lock.releaseLock();
+  switch (select) {
+    case 'admin_id':
+    case 'isChangeableByEditors':
+      admin_settings[select] = value;
+      break;
+
+    default:
+      ConsoleLog.error("setAdminSettings_() : Switch case is default.", select);
       return 1;
-    }
+  }
 
-		switch (key) {
-		case "admin_id":
-		case "isChangeableByEditors":
-			admin_settings[key] = value;
-			break;
-
-		default:
-			ConsoleLog.error("classAdminSettings_(): Switch case is default", { key: key });
-      lock.releaseLock();
-			return 1;
-		}
-
-		PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
-		CacheService2.put("document", "admin_settings", "json", admin_settings);
-    lock.releaseLock();
-  } else if (select === 'retrieve') {
-    lock.releaseLock();
-    return admin_settings;
-  } else {
-		ConsoleLog.error("classAdminSettings_(): Select case is default", { select: select });
-    lock.releaseLock();
-		return 1;
-	}
+  PropertiesService2.setProperty("document", "admin_settings", "json", admin_settings);
+  CacheService2.put("document", "admin_settings", "json", admin_settings);
 }
 
 function askTransferAdmin() {
@@ -114,7 +100,7 @@ function askTransferAdmin() {
 			ui.ButtonSet.YES_NO);
 
 	if (response == ui.Button.YES) {
-		classAdminSettings_("set", "admin_id", owner_id);
+		setAdminSettings_("admin_id", owner_id);
 		deleteAllTriggers_();
 		setUserSettings_("financial_calendar", "");
 		setUserSettings_("post_day_events", false);
@@ -133,7 +119,7 @@ function askTransferAdminSd() {
 	var editors, email, digest;
 	var user = Session.getEffectiveUser().getEmail();
 
-	if (spreadsheet.getowner() || getUserId_() !== classAdminSettings_("get", "admin_id")) return 1;
+	if (spreadsheet.getowner() || getUserId_() !== getAdminSettings_("admin_id")) return 1;
 
 	editors = spreadsheet.getEditors();
 	if (editors.length == 1) {
@@ -173,7 +159,7 @@ function continuedTransferAdminSd(editor) {
 	var editors, email, digest;
 	var user = Session.getEffectiveUser().getEmail();
 
-	if (spreadsheet.getowner() || getUserId_() !== classAdminSettings_("get", "admin_id")) return 1;
+	if (spreadsheet.getowner() || getUserId_() !== getAdminSettings_("admin_id")) return 1;
 
 	editors = spreadsheet.getEditors();
 	if (editors.length == 1) {
@@ -193,7 +179,7 @@ function continuedTransferAdminSd(editor) {
 
 		if (digest === editor) {
 			digest = computeDigest("SHA_256", email, "UTF_8");
-			classAdminSettings_("set", "admin_id", digest);
+			setAdminSettings_("admin_id", digest);
 			deleteAllTriggers_();
 			setUserSettings_("financial_calendar", "");
 			setUserSettings_("post_day_events", false);
