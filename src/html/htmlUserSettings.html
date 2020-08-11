@@ -66,7 +66,7 @@
 						<div class="header_tab active" id="tab_settings">
 							<i class="material-icons-outlined md-24" title="Settings">settings</i>
 						</div>
-						<? if (hasEditors && isAdmin) { ?>
+						<? if (isAdmin && hasEditors) { ?>
 							<div class="header_tab" id="tab_admin">
 								<i class="material-icons-outlined md-24" title="Group">group_work</i>
 							</div>
@@ -74,6 +74,11 @@
 						<div class="header_tab" id="tab_advanced">
 							<i class="material-icons-outlined md-24" title="Advanced">build</i>
 						</div>
+            <? if (isAdmin) { ?>
+              <div class="header_tab" id="tab_backup">
+                <i class="material-icons-outlined md-24" title="Backup">backup</i>
+              </div>
+            <? } ?>
 					</div>
 				</div>
 			</div>
@@ -232,35 +237,61 @@
 					</table>
 				</div>
 
-				<? if (hasEditors && isAdmin) { ?>
-					<div class="panel" id="panel_Admin">
-						<table style="width:100%;">
-							<tr>
-								<td class="comment" colspan="2">
-									<input id="isChangeableByEditors" type="checkbox"><label for="isChangeableByEditors">Editors can change settings</label>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<p>Only you can select the <b>calendar</b>, <b>reinstall triggers</b>, and <b>deactivate the add-on</b>.</p>
-								</td>
-							</tr>
-							<tr>
-								<td class="comment name" style="width: 100%;">Transfer admin role</td>
-								<td class="comment"><button id="b-Transfer" class="create">Transfer</button></td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<? if (isSharedDrive) { ?>
-										<p>Transfers admin role to current owner of the spreadsheet.<br>
-									<? } else { ?>
-										<p>Transfers admin role to an editor of the spreadsheet.<br>
-									<? } ?>
-									<a href="<?= home_wiki ?>/Add-on-Settings#group" target="_blank"><b>Learn more</b></a></p>
-								</td>
-							</tr>
-						</table>
-					</div>
+        <? if (isAdmin) { ?>
+          <div class="panel" id="panel_Backup">
+            <table style="width:100%;">
+              <tr>
+                <td class="comment" colspan="2">
+                  <input id="automatic_backup" type="checkbox"><label for="automatic_backup">Automatic backups</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <p>Make and email backups every quarter.<br>
+                  <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank"><b>Learn more</b></a></p>
+                </td>
+              </tr>
+              <tr>
+                <td class="comment name" style="width: 100%;"><label>Make backup</label></td>
+                <td class="comment"><button id="b-Backup" class="create">Backup</button></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <p>Make and email a backup now.</p>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <? if (hasEditors) { ?>
+              <div class="panel" id="panel_Admin">
+                <table style="width:100%;">
+                  <tr>
+                    <td class="comment" colspan="2">
+                      <input id="isChangeableByEditors" type="checkbox"><label for="isChangeableByEditors">Editors can change settings</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <p>Only you can select the <b>calendar</b>, <b>reinstall triggers</b>, and <b>deactivate the add-on</b>.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="comment name" style="width: 100%;">Transfer admin role</td>
+                    <td class="comment"><button id="b-Transfer" class="create">Transfer</button></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <? if (isSharedDrive) { ?>
+                        <p>Transfers admin role to current owner of the spreadsheet.<br>
+                      <? } else { ?>
+                        <p>Transfers admin role to an editor of the spreadsheet.<br>
+                      <? } ?>
+                      <a href="<?= home_wiki ?>/Add-on-Settings#group" target="_blank"><b>Learn more</b></a></p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            <? } ?>
 				<? } ?>
 			</div>
 
@@ -285,6 +316,8 @@
 				<? if (isAdmin) { ?>
 					$("#b-Deactivate").click(deactivateAddon);
 					$("#b-Reinstall").click(reinstallTriggers);
+          $("#b-Backup").click(backupNow);
+
 					<? if (hasEditors) { ?>
 						$("#b-Transfer").click(transferAdminRole);
 					<? } ?>
@@ -323,11 +356,17 @@
 					$("#panel_Advanced").show()
 						.siblings()
 						.hide();
-				<? if (hasEditors && isAdmin) { ?>
-					} else if (select === "tab_admin") {
-						$("#panel_Admin").show()
-							.siblings()
-							.hide();
+				<? if (isAdmin) { ?>
+          } else if (select === "tab_backup") {
+            $("#panel_Backup").show()
+              .siblings()
+              .hide();
+          <? if (hasEditors) { ?>
+            } else if (select === "tab_admin") {
+              $("#panel_Admin").show()
+                .siblings()
+                .hide();
+          <? } ?>
 				<? } ?>
 				}
 			});
@@ -346,8 +385,20 @@
 			<? } ?>
 			<? if (isAdmin) { ?>
         function loadAdminSettings(admin_settings) {
-          if (admin_settings.isChangeableByEditors) $("#isChangeableByEditors").prop("checked", true);
+          $("#isChangeableByEditors").prop("checked", admin_settings.isChangeableByEditors);
+          $('#automatic_backup').prop('checked', admin_settings.automatic_backup);
         }
+
+        $('#automatic_backup').change(function() {
+          this.disabled = true;
+          $('#footer_response').empty();
+          google.script.run.withSuccessHandler(function(r, o) {
+                o.disabled = false;
+              })
+            .withFailureHandler(showError)
+            .withUserObject(this)
+            .setAdminSettings('automatic_backup', $(this).val());
+        });
 
 				<? if (hasEditors) { ?>
 					$("#isChangeableByEditors").change(function() {
@@ -391,6 +442,19 @@
 						.withUserObject(this)
 						.askDeactivation();
 				}
+
+        function backupNow () {
+          this.disabled = true;
+          $("#footer_response").empty();
+
+          google.script.run.withSuccessHandler(function(r, o) {
+                if (!r) showStatus("Backup was sent");
+                o.disabled = false;
+              })
+            .withFailureHandler(showError)
+            .withUserObject(this)
+            .backupRequest();
+        }
 
 				function reinstallTriggers() {
 					this.disabled = true;
