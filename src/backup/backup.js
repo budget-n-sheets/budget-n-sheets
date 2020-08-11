@@ -2,6 +2,7 @@ function backupRequest () {
   if (!isInstalled_()) return;
   if (isScriptUpToDate_() !== 1) return;
   if (getUserId_() === classAdminSettings_("get", "admin_id")) return;
+  if (MailApp.getRemainingDailyQuota() === 0) return;
 
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const backup = {
@@ -40,7 +41,27 @@ function backupRequest () {
 }
 
 function emailBackup_ (blob) {
-  if (MailApp.getRemainingDailyQuota() === 0) return;
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+
+  var htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlBackupEmail');
+  htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+  htmlTemplate.spreadsheet_url = spreadsheet.getUrl();
+  htmlTemplate.spreadsheet_name = spreadsheet.getName();
+  htmlTemplate.time = DATE_NOW;
+
+  const htmlMessage = htmlTemplate.evaluate();
+  MailApp.sendEmail(
+    Session.getEffectiveUser().getEmail(),
+    'Your Budget n Sheets Backup',
+    htmlMessage.getContent(),
+    {
+      name: 'Add-on Budget n Sheets',
+      htmlBody: htmlMessage.getContent(),
+      noReply: true,
+      attachments: [blob]
+    }
+  )
 }
 
 function digestBackup_ (backup) {
