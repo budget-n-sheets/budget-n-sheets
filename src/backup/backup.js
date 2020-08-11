@@ -60,11 +60,9 @@ function digestBackup_ (backup) {
 function backupMeta_ (backup, spreadsheet) {
   backup.backup = {
     version: 1,
-    date_request: DATE_NOW.getTime()
+    date_request: DATE_NOW.getTime(),
+    spreadsheet_id: spreadsheet.getId()
   };
-
-  const digest = computeDigest('SHA_256', spreadsheet.getId(), 'UTF_8');
-  backup.backup.sha256_spreadsheet_id = digest;
 }
 
 function backupProperties_ (backup) {
