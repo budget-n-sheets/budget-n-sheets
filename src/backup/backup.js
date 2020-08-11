@@ -23,7 +23,8 @@ function backupRequest () {
     },
     admin_settings: {},
     user_settings: {},
-    const_properties: {}
+    const_properties: {},
+    class_version2: {}
   };
 
   backupMonths_(backup, spreadsheet);
@@ -70,6 +71,7 @@ function backupProperties_ (backup) {
   backup.user_settings = PropertiesService2.getProperty('document', 'user_settings', 'json');
   backup.admin_settings = PropertiesService2.getProperty('document', 'admin_settings', 'json');
   backup.const_properties = PropertiesService2.getProperty('document', 'const_properties', 'json');
+  backup.class_version2 = PropertiesService2.getProperty('document', 'class_version2', 'json');
 
   const digest = computeDigest('SHA_256', backup.user_settings.financial_calendar, 'UTF_8');
   backup.user_settings.sha256_financial_calendar = digest;
