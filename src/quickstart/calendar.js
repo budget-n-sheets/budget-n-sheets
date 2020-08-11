@@ -32,12 +32,6 @@ function playQuickCalendar_ (n) {
     return;
   }
 
-  const response = ui.alert(
-    'Authorization Required',
-    'Add-on Budget n Sheets needs your permission to create calendar events.\nClick OK to authorize and continue with the demo.',
-    ui.ButtonSet.OK_CANCEL);
-  if (response !== ui.Button.OK) return;
-
   const yyyy = DATE_NOW.getFullYear();
   const financial_year = getConstProperties_('financial_year');
 
