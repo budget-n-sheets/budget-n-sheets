@@ -241,17 +241,6 @@
           <div class="panel" id="panel_Backup">
             <table style="width:100%;">
               <tr>
-                <td class="comment" colspan="2">
-                  <input id="automatic_backup" type="checkbox"><label for="automatic_backup">Automatic backups</label>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <p>Make and email backups every quarter.<br>
-                  <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank"><b>Learn more</b></a></p>
-                </td>
-              </tr>
-              <tr>
                 <td class="comment name" style="width: 100%;"><label>Make backup</label></td>
                 <td class="comment"><button id="b-Backup" class="create">Backup</button></td>
               </tr>
@@ -386,19 +375,7 @@
 			<? if (isAdmin) { ?>
         function loadAdminSettings(admin_settings) {
           $("#isChangeableByEditors").prop("checked", admin_settings.isChangeableByEditors);
-          $('#automatic_backup').prop('checked', admin_settings.automatic_backup);
         }
-
-        $('#automatic_backup').change(function() {
-          this.disabled = true;
-          $('#footer_response').empty();
-          google.script.run.withSuccessHandler(function(r, o) {
-                o.disabled = false;
-              })
-            .withFailureHandler(showError)
-            .withUserObject(this)
-            .setAdminSettings('automatic_backup', $(this).val());
-        });
 
 				<? if (hasEditors) { ?>
 					$("#isChangeableByEditors").change(function() {
