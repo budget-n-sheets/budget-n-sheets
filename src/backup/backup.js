@@ -1,7 +1,7 @@
 function backupRequest () {
   if (!isInstalled_()) return;
   if (isScriptUpToDate_() !== 1) return;
-  if (getUserId_() === classAdminSettings_("get", "admin_id")) return;
+  if (getUserId_() !== classAdminSettings_("get", "admin_id")) return;
   if (MailApp.getRemainingDailyQuota() === 0) return;
 
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
