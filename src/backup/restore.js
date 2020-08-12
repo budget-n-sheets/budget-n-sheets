@@ -61,7 +61,7 @@ function validateBackup (fileId) {
   }
 
   info.tags = data.tags.length;
-  if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tags present.';
+  if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tags may be present.';
 
   list = [];
   for (i in data.db_tables.accounts) {

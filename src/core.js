@@ -328,15 +328,30 @@ function showDialogSetupAddon_() {
 	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Start budget spreadsheet");
 }
 
-function showDialogSetupRestore () {
+function showDialogSetupRestore (fileId) {
   if (isInstalled_()) return;
 
   const htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupRestore');
+
+  htmlTemplate.hasFileId = (fileId != null);
+  htmlTemplate.fileId = (fileId != null ? fileId : '');
+
   const htmlDialog = htmlTemplate.evaluate()
-    .setWidth(600)
-    .setHeight(425);
+    .setWidth(353)
+    .setHeight(359);
 
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Restore from backup');
+}
+
+function showDialogPickerRestore (fileId) {
+  if (isInstalled_()) return;
+
+  const htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlPickerRestore');
+  const htmlDialog = htmlTemplate.evaluate()
+    .setWidth(617)
+    .setHeight(487);
+
+  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Select backup');
 }
 
 

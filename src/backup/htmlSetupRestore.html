@@ -21,94 +21,6 @@
 </head>
 
 <body>
-  <script>
-    var pickerApiLoaded = false;
-    var fileId = '';
-    var DIMENSIONS = {
-      width: 600,
-      height: 425
-    };
-
-    /**
-     * Loads the Google Picker API.
-     */
-    function onApiLoad () {
-      gapi.load('picker', {
-        'callback': function() {
-          pickerApiLoaded = true;
-        }
-      });
-    }
-
-    /**
-     * Gets the user's OAuth 2.0 access token from the server-side script so that
-     * it can be passed to Picker. This technique keeps Picker from needing to
-     * show its own authorization dialog, but is only possible if the OAuth scope
-     * that Picker needs is available in Apps Script. Otherwise, your Picker code
-     * will need to declare its own OAuth scopes.
-     */
-    function getOAuthToken () {
-      google.script.run
-        .withSuccessHandler(createPicker)
-        .withFailureHandler(showError)
-        .getOAuthToken();
-    }
-
-    /**
-     * Creates a Picker that can access the user's spreadsheets. This function
-     * uses advanced options to hide the Picker's left navigation panel and
-     * default title bar.
-     *
-     * @param {string} token An OAuth 2.0 access token that lets Picker access the
-     *     file type specified in the addView call.
-     */
-    function createPicker (token) {
-      if (pickerApiLoaded && token) {
-        const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
-          .setIncludeFolders(false)
-          .setSelectFolderEnabled(false)
-          .setMimeTypes('text/plain')
-          .setMode(google.picker.DocsViewMode.LIST);
-
-        const picker = new google.picker.PickerBuilder()
-          .addView(docsView)
-          .enableFeature(google.picker.Feature.NAV_HIDDEN)
-          .hideTitleBar()
-          .setOAuthToken(token)
-          .setDeveloperKey('AIzaSyCFg7a2iP07kOynA_xfKUuhue131Emqs7k')
-          .setCallback(pickerCallback)
-          .setOrigin(google.script.host.origin)
-          .setSize(DIMENSIONS.width - 2, DIMENSIONS.height - 2)
-          .build();
-
-        picker.setVisible(true);
-      } else {
-        showError();
-      }
-    }
-
-    /**
-     * A callback function that extracts the chosen document's metadata from the
-     * response object. For details on the response object, see
-     * https://developers.google.com/picker/docs/result
-     *
-     * @param {object} data The response object.
-     */
-    function pickerCallback (data) {
-      const action = data[google.picker.Response.ACTION];
-      if (action == google.picker.Action.CANCEL) return;
-
-      const doc = data[google.picker.Response.DOCUMENTS][0];
-      fileId = doc[google.picker.Document.ID];
-
-      $('#b-Select').prop('disabled', true);
-      google.script.run
-        .withFailureHandler(showError)
-        .withSuccessHandler(refreshInfo)
-        .validateBackup(fileId);
-    }
-  </script>
-
   <table>
     <tr>
       <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">restore</span> Backup file</span></th>
@@ -124,59 +36,80 @@
       </td>
     </tr>
     <tr>
-      <td>
-        <button class="action" id="b-Select" onclick="getOAuthToken()">Select</button>
+      <td colspan="2">
+        <span class="error" id="response1"></span>
+        <div>
+          <button class="action" id="b-Select">Select</button>
+          <button onclick="google.script.host.close()">Cancel</button>
+        </div>
       </td>
-      <td class="error" id="response1"></td>
     </tr>
   </table>
 
-  <table style="margin-top: 1.3em;">
-    <tr>
-      <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">table_chart</span> Spreadsheet</span></th>
-    </tr>
-    <tr>
-      <td class="name" style="width: 127px;">Spreadsheet title</td>
-      <td class="details" id="spreadsheet_title"></td>
-    </tr>
-    <tr>
-      <td class="name">Financial year</td>
-      <td class="details" id="financial_year"></td>
-    </tr>
-    <tr>
-      <td class="name">Initial month</td>
-      <td class="details" id="initial_month"></td>
-    </tr>
-    <tr>
-      <td class="name">Financial calendar</td>
-      <td class="details" id="financial_calendar"></td>
-    </tr>
-  </table>
+  <div class="panel">
+    <p>Your budget spreadsheet will contain the following settings:</p>
+    <table style="margin-top: 1.3em;">
+      <tr>
+        <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">table_chart</span> Spreadsheet</span></th>
+      </tr>
+      <tr>
+        <td class="name" style="width: 127px;">Spreadsheet title</td>
+        <td id="spreadsheet_title"></td>
+      </tr>
+      <tr>
+        <td class="name">Financial year</td>
+        <td id="financial_year"></td>
+      </tr>
+      <tr>
+        <td class="name">Initial month</td>
+        <td id="initial_month"></td>
+      </tr>
+      <tr>
+        <td class="name">Financial calendar</td>
+        <td id="financial_calendar"></td>
+      </tr>
+    </table>
 
-  <table style="margin-top: 1.3em;">
-    <tr>
-      <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">assignment</span> Accounts, cards, and tags</span></th>
-    </tr>
-    <tr>
-      <td class="name" style="width: 127px;">Accounts</td>
-      <td class="details" id="accounts"></td>
-    </tr>
-    <tr>
-      <td class="name">Cards</td>
-      <td class="details" id="cards"></td>
-    </tr>
-    <tr>
-      <td class="name">Tags</td>
-      <td class="details" id="tags"></td>
-    </tr>
-  </table>
+    <table style="margin-top: 1.3em;">
+      <tr>
+        <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">assignment</span> Accounts, cards, and tags</span></th>
+      </tr>
+      <tr>
+        <td class="name" style="width: 127px;">Accounts</td>
+        <td id="accounts"></td>
+      </tr>
+      <tr>
+        <td class="name">Cards</td>
+        <td id="cards"></td>
+      </tr>
+      <tr>
+        <td class="name">Tags</td>
+        <td id="tags"></td>
+      </tr>
+    </table>
+  </div>
 
   <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
+    var fileId = <?= fileId ?>;
+
+    $(document).ready(function() {
+      $('#b-Select').click(pickFile);
+      <? if (hasFileId) { ?>
+      $('#b-Select').prop('disabled', true);
+
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(refreshInfo)
+        .validateBackup(fileId);
+      <? }?>
+    });
+
     function refreshInfo (info) {
       $("#response").empty();
       $('#b-Select').prop('disabled', false);
+
       if (info === 1) {
         $("#response1").append('Sorry, something went wrong. Try again in a moment.');
         return;
@@ -191,6 +124,18 @@
       for (var key in info) {
         $("#" + key).append(info[key]);
       }
+
+      $('.panel').fadeIn('fast');
+    }
+
+    function pickFile () {
+      this.disabled = true;
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(function () {
+            google.script.host.close();
+          })
+        .showDialogPickerRestore();
     }
   </script>
 </body>
