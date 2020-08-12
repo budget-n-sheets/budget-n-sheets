@@ -9,6 +9,14 @@
     p {
       text-indent: 0;
     }
+
+    table {
+      width: 100%;
+    }
+
+    td.border {
+      border-bottom: none;
+    }
   </style>
 </head>
 
@@ -23,7 +31,7 @@
     /**
      * Loads the Google Picker API.
      */
-    function onApiLoad() {
+    function onApiLoad () {
       gapi.load('picker', {
         'callback': function() {
           pickerApiLoaded = true;
@@ -38,7 +46,7 @@
      * that Picker needs is available in Apps Script. Otherwise, your Picker code
      * will need to declare its own OAuth scopes.
      */
-    function getOAuthToken() {
+    function getOAuthToken () {
       google.script.run
         .withSuccessHandler(createPicker)
         .withFailureHandler(showError)
@@ -53,7 +61,7 @@
      * @param {string} token An OAuth 2.0 access token that lets Picker access the
      *     file type specified in the addView call.
      */
-    function createPicker(token) {
+    function createPicker (token) {
       if (pickerApiLoaded && token) {
         var picker = new google.picker.PickerBuilder()
           .addView(google.picker.ViewId.DOCS)
@@ -78,13 +86,14 @@
      *
      * @param {object} data The response object.
      */
-    function pickerCallback(data) {
+    function pickerCallback (data) {
       const action = data[google.picker.Response.ACTION];
       if (action == google.picker.Action.CANCEL) return;
 
       const doc = data[google.picker.Response.DOCUMENTS][0];
       const id = doc[google.picker.Document.ID];
 
+      $('#b-Select').prop('disabled', true);
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
@@ -92,30 +101,66 @@
     }
   </script>
 
-  <p>Select the backup file from your Google Drive.</p>
-  <table style="width: 100%;">
+  <table>
+    <tr>
+      <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">restore</span> Backup file</span></th>
+    </tr>
     <tr>
       <td class="name">File name</td>
       <td id="file_name">
       </td>
     </tr>
     <tr>
-      <td class="name">Date created</td>
-      <td id="date_created">
+      <td class="border name">Date created</td>
+      <td class="border" id="date_created">
       </td>
     </tr>
     <tr>
-      <td colspan="2">
-        <span class="error" id="response1"></span><br>
-        <button class="action" onclick="getOAuthToken()">Select</button>
+      <td>
+        <button class="action" id="b-Select" onclick="getOAuthToken()">Select</button>
       </td>
+      <td class="error" id="response1"></td>
+    </tr>
+  </table>
+
+  <table style="margin-top: 1.3em;">
+    <tr>
+      <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">table_chart</span> Spreadsheet</span></th>
+    </tr>
+    <tr>
+      <td class="name">Spreadsheet title</td>
+      <td class="details" id="spreadsheet_title"></td>
+    </tr>
+    <tr>
+      <td class="name">Financial year</td>
+      <td class="details" id="financial_year"></td>
+    </tr>
+    <tr>
+      <td class="name">Initial month</td>
+      <td class="details" id="initial_month"></td>
     </tr>
   </table>
 
   <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    function refreshInfo (r) {
+    function refreshInfo (info) {
+      $("#response").empty();
+      $('#b-Select').prop('disabled', false);
+      if (info === 1) {
+        $("#response1").append('Sorry, something went wrong. Try again in a moment.');
+        return;
+      } else if (info === 2) {
+        $("#response1").append('No file with the given ID could be found. Possibly because you have not edited this file or you do not have permission to access it.');
+        return;
+      } else if (info === 3) {
+        $("#response1").append('The file is either not a supported file type or the file is corrupted.');
+        return;
+      }
+
+      for (var key in info) {
+        $("#" + key).append(info[key]);
+      }
     }
   </script>
 </body>
