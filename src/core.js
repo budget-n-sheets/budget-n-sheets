@@ -331,7 +331,8 @@ function showDialogSetupAddon_() {
 function showDialogSetupRestore (fileId) {
   if (isInstalled_()) return;
 
-  const htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupRestore');
+  var htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupRestore');
+  htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.hasFileId = (fileId != null);
   htmlTemplate.fileId = (fileId != null ? fileId : '');

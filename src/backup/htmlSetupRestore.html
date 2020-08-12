@@ -17,94 +17,166 @@
     td.border {
       border-bottom: none;
     }
+
+    .wait_load-wrapper {
+      width: 190px;
+    }
+    .wait_load-bar {
+      width: 113px;
+      animation-name: animateCustomProgressBar;
+      animation-duration: 1493ms;
+    }
+    @keyframes animateCustomProgressBar {
+      from {left: -257px;}
+      to {left: 257px;}
+    }
+
+    #content {
+      padding: 7px 5px;
+    }
   </style>
 </head>
 
 <body>
-  <table>
-    <tr>
-      <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">restore</span> Backup file</span></th>
-    </tr>
-    <tr>
-      <td class="name" style="width: 127px;">File name</td>
-      <td id="file_name">
-      </td>
-    </tr>
-    <tr>
-      <td class="border name">Date created</td>
-      <td class="border" id="date_created">
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <span class="error" id="response1"></span>
-        <div>
-          <button class="action" id="b-Select">Select</button>
-          <button onclick="google.script.host.close()">Cancel</button>
+  <div id="wrapper">
+    <div id="content">
+      <div class="panel active" id="restore-panel">
+        <table>
+          <tr>
+            <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">restore</span> Backup file</span></th>
+          </tr>
+          <tr>
+            <td class="name" style="width: 127px;">File name</td>
+            <td id="file_name">
+            </td>
+          </tr>
+          <tr>
+            <td class="border name">Date created</td>
+            <td class="border" id="date_created">
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <span class="error" id="response1"></span>
+              <div>
+                <button class="action" id="b-Select">Select</button>
+                <button onclick="google.script.host.close()">Cancel</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <div id="details">
+          <p>Your budget spreadsheet will contain the following settings:</p>
+          <table style="margin-top: 1.3em;">
+            <tr>
+              <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">table_chart</span> Spreadsheet</span></th>
+            </tr>
+            <tr>
+              <td class="name" style="width: 127px;">Spreadsheet title</td>
+              <td id="spreadsheet_title"></td>
+            </tr>
+            <tr>
+              <td class="name">Financial year</td>
+              <td id="financial_year"></td>
+            </tr>
+            <tr>
+              <td class="name">Initial month</td>
+              <td id="initial_month"></td>
+            </tr>
+            <tr>
+              <td class="name">Financial calendar</td>
+              <td id="financial_calendar"></td>
+            </tr>
+          </table>
+
+          <table style="margin-top: 1.3em;">
+            <tr>
+              <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">assignment</span> Accounts, cards, and tags</span></th>
+            </tr>
+            <tr>
+              <td class="name" style="width: 127px;">Accounts</td>
+              <td id="accounts"></td>
+            </tr>
+            <tr>
+              <td class="name">Cards</td>
+              <td id="cards"></td>
+            </tr>
+            <tr>
+              <td class="name">Tags</td>
+              <td id="tags"></td>
+            </tr>
+          </table>
+
+          <div style="margin-top: 1.3em;">
+            <button class="create" id="b-Restore">Restore</button>
+          </div>
         </div>
-      </td>
-    </tr>
-  </table>
+      </div>
 
-  <div class="panel">
-    <p>Your budget spreadsheet will contain the following settings:</p>
-    <table style="margin-top: 1.3em;">
-      <tr>
-        <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">table_chart</span> Spreadsheet</span></th>
-      </tr>
-      <tr>
-        <td class="name" style="width: 127px;">Spreadsheet title</td>
-        <td id="spreadsheet_title"></td>
-      </tr>
-      <tr>
-        <td class="name">Financial year</td>
-        <td id="financial_year"></td>
-      </tr>
-      <tr>
-        <td class="name">Initial month</td>
-        <td id="initial_month"></td>
-      </tr>
-      <tr>
-        <td class="name">Financial calendar</td>
-        <td id="financial_calendar"></td>
-      </tr>
-    </table>
+      <div class="panel" id="setup-panel">
+        <div style="width:100%;margin:40px auto 0 auto;" align="center">
+          <h2>Restoring your spreadsheet</h2>
+          <br>
+          <div class="wait_load-wrapper">
+            <div class="wait_load-bar"></div>
+          </div>
+          <div style="width:263px;margin-top:19px;">
+            This process takes up to 4 minutes. Do not edit the spreadsheet until it is finished.
+          </div>
+        </div>
+        <div id="timeout" style="display: none;margin-top: 2em;">
+          This is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.<br>
+          <button onclick="google.script.host.close()">Close</button>
+        </div>
+      </div>
 
-    <table style="margin-top: 1.3em;">
-      <tr>
-        <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">assignment</span> Accounts, cards, and tags</span></th>
-      </tr>
-      <tr>
-        <td class="name" style="width: 127px;">Accounts</td>
-        <td id="accounts"></td>
-      </tr>
-      <tr>
-        <td class="name">Cards</td>
-        <td id="cards"></td>
-      </tr>
-      <tr>
-        <td class="name">Tags</td>
-        <td id="tags"></td>
-      </tr>
-    </table>
+      <div class="panel" id="error-panel">
+        <p style="text-indent: 0;font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
+        <p style="text-indent: 0;">An error report was sent anonymously.</p>
+        <a href="<?= send_feedback ?>" target="_blank"><b>Send feedback</b></a>
+      </div>
+    </div>
   </div>
 
   <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    var fileId = <?= fileId ?>;
+    var fileId = <?= fileId ?> ;
 
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('#b-Select').click(pickFile);
+      $('#b-Restore').click(restoreNow);
       <? if (hasFileId) { ?>
-      $('#b-Select').prop('disabled', true);
+        $('#b-Select').prop('disabled', true);
 
-      google.script.run
-        .withFailureHandler(showError)
-        .withSuccessHandler(refreshInfo)
-        .validateBackup(fileId);
-      <? }?>
+        google.script.run
+          .withFailureHandler(showError)
+          .withSuccessHandler(refreshInfo)
+          .validateBackup(fileId);
+      <? } ?>
     });
+
+    function restoreNow () {
+      window.scrollTo(0, 0);
+
+      var p = $(".active").attr("id");
+      $("#" + p).removeClass("active");
+
+      $(".panel").hide();
+      $("#setup-panel").fadeIn("fast").addClass("active");
+      google.script.host.setHeight(233);
+
+      TIMEOUT_ID = setTimeout(function() {
+        google.script.host.setHeight(293);
+        $("#timeout").fadeIn();
+      }, 240000);
+
+      // google.script.run
+      //   .withFailureHandler(panelError)
+      //   .withSuccessHandler(null)
+      //   .setupRestoreUi(fileId);
+    }
 
     function refreshInfo (info) {
       $("#response").empty();
@@ -125,7 +197,7 @@
         $("#" + key).append(info[key]);
       }
 
-      $('.panel').fadeIn('fast');
+      $('#details').fadeIn('fast');
     }
 
     function pickFile () {
@@ -136,6 +208,14 @@
             google.script.host.close();
           })
         .showDialogPickerRestore();
+    }
+
+    function panelError (err) {
+      clearTimeout(TIMEOUT_ID);
+      google.script.host.setHeight(197);
+      $("#error-panel").siblings().remove();
+      $("#error-panel").fadeIn("fast").addClass("active");
+      $("#footer-buttons").append("<button onclick=\"google.script.host.close();\">Close</button>");
     }
   </script>
 </body>
