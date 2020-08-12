@@ -82,7 +82,8 @@ function backupMeta_ (backup, spreadsheet) {
   backup.backup = {
     version: 1,
     date_request: DATE_NOW.getTime(),
-    spreadsheet_id: spreadsheet.getId()
+    spreadsheet_id: spreadsheet.getId(),
+    spreadsheet_title: spreadsheet.getName()
   };
 }
 
