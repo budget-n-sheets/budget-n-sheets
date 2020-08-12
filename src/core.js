@@ -328,6 +328,17 @@ function showDialogSetupAddon_() {
 	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Start budget spreadsheet");
 }
 
+function showDialogSetupRestore () {
+  if (isInstalled_()) return;
+
+  const htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupRestore');
+  const htmlDialog = htmlTemplate.evaluate()
+    .setWidth(600)
+    .setHeight(425);
+
+  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Restore from backup');
+}
+
 
 function showDialogSetupEnd() {
 	var htmlTemplate, htmlDialog;

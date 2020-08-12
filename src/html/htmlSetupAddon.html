@@ -252,6 +252,12 @@
 			});
 
       function showRestore () {
+        google.script.run
+          .withFailureHandler(panelError)
+          .withSuccessHandler(function () {
+              google.script.host.close();
+            })
+          .showDialogSetupRestore();
       }
 
 			function clickNext() {
