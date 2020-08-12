@@ -23,6 +23,7 @@
 <body>
   <script>
     var pickerApiLoaded = false;
+    var fileId = '';
     var DIMENSIONS = {
       width: 600,
       height: 425
@@ -63,8 +64,14 @@
      */
     function createPicker (token) {
       if (pickerApiLoaded && token) {
-        var picker = new google.picker.PickerBuilder()
-          .addView(google.picker.ViewId.DOCS)
+        const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
+          .setIncludeFolders(false)
+          .setSelectFolderEnabled(false)
+          .setMimeTypes('text/plain')
+          .setMode(google.picker.DocsViewMode.LIST);
+
+        const picker = new google.picker.PickerBuilder()
+          .addView(docsView)
           .enableFeature(google.picker.Feature.NAV_HIDDEN)
           .hideTitleBar()
           .setOAuthToken(token)
@@ -73,6 +80,7 @@
           .setOrigin(google.script.host.origin)
           .setSize(DIMENSIONS.width - 2, DIMENSIONS.height - 2)
           .build();
+
         picker.setVisible(true);
       } else {
         showError();
@@ -91,13 +99,13 @@
       if (action == google.picker.Action.CANCEL) return;
 
       const doc = data[google.picker.Response.DOCUMENTS][0];
-      const id = doc[google.picker.Document.ID];
+      fileId = doc[google.picker.Document.ID];
 
       $('#b-Select').prop('disabled', true);
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
-        .validateBackup(id);
+        .validateBackup(fileId);
     }
   </script>
 
@@ -106,7 +114,7 @@
       <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">restore</span> Backup file</span></th>
     </tr>
     <tr>
-      <td class="name">File name</td>
+      <td class="name" style="width: 127px;">File name</td>
       <td id="file_name">
       </td>
     </tr>
@@ -128,7 +136,7 @@
       <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">table_chart</span> Spreadsheet</span></th>
     </tr>
     <tr>
-      <td class="name">Spreadsheet title</td>
+      <td class="name" style="width: 127px;">Spreadsheet title</td>
       <td class="details" id="spreadsheet_title"></td>
     </tr>
     <tr>
@@ -138,6 +146,28 @@
     <tr>
       <td class="name">Initial month</td>
       <td class="details" id="initial_month"></td>
+    </tr>
+    <tr>
+      <td class="name">Financial calendar</td>
+      <td class="details" id="financial_calendar"></td>
+    </tr>
+  </table>
+
+  <table style="margin-top: 1.3em;">
+    <tr>
+      <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">assignment</span> Accounts, cards, and tags</span></th>
+    </tr>
+    <tr>
+      <td class="name" style="width: 127px;">Accounts</td>
+      <td class="details" id="accounts"></td>
+    </tr>
+    <tr>
+      <td class="name">Cards</td>
+      <td class="details" id="cards"></td>
+    </tr>
+    <tr>
+      <td class="name">Tags</td>
+      <td class="details" id="tags"></td>
     </tr>
   </table>
 
