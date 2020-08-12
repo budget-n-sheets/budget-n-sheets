@@ -41,6 +41,7 @@ function setupLock (select, param1, param2) {
   }
 
   if (select === 'new') return setupNew_(param1, param2);
+  if (select === 'restore') return setupRestore_(param1);
 }
 
 function setupNew_ (settings, list_acc) {

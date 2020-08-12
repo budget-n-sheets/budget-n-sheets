@@ -172,10 +172,10 @@
         $("#timeout").fadeIn();
       }, 240000);
 
-      // google.script.run
-      //   .withFailureHandler(panelError)
-      //   .withSuccessHandler(null)
-      //   .setupRestoreUi(fileId);
+      google.script.run
+        .withFailureHandler(panelError)
+        .withSuccessHandler(null)
+        .setupLock('restore', fileId);
     }
 
     function refreshInfo (info) {
