@@ -27,39 +27,27 @@ function uninstall_(putLock) {
 	}
 }
 
-function setupUi(settings, list_acc) {
-  console.time('setup/time');
-
+function setupLock (select, param1, param2) {
   var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(200);
-	} catch (err) {
-		SpreadsheetApp.getUi().alert(
-			"Add-on setup in progress",
-			"A budget spreadsheet setup is already in progress.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
-		ConsoleLog.warn(err);
-		return;
-	}
+  try {
+    lock.waitLock(200);
+  } catch (err) {
+    SpreadsheetApp.getUi().alert(
+      'Add-on setup in progress',
+      'A budget spreadsheet setup is already in progress.',
+      SpreadsheetApp.getUi().ButtonSet.OK);
+    ConsoleLog.warn(err);
+    return;
+  }
 
+  if (select === 'new') return setupNew_(param1, param2);
+}
+
+function setupNew_ (settings, list_acc) {
+  console.time('setup/time');
 	SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
-	var owner, user;
 
-	if (! isTemplateAvailable()) throw new Error("Template is not available.");
-	else if ( isInstalled_() ) throw new Error("Add-on is already installed.");
-	else if (PropertiesService.getDocumentProperties().getProperty("lock_spreadsheet")) throw new Error("Spreadsheet is locked.");
-
-	owner = SPREADSHEET.getOwner();
-	if (owner) owner = owner.getEmail();
-	else owner = "";
-
-	user = Session.getEffectiveUser().getEmail();
-
-	if (owner && owner !== user) throw new Error("Missing ownership rights.");
-	else if (SPREADSHEET.getFormUrl()) throw new Error("Spreadsheet has a form linked.");
-
-
-	var class_version2, yyyy_mm;
+  setupValidate_();
 
 	SETUP_SETTINGS = {
 		spreadsheet_name: settings.spreadsheet_name,
@@ -70,40 +58,10 @@ function setupUi(settings, list_acc) {
 		decimal_separator: true
 	};
 
-	SPREADSHEET.rename(SETUP_SETTINGS["spreadsheet_name"]);
+  setupPrepare_();
+  setupParts_();
 
-	PropertiesService2.deleteAllProperties("document");
-	deleteAllTriggers_();
-	CacheService2.removeAll("document", CACHE_KEYS);
-
-	deleteAllSheets_();
-	copySheetsFromSource_();
-
-	yyyy_mm = {
-		time: DATE_NOW.getTime(),
-		yyyy: DATE_NOW.getFullYear(),
-		mm: DATE_NOW.getMonth()
-	};
-
-	setupSettings_(yyyy_mm);
-	setupProperties_(yyyy_mm);
-	setupTables_();
-	setupMonthSheet_();
-	setupBackstage_();
-	setupSummary_();
-	setupTags_();
-	setupCards_();
-	setupCashFlow_();
-	setupWest_();
-	setupEast_(yyyy_mm);
-
-  try {
-    setupTriggers_(yyyy_mm)
-  } catch (err) {
-    ConsoleLog.error(err)
-  }
-
-	class_version2 = {
+	const class_version2 = {
 		script: APPS_SCRIPT_GLOBAL.script_version,
 		template: APPS_SCRIPT_GLOBAL.template_version
 	};
@@ -116,11 +74,62 @@ function setupUi(settings, list_acc) {
 	SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName("Summary"));
 	PropertiesService2.setProperty("document", "is_installed", "boolean", true);
 
-  lock.releaseLock();
 	showDialogSetupEnd();
 	onOpen();
 
 	SPREADSHEET = null;
 	SETUP_SETTINGS = null;
   console.timeEnd('setup/time')
+}
+
+function setupValidate_ () {
+  if (!isTemplateAvailable()) throw new Error('Template is not available.');
+  if (isInstalled_()) throw new Error('Add-on is already installed.');
+  if (PropertiesService2.getProperty('document', 'lock_spreadsheet', 'boolean')) throw new Error('Spreadsheet is locked.');
+
+  var owner = SPREADSHEET.getOwner();
+  if (owner) owner = owner.getEmail();
+  else owner = '';
+
+  const user = Session.getEffectiveUser().getEmail();
+
+  if (owner && owner !== user) throw new Error('Missing ownership rights.');
+  if (SPREADSHEET.getFormUrl()) throw new Error('Spreadsheet has a form linked.');
+}
+
+function setupPrepare_ () {
+  SPREADSHEET.rename(SETUP_SETTINGS['spreadsheet_name']);
+
+  PropertiesService2.deleteAllProperties('document');
+  deleteAllTriggers_();
+  CacheService2.removeAll('document', CACHE_KEYS);
+
+  deleteAllSheets_();
+  copySheetsFromSource_();
+}
+
+function setupParts_ () {
+  const yyyy_mm = {
+    time: DATE_NOW.getTime(),
+    yyyy: DATE_NOW.getFullYear(),
+    mm: DATE_NOW.getMonth()
+  };
+
+  setupSettings_(yyyy_mm);
+  setupProperties_(yyyy_mm);
+  setupTables_();
+  setupMonthSheet_();
+  setupBackstage_();
+  setupSummary_();
+  setupTags_();
+  setupCards_();
+  setupCashFlow_();
+  setupWest_();
+  setupEast_(yyyy_mm);
+
+  try {
+    setupTriggers_(yyyy_mm);
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
 }
