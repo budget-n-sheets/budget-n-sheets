@@ -9,14 +9,14 @@
 				width: 100%;
 			}
 
-      #note-restore table {
+      #restore-panel table {
         font-size: 14px;
         border-collapse: collapse;
       }
-      #note-restore tr:hover {
+      #restore-panel tr:hover {
         background-color: #f3f3f3;
       }
-      #note-restore td {
+      #restore-panel td {
         padding: 11px 3px;
       }
 
@@ -54,7 +54,13 @@
 					</div>
 				</div>
 
-        <div class="panel" id="note-restore">
+        <div class="panel" id="note-panel">
+          <h2>Attention</h2>
+          <p>The build process will delete all tabs and data from the spreadsheet!</p>
+          <p>If the spreadsheet has important or sensitive data that you care about, <a href="https://support.google.com/docs/answer/49114" target="_blank"><b>make a copy or start a new spreadsheet</b></a> before continuing, then restart the process.</p>
+        </div>
+
+        <div class="panel" id="restore-panel">
           <h2>Let's get started</h2>
 
           <table>
@@ -74,12 +80,6 @@
             </tr>
           </table>
         </div>
-
-				<div class="panel" id="note-panel">
-					<h2>Attention</h2>
-					<p>The build process will delete all tabs and data from the spreadsheet!</p>
-					<p>If the spreadsheet has important or sensitive data that you care about, <a href="https://support.google.com/docs/answer/49114" target="_blank"><b>make a copy or start a new spreadsheet</b></a> before continuing, then restart the process.</p>
-				</div>
 
 				<div class="panel" id="form-panel">
 					<div style="display:table;width:100%;">
@@ -271,13 +271,13 @@
 
 				switch (p) {
 				case "main-panel":
-          $("#note-restore").fadeIn("fast").addClass("active");
-          break;
-        case "note-restore":
-					$("#note-panel").fadeIn("fast").addClass("active");
+          $("#note-panel").fadeIn("fast").addClass("active");
 					$("#footer-buttons").append("<button class=\"action\" onclick=\"clickNext();\">Continue</button>");
+          break;
+        case "note-panel":
+          $("#restore-panel").fadeIn("fast").addClass("active");
 					break;
-				case "note-panel":
+				case "restore-panel":
 					$("#form-panel").fadeIn("fast").addClass("active");
 					$("#footer-buttons").append("<button class=\"create\" type=\"submit\" form=\"the_form\">Build</button>");
 					break;
