@@ -80,7 +80,7 @@ function digestBackup_ (backup) {
 
 function backupMeta_ (backup, spreadsheet) {
   backup.backup = {
-    version: 1,
+    version: APPS_SCRIPT_GLOBAL.backup_version,
     date_request: DATE_NOW.getTime(),
     spreadsheet_id: spreadsheet.getId(),
     spreadsheet_title: spreadsheet.getName()
