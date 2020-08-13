@@ -16,7 +16,7 @@ function setupRestore_ (fileId) {
   const backup = JSON.parse(string);
 
   const list_acc = [];
-  for (i in backup.db_tables.accounts) {
+  for (var i in backup.db_tables.accounts) {
     list_acc.push(backup.db_tables.accounts[i].name);
   }
 
@@ -44,8 +44,20 @@ function setupRestore_ (fileId) {
   SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
 
+  restoreFromBackup_(backup);
+
+  showDialogSetupEnd();
+  onOpen();
+
+  SPREADSHEET = null;
+  SETUP_SETTINGS = null;
+  console.timeEnd('restore/time');
+}
+
+function restoreFromBackup_ (backup) {
+  var digest, i;
+
   if (backup.user_settings.sha256_financial_calendar) {
-    var digest;
     const calendars = getAllOwnedCalendars();
     for (i = 0; i < calendars.id.length; i++) {
       digest = computeDigest('SHA_256', calendars.id[i], 'UTF_8');
@@ -56,10 +68,15 @@ function setupRestore_ (fileId) {
     }
   }
 
-  showDialogSetupEnd();
-  onOpen();
+  const db_tables = getDbTables_();
 
-  SPREADSHEET = null;
-  SETUP_SETTINGS = null;
-  console.timeEnd('restore/time');
+  for (i in backup.db_tables.accounts) {
+    backup.db_tables.accounts[i].id = db_tables.accounts.ids[i];
+    tablesService('set', 'account', backup.db_tables.accounts[i]);
+  }
+
+  for (i in backup.db_tables.cards) {
+    backup.db_tables.cards[i].aliases = backup.db_tables.cards[i].aliases.join(',');
+    tablesService('set', 'addcard', backup.db_tables.cards[i]);
+  }
 }
