@@ -207,17 +207,6 @@
 									<a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a></p>
 								</td>
 							</tr>
-						<? } else { ?>
-							<tr>
-								<td class="comment name" style="width: 100%;"><label>Uninstall triggers</label></td>
-								<td class="comment"><button id="b-Uninstall">Uninstall</button></td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<p>This can fix issues related with the add-on's automatic update and maintenance.<br>
-									<a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a></p>
-								</td>
-							</tr>
 						<? } ?>
 					</table>
 				</div>
@@ -282,8 +271,6 @@
             .withSuccessHandler(loadAdminSettings)
             .withFailureHandler(showError)
             .retrieveAdminSettings();
-				<? } else { ?>
-					$("#b-Uninstall").click(uninstallTriggers);
 				<? } ?>
 				$("#b-Reset").click(resetProtection);
 
@@ -380,20 +367,6 @@
 						.withFailureHandler(showError)
 						.withUserObject(this)
 						.askReinstallTriggersUi();
-				}
-
-			<? } else { ?>
-				function uninstallTriggers() {
-					this.disabled = true;
-					$("#footer_response").empty();
-
-					google.script.run.withSuccessHandler(function(r, o) {
-								showStatus("Uninstalled triggers");
-								o.disabled = false;
-							})
-						.withFailureHandler(showError)
-						.withUserObject(this)
-						.askDeleteAllTriggers();
 				}
 
 			<? } ?>

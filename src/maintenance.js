@@ -27,10 +27,6 @@ function rollOperationMode_ (mode) {
   setSpreadsheetSettings_('operation_mode', 'mode');
 }
 
-function askDeleteAllTriggers() {
-	deleteAllTriggers_();
-}
-
 function askDeactivation() {
 	if (! isInstalled_()) {
 		uninstall_();
