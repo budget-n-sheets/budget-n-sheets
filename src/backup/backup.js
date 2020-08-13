@@ -93,8 +93,10 @@ function backupProperties_ (backup) {
   backup.const_properties = PropertiesService2.getProperty('document', 'const_properties', 'json');
   backup.class_version2 = PropertiesService2.getProperty('document', 'class_version2', 'json');
 
-  const digest = computeDigest('SHA_256', backup.user_settings.financial_calendar, 'UTF_8');
-  backup.user_settings.sha256_financial_calendar = digest;
+  if (backup.user_settings.financial_calendar) {
+    const digest = computeDigest('SHA_256', backup.user_settings.financial_calendar, 'UTF_8');
+    backup.user_settings.sha256_financial_calendar = digest;
+  }
 
   delete backup.user_settings.financial_calendar;
   delete backup.admin_settings.admin_id;
