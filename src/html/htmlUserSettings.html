@@ -207,16 +207,6 @@
 									<a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a></p>
 								</td>
 							</tr>
-							<tr>
-								<td class="comment name" style="width: 100%;"><label>Deactivate add-on</label></td>
-								<td class="comment"><button id="b-Deactivate" class="create">Deactivate</button></td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<p>Deactivate the add-on to disable features, updates and maintenance.<br>
-									<a href="<?= home_wiki ?>/Deactivate-or-Uninstall-Budget-n-Sheets" target="_blank"><b>Learn more</b></a></p>
-								</td>
-							</tr>
 						<? } else { ?>
 							<tr>
 								<td class="comment name" style="width: 100%;"><label>Uninstall triggers</label></td>
@@ -283,7 +273,6 @@
 			$(document).ready(function() {
 				$("#b-Save").click(saveSettings);
 				<? if (isAdmin) { ?>
-					$("#b-Deactivate").click(deactivateAddon);
 					$("#b-Reinstall").click(reinstallTriggers);
 					<? if (hasEditors) { ?>
 						$("#b-Transfer").click(transferAdminRole);
@@ -379,18 +368,6 @@
 					}
 
 				<? } ?>
-				function deactivateAddon() {
-					this.disabled = true;
-					$("#footer_response").empty();
-
-					google.script.run.withSuccessHandler(function(r, o) {
-								if (r) google.script.host.close();
-								o.disabled = false;
-							})
-						.withFailureHandler(showError)
-						.withUserObject(this)
-						.askDeactivation();
-				}
 
 				function reinstallTriggers() {
 					this.disabled = true;
