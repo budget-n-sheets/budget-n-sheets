@@ -68,7 +68,7 @@
 						</div>
 						<? if (hasEditors && isAdmin) { ?>
 							<div class="header_tab" id="tab_admin">
-								<i class="material-icons-outlined md-24" title="Group">group_work</i>
+								<i class="material-icons-outlined md-24" title="Group">groups</i>
 							</div>
 						<? } ?>
 						<div class="header_tab" id="tab_advanced">
@@ -78,12 +78,15 @@
 				</div>
 			</div>
 
-			<div id="content" style="margin-bottom:4.3em;">
+			<div id="content" style="margin-top: 7px;margin-bottom: 4.3em;">
 				<div class="panel active" id="panel_Settings">
 					<form class="asidebar" accept-charset="UTF-8">
 						<table style="width:100%;">
+              <tr>
+								<th colspan="2"><span style="font-size:1.2em;">Spreadsheet</span></th>
+							</tr>
 							<tr>
-								<td class="name"><label>Spreadsheet</label></td>
+								<td class="name"><label>Name</label></td>
 								<td><?= doc_name ?></td>
 							</tr>
 							<tr>
