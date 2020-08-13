@@ -34,7 +34,7 @@ function validateBackup (fileId) {
     file_name: file.getName(),
     date_created: new Date(data.backup.date_request).toString(),
 
-    spreadsheet_title: data.spreadsheet_title,
+    spreadsheet_title: data.backup.spreadsheet_title,
     financial_year: data.const_properties.financial_year,
     initial_month: MN_FULL[data.user_settings.initial_month],
     number_accounts: data.const_properties.number_accounts,

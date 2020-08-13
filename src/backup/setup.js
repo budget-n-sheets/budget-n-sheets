@@ -24,7 +24,7 @@ function setupRestore_ (fileId) {
   setupValidate_();
 
   SETUP_SETTINGS = {
-    spreadsheet_name: backup.spreadsheet_title,
+    spreadsheet_name: backup.backup.spreadsheet_title,
     financial_year: backup.const_properties.financial_year,
     init_month: backup.user_settings.initial_month,
     number_accounts: backup.const_properties.number_accounts,
