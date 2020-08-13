@@ -55,7 +55,10 @@ function setupRestore_ (fileId) {
 }
 
 function restoreFromBackup_ (backup) {
-  var digest, i;
+  var sheet, sheetCards;
+  var digest, max1, max2, mm, i, k;
+
+  const num_acc = backup.const_properties.number_accounts;
 
   if (backup.user_settings.sha256_financial_calendar) {
     const calendars = getAllOwnedCalendars();
@@ -79,4 +82,37 @@ function restoreFromBackup_ (backup) {
     backup.db_tables.cards[i].aliases = backup.db_tables.cards[i].aliases.join(',');
     tablesService('set', 'addcard', backup.db_tables.cards[i]);
   }
+
+  sheetCards = SPREADSHEET.getSheetByName('Cards');
+  max2 = sheetCards.getMaxRows() - 5;
+
+  mm = -1;
+  while (++mm < 12) {
+    while (max2 < backup.cards[mm].length) {
+      addBlankRows_('Cards');
+      max2 += 400;
+    }
+
+    if (backup.cards[mm].length > 0) {
+      sheetCards.getRange(6, 1 + 6 * mm, backup.cards[mm].length, 5).setValues(backup.cards[mm]);
+    }
+
+    if (backup.ttt[mm] == null) continue;
+    sheet = SPREADSHEET.getSheetByName(MN_SHORT[mm]);
+    max1 = sheet.getMaxRows() - 4;
+
+    for (k = 0; k < num_acc + 1; k++) {
+      if (backup.ttt[mm][k] == null) continue;
+      if (backup.ttt[mm][k].length === 0) continue;
+
+      while (max1 < backup.ttt[mm][k].length) {
+        addBlankRows_(MN_SHORT[mm]);
+        max1 += 400;
+      }
+
+      sheet.getRange(5, 1 + 5 * k, backup.ttt[mm][k].length, 4).setValues(backup.ttt[mm][k]);
+    }
+  }
+
+  SpradsheetApp.flush();
 }
