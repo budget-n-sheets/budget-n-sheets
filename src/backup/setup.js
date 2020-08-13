@@ -1,6 +1,7 @@
 function setupRestore_ (fileId) {
   console.time('restore/time');
 
+  var i;
   const parts = DriveApp.getFileById(fileId)
     .getBlob()
     .getAs('text/plain')
@@ -15,7 +16,7 @@ function setupRestore_ (fileId) {
   const backup = JSON.parse(string);
 
   const list_acc = [];
-  for (var i in backup.db_tables.accounts) {
+  for (i in backup.db_tables.accounts) {
     list_acc.push(backup.db_tables.accounts[i].name);
   }
 
@@ -42,6 +43,18 @@ function setupRestore_ (fileId) {
   SPREADSHEET.setRecalculationInterval(SpreadsheetApp.RecalculationInterval.HOUR);
   SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
+
+  if (backup.user_settings.sha256_financial_calendar) {
+    var digest;
+    const calendars = getAllOwnedCalendars();
+    for (i = 0; i < calendars.id.length; i++) {
+      digest = computeDigest('SHA_256', calendars.id[i], 'UTF_8');
+      if (digest === backup.user_settings.sha256_financial_calendar) {
+        setUserSettings_('financial_calendar', calendars.id[i]);
+        break;
+      }
+    }
+  }
 
   showDialogSetupEnd();
   onOpen();
