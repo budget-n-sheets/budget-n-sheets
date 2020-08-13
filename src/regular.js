@@ -4,7 +4,7 @@ function postEventsForDate_(date) {
 
 	var calendar, list_eventos, evento;
 	var value, tags;
-	var c1, a, i, j, k;
+	var c1, a, c, i, j, k;
 
 	calendar = getFinancialCalendar_();
 	if (!calendar) return;
@@ -26,6 +26,9 @@ function postEventsForDate_(date) {
     };
 	}
 
+  const cards_balances = getTablesService_('cardsbalances');
+  const hasCards = (cards_balances && cards_balances !== 1);
+
   c1 = 0;
   const cards = {
     table: [],
@@ -39,9 +42,30 @@ function postEventsForDate_(date) {
 		if (evento.Description === '') continue;
 		if (evento.hasAtMute) continue;
 
-    if (!isNaN(evento.Value)) value = evento.Value;
-		else if (evento.Tags.length > 0) value = 0;
-		else continue;
+    if (!isNaN(evento.Value)) {
+      value = evento.Value;
+    } else if (hasCards && evento.hasQcc) {
+      if (evento.Card !== -1) {
+        c = cards_balances.cards.indexOf(evento.Card);
+        if (c === -1) continue;
+      } else {
+        c = 0;
+      }
+
+      if (evento.TranslationType === 'M' &&
+          mm + evento.TranslationNumber >= 0 &&
+          mm + evento.TranslationNumber <= 11) {
+        value = +cards.balance[c][mm + evento.TranslationNumber].toFixed(2);
+      } else if (mm > 0) {
+        value = +cards.balance[c][mm - 1].toFixed(2);
+      } else {
+        value = 0;
+      }
+    } else if (evento.Tags.length > 0) {
+      value = 0;
+		} else {
+      continue;
+    }
     value = numberFormatLocaleSignal.call(value, dec_p);
 
     if (evento.Tags.length > 0) tags = '#' + evento.Tags.join(' #')
