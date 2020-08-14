@@ -61,8 +61,10 @@ function setAdminSettings_ (select, value) {
 
   switch (select) {
     case 'admin_id':
-    case 'isChangeableByEditors':
       admin_settings[select] = value;
+      break;
+    case 'isChangeableByEditors':
+      admin_settings[select] = (value === 'allow');
       break;
 
     default:

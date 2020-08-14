@@ -168,21 +168,20 @@
               <tr>
                 <th colspan="2"><span style="font-size:1.2em;">Performance</span></th>
               </tr>
-                <tr>
-                  <td class="comment name" style="width: 100%;"><label for="optimize_load">Optimize spreadsheet load</label></td>
-                  <td class="comment">
-                    <select id="optimize_load" required>
-                      <option value="enable">Enable</option>
-                      <option value="disable" selected>Disable</option>
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <p>Suspend calculations of old activities. This can improve overall spreadsheet performance and loading time.<br>
-                    <a href="<?= home_wiki ?>/Add-on-Settings" target="_blank"><b>Learn more</b></a></p>
-                  </td>
-                </tr>
+              <tr>
+                <td class="comment name" style="width: 100%;"><label for="optimize_load">Optimize spreadsheet load</label></td>
+                <td class="comment">
+                  <select id="optimize_load" required>
+                    <option value="enable">Enable</option>
+                    <option value="disable" selected>Disable</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <p>Suspend calculations of old activities. This can improve overall spreadsheet performance and loading time.</p>
+                </td>
+              </tr>
             </table>
             <? }?>
 					</form>
@@ -217,16 +216,21 @@
 				<? if (hasEditors && isAdmin) { ?>
 					<div class="panel" id="panel_Admin">
 						<table style="width:100%;">
-							<tr>
-								<td class="comment" colspan="2">
-									<input id="isChangeableByEditors" type="checkbox"><label for="isChangeableByEditors">Editors can change settings</label>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<p>Only you can select the <b>calendar</b>, <b>reinstall triggers</b>, and <b>deactivate the add-on</b>.</p>
-								</td>
-							</tr>
+              <tr>
+                <td class="comment name" style="width: 100%;"><label for="isChangeableByEditors">Editors can change settings</label></td>
+                <td class="comment">
+                  <select id="isChangeableByEditors" required>
+                    <option value="allow">Allow</option>
+                    <option value="deny" selected>Deny</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <p>Only the admin can change the <b>calendar</b> and <b>deactivate the add-on</b>.<br>
+                  <a href="<?= home_wiki ?>/Add-on-Settings#group" target="_blank"><b>Learn more</b></a></p>
+                </td>
+              </tr>
 							<tr>
 								<td class="comment name" style="width: 100%;">Transfer admin role</td>
 								<td class="comment"><button id="b-Transfer" class="action">Transfer</button></td>
@@ -325,7 +329,7 @@
 			<? } ?>
 			<? if (isAdmin) { ?>
         function loadAdminSettings(admin_settings) {
-          if (admin_settings.isChangeableByEditors) $("#isChangeableByEditors").prop("checked", true);
+          if (admin_settings.isChangeableByEditors) $("#isChangeableByEditors").val('allow');
         }
 
 				<? if (hasEditors) { ?>
@@ -337,7 +341,7 @@
 								})
 							.withFailureHandler(showError)
 							.withUserObject(this)
-							.saveAdminSettings("isChangeableByEditors", $(this).prop("checked"));
+							.saveAdminSettings("isChangeableByEditors", $(this).val());
 					});
 
 					function transferAdminRole() {
