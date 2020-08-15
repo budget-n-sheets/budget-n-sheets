@@ -190,13 +190,31 @@ function weeklyTriggerPre_(e) {
 }
 
 function onEdit_Main_(e) {
+	deprecateTrigger_(e);
 }
 
 function daily_Main_(e) {
+	deprecateTrigger_(e);
 }
 
 function weekly_Foo_(e) {
+	deprecateTrigger_(e);
 }
 
 function weekly_Bar_(e) {
+	deprecateTrigger_(e);
+}
+
+function deprecateTrigger_ (e) {
+	try {
+		const triggers = ScriptApp.getProjectTriggers();
+		for (var i = 0; i < triggers.length; i++) {
+			if (triggers[i].getUniqueId() === e.triggerUid) {
+				ScriptApp.deleteTrigger(triggers[i]);
+				return;
+			}
+		}
+	} catch (err) {
+		ConsoleLog.error(err);
+	}
 }
