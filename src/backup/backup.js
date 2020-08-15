@@ -1,7 +1,7 @@
 function backupRequest () {
   if (!isInstalled_()) return;
   if (isScriptUpToDate_() !== 1) return;
-  if (getUserId_() !== classAdminSettings_("get", "admin_id")) return;
+  if (getUserId_() !== classAdminSettings_('get', 'admin_id')) return;
   if (MailApp.getRemainingDailyQuota() === 0) return;
 
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -61,7 +61,7 @@ function emailBackup_ (blob) {
       noReply: true,
       attachments: [blob]
     }
-  )
+  );
 }
 
 function digestBackup_ (backup) {
@@ -166,7 +166,7 @@ function backupCards_ (backup, spreadsheet) {
     j = max;
     while (--j > -1) {
       if (table[j][0 + 6 * i] !== '' || table[j][1 + 6 * i] !== '' || table[j][2 + 6 * i] !== '' ||
-          table[j][3 + 6 * i] !== '' || table[j][4 + 6 * i] !== '') break;
+        table[j][3 + 6 * i] !== '' || table[j][4 + 6 * i] !== '') break;
     }
     j++;
 
@@ -197,7 +197,7 @@ function backupMonths_ (backup, spreadsheet) {
       j = max;
       while (--j > -1) {
         if (table[j][0] !== '' || table[j][1] !== '' ||
-            table[j][2] !== '' || table[j][3] !== '') break;
+          table[j][2] !== '' || table[j][3] !== '') break;
       }
       j++;
 
