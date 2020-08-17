@@ -10,5 +10,15 @@ function suspendActivity_ (mm) {
   const values = range.getValues();
   range.setValues(values);
 
+  var i;
+  var list = [];
+  for (i = 0; i < mm; i++) {
+    list[i] = 1;
+  }
+  for (; i < 12; i++) {
+    list[i] = 0;
+  }
+  setSpreadsheetSettings_('optimize_load', list);
+
   SpreadsheetApp.flush();
 }

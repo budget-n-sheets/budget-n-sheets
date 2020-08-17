@@ -203,4 +203,8 @@ function resumeActivity_ (mm) {
     formula = '=' + numberFormatLocaleSignal.call(db_cards.data[k].limit);
     sheet.getRange(2 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
   }
+
+  var status = getSpreadsheetSettings_('optimize_load');
+  status[mm] = 0;
+  setSpreadsheetSettings_('optimize_load', status);
 }
