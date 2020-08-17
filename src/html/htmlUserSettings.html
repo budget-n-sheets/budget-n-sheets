@@ -66,7 +66,7 @@
 						<div class="header_tab active" id="tab_settings">
 							<i class="material-icons-outlined md-24" title="Settings">settings</i>
 						</div>
-						<? if (hasEditors && isAdmin) { ?>
+						<? if (isAdmin && hasEditors) { ?>
 							<div class="header_tab" id="tab_admin">
 								<i class="material-icons-outlined md-24" title="Group">groups</i>
 							</div>
@@ -74,6 +74,11 @@
 						<div class="header_tab" id="tab_advanced">
 							<i class="material-icons-outlined md-24" title="Advanced">build</i>
 						</div>
+            <? if (isAdmin) { ?>
+              <div class="header_tab" id="tab_backup">
+                <i class="material-icons-outlined md-24" title="Backup">backup</i>
+              </div>
+            <? } ?>
 					</div>
 				</div>
 			</div>
@@ -194,40 +199,56 @@
 					</table>
 				</div>
 
-				<? if (hasEditors && isAdmin) { ?>
-					<div class="panel" id="panel_Admin">
-						<table style="width:100%;">
+        <? if (isAdmin) { ?>
+          <div class="panel" id="panel_Backup">
+            <table style="width:100%;">
               <tr>
-                <td class="comment name" style="width: 100%;"><label for="isChangeableByEditors">Editors can change settings</label></td>
-                <td class="comment">
-                  <select id="isChangeableByEditors" required>
-                    <option value="allow">Allow</option>
-                    <option value="deny" selected>Deny</option>
-                  </select>
-                </td>
+                <td class="comment name" style="width: 100%;"><label>Backup Now</label></td>
+                <td class="comment"><button id="b-Backup" class="action">Backup</button></td>
               </tr>
               <tr>
                 <td colspan="2">
-                  <p>Only the admin can change the <b>calendar</b> and <b>deactivate the add-on</b>.<br>
-                  <a href="<?= home_wiki ?>/Add-on-Settings#group" target="_blank"><b>Learn more</b></a></p>
+                  <p>Make a backup of the spreadsheet and email it from you to yourself.<br>
+                  <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank"><b>Learn more</b></a></p>
                 </td>
               </tr>
-							<tr>
-								<td class="comment name" style="width: 100%;">Transfer admin role</td>
-								<td class="comment"><button id="b-Transfer" class="action">Transfer</button></td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<? if (isSharedDrive) { ?>
-										<p>Transfers admin role to current owner of the spreadsheet.<br>
-									<? } else { ?>
-										<p>Transfers admin role to an editor of the spreadsheet.<br>
-									<? } ?>
-									<a href="<?= home_wiki ?>/Add-on-Settings#group" target="_blank"><b>Learn more</b></a></p>
-								</td>
-							</tr>
-						</table>
-					</div>
+            </table>
+          </div>
+          <? if (hasEditors) { ?>
+              <div class="panel" id="panel_Admin">
+                <table style="width:100%;">
+                  <tr>
+                    <td class="comment name" style="width: 100%;"><label for="isChangeableByEditors">Editors can change settings</label></td>
+                    <td class="comment">
+                      <select id="isChangeableByEditors" required>
+                        <option value="allow">Allow</option>
+                        <option value="deny" selected>Deny</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <p>Only the admin can change the <b>calendar</b> and <b>deactivate the add-on</b>.<br>
+                      <a href="<?= home_wiki ?>/Add-on-Settings#group" target="_blank"><b>Learn more</b></a></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="comment name" style="width: 100%;">Transfer admin role</td>
+                    <td class="comment"><button id="b-Transfer" class="action">Transfer</button></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <? if (isSharedDrive) { ?>
+                        <p>Transfers admin role to current owner of the spreadsheet.<br>
+                      <? } else { ?>
+                        <p>Transfers admin role to an editor of the spreadsheet.<br>
+                      <? } ?>
+                      <a href="<?= home_wiki ?>/Add-on-Settings#group" target="_blank"><b>Learn more</b></a></p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            <? } ?>
 				<? } ?>
 			</div>
 
@@ -251,6 +272,8 @@
 				$("#b-Save").click(saveSettings);
 				<? if (isAdmin) { ?>
 					$("#b-Reinstall").click(reinstallTriggers);
+          $("#b-Backup").click(backupNow);
+
 					<? if (hasEditors) { ?>
 						$("#b-Transfer").click(transferAdminRole);
 					<? } ?>
@@ -287,11 +310,17 @@
 					$("#panel_Advanced").show()
 						.siblings()
 						.hide();
-				<? if (hasEditors && isAdmin) { ?>
-					} else if (select === "tab_admin") {
-						$("#panel_Admin").show()
-							.siblings()
-							.hide();
+				<? if (isAdmin) { ?>
+          } else if (select === "tab_backup") {
+            $("#panel_Backup").show()
+              .siblings()
+              .hide();
+          <? if (hasEditors) { ?>
+            } else if (select === "tab_admin") {
+              $("#panel_Admin").show()
+                .siblings()
+                .hide();
+          <? } ?>
 				<? } ?>
 				}
 			});
@@ -343,6 +372,19 @@
 					}
 
 				<? } ?>
+
+        function backupNow () {
+          this.disabled = true;
+          $("#footer_response").empty();
+
+          google.script.run.withSuccessHandler(function(r, o) {
+                if (!r) showStatus("Backup was sent");
+                o.disabled = false;
+              })
+            .withFailureHandler(showError)
+            .withUserObject(this)
+            .backupRequest();
+        }
 
 				function reinstallTriggers() {
 					this.disabled = true;

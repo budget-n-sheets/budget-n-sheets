@@ -48,6 +48,7 @@ function getAdminSettings_ (select) {
   switch (select) {
     case 'admin_id':
     case 'isChangeableByEditors':
+		case 'automatic_backup':
       return admin_settings[select];
 
     default:
@@ -60,7 +61,8 @@ function setAdminSettings_ (select, value) {
   var admin_settings = PropertiesService2.getProperty("document", "admin_settings", "json");
 
   switch (select) {
-    case 'admin_id':
+		case 'admin_id':
+		case 'automatic_backup':
       admin_settings[select] = value;
       break;
     case 'isChangeableByEditors':
