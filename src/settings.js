@@ -64,12 +64,11 @@ function saveUserSettings(settings) {
 
 	const new_init_month = Number(settings.initial_month);
 	const init_month = getUserSettings_("initial_month");
-  const optimize_load = settings.optimize_load === 'enable';
 
 	const user_settings = {
 		initial_month: new_init_month,
 		override_zero: false,
-    optimize_load: optimize_load,
+    optimize_load: true,
 
 		financial_calendar: calendar.financial_calendar,
 		post_day_events: calendar.post_day_events,

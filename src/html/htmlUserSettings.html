@@ -164,25 +164,6 @@
 								</tr>
 							<? } ?>
 						</table>
-            <table style="width:100%;margin-top:1.3em;">
-              <tr>
-                <th colspan="2"><span style="font-size:1.2em;">Performance</span></th>
-              </tr>
-              <tr>
-                <td class="comment name" style="width: 100%;"><label for="optimize_load">Optimize spreadsheet load</label></td>
-                <td class="comment">
-                  <select id="optimize_load" required>
-                    <option value="enable">Enable</option>
-                    <option value="disable" selected>Disable</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <p>Suspend calculations of old activities. This can improve overall spreadsheet performance and loading time.</p>
-                </td>
-              </tr>
-            </table>
             <? }?>
 					</form>
 				</div>
@@ -393,8 +374,6 @@
 			function loadUserSettings(user_settings) {
 				$("#initial_month").val(user_settings.initial_month);
 
-        if (user_settings.optimize_load) $("#optimize_load").val('enable');
-
 				<? if (isCalendarEnabled) { ?>
 					<? if (isAdmin) { ?>
 						$("#financial_calendar").val(user_settings.financial_calendar);
@@ -423,8 +402,7 @@
 						post_day_events: $("#post_day_events").prop("checked"),
 						cash_flow_events: $("#cash_flow_events").prop("checked"),
 					<? } ?>
-          initial_month: $("#initial_month").val(),
-          optimize_load: $("#optimize_load").val()
+          initial_month: $("#initial_month").val()
 				};
 
 				google.script.run.withSuccessHandler(function(r, o) {
