@@ -205,6 +205,7 @@ function resumeActivity_ (mm) {
   }
 
   var status = getSpreadsheetSettings_('optimize_load');
+  if (status == null) status = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
   status[mm] = 0;
   setSpreadsheetSettings_('optimize_load', status);
 }

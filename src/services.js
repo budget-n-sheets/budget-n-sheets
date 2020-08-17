@@ -52,7 +52,7 @@ function onEditInstallable_(e) {
 		try {
 			var mm = MN_SHORT.indexOf(name);
 			var status = getSpreadsheetSettings_('optimize_load');
-			if (status[mm] === 1) resumeActivity_(mm);
+			if (status == null || status[mm] === 1) resumeActivity_(mm);
 		} catch (err) {
 			ConsoleLog.error(err);
 		}
