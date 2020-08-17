@@ -47,7 +47,12 @@ function setupRestore_ (fileId) {
   setupPrepare_();
   setupParts_();
 
-  PropertiesService2.setProperty('document', 'class_version2', 'json', backup.class_version2);
+  const class_version2 = {
+    script: APPS_SCRIPT_GLOBAL.script_version,
+    template: APPS_SCRIPT_GLOBAL.template_version
+  };
+  class_version2.script.beta = PATCH_THIS['beta_list'].length;
+  PropertiesService2.setProperty('document', 'class_version2', 'json', class_version2);
 
   if (bsSignSetup_()) throw new Error('Failed to sign document.');
 
