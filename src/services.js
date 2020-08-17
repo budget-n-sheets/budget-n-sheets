@@ -148,9 +148,13 @@ function dailyTrigger_(e) {
 	if (yyyymmdd.date === 1) {
 		treatLayout_(yyyymmdd.year, yyyymmdd.month);
 
-    if (yyyymd.month > 2) {
-      switchActivity_('suspend');
-    }
+		try {
+			if (yyyymd.month > 2) {
+				switchActivity_('suspend');
+			}
+		} catch (err) {
+			ConsoleLog.error(err);
+		}
 	}
 
 	if (getUserSettings_("post_day_events")) {
