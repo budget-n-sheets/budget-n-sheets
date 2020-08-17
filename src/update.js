@@ -8,7 +8,7 @@ var PATCH_THIS = Object.freeze({
       [ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_, update_v0m31p8_, null ],
       [ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_, update_v0m32p7_, null ],
       [ update_v0m33p0_, update_v0m33p1_, update_v0m33p2_, null, null, null, null, null, null, update_v0m33p9_ ],
-      [ update_v0m34p0_, null, null, null, null, null, null ]
+      [ update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_ ]
     ]
   ],
   beta_list: [ ]
@@ -161,6 +161,20 @@ function update_v0m0p0_() {
     return 2;
   }
 }*/
+
+/**
+ * Set spreadsheet settings 'optimize_load'.
+ *
+ * 0.34.7
+ */
+function update_v0m34p7_() {
+  try {
+    const status = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+    setSpreadsheetSettings_('optimize_load', status);
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
 
 /**
  * Set 'optimize_load' initial value to 'false'.
