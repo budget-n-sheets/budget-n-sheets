@@ -52,6 +52,7 @@
       if (pickerApiLoaded && token) {
         const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
           .setIncludeFolders(false)
+          .setOwnedByMe(true)
           .setSelectFolderEnabled(false)
           .setMimeTypes('text/plain')
           .setMode(google.picker.DocsViewMode.LIST);

@@ -1,9 +1,20 @@
 function setupRestore_ (fileId) {
   console.time('restore/time');
 
+  try {
+    const file = DriveApp.getFileById(fileId);
+
+    const owner = file.getOwner().getEmail();
+    const user = Session.getEffectiveUser().getEmail();
+
+    if (owner !== user) return 2;
+  } catch (err) {
+    console.log(err);
+    return 2;
+  }
+
   var i;
-  const parts = DriveApp.getFileById(fileId)
-    .getBlob()
+  const parts = file.getBlob()
     .getAs('text/plain')
     .getDataAsString()
     .split(':');
