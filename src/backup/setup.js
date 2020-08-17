@@ -1,5 +1,5 @@
 function setupRestore_ (fileId) {
-  console.time('restore/time');
+  console.time('setup/restore');
 
   try {
     const file = DriveApp.getFileById(fileId);
@@ -67,7 +67,7 @@ function setupRestore_ (fileId) {
 
   SPREADSHEET = null;
   SETUP_SETTINGS = null;
-  console.timeEnd('restore/time');
+  console.timeEnd('setup/restore');
 }
 
 function restoreFromBackup_ (backup) {

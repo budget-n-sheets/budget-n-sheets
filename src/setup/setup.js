@@ -45,7 +45,7 @@ function setupLock (select, param1, param2) {
 }
 
 function setupNew_ (settings, list_acc) {
-  console.time('setup/time');
+  console.time('setup/new');
 	SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
 
   setupValidate_();
@@ -80,7 +80,7 @@ function setupNew_ (settings, list_acc) {
 
 	SPREADSHEET = null;
 	SETUP_SETTINGS = null;
-  console.timeEnd('setup/time')
+  console.timeEnd('setup/new')
 }
 
 function setupValidate_ () {
