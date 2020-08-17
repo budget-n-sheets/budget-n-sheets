@@ -36,7 +36,8 @@ function setupProperties_(yyyy_mm) {
 		operation_mode: operation,
     view_mode: 'complete',
 		decimal_separator: SETUP_SETTINGS["decimal_separator"],
-		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale()
+		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale(),
+		optimize_load: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
 	};
 	PropertiesService2.setProperty("document", "spreadsheet_settings", "json", properties);
 }

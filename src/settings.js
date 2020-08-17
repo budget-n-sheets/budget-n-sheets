@@ -161,6 +161,7 @@ function getSpreadsheetSettings_(select) {
 	case "decimal_separator":
 	case "spreadsheet_locale":
   case 'view_mode':
+	case 'optimize_load':
 		return spreadsheet_settings[select];
 
 	default:
@@ -178,6 +179,7 @@ function setSpreadsheetSettings_(select, value) {
 	case "decimal_separator":
 	case "spreadsheet_locale":
   case 'view_mode':
+	case 'optimize_load':
 		spreadsheet_settings[select] = value;
 		break;
 
