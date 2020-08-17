@@ -17,6 +17,10 @@
 				padding-bottom: 0;
 			}
 
+      #panel_Backup p {
+        text-indent: 0;
+      }
+
 			.table_row {
 				display: table-row;
 			}
@@ -201,20 +205,24 @@
 
         <? if (isAdmin) { ?>
           <div class="panel" id="panel_Backup">
-            <table style="width:100%;">
-              <tr>
-                <td class="comment name" style="width: 100%;"><label>Backup Now</label></td>
-                <td class="comment"><button id="b-Backup" class="action">Backup</button></td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <p>Make a backup of the spreadsheet and email it from you to yourself.<br>
-                  <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank"><b>Learn more</b></a></p>
-                </td>
-              </tr>
-            </table>
+            <h2>Budget n Sheets Backup</h2>
+
+            <p>You can back up content, data, and settings from your budget sheet to your Google Drive. Once you request a backup, the add-on creates an archive with the essential data and settings and emails it to you as an attachment. You can save it in your Google Drive then.</p>
+
+            <p>You can restore your backed-up data to a new budget sheet.</p>
+
+            <ul>
+              <li>The backup file is not encrypted.</li>
+              <li>The backup is not uploaded elsewhere.</li>
+              <li>The size of the backup varies by spreadsheet and settings.</li>
+            </ul>
+
+            <button id="b-Backup" class="action">Back up now</button>
+
+            <p>For more information, visit <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank">Wiki - Backup and Restore</a>.</p>
           </div>
           <? if (hasEditors) { ?>
+
               <div class="panel" id="panel_Admin">
                 <table style="width:100%;">
                   <tr>
