@@ -33,12 +33,12 @@ function onEditInstallable_(e) {
 	if (e.authMode != ScriptApp.AuthMode.FULL) return;
 
 	try {
-    var sheet =  e.range.getSheet();
+    var sheet = e.range.getSheet();
 		var name = sheet.getName();
 	} catch (err) {
 	}
 
-  if (['Quick Actions', 'Tags'].indexOf(name) === -1) return;
+  if (name !== 'Quick Actions' && MN_SHORT.indexOf(name) === -1) return;
 
 	if (name === "Quick Actions") {
 		try {
@@ -48,13 +48,15 @@ function onEditInstallable_(e) {
 		} finally {
 			e.range.setValue("");
 		}
-	}/* else if (name === "Tags") {
+	} else {
 		try {
-			tagsCheckbox_(sheet, e.range);
+			var mm = MN_SHORT.indexOf(name);
+			var status = getSpreadsheetSettings_('optimize_load');
+			if (status[mm] === 1) resumeActivity_(mm);
 		} catch (err) {
 			ConsoleLog.error(err);
 		}
-	}*/
+	}
 }
 
 function tagsCheckbox_(sheet, range) {
