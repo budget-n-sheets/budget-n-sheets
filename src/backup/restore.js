@@ -86,3 +86,79 @@ function validateBackup (fileId) {
 
   return info;
 }
+
+function restoreFromBackup_ (backup) {
+  var sheet, sheetCards;
+  var digest, max1, max2, mm, i, k;
+
+  const num_acc = backup.const_properties.number_accounts;
+
+  if (backup.user_settings.sha256_financial_calendar) {
+    const calendars = getAllOwnedCalendars();
+    for (i = 0; i < calendars.id.length; i++) {
+      digest = computeDigest('SHA_256', calendars.id[i], 'UTF_8');
+      if (digest === backup.user_settings.sha256_financial_calendar) {
+        setUserSettings_('financial_calendar', calendars.id[i]);
+        break;
+      }
+    }
+  }
+
+  const db_tables = getDbTables_();
+
+  for (i in backup.db_tables.accounts) {
+    backup.db_tables.accounts[i].id = db_tables.accounts.ids[i];
+    tablesService('set', 'account', backup.db_tables.accounts[i]);
+  }
+
+  for (i in backup.db_tables.cards) {
+    backup.db_tables.cards[i].aliases = backup.db_tables.cards[i].aliases.join(',');
+    tablesService('set', 'addcard', backup.db_tables.cards[i]);
+  }
+
+  sheetCards = SPREADSHEET.getSheetByName('Cards');
+  max2 = sheetCards.getMaxRows() - 5;
+
+  mm = -1;
+  while (++mm < 12) {
+    while (max2 < backup.cards[mm].length) {
+      addBlankRows_('Cards');
+      max2 += 400;
+    }
+
+    if (backup.cards[mm].length > 0) {
+      sheetCards.getRange(6, 1 + 6 * mm, backup.cards[mm].length, 5).setValues(backup.cards[mm]);
+    }
+
+    if (backup.ttt[mm] == null) continue;
+    sheet = SPREADSHEET.getSheetByName(MN_SHORT[mm]);
+    max1 = sheet.getMaxRows() - 4;
+
+    for (k = 0; k < num_acc + 1; k++) {
+      if (backup.ttt[mm][k] == null) continue;
+      if (backup.ttt[mm][k].length === 0) continue;
+
+      while (max1 < backup.ttt[mm][k].length) {
+        addBlankRows_(MN_SHORT[mm]);
+        max1 += 400;
+      }
+
+      sheet.getRange(5, 1 + 5 * k, backup.ttt[mm][k].length, 4).setValues(backup.ttt[mm][k]);
+    }
+  }
+
+  SpreadsheetApp.flush();
+
+  sheet = SPREADSHEET.getSheetByName('Tags');
+
+  max1 = sheet.getMaxRows();
+  while (max1 < backup.tags.length) {
+    addBlankRows_('Tags');
+    max1 += 400;
+  }
+
+  if (backup.tags.length > 0) {
+    sheet.getRange(2, 1, backup.tags.length, 5).setValues(backup.tags);
+    SpreadsheetApp.flush();
+  }
+}
