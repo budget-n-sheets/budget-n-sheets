@@ -131,4 +131,17 @@ function restoreFromBackup_ (backup) {
   }
 
   SpreadsheetApp.flush();
+
+  sheet = SPREADSHEET.getSheetByName('Tags');
+
+  max1 = sheet.getMaxRows();
+  while (max1 < backup.tags.length) {
+    addBlankRows_('Tags');
+    max1 += 400;
+  }
+
+  if (backup.tags.length > 0) {
+    sheet.getRange(2, 1, backup.tags.length, 5).setValues(backup.tags);
+    SpreadsheetApp.flush();
+  }
 }
