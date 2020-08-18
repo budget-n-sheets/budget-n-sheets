@@ -9,7 +9,7 @@ function validateBackup (fileId) {
 
     if (owner !== user) return 2;
   } catch (err) {
-    console.log(err);
+    ConsoleLog.error(err);
     return 2;
   }
 
