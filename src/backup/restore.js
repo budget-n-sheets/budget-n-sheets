@@ -88,10 +88,7 @@ function validateBackup (fileId) {
 }
 
 function restoreFromBackup_ (backup) {
-  var sheet, sheetCards;
-  var digest, max1, max2, mm, i, k;
-
-  const num_acc = backup.const_properties.number_accounts;
+  var digest, i;
 
   if (backup.user_settings.sha256_financial_calendar) {
     const calendars = getAllOwnedCalendars();
@@ -104,6 +101,17 @@ function restoreFromBackup_ (backup) {
     }
   }
 
+  restoreTables_(backup);
+  restoreMonths_(backup);
+  restoreCards_(backup);
+  restoreTags_(backup);
+
+  SpreadsheetApp.flush();
+}
+
+function restoreTables_ (backup) {
+  var i;
+
   const db_tables = getDbTables_();
 
   for (i in backup.db_tables.accounts) {
@@ -115,50 +123,63 @@ function restoreFromBackup_ (backup) {
     backup.db_tables.cards[i].aliases = backup.db_tables.cards[i].aliases.join(',');
     tablesService('set', 'addcard', backup.db_tables.cards[i]);
   }
+}
 
-  sheetCards = SPREADSHEET.getSheetByName('Cards');
-  max2 = sheetCards.getMaxRows() - 5;
+function restoreCards_ (backup) {
+  var max, mm;
+
+  const sheet = SPREADSHEET.getSheetByName('Cards');
+  max = sheet.getMaxRows() - 5;
 
   mm = -1;
   while (++mm < 12) {
-    while (max2 < backup.cards[mm].length) {
+    if (backup.cards[mm].length === 0) continue;
+
+    while (max < backup.cards[mm].length) {
       addBlankRows_('Cards');
-      max2 += 400;
+      max += 400;
     }
 
-    if (backup.cards[mm].length > 0) {
-      sheetCards.getRange(6, 1 + 6 * mm, backup.cards[mm].length, 5).setValues(backup.cards[mm]);
-    }
+    sheet.getRange(6, 1 + 6 * mm, backup.cards[mm].length, 5).setValues(backup.cards[mm]);
+  }
+}
 
+function restoreMonths_ (backup) {
+  var sheet, max, mm, k;
+
+  const num_acc = backup.const_properties.number_accounts;
+
+  mm = -1;
+  while (++mm < 12) {
     if (backup.ttt[mm] == null) continue;
+
     sheet = SPREADSHEET.getSheetByName(MN_SHORT[mm]);
-    max1 = sheet.getMaxRows() - 4;
+    max = sheet.getMaxRows() - 4;
 
     for (k = 0; k < num_acc + 1; k++) {
       if (backup.ttt[mm][k] == null) continue;
       if (backup.ttt[mm][k].length === 0) continue;
 
-      while (max1 < backup.ttt[mm][k].length) {
+      while (max < backup.ttt[mm][k].length) {
         addBlankRows_(MN_SHORT[mm]);
-        max1 += 400;
+        max += 400;
       }
 
       sheet.getRange(5, 1 + 5 * k, backup.ttt[mm][k].length, 4).setValues(backup.ttt[mm][k]);
     }
   }
+}
 
-  SpreadsheetApp.flush();
+function restoreTags_ (backup) {
+  const sheet = SPREADSHEET.getSheetByName('Tags');
 
-  sheet = SPREADSHEET.getSheetByName('Tags');
-
-  max1 = sheet.getMaxRows();
-  while (max1 < backup.tags.length) {
+  var max = sheet.getMaxRows();
+  while (max < backup.tags.length) {
     addBlankRows_('Tags');
-    max1 += 400;
+    max += 400;
   }
 
   if (backup.tags.length > 0) {
     sheet.getRange(2, 1, backup.tags.length, 5).setValues(backup.tags);
-    SpreadsheetApp.flush();
   }
 }
