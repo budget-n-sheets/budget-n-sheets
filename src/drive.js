@@ -10,9 +10,5 @@
  */
 function getOAuthToken () {
   DriveApp.getRootFolder();
-
-  const token = ScriptApp.getOAuthToken();
-  CacheService2.put('user', 'OAuthToken', 'string', token);
-
-  return token;
+  return ScriptApp.getOAuthToken();
 }

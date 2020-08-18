@@ -1,17 +1,6 @@
 function validateBackup (fileId) {
   if (isInstalled_()) return 1;
 
-  const lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch (err) {
-    return 1;
-  }
-
-  if (CacheService2.get('user', 'OAuthToken', 'string') == null) return 1;
-  CacheService2.remove('user', 'OAuthToken');
-  lock.releaseLock();
-
   try {
     const file = DriveApp.getFileById(fileId);
 
