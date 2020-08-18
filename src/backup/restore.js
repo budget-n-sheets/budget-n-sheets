@@ -55,7 +55,7 @@ function validateBackup (fileId) {
   }
 
   info.tags = data.tags.length;
-  if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tags may be present.';
+  if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tags found.';
 
   list = [];
   for (i in data.db_tables.accounts) {
@@ -70,7 +70,7 @@ function validateBackup (fileId) {
   if (list.length > 0) {
     info.cards = list.join(', ');
   } else {
-    info.cards = 'No cards present.';
+    info.cards = 'No cards found.';
   }
 
   return info;

@@ -59,7 +59,7 @@
             <td colspan="2">
               <span class="error" id="response1"></span>
               <div>
-                <button class="action" id="b-Select">Select</button>
+                <button class="action" id="b-Select">Select backup</button>
                 <button onclick="google.script.host.close()">Cancel</button>
               </div>
             </td>
@@ -158,10 +158,9 @@
     });
 
     function restoreNow () {
+      this.disabled = true;
       window.scrollTo(0, 0);
-
-      var p = $(".active").attr("id");
-      $("#" + p).removeClass("active");
+      $("#response").empty();
 
       $(".panel").hide();
       $("#setup-panel").fadeIn("fast").addClass("active");
