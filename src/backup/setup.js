@@ -130,5 +130,5 @@ function restoreFromBackup_ (backup) {
     }
   }
 
-  SpradsheetApp.flush();
+  SpreadsheetApp.flush();
 }
