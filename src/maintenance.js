@@ -36,7 +36,7 @@ function askDeactivation() {
 
 	var ui = SpreadsheetApp.getUi();
 
-	if (getUserId_() !== getAdminSettings_("admin_id")) {
+	if (!isUserAdmin_()) {
 		ui.alert(
 			"Permission denied",
 			"You don't have permission to deactivate the add-on.",
@@ -166,7 +166,7 @@ function askResetProtection() {
 }
 
 function askReinstallTriggersUi() {
-	if (getUserId_() !== getAdminSettings_("admin_id")) {
+	if (!isUserAdmin_()) {
 		SpreadsheetApp.getUi().alert(
 			"Permission denied",
 			"You don't have permission to reinstall the triggers.",

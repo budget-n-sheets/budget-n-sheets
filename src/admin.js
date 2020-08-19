@@ -38,7 +38,7 @@ function retrieveAdminSettings () {
 }
 
 function saveAdminSettings (key, value) {
-  if (getUserId_() !== getAdminSettings_('admin_id')) return 1;
+  if (!isUserAdmin_()) return 1;
 	return setAdminSettings_(key, value);
 }
 
@@ -127,7 +127,7 @@ function askTransferAdminSd() {
 	var editors, email, digest;
 	var user = Session.getEffectiveUser().getEmail();
 
-	if (spreadsheet.getowner() || getUserId_() !== getAdminSettings_("admin_id")) return 1;
+	if (spreadsheet.getowner() || !isUserAdmin_()) return 1;
 
 	editors = spreadsheet.getEditors();
 	if (editors.length == 1) {
@@ -167,7 +167,7 @@ function continuedTransferAdminSd(editor) {
 	var editors, email, digest;
 	var user = Session.getEffectiveUser().getEmail();
 
-	if (spreadsheet.getowner() || getUserId_() !== getAdminSettings_("admin_id")) return 1;
+	if (spreadsheet.getowner() || !isUserAdmin_()) return 1;
 
 	editors = spreadsheet.getEditors();
 	if (editors.length == 1) {
