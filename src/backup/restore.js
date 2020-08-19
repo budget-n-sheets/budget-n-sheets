@@ -13,11 +13,16 @@ function validateBackup (fileId) {
     return 2;
   }
 
-  const blob = file.getBlob().getAs('text/plain');
-  const raw = blob.getDataAsString();
+  try {
+    const blob = file.getBlob().getAs('text/plain');
+    const raw = blob.getDataAsString();
 
-  const parts = raw.split(':');
-  const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+    const parts = raw.split(':');
+    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 3;
+  }
   if (sha !== parts[1]) return 3;
 
   const webSafeCode = parts[0];
