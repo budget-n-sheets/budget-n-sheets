@@ -9,6 +9,17 @@
 				width: 100%;
 			}
 
+      #restore-panel table {
+        font-size: 14px;
+        border-collapse: collapse;
+      }
+      #restore-panel tr:hover {
+        background-color: #f3f3f3;
+      }
+      #restore-panel td {
+        padding: 11px 3px;
+      }
+
 			.wait_load-wrapper {
 				width: 190px;
 			}
@@ -43,11 +54,32 @@
 					</div>
 				</div>
 
-				<div class="panel" id="note-panel">
-					<h2>Attention</h2>
-					<p>The build process will delete all tabs and data from the spreadsheet!</p>
-					<p>If the spreadsheet has important or sensitive data that you care about, <a href="https://support.google.com/docs/answer/49114" target="_blank"><b>make a copy or start a new spreadsheet</b></a> before continuing, then restart the process.</p>
-				</div>
+        <div class="panel" id="note-panel">
+          <h2>Attention</h2>
+          <p>The build process will delete all tabs and data from the spreadsheet!</p>
+          <p>If the spreadsheet has important or sensitive data that you care about, <a href="https://support.google.com/docs/answer/49114" target="_blank"><b>make a copy or start a new spreadsheet</b></a> before continuing, then restart the process.</p>
+        </div>
+
+        <div class="panel" id="restore-panel">
+          <h2>Let's get started</h2>
+
+          <table>
+            <tr id="b-Continue">
+              <td style="vertical-align: middle;border-bottom: none;"><span class="material-icons-outlined">new_releases</span></td>
+              <td style="cursor: pointer;">
+                <b>Set up as new</b><br>
+                Get a new budget spreadsheet.
+              </td>
+            </tr>
+            <tr id="b-Restore">
+              <td style="vertical-align: middle;"><span class="material-icons-outlined">restore</span></td>
+              <td style="cursor: pointer;">
+                <b>Restore your data</b><br>
+                Restore a budget spreadsheet from a backup.
+              </td>
+            </tr>
+          </table>
+        </div>
 
 				<div class="panel" id="form-panel">
 					<div style="display:table;width:100%;">
@@ -196,6 +228,9 @@
       var TIMEOUT_ID;
 
 			$(document).ready(function() {
+        $("#b-Continue").click(clickNext);
+        $("#b-Restore").click(showRestore);
+
 				var date = new Date();
 				$("#financial_year").val(date.getFullYear());
 				if (date.getMonth() > 1) {
@@ -216,6 +251,15 @@
 				$("input[name=account_name]").slice(num_acc).attr("required", false).val("");
 			});
 
+      function showRestore () {
+        google.script.run
+          .withFailureHandler(panelError)
+          .withSuccessHandler(function () {
+              google.script.host.close();
+            })
+          .showDialogSetupRestore();
+      }
+
 			function clickNext() {
 				window.scrollTo(0, 0);
 
@@ -227,10 +271,13 @@
 
 				switch (p) {
 				case "main-panel":
-					$("#note-panel").fadeIn("fast").addClass("active");
+          $("#note-panel").fadeIn("fast").addClass("active");
 					$("#footer-buttons").append("<button class=\"action\" onclick=\"clickNext();\">Continue</button>");
+          break;
+        case "note-panel":
+          $("#restore-panel").fadeIn("fast").addClass("active");
 					break;
-				case "note-panel":
+				case "restore-panel":
 					$("#form-panel").fadeIn("fast").addClass("active");
 					$("#footer-buttons").append("<button class=\"create\" type=\"submit\" form=\"the_form\">Build</button>");
 					break;

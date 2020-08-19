@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+</head>
+
+<body>
+  <script>
+    var pickerApiLoaded = false;
+    var fileId = '';
+    var DIMENSIONS = {
+      width: 593,
+      height: 479
+    };
+
+    /**
+     * Loads the Google Picker API.
+     */
+    function onApiLoad () {
+      gapi.load('picker', {
+        'callback': function() {
+          pickerApiLoaded = true;
+        }
+      });
+    }
+
+    /**
+     * Gets the user's OAuth 2.0 access token from the server-side script so that
+     * it can be passed to Picker. This technique keeps Picker from needing to
+     * show its own authorization dialog, but is only possible if the OAuth scope
+     * that Picker needs is available in Apps Script. Otherwise, your Picker code
+     * will need to declare its own OAuth scopes.
+     */
+    function getOAuthToken () {
+      google.script.run
+        .withSuccessHandler(createPicker)
+        .withFailureHandler(showError)
+        .getOAuthToken();
+    }
+
+    /**
+     * Creates a Picker that can access the user's spreadsheets. This function
+     * uses advanced options to hide the Picker's left navigation panel and
+     * default title bar.
+     *
+     * @param {string} token An OAuth 2.0 access token that lets Picker access the
+     *     file type specified in the addView call.
+     */
+    function createPicker (token) {
+      if (pickerApiLoaded && token) {
+        const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
+          .setIncludeFolders(false)
+          .setOwnedByMe(true)
+          .setSelectFolderEnabled(false)
+          .setMimeTypes('text/plain')
+          .setMode(google.picker.DocsViewMode.LIST);
+
+        const picker = new google.picker.PickerBuilder()
+          .addView(docsView)
+          .enableFeature(google.picker.Feature.NAV_HIDDEN)
+          .hideTitleBar()
+          .setOAuthToken(token)
+          .setDeveloperKey('AIzaSyCFg7a2iP07kOynA_xfKUuhue131Emqs7k')
+          .setCallback(pickerCallback)
+          .setOrigin(google.script.host.origin)
+          .setSize(DIMENSIONS.width, DIMENSIONS.height)
+          .build();
+
+        picker.setVisible(true);
+      } else {
+        showError();
+      }
+    }
+
+    /**
+     * A callback function that extracts the chosen document's metadata from the
+     * response object. For details on the response object, see
+     * https://developers.google.com/picker/docs/result
+     *
+     * @param {object} data The response object.
+     */
+    function pickerCallback (data) {
+      const action = data[google.picker.Response.ACTION];
+      if (action == google.picker.Action.CANCEL) {
+        google.script.run.showDialogSetupRestore();
+        return;
+      }
+
+      const doc = data[google.picker.Response.DOCUMENTS][0];
+      google.script.run
+        .withFailureHandler(showError)
+        .showDialogSetupRestore(doc[google.picker.Document.ID]);
+    }
+  </script>
+
+  <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <script>
+    $(document).ready(function() {
+      getOAuthToken();
+    });
+  </script>
+</body>
+
+</html>
