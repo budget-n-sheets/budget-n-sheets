@@ -30,13 +30,9 @@ function bsSignSetup_ () {
   }
 
   const data = {
-    time: DATE_NOW.getTime(),
+    date: DATE_NOW.getTime(),
     spreadsheet_id: spreadsheet.getId(),
-
-    script: class_version.script,
-    template: class_version.template,
-
-    financial_year: const_properties.financial_year,
+    class_version: class_version,
     number_accounts: const_properties.number_accounts
   };
 
