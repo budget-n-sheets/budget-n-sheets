@@ -20,6 +20,10 @@ function getUserId_() {
 	return userId;
 }
 
+function isUserAdmin_ () {
+	return getUserId_() === getAdminSettings_('admin_id');
+}
+
 function retrieveAdminSettings () {
   var admin_settings = CacheService2.get('document', 'admin_settings', 'json');
   if (!admin_settings) {
