@@ -71,6 +71,13 @@
                 Get a new budget spreadsheet.
               </td>
             </tr>
+            <tr id="b-Copy">
+              <td style="vertical-align: middle;border-bottom: none;"><span class="material-icons-outlined">content_copy</span></td>
+              <td style="cursor: pointer;">
+                <b>Copy your data</b><br>
+                Copy content from an old budget spreadsheet.
+              </td>
+            </tr>
             <tr id="b-Restore">
               <td style="vertical-align: middle;"><span class="material-icons-outlined">restore</span></td>
               <td style="cursor: pointer;">
@@ -234,6 +241,7 @@
 			$(document).ready(function() {
         $("#b-Continue").click(clickNext);
         $("#b-Restore").click(showRestore);
+        $("#b-Copy").click(showCopy);
 
 				var date = new Date();
 				$("#financial_year").val(date.getFullYear());
@@ -256,6 +264,16 @@
 			});
 
       function showRestore () {
+        google.script.run
+          .withFailureHandler(panelError)
+          .withSuccessHandler(function () {
+              google.script.host.close();
+            })
+          .showDialogSetupRestore();
+      }
+
+      function showCopy () {
+        $("#restore-panel").fadeOut();
         google.script.run
           .withFailureHandler(panelError)
           .withSuccessHandler(function () {
