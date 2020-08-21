@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+  <style>
+    p {
+      text-indent: 0;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    td.border {
+      border-bottom: none;
+    }
+
+    #content {
+      padding: 7px 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="content">
+      <div class="panel active" id="restore-panel">
+        <table>
+          <tr>
+            <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">table_chart</span> Spreadsheet</span></th>
+          </tr>
+          <tr>
+            <td class="name" style="width: 127px;">Spreadsheet name</td>
+            <td id="file_name">
+            </td>
+          </tr>
+          <tr>
+            <td class="border name">Last modified</td>
+            <td class="border" id="last_updated">
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <span class="error" id="response"></span>
+              <div>
+                <button class="action" id="b-Select">Select spreadsheet</button>
+                <button onclick="google.script.host.close()">Cancel</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <script>
+    const FILE_ID = <?= fileId ?>;
+
+    $(document).ready(function() {
+      $('#b-Select').click(pickFile);
+      <? if (hasFileId) { ?>
+      $('#b-Select').prop('disabled', true);
+
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(null)
+        .validateSpreadsheet(FILE_ID);
+      <? } ?>
+    });
+
+    function pickFile() {
+      this.disabled = true;
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(function() {
+          google.script.host.close();
+        })
+        .showDialogPickerRestore('copy');
+    }
+  </script>
+</body>
+
+</html>
