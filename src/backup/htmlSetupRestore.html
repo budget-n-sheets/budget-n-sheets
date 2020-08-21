@@ -212,7 +212,7 @@
         .withSuccessHandler(function () {
             google.script.host.close();
           })
-        .showDialogPickerRestore();
+        .showDialogPickerRestore('copy');
     }
 
     function panelError (err) {

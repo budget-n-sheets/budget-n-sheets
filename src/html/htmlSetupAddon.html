@@ -264,6 +264,7 @@
 			});
 
       function showRestore () {
+        $("#restore-panel").fadeOut();
         google.script.run
           .withFailureHandler(panelError)
           .withSuccessHandler(function () {
@@ -279,7 +280,7 @@
           .withSuccessHandler(function () {
               google.script.host.close();
             })
-          .showDialogSetupRestore();
+          .showDialogSetupCopy();
       }
 
 			function clickNext() {
