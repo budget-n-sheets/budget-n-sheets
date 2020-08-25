@@ -50,6 +50,7 @@ function playSpeedQuickstart (id) {
       throw new Error('playSpeedQuickstart(): Switch case is default. ' + job);
   }
 
+  SpreadsheetApp.getActiveSpreadsheet().toast('Done.', 'Quickstart');
   lock.releaseLock();
 }
 
