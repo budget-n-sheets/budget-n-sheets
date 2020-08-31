@@ -149,7 +149,7 @@ function dailyTrigger_(e) {
 		treatLayout_(yyyymmdd.year, yyyymmdd.month);
 
 		try {
-			if (yyyymd.month > 2) {
+			if (yyyymmdd.month > 2) {
 				switchActivity_('suspend');
 			}
 		} catch (err) {
