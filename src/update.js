@@ -8,7 +8,7 @@ var PATCH_THIS = Object.freeze({
       [ update_v0m31p0_, null, null, null, null, null, update_v0m31p6_, update_v0m31p7_, update_v0m31p8_, null ],
       [ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_, update_v0m32p7_, null ],
       [ update_v0m33p0_, update_v0m33p1_, update_v0m33p2_, null, null, null, null, null, null, update_v0m33p9_ ],
-      [ update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_, null ]
+      [ update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_, null, null ]
     ]
   ],
   beta_list: [ ]
