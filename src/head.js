@@ -12,11 +12,11 @@ var CACHE_KEYS = ['class_version2', 'admin_settings', 'user_settings', 'spreadsh
 var TABLE_DIMENSION = Object.freeze({height: 10, width: 5});
 
 var RESERVED_HREF = Object.freeze({
-  home_developer: 'https://sites.google.com/view/guimspace',
-  home_app: 'https://sites.google.com/view/guimspace/budget-n-sheets',
-  home_help: 'https://sites.google.com/view/guimspace/budget-n-sheets/help',
-  privacy_policy: 'https://sites.google.com/view/guimspace/budget-n-sheets/privacy-policy',
-  terms_of_service: 'https://sites.google.com/view/guimspace/budget-n-sheets/terms-of-service',
+  home_developer: 'https://www.budgetnsheets.com',
+  home_app: 'https://www.budgetnsheets.com',
+  home_help: 'https://www.budgetnsheets.com/support',
+  privacy_policy: 'https://www.budgetnsheets.com/privacy-policy',
+  terms_of_service: 'https://www.budgetnsheets.com/terms-of-service',
   join_forum: 'https://groups.google.com/d/forum/add-on-budget-n-sheets-forum',
   send_feedback: 'https://docs.google.com/forms/d/e/1FAIpQLSfS1agp9AHRgRx7NXZrosd7ME6yfR4f_VR5b36NZZ832tRUWw/viewform?usp=sf_link',
   home_wiki: 'https://github.com/guimspace/budget-n-sheets/wiki',
