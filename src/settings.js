@@ -79,6 +79,12 @@ function saveUserSettings(settings) {
 
 
   try {
+    updateDecimalPlaces_();
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+
+  try {
     updateDecimalSeparator_();
   } catch (err) {
     ConsoleLog.error(err);

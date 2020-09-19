@@ -127,6 +127,89 @@ function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
   sheet.getRange(row + i, offset + col, value.length, 1).setFormulas(value);
 }
 
+function updateDecimalPlaces_ () {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet, max;
+
+  const h_ = TABLE_DIMENSION.height;
+  const w_ = TABLE_DIMENSION.width;
+
+  const num_acc = getConstProperties_('number_accounts');
+
+  const dec_p = getSpreadsheetSettings_('decimal_places');
+  const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
+  const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
+
+  sheet = spreadsheet.getSheetByName('Summary');
+  if (sheet) {
+    sheet.getRangeList(['D9:I22', 'D25:G36']).setNumberFormat(number_format);
+  }
+
+  for (let i = 0; i < 12; i++) {
+    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    if (!sheet) continue;
+
+    max = sheet.getMaxRows() - 4;
+    if (max < 1) continue;
+
+    const list = [];
+    for (let k = 0; k < num_acc; k++) {
+      list[k] = rollA1Notation(5, 8 + 5 * k, max, 1);
+
+      sheet.getRange(2, 6 + 5 * k).setFormula('CONCAT("Balance "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(3 + h_ * i, 7 + w_ * k) + '))');
+      sheet.getRange(3, 6 + 5 * k).setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4 + h_ * i, 7 + w_ * k) + '))');
+
+      let expr1 = "TEXT('_Backstage'!" + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      expr1 = '"Withdrawal: ["; \'_Backstage\'!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
+
+      let expr2 = "TEXT('_Backstage'!" + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      expr2 = '"Deposit: ["; \'_Backstage\'!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr2 + '; "\n"; ';
+
+      let expr3 = "TEXT('_Backstage'!" + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      expr3 = '"Trf. in: ["; \'_Backstage\'!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr3 + '; "\n"; ';
+
+      let expr4 = "TEXT('_Backstage'!" + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      expr4 = '"Trf. out: ["; \'_Backstage\'!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
+
+      const formula = 'CONCATENATE(' + expr1 + expr2 + expr3 + expr4 + ')';
+      sheet.getRange(1, 8 + 5 * k).setFormula(formula);
+    }
+    list.push(rollA1Notation(5, 3, max, 1));
+
+    sheet.getRangeList(list).setNumberFormat(number_format);
+  }
+
+  sheet = spreadsheet.getSheetByName('Cards');
+  max = (sheet ? sheet.getMaxRows() - 5 : 0);
+  if (max > 0) {
+    const list = [];
+    for (let i = 0; i < 12; i++) {
+      list[i] = rollA1Notation(6, 4 + 6 * i, max, 1);
+    }
+    sheet.getRangeList(list).setNumberFormat(number_format);
+  }
+
+  sheet = spreadsheet.getSheetByName('Cash Flow');
+  if (sheet) {
+    const list = [];
+    for (let i = 0; i < 12; i++) {
+      list[i] = rollA1Notation(4, 2 + 4 * i, 31, 2);
+    }
+    sheet.getRangeList(list).setNumberFormat(number_format);
+  }
+
+  sheet = spreadsheet.getSheetByName('Tags');
+  max = (sheet ? sheet.getMaxRows() - 1 : 0);
+  if (max > 0) {
+    sheet.getRange(2, 6, max, 12).setNumberFormat(number_format);
+    sheet.getRange(2, 19, max, 2).setNumberFormat(number_format);
+  }
+
+  sheet = spreadsheet.getSheetByName('_Backstage');
+  if (sheet) {
+    sheet.getRange(2, 2, sheet.getMaxRows() - 1, sheet.getMaxColumns() - 1).setNumberFormat(number_format);
+  }
+}
 
 function updateDecimalSeparator_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
