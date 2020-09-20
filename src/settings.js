@@ -66,6 +66,7 @@ function saveUserSettings(settings) {
 
 	const new_init_month = Number(settings.initial_month);
 	const init_month = getUserSettings_("initial_month");
+	const decimal_places = getSpreadsheetSettings_('initial_month');
 
 	const user_settings = {
 		initial_month: new_init_month,
@@ -83,7 +84,9 @@ function saveUserSettings(settings) {
   setSpreadsheetSettings_('decimal_places', settings.decimal_places);
 
   try {
-    updateDecimalPlaces_();
+    if (decimal_places !== settings.decimal_places) {
+      updateDecimalPlaces_();
+    }
   } catch (err) {
     ConsoleLog.error(err);
   }
