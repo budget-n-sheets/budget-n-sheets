@@ -190,6 +190,12 @@ function updateDecimalPlaces_ () {
 
       list[i] = rollA1Notation(6, 4 + 6 * i, max, 1);
 
+      let formula = 'OFFSET(' + cell + '; 4; 1 + 5*' + head + '; 1; 1)';
+      formula = 'TEXT(' + formula + '; "' + number_format + '")';
+      formula = 'IF(' + rollA1Notation(2, 2 + 6 * i) + ' = "All"; ""; ' + formula + ')';
+      formula = 'CONCATENATE("AVAIL credit: "; ' + formula + ')';
+      sheet.getRange(3, 1 + 6 * i).setFormula(formula);
+
       let expr1 = 'OFFSET(' + cell + '; 1; 5*' + head + '; 1; 1)';
       expr1 = '"Credit: "; TEXT(' + expr1 + '; "' + number_format + '"); "\n"; ';
 
@@ -199,7 +205,7 @@ function updateDecimalPlaces_ () {
       let expr3 = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
       expr3 = '"Balance: "; TEXT(' + expr3 + '; "' + number_format + '")';
 
-      const formula = 'CONCATENATE(' + expr1 + expr2 + '"\n"; ' + expr3 + ')';
+      formula = 'CONCATENATE(' + expr1 + expr2 + '"\n"; ' + expr3 + ')';
       sheet.getRange(2, 4 + 6 * i).setFormula(formula);
     }
     sheet.getRangeList(list).setNumberFormat(number_format);
