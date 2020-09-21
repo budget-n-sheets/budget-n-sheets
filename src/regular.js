@@ -135,6 +135,7 @@ function updateDecimalPlaces_ () {
   const w_ = TABLE_DIMENSION.width;
 
   const num_acc = getConstProperties_('number_accounts');
+  const col = 2 + w_ + w_ * num_acc;
 
   const dec_p = getSpreadsheetSettings_('decimal_places');
   const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
@@ -184,7 +185,22 @@ function updateDecimalPlaces_ () {
   if (max > 0) {
     const list = [];
     for (let i = 0; i < 12; i++) {
+      const head = rollA1Notation(2, 1 + 6 * i);
+      const cell = "'_Backstage'!" + rollA1Notation(2 + h_ * i, col);
+
       list[i] = rollA1Notation(6, 4 + 6 * i, max, 1);
+
+      let expr1 = 'OFFSET(' + cell + '; 1; 5*' + head + '; 1; 1)';
+      expr1 = '"Credit: "; TEXT(' + expr1 + '; "' + number_format + '"); "\n"; ';
+
+      let expr2 = 'OFFSET(' + cell + '; 3; 5*' + head + '; 1; 1)';
+      expr2 = '"Expenses: "; TEXT(' + expr2 + '; "' + number_format + '"); "\n"; ';
+
+      let expr3 = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
+      expr3 = '"Balance: "; TEXT(' + expr3 + '; "' + number_format + '")';
+
+      const formula = 'CONCATENATE(' + expr1 + expr2 + '"\n"; ' + expr3 + ')';
+      sheet.getRange(2, 4 + 6 * i).setFormula(formula);
     }
     sheet.getRangeList(list).setNumberFormat(number_format);
   }
