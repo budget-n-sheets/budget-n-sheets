@@ -52,6 +52,7 @@ function setupNew_ (settings, list_acc) {
 
 	SETUP_SETTINGS = {
 		spreadsheet_name: settings.spreadsheet_name,
+		decimal_places: Number(settings.decimal_places),
 		financial_year: Number(settings.financial_year),
 		init_month: Number(settings.initial_month),
 		number_accounts: Number(settings.number_accounts),
