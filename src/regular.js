@@ -157,9 +157,6 @@ function updateDecimalPlaces_ () {
     for (let k = 0; k < num_acc; k++) {
       list[k] = rollA1Notation(5, 8 + 5 * k, max, 1);
 
-      sheet.getRange(2, 6 + 5 * k).setFormula('CONCAT("Balance "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(3 + h_ * i, 7 + w_ * k) + '))');
-      sheet.getRange(3, 6 + 5 * k).setFormula('CONCAT("Expenses "; TO_TEXT(\'_Backstage\'!' + rollA1Notation(4 + h_ * i, 7 + w_ * k) + '))');
-
       let expr1 = "TEXT('_Backstage'!" + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
       expr1 = '"Withdrawal: ["; \'_Backstage\'!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
 
