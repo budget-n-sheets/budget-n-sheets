@@ -99,6 +99,10 @@
 								<td class="name" style="width:50%;"><label for="spreadsheet_name">Spreadsheet title</label></td>
 								<td><input type="text" id="spreadsheet_name" maxlength="53" required></td>
 							</tr>
+              <tr>
+                <td class="name"><label for="decimal_places">Decimal places</label></td>
+                <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+              </tr>
 						</table>
 						<table style="width: 100%; margin-top: 2em;">
 							<tr>
@@ -300,6 +304,7 @@
 
 				var settings = {
 					spreadsheet_name: $("#spreadsheet_name").val(),
+          decimal_places: $("#decimal_places").val(),
 					financial_year: $("#financial_year").val(),
 					initial_month: $("#initial_month").val(),
 					number_accounts: $("#number_accounts").val()

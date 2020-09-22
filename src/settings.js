@@ -25,6 +25,8 @@ function retrieveUserSettings() {
 		return;
 	}
 
+	user_settings.decimal_places = getSpreadsheetSettings_('decimal_places');
+
 	return user_settings;
 }
 
@@ -77,6 +79,8 @@ function saveUserSettings(settings) {
 	PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
 	CacheService2.put("document", "user_settings", "json", user_settings);
 
+
+  setSpreadsheetSettings_('decimal_places', settings.decimal_places);
 
   try {
     updateDecimalPlaces_();
