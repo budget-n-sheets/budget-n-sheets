@@ -36,5 +36,9 @@ function setupSummary_() {
 
 	sheet.insertChart( chart.build() );
 
+	if (SETUP_SETTINGS['decimal_places'] !== 2) {
+    sheet.getRangeList(['D9:I22', 'D25:G36']).setNumberFormat(SETUP_SETTINGS['number_format']);
+  }
+
 	SpreadsheetApp.flush();
 }

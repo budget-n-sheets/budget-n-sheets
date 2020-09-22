@@ -97,4 +97,8 @@ function setupBackstage_() {
 
 	sheet.getRange(2, 2, height, 5).setFormulas(wallet);
 	sheet.getRange(2, 7, height, width).setFormulas(accounts);
+
+	if (SETUP_SETTINGS['decimal_places'] !== 2) {
+    sheet.getRange(2, 2, sheet.getMaxRows() - 1, sheet.getMaxColumns() - 1).setNumberFormat(SETUP_SETTINGS['number_format']);
+  }
 }
