@@ -36,6 +36,7 @@ function validateBackup (fileId) {
     spreadsheet_title: data.backup.spreadsheet_title,
     financial_year: data.const_properties.financial_year,
     initial_month: MN_FULL[data.user_settings.initial_month],
+    decimal_places: data.spreadsheet_settings.decimal_places,
     number_accounts: data.const_properties.number_accounts,
 
     financial_calendar: '',
