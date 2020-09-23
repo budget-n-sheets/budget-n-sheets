@@ -128,6 +128,8 @@ function setupRestore_ (fileId) {
 
   SETUP_SETTINGS = {
     spreadsheet_name: backup.backup.spreadsheet_title,
+    decimal_places: backup.spreadsheet_settings.decimal_places,
+    number_format: '#,##0.00;(#,##0.00)',
     financial_year: backup.const_properties.financial_year,
     init_month: backup.user_settings.initial_month,
     number_accounts: backup.const_properties.number_accounts,
