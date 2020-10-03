@@ -163,6 +163,134 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Add 'decimal_places' to spreadsheet settings.
+ * Update accounts header format.
+ * Update Summary chart.
+ *
+ * 0.35.0
+ */
+function update_v0m35p0_ () {
+  try {
+    setSpreadsheetSettings_('decimal_places', 2);
+
+    update_v0m35p0s0_();
+    update_v0m35p0s1_();
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m35p0s1_ () {
+  try {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = spreadsheet.getSheetByName('Summary');
+    var i;
+
+    if (!sheet) return;
+
+    const h_ = TABLE_DIMENSION.height;
+
+    sheet.getRange(2, 13, 3, 1).setFormulas([
+      ["'_Settings'!B3"],
+      ["'_Settings'!B4"],
+      ["'_Settings'!B6"]
+    ]);
+
+    sheet.getRange(2, 13).copyTo(
+      sheet.getRange(4, 13),
+      { formatOnly: true }
+    );
+
+    const list = [];
+    const formulas = [];
+
+    for (i = 0; i < 12; i++) {
+      list[i] = rollA1Notation(11 + i, 8);
+
+      formulas[i] = [
+        'IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11 + i, 4) + ', -' + rollA1Notation(11 + i, 6) + ', "", ""}; {"", "", ' + rollA1Notation(11 + i, 4) + ', -' + rollA1Notation(11 + i, 6) + '})'
+      ];
+    }
+    sheet.getRange(25, 4, 12, 1).setFormulas(formulas);
+
+    sheet.getRange(25, 8, 12, 1).setFormula('=$D$10');
+    sheet.getRange(25, 9, 12, 1).setFormula('=-$F$10');
+
+    sheet.getRange(25, 4).setFormula('IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11, 4) + ', -' + rollA1Notation(11, 6) + ', 0, 0}; {0, 0, ' + rollA1Notation(11, 4) + ', -' + rollA1Notation(11, 6) + '})');
+
+    sheet.getRange(9, 4, 1, 5).setFormulas([[
+      "=IF(_Settings!$B6 > 0;  {SUM(OFFSET($D10; '_Settings'!$B4; 0; '_Settings'!$B6; 1)); AVERAGE(OFFSET($D10; '_Settings'!$B4; 0; '_Settings'!$B6; 1))}; {0; 0})", null,
+      "=IF(_Settings!$B6 > 0;  {SUM(OFFSET($F10; '_Settings'!$B4; 0; '_Settings'!$B6; 1)); AVERAGE(OFFSET($F10; '_Settings'!$B4; 0; '_Settings'!$B6; 1))}; {0; 0})", null,
+      '=D9 + F9'
+    ]]);
+
+    const charts = sheet.getCharts();
+    if (charts[0]) sheet.removeChart(charts[0]);
+
+    const options = {
+      0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Income' },
+      1: { color: '#cccccc', type: 'bars', labelInLegend: 'Expenses' },
+      2: { color: '#45818e', type: 'bars', labelInLegend: 'Income' },
+      3: { color: '#e69138', type: 'bars', labelInLegend: 'Expenses' },
+      4: { color: '#45818e', type: 'line', labelInLegend: 'Avg Income' },
+      5: { color: '#e69138', type: 'line', labelInLegend: 'Avg Expenses' }
+    };
+
+    var chart = sheet.newChart()
+      .addRange(sheet.getRange('C25:I36'))
+      .setChartType(Charts.ChartType.COMBO)
+      .setPosition(24, 2, 0, 0)
+      .setOption('mode', 'view')
+      .setOption('legend', 'top')
+      .setOption('focusTarget', 'category')
+      .setOption('series', options)
+      .setOption('height', 482)
+      .setOption('width', 886);
+
+    sheet.insertChart(chart.build());
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
+
+function update_v0m35p0s0_ () {
+  try {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet;
+    var expr1, expr2, expr3, expr4;
+
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const num_acc = getConstProperties_('number_accounts');
+
+    for (var i = 0; i < 12; i++) {
+      sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+      if (!sheet) continue;
+
+      for (k = 0; k < num_acc; k++) {
+        expr1 = "TEXT('_Backstage'!" + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr1 = '"Withdrawal: ["; \'_Backstage\'!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
+
+        expr2 = "TEXT('_Backstage'!" + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr2 = '"Deposit: ["; \'_Backstage\'!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr2 + '; "\n"; ';
+
+        expr3 = "TEXT('_Backstage'!" + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr3 = '"Trf. in: ["; \'_Backstage\'!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr3 + '; "\n"; ';
+
+        expr4 = "TEXT('_Backstage'!" + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr4 = '"Trf. out: ["; \'_Backstage\'!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
+
+        sheet.getRange(1, 8 + 5 * k).setFormula('CONCATENATE(' + expr1 + expr2 + expr3 + expr4 + ')');
+      }
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
+
+/**
  * Set recalculation interval to 'ON_CHANGE'.
  *
  * 0.34.10
