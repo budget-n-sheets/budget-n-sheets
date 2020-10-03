@@ -159,6 +159,7 @@ function getSpreadsheetSettings_(select) {
 	switch (select) {
 	case "operation_mode":
 	case "decimal_separator":
+	case 'decimal_places':
 	case "spreadsheet_locale":
   case 'view_mode':
 	case 'optimize_load':
@@ -177,6 +178,7 @@ function setSpreadsheetSettings_(select, value) {
 	switch (select) {
 	case "operation_mode":
 	case "decimal_separator":
+	case 'decimal_places':
 	case "spreadsheet_locale":
   case 'view_mode':
 	case 'optimize_load':
