@@ -9,7 +9,7 @@ var PATCH_THIS = Object.freeze({
       [ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_, update_v0m32p7_, null ],
       [ update_v0m33p0_, update_v0m33p1_, update_v0m33p2_, null, null, null, null, null, null, update_v0m33p9_ ],
       [ update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_, null, null, update_v0m34p10_, null, null ],
-      [ update_v0m35p0_ ]
+      [ update_v0m35p0_, update_v0m35p1_ ]
     ]
   ],
   beta_list: [ ]
@@ -162,6 +162,40 @@ function update_v0m0p0_() {
     return 2;
   }
 }*/
+
+/**
+ * Fix symbol separator in arrays.
+ * Clear content for function expansion.
+ *
+ * 0.35.1
+ */
+function update_v0m35p1_ () {
+  try {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = spreadsheet.getSheetByName('Summary');
+    var i;
+
+    const dec_c = (getSpreadsheetSettings_('decimal_separator') ? ',' : ' \\');
+
+    const list = [];
+    const formulas = [];
+
+    sheet.getRange(25, 5, 12, 5).clearContent();
+
+    for (i = 0; i < 12; i++) {
+      list[i] = rollA1Notation(11 + i, 8);
+
+      formulas[i] = [
+        'IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11 + i, 4) + dec_c + ' -' + rollA1Notation(11 + i, 6) + dec_c + ' ""' + dec_c + ' ""}; {""' + dec_c + ' ""' + dec_c + ' ' + rollA1Notation(11 + i, 4) + dec_c + ' -' + rollA1Notation(11 + i, 6) + '})'
+      ];
+    }
+    sheet.getRange(25, 4, 12, 1).setFormulas(formulas);
+
+    sheet.getRange(25, 4).setFormula('IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11, 4) + dec_c + ' -' + rollA1Notation(11, 6) + dec_c + ' 0' + dec_c + ' 0}; {0' + dec_c + ' 0' + dec_c + ' ' + rollA1Notation(11, 4) + dec_c + ' -' + rollA1Notation(11, 6) + '})');
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
 
 /**
  * Add 'decimal_places' to spreadsheet settings.
