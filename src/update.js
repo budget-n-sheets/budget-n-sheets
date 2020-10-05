@@ -9,7 +9,7 @@ var PATCH_THIS = Object.freeze({
       [ null, null, update_v0m32p2_, null, null, null, update_v0m32p6_, update_v0m32p7_, null ],
       [ update_v0m33p0_, update_v0m33p1_, update_v0m33p2_, null, null, null, null, null, null, update_v0m33p9_ ],
       [ update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_, null, null, update_v0m34p10_, null, null ],
-      [ update_v0m35p0_, update_v0m35p1_ ]
+      [ update_v0m35p0_, update_v0m35p1_, update_v0m35p2_ ]
     ]
   ],
   beta_list: [ ]
@@ -162,6 +162,23 @@ function update_v0m0p0_() {
     return 2;
   }
 }*/
+
+/**
+ * Fix cleared range reference for averages.
+ *
+ * 0.35.2
+ */
+function update_v0m35p2_ () {
+  try {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = spreadsheet.getSheetByName('Summary');
+
+    sheet.getRange(25, 8, 12, 1).setFormula('=$D$10');
+    sheet.getRange(25, 9, 12, 1).setFormula('=-$F$10');
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
 
 /**
  * Fix symbol separator in arrays.
