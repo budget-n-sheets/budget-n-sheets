@@ -237,22 +237,22 @@ function update_v0m35p0s1_ () {
       { formatOnly: true }
     );
 
-    const list = [];
-    const formulas = [];
-
-    for (i = 0; i < 12; i++) {
-      list[i] = rollA1Notation(11 + i, 8);
-
-      formulas[i] = [
-        'IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11 + i, 4) + ', -' + rollA1Notation(11 + i, 6) + ', "", ""}; {"", "", ' + rollA1Notation(11 + i, 4) + ', -' + rollA1Notation(11 + i, 6) + '})'
-      ];
-    }
-    sheet.getRange(25, 4, 12, 1).setFormulas(formulas);
+    // const list = [];
+    // const formulas = [];
+    //
+    // for (i = 0; i < 12; i++) {
+    //   list[i] = rollA1Notation(11 + i, 8);
+    //
+    //   formulas[i] = [
+    //     'IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11 + i, 4) + ', -' + rollA1Notation(11 + i, 6) + ', "", ""}; {"", "", ' + rollA1Notation(11 + i, 4) + ', -' + rollA1Notation(11 + i, 6) + '})'
+    //   ];
+    // }
+    // sheet.getRange(25, 4, 12, 1).setFormulas(formulas);
 
     sheet.getRange(25, 8, 12, 1).setFormula('=$D$10');
     sheet.getRange(25, 9, 12, 1).setFormula('=-$F$10');
 
-    sheet.getRange(25, 4).setFormula('IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11, 4) + ', -' + rollA1Notation(11, 6) + ', 0, 0}; {0, 0, ' + rollA1Notation(11, 4) + ', -' + rollA1Notation(11, 6) + '})');
+    // sheet.getRange(25, 4).setFormula('IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11, 4) + ', -' + rollA1Notation(11, 6) + ', 0, 0}; {0, 0, ' + rollA1Notation(11, 4) + ', -' + rollA1Notation(11, 6) + '})');
 
     sheet.getRange(9, 4, 1, 5).setFormulas([[
       "=IF(_Settings!$B6 > 0;  {SUM(OFFSET($D10; '_Settings'!$B4; 0; '_Settings'!$B6; 1)); AVERAGE(OFFSET($D10; '_Settings'!$B4; 0; '_Settings'!$B6; 1))}; {0; 0})", null,
