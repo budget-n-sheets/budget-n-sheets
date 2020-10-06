@@ -172,6 +172,7 @@ function update_v0m35p2_ () {
   try {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = spreadsheet.getSheetByName('Summary');
+    if (!sheet) return;
 
     sheet.getRange(25, 8, 12, 1).setFormula('=$D$10');
     sheet.getRange(25, 9, 12, 1).setFormula('=-$F$10');
@@ -190,6 +191,8 @@ function update_v0m35p1_ () {
   try {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = spreadsheet.getSheetByName('Summary');
+    if (!sheet) return;
+
     var i;
 
     const dec_c = (getSpreadsheetSettings_('decimal_separator') ? ',' : ' \\');
