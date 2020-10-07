@@ -25,6 +25,8 @@ function retrieveUserSettings() {
 		return;
 	}
 
+	user_settings.decimal_places = getSpreadsheetSettings_('decimal_places');
+
 	return user_settings;
 }
 
@@ -64,6 +66,7 @@ function saveUserSettings(settings) {
 
 	const new_init_month = Number(settings.initial_month);
 	const init_month = getUserSettings_("initial_month");
+	const decimal_places = getSpreadsheetSettings_('decimal_places');
 
 	const user_settings = {
 		initial_month: new_init_month,
@@ -77,6 +80,17 @@ function saveUserSettings(settings) {
 	PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
 	CacheService2.put("document", "user_settings", "json", user_settings);
 
+
+  settings.decimal_places = Number(settings.decimal_places);
+  setSpreadsheetSettings_('decimal_places', settings.decimal_places);
+
+  try {
+    if (decimal_places !== settings.decimal_places) {
+      updateDecimalPlaces_();
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
 
   try {
     updateDecimalSeparator_();
@@ -159,6 +173,7 @@ function getSpreadsheetSettings_(select) {
 	switch (select) {
 	case "operation_mode":
 	case "decimal_separator":
+	case 'decimal_places':
 	case "spreadsheet_locale":
   case 'view_mode':
 	case 'optimize_load':
@@ -177,6 +192,7 @@ function setSpreadsheetSettings_(select, value) {
 	switch (select) {
 	case "operation_mode":
 	case "decimal_separator":
+	case 'decimal_places':
 	case "spreadsheet_locale":
   case 'view_mode':
 	case 'optimize_load':

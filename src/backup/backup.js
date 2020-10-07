@@ -24,6 +24,7 @@ function backupRequest () {
     },
     admin_settings: {},
     user_settings: {},
+    spreadsheet_settings: {},
     const_properties: {},
     class_version2: {}
   };
@@ -92,6 +93,10 @@ function backupProperties_ (backup) {
   backup.admin_settings = PropertiesService2.getProperty('document', 'admin_settings', 'json');
   backup.const_properties = PropertiesService2.getProperty('document', 'const_properties', 'json');
   backup.class_version2 = PropertiesService2.getProperty('document', 'class_version2', 'json');
+
+  backup.spreadsheet_settings = {
+    decimal_places: getSpreadsheetSettings_('decimal_places')
+  };
 
   if (backup.user_settings.financial_calendar) {
     const digest = computeDigest('SHA_256', backup.user_settings.financial_calendar, 'UTF_8');

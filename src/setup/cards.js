@@ -34,7 +34,7 @@ function setupCards_() {
 		sheet.getRange(2, 2 + 6*i).setValue("All");
 
 		formula = "OFFSET(" + cell + "; 4; 1 + 5*" + head + "; 1; 1)";
-		formula = "TEXT(" + formula + "; \"#,##0.00;(#,##0.00)\")";
+		formula = 'TEXT(' + formula + '; "' + SETUP_SETTINGS['number_format'] + '")';
 		formula = "IF(" + rollA1Notation(2, 2 + 6*i) + " = \"All\"; \"\"; " + formula + ")";
 		formula = "CONCATENATE(\"AVAIL credit: \"; " + formula + ")";
 		sheet.getRange(3, 1 + 6*i).setFormula(formula);
@@ -56,18 +56,28 @@ function setupCards_() {
 		sheet.getRange(2, 1 + 6*i).setFormula(formula);
 
 
-		expr1 = "OFFSET(" + cell + "; 1; 5*" + head + "; 1; 1)";
-		expr1 = "\"Credit: \"; TEXT(" + expr1 + "; \"#,##0.00;(#,##0.00)\"); \"\n\"; ";
+		expr1 = 'OFFSET(' + cell + '; 1; 5*' + head + '; 1; 1)';
+    expr1 = '"Credit: "; TEXT(' + expr1 + '; "' + SETUP_SETTINGS['number_format'] + '"); "\n"; ';
 
-		expr2 = "OFFSET(" + cell + "; 3; 5*" + head + "; 1; 1)";
-		expr2 = "\"Expenses: \"; TEXT(" + expr2 + "; \"#,##0.00;(#,##0.00)\"); \"\n\"; ";
+		expr2 = 'OFFSET(' + cell + '; 3; 5*' + head + '; 1; 1)';
+		expr2 = '"Expenses: "; TEXT(' + expr2 + '; "' + SETUP_SETTINGS['number_format'] + '"); "\n"; ';
 
-		expr3 = "OFFSET(" + cell + "; 4; 5*" + head + "; 1; 1)";
-		expr3 = "\"Balance: \"; TEXT(" + expr3 + "; \"#,##0.00;(#,##0.00)\")";
+		expr3 = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
+		expr3 = '"Balance: "; TEXT(' + expr3 + '; "' + SETUP_SETTINGS['number_format'] + '")';
 
 		formula = "CONCATENATE(" + expr1 + expr2 + "\"\n\"; " + expr3 + ")";
 		sheet.getRange(2, 4 + 6*i).setFormula(formula);
 	}
+
+	if (SETUP_SETTINGS['decimal_places'] !== 2) {
+    const list_format = [];
+
+    for (let i = 0; i < 12; i++) {
+      list_format[i] = rollA1Notation(6, 4 + 6 * i, 400, 1);
+    }
+
+    sheet.getRangeList(list_format).setNumberFormat(SETUP_SETTINGS['number_format']);
+  }
 
 	SpreadsheetApp.flush();
 }

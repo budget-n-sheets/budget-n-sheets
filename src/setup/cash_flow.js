@@ -126,5 +126,15 @@ function setupCashFlow_() {
 	}
 	sheet.getRange(4, 3 + 4*init_month).setFormula(formula);
 
+	if (SETUP_SETTINGS['decimal_places'] !== 2) {
+    const list_format = [];
+
+    for (let i = 0; i < 12; i++) {
+      list_format[i] = rollA1Notation(4, 2 + 4 * i, 31, 2);
+    }
+
+    sheet.getRangeList(list_format).setNumberFormat(SETUP_SETTINGS['number_format']);
+  }
+
 	SpreadsheetApp.flush();
 }

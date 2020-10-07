@@ -53,5 +53,10 @@ function setupTags_() {
 	formula = "{\"total\"; " + formula + "}";
 	sheet.getRange(1, 20).setFormula(formula);
 
+	if (SETUP_SETTINGS['decimal_places'] !== 2) {
+    sheet.getRange(2, 6, 40, 12).setNumberFormat(SETUP_SETTINGS['number_format']);
+    sheet.getRange(2, 19, 40, 2).setNumberFormat(SETUP_SETTINGS['number_format']);
+  }
+
 	SpreadsheetApp.flush();
 }
