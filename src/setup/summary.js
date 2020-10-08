@@ -8,7 +8,9 @@ function setupSummary_() {
 		0: {color: "#b7b7b7", type: "bars", labelInLegend: "Income"},
 		1: {color: "#cccccc", type: "bars", labelInLegend: "Expenses"},
 		2: {color: "#45818e", type: "bars", labelInLegend: "Income"},
-		3: {color: "#e69138", type: "bars", labelInLegend: "Expenses"}
+		3: {color: "#e69138", type: "bars", labelInLegend: "Expenses"},
+		4: {color: "#45818e", type: "line", labelInLegend: "Avg Income"},
+		5: {color: "#e69138", type: "line", labelInLegend: "Avg Expenses"}
 	};
 
 	sheet.protect().setWarningOnly(true);
@@ -24,7 +26,7 @@ function setupSummary_() {
 	sheet.getRange(11, 4, 12, 4).setFormulas(formulas);
 
 	chart = sheet.newChart()
-		.addRange( sheet.getRange("C25:H36") )
+		.addRange( sheet.getRange("C25:I36") )
 		.setChartType(Charts.ChartType.COMBO)
 		.setPosition(24, 2, 0, 0)
 		.setOption("mode", "view")

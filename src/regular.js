@@ -55,9 +55,9 @@ function postEventsForDate_(date) {
       if (evento.TranslationType === 'M' &&
           mm + evento.TranslationNumber >= 0 &&
           mm + evento.TranslationNumber <= 11) {
-        value = +cards.balance[c][mm + evento.TranslationNumber].toFixed(2);
+        value = +cards_balances.balance[c][mm + evento.TranslationNumber].toFixed(2);
       } else if (mm > 0) {
-        value = +cards.balance[c][mm - 1].toFixed(2);
+        value = +cards_balances.balance[c][mm - 1].toFixed(2);
       } else {
         value = 0;
       }

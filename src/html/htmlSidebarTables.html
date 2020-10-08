@@ -198,12 +198,20 @@
 			}
 
 			function listAccounts(db_accounts) {
+        const MN_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 				var item, k;
 
 				for (k = 0; k < db_accounts.length; k++) {
 					item = "<div class=\"table_row\">";
 					item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_accounts[k].name + "</div>";
 					item += "</div>"
+
+					item += "<div class=\"table_row\">";
+					item += "<div class=\"item_cell\" style=\"font-size: 14px;line-height: 1.3;\">";
+					item += "Initial month: " + MN_FULL[db_accounts[k].time_a] + "<br>";
+					item += "Initial balance: " + formatCurrency.call(db_accounts[k].balance);
+					item += "</div>";
+					item += "</div>";
 
 					item += "<div class=\"table_row\">";
 					item += "<div class=\"item_cell item_menu\">";

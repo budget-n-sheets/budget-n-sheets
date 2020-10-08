@@ -44,16 +44,16 @@ function setupMonthSheet_() {
 
 
 			expr1 = "TEXT('_Backstage'!" + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "' + SETUP_SETTINGS['number_format'] + '")';
-			expr1 = "\"Withdrawal: (\"; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 9 + w_*k) + "; \") \"; " + expr1 + "; \"\n\"; ";
+			expr1 = "\"Withdrawal: [\"; \'_Backstage\'!" + rollA1Notation(2 + h_*i, 9 + w_*k) + "; \"] \"; " + expr1 + "; \"\n\"; ";
 
 			expr2 = "TEXT('_Backstage'!" + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "' + SETUP_SETTINGS['number_format'] + '")';
-			expr2 = "\"Deposit: (\"; \'_Backstage\'!" + rollA1Notation(3 + h_*i, 9 + w_*k) + "; \") \"; " + expr2 + "; \"\n\"; ";
+			expr2 = "\"Deposit: [\"; \'_Backstage\'!" + rollA1Notation(3 + h_*i, 9 + w_*k) + "; \"] \"; " + expr2 + "; \"\n\"; ";
 
 			expr3 = "TEXT('_Backstage'!" + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "' + SETUP_SETTINGS['number_format'] + '")';
-			expr3 = "\"Trf. in: (\"; \'_Backstage\'!" + rollA1Notation(4 + h_*i, 9 + w_*k) + "; \") \"; " + expr3 + "; \"\n\"; ";
+			expr3 = "\"Trf. in: [\"; \'_Backstage\'!" + rollA1Notation(4 + h_*i, 9 + w_*k) + "; \"] \"; " + expr3 + "; \"\n\"; ";
 
 			expr4 = "TEXT('_Backstage'!" + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "' + SETUP_SETTINGS['number_format'] + '")';
-			expr4 = "\"Trf. out: (\"; \'_Backstage\'!" + rollA1Notation(5 + h_*i, 9 + w_*k) + "; \") \"; " + expr4;
+			expr4 = "\"Trf. out: [\"; \'_Backstage\'!" + rollA1Notation(5 + h_*i, 9 + w_*k) + "; \"] \"; " + expr4;
 
 			formula = "CONCATENATE(" + expr1 + expr2 + expr3 + expr4 + ")";
 			sheet.getRange(1, 8 + 5*k).setFormula(formula);

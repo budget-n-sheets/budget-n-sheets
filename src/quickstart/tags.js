@@ -23,6 +23,9 @@ function playQuickTags_ (n) {
     case 2:
       playQuickTags02_(n);
       break;
+    case 4:
+      showPanelAnalytics();
+      break;
 
     default:
       throw new Error('playQuickTags_(): Switch case is default. ' + n);
