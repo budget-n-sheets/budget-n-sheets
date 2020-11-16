@@ -161,7 +161,7 @@ function showSidebarMainSettings() {
 
 	const isAdmin = (user_id === getAdminSettings_('admin_id'));
 
-	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUserSettings");
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAdminSettings");
 	htmlTemplate = printHrefScriptlets(htmlTemplate);
 
 	htmlTemplate.isAdmin = isAdmin;
