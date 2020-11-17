@@ -70,7 +70,7 @@
 						<div class="header_tab active" id="tab_settings">
 							<i class="material-icons-outlined md-24" title="Settings">settings</i>
 						</div>
-						<? if (isAdmin && hasEditors) { ?>
+						<? if (hasEditors) { ?>
 							<div class="header_tab" id="tab_admin">
 								<i class="material-icons-outlined md-24" title="Group">groups</i>
 							</div>
@@ -78,11 +78,9 @@
 						<div class="header_tab" id="tab_advanced">
 							<i class="material-icons-outlined md-24" title="Advanced">build</i>
 						</div>
-            <? if (isAdmin) { ?>
-              <div class="header_tab" id="tab_backup">
-                <i class="material-icons-outlined md-24" title="Backup">backup</i>
-              </div>
-            <? } ?>
+            <div class="header_tab" id="tab_backup">
+              <i class="material-icons-outlined md-24" title="Backup">backup</i>
+            </div>
 					</div>
 				</div>
 			</div>
@@ -132,33 +130,22 @@
 								<th colspan="2"><span style="font-size:1.2em;">Financial Calendar</span></th>
 							</tr>
 							<? if (isCalendarEnabled) { ?>
-								<? if (isAdmin) { ?>
-									<tr>
-										<td class="comment name"><label for="financial_calendar">Calendar</label></td>
-										<td class="comment">
-											<select id="financial_calendar" style="width: 157px" required>
-												<option value="" selected>Disable</option>
-												<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
-													<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
-												<? } ?>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td class="secondary" colspan="2">
-											* Calendar is not owned by you.
-										</td>
-									</tr>
-								<? } else { ?>
-									<tr>
-										<td class="name"><label>Calendar</label></td>
-										<td>
-											<select disabled>
-												<option selected>Restrict</option>
-											</select>
-										</td>
-									</tr>
-								<? } ?>
+								<tr>
+									<td class="comment name"><label for="financial_calendar">Calendar</label></td>
+									<td class="comment">
+										<select id="financial_calendar" style="width: 157px" required>
+											<option value="" selected>Disable</option>
+											<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
+												<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
+											<? } ?>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="secondary" colspan="2">
+										* Calendar is not owned by you.
+									</td>
+								</tr>
 								<tr>
 									<td colspan="2">
 										<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to the spreadsheet</label>
@@ -192,76 +179,72 @@
 								<p>This can fix issues related with editable ranges affected by protection.</p>
 							</td>
 						</tr>
-						<? if (isAdmin) { ?>
-							<tr>
-								<td class="comment name" style="width: 100%;"><label>Reinstall triggers</label></td>
-								<td class="comment"><button id="b-Reinstall">Reinstall</button></td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<p>This can fix issues related with the add-on's automatic update and maintenance.<br>
-									<a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a></p>
-								</td>
-							</tr>
-						<? } ?>
+						<tr>
+							<td class="comment name" style="width: 100%;"><label>Reinstall triggers</label></td>
+							<td class="comment"><button id="b-Reinstall">Reinstall</button></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<p>This can fix issues related with the add-on's automatic update and maintenance.<br>
+								<a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a></p>
+							</td>
+						</tr>
 					</table>
 				</div>
 
-        <? if (isAdmin) { ?>
-          <div class="panel" id="panel_Backup">
-            <h2>Budget n Sheets Backup</h2>
+        <div class="panel" id="panel_Backup">
+          <h2>Budget n Sheets Backup</h2>
 
-            <p>You can back up content, data, and settings from your budget sheet to your Google Drive. Once you request a backup, the add-on creates an archive with the essential data and settings and emails it to you as an attachment. You can save it in your Google Drive then.</p>
+          <p>You can back up content, data, and settings from your budget sheet to your Google Drive. Once you request a backup, the add-on creates an archive with the essential data and settings and emails it to you as an attachment. You can save it in your Google Drive then.</p>
 
-            <p>You can restore your backed-up data to a new budget sheet.</p>
+          <p>You can restore your backed-up data to a new budget sheet.</p>
 
-            <ul>
-              <li>The backup file is not encrypted.</li>
-              <li>The backup is not uploaded elsewhere.</li>
-              <li>The size of the backup varies by spreadsheet and settings.</li>
-            </ul>
+          <ul>
+            <li>The backup file is not encrypted.</li>
+            <li>The backup is not uploaded elsewhere.</li>
+            <li>The size of the backup varies by spreadsheet and settings.</li>
+          </ul>
 
-            <button id="b-Backup" class="action">Back up now</button>
+          <button id="b-Backup" class="action">Back up now</button>
 
-            <p>For more information, visit <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank">Wiki - Backup and Restore</a>.</p>
-          </div>
-          <? if (hasEditors) { ?>
+          <p>For more information, visit <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank">Wiki - Backup and Restore</a>.</p>
+        </div>
+        <? if (hasEditors) { ?>
 
-              <div class="panel" id="panel_Admin">
-                <table style="width:100%;">
-                  <tr>
-                    <td class="comment name" style="width: 100%;"><label for="isChangeableByEditors">Editors can change settings</label></td>
-                    <td class="comment">
-                      <select id="isChangeableByEditors" required>
-                        <option value="allow">Allow</option>
-                        <option value="deny" selected>Deny</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <p>Only the admin can change the <b>calendar</b> and <b>deactivate the add-on</b>.<br>
-                      <a href="<?= home_wiki ?>/Changing-Settings#editors-can-change-settings" target="_blank"><b>Learn more</b></a></p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="comment name" style="width: 100%;">Transfer admin role</td>
-                    <td class="comment"><button id="b-Transfer" class="action">Transfer</button></td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <? if (isSharedDrive) { ?>
-                        <p>Transfers admin role to current owner of the spreadsheet.<br>
-                      <? } else { ?>
-                        <p>Transfers admin role to an editor of the spreadsheet.<br>
-                      <? } ?>
-                      <a href="<?= home_wiki ?>/Changing-Settings#transfer-admin-role" target="_blank"><b>Learn more</b></a></p>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            <? } ?>
-				<? } ?>
+        <div class="panel" id="panel_Admin">
+          <table style="width:100%;">
+            <tr>
+              <td class="comment name" style="width: 100%;"><label for="isChangeableByEditors">Editors can change settings</label></td>
+              <td class="comment">
+                <select id="isChangeableByEditors" required>
+                  <option value="allow">Allow</option>
+                  <option value="deny" selected>Deny</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <p>Only the admin can change the <b>calendar</b> and <b>deactivate the add-on</b>.<br>
+                <a href="<?= home_wiki ?>/Changing-Settings#editors-can-change-settings" target="_blank"><b>Learn more</b></a></p>
+              </td>
+            </tr>
+            <tr>
+              <td class="comment name" style="width: 100%;">Transfer admin role</td>
+              <td class="comment"><button id="b-Transfer" class="action">Transfer</button></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <? if (isSharedDrive) { ?>
+                  <p>Transfers admin role to current owner of the spreadsheet.<br>
+                <? } else { ?>
+                  <p>Transfers admin role to an editor of the spreadsheet.<br>
+                <? } ?>
+                <a href="<?= home_wiki ?>/Changing-Settings#transfer-admin-role" target="_blank"><b>Learn more</b></a></p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <? } ?>
 			</div>
 
 			<div id="footer">
@@ -282,19 +265,17 @@
 		<script>
 			$(document).ready(function() {
 				$("#b-Save").click(saveSettings);
-				<? if (isAdmin) { ?>
-					$("#b-Reinstall").click(reinstallTriggers);
-          $("#b-Backup").click(backupNow);
+				$("#b-Reinstall").click(reinstallTriggers);
+        $("#b-Backup").click(backupNow);
 
-					<? if (hasEditors) { ?>
-						$("#b-Transfer").click(transferAdminRole);
-					<? } ?>
-
-          google.script.run
-            .withSuccessHandler(loadAdminSettings)
-            .withFailureHandler(showError)
-            .retrieveAdminSettings();
+				<? if (hasEditors) { ?>
+					$("#b-Transfer").click(transferAdminRole);
 				<? } ?>
+
+        google.script.run
+          .withSuccessHandler(loadAdminSettings)
+          .withFailureHandler(showError)
+          .retrieveAdminSettings();
 				$("#b-Reset").click(resetProtection);
 
 				google.script.run.withSuccessHandler(loadUserSettings)
@@ -322,18 +303,16 @@
 					$("#panel_Advanced").show()
 						.siblings()
 						.hide();
-				<? if (isAdmin) { ?>
-          } else if (select === "tab_backup") {
-            $("#panel_Backup").show()
-              .siblings()
-              .hide();
-          <? if (hasEditors) { ?>
-            } else if (select === "tab_admin") {
-              $("#panel_Admin").show()
-                .siblings()
-                .hide();
-          <? } ?>
-				<? } ?>
+        } else if (select === "tab_backup") {
+          $("#panel_Backup").show()
+            .siblings()
+            .hide();
+        <? if (hasEditors) { ?>
+        } else if (select === "tab_admin") {
+          $("#panel_Admin").show()
+            .siblings()
+            .hide();
+        <? } ?>
 				}
 			});
 
@@ -349,69 +328,67 @@
 				});
 
 			<? } ?>
-			<? if (isAdmin) { ?>
-        function loadAdminSettings(admin_settings) {
-          if (admin_settings.isChangeableByEditors) $("#isChangeableByEditors").val('allow');
-        }
+      function loadAdminSettings(admin_settings) {
+        if (admin_settings.isChangeableByEditors) $("#isChangeableByEditors").val('allow');
+      }
 
-				<? if (hasEditors) { ?>
-					$("#isChangeableByEditors").change(function() {
-						this.disabled = true;
-						$("#footer_response").empty();
-						google.script.run.withSuccessHandler(function(r, o) {
-									o.disabled = false;
-								})
-							.withFailureHandler(showError)
-							.withUserObject(this)
-							.saveAdminSettings("isChangeableByEditors", $(this).val());
-					});
-
-					function transferAdminRole() {
-						this.disabled = true;
-						$("#footer_response").empty();
-
-						google.script.run.withSuccessHandler(function(r, o) {
-									o.disabled = false;
-									if (!r) google.script.host.close();
-								})
-							.withFailureHandler(showError)
-							.withUserObject(this)
-							<? if (isSharedDrive) { ?>
-								.askTransferAdminSd();
-							<? } else { ?>
-								.askTransferAdmin();
-							<? } ?>
-					}
-
-				<? } ?>
-
-        function backupNow () {
-          this.disabled = true;
-          $("#footer_response").empty();
-
-          google.script.run.withSuccessHandler(function(r, o) {
-                if (!r) showStatus("Backup was sent");
-                o.disabled = false;
-              })
-            .withFailureHandler(showError)
-            .withUserObject(this)
-            .backupRequest();
-        }
-
-				function reinstallTriggers() {
+			<? if (hasEditors) { ?>
+				$("#isChangeableByEditors").change(function() {
 					this.disabled = true;
 					$("#footer_response").empty();
-
 					google.script.run.withSuccessHandler(function(r, o) {
-								if (!r) showStatus("Reinstalled triggers");
 								o.disabled = false;
 							})
 						.withFailureHandler(showError)
 						.withUserObject(this)
-						.askReinstallTriggersUi();
+						.saveAdminSettings("isChangeableByEditors", $(this).val());
+				});
+
+				function transferAdminRole() {
+					this.disabled = true;
+					$("#footer_response").empty();
+
+					google.script.run.withSuccessHandler(function(r, o) {
+								o.disabled = false;
+								if (!r) google.script.host.close();
+							})
+						.withFailureHandler(showError)
+						.withUserObject(this)
+						<? if (isSharedDrive) { ?>
+							.askTransferAdminSd();
+						<? } else { ?>
+							.askTransferAdmin();
+						<? } ?>
 				}
 
 			<? } ?>
+
+      function backupNow () {
+        this.disabled = true;
+        $("#footer_response").empty();
+
+        google.script.run.withSuccessHandler(function(r, o) {
+              if (!r) showStatus("Backup was sent");
+              o.disabled = false;
+            })
+          .withFailureHandler(showError)
+          .withUserObject(this)
+          .backupRequest();
+      }
+
+			function reinstallTriggers() {
+				this.disabled = true;
+				$("#footer_response").empty();
+
+				google.script.run.withSuccessHandler(function(r, o) {
+							if (!r) showStatus("Reinstalled triggers");
+							o.disabled = false;
+						})
+					.withFailureHandler(showError)
+					.withUserObject(this)
+					.askReinstallTriggersUi();
+			}
+
 			function resetProtection() {
 				this.disabled = true;
 				$("#footer_response").empty();
@@ -430,16 +407,12 @@
         $("#decimal_places").val(user_settings.decimal_places);
 
 				<? if (isCalendarEnabled) { ?>
-					<? if (isAdmin) { ?>
-						$("#financial_calendar").val(user_settings.financial_calendar);
-						if (user_settings.financial_calendar) {
-					<? } else { ?>
-						if (user_settings.hasFinancialCalendar) {
-					<? } ?>
-						if (user_settings.post_day_events) $("#post_day_events").prop("checked", true);
-						if (user_settings.cash_flow_events) $("#cash_flow_events").prop("checked", true);
-						$(".options-calendar").prop("disabled", false);
-					}
+				$("#financial_calendar").val(user_settings.financial_calendar);
+				if (user_settings.financial_calendar) {
+					if (user_settings.post_day_events) $("#post_day_events").prop("checked", true);
+					if (user_settings.cash_flow_events) $("#cash_flow_events").prop("checked", true);
+					$(".options-calendar").prop("disabled", false);
+				}
 				<? } ?>
 
 				$("#b-Save").prop("disabled", false);
@@ -451,9 +424,7 @@
 
 				var user_settings = {
 					<? if (isCalendarEnabled) { ?>
-						<? if (isAdmin) { ?>
-							financial_calendar: $("#financial_calendar").val(),
-						<? } ?>
+						financial_calendar: $("#financial_calendar").val(),
 						post_day_events: $("#post_day_events").prop("checked"),
 						cash_flow_events: $("#cash_flow_events").prop("checked"),
 					<? } ?>
