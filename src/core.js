@@ -154,25 +154,19 @@ function showSidebarMainSettings() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var htmlTemplate, htmlSidebar;
 
-	const user_id = getUserId_();
-	const isChangeableByEditors = getAdminSettings_('isChangeableByEditors');
+  const isAdmin = isUserAdmin_();
   const financial_year = getConstProperties_('financial_year');
   const isOperationActive = (financial_year >= DATE_NOW.getFullYear());
 
-	const isAdmin = (user_id === getAdminSettings_('admin_id'));
+  htmlTemplate = (isAdmin ? 'html/htmlAdminSettings' : 'html/htmlEditorSettings')
+  htmlTemplate = HtmlService.createTemplateFromFile(htmlTemplate);
+  htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAdminSettings");
-	htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-	htmlTemplate.isAdmin = isAdmin;
-	htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
   htmlTemplate.isOperationActive = isOperationActive;
 
 	if (isAdmin) {
-		const editors = spreadsheet.getEditors();
-		const hasEditors = (editors.length > 1);
-
-		htmlTemplate.hasEditors = hasEditors;
+    htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
+		htmlTemplate.hasEditors = (spreadsheet.getEditors().length > 1);
 
     if (isOperationActive) {
       const calendars = getAllOwnedCalendars();
@@ -181,15 +175,13 @@ function showSidebarMainSettings() {
     } else {
       htmlTemplate.isCalendarEnabled = false;
     }
-	} else if (isChangeableByEditors) {
-		htmlTemplate.hasEditors = false;
-		htmlTemplate.isCalendarEnabled = true;
 
-	} else {
+	} else if (!getAdminSettings_('isChangeableByEditors')) {
 		SpreadsheetApp.getUi().alert(
 			"Permission denied",
 			"You don't have permission to change the settings.",
 			SpreadsheetApp.getUi().ButtonSet.OK);
+
 		return;
 	}
 
