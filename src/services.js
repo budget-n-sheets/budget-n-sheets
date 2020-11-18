@@ -24,8 +24,6 @@ function loadCache_() {
 	cache = (cache ? true : false);
 	CacheService2.put("document", "is_installed", "boolean", cache);
 
-	getUserId_();
-
 	CacheService2.put("document", "load_cache", "boolean", true);
 }
 
