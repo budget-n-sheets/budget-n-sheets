@@ -1,8 +1,10 @@
 function validateBackup (fileId) {
   if (isInstalled_()) return 1;
 
+  let file, sha, parts;
+
   try {
-    const file = DriveApp.getFileById(fileId);
+    file = DriveApp.getFileById(fileId);
 
     const owner = file.getOwner().getEmail();
     const user = Session.getEffectiveUser().getEmail();
@@ -17,8 +19,8 @@ function validateBackup (fileId) {
     const blob = file.getBlob().getAs('text/plain');
     const raw = blob.getDataAsString();
 
-    const parts = raw.split(':');
-    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+    parts = raw.split(':');
+    sha = computeDigest('SHA_1', parts[0], 'UTF_8');
   } catch (err) {
     ConsoleLog.error(err);
     return 3;

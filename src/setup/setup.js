@@ -91,8 +91,10 @@ function setupNew_ (settings, list_acc) {
 function setupRestore_ (fileId) {
   console.time('setup/restore');
 
+	let file;
+
   try {
-    const file = DriveApp.getFileById(fileId);
+    file = DriveApp.getFileById(fileId);
 
     const owner = file.getOwner().getEmail();
     const user = Session.getEffectiveUser().getEmail();
