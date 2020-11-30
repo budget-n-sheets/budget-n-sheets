@@ -8,6 +8,7 @@
 
 <body>
   <script>
+    const DEVELOPER_KEY = <?= picker_key ?>;
     var pickerApiLoaded = false;
     var fileId = '';
     var DIMENSIONS = {
@@ -62,7 +63,7 @@
           .enableFeature(google.picker.Feature.NAV_HIDDEN)
           .hideTitleBar()
           .setOAuthToken(token)
-          .setDeveloperKey('AIzaSyCFg7a2iP07kOynA_xfKUuhue131Emqs7k')
+          .setDeveloperKey(DEVELOPER_KEY)
           .setCallback(pickerCallback)
           .setOrigin(google.script.host.origin)
           .setSize(DIMENSIONS.width, DIMENSIONS.height)

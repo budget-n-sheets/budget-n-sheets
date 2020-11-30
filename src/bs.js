@@ -1,3 +1,19 @@
+function getDeveloperKey_ () {
+  const scriptCache = CacheService.getScriptCache()
+  let key = scriptCache.get('developer_key')
+
+  if (!key) {
+    key = PropertiesService.getScriptProperties().getProperty('developer_key')
+    if (!key) {
+      ConsoleLog.error("getDeveloperKey_(): Key 'developer_key' was not found!")
+      return 1
+    }
+    scriptCache.put('developer_key', key)
+  }
+
+  return key
+}
+
 function bsSignSetup_ () {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheet, i;

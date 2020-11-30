@@ -339,7 +339,12 @@ function showDialogSetupRestore (fileId) {
 function showDialogPickerRestore (fileId) {
   if (isInstalled_()) return;
 
-  const htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlPickerRestore');
+  const developer_key = getDeveloperKey_()
+  if (developer_key === 1) showDialogErrorMessage()
+
+  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlPickerRestore')
+  htmlTemplate.picker_key = developer_key
+
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(617)
     .setHeight(487);
