@@ -99,7 +99,7 @@ function BSSUMBYTAG(tag, range) {
 		if (! regex.test(range[i][1])) continue;
 
 		for (j = 0; j < cr; j++) {
-			if (range[i][1].indexOf(tag[j]) !== -1) {
+			if (range[i][1].indexOf(tag[pos[j]]) !== -1) {
 				sum[pos[j]][0] += Number(range[i][0]);
 			}
 		}
