@@ -37,20 +37,9 @@ function playQuickCalendar_ (n) {
 
   if (yyyy === financial_year) {
     mm = DATE_NOW.getMonth() + 1;
-    if (mm === 12) {
-      ui.alert(
-        "Can't create events",
-        'This example is unavailble because the year is almost round. Try in the budget sheet of the next year.',
-        ui.ButtonSet.OK);
-      return;
-    }
   } else if (yyyy < financial_year) {
     mm = getUserSettings_('initial_month');
   } else {
-    ui.alert(
-      "Can't create events",
-      'This example is unavailble. Try in a budget sheet of the current year.',
-      ui.ButtonSet.OK);
     return;
   }
 
