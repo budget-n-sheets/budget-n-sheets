@@ -142,3 +142,18 @@ function deleteAllTriggers_ () {
     ScriptApp.deleteTrigger(triggers[i])
   }
 }
+
+/**
+ * Purges all triggers.
+ */
+function deleteAllProjectTriggers_ () {
+  var triggers = ScriptApp.getProjectTriggers()
+
+  for (var i = 0; i < triggers.length; i++) {
+    ScriptApp.deleteTrigger(triggers[i])
+  }
+}
+
+function countProjectTriggers () {
+  return ScriptApp.getProjectTriggers().length
+}
