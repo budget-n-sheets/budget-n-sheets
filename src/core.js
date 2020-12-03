@@ -97,7 +97,7 @@ function showPanelQuickstart() {
 		htmlTemplate.dec_n = "comma";
 	}
 
-	htmlTemplate.isCurrent = (financial_year === DATE_NOW.getFullYear());
+	htmlTemplate.isCurrent = (DATE_NOW < new Date(financial_year, 11, 1));
 
 	var htmlSidebar = htmlTemplate.evaluate().setTitle("Quickstart");
 	SpreadsheetApp.getUi().showSidebar(htmlSidebar);
