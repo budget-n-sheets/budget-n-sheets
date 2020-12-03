@@ -16,6 +16,8 @@ function uninstall_(putLock) {
 		ScriptApp.deleteTrigger(list[i]);
 	}
 
+	deleteAllTriggers_()
+
 	CacheService2.removeAll("document", CACHE_KEYS);
 
 	if (putLock) {

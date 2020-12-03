@@ -119,7 +119,7 @@ function deleteTrigger_ (category, select, onlyFirst) {
       break
   }
 
-  var triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet())
+  var triggers = ScriptApp.getProjectTriggers()
 
   for (var i = 0; i < triggers.length; i++) {
     if (triggers[i][method]() === watch) {
@@ -136,9 +136,17 @@ function deleteTrigger_ (category, select, onlyFirst) {
  * Purges all triggers.
  */
 function deleteAllTriggers_ () {
-  var triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet())
+  var triggers = ScriptApp.getProjectTriggers()
+
+  const ids = [
+    PropertiesService2.getProperty('document', 'onOpenTriggerId', 'string'),
+    PropertiesService2.getProperty('document', 'onEditTriggerId', 'string'),
+    PropertiesService2.getProperty('document', 'clockTriggerId', 'string')
+  ]
 
   for (var i = 0; i < triggers.length; i++) {
-    ScriptApp.deleteTrigger(triggers[i])
+    if (ids.indexOf(triggers[i].getUniqueId()) !== -1) {
+      ScriptApp.deleteTrigger(triggers[i])
+    }
   }
 }

@@ -10,7 +10,7 @@ function rollOperationMode_ (mode) {
   const hour = 2 + randomInteger(4);
   var trigger;
 
-  deleteTrigger_('EventType', 'CLOCK');
+  deleteTrigger_('KeyId', { scope: 'document', key: 'clockTriggerId' });
 
   if (mode === 'passive') {
     const day = 1 + randomInteger(28);
