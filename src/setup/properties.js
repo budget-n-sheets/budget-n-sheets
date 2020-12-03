@@ -38,7 +38,6 @@ function setupProperties_(yyyy_mm) {
     view_mode: 'complete',
 		decimal_places: SETUP_SETTINGS['decimal_places'],
 		decimal_separator: SETUP_SETTINGS["decimal_separator"],
-		decimal_separator: SETUP_SETTINGS['decimal_separator'],
 		spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale(),
 		optimize_load: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
 	};
