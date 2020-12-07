@@ -4,6 +4,18 @@ function backupRequest () {
   if (isScriptUpToDate_() !== 1) return;
   if (MailApp.getRemainingDailyQuota() === 0) return;
 
+  const ui = SpreadsheetApp.getUi();
+  const response = ui.alert(
+    "Back up now?",
+    "The backup file will be sent to your email when the backup completes.",
+    ui.ButtonSet.YES_NO);
+
+  if (response === ui.Button.NO) return;
+
+  backupRequest_()
+}
+
+function backupRequest_ () {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const backup = {
     backup: {},
