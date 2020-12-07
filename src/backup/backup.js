@@ -1,10 +1,18 @@
 function backupRequest () {
+  const ui = SpreadsheetApp.getUi();
+
   if (!isInstalled_()) return 2;
   if (!isUserAdmin_()) return 2;
   if (isScriptUpToDate_() !== 1) return 2;
-  if (MailApp.getRemainingDailyQuota() === 0) return 2;
 
-  const ui = SpreadsheetApp.getUi();
+  if (MailApp.getRemainingDailyQuota() === 0) {
+    ui.alert(
+      "Can't back up",
+      "You don't have enought quota for Google Services. Try again later.",
+      ui.ButtonSet.OK);
+    return 1;
+  }
+
   const response = ui.alert(
     "Back up now?",
     "The backup file will be sent to your email when the backup completes.",
