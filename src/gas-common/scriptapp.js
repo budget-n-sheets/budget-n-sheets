@@ -4,7 +4,7 @@
  * <https://github.com/guimspace/gas-common>
  */
 
-function isReAuthorizationRequired_ () {
+function isAuthorizationRequired_ () {
   try {
     PropertiesService.getDocumentProperties()
   } catch (e) {

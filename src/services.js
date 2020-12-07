@@ -124,7 +124,7 @@ function quickActions_(range, value) {
 }
 
 function dailyTrigger_(e) {
-	if (isReAuthorizationRequired_()) return;
+	if (isAuthorizationRequired_()) return;
 	if (!isInstalled_()) return;
 	if (seamlessUpdate_()) return;
 
@@ -161,7 +161,7 @@ function dailyTrigger_(e) {
 }
 
 function weeklyTriggerPos_(e) {
-	if (isReAuthorizationRequired_()) return;
+	if (isAuthorizationRequired_()) return;
 	if (!isInstalled_()) return;
 
 	seamlessUpdate_();
@@ -172,7 +172,7 @@ function weeklyTriggerPos_(e) {
 }
 
 function weeklyTriggerPre_(e) {
-	if (isReAuthorizationRequired_()) return;
+	if (isAuthorizationRequired_()) return;
 	if (!isInstalled_()) return;
 	if (seamlessUpdate_()) return;
 
