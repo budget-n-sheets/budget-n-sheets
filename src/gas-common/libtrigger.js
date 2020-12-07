@@ -106,15 +106,11 @@ function deleteTrigger_ (category, select, onlyFirst) {
   var watch
 
   switch (category) {
-    case 'EventType':
-      watch = getEventType(select)
-      break
     case 'KeyId':
       method = 'getUniqueId'
       watch = PropertiesService2.getProperty(select.scope, select.key, 'string')
       break
     case 'UniqueId':
-    case 'HandlerFunction':
       watch = select
       break
   }
