@@ -195,14 +195,6 @@ function showSidebarMainSettings() {
 
 
 function showDialogAboutAddon() {
-	try {
-		if ( isInstalled_() ) {
-			onlineUpdate_();
-		}
-	} catch (err) {
-		ConsoleLog.error(err);
-	}
-
 	var htmlDialog, htmlTemplate;
 	const v0 = APPS_SCRIPT_GLOBAL.script_version;
 
