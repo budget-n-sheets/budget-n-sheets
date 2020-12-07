@@ -1,8 +1,8 @@
 function backupRequest () {
-  if (!isInstalled_()) return;
-  if (!isUserAdmin_()) return;
-  if (isScriptUpToDate_() !== 1) return;
-  if (MailApp.getRemainingDailyQuota() === 0) return;
+  if (!isInstalled_()) return 2;
+  if (!isUserAdmin_()) return 2;
+  if (isScriptUpToDate_() !== 1) return 2;
+  if (MailApp.getRemainingDailyQuota() === 0) return 2;
 
   const ui = SpreadsheetApp.getUi();
   const response = ui.alert(
@@ -10,9 +10,10 @@ function backupRequest () {
     "The backup file will be sent to your email when the backup completes.",
     ui.ButtonSet.YES_NO);
 
-  if (response === ui.Button.NO) return;
+  if (response === ui.Button.NO) return 1;
 
   backupRequest_()
+  return 0;
 }
 
 function backupRequest_ () {

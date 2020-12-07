@@ -368,7 +368,8 @@
         $("#footer_response").empty();
 
         google.script.run.withSuccessHandler(function(r, o) {
-              if (!r) showStatus("Backup was sent");
+              if (r === 0) showStatus("Backup was sent");
+              else if (r !== 1) showStatus("Something went wrong. Try again later.");
               o.disabled = false;
             })
           .withFailureHandler(showError)
