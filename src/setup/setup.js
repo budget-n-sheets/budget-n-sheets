@@ -11,11 +11,6 @@ function isInstalled_() {
 }
 
 function uninstall_(putLock) {
-	var list = ScriptApp.getUserTriggers( SpreadsheetApp.getActiveSpreadsheet() );
-	for (var i = 0; i < list.length; i++) {
-		ScriptApp.deleteTrigger(list[i]);
-	}
-
 	deleteAllTriggers_()
 
 	CacheService2.removeAll("document", CACHE_KEYS);
