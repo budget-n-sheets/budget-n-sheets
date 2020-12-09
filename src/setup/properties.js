@@ -1,6 +1,7 @@
 function setupProperties_(yyyy_mm) {
 	var properties, operation
 
+	const adminId = getUserId_();
 	const hour = 2 + randomInteger(4);
 
 	properties = {
@@ -15,7 +16,7 @@ function setupProperties_(yyyy_mm) {
 
 
 	properties = {
-		admin_id: getUserId_(),
+		admin_id: adminId,
 		isChangeableByEditors: false,
     automatic_backup: false
 	};
@@ -42,4 +43,12 @@ function setupProperties_(yyyy_mm) {
 		optimize_load: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
 	};
 	PropertiesService2.setProperty("document", "spreadsheet_settings", "json", properties);
+
+	properties = {
+		owner: adminId,
+		onOpen: { id: '', time_created: 0 },
+		onEdit: { id: '', time_created: 0 },
+		timeBased: { id: '', time_created: 0 }
+	};
+	PropertiesService2.setProperty("document", "spreadsheet_triggers", "json", properties);
 }
