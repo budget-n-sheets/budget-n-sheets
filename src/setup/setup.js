@@ -211,7 +211,7 @@ function setupParts_ () {
   setupEast_(yyyy_mm);
 
   try {
-    setupTriggers_(yyyy_mm);
+    setupTriggers_();
   } catch (err) {
     ConsoleLog.error(err);
   }
