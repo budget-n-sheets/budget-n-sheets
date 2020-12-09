@@ -32,7 +32,7 @@ function toolPicker_(select, value) {
 			validateUpdateCashFlow_();
 			break;
     case 'UpdateCashFlowMm':
-      if (onlineUpdate_()) break;
+      if (seamlessUpdate_()) break;
       updateCashFlow_(value);
 			break;
 		case 'FormatRegistry':
