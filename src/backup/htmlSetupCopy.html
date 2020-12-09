@@ -68,10 +68,26 @@
 
       google.script.run
         .withFailureHandler(showError)
-        .withSuccessHandler(null)
+        .withSuccessHandler(refreshInfo)
         .validateSpreadsheet(FILE_ID);
       <? } ?>
     });
+
+    function refreshInfo (info) {
+      $("#response").empty();
+      $('#b-Select').prop('disabled', false);
+
+      if (info === 1) {
+        $("#response").append('Sorry, something went wrong. Try again in a moment.');
+        return;
+      } else if (info === 2) {
+        $("#response").append('No spreadsheet with the given ID could be found, or you do not have permission to access it.');
+        return;
+      } else if (info === 3) {
+        $("#response").append('Sorry, it was not possible to verify the spreadsheet.');
+        return;
+      }
+    }
 
     function pickFile() {
       this.disabled = true;
