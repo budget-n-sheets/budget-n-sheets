@@ -34,3 +34,9 @@ function startTrigger_ (name) {
     saveTriggerId_(trigger);
   }
 }
+
+function stopTrigger_ (name) {
+  const spreadsheet_triggers = PropertiesService2.getProperty('document', 'spreadsheet_triggers', 'json');
+
+  deleteTrigger_('UniqueId', spreadsheet_triggers[name].id);
+}
