@@ -36,7 +36,15 @@ function onlineUpdate_() {
 		return 1;
 	}
 
-	showDialogUpdate();
+  if (! isUserAdmin_()) {
+    ui.alert(
+      "Add-on update",
+      "Please, contact the spreadsheet admin to update the add-on.",
+      ui.ButtonSet.OK);
+    return;
+  }
+
+  showDialogUpdate();
 
 	const r = update_();
 
@@ -70,6 +78,7 @@ function onlineUpdate_() {
 
 function seamlessUpdate_() {
 	if (! isTemplateAvailable()) return 1;
+  if (! isUserAdmin_()) return 1;
 
   const v0 = isScriptUpToDate_();
   if (v0 === 1) return;
