@@ -155,11 +155,12 @@ function deleteTrigger_ (category, select, onlyFirst) {
 function deleteAllTriggers_ () {
   var triggers = ScriptApp.getProjectTriggers()
 
+  const spreadsheet_triggers = PropertiesService2.getProperty("document", "spreadsheet_triggers", "json");
   const ids = [
-    PropertiesService2.getProperty('document', 'onOpenTriggerId', 'string'),
-    PropertiesService2.getProperty('document', 'onEditTriggerId', 'string'),
-    PropertiesService2.getProperty('document', 'clockTriggerId', 'string')
-  ]
+    spreadsheet_triggers.onOpen.id,
+    spreadsheet_triggers.onEdit.id,
+    spreadsheet_triggers.timeBased.id,
+  ];
 
   for (var i = 0; i < triggers.length; i++) {
     if (ids.indexOf(triggers[i].getUniqueId()) !== -1) {
