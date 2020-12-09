@@ -174,6 +174,26 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Set property 'spreadsheet_triggers'.
+ *
+ * 0.36.2
+ */
+function update_v0m36p2_() {
+  try {
+    const properties = {
+      owner: getAdminSettings_('admin_id'),
+      onOpen: { id: '', time_created: 0 },
+      onEdit: { id: '', time_created: 0 },
+      timeBased: { id: '', time_created: 0 }
+    };
+    PropertiesService2.setProperty('document', 'spreadsheet_triggers', 'json', properties);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
  * Fix cleared range reference for averages.
  *
  * 0.35.2
