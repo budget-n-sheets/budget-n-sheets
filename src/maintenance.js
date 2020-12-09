@@ -11,20 +11,11 @@ function rollOperationMode_ (mode) {
   var trigger;
 
   stopTrigger_('timeBased');
+  Utilities.sleep(1000);
+  startTrigger_('timeBased');
 
-  if (mode === 'passive') {
-    const day = 1 + randomInteger(28);
-
-    trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour, minute: -1 });
-    saveTriggerId_(trigger);
-    console.log('mode/passive');
-  } else {
-    trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: hour, minute: -1 });
-    saveTriggerId_(trigger);
-    console.log('mode/active');
-  }
-
-  setSpreadsheetSettings_('operation_mode', 'mode');
+  console.log('mode/' + mode);
+  setSpreadsheetSettings_('operation_mode', mode);
 }
 
 function askDeactivation() {
@@ -180,38 +171,13 @@ function askReinstallTriggersUi() {
 function reinstallTriggers_() {
 	if (! isInstalled_()) return;
 
-	var yyyy = getSpreadsheetDate.call(DATE_NOW).getFullYear();
-	var trigger, operation, day
-
-	const hour = 2 + randomInteger(4);
-	const financial_year = getConstProperties_("financial_year");
-
 	deleteAllTriggers_();
+  Utilities.sleep(1000);
 
-	if (financial_year < yyyy) {
-		day = 1 + randomInteger(28);
-		trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour, minute: -1 })
-		operation = "passive";
+  startTrigger_('onOpen');
+  startTrigger_('onEdit');
+  startTrigger_('timeBased');
 
-	} else if (financial_year == yyyy) {
-		trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: hour, minute: -1 })
-		operation = "active";
-
-	} else if (financial_year > yyyy) {
-		day = new Date(financial_year, 0, 2).getDay();
-		trigger = createNewTrigger_('weeklyTriggerPre_', 'onWeekDay', { weeks: 1, week: day, hour: hour, minute: -1 })
-		operation = "passive";
-
-	} else {
-		ConsoleLog.warn("reinstallTriggers_(): Case is default.");
-	}
-
-  saveTriggerId_(trigger)
-	setSpreadsheetSettings_("operation_mode", operation);
-
-	trigger = createNewTrigger_('onEditInstallable_', 'onEdit')
-  saveTriggerId_(trigger)
-
-	trigger = createNewTrigger_('onOpenInstallable_', 'onOpen')
-  saveTriggerId_(trigger)
+  if (yyyy === financial_year) setSpreadsheetSettings_('operation_mode', 'active');
+  else setSpreadsheetSettings_('operation_mode', 'passive');
 }
