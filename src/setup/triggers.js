@@ -5,10 +5,10 @@ function setupTriggers_(yyyy_mm) {
   const financial_year = SETUP_SETTINGS["financial_year"]
 
   trigger = createNewTrigger_('onEditInstallable_', 'onEdit')
-  saveTriggerId_(trigger, 'document', 'onEditTriggerId')
+  saveTriggerId_(trigger)
 
   trigger = createNewTrigger_('onOpenInstallable_', 'onOpen')
-  saveTriggerId_(trigger, 'document', 'onOpenTriggerId')
+  saveTriggerId_(trigger)
 
   if (financial_year < yyyy_mm.yyyy) {
     day = 1 + randomInteger(28)
@@ -29,5 +29,5 @@ function setupTriggers_(yyyy_mm) {
   }
 
   trigger = createNewTrigger_(handler, type, parameters)
-  saveTriggerId_(trigger, 'document', 'clockTriggerId')
+  saveTriggerId_(trigger)
 }

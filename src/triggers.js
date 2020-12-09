@@ -1,8 +1,10 @@
 function startTrigger_ (name) {
   if (name === 'onOpen') {
     const trigger = createNewTrigger_('onOpenInstallable_', 'onOpen');
+    saveTriggerId_(trigger);
   } else if (name === 'onEdit') {
     const trigger = createNewTrigger_('onEditInstallable_', 'onEdit');
+    saveTriggerId_(trigger);
   } else if (name === 'timeBased') {
     let handler, type, parameters;
 
@@ -29,5 +31,6 @@ function startTrigger_ (name) {
     }
 
     const trigger = createNewTrigger_(handler, type, parameters);
+    saveTriggerId_(trigger);
   }
 }

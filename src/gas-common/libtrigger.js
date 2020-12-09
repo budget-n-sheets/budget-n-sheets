@@ -21,8 +21,29 @@ function getEventType (v) {
   }
 }
 
-function saveTriggerId_ (trigger, scope, key) {
-  PropertiesService2.setProperty(scope, key, 'string', trigger.getUniqueId())
+function saveTriggerId_ (trigger) {
+  let key;
+
+  switch (trigger.getEventType()) {
+    case ScriptApp.EventType.ON_OPEN:
+      key = 'onOpen';
+      break;
+    case ScriptApp.EventType.ON_EDIT:
+      key = 'onEdit';
+      break;
+    case ScriptApp.EventType.CLOCK:
+      key = 'timeBased';
+      break;
+  }
+
+  const spreadsheet_triggers = PropertiesService2.getProperty("document", "spreadsheet_triggers", "json");
+
+  spreadsheet_triggers[key] = {
+    id: trigger.getUniqueId(),
+    time_created: DATE_NOW.getTime()
+  };
+
+  PropertiesService2.setProperty("document", "spreadsheet_triggers", "json", spreadsheet_triggers);
 }
 
 /**

@@ -16,11 +16,11 @@ function rollOperationMode_ (mode) {
     const day = 1 + randomInteger(28);
 
     trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour, minute: -1 });
-    saveTriggerId_(trigger, 'document', 'clockTriggerId');
+    saveTriggerId_(trigger);
     console.log('mode/passive');
   } else {
     trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: hour, minute: -1 });
-    saveTriggerId_(trigger, 'document', 'clockTriggerId');
+    saveTriggerId_(trigger);
     console.log('mode/active');
   }
 
@@ -206,12 +206,12 @@ function reinstallTriggers_() {
 		ConsoleLog.warn("reinstallTriggers_(): Case is default.");
 	}
 
-  saveTriggerId_(trigger, 'document', 'clockTriggerId')
+  saveTriggerId_(trigger)
 	setSpreadsheetSettings_("operation_mode", operation);
 
 	trigger = createNewTrigger_('onEditInstallable_', 'onEdit')
-  saveTriggerId_(trigger, 'document', 'onEditTriggerId')
+  saveTriggerId_(trigger)
 
 	trigger = createNewTrigger_('onOpenInstallable_', 'onOpen')
-  saveTriggerId_(trigger, 'document', 'onOpenTriggerId')
+  saveTriggerId_(trigger)
 }
