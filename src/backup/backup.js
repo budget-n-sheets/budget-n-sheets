@@ -60,6 +60,7 @@ function backupRequest_ () {
 
   const blob = digestBackup_(backup);
   emailBackup_(blob);
+  console.info('backup/success');
 }
 
 function emailBackup_ (blob) {
