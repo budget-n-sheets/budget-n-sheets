@@ -57,7 +57,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <span class="error" id="response1"></span>
+              <span class="error" id="response"></span>
               <div>
                 <button class="action" id="b-Select">Select backup</button>
                 <button onclick="google.script.host.close()">Cancel</button>
@@ -186,13 +186,13 @@
       $('#b-Select').prop('disabled', false);
 
       if (info === 1) {
-        $("#response1").append('Sorry, something went wrong. Try again in a moment.');
+        $("#response").append('Sorry, something went wrong. Try again in a moment.');
         return;
       } else if (info === 2) {
-        $("#response1").append('No file with the given ID could be found, or you do not have permission to access it.');
+        $("#response").append('No file with the given ID could be found, or you do not have permission to access it.');
         return;
       } else if (info === 3) {
-        $("#response1").append('The file is either not a supported file type or the file is corrupted.');
+        $("#response").append('The file is either not a supported file type or the file is corrupted.');
         return;
       }
 
