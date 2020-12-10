@@ -30,7 +30,7 @@
       <div class="panel active" id="restore-panel">
         <table>
           <tr>
-            <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">table_chart</span> Spreadsheet</span></th>
+            <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">description</span> Spreadsheet</span></th>
           </tr>
           <tr>
             <td class="name" style="width: 127px;">Spreadsheet name</td>
@@ -73,7 +73,8 @@
       <? } ?>
     });
 
-    function refreshInfo (info) {
+    <? if (hasFileId) { ?>
+    function refreshInfo(info) {
       $("#response").empty();
       $('#b-Select').prop('disabled', false);
 
@@ -87,7 +88,11 @@
         $("#response").append('Sorry, it was not possible to verify the spreadsheet.');
         return;
       }
+
+      $("#file_name").append('<a href="' + info.file_url + '" target="_blank">' + info.file_name + '</a>');
+      $('#last_updated').append(info.last_updated);
     }
+    <? } ?>
 
     function pickFile() {
       this.disabled = true;

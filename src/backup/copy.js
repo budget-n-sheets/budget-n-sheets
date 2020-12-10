@@ -1,7 +1,7 @@
 function validateSpreadsheet (fileId) {
   if (isInstalled_()) return 1;
 
-  let file, parts;
+  let spreadsheet, file, parts;
 
   try {
     file = DriveApp.getFileById(fileId);
@@ -18,8 +18,8 @@ function validateSpreadsheet (fileId) {
   if (file.getMimeType() !== MimeType.GOOGLE_SHEETS) return 3;
 
   try {
-    const spreadsheet = SpreadsheetApp.openById(fileId);
-    const sheet = spreadsheet.getSheetByName('About');
+    spreadsheet = SpreadsheetApp.openById(fileId);
+    const sheet = spreadsheet.getSheetByName('_About BnS');
     if (!sheet) return 3;
 
     const inner_key = PropertiesService.getScriptProperties().getProperty('inner_lock');
@@ -46,5 +46,9 @@ function validateSpreadsheet (fileId) {
   if (data.spreadsheet_id !== fileId) return 2;
   if (data.admin_id !== getUserId_()) return 2;
 
-  return;
+  return {
+    file_name: spreadsheet.getName(),
+    file_url: spreadsheet.getUrl(),
+    last_updated: file.getLastUpdated().toString()
+  };
 }
