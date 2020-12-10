@@ -1,8 +1,10 @@
 function validateSpreadsheet (fileId) {
   if (isInstalled_()) return 1;
 
+  let file, parts;
+
   try {
-    var file = DriveApp.getFileById(fileId);
+    file = DriveApp.getFileById(fileId);
 
     const owner = file.getOwner().getEmail();
     const user = Session.getEffectiveUser().getEmail();
@@ -16,7 +18,7 @@ function validateSpreadsheet (fileId) {
   if (file.getMimeType() !== MimeType.GOOGLE_SHEETS) return 3;
 
   try {
-    var spreadsheet = SpreadsheetApp.openById(fileId);
+    const spreadsheet = SpreadsheetApp.openById(fileId);
     const sheet = spreadsheet.getSheetByName('About');
     if (!sheet) return 3;
 
@@ -28,7 +30,7 @@ function validateSpreadsheet (fileId) {
 
     const displayValue = sheet.getRange(8, 2).getDisplayValue();
 
-    var parts = displayValue.split(':');
+    parts = displayValue.split(':');
     const sha = computeHmacSignature('SHA_256', parts[0], inner_key, 'UTF_8');
 
     if (sha !== parts[1]) return 3;
