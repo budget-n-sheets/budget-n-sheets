@@ -193,21 +193,38 @@
 				</div>
 
         <div class="panel" id="panel_Backup">
-          <h2>Budget n Sheets Backup</h2>
+          <table>
+            <tr>
+              <th colspan="2"><span style="font-size:1.2em;">Back up data & settings</span></th>
+            </tr>
+            <tr>
+              <td>
+                <p>You can back up data and settings from your budget spreadsheet to your Google Drive. You can restore your backed-up information to a new budget spreadsheet.</p>
+              </td>
+            </tr>
+          </table>
 
-          <p>You can back up content, data, and settings from your budget sheet to your Google Drive. Once you request a backup, the add-on creates an archive with the essential data and settings and emails it to you as an attachment. You can save it in your Google Drive then.</p>
-
-          <p>You can restore your backed-up data to a new budget sheet.</p>
-
+          <b>What gets backed up</b>
           <ul>
-            <li>The backup file is not encrypted.</li>
-            <li>The backup is not uploaded elsewhere.</li>
-            <li>The size of the backup varies by spreadsheet and settings.</li>
+            <li>Jan, ..., Dec transactions</li>
+            <li>Cards transactions</li>
+            <li>Tags</li>
+            <li>Accounts and Cards</li>
+            <li>Add-on settings</li>
           </ul>
+
+          <b>Important notes regarding your backup:</b>
+          <ul>
+            <li>The backup file is <b>NOT encrypted</b>.</li>
+            <li>The size of the backup varies by spreadsheet and settings.</li>
+            <li>The backup is a text file, and changing its content can impact the integrity and corrupt it.</li>
+          </ul>
+
+          <p>An email will be sent to you with the backup file attached to it. You can <a href="https://support.google.com/mail/answer/30719" target="_blank">save the attachment to your Drive</a>.</p>
 
           <button id="b-Backup" class="action">Back up now</button>
 
-          <p>For more information, visit <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank">Wiki - Backup and Restore</a>.</p>
+          <p>For more information, visit <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank">Backup and Restore</a>.</p>
         </div>
         <? if (hasEditors) { ?>
 
