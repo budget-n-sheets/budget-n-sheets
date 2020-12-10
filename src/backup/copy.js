@@ -46,5 +46,5 @@ function validateSpreadsheet (fileId) {
   if (data.spreadsheet_id !== fileId) return 2;
   if (data.admin_id !== getUserId_()) return 2;
 
-  return info;
+  return;
 }
