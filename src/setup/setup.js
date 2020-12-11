@@ -88,32 +88,10 @@ function setupNew_ (settings, list_acc) {
 function setupRestore_ (fileId) {
   console.time('setup/restore');
 
-	let file;
+  const settings_candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
+  if (settings_candidate.file_id !== fileId) return 2;
 
-  try {
-    file = DriveApp.getFileById(fileId);
-
-    const owner = file.getOwner().getEmail();
-    const user = Session.getEffectiveUser().getEmail();
-
-    if (owner !== user) return 2;
-  } catch (err) {
-    console.log(err);
-    return 2;
-  }
-
-  var i;
-  const parts = file.getBlob()
-    .getAs('text/plain')
-    .getDataAsString()
-    .split(':');
-
-  const webSafeCode = parts[0];
-  const sha = computeDigest('SHA_1', webSafeCode, 'UTF_8');
-  if (sha !== parts[1]) return 3;
-
-  const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
-  const backup = JSON.parse(string);
+  const backup = settings_candidate.backup;
 
   const list_acc = [];
   for (var i in backup.db_tables.accounts) {

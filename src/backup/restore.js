@@ -31,6 +31,8 @@ function validateBackup (fileId) {
   const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
   const data = JSON.parse(string);
 
+  PropertiesService2.setProperty('document', 'settings_candidate', 'json', { backup: data, file_id: fileId });
+
   const info = {
     file_name: file.getName(),
     date_created: new Date(data.backup.date_request).toString(),
