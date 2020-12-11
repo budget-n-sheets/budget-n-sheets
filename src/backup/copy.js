@@ -1,7 +1,7 @@
 function validateSpreadsheet (fileId) {
   if (isInstalled_()) return 1;
 
-  let spreadsheet, file, parts;
+  let spreadsheet, file, metadata;
 
   try {
     file = DriveApp.getFileById(fileId);
@@ -28,18 +28,31 @@ function validateSpreadsheet (fileId) {
       return 1;
     }
 
-    const displayValue = sheet.getRange(8, 2).getDisplayValue();
+    const list = sheet.getDeveloperMetadata();
+    let status = 0;
 
-    parts = displayValue.split(':');
-    const sha = computeHmacSignature('SHA_256', parts[0], inner_key, 'UTF_8');
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].getKey() !== 'bs_sig') continue;
 
-    if (sha !== parts[1]) return 3;
+      metadata = list[i].getValue();
+      if (!metadata) continue;
+
+      metadata = JSON.parse(metadata);
+
+      let hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
+      if (hmac === metadata.hmac) {
+        status = 1;
+        break;
+      }
+    }
+
+    if (!status) return 3;
   } catch (err) {
     ConsoleLog.error(err);
     return 3;
   }
 
-  const webSafeCode = parts[0];
+  const webSafeCode = metadata.encoded;
   const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
   const data = JSON.parse(string);
 
