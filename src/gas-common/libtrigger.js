@@ -37,6 +37,7 @@ function saveTriggerId_ (trigger) {
   }
 
   const spreadsheet_triggers = PropertiesService2.getProperty("document", "spreadsheet_triggers", "json");
+  if (!spreadsheet_triggers) return;
 
   spreadsheet_triggers[key] = {
     id: trigger.getUniqueId(),
@@ -156,6 +157,8 @@ function deleteAllTriggers_ () {
   var triggers = ScriptApp.getProjectTriggers()
 
   const spreadsheet_triggers = PropertiesService2.getProperty("document", "spreadsheet_triggers", "json");
+  if (!spreadsheet_triggers) return;
+
   const ids = [
     spreadsheet_triggers.onOpen.id,
     spreadsheet_triggers.onEdit.id,
