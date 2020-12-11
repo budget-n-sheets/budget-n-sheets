@@ -55,8 +55,31 @@ function bsSignSetup_ () {
   const stringed = JSON.stringify(data);
   const encoded = Utilities.base64EncodeWebSafe(stringed, Utilities.Charset.UTF_8);
   const sig = computeHmacSignature("SHA_256", encoded, key, "UTF_8");
+  const package = JSON.stringify({
+    encoded: encoded,
+    hmac: sig
+  });
 
-  sheet.getRange(8, 2).setValue(encoded + ':' + sig);
+  const list = sheet.getDeveloperMetadata();
+  let status = 0;
+
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].getKey() === 'bs_sig') {
+      list[i].setVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+        .setValue(package);
+      status = 1;
+      break;
+    }
+  }
+
+  if (!status) {
+    sheet.addDeveloperMetadata(
+      'bs_sig',
+      package,
+      SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+    );
+  }
+
   SpreadsheetApp.flush();
 }
 
@@ -84,6 +107,12 @@ function importAboutPage_ (spreadsheet) {
       .setName("_About BnS")
       .setTabColor("#6aa84f")
       .hideSheet();
+
+    sheet.addDeveloperMetadata(
+      'bs_sig',
+      '{}',
+      SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+    );
 
     sheet.protect().setWarningOnly(true);
     SpreadsheetApp.flush();
