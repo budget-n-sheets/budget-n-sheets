@@ -66,9 +66,9 @@ function readSpreadsheetInfo (fileId) {
     financial_year: DATE_NOW.getFullYear(),
     initial_month: DATE_NOW.getMonth(),
 
-    accounts: '',
-    cards: '',
-    tags: '-'
+    accounts: [],
+    cards: [],
+    tags: 0
   };
 
   sheet = spreadsheet.getSheetByName('_Settings');
@@ -78,7 +78,7 @@ function readSpreadsheetInfo (fileId) {
 
   info.financial_year = values[0][0];
   info.initial_month = MN_FULL[values[2][0]];
-  if (values[5][0] > 0) info.tags = 'Up to ' + values[5][0] + ' tag(s) found.';
+  info.tags = values[5][0];
 
   sheet = spreadsheet.getSheetByName('_Backstage');
   if (!sheet) return 1;
@@ -94,17 +94,25 @@ function readSpreadsheetInfo (fileId) {
   for (let i = 0; i < num_accs; i++) {
     list[i] = values[0][w_ + w_ * i];
   }
-  info.accounts = list.join(', ');
+  info.accounts = list;
 
   list = [];
   cols = 2 * w_ + num_accs * w_;
   for (let i = 0; i < 10; i++) {
     if (values[0][cols + w_ * i] != '') {
       let match = values[0][cols + w_ * i].match(/\w+/);
-      if (match) list.push(match);
+      if (match) list.push(match[0]);
     }
   }
-  info.cards = list.join(', ');
+  info.cards = list;
+
+  PropertiesService2.setProperty('document', 'settings_pc', 'json', info);
+
+  info.accounts = info.accounts.join(', ');
+  info.cards = info.cards.join(', ');
+
+  if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tag(s) found.';
+  else info.tags = '-';
 
   return info;
 }
