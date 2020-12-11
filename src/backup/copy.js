@@ -89,9 +89,9 @@ function readSpreadsheetInfo (fileId) {
 
   values = sheet.getRange(2, 2, 7, 1).getValues();
 
-  info.financial_year = values[0][0];
-  info.initial_month = MN_FULL[values[2][0]];
-  info.tags = values[5][0];
+  info.financial_year = Number(values[0][0]);
+  info.initial_month = Number(values[2][0]) - 1;
+  info.tags = Number(values[5][0]);
 
   sheet = spreadsheet.getSheetByName('_Backstage');
   if (!sheet) return 1;
@@ -120,6 +120,8 @@ function readSpreadsheetInfo (fileId) {
   info.cards = list;
 
   PropertiesService2.setProperty('document', 'settings_pc', 'json', info);
+
+  info.initial_month = MN_FULL[info.initial_month];
 
   info.accounts = info.accounts.join(', ');
   for (let i = 0; i < info.cards.length; i++) {
