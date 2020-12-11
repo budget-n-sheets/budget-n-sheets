@@ -52,6 +52,56 @@
             </td>
           </tr>
         </table>
+
+        <div class="panel" id="details">
+          <p>Review the spreadsheet specs and settings.</p>
+
+          <table style="margin-top: 1.3em;">
+            <tr>
+              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
+            </tr>
+            <tr>
+              <td class="name" style="width: 127px;">Spreadsheet title</td>
+              <td id="spreadsheet_title"></td>
+            </tr>
+          </table>
+
+          <table style="margin-top: 1.3em;">
+            <tr>
+              <th colspan="2" style="font-size:1.2em;"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
+            </tr>
+            <tr>
+              <td class="name" style="width: 127px;">Financial year</td>
+              <td id="financial_year"></td>
+            </tr>
+            <tr>
+              <td class="name">Initial month</td>
+              <td id="initial_month"></td>
+            </tr>
+          </table>
+
+          <table style="margin-top: 1.3em;">
+            <tr>
+              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">assignment</i> Accounts, cards, and tags</span></th>
+            </tr>
+            <tr>
+              <td class="name" style="width: 127px;">Accounts</td>
+              <td id="accounts"></td>
+            </tr>
+            <tr>
+              <td class="name">Cards</td>
+              <td id="cards"></td>
+            </tr>
+            <tr>
+              <td class="name">Tags</td>
+              <td id="tags"></td>
+            </tr>
+          </table>
+
+          <div style="margin-top: 1.3em;">
+            <button class="create" id="b-Copy" disabled>Copy</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -68,15 +118,14 @@
 
       google.script.run
         .withFailureHandler(showError)
-        .withSuccessHandler(refreshInfo)
+        .withSuccessHandler(requestInfo)
         .validateSpreadsheet(FILE_ID);
       <? } ?>
     });
 
     <? if (hasFileId) { ?>
-    function refreshInfo(info) {
+    function requestInfo(info) {
       $("#response").empty();
-      $('#b-Select').prop('disabled', false);
 
       if (info === 1) {
         $("#response").append('Sorry, something went wrong. Try again in a moment.');
@@ -91,6 +140,22 @@
 
       $("#file_name").append('<a href="' + info.file_url + '" target="_blank">' + info.file_name + '</a>');
       $('#last_updated').append(info.last_updated);
+
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(refreshInfo)
+        .readSpreadsheetInfo(FILE_ID);
+    }
+
+    function refreshInfo(info) {
+      $('#b-Select').prop('disabled', false);
+
+      for (let key in info) {
+        $("#" + key).append(info[key]);
+      }
+
+      $('#details').fadeIn('fast');
+      $('#b-Copy').prop('disabled', false);
     }
     <? } ?>
 
