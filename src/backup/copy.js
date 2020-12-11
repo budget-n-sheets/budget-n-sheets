@@ -113,8 +113,8 @@ function readSpreadsheetInfo (fileId) {
   cols = 2 * w_ + num_accs * w_;
   for (let i = 0; i < 10; i++) {
     if (values[0][cols + w_ * i] != '') {
-      let match = values[0][cols + w_ * i].match(/\w+/);
-      if (match) list.push(match[0]);
+      let matches = values[0][cols + w_ * i].match(/\w+/g);
+      if (matches) list.push(matches);
     }
   }
   info.cards = list;
@@ -122,6 +122,9 @@ function readSpreadsheetInfo (fileId) {
   PropertiesService2.setProperty('document', 'settings_pc', 'json', info);
 
   info.accounts = info.accounts.join(', ');
+  for (let i = 0; i < info.cards.length; i++) {
+    info.cards[i] = info.cards[i][0];
+  }
   info.cards = info.cards.join(', ');
 
   if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tag(s) found.';
