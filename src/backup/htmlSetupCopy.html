@@ -103,6 +103,29 @@
           </div>
         </div>
       </div>
+
+      <div class="panel" id="setup-panel">
+        <div style="width:100%;margin:40px auto 0 auto;" align="center">
+          <h2>Copying your spreadsheet</h2>
+          <br>
+          <div class="wait_load-wrapper">
+            <div class="wait_load-bar"></div>
+          </div>
+          <div style="width:263px;margin-top:19px;">
+            This process takes up to 4 minutes. Do not edit the spreadsheet until it is finished.
+          </div>
+        </div>
+        <div id="timeout" style="display: none;margin-top: 2em;">
+          This is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.<br>
+          <button onclick="google.script.host.close()">Close</button>
+        </div>
+      </div>
+
+      <div class="panel" id="error-panel">
+        <p style="text-indent: 0;font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
+        <p style="text-indent: 0;">An error report was sent anonymously.</p>
+        <a href="<?= send_feedback ?>" target="_blank"><b>Send feedback</b></a>
+      </div>
     </div>
   </div>
 
@@ -110,9 +133,11 @@
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     const FILE_ID = <?= fileId ?>;
+    let TIMEOUT_ID;
 
     $(document).ready(function() {
       $('#b-Select').click(pickFile);
+      $('#b-Copy').click(copyNow);
       <? if (hasFileId) { ?>
       $('#b-Select').prop('disabled', true);
 
@@ -167,6 +192,34 @@
           google.script.host.close();
         })
         .showDialogPickerRestore('copy');
+    }
+
+    function copyNow() {
+      this.disabled = true;
+      window.scrollTo(0, 0);
+      $("#response").empty();
+
+      $(".panel").hide();
+      $("#setup-panel").fadeIn("fast").addClass("active");
+      google.script.host.setHeight(233);
+
+      TIMEOUT_ID = setTimeout(function() {
+        google.script.host.setHeight(293);
+        $("#timeout").fadeIn();
+      }, 240000);
+
+      google.script.run
+        .withFailureHandler(panelError)
+        .withSuccessHandler(null)
+        .setupLock('copy', fileId);
+    }
+
+    function panelError (err) {
+      clearTimeout(TIMEOUT_ID);
+      google.script.host.setHeight(197);
+      $("#error-panel").siblings().remove();
+      $("#error-panel").fadeIn("fast").addClass("active");
+      $("#footer-buttons").append("<button onclick=\"google.script.host.close();\">Close</button>");
     }
   </script>
 </body>
