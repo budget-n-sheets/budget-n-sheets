@@ -291,14 +291,14 @@ function showDialogSetupAddon_() {
 
 
 	ui.alert(
-		"Notice to X-Frame-Options Policy",
-		"Due to a bug with Google Sheets [1], the setup \"Start budget spreadsheet\" may not be displayed or work correctly.\n\
-		If you experience the issue, please use the browser in private/incognito mode to start a new budget sheet.\n\n\
-		Learn more: https://github.com/guimspace/budget-n-sheets/wiki/Notice-to-X-Frame-Options-Policy\n\n\
-		References\n\
-		[1] - Google Issue Tracker - Bug 69270374 https://issuetracker.google.com/issues/69270374\n\
-		[2] - Google Account Help - https://support.google.com/accounts/answer/1721977",
-		ui.ButtonSet.OK);
+    "Notice",
+    `Due to a bug with Google Sheets, if you experience
+    any issues with the \"Start budget spreadsheet\" dialog,
+    please use your browser in incognito/private mode
+    and try again.
+
+    Learn more at budgetnsheets.com/notice-to-x-frame`,
+    ui.ButtonSet.OK);
 
 	var htmlTemplate, htmlDialog;
 
