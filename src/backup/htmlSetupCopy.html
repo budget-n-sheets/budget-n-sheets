@@ -211,7 +211,7 @@
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupLock('copy', fileId);
+        .setupLock('copy', FILE_ID);
     }
 
     function panelError (err) {
