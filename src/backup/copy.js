@@ -43,7 +43,7 @@ function validateSpreadsheet (fileId) {
   const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
   const data = JSON.parse(string);
 
-  if (data.spreadsheet_id !== fileId) return 2;
+  // if (data.spreadsheet_id !== fileId) return 2;
   if (data.admin_id !== getUserId_()) return 2;
 
   return {
