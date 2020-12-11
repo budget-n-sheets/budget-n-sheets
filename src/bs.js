@@ -14,6 +14,22 @@ function getDeveloperKey_ () {
   return key
 }
 
+function getInnerKey_ () {
+  const scriptCache = CacheService.getScriptCache();
+  let key = scriptCache.get('inner_lock');
+
+  if (!key) {
+    key = PropertiesService.getScriptProperties().getProperty('inner_lock');
+    if (!key) {
+      ConsoleLog.error("getInnerKey_(): Key 'inner_lock' was not found!");
+      return 1;
+    }
+    scriptCache.put('inner_lock', key);
+  }
+
+  return key;
+}
+
 function bsSignSetup_ () {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheet, i;
@@ -27,11 +43,8 @@ function bsSignSetup_ () {
     return 1;
   }
 
-  const key = PropertiesService.getScriptProperties().getProperty('inner_lock');
-  if (!key) {
-    ConsoleLog.error("bsSignSetup_(): Key 'inner_lock' was not found!");
-    return 1;
-  }
+  const key = getInnerKey_();
+  if (key === 1) return 1;
 
   const const_properties = PropertiesService2.getProperty("document", "const_properties", "json");
   if (!const_properties) {
