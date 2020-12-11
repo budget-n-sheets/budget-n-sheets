@@ -129,7 +129,6 @@ function setupRestore_ (fileId) {
 
   if (bsSignSetup_()) throw new Error('Failed to sign document.');
 
-  SPREADSHEET.setRecalculationInterval(SpreadsheetApp.RecalculationInterval.HOUR);
   SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
 
