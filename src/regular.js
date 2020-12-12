@@ -143,7 +143,7 @@ function updateDecimalPlaces_ () {
 
   sheet = spreadsheet.getSheetByName('_Settings');
   if (sheet) {
-    sheet.getRange(8, 2).setNumberFormat('0' + dec_c);
+    sheet.getRange(8, 2).setNumberFormat('0' + dec_c).setFormula('RAND()');
   }
 
   sheet = spreadsheet.getSheetByName('Summary');
@@ -256,7 +256,7 @@ function updateDecimalSeparator_() {
 	cell = sheet.getRange(8, 2);
 
 	cell.setNumberFormat(format);
-	cell.setValue(0.1);
+	cell.setFormula('RAND()');
 	SpreadsheetApp.flush();
 
 	cell = cell.getDisplayValue();
