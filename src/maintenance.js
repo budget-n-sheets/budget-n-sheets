@@ -171,6 +171,8 @@ function askReinstallTriggersUi() {
 function reinstallTriggers_() {
 	if (! isInstalled_()) return;
 
+  const financial_year = getConstProperties_('financial_year');
+
 	deleteAllTriggers_();
   Utilities.sleep(1000);
 
@@ -178,6 +180,6 @@ function reinstallTriggers_() {
   startTrigger_('onEdit');
   startTrigger_('timeBased');
 
-  if (yyyy === financial_year) setSpreadsheetSettings_('operation_mode', 'active');
+  if (DATE_NOW.getFullYear() === financial_year) setSpreadsheetSettings_('operation_mode', 'active');
   else setSpreadsheetSettings_('operation_mode', 'passive');
 }
