@@ -174,6 +174,44 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Set recalculation interval to 'ON_CHANGE'.
+ * Copy legacy properties of triggers ID to 'spreadsheet_triggers' structure.
+ * Delete legacy properties of triggers ID.
+ *
+ * 0.36.3
+ */
+function update_v0m36p3_() {
+  try {
+    SpreadsheetApp.getActiveSpreadsheet()
+      .setRecalculationInterval(SpreadsheetApp.RecalculationInterval.ON_CHANGE);
+
+    let onOpen = PropertiesService2.getProperty('document', 'onOpenTriggerId', 'string');
+    let onEdit = PropertiesService2.getProperty('document', 'onEditTriggerId', 'string');
+    let clock = PropertiesService2.getProperty('document', 'clockTriggerId', 'string');
+
+    if (!onOpen) onOpen = '';
+    if (!onEdit) onEdit = '';
+    if (!clock) clock = '';
+
+    const properties = {
+      owner: getAdminSettings_('admin_id'),
+      onOpen: { id: onOpen, time_created: 0 },
+      onEdit: { id: onEdit, time_created: 0 },
+      timeBased: { id: clock, time_created: 0 }
+    };
+
+    PropertiesService2.setProperty('document', 'spreadsheet_triggers', 'json', properties);
+
+    PropertiesService2.deleteProperty('document', 'onOpenTriggerId');
+    PropertiesService2.deleteProperty('document', 'onEditTriggerId');
+    PropertiesService2.deleteProperty('document', 'clockTriggerId');
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
  * Set property 'spreadsheet_triggers'.
  *
  * 0.36.2
