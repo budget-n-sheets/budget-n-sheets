@@ -63,19 +63,14 @@ function bsSignSetup_ () {
     hmac: sig
   });
 
-  const list = spreadsheet.getDeveloperMetadata();
-  let status = 0;
+  const list = spreadsheet.createDeveloperMetadataFinder()
+    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+    .withKey('bs_sig')
+    .find();
 
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].getKey() === 'bs_sig') {
-      list[i].setVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
-        .setValue(package);
-      status = 1;
-      break;
-    }
-  }
-
-  if (!status) {
+  if (list.length > 0) {
+    list[0].setValue(package);
+  } else {
     spreadsheet.addDeveloperMetadata(
       'bs_sig',
       package,
