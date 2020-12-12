@@ -62,6 +62,7 @@ function readSpreadsheetInfo (fileId) {
   const w_ = TABLE_DIMENSION.width;
 
   const info = {
+    file_id: fileId,
     spreadsheet_title: spreadsheet.getName(),
 
     financial_year: DATE_NOW.getFullYear(),

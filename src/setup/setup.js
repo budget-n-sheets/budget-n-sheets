@@ -143,7 +143,7 @@ function setupRestore_ (fileId) {
   console.timeEnd('setup/restore');
 }
 
-function setupCopy_ (fileId) {
+function setupCopy_ () {
   console.time('setup/copy');
 
   const settings_candidate = PropertiesService2.getProperty('document', 'settings_pc', 'json');
