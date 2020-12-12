@@ -139,8 +139,7 @@ function updateSettingsMetadata_ (user_settings) {
     .find();
 
   if (elements.length > 0) {
-    elements[0].setVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
-      .setValue(JSON.stringify(metadata));
+    elements[0].setValue(JSON.stringify(metadata));
   } else {
     sheet.addDeveloperMetadata(
         'user_settings',
