@@ -32,16 +32,6 @@ function getInnerKey_ () {
 
 function bsSignSetup_ () {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet, i;
-
-  i = -1;
-  while (!sheet && ++i < 3) {
-    sheet = getAboutPage_(spreadsheet);
-  }
-  if (sheet === 1 || i >= 3) {
-    ConsoleLog.error('bsSignSetup_(): Failed to find About page.');
-    return 1;
-  }
 
   const key = getInnerKey_();
   if (key === 1) return 1;
@@ -73,7 +63,7 @@ function bsSignSetup_ () {
     hmac: sig
   });
 
-  const list = sheet.getDeveloperMetadata();
+  const list = spreadsheet.getDeveloperMetadata();
   let status = 0;
 
   for (let i = 0; i < list.length; i++) {
@@ -86,7 +76,7 @@ function bsSignSetup_ () {
   }
 
   if (!status) {
-    sheet.addDeveloperMetadata(
+    spreadsheet.addDeveloperMetadata(
       'bs_sig',
       package,
       SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
