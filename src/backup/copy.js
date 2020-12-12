@@ -28,15 +28,13 @@ function validateSpreadsheet (fileId) {
       .withKey('bs_sig')
       .find();
 
-    if (list.length > 0) {
-      metadata = list[0].getValue();
-      metadata = JSON.parse(metadata);
+    if (list.length === 0) return 3;
 
-      let hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
-      if (hmac !== metadata.hmac) return 3;
-    } else {
-      return 3;
-    }
+    metadata = list[0].getValue();
+    metadata = JSON.parse(metadata);
+
+    let hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
+    if (hmac !== metadata.hmac) return 3;
   } catch (err) {
     ConsoleLog.error(err);
     return 3;
