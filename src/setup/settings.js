@@ -28,5 +28,19 @@ function setupSettings_(yyyy_mm) {
 	];
 	sheet.getRange(2, 2, 7, 1).setFormulas(cell);
 
+
+  const metadata = {
+    initial_month: SETUP_SETTINGS.init_month,
+    financial_calendar_sha256: '',
+    post_day_events: false,
+    cash_flow_events: false
+  };
+
+  sheet.addDeveloperMetadata(
+    'user_settings',
+    JSON.stringify(metadata),
+    SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+  );
+
 	SpreadsheetApp.flush();
 }

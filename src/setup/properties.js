@@ -30,6 +30,17 @@ function setupProperties_(yyyy_mm) {
 	};
 	PropertiesService2.setProperty("document", "const_properties", "json", properties);
 
+  const metadata = {
+    number_accounts: SETUP_SETTINGS.number_accounts,
+    financial_year: SETUP_SETTINGS.financial_year
+  };
+
+  SPREADSHEET.addDeveloperMetadata(
+    'const_properties',
+    JSON.stringify(metadata),
+    SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+  );
+
 
   if (SETUP_SETTINGS["financial_year"] === yyyy_mm.yyyy) operation = "active"
   else operation = "passive"
