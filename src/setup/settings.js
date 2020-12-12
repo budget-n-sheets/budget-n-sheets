@@ -7,8 +7,11 @@ function setupSettings_(yyyy_mm) {
 
 	sheet.protect().setWarningOnly(true);
 
+  dec_p = SETUP_SETTINGS['decimal_places'];
+  const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
+
 	cell = sheet.getRange(8, 2);
-	cell.setNumberFormat("0.0");
+  cell.setNumberFormat('0' + dec_c);
 	cell.setValue(0.1);
 	SpreadsheetApp.flush();
 

@@ -141,6 +141,11 @@ function updateDecimalPlaces_ () {
   const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
   const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
 
+  sheet = spreadsheet.getSheetByName('_Settings');
+  if (sheet) {
+    sheet.getRange(8, 2).setNumberFormat('0' + dec_c);
+  }
+
   sheet = spreadsheet.getSheetByName('Summary');
   if (sheet) {
     sheet.getRangeList(['D9:I22', 'D25:G36']).setNumberFormat(number_format);
@@ -234,6 +239,14 @@ function updateDecimalSeparator_() {
 	var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	var sheet, cell, v, t;
 
+  const dec_p = getSpreadsheetSettings_('decimal_places');
+  const format = '0' + (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
+
+  sheet = spreadsheet.getSheetByName('_Settings');
+  if (sheet) {
+    sheet.getRange(8, 2).setNumberFormat('0' + dec_c);
+  }
+
 	sheet = spreadsheet.getSheetByName("_Settings");
 	if (!sheet) {
 		sheet = spreadsheet.insertSheet();
@@ -242,7 +255,7 @@ function updateDecimalSeparator_() {
 
 	cell = sheet.getRange(8, 2);
 
-	cell.setNumberFormat("0.0");
+	cell.setNumberFormat(format);
 	cell.setValue(0.1);
 	SpreadsheetApp.flush();
 
