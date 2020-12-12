@@ -188,6 +188,32 @@ function refreshCardName_(action, index, card) {
 
 	sheet.getRange(1, col + w_*index - 1).setValue(text);
 	sheet.getRangeList(ranges).setValue(limit);
+
+  {
+    const db_cards = getDbTables_('cards');
+    let metadata =  [];
+
+    for (let k = 0; k < db_cards.data.length; k++) {
+      metadata[k] = {};
+      Object.assign(metadata[k], db_cards.data[k]);
+      delete metadata[k].id;
+    }
+
+    let list_metadata = sheet.createDeveloperMetadataFinder()
+      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+      .withKey('db_cards')
+      .find();
+
+    if (list_metadata.length > 0) {
+      list_metadata[0].setValue(JSON.stringify(metadata));
+    } else {
+      sheet.addDeveloperMetadata(
+        'db_cards',
+        JSON.stringify(metadata),
+        SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+      );
+    }
+  }
 }
 
 

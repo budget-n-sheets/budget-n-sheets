@@ -1,6 +1,8 @@
 function setupTables_() {
 	var ids, acc, r, i, j, k;
 
+  const sheet = SPREADSHEET.getSheetByName('_Backstage');
+
 	const init_month = SETUP_SETTINGS["init_month"];
 	const list_acc = SETUP_SETTINGS["list_acc"];
 	const num_acc = SETUP_SETTINGS["number_accounts"];
@@ -33,6 +35,7 @@ function setupTables_() {
 		}
 	};
 
+  let metadata = [];
 	for (k = 0; k < num_acc; k++) {
 		db_tables.accounts.ids[k] = ids[1 + k];
 
@@ -46,7 +49,23 @@ function setupTables_() {
 
 		db_tables.accounts.names[k] = list_acc[k];
 		db_tables.accounts.data[k] = acc;
+
+    metadata[k] = {};
+    Object.assign(metadata[k], acc);
+    delete metadata[k].id;
 	}
+
+  sheet.addDeveloperMetadata(
+    'db_accounts',
+    JSON.stringify(metadata),
+    SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+  );
+
+  sheet.addDeveloperMetadata(
+    'db_cards',
+    JSON.stringify([]),
+    SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+  );
 
 	PropertiesService2.setProperty("document", "DB_TABLES", "json", db_tables);
 }

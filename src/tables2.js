@@ -180,6 +180,32 @@ function refreshAccountName_(index, account) {
 	if (sheet) {
 		sheet.getRange(1, 6 + 5*index).setValue(account.name);
 	}
+
+  {
+    const db_accounts = getDbTables_('accounts');
+    let metadata =  [];
+
+    for (let k = 0; k < db_accounts.data.length; k++) {
+      metadata[k] = {};
+      Object.assign(metadata[k], db_accounts.data[k]);
+      delete metadata[k].id;
+    }
+
+    let list_metadata = sheet.createDeveloperMetadataFinder()
+      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+      .withKey('db_accounts')
+      .find();
+
+    if (list_metadata.length > 0) {
+      list_metadata[0].setValue(JSON.stringify(metadata));
+    } else {
+      sheet.addDeveloperMetadata(
+        'db_accounts',
+        JSON.stringify(metadata),
+        SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+      );
+    }
+  }
 }
 
 
