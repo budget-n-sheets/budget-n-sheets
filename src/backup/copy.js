@@ -20,11 +20,8 @@ function validateSpreadsheet (fileId) {
   try {
     spreadsheet = SpreadsheetApp.openById(fileId);
 
-    const inner_key = PropertiesService.getScriptProperties().getProperty('inner_lock');
-    if (!inner_key) {
-      ConsoleLog.error("validateSpreadsheet(): Key 'inner_lock' was not found!");
-      return 1;
-    }
+    const inner_key = getInnerKey_();
+    if (inner_key === 1) return 1;
 
     const list = spreadsheet.createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
