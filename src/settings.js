@@ -134,6 +134,7 @@ function updateSettingsMetadata_ (user_settings) {
   }
 
   const elements = sheet.createDeveloperMetadataFinder()
+    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
     .withKey('user_settings')
     .find();
 
