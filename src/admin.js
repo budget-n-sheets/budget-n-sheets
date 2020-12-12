@@ -113,6 +113,7 @@ function askTransferAdmin() {
 		setUserSettings_("financial_calendar", "");
 		setUserSettings_("post_day_events", false);
 		setUserSettings_("cash_flow_events", false);
+    bsSignSetup_();
 		console.log("admin-role/transferred");
 		return;
 	}
@@ -192,6 +193,7 @@ function continuedTransferAdminSd(editor) {
 			setUserSettings_("financial_calendar", "");
 			setUserSettings_("post_day_events", false);
 			setUserSettings_("cash_flow_events", false);
+      bsSignSetup_();
 			console.log("admin-role/transferred");
 			return;
 		}
