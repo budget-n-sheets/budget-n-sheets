@@ -19,8 +19,6 @@ function validateSpreadsheet (fileId) {
 
   try {
     spreadsheet = SpreadsheetApp.openById(fileId);
-    const sheet = spreadsheet.getSheetByName('_About BnS');
-    if (!sheet) return 3;
 
     const inner_key = PropertiesService.getScriptProperties().getProperty('inner_lock');
     if (!inner_key) {
@@ -28,25 +26,20 @@ function validateSpreadsheet (fileId) {
       return 1;
     }
 
-    const list = sheet.getDeveloperMetadata();
-    let status = 0;
+    const list = spreadsheet.createDeveloperMetadataFinder()
+      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+      .withKey('bs_sig')
+      .find();
 
-    for (let i = 0; i < list.length; i++) {
-      if (list[i].getKey() !== 'bs_sig') continue;
-
-      metadata = list[i].getValue();
-      if (!metadata) continue;
-
+    if (list.length > 0) {
+      metadata = list[0].getValue();
       metadata = JSON.parse(metadata);
 
       let hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
-      if (hmac === metadata.hmac) {
-        status = 1;
-        break;
-      }
+      if (hmac !== metadata.hmac) return 3;
+    } else {
+      return 3;
     }
-
-    if (!status) return 3;
   } catch (err) {
     ConsoleLog.error(err);
     return 3;
