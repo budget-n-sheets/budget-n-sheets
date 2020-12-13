@@ -81,6 +81,8 @@ function saveUserSettings(settings) {
 	CacheService2.put("document", "user_settings", "json", user_settings);
 
 
+  updateSettingsMetadata_(user_settings);
+
   settings.decimal_places = Number(settings.decimal_places);
   setSpreadsheetSettings_('decimal_places', settings.decimal_places);
 
@@ -113,6 +115,39 @@ function saveUserSettings(settings) {
   }
 }
 
+function updateSettingsMetadata_ (user_settings) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Settings');
+
+  const metadata = {
+    initial_month: user_settings.initial_month,
+    financial_calendar_sha256: '',
+    post_day_events: user_settings.post_day_events,
+    cash_flow_events: user_settings.cash_flow_events
+  };
+
+  if (user_settings.financial_calendar !== '') {
+    metadata.financial_calendar_sha256 = computeDigest(
+      'SHA_256',
+      user_settings.financial_calendar,
+      'UTF_8'
+    );
+  }
+
+  const elements = sheet.createDeveloperMetadataFinder()
+    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+    .withKey('user_settings')
+    .find();
+
+  if (elements.length > 0) {
+    elements[0].setValue(JSON.stringify(metadata));
+  } else {
+    sheet.addDeveloperMetadata(
+        'user_settings',
+        JSON.stringify(metadata),
+        SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+      );
+  }
+}
 
 function getUserSettings_(select) {
   var user_settings = CacheService2.get('document', 'user_settings', 'json');
@@ -157,6 +192,9 @@ function setUserSettings_(select, value) {
 
 	PropertiesService2.setProperty("document", "user_settings", "json", user_settings);
 	CacheService2.put("document", "user_settings", "json", user_settings);
+
+  updateSettingsMetadata_ (user_settings);
+
 	return true;
 }
 
