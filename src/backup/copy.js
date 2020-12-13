@@ -175,8 +175,10 @@ function copyMonths_ (spreadsheet) {
 
     let destination = SPREADSHEET.getSheetByName(MN_SHORT[mm]);
 
-    while (destination.getMaxRows() < last) {
-      toolPicker_("AddBlankRows");
+    let max = destination.getMaxRows();
+    while (max < last) {
+      addBlankRows_(MN_SHORT[mm]);
+      max += 400;
     }
 
     let values = source.getRange(5, 1, last - 4, 5 + 5 * number_accounts).getValues();
@@ -192,8 +194,11 @@ function copyCards_ (spreadsheet) {
   if (last < 6) return;
 
   const destination = SPREADSHEET.getSheetByName('Cards');
-  while (destination.getMaxRows() < last) {
-    toolPicker_('AddBlankRows', 'Cards');
+
+  let max = destination.getMaxRows();
+  while (max < last) {
+    addBlankRows_('Cards');
+    max += 400;
   }
 
   const values = source.getRange(6, 1, last - 5, 6 * 12).getValues();
