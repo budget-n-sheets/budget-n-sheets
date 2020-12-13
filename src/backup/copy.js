@@ -123,3 +123,38 @@ function readSpreadsheetInfo (fileId) {
 
   return info;
 }
+
+function restoreFromSpreadsheet_ (file_id) {
+  const spreadsheet = SpreadsheetApp.openById(file_id);
+
+  copyTables_(spreadsheet);
+}
+
+function copyTables_ (spreadsheet) {
+  const db_tables = getDbTables_();
+  let metadata;
+
+  metadata = spreadsheet.createDeveloperMetadataFinder()
+    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+    .withKey('db_accounts')
+    .find();
+  metadata = JSON.parse(metadata[0].getValue());
+
+  for (let i = 0; i < metadata.length; i++) {
+    metadata[i].id = db_tables.accounts.ids[i];
+    tablesService('set', 'account', metadata[i]);
+  }
+
+  metadata = spreadsheet.createDeveloperMetadataFinder()
+    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+    .withKey('db_cards')
+    .find();
+  metadata = JSON.parse(metadata[0].getValue());
+
+  for (let i = 0; i < metadata.length; i++) {
+    metadata[i].aliases = metadata[i].aliases.join(',');
+    tablesService('set', 'addcard', metadata[i]);
+  }
+
+  SpreadsheetApp.flush();
+}

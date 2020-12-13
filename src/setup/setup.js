@@ -166,6 +166,8 @@ function setupCopy_ () {
   setupPrepare_();
   setupParts_();
 
+  restoreFromSpreadsheet_(settings_candidate.file_id);
+
   const class_version2 = {
     script: APPS_SCRIPT_GLOBAL.script_version,
     template: APPS_SCRIPT_GLOBAL.template_version
