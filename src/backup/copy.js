@@ -129,6 +129,7 @@ function restoreFromSpreadsheet_ (file_id) {
 
   copyTables_(spreadsheet);
   copyMonths_(spreadsheet);
+  copyCards_(spreadsheet);
 }
 
 function copyTables_ (spreadsheet) {
@@ -180,4 +181,20 @@ function copyMonths_ (spreadsheet) {
     let values = source.getRange(5, 1, last - 4, 5 + 5 * number_accounts).getValues();
     destination.getRange(5, 1, last - 4, 5 + 5 * number_accounts).setValues(values);
   }
+}
+
+function copyCards_ (spreadsheet) {
+  const source = spreadsheet.getSheetByName('Cards');
+  if (!source) return;
+
+  let last = source.getLastRow();
+  if (last < 6) return;
+
+  const destination = SPREADSHEET.getSheetByName('Cards');
+  while (destination.getMaxRows() < last) {
+    toolPicker_('AddBlankRows', 'Cards');
+  }
+
+  const values = source.getRange(6, 1, last - 5, 6 * 12).getValues();
+  destination.getRange(6, 1, last - 5, 6 * 12).setValues(values);
 }
