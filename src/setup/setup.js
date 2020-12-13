@@ -164,6 +164,14 @@ function setupPrepare_ () {
   deleteAllTriggers_();
   CacheService2.removeAll('document', CACHE_KEYS);
 
+  const metadata = SPREADSHEET.createDeveloperMetadataFinder()
+    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+    .find();
+
+  for (let i = 0; i < metadata.length; i++) {
+    metadata[i].remove();
+  }
+
   deleteAllSheets_();
   copySheetsFromSource_();
 }
