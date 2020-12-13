@@ -244,7 +244,7 @@ function updateDecimalSeparator_() {
 
   sheet = spreadsheet.getSheetByName('_Settings');
   if (sheet) {
-    sheet.getRange(8, 2).setNumberFormat('0' + dec_c);
+    sheet.getRange(8, 2).setNumberFormat('0' + format);
   }
 
 	sheet = spreadsheet.getSheetByName("_Settings");
