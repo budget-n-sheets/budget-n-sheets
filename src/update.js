@@ -174,6 +174,126 @@ function update_v0m0p0_() {
 }*/
 
 /**
+ * Set spreadsheet and settings metadata.
+ * Set number format of random value.
+ *
+ * 0.36.4
+ */
+function update_v0m36p4_ () {
+  try {
+    if (update_v0m36p4s0_()) return 2;
+    if (update_v0m36p4s1_()) return 2;
+    if (update_v0m36p4s2_()) return 2;
+
+    const user_settings = PropertiesService2.getProperty('document', 'user_settings', 'json');
+    updateSettingsMetadata_(user_settings);
+
+    updateDecimalSeparator_();
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m36p4s2_ () {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const db = getTablesService_('all');
+    let metadata, list;
+
+    metadata = [];
+    for (let k = 0; k < db.accounts.length; k++) {
+      metadata[k] = {};
+      Object.assign(metadata[k], db.accounts[k]);
+      delete metadata[k].id;
+    }
+
+    list = sheet.createDeveloperMetadataFinder()
+      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+      .withKey('db_accounts')
+      .find();
+
+    if (list.length > 0) {
+      list[0].setValue(JSON.stringify(metadata));
+    } else {
+      sheet.addDeveloperMetadata(
+        'db_accounts',
+        JSON.stringify(metadata),
+        SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+      );
+    }
+
+    metadata = [];
+    for (let k = 0; k < db.cards.length; k++) {
+      metadata[k] = {};
+      Object.assign(metadata[k], db.cards[k]);
+      delete metadata[k].id;
+    }
+
+    list = sheet.createDeveloperMetadataFinder()
+      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+      .withKey('db_cards')
+      .find();
+
+    if (list.length > 0) {
+      list[0].setValue(JSON.stringify(metadata));
+    } else {
+      sheet.addDeveloperMetadata(
+        'db_cards',
+        JSON.stringify(metadata),
+        SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+      );
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m36p4s1_ () {
+  try {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const list = spreadsheet.createDeveloperMetadataFinder()
+      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+      .withKey('const_properties')
+      .find();
+
+    for (let i = 0; i < list.length; i++) {
+      list[i].remove();
+    }
+
+    const const_properties = PropertiesService2.getProperty('document', 'const_properties', 'json');
+    delete const_properties.date_created;
+
+    spreadsheet.addDeveloperMetadata(
+      'const_properties',
+      JSON.stringify(const_properties),
+      SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+    );
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m36p4s0_ () {
+  try {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const list = spreadsheet.createDeveloperMetadataFinder()
+      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+      .withKey('bs_sig')
+      .find();
+
+    for (let i = 0; i < list.length; i++) {
+      list[i].remove();
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
  * Set recalculation interval to 'ON_CHANGE'.
  * Copy legacy properties of triggers ID to 'spreadsheet_triggers' structure.
  * Delete legacy properties of triggers ID.
