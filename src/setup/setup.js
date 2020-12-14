@@ -39,6 +39,7 @@ function setupLock (select, param1, param2) {
 
   if (select === 'new') return setupNew_(param1, param2);
   if (select === 'restore') return setupRestore_(param1);
+	if (select === 'copy') return setupCopy_(param1);
 }
 
 function setupNew_ (settings, list_acc) {
@@ -140,6 +141,51 @@ function setupRestore_ (fileId) {
   SPREADSHEET = null;
   SETUP_SETTINGS = null;
   console.timeEnd('setup/restore');
+}
+
+function setupCopy_ () {
+  console.time('setup/copy');
+
+  const settings_candidate = PropertiesService2.getProperty('document', 'settings_pc', 'json');
+
+  SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+
+  setupValidate_();
+
+  SETUP_SETTINGS = {
+    spreadsheet_name: settings_candidate.spreadsheet_title,
+    decimal_places: 2,
+    number_format: '#,##0.00;(#,##0.00)',
+    financial_year: settings_candidate.financial_year,
+    init_month: settings_candidate.initial_month,
+    number_accounts: settings_candidate.accounts.length,
+    list_acc: settings_candidate.accounts,
+    decimal_separator: true
+  };
+
+  setupPrepare_();
+  setupParts_();
+
+  restoreFromSpreadsheet_(settings_candidate.file_id);
+
+  const class_version2 = {
+    script: APPS_SCRIPT_GLOBAL.script_version,
+    template: APPS_SCRIPT_GLOBAL.template_version
+  };
+  class_version2.script.beta = PATCH_THIS.beta_list.length;
+  PropertiesService2.setProperty('document', 'class_version2', 'json', class_version2);
+
+  if (bsSignSetup_()) throw new Error('Failed to sign document.');
+
+  SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
+  PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
+
+  showDialogSetupEnd();
+  onOpen();
+
+  SPREADSHEET = null;
+  SETUP_SETTINGS = null;
+  console.timeEnd('setup/copy');
 }
 
 function setupValidate_ () {

@@ -51,11 +51,16 @@
      */
     function createPicker (token) {
       if (pickerApiLoaded && token) {
+        <? if (isRestore) { ?>
         const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
           .setIncludeFolders(false)
-          .setOwnedByMe(true)
           .setSelectFolderEnabled(false)
           .setMimeTypes('text/plain')
+        <? } else { ?>
+        const docsView = new google.picker.DocsView(google.picker.ViewId.SPREADSHEETS)
+          .setMimeTypes('application/vnd.google-apps.spreadsheet')
+        <? } ?>
+          .setOwnedByMe(true)
           .setMode(google.picker.DocsViewMode.LIST);
 
         const picker = new google.picker.PickerBuilder()
@@ -92,7 +97,11 @@
       const doc = data[google.picker.Response.DOCUMENTS][0];
       google.script.run
         .withFailureHandler(showError)
+        <? if (isRestore) { ?>
         .showDialogSetupRestore(doc[google.picker.Document.ID]);
+        <? } else { ?>
+        .showDialogSetupCopy(doc[google.picker.Document.ID]);
+        <? } ?>
     }
   </script>
 

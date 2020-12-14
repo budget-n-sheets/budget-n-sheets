@@ -331,20 +331,40 @@ function showDialogSetupRestore (fileId) {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Restore from backup');
 }
 
-function showDialogPickerRestore (fileId) {
+function showDialogSetupCopy (fileId) {
   if (isInstalled_()) return;
+
+  var htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupCopy');
+  htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+  htmlTemplate.hasFileId = (fileId != null);
+  htmlTemplate.fileId = (fileId != null ? fileId : '');
+
+  const htmlDialog = htmlTemplate.evaluate()
+    .setWidth(353)
+    .setHeight(359);
+
+  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Copy from spreadsheet');
+}
+
+function showDialogPickerRestore (topic) {
+  if (isInstalled_()) return;
+
+  const isRestore = (topic === 'restore');
+  const title = (isRestore ? 'Select Backup' : 'Select Spreadsheet');
 
   const developer_key = getDeveloperKey_()
   if (developer_key === 1) showDialogErrorMessage()
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlPickerRestore')
+  const htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlPickerRestore');
   htmlTemplate.picker_key = developer_key
+  htmlTemplate.isRestore = isRestore;
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(617)
     .setHeight(487);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Select backup');
+  SpreadsheetApp.getUi().showModalDialog(htmlDialog, title);
 }
 
 

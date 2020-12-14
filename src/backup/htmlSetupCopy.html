@@ -18,19 +18,6 @@
       border-bottom: none;
     }
 
-    .wait_load-wrapper {
-      width: 190px;
-    }
-    .wait_load-bar {
-      width: 113px;
-      animation-name: animateCustomProgressBar;
-      animation-duration: 1493ms;
-    }
-    @keyframes animateCustomProgressBar {
-      from {left: -257px;}
-      to {left: 257px;}
-    }
-
     #content {
       padding: 7px 5px;
     }
@@ -43,23 +30,23 @@
       <div class="panel active" id="restore-panel">
         <table>
           <tr>
-            <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">restore</span> Backup file</span></th>
+            <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">description</span> Spreadsheet</span></th>
           </tr>
           <tr>
-            <td class="name" style="width: 127px;">File name</td>
+            <td class="name" style="width: 127px;">Spreadsheet name</td>
             <td id="file_name">
             </td>
           </tr>
           <tr>
-            <td class="border name">Date created</td>
-            <td class="border" id="date_created">
+            <td class="border name">Last modified</td>
+            <td class="border" id="last_updated">
             </td>
           </tr>
           <tr>
             <td colspan="2">
               <span class="error" id="response"></span>
               <div>
-                <button class="action" id="b-Select">Select backup</button>
+                <button class="action" id="b-Select">Select spreadsheet</button>
                 <button onclick="google.script.host.close()">Cancel</button>
               </div>
             </td>
@@ -67,36 +54,35 @@
         </table>
 
         <div class="panel" id="details">
-          <p>Your budget spreadsheet will contain the following settings:</p>
+          <p>Review the spreadsheet specs and settings.</p>
+
           <table style="margin-top: 1.3em;">
             <tr>
-              <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">table_chart</span> Spreadsheet</span></th>
+              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
             </tr>
             <tr>
               <td class="name" style="width: 127px;">Spreadsheet title</td>
               <td id="spreadsheet_title"></td>
             </tr>
+          </table>
+
+          <table style="margin-top: 1.3em;">
             <tr>
-              <td class="name">Financial year</td>
+              <th colspan="2" style="font-size:1.2em;"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
+            </tr>
+            <tr>
+              <td class="name" style="width: 127px;">Financial year</td>
               <td id="financial_year"></td>
             </tr>
             <tr>
               <td class="name">Initial month</td>
               <td id="initial_month"></td>
             </tr>
-            <tr>
-              <td class="name">Decimal places</td>
-              <td id="decimal_places"></td>
-            </tr>
-            <tr>
-              <td class="name">Financial calendar</td>
-              <td id="financial_calendar"></td>
-            </tr>
           </table>
 
           <table style="margin-top: 1.3em;">
             <tr>
-              <th colspan="2"><span style="font-size: 1.2em;"><span class="material-icons-outlined">assignment</span> Accounts, cards, and tags</span></th>
+              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">assignment</i> Accounts, cards, and tags</span></th>
             </tr>
             <tr>
               <td class="name" style="width: 127px;">Accounts</td>
@@ -113,14 +99,14 @@
           </table>
 
           <div style="margin-top: 1.3em;">
-            <button class="create" id="b-Restore" disabled>Restore</button>
+            <button class="create" id="b-Copy" disabled>Copy</button>
           </div>
         </div>
       </div>
 
       <div class="panel" id="setup-panel">
         <div style="width:100%;margin:40px auto 0 auto;" align="center">
-          <h2>Restoring your spreadsheet</h2>
+          <h2>Copying your spreadsheet</h2>
           <br>
           <div class="wait_load-wrapper">
             <div class="wait_load-bar"></div>
@@ -146,23 +132,69 @@
   <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
+    const FILE_ID = <?= fileId ?>;
     let TIMEOUT_ID;
-    var fileId = <?= fileId ?> ;
 
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('#b-Select').click(pickFile);
-      $('#b-Restore').click(restoreNow);
+      $('#b-Copy').click(copyNow);
       <? if (hasFileId) { ?>
-        $('#b-Select').prop('disabled', true);
+      $('#b-Select').prop('disabled', true);
 
-        google.script.run
-          .withFailureHandler(showError)
-          .withSuccessHandler(refreshInfo)
-          .validateBackup(fileId);
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(requestInfo)
+        .validateSpreadsheet(FILE_ID);
       <? } ?>
     });
 
-    function restoreNow () {
+    <? if (hasFileId) { ?>
+    function requestInfo(info) {
+      $("#response").empty();
+
+      if (info === 1) {
+        $("#response").append('Sorry, something went wrong. Try again in a moment.');
+        return;
+      } else if (info === 2) {
+        $("#response").append('No spreadsheet with the given ID could be found, or you do not have permission to access it.');
+        return;
+      } else if (info === 3) {
+        $("#response").append('Sorry, it was not possible to verify the spreadsheet.');
+        return;
+      }
+
+      $("#file_name").append('<a href="' + info.file_url + '" target="_blank">' + info.file_name + '</a>');
+      $('#last_updated').append(info.last_updated);
+
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(refreshInfo)
+        .readSpreadsheetInfo(FILE_ID);
+    }
+
+    function refreshInfo(info) {
+      $('#b-Select').prop('disabled', false);
+
+      for (let key in info) {
+        $("#" + key).append(info[key]);
+      }
+
+      $('#details').fadeIn('fast');
+      $('#b-Copy').prop('disabled', false);
+    }
+    <? } ?>
+
+    function pickFile() {
+      this.disabled = true;
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(function() {
+          google.script.host.close();
+        })
+        .showDialogPickerRestore('copy');
+    }
+
+    function copyNow() {
       this.disabled = true;
       window.scrollTo(0, 0);
       $("#response").empty();
@@ -179,40 +211,7 @@
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupLock('restore', fileId);
-    }
-
-    function refreshInfo (info) {
-      $("#response").empty();
-      $('#b-Select').prop('disabled', false);
-
-      if (info === 1) {
-        $("#response").append('Sorry, something went wrong. Try again in a moment.');
-        return;
-      } else if (info === 2) {
-        $("#response").append('No file with the given ID could be found, or you do not have permission to access it.');
-        return;
-      } else if (info === 3) {
-        $("#response").append('The file is either not a supported file type or the file is corrupted.');
-        return;
-      }
-
-      for (var key in info) {
-        $("#" + key).append(info[key]);
-      }
-
-      $('#details').fadeIn('fast');
-      $('#b-Restore').prop('disabled', false);
-    }
-
-    function pickFile () {
-      this.disabled = true;
-      google.script.run
-        .withFailureHandler(showError)
-        .withSuccessHandler(function () {
-            google.script.host.close();
-          })
-        .showDialogPickerRestore('restore');
+        .setupLock('copy', FILE_ID);
     }
 
     function panelError (err) {
