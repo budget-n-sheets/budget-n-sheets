@@ -120,6 +120,8 @@ function setupRestore_ (fileId) {
   setupPrepare_();
   setupParts_();
 
+  restoreFromBackup_(backup);
+
   const class_version2 = {
     script: APPS_SCRIPT_GLOBAL.script_version,
     template: APPS_SCRIPT_GLOBAL.template_version
@@ -131,8 +133,6 @@ function setupRestore_ (fileId) {
 
   SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
-
-  restoreFromBackup_(backup);
 
   showDialogSetupEnd();
   onOpen();
