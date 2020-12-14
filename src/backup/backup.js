@@ -165,7 +165,7 @@ function backupTags_ (backup, spreadsheet) {
 
   if (!sheet) return;
 
-  const max = sheet.getMaxRows() - 1;
+  const max = sheet.getLastRow() - 1;
   if (max < 1) return;
   table = sheet.getRange(2, 1, max, 5).getValues();
 
@@ -186,7 +186,7 @@ function backupCards_ (backup, spreadsheet) {
 
   if (!sheet) return;
 
-  const max = sheet.getMaxRows() - 5;
+  const max = sheet.getLastRow() - 5;
   if (max < 1) return;
   table = sheet.getRange(6, 1, max, 6 * 12).getValues();
 
