@@ -225,17 +225,20 @@ function showDialogErrorMessage() {
 }
 
 
-function showDialogUpdate() {
+function showDialogMessage (title, message, timeout) {
 	var htmlTemplate, htmlDialog;
 
-	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlUpdateScreen");
+	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlMessageScreen");
 	htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+  htmlTemplate.message = message;
+  htmlTemplate.hasTimeout = timeout;
 
 	htmlDialog = htmlTemplate.evaluate()
 		.setWidth(263)
 		.setHeight(113);
 
-	SpreadsheetApp.getUi().showModalDialog(htmlDialog, "Add-on update");
+	SpreadsheetApp.getUi().showModalDialog(htmlDialog, title);
 }
 
 

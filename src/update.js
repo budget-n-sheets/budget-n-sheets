@@ -44,7 +44,7 @@ function onlineUpdate_() {
     return;
   }
 
-  showDialogUpdate();
+  showDialogMessage('Add-on update', 'Updating add-on...', 1);
 
 	const r = update_();
 
