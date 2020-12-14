@@ -75,6 +75,12 @@ function setupNew_ (settings, list_acc) {
 
 	if (bsSignSetup_()) throw new Error("Failed to sign document.");
 
+  try {
+    setupTriggers_();
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+
 	SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName("Summary"));
 	PropertiesService2.setProperty("document", "is_installed", "boolean", true);
 
@@ -132,6 +138,12 @@ function setupRestore_ (fileId) {
 
   if (bsSignSetup_()) throw new Error('Failed to sign document.');
 
+  try {
+    setupTriggers_();
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+
   SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
 
@@ -176,6 +188,12 @@ function setupCopy_ () {
   PropertiesService2.setProperty('document', 'class_version2', 'json', class_version2);
 
   if (bsSignSetup_()) throw new Error('Failed to sign document.');
+
+  try {
+    setupTriggers_();
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
 
   SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
@@ -240,10 +258,4 @@ function setupParts_ () {
   setupCashFlow_();
   setupWest_();
   setupEast_(yyyy_mm);
-
-  try {
-    setupTriggers_();
-  } catch (err) {
-    ConsoleLog.error(err);
-  }
 }
