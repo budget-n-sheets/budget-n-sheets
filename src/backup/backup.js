@@ -1,4 +1,4 @@
-function backupRequest () {
+function backupRequestUi () {
   const ui = SpreadsheetApp.getUi();
 
   if (!isInstalled_()) return 2;
@@ -20,7 +20,12 @@ function backupRequest () {
 
   if (response === ui.Button.NO) return 1;
 
+  showDialogMessage('Add-on backup', 'Backing up...', 1);
   backupRequest_()
+  ui.alert(
+    "Add-on backup",
+    "The backup was completed successfully.",
+    ui.ButtonSet.OK);
   return 0;
 }
 
