@@ -131,6 +131,7 @@ function restoreFromSpreadsheet_ (file_id) {
   copyMonths_(spreadsheet);
   copyCards_(spreadsheet);
   copyTags_(spreadsheet);
+  copySettings_(spreadsheet);
 }
 
 function copyTables_ (spreadsheet) {
@@ -221,4 +222,27 @@ function copyTags_ (spreadsheet) {
 
   const values = source.getRange(2, 1, last - 1, 5).getValues();
   destination.getRange(2, 1, last - 1, 5).setValues(values);
+}
+
+function copySettings_ (spreadsheet) {
+  const list = spreadsheet.createDeveloperMetadataFinder()
+    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+    .withKey('user_settings')
+    .find();
+  if (list.length === 0) return;
+
+  const metadata = JSON.parse(list[0].getValue());
+  if (metadata.financial_calendar_sha256 === '') return;
+
+  const calendars = getAllOwnedCalendars();
+  for (let i = 0; i < calendars.id.length; i++) {
+    const digest = computeDigest('SHA_256', calendars.id[i], 'UTF_8');
+
+    if (digest === metadata.financial_calendar_sha256) {
+      setUserSettings_('financial_calendar', calendars.id[i]);
+      setUserSettings_('post_day_events', metadata.post_day_events);
+      setUserSettings_('cash_flow_events', metadata.cash_flow_events);
+      break;
+    }
+  }
 }
