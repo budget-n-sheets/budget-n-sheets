@@ -155,10 +155,11 @@ function setupRestore_ (fileId) {
   console.timeEnd('setup/restore');
 }
 
-function setupCopy_ () {
+function setupCopy_ (file_id) {
   console.time('setup/copy');
 
   const settings_candidate = PropertiesService2.getProperty('document', 'settings_pc', 'json');
+  if (settings_candidate.file_id !== file_id) throw new Error('File ID does not match.');
 
   SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
 
