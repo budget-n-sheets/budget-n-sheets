@@ -351,7 +351,7 @@ function showDialogPickerRestore (topic) {
   if (isInstalled_()) return;
 
   const isRestore = (topic === 'restore');
-  const title = (isRestore ? 'Select Backup' : 'Select Spreadsheet');
+  const title = (isRestore ? 'Select backup' : 'Select spreadsheet');
 
   const developer_key = getDeveloperKey_()
   if (developer_key === 1) showDialogErrorMessage()
