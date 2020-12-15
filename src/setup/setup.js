@@ -96,7 +96,7 @@ function setupRestore_ (fileId) {
   console.time('setup/restore');
 
   const settings_candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
-  if (settings_candidate.file_id !== fileId) return 2;
+  if (settings_candidate.file_id !== fileId) throw new Error('File ID does not match.');
 
   const backup = settings_candidate.backup;
 
