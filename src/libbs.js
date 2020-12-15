@@ -128,6 +128,7 @@ function getMonthDelta (mm) {
 
 var ConsoleLog = {
   digest: function (error, values) {
+    return error;
     const payload = {};
 
     if (error instanceof Error) {
