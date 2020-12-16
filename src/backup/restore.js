@@ -100,29 +100,10 @@ function restoreFromBackup_ (backup) {
     }
   }
 
-  try {
-    restoreTables_(backup);
-  } catch (err) {
-    ConsoleLog.error(err);
-  }
-
-  try {
-    restoreMonths_(backup);
-  } catch (err) {
-    ConsoleLog.error(err);
-  }
-
-  try {
-    restoreCards_(backup);
-  } catch (err) {
-    ConsoleLog.error(err);
-  }
-
-  try {
-    restoreTags_(backup);
-  } catch (err) {
-    ConsoleLog.error(err);
-  }
+  restoreTables_(backup);
+  restoreMonths_(backup);
+  restoreCards_(backup);
+  restoreTags_(backup);
 
   SpreadsheetApp.flush();
 }
