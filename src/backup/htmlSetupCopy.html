@@ -147,12 +147,15 @@
       $("#response").empty();
 
       if (info === 1) {
+        $('#b-Select').prop('disabled', false);
         $("#response").append('Sorry, something went wrong. Try again in a moment.');
         return;
       } else if (info === 2) {
+        $('#b-Select').prop('disabled', false);
         $("#response").append('No spreadsheet with the given ID could be found, or you do not have permission to access it.');
         return;
       } else if (info === 3) {
+        $('#b-Select').prop('disabled', false);
         $("#response").append('Sorry, it was not possible to verify the spreadsheet.');
         return;
       }
