@@ -95,6 +95,8 @@ function restoreFromBackup_ (backup) {
       digest = computeDigest('SHA_256', calendars.id[i], 'UTF_8');
       if (digest === backup.user_settings.sha256_financial_calendar) {
         setUserSettings_('financial_calendar', calendars.id[i]);
+        setUserSettings_('post_day_events', backup.user_settings.post_day_events);
+        setUserSettings_('cash_flow_events', backup.user_settings.cash_flow_events);
         break;
       }
     }
