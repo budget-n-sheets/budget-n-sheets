@@ -28,7 +28,7 @@ function update_minor_ (v1, list, patch, beta) {
   if (v1) ver = v1;
   else ver = { patch: -100 };
 
-  if (p != ver.patch) b = 0;
+  if (p !== ver.patch) b = 0;
   else b = beta;
 
   do {
@@ -39,7 +39,7 @@ function update_minor_ (v1, list, patch, beta) {
     } else if (list[p]) {
       r = list[p]();
     }
-  } while (!r && p != ver.patch);
+  } while (!r && p !== ver.patch);
 
   if (r) p--;
 

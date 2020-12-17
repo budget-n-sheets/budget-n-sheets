@@ -1,5 +1,5 @@
 function onOpenInstallable_ (e) {
-  if (e.authMode != ScriptApp.AuthMode.FULL) return;
+  if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
   try {
     loadCache_();
@@ -28,7 +28,7 @@ function loadCache_ () {
 }
 
 function onEditInstallable_ (e) {
-  if (e.authMode != ScriptApp.AuthMode.FULL) return;
+  if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
   try {
     const sheet = e.range.getSheet();

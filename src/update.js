@@ -1280,7 +1280,7 @@ function update_v0m30p6_ () {
 
     for (let i = 0; i < triggers.length; i++) {
       name = triggers[i].getHandlerFunction();
-      if (handlers.indexOf(name) != -1) continue;
+      if (handlers.indexOf(name) !== -1) continue;
 
       eventType = triggers[i].getEventType();
       ScriptApp.deleteTrigger(triggers[i]);

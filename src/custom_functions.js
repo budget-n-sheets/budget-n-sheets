@@ -26,7 +26,7 @@ function BSREPORT (data) {
   i = 0;
   n = sum_range.length;
 
-  while (i < n && sum_range[i] != '') {
+  while (i < n && sum_range[i] !== '') {
     if (/#wd/.test(range[i]) && sum_range[i] <= 0) {
       stats[0][1]++;
       stats[0][0] += sum_range[i];

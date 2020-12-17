@@ -101,7 +101,7 @@ function readSpreadsheetInfo (fileId) {
   list = [];
   cols = 2 * w_ + num_accs * w_;
   for (let i = 0; i < 10; i++) {
-    if (values[0][cols + w_ * i] != '') {
+    if (values[0][cols + w_ * i] !== '') {
       const matches = values[0][cols + w_ * i].match(/\w+/g);
       if (matches) list.push(matches);
     }
