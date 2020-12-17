@@ -58,7 +58,7 @@ function bsSignSetup_ () {
   const stringed = JSON.stringify(data);
   const encoded = Utilities.base64EncodeWebSafe(stringed, Utilities.Charset.UTF_8);
   const sig = computeHmacSignature("SHA_256", encoded, key, "UTF_8");
-  const package = JSON.stringify({
+  const pack = JSON.stringify({
     encoded: encoded,
     hmac: sig
   });
@@ -69,11 +69,11 @@ function bsSignSetup_ () {
     .find();
 
   if (list.length > 0) {
-    list[0].setValue(package);
+    list[0].setValue(pack);
   } else {
     spreadsheet.addDeveloperMetadata(
       'bs_sig',
-      package,
+      pack,
       SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
     );
   }
