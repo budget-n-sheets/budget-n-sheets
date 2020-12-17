@@ -117,7 +117,7 @@ function getCardsBalances_ () {
   balances = {
     cards: ['All'],
     balance: [
-      [0, 0, 0, 0, 0, 0, 0, 0,	0, 0, 0, 0]
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
   };
 

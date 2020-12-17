@@ -29,10 +29,10 @@ function onInstall (e) {
 }
 
 /**
-	* Adds a custom menu with items to show the sidebar and dialog.
-	*
-	* @param {Object} e The event parameter for a simple onOpen trigger.
-	*/
+  * Adds a custom menu with items to show the sidebar and dialog.
+  *
+  * @param {Object} e The event parameter for a simple onOpen trigger.
+  */
 function onOpen (e) {
   const ui = SpreadsheetApp.getUi();
   const menu = ui.createAddonMenu();
