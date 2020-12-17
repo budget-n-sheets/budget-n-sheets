@@ -37,8 +37,8 @@ function pagesView_ (select, a) {
 }
 
 function hideSheets_ (a) {
-  let spreadsheet, sheet;
-  let delta, mm, i;
+  let sheet;
+  let mm, i;
 
   if (a) {
     mm = getSpreadsheetDate.call(DATE_NOW).getMonth();
@@ -54,8 +54,8 @@ function hideSheets_ (a) {
     }
   }
 
-  spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  delta = getMonthDelta(mm);
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const delta = getMonthDelta(mm);
 
   for (i = 0; i < 12; i++) {
     sheet = spreadsheet.getSheetByName(MN_SHORT[i]);

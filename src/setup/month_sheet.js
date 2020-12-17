@@ -1,8 +1,8 @@
 function setupMonthSheet_ () {
   const sheetTTT = SPREADSHEET.getSheetByName('TTT');
-  let sheets, sheet, ranges, formula;
+  let sheet, ranges, formula;
   let expr1, expr2, expr3, expr4;
-  let headers, i, k;
+  let i, k;
 
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
@@ -10,9 +10,9 @@ function setupMonthSheet_ () {
   const list_acc = SETUP_SETTINGS.list_acc;
   const num_acc = SETUP_SETTINGS.number_accounts;
 
-  sheets = new Array(12);
+  const sheets = new Array(12);
 
-  headers = [];
+  const headers = [];
   for (k = 0; k < 1 + num_acc; k++) {
     headers[k] = rollA1Notation(1, 1 + 5 * k);
   }

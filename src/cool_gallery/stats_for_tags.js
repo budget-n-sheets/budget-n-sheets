@@ -1,8 +1,8 @@
 function coolStatsForTags_ (info) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName(info.sheet_name);
-  let sheetTags, range;
-  let chart, options, n;
+  let range;
+  let chart, options;
 
   sheet.getRange('E2').setFormula('\'_Settings\'!B4');
   sheet.getRange('E3').setFormula('\'_Settings\'!B6');
@@ -73,8 +73,8 @@ function coolStatsForTags_ (info) {
     .setOption('width', 783);
   sheet.insertChart(chart.build());
 
-  sheetTags = spreadsheet.getSheetByName('Tags');
-  n = sheetTags.getMaxRows();
+  const sheetTags = spreadsheet.getSheetByName('Tags');
+  const n = sheetTags.getMaxRows();
   if (n > 1) {
     range = sheetTags.getRange(2, 5, n - 1, 1);
 

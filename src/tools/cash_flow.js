@@ -147,7 +147,7 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
 
 function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
   let day, value, match, translation, important;
-  let start, end, offset, first;
+  let start, offset, first;
   let cc, c, i, j, k;
 
   const sheet = spreadsheet.getSheetByName(MN_SHORT[more.mm]);
@@ -163,7 +163,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
   const hasTags = (tags && tags.tags.length > 0);
   const table = sheet.getRange(5, 6, maxRows, 5 * num_acc).getValues();
 
-  end = new Date(more.yyyy, more.mm + 1, 1);
+  const end = new Date(more.yyyy, more.mm + 1, 1);
   if (DATE_NOW >= end) first = 99;
   else {
     start = new Date(more.yyyy, more.mm, 1);

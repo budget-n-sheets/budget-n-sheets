@@ -10,21 +10,19 @@ function BSBLANK (array) {
 function BSREPORT (data) {
   Utilities.sleep(300);
 
-  let stats;
-  let range, sum_range;
-  let n, i;
+  let i;
 
-  stats = [
+  const stats = [
     [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]
   ];
 
   if (data === '') return stats;
 
-  sum_range = data[0];
-  range = data[1];
+  const sum_range = data[0];
+  const range = data[1];
 
   i = 0;
-  n = sum_range.length;
+  const n = sum_range.length;
 
   while (i < n && sum_range[i] !== '') {
     if (/#wd/.test(range[i]) && sum_range[i] <= 0) {
@@ -56,7 +54,7 @@ function BSREPORT (data) {
 function BSSUMBYTAG (tag, range) {
   Utilities.sleep(300);
 
-  let sum, regex, pos;
+  let regex;
   let n, i, j;
   let cr;
 
@@ -67,9 +65,10 @@ function BSSUMBYTAG (tag, range) {
   tag = tag[0];
   tag = tag.slice(1);
 
+  const sum = [];
+  const pos = [];
+
   cr = 0;
-  sum = [];
-  pos = [];
   regex = [];
   for (i = 0; i < n; i++) {
     if (/^\w+$/.test(tag[i])) {

@@ -14,7 +14,7 @@ const QUICKSTART_DATA_STATEMENTS = Object.freeze({
 });
 
 function playQuickStatements_ (n) {
-  let lastRow, data, col, val;
+  let lastRow, col, val;
 
   const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MN_SHORT[DATE_NOW.getMonth()] : MN_SHORT[0]);
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -29,7 +29,7 @@ function playQuickStatements_ (n) {
   lastRow = sheet.getLastRow();
   if (lastRow < 4) lastRow = 4;
 
-  data = QUICKSTART_DATA_STATEMENTS[n];
+  const data = QUICKSTART_DATA_STATEMENTS[n];
   if (!data) throw new Error("Values for quickstart example couldn't be found. statements " + n);
 
   switch (n) {

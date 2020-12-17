@@ -1,6 +1,6 @@
 function setupEast_ (yyyy_mm) {
   const spreadsheet = SPREADSHEET;
-  let sheets, sheet;
+  let sheet;
   let md, t, i;
 
   const init_month = SETUP_SETTINGS.init_month;
@@ -12,7 +12,7 @@ function setupEast_ (yyyy_mm) {
     t = false;
   }
 
-  sheets = [];
+  const sheets = [];
   for (i = 0; i < 12; i++) {
     sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
   }

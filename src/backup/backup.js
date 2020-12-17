@@ -184,13 +184,13 @@ function backupTables_ (backup) {
 
 function backupTags_ (backup, spreadsheet) {
   const sheet = spreadsheet.getSheetByName('Tags');
-  let table, j;
+  let j;
 
   if (!sheet) return;
 
   const max = sheet.getLastRow() - 1;
   if (max < 1) return;
-  table = sheet.getRange(2, 1, max, 5).getValues();
+  const table = sheet.getRange(2, 1, max, 5).getValues();
 
   j = max;
   while (--j > -1) {
@@ -205,13 +205,13 @@ function backupTags_ (backup, spreadsheet) {
 
 function backupCards_ (backup, spreadsheet) {
   const sheet = spreadsheet.getSheetByName('Cards');
-  let table, i, j;
+  let i, j;
 
   if (!sheet) return;
 
   const max = sheet.getLastRow() - 5;
   if (max < 1) return;
-  table = sheet.getRange(6, 1, max, 6 * 12).getValues();
+  const table = sheet.getRange(6, 1, max, 6 * 12).getValues();
 
   i = -1;
   while (++i < 12) {

@@ -1,6 +1,6 @@
 function setupCashFlow_ () {
   const sheet = SPREADSHEET.getSheetByName('Cash Flow');
-  let ranges, formula, b_f3f3f3, b_d9ead3;
+  let ranges, formula;
   let d, s;
   let i, j, k;
 
@@ -39,8 +39,8 @@ function setupCashFlow_ () {
   } else {
   */
   ranges = [];
-  b_f3f3f3 = [];
-  b_d9ead3 = [];
+  const b_f3f3f3 = [];
+  const b_d9ead3 = [];
 
   i = 0;
   d = new Date(financial_year, 1 + i, 0).getDate();

@@ -2,11 +2,11 @@ function postEventsForDate_ (date) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   let sheet;
 
-  let calendar, list_eventos, evento;
+  let list_eventos, evento;
   let value, tags;
   let c1, a, c, i, j, k;
 
-  calendar = getFinancialCalendar_();
+  const calendar = getFinancialCalendar_();
   if (!calendar) return;
   list_eventos = calendar.getEventsForDay(date);
   if (list_eventos.length === 0) return;
@@ -100,7 +100,7 @@ function postEventsForDate_ (date) {
 
 function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
   const lastRow = sheet.getLastRow();
-  let table, value, i;
+  let table, i;
 
   if (sheet.getMaxRows() < lastRow + data.table.length) {
     addBlankRows_(sheet.getName());
@@ -123,7 +123,7 @@ function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
 
   sheet.getRange(row, offset, table.length, width).setValues(table);
 
-  value = transpose([data.values]);
+  const value = transpose([data.values]);
   sheet.getRange(row + i, offset + col, value.length, 1).setFormulas(value);
 }
 
@@ -237,7 +237,7 @@ function updateDecimalPlaces_ () {
 
 function updateDecimalSeparator_ () {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet, cell, v, t;
+  let sheet, cell, t;
 
   const dec_p = getSpreadsheetSettings_('decimal_places');
   const format = '0' + (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
@@ -260,7 +260,7 @@ function updateDecimalSeparator_ () {
   SpreadsheetApp.flush();
 
   cell = cell.getDisplayValue();
-  v = /\./.test(cell);
+  const v = /\./.test(cell);
 
   if (t) spreadsheet.deleteSheet(sheet);
 
@@ -271,13 +271,12 @@ function updateDecimalSeparator_ () {
 function treatLayout_ (yyyy, mm) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const financial_year = getConstProperties_('financial_year');
-  let sheets;
   let month, i;
 
   if (financial_year > yyyy) return; // Too soon to format the spreadsheet.
   else if (financial_year < yyyy) mm = 0; // Last time to format the spreadsheet.
 
-  sheets = [];
+  const sheets = [];
   for (i = 0; i < 12; i++) {
     sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
   }

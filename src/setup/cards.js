@@ -1,6 +1,6 @@
 function setupCards_ () {
   const sheet = SPREADSHEET.getSheetByName('Cards');
-  let ranges, formula, head, cell;
+  let formula, head, cell;
   let expr1, expr2, expr3;
   let i, k;
 
@@ -17,7 +17,7 @@ function setupCards_ () {
   SPREADSHEET.setActiveSheet(sheet);
   SPREADSHEET.moveActiveSheet(14);
 
-  ranges = [];
+  const ranges = [];
   for (i = 0; i < 12; i++) {
     ranges[2 * i] = sheet.getRange(6, 1 + 6 * i, 400, 5);
     ranges[2 * i + 1] = sheet.getRange(2, 2 + 6 * i, 1, 2);

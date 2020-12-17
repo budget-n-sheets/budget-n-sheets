@@ -5,7 +5,7 @@ function getCardById_ (card_id) {
 }
 
 function addCard_ (card) {
-  let aliases, random, c;
+  let aliases, c;
 
   if (!/^\w+$/.test(card.code)) return 10;
 
@@ -23,7 +23,7 @@ function addCard_ (card) {
     c = aliases.indexOf(card.code);
   }
 
-  random = genUniqueTableId_();
+  const random = genUniqueTableId_();
   if (!random) return 1;
 
   card.id = random;
@@ -43,13 +43,13 @@ function addCard_ (card) {
 
 function setCard_ (card) {
   let aliases;
-  let pos, c, i;
+  let c, i;
 
   if (!/^\w+$/.test(card.code)) return 10;
 
   const db_cards = getDbTables_('cards');
 
-  pos = db_cards.ids.indexOf(card.id);
+  const pos = db_cards.ids.indexOf(card.id);
   if (pos === -1) return 1;
 
   for (i = 0; i < db_cards.codes.length; i++) {
@@ -98,7 +98,7 @@ function deleteCard_ (card_id) {
 
 function getCardsBalances_ () {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
-  let balances, data, code;
+  let data, code;
   let v, i, k;
 
   if (!sheet) return;
@@ -114,7 +114,7 @@ function getCardsBalances_ () {
 
   if (db_cards.count === 0) return;
 
-  balances = {
+  const balances = {
     cards: ['All'],
     balance: [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -154,7 +154,7 @@ function getCardsBalances_ () {
 
 function refreshCardName_ (action, index, card) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
-  let ranges, text, limit, i;
+  let text, limit, i;
 
   if (!sheet) return;
 
@@ -165,7 +165,7 @@ function refreshCardName_ (action, index, card) {
 
   const col = 2 + w_ + w_ * num_acc + w_ + 1;
 
-  ranges = [];
+  const ranges = [];
   for (i = 0; i < 12; i++) {
     ranges[i] = rollA1Notation(2 + h_ * i, col + w_ * index);
   }
@@ -213,9 +213,8 @@ function refreshCardName_ (action, index, card) {
 
 function refreshCardsRules_ () {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
-  let card, list1, list2;
-  let rule1, rule2;
-  let n, i, j;
+  let card;
+  let i, j;
 
   if (!sheet) return;
 
@@ -225,8 +224,8 @@ function refreshCardsRules_ () {
   const num_acc = getConstProperties_('number_accounts');
   const db_cards = getDbTables_('cards');
 
-  list1 = ['All'];
-  list2 = [];
+  const list1 = ['All'];
+  const list2 = [];
 
   for (i = 0; i < db_cards.count; i++) {
     card = db_cards.data[i];
@@ -239,7 +238,7 @@ function refreshCardsRules_ () {
     }
   }
 
-  n = sheet.getMaxRows() - 5;
+  const n = sheet.getMaxRows() - 5;
   if (n < 1) return;
 
   if (list2.length === 0) {
@@ -251,12 +250,12 @@ function refreshCardsRules_ () {
     return;
   }
 
-  rule1 = SpreadsheetApp.newDataValidation()
+  const rule1 = SpreadsheetApp.newDataValidation()
     .requireValueInList(list1, true)
     .setAllowInvalid(true)
     .build();
 
-  rule2 = SpreadsheetApp.newDataValidation()
+  const rule2 = SpreadsheetApp.newDataValidation()
     .requireValueInList(list2, true)
     .setAllowInvalid(true)
     .build();

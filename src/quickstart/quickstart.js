@@ -55,14 +55,14 @@ function playSpeedQuickstart (id) {
 }
 
 function fillMonthWithZeros (sheet) {
-  let values, lastRow;
+  let lastRow;
   let i, k;
 
   lastRow = sheet.getLastRow();
   if (lastRow < 5) return;
 
   lastRow -= 4;
-  values = sheet.getRange(5, 1, lastRow, 10).getValues();
+  const values = sheet.getRange(5, 1, lastRow, 10).getValues();
 
   let n = 0;
   const list = [];
@@ -85,14 +85,14 @@ function fillMonthWithZeros (sheet) {
 }
 
 function fillCardWithZeros (sheet, col) {
-  let values, lastRow;
+  let lastRow;
   let i, k;
 
   lastRow = sheet.getLastRow();
   if (lastRow < 6) return;
 
   lastRow -= 5;
-  values = sheet.getRange(6, col, lastRow, 18).getValues();
+  const values = sheet.getRange(6, col, lastRow, 18).getValues();
   col += 3;
 
   let n = 0;

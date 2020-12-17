@@ -128,12 +128,12 @@ function askTransferAdminSd () {
   if (!isInstalled_()) return;
 
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  let editors, email, digest;
+  let email, digest;
   const user = Session.getEffectiveUser().getEmail();
 
   if (spreadsheet.getowner() || !isUserAdmin_()) return 1;
 
-  editors = spreadsheet.getEditors();
+  const editors = spreadsheet.getEditors();
   if (editors.length === 1) {
     SpreadsheetApp.getUi().alert(
       "Can't transfer admin role",
@@ -168,12 +168,12 @@ function continuedTransferAdminSd (editor) {
   if (!isInstalled_()) return;
 
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  let editors, email, digest;
+  let email, digest;
   const user = Session.getEffectiveUser().getEmail();
 
   if (spreadsheet.getowner() || !isUserAdmin_()) return 1;
 
-  editors = spreadsheet.getEditors();
+  const editors = spreadsheet.getEditors();
   if (editors.length === 1) {
     SpreadsheetApp.getUi().alert(
       "Can't transfer admin role",

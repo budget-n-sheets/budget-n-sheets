@@ -1,7 +1,7 @@
 function coolFilterByTag_ (info) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName(info.sheet_name);
-  let sheetTags, formula, range, rule;
+  let formula, range, rule;
   let text, aux1, aux2, aux3;
   let n, i, k;
 
@@ -55,7 +55,7 @@ function coolFilterByTag_ (info) {
 
   sheet.getRange('B12').setFormula(formula);
 
-  sheetTags = spreadsheet.getSheetByName('Tags');
+  const sheetTags = spreadsheet.getSheetByName('Tags');
   if (sheetTags) n = sheetTags.getMaxRows();
   else n = 0;
 

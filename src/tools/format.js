@@ -40,7 +40,7 @@ function formatTags_ () {
 
 function formatAccounts_ (mm) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
-  let date1, date2;
+  let date2;
   let table;
   let cc, n, i, k;
 
@@ -79,7 +79,7 @@ function formatAccounts_ (mm) {
     if (i > 1) sheet.getRange(5, 1 + cc, i, 4).sort({ column: 1 + cc, ascending: false });
   }
 
-  date1 = DATE_NOW.getTime();
+  const date1 = DATE_NOW.getTime();
   date2 = getConstProperties_('financial_year');
   date2 = new Date(date2, mm + 1, 0).getTime();
 
@@ -89,7 +89,7 @@ function formatAccounts_ (mm) {
 
 function formatCards_ (mm) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
-  let lastRow, table, card;
+  let table, card;
   let c, n;
   let i, j;
 
@@ -98,7 +98,7 @@ function formatCards_ (mm) {
   const w_ = 6;
   const cc = w_ * mm;
 
-  lastRow = sheet.getLastRow();
+  const lastRow = sheet.getLastRow();
   if (lastRow < 6) return;
 
   i = 0;

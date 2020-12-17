@@ -203,7 +203,6 @@ function refreshAccountName_ (index, account) {
 
 function refreshCashFlowReferences_ () {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cash Flow');
-  let formulas;
   let string, mm, dd, i, k;
 
   if (!sheet) return 1;
@@ -217,7 +216,7 @@ function refreshCashFlowReferences_ () {
 
   const db_accounts = getDbTables_('accounts');
 
-  formulas = ['=0 + B4'];
+  const formulas = ['=0 + B4'];
 
   for (i = 1; i < 12; i++) {
     dd = new Date(yyyy, i, 0).getDate();

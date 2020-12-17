@@ -2,7 +2,7 @@
  * Number format $ x,xx0.00;-$ x,xx0.00
  */
 function numberFormatCurrency (p_dec_p) {
-  let DEC_P, DEC_PS;
+  let DEC_P;
 
   if (p_dec_p != null) {
     DEC_P = p_dec_p ? '.' : ',';
@@ -10,7 +10,7 @@ function numberFormatCurrency (p_dec_p) {
     DEC_P = getSpreadsheetSettings_('decimal_separator') ? '.' : ',';
   }
 
-  DEC_PS = (DEC_P === '.' ? ',' : '.');
+  const DEC_PS = (DEC_P === '.' ? ',' : '.');
 
   let n = this;
   const s = n < 0 ? '-$ ' : '$ ';
@@ -24,7 +24,7 @@ function numberFormatCurrency (p_dec_p) {
  * Number format x,xx0.00;(x,xx0.00)
  */
 function numberFormatFinancial (p_dec_p) {
-  let DEC_P, DEC_PS;
+  let DEC_P;
 
   if (p_dec_p != null) {
     DEC_P = p_dec_p ? '.' : ',';
@@ -32,7 +32,7 @@ function numberFormatFinancial (p_dec_p) {
     DEC_P = getSpreadsheetSettings_('decimal_separator') ? '.' : ',';
   }
 
-  DEC_PS = (DEC_P === '.' ? ',' : '.');
+  const DEC_PS = (DEC_P === '.' ? ',' : '.');
 
   let n = this;
   const s = n < 0;

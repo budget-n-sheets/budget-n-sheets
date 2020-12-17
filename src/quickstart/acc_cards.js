@@ -42,8 +42,8 @@ function playQuickAccCards_ (n) {
   }
 
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet, lastRow, col;
-  let data, name, val, mm;
+  let lastRow, col;
+  let name, val, mm;
 
   const code = db_cards.codes[0];
   const financial_year = getConstProperties_('financial_year');
@@ -55,7 +55,7 @@ function playQuickAccCards_ (n) {
     else name = MN_SHORT[0];
   }
 
-  sheet = spreadsheet.getSheetByName(name);
+  const sheet = spreadsheet.getSheetByName(name);
   if (!sheet) {
     alertQuickstartSheetMissing(name);
     return;
@@ -64,7 +64,7 @@ function playQuickAccCards_ (n) {
   spreadsheet.setActiveSheet(sheet);
   lastRow = sheet.getLastRow();
 
-  data = QUICKSTART_ACC_CARDS[n];
+  const data = QUICKSTART_ACC_CARDS[n];
   if (!data) throw new Error("Values for quickstart example couldn't be found. acc_cards:" + n);
 
   if (n === 3) {

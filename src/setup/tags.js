@@ -1,6 +1,6 @@
 function setupTags_ () {
   const sheet = SPREADSHEET.getSheetByName('Tags');
-  let ranges, formula, rg, cd;
+  let formula, rg, cd;
   let i, k;
 
   const h_ = TABLE_DIMENSION.height;
@@ -14,7 +14,7 @@ function setupTags_ () {
   const formulas = [[]];
   const col = 11 + w_ * num_acc;
 
-  ranges = sheet.getRange(2, 1, 40, 5);
+  const ranges = sheet.getRange(2, 1, 40, 5);
   sheet.protect()
     .setUnprotectedRanges([ranges])
     .setWarningOnly(true);

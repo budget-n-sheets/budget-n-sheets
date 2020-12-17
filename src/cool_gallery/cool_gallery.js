@@ -1,5 +1,5 @@
 function coolGallery (option) {
-  let lock, s;
+  let s;
   let info;
 
   info = APPS_SCRIPT_GLOBAL.cool_gallery;
@@ -10,7 +10,7 @@ function coolGallery (option) {
     return 2;
   }
 
-  lock = LockService.getDocumentLock();
+  const lock = LockService.getDocumentLock();
   s = lock.tryLock(200);
   if (!s) return 0;
   s = getCoolSheet_(info);

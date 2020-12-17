@@ -1,5 +1,5 @@
 function setupTables_ () {
-  let ids, acc, r, i, j, k;
+  let acc, r, i, j, k;
 
   const sheet = SPREADSHEET.getSheetByName('_Backstage');
 
@@ -9,7 +9,7 @@ function setupTables_ () {
 
   i = 0;
   j = 0;
-  ids = [];
+  const ids = [];
   while (j < 1 + num_acc && i < 99) {
     r = randomString(7, 'lonum');
     if (ids.indexOf(r) === -1) {

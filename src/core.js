@@ -134,14 +134,14 @@ function showPanelTables (tab) {
 function showPanelAnalytics () {
   if (onlineUpdate_()) return;
 
-  let htmlTemplate, htmlSidebar;
+  let htmlTemplate;
 
   htmlTemplate = HtmlService.createTemplateFromFile('cool_gallery/htmlCoolGallery');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.list = APPS_SCRIPT_GLOBAL.cool_gallery;
 
-  htmlSidebar = htmlTemplate.evaluate().setTitle('Cool Gallery');
+  const htmlSidebar = htmlTemplate.evaluate().setTitle('Cool Gallery');
 
   SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
@@ -150,7 +150,7 @@ function showSidebarMainSettings () {
   if (onlineUpdate_()) return;
 
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  let htmlTemplate, htmlSidebar;
+  let htmlTemplate;
 
   const isAdmin = isUserAdmin_();
   const financial_year = getConstProperties_('financial_year');
@@ -185,13 +185,13 @@ function showSidebarMainSettings () {
   htmlTemplate.doc_name = spreadsheet.getName();
   htmlTemplate.financial_year = financial_year;
 
-  htmlSidebar = htmlTemplate.evaluate().setTitle('Settings');
+  const htmlSidebar = htmlTemplate.evaluate().setTitle('Settings');
 
   SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
 
 function showDialogAboutAddon () {
-  let htmlDialog, htmlTemplate;
+  let htmlTemplate;
   let v0;
 
   if (isInstalled_()) v0 = getClassVersion_('script');
@@ -202,7 +202,7 @@ function showDialogAboutAddon () {
 
   htmlTemplate.version = v0.major + '.' + v0.minor + '.' + v0.patch;
 
-  htmlDialog = htmlTemplate.evaluate()
+  const htmlDialog = htmlTemplate.evaluate()
     .setWidth(281)
     .setHeight(359);
 
@@ -210,12 +210,12 @@ function showDialogAboutAddon () {
 }
 
 function showDialogErrorMessage () {
-  let htmlTemplate, htmlDialog;
+  let htmlTemplate;
 
   htmlTemplate = HtmlService.createTemplateFromFile('html/htmlExceptionMessage');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlDialog = htmlTemplate.evaluate()
+  const htmlDialog = htmlTemplate.evaluate()
     .setWidth(373)
     .setHeight(137);
 
@@ -223,7 +223,7 @@ function showDialogErrorMessage () {
 }
 
 function showDialogMessage (title, message, timeout) {
-  let htmlTemplate, htmlDialog;
+  let htmlTemplate;
 
   htmlTemplate = HtmlService.createTemplateFromFile('html/htmlMessageScreen');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
@@ -231,7 +231,7 @@ function showDialogMessage (title, message, timeout) {
   htmlTemplate.message = message;
   htmlTemplate.hasTimeout = timeout;
 
-  htmlDialog = htmlTemplate.evaluate()
+  const htmlDialog = htmlTemplate.evaluate()
     .setWidth(263)
     .setHeight(113);
 
@@ -263,13 +263,13 @@ function showDialogSetupAddon_ () {
   }
 
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  let owner, user;
+  let owner;
 
   owner = spreadsheet.getOwner();
   if (owner) owner = owner.getEmail();
   else owner = '';
 
-  user = Session.getEffectiveUser().getEmail();
+  const user = Session.getEffectiveUser().getEmail();
 
   if (owner && owner !== user) {
     ui.alert(
@@ -295,12 +295,12 @@ function showDialogSetupAddon_ () {
     Learn more at budgetnsheets.com/notice-to-x-frame`,
     ui.ButtonSet.OK);
 
-  let htmlTemplate, htmlDialog;
+  let htmlTemplate;
 
   htmlTemplate = HtmlService.createTemplateFromFile('html/htmlSetupAddon');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlDialog = htmlTemplate.evaluate()
+  const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)
     .setHeight(359);
 
@@ -360,12 +360,12 @@ function showDialogPickerRestore (topic) {
 }
 
 function showDialogSetupEnd () {
-  let htmlTemplate, htmlDialog;
+  let htmlTemplate;
 
   htmlTemplate = HtmlService.createTemplateFromFile('html/htmlSetupEnd');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlDialog = htmlTemplate.evaluate()
+  const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)
     .setHeight(367);
 
@@ -374,9 +374,8 @@ function showDialogSetupEnd () {
 
 function showDialogEditAccount (acc_id) {
   const htmlTemplate = HtmlService.createTemplateFromFile('html/htmlEditAccount');
-  let account;
 
-  account = tablesService('get', 'account', acc_id);
+  const account = tablesService('get', 'account', acc_id);
   if (!account) return 1;
 
   for (const key in account) {
@@ -392,11 +391,10 @@ function showDialogEditAccount (acc_id) {
 
 function showDialogAddCard () {
   const htmlTemplate = HtmlService.createTemplateFromFile('html/htmlAddEditCard');
-  let card;
 
   htmlTemplate.is_edit = false;
 
-  card = { id: '', name: '', code: '', aliases: '', limit: 0 };
+  const card = { id: '', name: '', code: '', aliases: '', limit: 0 };
 
   for (const key in card) {
     htmlTemplate['card_' + key] = card[key];
@@ -411,11 +409,10 @@ function showDialogAddCard () {
 
 function showDialogEditCard (card_id) {
   const htmlTemplate = HtmlService.createTemplateFromFile('html/htmlAddEditCard');
-  let card;
 
   htmlTemplate.is_edit = true;
 
-  card = tablesService('get', 'card', card_id);
+  const card = tablesService('get', 'card', card_id);
   if (!card) return 1;
 
   card.aliases = card.aliases.join(', ');

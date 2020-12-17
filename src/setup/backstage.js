@@ -1,6 +1,6 @@
 function setupBackstage_ () {
   const sheet = SPREADSHEET.getSheetByName('_Backstage');
-  let wallet, accounts, formula;
+  let formula;
   let income, expenses;
   let n, i, k;
 
@@ -22,8 +22,8 @@ function setupBackstage_ () {
   const col = 2 + w_ + w_ * num_acc + w_;
   const dec_c = (dec_p ? ',' : '\\');
 
-  wallet = new Array(height);
-  accounts = new Array(height);
+  const wallet = new Array(height);
+  const accounts = new Array(height);
 
   n = height;
   while (n--) {

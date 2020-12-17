@@ -1,14 +1,14 @@
 function calendarDigestListEvents_ (listEvents, start, end, offset) {
   let evento, description;
-  let output, translation, regexp, match;
-  let list_acc, list, cell, s, i, j;
-  let startDate, endDate, end2, a, d;
+  let translation, match;
+  let list, cell, s, i, j;
+  let startDate, endDate, a, d;
 
-  end2 = new Date(end);
+  const end2 = new Date(end);
   end2.setDate(end2.getDate() - 1);
 
-  output = [];
-  regexp = {
+  const output = [];
+  const regexp = {
     accounts: '',
     cards: 0
   };
@@ -16,7 +16,7 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
   const dec_p = getSpreadsheetSettings_('decimal_separator');
   const db_tables = getDbTables_();
 
-  list_acc = db_tables.accounts.names;
+  const list_acc = db_tables.accounts.names;
   list_acc.splice(0, 0, 'Wallet');
 
   list = list_acc.slice();
@@ -142,7 +142,6 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
 
 function getAllOwnedCalendars () {
   let calendars;
-  let db_calendars;
   let digest, id, name, i;
 
   try {
@@ -161,7 +160,7 @@ function getAllOwnedCalendars () {
     calendars = [];
   }
 
-  db_calendars = {
+  const db_calendars = {
     name: [],
     id: [],
     md5: []
@@ -190,16 +189,16 @@ function getFinancialCalendar_ () {
 }
 
 function getCalendarEventsForCashFlow_ (financial_year, mm) {
-  let calendar, eventos;
+  let eventos;
   let today;
-  let start, end, offset, a, b;
+  let start, offset;
 
   if (!getUserSettings_('cash_flow_events')) return [];
 
-  calendar = getFinancialCalendar_();
+  const calendar = getFinancialCalendar_();
   if (!calendar) return [];
 
-  end = new Date(financial_year, mm + 1, 1);
+  const end = new Date(financial_year, mm + 1, 1);
   if (DATE_NOW >= end) return [];
 
   start = new Date(financial_year, mm, 1);
@@ -211,8 +210,8 @@ function getCalendarEventsForCashFlow_ (financial_year, mm) {
   offset = getSpreadsheetDate.call(start);
   offset = start.getTime() - offset.getTime();
 
-  a = new Date(start.getTime() + offset);
-  b = new Date(end.getTime() + offset);
+  const a = new Date(start.getTime() + offset);
+  const b = new Date(end.getTime() + offset);
 
   eventos = calendar.getEvents(a, b);
   if (!eventos) return [];

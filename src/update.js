@@ -637,7 +637,7 @@ function update_v0m33p2_ () {
 function update_v0m33p1_ () {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
-    let rules, rule;
+    let rule;
     if (!sheet) return;
 
     const maxRows = sheet.getMaxRows() - 1;
@@ -651,7 +651,7 @@ function update_v0m33p1_ () {
     sheet.getRange(2, 5, maxRows, 1).clearDataValidations().setDataValidation(rule);
 
     sheet.clearConditionalFormatRules();
-    rules = sheet.getConditionalFormatRules();
+    const rules = sheet.getConditionalFormatRules();
 
     range = sheet.getRange(2, 6, maxRows, 12);
     rule = SpreadsheetApp.newConditionalFormatRule()
@@ -845,12 +845,12 @@ function update_v0m33p0s2_ (spreadsheet, limits) {
 
 function update_v0m33p0s1_ (spreadsheet, limits) {
   try {
-    let sheet, formula, limit, rg, cd;
+    let sheet, formula, rg, cd;
     let i, k;
 
     sheet = spreadsheet.getSheetByName('Cards');
     if (!sheet) return;
-    limit = sheet.getMaxRows();
+    const limit = sheet.getMaxRows();
 
     sheet = spreadsheet.getSheetByName('Tags');
     if (!sheet) return;
@@ -965,8 +965,7 @@ function update_v0m32p7_ () {
   try {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const backstage = spreadsheet.getSheetByName('_Backstage');
-    let wallet, accounts, cards;
-    let col, n, i, k;
+    let n, i, k;
 
     if (!backstage) return;
 
@@ -976,10 +975,10 @@ function update_v0m32p7_ () {
     const height = 120;
     const num_acc = getConstProperties_('number_accounts');
 
-    wallet = new Array(height);
-    cards = new Array(height);
+    const wallet = new Array(height);
+    const cards = new Array(height);
 
-    accounts = [];
+    const accounts = [];
     for (k = 0; k < num_acc; k++) {
       accounts[k] = new Array(height);
     }
@@ -1021,7 +1020,7 @@ function update_v0m32p7_ () {
     }
     backstage.getRange(2, 6 + w_ * num_acc + w_, height, 1).setFormulas(cards);
 
-    col = 16 + w_ * num_acc;
+    const col = 16 + w_ * num_acc;
     for (k = 0; k < 10; k++) {
       list = [];
       for (i = 0; i < 12; i++) {
@@ -1082,11 +1081,9 @@ function update_v0m32p6_ () {
  */
 function update_v0m32p2_ () {
   try {
-    let rr;
-
     update_v0m32p2s0_();
 
-    rr = update_v0m32p2s1_();
+    const rr = update_v0m32p2s1_();
     if (rr) return rr;
   } catch (err) {
     ConsoleLog.error(err);
@@ -1097,17 +1094,16 @@ function update_v0m32p2_ () {
 function update_v0m32p2s1_ () {
   try {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    let template;
-    let sheet, tmp, ranges, n;
+    let sheet;
 
     sheet = spreadsheet.getSheetByName('Quick Actions');
     if (!sheet) return;
 
-    template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
+    const template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
 
-    tmp = spreadsheet.insertSheet();
+    const tmp = spreadsheet.insertSheet();
 
-    n = sheet.getIndex();
+    const n = sheet.getIndex();
     spreadsheet.deleteSheet(sheet);
 
     sheet = template.getSheetByName('Quick Actions')
@@ -1116,7 +1112,7 @@ function update_v0m32p2s1_ () {
 
     sheet.setTabColor('#6aa84f');
 
-    ranges = [];
+    const ranges = [];
     ranges[0] = sheet.getRange(3, 3, 3, 1);
     ranges[1] = sheet.getRange(8, 3, 2, 1);
     ranges[2] = sheet.getRange(12, 2, 1, 2);
@@ -1271,12 +1267,12 @@ function update_v0m30p6_ () {
     const handlers = ['onOpenInstallable_', 'onEditInstallable_', 'dailyTrigger_', 'weeklyTriggerPos_', 'weeklyTriggerPre_'];
     const financial_year = getConstProperties_('financial_year');
 
-    let triggers, trigger, yyyy, dd, name;
+    let trigger, yyyy, dd, name;
     let eventType, installClock, installOnEdit;
 
     installClock = false;
     installOnEdit = false;
-    triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet());
+    const triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet());
 
     for (let i = 0; i < triggers.length; i++) {
       name = triggers[i].getHandlerFunction();
