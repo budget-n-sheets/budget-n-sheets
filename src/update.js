@@ -182,9 +182,16 @@ function update_v0m0p0_() {
  */
 function update_v0m36p4_ () {
   try {
-    if (update_v0m36p4s0_()) return 2;
-    if (update_v0m36p4s1_()) return 2;
-    if (update_v0m36p4s2_()) return 2;
+    let rr;
+
+    rr = update_v0m36p4s0_();
+    if (rr) return rr;
+
+    rr = update_v0m36p4s1_();
+    if (rr) return rr;
+
+    rr = update_v0m36p4s2_();
+    if (rr) return rr;
 
     const user_settings = PropertiesService2.getProperty('document', 'user_settings', 'json');
     updateSettingsMetadata_(user_settings);
@@ -199,6 +206,8 @@ function update_v0m36p4_ () {
 function update_v0m36p4s2_ () {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    if (!sheet) return 1;
+
     const db = getTablesService_('all');
     let metadata, list;
 
