@@ -95,7 +95,7 @@ function saveUserSettings (settings) {
     ConsoleLog.error(err);
   }
 
-  if (init_month == new_init_month) return;
+  if (init_month === new_init_month) return;
 
   try {
     sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Settings');
@@ -265,14 +265,14 @@ function getMonthFactored_ (select) {
 
   const financial_year = getConstProperties_('financial_year');
 
-  if (select == 'actual_month') {
+  if (select === 'actual_month') {
     yyyy = date.getFullYear();
 
-    if (yyyy == financial_year) return date.getMonth() + 1;
+    if (yyyy === financial_year) return date.getMonth() + 1;
     else if (yyyy < financial_year) return 0;
     else return 12;
-  } else if (select == 'active_months') {
-    if (date.getFullYear() == financial_year) mm = date.getMonth() + 1;
+  } else if (select === 'active_months') {
+    if (date.getFullYear() === financial_year) mm = date.getMonth() + 1;
     else if (date.getFullYear() < financial_year) mm = 0;
     else mm = 12;
 
@@ -280,11 +280,11 @@ function getMonthFactored_ (select) {
 
     if (user_settings.initial_month > mm) return 0;
     else return (mm - user_settings.initial_month + 1);
-  } else if (select == 'm_factor') {
+  } else if (select === 'm_factor') {
     yyyy = date.getFullYear();
     mm = getMonthFactored_('active_months');
 
-    if (yyyy == financial_year) {
+    if (yyyy === financial_year) {
       mm--;
       if (mm > 0) return mm;
       else return 0;

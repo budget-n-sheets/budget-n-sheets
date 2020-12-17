@@ -18,7 +18,7 @@
  */
 
 function update_major_ (v1, list, minor, patch, beta) {
-  if (list == null || list.length == 0) return { r: 1, m: -1, p: -1 };
+  if (list == null || list.length === 0) return { r: 1, m: -1, p: -1 };
 
   let m = minor;
   let p = patch;
@@ -29,7 +29,7 @@ function update_major_ (v1, list, minor, patch, beta) {
   r = { r: 0, p: p };
 
   do {
-    if (v1 && m == v1.minor) ver = v1;
+    if (v1 && m === v1.minor) ver = v1;
     else ver = null;
 
     if (m >= list.length) {
@@ -39,7 +39,7 @@ function update_major_ (v1, list, minor, patch, beta) {
       r = update_minor_(ver, list[m], p, beta);
     }
 
-    if (r.r || (ver && m == ver.minor)) {
+    if (r.r || (ver && m === ver.minor)) {
       t = 1;
     } else {
       m++;
@@ -48,10 +48,10 @@ function update_major_ (v1, list, minor, patch, beta) {
     }
   } while (!t);
 
-  if (r.r && r.p == -1) {
+  if (r.r && r.p === -1) {
     m--;
     r.p = pp;
-  } else if (r.p == -1) {
+  } else if (r.p === -1) {
     r.p = 0;
   }
 

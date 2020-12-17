@@ -25,7 +25,7 @@ function setupCashFlow_ () {
     .setWarningOnly(true);
 
   /*
-  if (financial_year == 2020) {
+  if (financial_year === 2020) {
     ranges = [ "C4:C33", "G4:G31", "K4:K33", "O4:O32", "S4:S33", "W4:W32", "AA4:AA33", "AE4:AE33", "AI4:AI32", "AM4:AM33", "AQ4:AQ32", "AU4:AU33" ];
 
     b_f3f3f3 = [ "F32:H33", "N33:P33", "V33:X33", "AH33:AJ33", "AP33:AR33" ];
@@ -116,7 +116,7 @@ function setupCashFlow_ () {
 
   sheet.getRange(4, 3).setFormula('=0 + B4');
 
-  if (init_month == 0) {
+  if (init_month === 0) {
     formula = '=0 + B4';
   } else {
     d = new Date(financial_year, init_month, 0).getDate();

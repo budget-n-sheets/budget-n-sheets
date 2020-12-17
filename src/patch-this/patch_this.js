@@ -52,7 +52,7 @@ function update_ () {
   r = { r: 0, m: minor, p: patch, b: beta };
 
   do {
-    ver = (major == v1.major ? v1 : null);
+    ver = (major === v1.major ? v1 : null);
     if (major >= patch_list.length) {
       major -= 2;
       t = 1;
@@ -60,7 +60,7 @@ function update_ () {
       r = update_major_(ver, patch_list[major], minor, patch, beta);
     }
 
-    if (r.r || major == v1.major) {
+    if (r.r || major === v1.major) {
       t = 1;
     } else {
       major++;
@@ -72,16 +72,16 @@ function update_ () {
   } while (!t);
 
   if (r.r) {
-    if (r.m == -1) {
+    if (r.m === -1) {
       major--;
       r.m = mm;
     }
-    if (r.p == -1) r.p = pp;
+    if (r.p === -1) r.p = pp;
 
-    if (r.r == 2) ConsoleLog.warn('add-on/update/fail', r);
+    if (r.r === 2) ConsoleLog.warn('add-on/update/fail', r);
     r.r = 2;
   } else {
-    if (r.m == -1) r.m = 0;
+    if (r.m === -1) r.m = 0;
     r.r = 0;
   }
 

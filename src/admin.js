@@ -107,7 +107,7 @@ function askTransferAdmin () {
     "You might lose the ability to change settings. You can't undo this action!\n\nNew admin: " + owner,
     ui.ButtonSet.YES_NO);
 
-  if (response == ui.Button.YES) {
+  if (response === ui.Button.YES) {
     deleteAllTriggers_();
 
     setAdminSettings_('admin_id', owner_id);
@@ -134,7 +134,7 @@ function askTransferAdminSd () {
   if (spreadsheet.getowner() || !isUserAdmin_()) return 1;
 
   editors = spreadsheet.getEditors();
-  if (editors.length == 1) {
+  if (editors.length === 1) {
     SpreadsheetApp.getUi().alert(
       "Can't transfer admin role",
       'You are the only editor of the spreadsheet.',
@@ -174,7 +174,7 @@ function continuedTransferAdminSd (editor) {
   if (spreadsheet.getowner() || !isUserAdmin_()) return 1;
 
   editors = spreadsheet.getEditors();
-  if (editors.length == 1) {
+  if (editors.length === 1) {
     SpreadsheetApp.getUi().alert(
       "Can't transfer admin role",
       'You are the only editor of the spreadsheet.',

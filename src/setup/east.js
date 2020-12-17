@@ -5,7 +5,7 @@ function setupEast_ (yyyy_mm) {
 
   const init_month = SETUP_SETTINGS.init_month;
 
-  if (yyyy_mm.yyyy == SETUP_SETTINGS.financial_year) {
+  if (yyyy_mm.yyyy === SETUP_SETTINGS.financial_year) {
     t = true;
     md = getMonthDelta(yyyy_mm.mm);
   } else {
@@ -64,7 +64,7 @@ function setupEast_ (yyyy_mm) {
       }
     }
 
-    if (yyyy_mm.mm == 11) {
+    if (yyyy_mm.mm === 11) {
       sheets[8].showSheet();
     }
   }

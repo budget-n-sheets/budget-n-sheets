@@ -153,7 +153,7 @@ function getAllOwnedCalendars () {
   }
 
   try {
-    if (calendars.length == 0) {
+    if (calendars.length === 0) {
       calendars = CalendarApp.getAllOwnedCalendars();
     }
   } catch (err) {

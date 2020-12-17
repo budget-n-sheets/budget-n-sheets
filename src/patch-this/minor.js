@@ -18,7 +18,7 @@
  */
 
 function update_minor_ (v1, list, patch, beta) {
-  if (list == null || list.length == 0) return { r: 1, p: -1, b: 0 };
+  if (list == null || list.length === 0) return { r: 1, p: -1, b: 0 };
 
   let p = patch;
   let ver, b, r;
@@ -43,7 +43,7 @@ function update_minor_ (v1, list, patch, beta) {
 
   if (r) p--;
 
-  if (p == ver.patch) {
+  if (p === ver.patch) {
     b = update_beta_(b);
   }
 

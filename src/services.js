@@ -83,7 +83,7 @@ function tagsCheckbox_ (sheet, range) {
 }
 
 function quickActions_ (range, value) {
-  if (value == '') return;
+  if (value === '') return;
 
   const row = range.getRow();
 
@@ -92,8 +92,8 @@ function quickActions_ (range, value) {
       toolPicker_('AddBlankRows', 'Cards');
       break;
     case 12:
-      if (value == 'Collapse') pagesView_('hide', 1);
-      else if (value == 'Expand') pagesView_('show');
+      if (value === 'Collapse') pagesView_('hide', 1);
+      else if (value === 'Expand') pagesView_('show');
       break;
 
     default:

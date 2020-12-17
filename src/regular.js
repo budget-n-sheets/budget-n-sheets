@@ -9,7 +9,7 @@ function postEventsForDate_ (date) {
   calendar = getFinancialCalendar_();
   if (!calendar) return;
   list_eventos = calendar.getEventsForDay(date);
-  if (list_eventos.length == 0) return;
+  if (list_eventos.length === 0) return;
   list_eventos = calendarDigestListEvents_(list_eventos);
 
   const mm = date.getMonth();

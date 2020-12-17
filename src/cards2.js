@@ -112,7 +112,7 @@ function getCardsBalances_ () {
   const col = 2 + w_ + w_ * num_acc;
   const num_cards = db_cards.count;
 
-  if (db_cards.count == 0) return;
+  if (db_cards.count === 0) return;
 
   balances = {
     cards: ['All'],
@@ -129,7 +129,7 @@ function getCardsBalances_ () {
   data = sheet.getRange(1, col + w_, 1 + 12 * h_, w_ * num_cards).getValues();
 
   for (k = 0; k < num_cards; k++) {
-    if (data[0][w_ * k] == '') continue;
+    if (data[0][w_ * k] === '') continue;
 
     code = data[0][w_ * k].match(/\w+/g);
     if (code == null) continue;
@@ -137,7 +137,7 @@ function getCardsBalances_ () {
     for (i = 0; i < code.length; i++) {
       if (db_cards.codes.indexOf(code[i]) !== -1) break;
     }
-    if (i == code.length) continue;
+    if (i === code.length) continue;
 
     balances.cards.push(code[i]);
 

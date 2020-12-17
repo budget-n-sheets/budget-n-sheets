@@ -18,7 +18,7 @@ function BSREPORT (data) {
     [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]
   ];
 
-  if (data == '') return stats;
+  if (data === '') return stats;
 
   sum_range = data[0];
   range = data[1];
@@ -84,10 +84,10 @@ function BSSUMBYTAG (tag, range) {
     }
   }
 
-  if (range == '') return sum;
+  if (range === '') return sum;
 
-  if (regex.length == 0) return sum;
-  else if (regex.length == 1) regex = regex[0];
+  if (regex.length === 0) return sum;
+  else if (regex.length === 1) regex = regex[0];
   else regex = regex.join('|');
 
   regex = '#(' + regex + ')';
@@ -120,7 +120,7 @@ function BSCARDPART (data) {
 
   for (let i = 0; i < values.length; i++) {
     if (current[i] >= max[i]) continue;
-    if (current[i] == '' || max[i] == '' || values[i] == '') continue;
+    if (current[i] === '' || max[i] === '' || values[i] === '') continue;
 
     sum += (max[i] - current[i]) * values[i];
   }

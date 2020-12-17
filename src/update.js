@@ -1045,7 +1045,7 @@ function update_v0m32p6_ () {
     const triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet());
 
     for (let i = 0; i < triggers.length; i++) {
-      if (triggers[i].getEventType() == ScriptApp.EventType.CLOCK) {
+      if (triggers[i].getEventType() === ScriptApp.EventType.CLOCK) {
         ScriptApp.deleteTrigger(triggers[i]);
       }
     }
@@ -1060,7 +1060,7 @@ function update_v0m32p6_ () {
       day = 1 + randomInteger(28);
       trigger = createNewTrigger_('weeklyTriggerPos_', 'onMonthDay', { days: day, hour: hour });
       saveTriggerId_(trigger, 'document', 'clockTriggerId');
-    } else if (financial_year == yyyy) {
+    } else if (financial_year === yyyy) {
       trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: hour });
       saveTriggerId_(trigger, 'document', 'clockTriggerId');
     } else if (financial_year > yyyy) {
@@ -1309,7 +1309,7 @@ function update_v0m30p6_ () {
       if (financial_year < yyyy) {
         trigger = createNewTrigger_('weeklyTriggerPos_', 'onWeekDay', { weeks: 1, week: 2 });
         saveTriggerId_(trigger, 'document', 'clockTriggerId');
-      } else if (financial_year == yyyy) {
+      } else if (financial_year === yyyy) {
         trigger = createNewTrigger_('dailyTrigger_', 'everyDays', { days: 1, hour: 2 });
         saveTriggerId_(trigger, 'document', 'clockTriggerId');
       } else if (financial_year > yyyy) {

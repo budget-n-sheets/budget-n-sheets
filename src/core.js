@@ -37,7 +37,7 @@ function onOpen (e) {
   const ui = SpreadsheetApp.getUi();
   const menu = ui.createAddonMenu();
 
-  if (e && e.authMode == ScriptApp.AuthMode.NONE) {
+  if (e && e.authMode === ScriptApp.AuthMode.NONE) {
     menu.addItem('Start budget sheet', 'showDialogSetupAddon_')
       .addSeparator()
       .addItem('About the add-on', 'showDialogAboutAddon');
@@ -441,7 +441,7 @@ function showDialogDeleteCard (card_id) {
     'Are you sure you want to delete ' + card.name + '?',
     ui.ButtonSet.YES_NO);
 
-  if (response == ui.Button.YES) {
+  if (response === ui.Button.YES) {
     tablesService('set', 'deletecard', card_id);
     return 1;
   }
