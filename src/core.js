@@ -196,7 +196,10 @@ function showSidebarMainSettings() {
 
 function showDialogAboutAddon() {
 	var htmlDialog, htmlTemplate;
-	const v0 = APPS_SCRIPT_GLOBAL.script_version;
+  let v0;
+
+  if (isInstalled_()) v0 = getClassVersion_('script');
+  else v0 = APPS_SCRIPT_GLOBAL.script_version;
 
 	htmlTemplate = HtmlService.createTemplateFromFile("html/htmlAboutAddon");
 	htmlTemplate = printHrefScriptlets(htmlTemplate);
