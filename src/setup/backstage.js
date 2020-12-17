@@ -59,11 +59,11 @@ function setupBackstage_ () {
     income = '0';
     expenses = '0';
 
-    wallet[h_ * i][4] = "BSBLANK(TRANSPOSE(\'" + MN_SHORT[i] + "\'!" + values[k] + '))';
+    wallet[h_ * i][4] = "BSBLANK(TRANSPOSE('" + MN_SHORT[i] + "'!" + values[k] + '))';
 
-    formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + tags[k] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); "#ign"))';
-    formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[k] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1))); ' + formula;
-    formula = "FILTER(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[k] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); ' + formula + ')';
+    formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[k] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); "#ign"))';
+    formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[k] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1))); ' + formula;
+    formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[k] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); ' + formula + ')';
     formula = 'SUM(IFERROR(' + formula + '; 0))';
     wallet[2 + h_ * i][0] = formula;
 
@@ -72,21 +72,21 @@ function setupBackstage_ () {
       expenses += ' + ' + rollA1Notation(4 + h_ * i, 7 + w_ * k);
 
       accounts[h_ * i][w_ * k] = '=' + balance2[5 * i + k];
-      accounts[h_ * i][4 + w_ * k] = "BSBLANK(TRANSPOSE(\'" + MN_SHORT[i] + "\'!" + values[1 + k] + '))';
+      accounts[h_ * i][4 + w_ * k] = "BSBLANK(TRANSPOSE('" + MN_SHORT[i] + "'!" + values[1 + k] + '))';
 
-      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
-      formula = "FILTER(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
+      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
+      formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
       formula = balance1[5 * i + k] + ' + IFERROR(SUM(' + formula + '); 0)';
       accounts[1 + h_ * i][w_ * k] = formula;
 
-      formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + tags[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
-      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1))); ' + formula;
-      formula = "FILTER(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + values[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
+      formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
+      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1))); ' + formula;
+      formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
       formula = 'IFERROR(SUM(' + formula + '); 0)';
       accounts[2 + h_ * i][w_ * k] = formula;
 
-      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + tags[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
-      formula = "IFERROR(FILTER(ARRAY_CONSTRAIN(\'" + MN_SHORT[i] + "\'!" + combo[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 2); ' + formula + '); "")';
+      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
+      formula = "IFERROR(FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + combo[1 + k] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 2); ' + formula + '); "")';
       formula = 'BSREPORT(TRANSPOSE(' + formula + '))';
       accounts[h_ * i][1 + w_ * k] = formula;
     }

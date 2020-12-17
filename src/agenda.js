@@ -89,7 +89,7 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
       if (cell.Value) cell.Value[0] = cell.Value[0].replace(',', '.');
     }
 
-    if (cell.Value) cell.Value = Number(cell.Value[0].replace('\$', ''));
+    if (cell.Value) cell.Value = Number(cell.Value[0].replace('$', ''));
     else cell.Value = NaN;
 
     translation = getTranslation.call(cell.Description);

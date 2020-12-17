@@ -288,7 +288,7 @@ function showDialogSetupAddon_ () {
   ui.alert(
     'Notice',
     `Due to a bug with Google Sheets, if you experience
-    any issues with the \"Start budget spreadsheet\" dialog,
+    any issues with the "Start budget spreadsheet" dialog,
     please use your browser in incognito/private mode
     and try again.
 
