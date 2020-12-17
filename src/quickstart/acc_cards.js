@@ -1,4 +1,4 @@
-var QUICKSTART_ACC_CARDS = Object.freeze({
+const QUICKSTART_ACC_CARDS = Object.freeze({
   3: [
     [7, 'Online shopping 1/3 (with instalments in d/d format)', null, null, null, null,
       -7, 'Online shopping 2/3 (with instalments in d/d format)', null, null, null, null,
@@ -41,9 +41,9 @@ function playQuickAccCards_ (n) {
     return;
   }
 
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet, lastRow, col;
-  var data, name, val, mm;
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet, lastRow, col;
+  let data, name, val, mm;
 
   const code = db_cards.codes[0];
   const financial_year = getConstProperties_('financial_year');

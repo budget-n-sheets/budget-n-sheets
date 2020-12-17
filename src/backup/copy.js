@@ -33,7 +33,7 @@ function validateSpreadsheet (fileId) {
     metadata = list[0].getValue();
     metadata = JSON.parse(metadata);
 
-    let hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
+    const hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
     if (hmac !== metadata.hmac) return 3;
   } catch (err) {
     ConsoleLog.error(err);
@@ -102,7 +102,7 @@ function readSpreadsheetInfo (fileId) {
   cols = 2 * w_ + num_accs * w_;
   for (let i = 0; i < 10; i++) {
     if (values[0][cols + w_ * i] != '') {
-      let matches = values[0][cols + w_ * i].match(/\w+/g);
+      const matches = values[0][cols + w_ * i].match(/\w+/g);
       if (matches) list.push(matches);
     }
   }
@@ -168,13 +168,13 @@ function copyMonths_ (spreadsheet) {
 
   let mm = -1;
   while (++mm < 12) {
-    let source = spreadsheet.getSheetByName(MN_SHORT[mm]);
+    const source = spreadsheet.getSheetByName(MN_SHORT[mm]);
     if (!source) continue;
 
-    let last = source.getLastRow();
+    const last = source.getLastRow();
     if (last < 5) continue;
 
-    let destination = SPREADSHEET.getSheetByName(MN_SHORT[mm]);
+    const destination = SPREADSHEET.getSheetByName(MN_SHORT[mm]);
 
     let max = destination.getMaxRows();
     while (max < last) {
@@ -182,7 +182,7 @@ function copyMonths_ (spreadsheet) {
       max += 400;
     }
 
-    let values = source.getRange(5, 1, last - 4, 5 + 5 * number_accounts).getValues();
+    const values = source.getRange(5, 1, last - 4, 5 + 5 * number_accounts).getValues();
     destination.getRange(5, 1, last - 4, 5 + 5 * number_accounts).setValues(values);
   }
 }
@@ -191,7 +191,7 @@ function copyCards_ (spreadsheet) {
   const source = spreadsheet.getSheetByName('Cards');
   if (!source) return;
 
-  let last = source.getLastRow();
+  const last = source.getLastRow();
   if (last < 6) return;
 
   const destination = SPREADSHEET.getSheetByName('Cards');

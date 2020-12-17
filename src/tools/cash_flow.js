@@ -1,9 +1,9 @@
 function validateUpdateCashFlow_ () {
   if (onlineUpdate_()) return;
 
-  var range = SpreadsheetApp.getActiveRange();
-  var name = range.getSheet().getSheetName();
-  var mm;
+  const range = SpreadsheetApp.getActiveRange();
+  const name = range.getSheet().getSheetName();
+  let mm;
 
   if (name === 'Cash Flow') {
     mm = range.getColumn() - 1;
@@ -24,8 +24,8 @@ function validateUpdateCashFlow_ () {
 
 function updateCashFlow_ (mm) {
   console.time('tool/update-cash-flow');
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = spreadsheet.getSheetByName('Cash Flow');
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName('Cash Flow');
   if (!sheet) return;
 
   const dec_p = getSpreadsheetSettings_('decimal_separator');
@@ -68,8 +68,8 @@ function updateCashFlow_ (mm) {
 }
 
 function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
-  var evento, title, value, day;
-  var c, i, j;
+  let evento, title, value, day;
+  let c, i, j;
 
   const mm = more.mm;
   const dec_p = more.dec_p;
@@ -146,11 +146,11 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
 }
 
 function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
-  var day, value, match, translation, important;
-  var start, end, offset, first;
-  var cc, c, i, j, k;
+  let day, value, match, translation, important;
+  let start, end, offset, first;
+  let cc, c, i, j, k;
 
-  var sheet = spreadsheet.getSheetByName(MN_SHORT[more.mm]);
+  const sheet = spreadsheet.getSheetByName(MN_SHORT[more.mm]);
   if (!sheet) return;
 
   const maxRows = sheet.getLastRow() - 4;
@@ -208,7 +208,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
         important = (important ? important[0].slice(2) : '');
 
         match = table[i][3 + cc].match(/#\w+/g);
-        match = (match ? match : []);
+        match = (match || []);
         for (j = 0; j < match.length; j++) {
           match[j] = match[j].slice(1);
         }

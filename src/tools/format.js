@@ -1,33 +1,33 @@
-function validateFormatRegistry_() {
-	var range = SpreadsheetApp.getActiveRange();
-	var sheet = range.getSheet();
-	var name = sheet.getSheetName();
-	var mm;
+function validateFormatRegistry_ () {
+  const range = SpreadsheetApp.getActiveRange();
+  const sheet = range.getSheet();
+  const name = sheet.getSheetName();
+  let mm;
 
-	if (name === "Cards") {
-		mm = range.getColumn();
-		mm = (mm - (mm % 6)) / 6;
-		formatCards_(mm);
+  if (name === 'Cards') {
+    mm = range.getColumn();
+    mm = (mm - (mm % 6)) / 6;
+    formatCards_(mm);
   } else if (name === 'Tags') {
     formatTags_();
-	} else {
-		mm = MN_SHORT.indexOf(name);
-		if (mm === -1) {
-			SpreadsheetApp.getUi().alert(
-				"Can't sort registry",
-				"Select a month, Cards or Tags to sort the registry.",
-				SpreadsheetApp.getUi().ButtonSet.OK);
-			return;
-		}
-		formatAccounts_(mm);
-	}
+  } else {
+    mm = MN_SHORT.indexOf(name);
+    if (mm === -1) {
+      SpreadsheetApp.getUi().alert(
+        "Can't sort registry",
+        'Select a month, Cards or Tags to sort the registry.',
+        SpreadsheetApp.getUi().ButtonSet.OK);
+      return;
+    }
+    formatAccounts_(mm);
+  }
 }
 
-function formatTags_() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+function formatTags_ () {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
   if (!sheet) return;
 
-  var maxRows = sheet.getMaxRows() - 1;
+  const maxRows = sheet.getMaxRows() - 1;
   if (maxRows < 1) return;
 
   sheet.getRange(2, 1, maxRows, 5).sort([
@@ -38,28 +38,28 @@ function formatTags_() {
   SpreadsheetApp.flush();
 }
 
-function formatAccounts_(mm) {
-	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
-	var date1, date2;
-	var table;
-	var cc, n, i, k;
+function formatAccounts_ (mm) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
+  let date1, date2;
+  let table;
+  let cc, n, i, k;
 
-	const w_ = TABLE_DIMENSION.width;
-	const num_acc = getConstProperties_('number_accounts');
+  const w_ = TABLE_DIMENSION.width;
+  const num_acc = getConstProperties_('number_accounts');
 
-	if (!sheet) return;
-	if (sheet.getMaxColumns() < 5 + 5*num_acc) return;
+  if (!sheet) return;
+  if (sheet.getMaxColumns() < 5 + 5 * num_acc) return;
 
   const lastRow = sheet.getLastRow() - 4;
   if (lastRow < 1) return;
 
-	sheet.showRows(5, lastRow);
+  sheet.showRows(5, lastRow);
 
-  const snapshot = sheet.getRange(5, 1, lastRow, w_*(1 + num_acc)).getValues();
+  const snapshot = sheet.getRange(5, 1, lastRow, w_ * (1 + num_acc)).getValues();
 
-	for (k = 0; k < 1 + num_acc; k++) {
+  for (k = 0; k < 1 + num_acc; k++) {
     i = 0;
-    cc = w_*k;
+    cc = w_ * k;
     while (i < lastRow && snapshot[i][2 + cc] !== '') { i++; }
 
     if (i === 0) continue;
@@ -67,36 +67,36 @@ function formatAccounts_(mm) {
     n = i;
     range = sheet.getRange(5, 1 + cc, n, 4);
 
-		range.sort([
-			{ column: (1 + cc), ascending: true },
-			{ column: (3 + cc), ascending: true }
-		]);
+    range.sort([
+      { column: (1 + cc), ascending: true },
+      { column: (3 + cc), ascending: true }
+    ]);
 
-		i = 0;
-		table = range.getValues();
-		while (i < n && table[i][0] < 0) { i++; }
+    i = 0;
+    table = range.getValues();
+    while (i < n && table[i][0] < 0) { i++; }
 
-		if (i > 1) sheet.getRange(5, 1 + cc, i, 4).sort({column:1 + cc, ascending:false});
-	}
+    if (i > 1) sheet.getRange(5, 1 + cc, i, 4).sort({ column: 1 + cc, ascending: false });
+  }
 
-	date1 = DATE_NOW.getTime();
-	date2 = getConstProperties_('financial_year');
-	date2 = new Date(date2, mm + 1, 0).getTime();
+  date1 = DATE_NOW.getTime();
+  date2 = getConstProperties_('financial_year');
+  date2 = new Date(date2, mm + 1, 0).getTime();
 
   n = sheet.getMaxRows();
-	if (lastRow + 4 < n && date2 < date1) sheet.hideRows(lastRow + 5, n - lastRow - 4);
+  if (lastRow + 4 < n && date2 < date1) sheet.hideRows(lastRow + 5, n - lastRow - 4);
 }
 
-function formatCards_(mm) {
-	var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
-	var lastRow, table, card;
-	var c, n;
-	var i, j;
+function formatCards_ (mm) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
+  let lastRow, table, card;
+  let c, n;
+  let i, j;
 
-	if (!sheet) return;
+  if (!sheet) return;
 
-	const w_ = 6;
-  const cc = w_*mm;
+  const w_ = 6;
+  const cc = w_ * mm;
 
   lastRow = sheet.getLastRow();
   if (lastRow < 6) return;
@@ -109,24 +109,24 @@ function formatCards_(mm) {
   if (i === 0) return;
   n = i;
 
-	sheet.getRange(6, 1 + w_*mm, n, 5).sort([
-		{column:(3 + cc), ascending:true},
-		{column:(1 + cc), ascending:true},
-		{column:(4 + cc), ascending:true}
-	]);
+  sheet.getRange(6, 1 + w_ * mm, n, 5).sort([
+    { column: (3 + cc), ascending: true },
+    { column: (1 + cc), ascending: true },
+    { column: (4 + cc), ascending: true }
+  ]);
 
-	i = 0;
-	j = 0;
-	table = sheet.getRange(6, 1 + cc, n, 5).getValues();
-	while (i < n) {
-		c = j;
-		card = table[i][2];
-		while (j < n && table[j][2] === card && table[j][0] < 0) { j++; }
+  i = 0;
+  j = 0;
+  table = sheet.getRange(6, 1 + cc, n, 5).getValues();
+  while (i < n) {
+    c = j;
+    card = table[i][2];
+    while (j < n && table[j][2] === card && table[j][0] < 0) { j++; }
     c = j - c;
 
-		if (c > 1) sheet.getRange(6 + i, 1 + cc, c, 5).sort({column:1 + cc, ascending:false});
+    if (c > 1) sheet.getRange(6 + i, 1 + cc, c, 5).sort({ column: 1 + cc, ascending: false });
 
     while (j < n && table[j][2] === card) { j++; }
-		i = j;
-	}
+    i = j;
+  }
 }

@@ -1,13 +1,13 @@
 function calendarDigestListEvents_ (listEvents, start, end, offset) {
-  var evento, description;
-  var output, translation, regexp, match;
-  var list_acc, list, cell, s, i, j;
-  var startDate, endDate, end2, a, d;
+  let evento, description;
+  let output, translation, regexp, match;
+  let list_acc, list, cell, s, i, j;
+  let startDate, endDate, end2, a, d;
 
   end2 = new Date(end);
   end2.setDate(end2.getDate() - 1);
 
-  output = [ ];
+  output = [];
   regexp = {
     accounts: '',
     cards: 0
@@ -50,7 +50,7 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
 
     cell = {
       Id: evento.getId(),
-      Day: [ ],
+      Day: [],
       Title: evento.getTitle(),
       Description: description,
       Table: -1,
@@ -58,7 +58,7 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
       Value: 0,
       TranslationType: '',
       TranslationNumber: 0,
-      Tags: [ ],
+      Tags: [],
       TagImportant: '',
       hasAtMute: true,
       hasQcc: false,
@@ -100,7 +100,7 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
     cell.TagImportant = (match ? match[0].slice(2) : '');
 
     cell.Tags = cell.Description.match(/#\w+/g);
-    if (!cell.Tags) cell.Tags = [ ];
+    if (!cell.Tags) cell.Tags = [];
     else {
       for (j = 0; j < cell.Tags.length; j++) {
         cell.Tags[j] = cell.Tags[j].slice(1);
@@ -141,15 +141,15 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
 }
 
 function getAllOwnedCalendars () {
-  var calendars;
-  var db_calendars;
-  var digest, id, name, i;
+  let calendars;
+  let db_calendars;
+  let digest, id, name, i;
 
   try {
     calendars = CalendarApp.getAllCalendars();
   } catch (err) {
     ConsoleLog.error(err);
-    calendars = [ ];
+    calendars = [];
   }
 
   try {
@@ -158,13 +158,13 @@ function getAllOwnedCalendars () {
     }
   } catch (err) {
     ConsoleLog.error(err);
-    calendars = [ ];
+    calendars = [];
   }
 
   db_calendars = {
-    name: [ ],
-    id: [ ],
-    md5: [ ]
+    name: [],
+    id: [],
+    md5: []
   };
 
   for (i = 0; i < calendars.length; i++) {
@@ -190,22 +190,22 @@ function getFinancialCalendar_ () {
 }
 
 function getCalendarEventsForCashFlow_ (financial_year, mm) {
-  var calendar, eventos;
-  var today;
-  var start, end, offset, a, b;
+  let calendar, eventos;
+  let today;
+  let start, end, offset, a, b;
 
-  if (!getUserSettings_('cash_flow_events')) return [ ];
+  if (!getUserSettings_('cash_flow_events')) return [];
 
   calendar = getFinancialCalendar_();
-  if (!calendar) return [ ];
+  if (!calendar) return [];
 
   end = new Date(financial_year, mm + 1, 1);
-  if (DATE_NOW >= end) return [ ];
+  if (DATE_NOW >= end) return [];
 
   start = new Date(financial_year, mm, 1);
   if (start <= DATE_NOW) {
     start = new Date(financial_year, mm, DATE_NOW.getDate() + 1);
-    if (start > end) return [ ];
+    if (start > end) return [];
   }
 
   offset = getSpreadsheetDate.call(start);
@@ -215,7 +215,7 @@ function getCalendarEventsForCashFlow_ (financial_year, mm) {
   b = new Date(end.getTime() + offset);
 
   eventos = calendar.getEvents(a, b);
-  if (!eventos) return [ ];
+  if (!eventos) return [];
 
   eventos = calendarDigestListEvents_(eventos, start, end, offset);
   return eventos;

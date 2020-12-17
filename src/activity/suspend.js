@@ -10,8 +10,8 @@ function suspendActivity_ (mm) {
   const values = range.getValues();
   range.setValues(values);
 
-  var i;
-  var list = [];
+  let i;
+  const list = [];
   for (i = 0; i < mm; i++) {
     list[i] = 1;
   }

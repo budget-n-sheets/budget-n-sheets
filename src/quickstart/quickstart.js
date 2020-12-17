@@ -8,7 +8,7 @@ function alertQuickstartSheetMissing (name) {
 function playSpeedQuickstart (id) {
   if (!isInstalled_()) return;
 
-  var lock = LockService.getDocumentLock();
+  const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
   } catch (err) {
@@ -55,8 +55,8 @@ function playSpeedQuickstart (id) {
 }
 
 function fillMonthWithZeros (sheet) {
-  var values, lastRow;
-  var i, k;
+  let values, lastRow;
+  let i, k;
 
   lastRow = sheet.getLastRow();
   if (lastRow < 5) return;
@@ -64,7 +64,7 @@ function fillMonthWithZeros (sheet) {
   lastRow -= 4;
   values = sheet.getRange(5, 1, lastRow, 10).getValues();
 
-  var n = 0;
+  let n = 0;
   const list = [];
 
   for (k = 0; k < 2; k++) {
@@ -85,8 +85,8 @@ function fillMonthWithZeros (sheet) {
 }
 
 function fillCardWithZeros (sheet, col) {
-  var values, lastRow;
-  var i, k;
+  let values, lastRow;
+  let i, k;
 
   lastRow = sheet.getLastRow();
   if (lastRow < 6) return;
@@ -95,7 +95,7 @@ function fillCardWithZeros (sheet, col) {
   values = sheet.getRange(6, col, lastRow, 18).getValues();
   col += 3;
 
-  var n = 0;
+  let n = 0;
   const list = [];
 
   for (k = 0; k < 3; k++) {

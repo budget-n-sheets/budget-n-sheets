@@ -1,59 +1,59 @@
-function setupTables_() {
-	var ids, acc, r, i, j, k;
+function setupTables_ () {
+  let ids, acc, r, i, j, k;
 
   const sheet = SPREADSHEET.getSheetByName('_Backstage');
 
-	const init_month = SETUP_SETTINGS["init_month"];
-	const list_acc = SETUP_SETTINGS["list_acc"];
-	const num_acc = SETUP_SETTINGS["number_accounts"];
+  const init_month = SETUP_SETTINGS.init_month;
+  const list_acc = SETUP_SETTINGS.list_acc;
+  const num_acc = SETUP_SETTINGS.number_accounts;
 
-	i = 0;
-	j = 0;
-	ids = [ ];
-	while (j < 1 + num_acc && i < 99) {
-		r = randomString(7, "lonum");
-		if (ids.indexOf(r) === -1) {
-			ids[j] = r;
-			j++;
-		}
+  i = 0;
+  j = 0;
+  ids = [];
+  while (j < 1 + num_acc && i < 99) {
+    r = randomString(7, 'lonum');
+    if (ids.indexOf(r) === -1) {
+      ids[j] = r;
+      j++;
+    }
     Utilities.sleep(40);
-		i++;
-	}
-	if (ids.length < 1 + num_acc) throw new Error("Could not generate unique IDs.");
+    i++;
+  }
+  if (ids.length < 1 + num_acc) throw new Error('Could not generate unique IDs.');
 
-	db_tables = {
-		accounts: {
-			ids: [ ],
-			names: [ ],
-			data: [ ]
-		},
-		cards: {
-			count: 0,
-			ids: [ ],
-			codes: [ ],
-			data: [ ]
-		}
-	};
+  db_tables = {
+    accounts: {
+      ids: [],
+      names: [],
+      data: []
+    },
+    cards: {
+      count: 0,
+      ids: [],
+      codes: [],
+      data: []
+    }
+  };
 
-  let metadata = [];
-	for (k = 0; k < num_acc; k++) {
-		db_tables.accounts.ids[k] = ids[1 + k];
+  const metadata = [];
+  for (k = 0; k < num_acc; k++) {
+    db_tables.accounts.ids[k] = ids[1 + k];
 
-		acc = {
-			id: ids[1 + k],
-			name: list_acc[k],
-			balance: 0,
-			time_a: init_month,
-			time_z: 11
-		};
+    acc = {
+      id: ids[1 + k],
+      name: list_acc[k],
+      balance: 0,
+      time_a: init_month,
+      time_z: 11
+    };
 
-		db_tables.accounts.names[k] = list_acc[k];
-		db_tables.accounts.data[k] = acc;
+    db_tables.accounts.names[k] = list_acc[k];
+    db_tables.accounts.data[k] = acc;
 
     metadata[k] = {};
     Object.assign(metadata[k], acc);
     delete metadata[k].id;
-	}
+  }
 
   sheet.addDeveloperMetadata(
     'db_accounts',
@@ -67,5 +67,5 @@ function setupTables_() {
     SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
   );
 
-	PropertiesService2.setProperty("document", "DB_TABLES", "json", db_tables);
+  PropertiesService2.setProperty('document', 'DB_TABLES', 'json', db_tables);
 }

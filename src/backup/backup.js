@@ -14,17 +14,17 @@ function backupRequestUi () {
   }
 
   const response = ui.alert(
-    "Back up now?",
-    "The backup file will be sent to your email when the backup completes.",
+    'Back up now?',
+    'The backup file will be sent to your email when the backup completes.',
     ui.ButtonSet.YES_NO);
 
   if (response === ui.Button.NO) return 1;
 
   showDialogMessage('Add-on backup', 'Backing up...', 1);
-  backupRequest_()
+  backupRequest_();
   ui.alert(
-    "Add-on backup",
-    "The backup was completed successfully.",
+    'Add-on backup',
+    'The backup was completed successfully.',
     ui.ButtonSet.OK);
   return 0;
 }
@@ -34,14 +34,32 @@ function backupRequest_ () {
   const backup = {
     backup: {},
     ttt: {
-      0: {}, 1: {}, 2: {}, 3: {},
-      4: {}, 5: {}, 6: {}, 7: {},
-      8: {}, 9: {}, 10: {}, 11: {}
+      0: {},
+      1: {},
+      2: {},
+      3: {},
+      4: {},
+      5: {},
+      6: {},
+      7: {},
+      8: {},
+      9: {},
+      10: {},
+      11: {}
     },
     cards: {
-      0: [], 1: [], 2: [], 3: [],
-      4: [], 5: [], 6: [], 7: [],
-      8: [], 9: [], 10: [], 11: []
+      0: [],
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+      5: [],
+      6: [],
+      7: [],
+      8: [],
+      9: [],
+      10: [],
+      11: []
     },
     tags: [],
     db_tables: {
@@ -71,7 +89,7 @@ function backupRequest_ () {
 function emailBackup_ (blob) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
-  var htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlBackupEmail');
+  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlBackupEmail');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.spreadsheet_url = spreadsheet.getUrl();
@@ -139,7 +157,7 @@ function backupProperties_ (backup) {
 
 function backupTables_ (backup) {
   const db_tables = getDbTables_();
-  var account, card, i;
+  let account, card, i;
 
   i = -1;
   while (++i < db_tables.accounts.data.length) {
@@ -166,7 +184,7 @@ function backupTables_ (backup) {
 
 function backupTags_ (backup, spreadsheet) {
   const sheet = spreadsheet.getSheetByName('Tags');
-  var table, j;
+  let table, j;
 
   if (!sheet) return;
 
@@ -187,7 +205,7 @@ function backupTags_ (backup, spreadsheet) {
 
 function backupCards_ (backup, spreadsheet) {
   const sheet = spreadsheet.getSheetByName('Cards');
-  var table, i, j;
+  let table, i, j;
 
   if (!sheet) return;
 
@@ -212,7 +230,7 @@ function backupCards_ (backup, spreadsheet) {
 
 function backupMonths_ (backup, spreadsheet) {
   const num_acc = getConstProperties_('number_accounts') + 1;
-  var sheet, table, max, i, j, k;
+  let sheet, table, max, i, j, k;
 
   i = -1;
   while (++i < 12) {

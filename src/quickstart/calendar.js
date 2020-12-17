@@ -1,4 +1,4 @@
-var QUICKSTART_DATA_CALENDAR = Object.freeze({
+const QUICKSTART_DATA_CALENDAR = Object.freeze({
   1: [
     { day: 2, title: 'The simplest event', description: 'acc_name\nvalue\n---\nThis simple event has the name of an account and a number formatted.', value: -1.23 },
     { day: 3, title: 'Muted event', description: 'acc_name\nvalue\n\n@muted\n---\nThis event has the "@muted" indicator, so it is not included in cash flow, nor posted in the table.', value: -1.23 },
@@ -14,9 +14,9 @@ var QUICKSTART_DATA_CALENDAR = Object.freeze({
 });
 
 function playQuickCalendar_ (n) {
-  var ui = SpreadsheetApp.getUi();
-  var calendar = getFinancialCalendar_();
-  var data, value, description, mm, i;
+  const ui = SpreadsheetApp.getUi();
+  const calendar = getFinancialCalendar_();
+  let data, value, description, mm, i;
 
   if (!calendar) {
     ui.alert(
@@ -43,8 +43,8 @@ function playQuickCalendar_ (n) {
     return;
   }
 
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = spreadsheet.getSheetByName('Cash Flow');
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName('Cash Flow');
 
   if (!sheet) {
     alertQuickstartSheetMissing(name);

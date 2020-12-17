@@ -1,4 +1,4 @@
-var QUICKSTART_DATA_TRANSACTIONS = Object.freeze({
+const QUICKSTART_DATA_TRANSACTIONS = Object.freeze({
   1: [[7, 'Deposit (to my account #dp)', null, '#dp']],
   2: [[7, 'Transfer (from someone #trf)', null, '#trf']],
   3: [[7, 'Transfer (to someone #trf)', null, '#trf']],
@@ -36,7 +36,7 @@ function playQuickTransactions_ (n) {
   }
 
   spreadsheet.setActiveSheet(sheet);
-  var lastRow = sheet.getLastRow();
+  let lastRow = sheet.getLastRow();
   if (lastRow < 4) lastRow = 4;
 
   if (sheet.getMaxRows() < lastRow + data.length) toolPicker_('AddBlankRows', sheet.getName());

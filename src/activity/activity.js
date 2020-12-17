@@ -32,7 +32,7 @@ function switchActivity_ (select) {
     return 1;
   }
 
-  var mm;
+  let mm;
 
   SpreadsheetApp.flush();
 

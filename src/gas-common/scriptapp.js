@@ -6,10 +6,10 @@
 
 function isAuthorizationRequired_ () {
   try {
-    PropertiesService.getDocumentProperties()
+    PropertiesService.getDocumentProperties();
   } catch (e) {
-    return true
+    return true;
   }
 
-  return ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL).getAuthorizationStatus() === ScriptApp.AuthorizationStatus.REQUIRED
+  return ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL).getAuthorizationStatus() === ScriptApp.AuthorizationStatus.REQUIRED;
 }

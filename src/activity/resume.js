@@ -1,8 +1,8 @@
 function resumeActivity_ (mm) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('_Backstage');
-  var range1A1, range2A1, formula, width, i, k;
-  var income, expenses;
+  let range1A1, range2A1, formula, width, i, k;
+  let income, expenses;
 
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
@@ -79,7 +79,7 @@ function resumeActivity_ (mm) {
   SpreadsheetApp.flush();
 
   const actual_month = getMonthFactored_('actual_month');
-  var rangeList;
+  let rangeList;
   for (k = 0; k < num_acc; k++) {
     rangeList = [];
 
@@ -99,7 +99,7 @@ function resumeActivity_ (mm) {
   }
 
   const db_accounts = getDbTables_('accounts');
-  var account;
+  let account;
   for (k = 0; k < num_acc; k++) {
     account = db_accounts.data[k];
     if (account.time_a < mm) continue;
@@ -123,7 +123,7 @@ function resumeActivity_ (mm) {
     }
   }
 
-  const dec_c = (getSpreadsheetSettings_("decimal_separator") ? ';' : '\\');
+  const dec_c = (getSpreadsheetSettings_('decimal_separator') ? ';' : '\\');
 
   const col = 2 + w_ + w_ * num_acc + w_;
   const max2 = spreadsheet.getSheetByName('Cards').getMaxRows() - 5;
@@ -136,8 +136,7 @@ function resumeActivity_ (mm) {
   sheet.getRange(2 + h_ * mm, 4 + col - w_).setFormula('BSBLANK(TRANSPOSE(\'Cards\'!' + rollA1Notation(6, 4 + 6 * mm, max2, 1) + '))');
   sheet.getRange(3 + h_ * mm, col - w_, 4, 1).setFormulaR1C1(formula);
 
-
-  var header1, header2;
+  let header1, header2;
 
   for (k = 0; k < 10; k++) {
     range1A1 = rollA1Notation(6, 4 + 6 * mm, max2);
@@ -204,7 +203,7 @@ function resumeActivity_ (mm) {
     sheet.getRange(2 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
   }
 
-  var status = getSpreadsheetSettings_('optimize_load');
+  let status = getSpreadsheetSettings_('optimize_load');
   if (status == null) status = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
   status[mm] = 0;
   setSpreadsheetSettings_('optimize_load', status);

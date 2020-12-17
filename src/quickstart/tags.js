@@ -1,4 +1,4 @@
-var QUICKSTART_DATA_TAGS = Object.freeze({
+const QUICKSTART_DATA_TAGS = Object.freeze({
   1: [['Coffee', 'Food and supply', 'My coffee addiction tracker', 'TRUE', 'coffee']],
   2: [
     [3, 'Bus to Abc', null, '#trip1'],
@@ -57,7 +57,7 @@ function playQuickTags02_ (n) {
   const data = QUICKSTART_DATA_TAGS[n];
   if (!data) throw new Error("playQuickTags2_(): Values for quickstart example couldn't be found. tags:" + n);
 
-  for (var i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     data[i][2] = randomValueNegative(2, 2);
   }
 
@@ -70,7 +70,7 @@ function playQuickTags02_ (n) {
   }
 
   spreadsheet.setActiveSheet(sheet);
-  var lastRow = sheet.getLastRow();
+  let lastRow = sheet.getLastRow();
   if (lastRow < 4) lastRow = 4;
 
   sheet.getRange(lastRow + 1, 6, data.length, data[0].length)

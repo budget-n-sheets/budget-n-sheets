@@ -50,7 +50,7 @@ function validateBackup (fileId) {
     cards: ''
   };
 
-  var digest, list, i;
+  let digest, list, i;
 
   if (data.user_settings.sha256_financial_calendar) {
     const calendars = getAllOwnedCalendars();
@@ -87,7 +87,7 @@ function validateBackup (fileId) {
 }
 
 function restoreFromBackup_ (backup) {
-  var digest, i;
+  let digest, i;
 
   if (backup.user_settings.sha256_financial_calendar) {
     const calendars = getAllOwnedCalendars();
@@ -111,7 +111,7 @@ function restoreFromBackup_ (backup) {
 }
 
 function restoreTables_ (backup) {
-  var i;
+  let i;
 
   const db_tables = getDbTables_();
 
@@ -127,7 +127,7 @@ function restoreTables_ (backup) {
 }
 
 function restoreCards_ (backup) {
-  var max, mm;
+  let max, mm;
 
   const sheet = SPREADSHEET.getSheetByName('Cards');
   max = sheet.getMaxRows() - 5;
@@ -146,7 +146,7 @@ function restoreCards_ (backup) {
 }
 
 function restoreMonths_ (backup) {
-  var sheet, max, mm, k;
+  let sheet, max, mm, k;
 
   const num_acc = backup.const_properties.number_accounts;
 
@@ -174,7 +174,7 @@ function restoreMonths_ (backup) {
 function restoreTags_ (backup) {
   const sheet = SPREADSHEET.getSheetByName('Tags');
 
-  var max = sheet.getMaxRows();
+  let max = sheet.getMaxRows();
   while (max < backup.tags.length) {
     addBlankRows_('Tags');
     max += 400;

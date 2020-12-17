@@ -1,17 +1,17 @@
-var MN_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-var MN_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MN_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MN_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-var TC_CODE = ['A', 'D', 'E', 'F', 'G', 'K', 'L', 'S', 'T', 'U'];
-var TC_NAME = ['Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling'];
+const TC_CODE = ['A', 'D', 'E', 'F', 'G', 'K', 'L', 'S', 'T', 'U'];
+const TC_NAME = ['Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling'];
 
-var DATE_NOW = new Date();
+const DATE_NOW = new Date();
 
-var SPREADSHEET, SETUP_SETTINGS;
-var CACHE_KEYS = ['class_version2', 'admin_settings', 'user_settings', 'spreadsheet_settings', 'const_properties', 'DB_TABLES', 'DB_CALENDARS', 'is_installed', 'load_cache'];
+let SPREADSHEET, SETUP_SETTINGS;
+const CACHE_KEYS = ['class_version2', 'admin_settings', 'user_settings', 'spreadsheet_settings', 'const_properties', 'DB_TABLES', 'DB_CALENDARS', 'is_installed', 'load_cache'];
 
-var TABLE_DIMENSION = Object.freeze({height: 10, width: 5});
+const TABLE_DIMENSION = Object.freeze({ height: 10, width: 5 });
 
-var RESERVED_HREF = Object.freeze({
+const RESERVED_HREF = Object.freeze({
   home_developer: 'https://www.budgetnsheets.com',
   home_app: 'https://www.budgetnsheets.com',
   home_help: 'https://www.budgetnsheets.com/support',
@@ -23,7 +23,7 @@ var RESERVED_HREF = Object.freeze({
   g_marketplace: 'https://gsuite.google.com/marketplace/app/budget_n_sheets/628594713587'
 });
 
-var APPS_SCRIPT_GLOBAL = Object.freeze({
+const APPS_SCRIPT_GLOBAL = Object.freeze({
   script_version: {
     major: 0,
     minor: 37,

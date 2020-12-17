@@ -17,16 +17,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-function update_beta_(beta) {
-	var list = PATCH_THIS["beta_list"];
-	var b = beta;
+function update_beta_ (beta) {
+  const list = PATCH_THIS.beta_list;
+  let b = beta;
 
-	while (b < list.length) {
-		if (list[b]) {
-			list[b]();
-		}
-		b++;
-	}
+  while (b < list.length) {
+    if (list[b]) {
+      list[b]();
+    }
+    b++;
+  }
 
-	return b;
+  return b;
 }

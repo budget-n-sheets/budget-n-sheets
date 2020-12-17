@@ -1,67 +1,67 @@
-function toolAddBlankRows() {
-	toolPicker_("AddBlankRows");
+function toolAddBlankRows () {
+  toolPicker_('AddBlankRows');
 }
 
-function toolUpdateCashFlow() {
-	toolPicker_("UpdateCashFlow");
+function toolUpdateCashFlow () {
+  toolPicker_('UpdateCashFlow');
 }
 
-function toolFormatRegistry() {
-	toolPicker_("FormatRegistry");
+function toolFormatRegistry () {
+  toolPicker_('FormatRegistry');
 }
 
-function toolPicker_(select, value) {
-	var lock = LockService.getDocumentLock();
-	try {
-		lock.waitLock(200);
-	} catch (err) {
-		SpreadsheetApp.getUi().alert(
-			"Add-on is busy",
-			"The add-on is busy. Try again in a moment.",
-			SpreadsheetApp.getUi().ButtonSet.OK);
+function toolPicker_ (select, value) {
+  const lock = LockService.getDocumentLock();
+  try {
+    lock.waitLock(200);
+  } catch (err) {
+    SpreadsheetApp.getUi().alert(
+      'Add-on is busy',
+      'The add-on is busy. Try again in a moment.',
+      SpreadsheetApp.getUi().ButtonSet.OK);
 
-		ConsoleLog.warn(err);
-		return;
-	}
+    ConsoleLog.warn(err);
+    return;
+  }
 
-	switch (select) {
-		case 'AddBlankRows':
-			addBlankRows_(value);
-			break;
-		case 'UpdateCashFlow':
-			validateUpdateCashFlow_();
-			break;
+  switch (select) {
+    case 'AddBlankRows':
+      addBlankRows_(value);
+      break;
+    case 'UpdateCashFlow':
+      validateUpdateCashFlow_();
+      break;
     case 'UpdateCashFlowMm':
       if (seamlessUpdate_()) break;
       updateCashFlow_(value);
-			break;
-		case 'FormatRegistry':
-			validateFormatRegistry_();
-			break;
-		case 'FormatAccount':
-			formatAccounts_(value);
-			break;
-		case 'FormatCards':
-			formatCards_(value);
-			break;
+      break;
+    case 'FormatRegistry':
+      validateFormatRegistry_();
+      break;
+    case 'FormatAccount':
+      formatAccounts_(value);
+      break;
+    case 'FormatCards':
+      formatCards_(value);
+      break;
 
-		default:
-      ConsoleLog.error("toolPicker_(): Switch case is default.", select);
-			break;
-	}
+    default:
+      ConsoleLog.error('toolPicker_(): Switch case is default.', select);
+      break;
+  }
 
   lock.releaseLock();
 }
 
-function getTagData_() {
+function getTagData_ () {
   const data = {
-    tags: [ ],
-    months: [ ],
-    average: [ ],
-    total: [ ]
+    tags: [],
+    months: [],
+    average: [],
+    total: []
   };
 
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tags");
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
   if (!sheet) return data;
   if (sheet.getMaxColumns() < 20) return data;
 
@@ -70,7 +70,7 @@ function getTagData_() {
 
   const table = sheet.getRange(2, 5, lastRow - 1, 16).getValues();
 
-  for (var i = 0; i < table.length; i++) {
+  for (let i = 0; i < table.length; i++) {
     if (table[i][0] === '' || !/^\w+$/.test(table[i][0])) continue;
 
     data.tags[i] = table[i][0];

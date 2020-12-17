@@ -1,6 +1,6 @@
 function playQuickCashFlow_ (n) {
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet;
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet;
 
   const mm = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? DATE_NOW.getMonth() : 0);
 

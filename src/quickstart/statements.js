@@ -1,4 +1,4 @@
-var QUICKSTART_DATA_STATEMENTS = Object.freeze({
+const QUICKSTART_DATA_STATEMENTS = Object.freeze({
   1: [[7, 'Coffee shop', null, '']],
   2: [[7, 'Grocery shop', null, '']],
   3: [
@@ -14,7 +14,7 @@ var QUICKSTART_DATA_STATEMENTS = Object.freeze({
 });
 
 function playQuickStatements_ (n) {
-  var lastRow, data, col, val;
+  let lastRow, data, col, val;
 
   const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MN_SHORT[DATE_NOW.getMonth()] : MN_SHORT[0]);
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();

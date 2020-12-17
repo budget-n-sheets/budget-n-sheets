@@ -1,4 +1,4 @@
-var QUICKSTART_DATA_BLANKVALUE = Object.freeze({
+const QUICKSTART_DATA_BLANKVALUE = Object.freeze({
   1: [
     [5, 'Parking', null, '', null,
       5, 'Coffee shop', null, ''],
@@ -20,7 +20,7 @@ var QUICKSTART_DATA_BLANKVALUE = Object.freeze({
 });
 
 function playQuickBlankValue_ (n) {
-  var lastRow;
+  let lastRow;
 
   const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MN_SHORT[DATE_NOW.getMonth()] : MN_SHORT[0]);
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();

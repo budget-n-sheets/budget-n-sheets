@@ -10,7 +10,7 @@
  * @return {number}   Random integer.
  */
 function randomInteger (n) {
-  return Math.floor(Math.random() * Math.floor(n))
+  return Math.floor(Math.random() * Math.floor(n));
 }
 
 /**
@@ -19,7 +19,7 @@ function randomInteger (n) {
  * @return {number}   Random number.
  */
 function randomNumber (p) {
-  return Math.random() * Math.pow(10, p)
+  return Math.random() * Math.pow(10, p);
 }
 
 /**
@@ -29,7 +29,7 @@ function randomNumber (p) {
  * @return {number}   Random number.
  */
 function randomValue (p, d) {
-  return +randomNumber(p).toFixed(d)
+  return +randomNumber(p).toFixed(d);
 }
 
 /**
@@ -39,7 +39,7 @@ function randomValue (p, d) {
  * @return {number}   Random number.
  */
 function randomValueSign (p, d) {
-  return (Math.random() < 0.5 ? 1 : -1) * +randomNumber(p).toFixed(d)
+  return (Math.random() < 0.5 ? 1 : -1) * +randomNumber(p).toFixed(d);
 }
 
 /**
@@ -49,48 +49,48 @@ function randomValueSign (p, d) {
  * @return {number}   Random number.
  */
 function randomValueNegative (p, d) {
-  return -randomNumber(p).toFixed(d)
+  return -randomNumber(p).toFixed(d);
 }
 
 function randomString (n, p) {
-  var a, b
-  var i
+  let a, b;
+  let i;
 
-  a = ''
+  a = '';
   switch (p) {
     case 'digit':
-      b = '0123456789'
-      break
+      b = '0123456789';
+      break;
     case 'lower':
-      b = 'abcdefghijklmnopqrstuvwxyz'
-      break
+      b = 'abcdefghijklmnopqrstuvwxyz';
+      break;
     case 'upper':
-      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-      break
+      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      break;
     case 'alpha':
-      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-      break
+      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+      break;
     case 'lonum':
-      b = 'abcdefghijklmnopqrstuvwxyz0123456789'
-      break
+      b = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      break;
     case 'upnum':
-      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-      break
+      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      break;
     case 'alnum':
-      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-      break
+      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      break;
     case 'word':
-      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_'
-      break
+      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_';
+      break;
 
     default:
-      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-      break
+      b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      break;
   }
 
   for (i = 0; i < n; i++) {
-    a += b.charAt(Math.floor(Math.random() * b.length))
+    a += b.charAt(Math.floor(Math.random() * b.length));
   }
 
-  return a
+  return a;
 }

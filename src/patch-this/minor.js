@@ -17,35 +17,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-function update_minor_(v1, list, patch, beta) {
-	if (list == null || list.length == 0) return {r:1, p:-1, b:0};
+function update_minor_ (v1, list, patch, beta) {
+  if (list == null || list.length == 0) return { r: 1, p: -1, b: 0 };
 
-	var p = patch;
-	var ver, b, r;
+  let p = patch;
+  let ver, b, r;
 
-	r = 0;
+  r = 0;
 
-	if (v1) ver = v1;
-	else ver = {patch:-100};
+  if (v1) ver = v1;
+  else ver = { patch: -100 };
 
-	if (p != ver.patch) b = 0;
-	else b = beta;
+  if (p != ver.patch) b = 0;
+  else b = beta;
 
-	do {
-		p++;
-		if (p >= list.length) {
-			p--;
-			break;
-		} else if (list[p]) {
-			r = list[p]();
-		}
-	} while (!r && p != ver.patch);
+  do {
+    p++;
+    if (p >= list.length) {
+      p--;
+      break;
+    } else if (list[p]) {
+      r = list[p]();
+    }
+  } while (!r && p != ver.patch);
 
-	if (r) p--;
+  if (r) p--;
 
-	if (p == ver.patch) {
-		b = update_beta_(b);
-	}
+  if (p == ver.patch) {
+    b = update_beta_(b);
+  }
 
-	return {r:r, p:p, b:b};
+  return { r: r, p: p, b: b };
 }
