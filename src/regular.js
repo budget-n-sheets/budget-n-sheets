@@ -243,11 +243,6 @@ function updateDecimalSeparator_ () {
   const format = '0' + (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
 
   sheet = spreadsheet.getSheetByName('_Settings');
-  if (sheet) {
-    sheet.getRange(8, 2).setNumberFormat('0' + format);
-  }
-
-  sheet = spreadsheet.getSheetByName('_Settings');
   if (!sheet) {
     sheet = spreadsheet.insertSheet();
     t = true;
