@@ -20,7 +20,6 @@ function setupBackstage_ () {
   const width = w_ * num_acc;
   const height = 120;
   const col = 2 + w_ + w_ * num_acc + w_;
-  const dec_c = (dec_p ? ',' : '\\');
 
   const wallet = new Array(height);
   const accounts = new Array(height);
@@ -97,6 +96,33 @@ function setupBackstage_ () {
 
   sheet.getRange(2, 2, height, 5).setFormulas(wallet);
   sheet.getRange(2, 7, height, width).setFormulas(accounts);
+
+  if (!dec_p) {
+    const col = 2 + w_ + w_ * SETUP_SETTINGS.number_accounts + w_;
+    const max2 = 400;
+
+    let mm = -1;
+    while (++mm < 12) {
+      const range1A1 = rollA1Notation(6, 4 + 6 * mm, max2);
+      const range2A1 = rollA1Notation(6, 3 + 6 * mm, max2);
+
+      for (let k = 0; k < 10; k++) {
+        const header2 = rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
+
+        formula = "REGEXEXTRACT(ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+        formula = 'ARRAYFORMULA(SPLIT(' + formula + '; "/"))';
+        formula = '{' + formula + "\\ ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1)}; ';
+        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range2A1 + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
+
+        formula = formula + "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1))); ';
+        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+
+        formula = 'BSCARDPART(TRANSPOSE(IFNA(FILTER(' + formula + '); 0)))';
+        formula = 'IF(' + rollA1Notation(1, col + w_ * k) + ' = ""; 0; ' + formula + ')';
+        sheet.getRange(5 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
+      }
+    }
+  }
 
   if (SETUP_SETTINGS.decimal_places !== 2) {
     sheet.getRange(2, 2, sheet.getMaxRows() - 1, sheet.getMaxColumns() - 1).setNumberFormat(SETUP_SETTINGS.number_format);
