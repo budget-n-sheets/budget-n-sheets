@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<base target="_top">
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
-	</head>
-	<body>
-		<ul style="padding-left: 13px;">
-			<li>It is only possible to transfer the admin role using the add-on.</li>
-			<li>You might lose the ability to change settings.</li>
-			<li>You can't undo this action!</li>
-		</ul>
 
-		Select an editor to become the admin:
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+</head>
 
-		<form id="the_form" style="margin: 11px auto" onsubmit="submitForm();">
-			<select id="editor" required>
-				<option>Select an editor</option>
-				<? for (var i = 0; i < editors.length; i++) { ?>
-					<option value=<?= editors[i].digest ?>><?= editors[i].email ?></option>
-				<? } ?>
-			</select>
-		</form>
+<body>
+  <ul style="padding-left: 13px;">
+    <li>It is only possible to transfer the admin role using the add-on.</li>
+    <li>You might lose the ability to change settings.</li>
+    <li>You can't undo this action!</li>
+  </ul>
 
-		<button class="action" type="submit" form="the_form">Select</button> <button onclick="google.script.host.close();">Cancel</button>
-		<script>
-			function submitForm() {
-				google.script.run
-					.withSuccessHandler(function(e) {
-							google.script.host.close();
-						})
-					.continuedTransferAdminSd( $("#editor").val() );
-			}
-		</script>
-	</body>
+  Select an editor to become the admin:
+
+  <form id="the_form" style="margin: 11px auto" onsubmit="submitForm();">
+    <select id="editor" required>
+      <option>Select an editor</option>
+      <? for (var i = 0; i < editors.length; i++) { ?>
+      <option value=<?= editors[i].digest ?>><?= editors[i].email ?></option>
+      <? } ?>
+    </select>
+  </form>
+
+  <button class="action" type="submit" form="the_form">Select</button> <button onclick="google.script.host.close();">Cancel</button>
+  <script>
+    function submitForm() {
+      google.script.run
+        .withSuccessHandler(function(e) {
+          google.script.host.close();
+        })
+        .continuedTransferAdminSd($("#editor").val());
+    }
+  </script>
+</body>
+
 </html>

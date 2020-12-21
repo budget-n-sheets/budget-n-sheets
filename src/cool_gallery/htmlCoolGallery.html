@@ -1,126 +1,131 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<base target="_top">
-		<meta charset="UTF-8">
-		<?!= htmlInclude('gas-common/htmlStyles'); ?>
-		<style>
-			.table_row {
-				display: table-row;
-			}
 
-			.item_table {
-				width: 100%;
-				margin-bottom: 17px;
-				display: table;
-				background: #f3f3f3;
-				border-radius: 7px;
-				border: 2px solid #d9d9d9;
-			}
-			.item_cell {
-				width: 100%;
-				padding: 11px;
-				display: table-cell;
-			}
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= htmlInclude('gas-common/htmlStyles'); ?>
+  <style>
+    .table_row {
+      display: table-row;
+    }
 
-			.item_menu {
-				font-weight: bold;
-				word-spacing: 11px;
-			}
+    .item_table {
+      width: 100%;
+      margin-bottom: 17px;
+      display: table;
+      background: #f3f3f3;
+      border-radius: 7px;
+      border: 2px solid #d9d9d9;
+    }
 
-			.footer_table {
-				display: table;
-				width: 100%;
-				border-collapse: separate;
-				border-spacing: 7px;
-				border-top: 1px solid #dadbe0;
-			}
-			.footer_cell {
-				display: table-cell;
-				vertical-align: middle;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="wrapper">
+    .item_cell {
+      width: 100%;
+      padding: 11px;
+      display: table-cell;
+    }
 
-			<div id="content" style="margin-bottom:4.7em;">
-				<div class="panel active" id="panel_List">
-					<? for (var i in list) { ?>
-						<div class="item_table">
-							<div class="table_row">
-								<div class="item_cell">
-									<span style="font-size: 23px;"><?= list[i].name ?></span><br>
-                  <p style="text-indent: 0;font-size: 17px;"><?= list[i].description ?></p>
-									<span class="gray"><?= list[i].version_date ?></span><br>
-									<span class="gray"><?= list[i].version_name ?></span>
-								</div>
-							</div>
-							<div class="table_row">
-								<div class="item_cell item_menu">
-									<? if (list[i].preview_id != null) { ?>
-										<a href="https://docs.google.com/spreadsheets/d/e/<?= list[i].preview_id ?>/pubhtml" target="_blank">Preview</a>
-									<? } ?>
-									<a class="m-la" id="<?= i ?>">Import</a>
-								</div>
-							</div>
-						</div>
-					<? } ?>
-				</div>
+    .item_menu {
+      font-weight: bold;
+      word-spacing: 11px;
+    }
+
+    .footer_table {
+      display: table;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 7px;
+      border-top: 1px solid #dadbe0;
+    }
+
+    .footer_cell {
+      display: table-cell;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+
+    <div id="content" style="margin-bottom:4.7em;">
+      <div class="panel active" id="panel_List">
+        <? for (var i in list) { ?>
+        <div class="item_table">
+          <div class="table_row">
+            <div class="item_cell">
+              <span style="font-size: 23px;"><?= list[i].name ?></span><br>
+              <p style="text-indent: 0;font-size: 17px;"><?= list[i].description ?></p>
+              <span class="gray"><?= list[i].version_date ?></span><br>
+              <span class="gray"><?= list[i].version_name ?></span>
+            </div>
+          </div>
+          <div class="table_row">
+            <div class="item_cell item_menu">
+              <? if (list[i].preview_id != null) { ?>
+              <a href="https://docs.google.com/spreadsheets/d/e/<?= list[i].preview_id ?>/pubhtml" target="_blank">Preview</a>
+              <? } ?>
+              <a class="m-la" id="<?= i ?>">Import</a>
+            </div>
+          </div>
+        </div>
+        <? } ?>
+      </div>
 
 
-				<div class="panel" id="wait_load" align="center">
-					<b>Importing now...</b><br>
+      <div class="panel" id="wait_load" align="center">
+        <b>Importing now...</b><br>
 
-					<div class="wait_load-wrapper">
-						<div class="wait_load-bar"></div>
-					</div>
-				</div>
-			</div>
+        <div class="wait_load-wrapper">
+          <div class="wait_load-bar"></div>
+        </div>
+      </div>
+    </div>
 
-			<div id="footer">
-				<div class="footer_table">
-					<div class="table_row">
-						<div class="footer_cell left"style="width: 100%;">
-							<span class="current" id="p-Response"></span>
-						</div>
-						<div class="footer_cell right">
-							<div class="md-footer"><a href="<?= send_feedback ?>" target="_blank"><i class="material-icons-outlined md-24 md-click" title="Send feedback">feedback</i></a></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div id="footer">
+      <div class="footer_table">
+        <div class="table_row">
+          <div class="footer_cell left" style="width: 100%;">
+            <span class="current" id="p-Response"></span>
+          </div>
+          <div class="footer_cell right">
+            <div class="md-footer"><a href="<?= send_feedback ?>" target="_blank"><i class="material-icons-outlined md-24 md-click" title="Send feedback">feedback</i></a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-		<?!= htmlInclude('gas-common/htmlJavaScript'); ?>
-		<script>
-			$(document).on('click', '.m-la', function() {
-				var id = $(this).attr('id');
+  <?!= htmlInclude('gas-common/htmlJavaScript'); ?>
+  <script>
+    $(document).on('click', '.m-la', function() {
+      var id = $(this).attr('id');
 
-				$("#p-Response").empty();
-				$('#wait_load').fadeIn('fast')
-					.siblings()
-					.hide();
-				google.script.run.withSuccessHandler(response)
-					.withFailureHandler(showError)
-					.coolGallery(id);
-			});
+      $("#p-Response").empty();
+      $('#wait_load').fadeIn('fast')
+        .siblings()
+        .hide();
+      google.script.run.withSuccessHandler(response)
+        .withFailureHandler(showError)
+        .coolGallery(id);
+    });
 
-			function response(r) {
-				$('#panel_List').fadeIn('fast')
-					.siblings()
-					.hide();
+    function response(r) {
+      $('#panel_List').fadeIn('fast')
+        .siblings()
+        .hide();
 
-				if (r === 0) {
-					$("#p-Response").empty().append("Add-on is busy. Try again in a moment.");
-				} else if (r === 1) {
-					$("#p-Response").empty().append("The spreadsheet is not available. Try again later.");
-				} else if (r === 2) {
-					$("#p-Response").empty().append("Something went wrong. Try again in a moment.");
-				} else if (r === 3) {
-					showError();
-				}
-			}
-		</script>
-	</body>
+      if (r === 0) {
+        $("#p-Response").empty().append("Add-on is busy. Try again in a moment.");
+      } else if (r === 1) {
+        $("#p-Response").empty().append("The spreadsheet is not available. Try again later.");
+      } else if (r === 2) {
+        $("#p-Response").empty().append("Something went wrong. Try again in a moment.");
+      } else if (r === 3) {
+        showError();
+      }
+    }
+  </script>
+</body>
+
 </html>

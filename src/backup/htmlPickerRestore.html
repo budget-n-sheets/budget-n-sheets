@@ -19,7 +19,7 @@
     /**
      * Loads the Google Picker API.
      */
-    function onApiLoad () {
+    function onApiLoad() {
       gapi.load('picker', {
         'callback': function() {
           pickerApiLoaded = true;
@@ -34,7 +34,7 @@
      * that Picker needs is available in Apps Script. Otherwise, your Picker code
      * will need to declare its own OAuth scopes.
      */
-    function getOAuthToken () {
+    function getOAuthToken() {
       google.script.run
         .withSuccessHandler(createPicker)
         .withFailureHandler(showError)
@@ -49,7 +49,7 @@
      * @param {string} token An OAuth 2.0 access token that lets Picker access the
      *     file type specified in the addView call.
      */
-    function createPicker (token) {
+    function createPicker(token) {
       if (pickerApiLoaded && token) {
         <? if (isRestore) { ?>
         const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
@@ -87,7 +87,7 @@
      *
      * @param {object} data The response object.
      */
-    function pickerCallback (data) {
+    function pickerCallback(data) {
       const action = data[google.picker.Response.ACTION];
       if (action == google.picker.Action.CANCEL) {
         google.script.run.showDialogSetupRestore();

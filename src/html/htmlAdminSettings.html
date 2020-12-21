@@ -1,468 +1,477 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<base target="_top">
-		<meta charset="UTF-8">
-		<?!= htmlInclude("gas-common/htmlStyles"); ?>
-		<style>
-			td p {
-				margin-top: 0;
-				margin-bottom: 0;
-				text-indent: 0;
-				text-align: justify;
-			}
 
-			td.comment {
-				border-bottom: none;
-				padding-bottom: 0;
-			}
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+  <style>
+    td p {
+      margin-top: 0;
+      margin-bottom: 0;
+      text-indent: 0;
+      text-align: justify;
+    }
 
-      #panel_Backup p {
-        text-indent: 0;
-      }
+    td.comment {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
 
-			.table_row {
-				display: table-row;
-			}
+    #panel_Backup p {
+      text-indent: 0;
+    }
 
-			#header {
-				height: 3.7em;
-				width: 100%;
-				border-bottom: 1px solid #dadbe0;
-			}
+    .table_row {
+      display: table-row;
+    }
 
-			.header_table {
-				display: table;
-				width: inherit;
-				height: inherit;
-				text-align: center;
-				border-collapse: separate;
-				border-spacing: 13px 7px;
-			}
-			.header_tab {
-				cursor: pointer;
-				display: table-cell;
-				vertical-align:middle;
-				color: rgba(0, 0, 0, 0.54);
-			}
-			.header_tab.active {
-				border-bottom: solid 2px;
-			}
+    #header {
+      height: 3.7em;
+      width: 100%;
+      border-bottom: 1px solid #dadbe0;
+    }
 
-			.footer_table {
-				display: table;
-				width: 100%;
-				border-collapse: separate;
-				border-spacing: 7px;
-				border-top: 1px solid #dadbe0;
-			}
-			.footer_cell {
-				display: table-cell;
-				vertical-align: middle;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="wrapper">
-			<div id="header">
-				<div class="header_table">
-					<div class="table_row">
-						<div class="header_tab active" id="tab_settings">
-							<i class="material-icons-outlined md-24" title="Settings">settings</i>
-						</div>
-						<? if (hasEditors) { ?>
-							<div class="header_tab" id="tab_admin">
-								<i class="material-icons-outlined md-24" title="Group">groups</i>
-							</div>
-						<? } ?>
-						<div class="header_tab" id="tab_advanced">
-							<i class="material-icons-outlined md-24" title="Advanced">build</i>
-						</div>
-            <div class="header_tab" id="tab_backup">
-              <i class="material-icons-outlined md-24" title="Backup">backup</i>
-            </div>
-					</div>
-				</div>
-			</div>
+    .header_table {
+      display: table;
+      width: inherit;
+      height: inherit;
+      text-align: center;
+      border-collapse: separate;
+      border-spacing: 13px 7px;
+    }
 
-			<div id="content" style="margin-top: 7px;margin-bottom: 4.3em;">
-				<div class="panel active" id="panel_Settings">
-					<form class="asidebar" accept-charset="UTF-8">
-						<table style="width:100%;">
-              <tr>
-								<th colspan="2"><span style="font-size:1.2em;">Spreadsheet</span></th>
-							</tr>
-							<tr>
-								<td class="name"><label>Name</label></td>
-								<td><?= doc_name ?></td>
-							</tr>
-							<tr>
-								<td class="name"><label>Financial year</label></td>
-								<td><?= financial_year ?></td>
-							</tr>
-							<tr>
-								<td class="name"><label for="initial_month">Initial month</label></td>
-								<td>
-									<select id="initial_month" required>
-										<option value="0" selected>January</option>
-										<option value="1">February</option>
-										<option value="2">March</option>
-										<option value="3">April</option>
-										<option value="4">May</option>
-										<option value="5">June</option>
-										<option value="6">July</option>
-										<option value="7">August</option>
-										<option value="8">September</option>
-										<option value="9">October</option>
-										<option value="10">November</option>
-										<option value="11">December</option>
-									</select>
-								</td>
-							</tr>
-              <tr>
-                <td class="name"><label for="decimal_places">Decimal places</label></td>
-                <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
-              </tr>
-						</table>
-            <? if (isOperationActive) { ?>
-						<table style="width:100%;margin-top:1.3em;">
-							<tr>
-								<th colspan="2"><span style="font-size:1.2em;">Financial Calendar</span></th>
-							</tr>
-							<? if (isCalendarEnabled) { ?>
-								<tr>
-									<td class="comment name"><label for="financial_calendar">Calendar</label></td>
-									<td class="comment">
-										<select id="financial_calendar" style="width: 157px" required>
-											<option value="" selected>Disable</option>
-											<? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
-												<option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
-											<? } ?>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td class="secondary" colspan="2">
-										* Calendar is not owned by you.
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to the spreadsheet</label>
-									</td>
-								</tr>
-                <tr>
-                  <td colspan="2">
-                    <input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
-                  </td>
-                </tr>
-							<? } else { ?>
-								<tr>
-									<td>
-										It seems like Google Calendar is not enable for your account. <a href="<?= home_wiki ?>/Financial-Calendar" target="_blank"><b>Learn more</b></a>
-									</td>
-								</tr>
-							<? } ?>
-						</table>
-            <? } ?>
-					</form>
-				</div>
+    .header_tab {
+      cursor: pointer;
+      display: table-cell;
+      vertical-align: middle;
+      color: rgba(0, 0, 0, 0.54);
+    }
 
-				<div class="panel" id="panel_Advanced">
-					<table style="width:100%;">
-						<tr>
-							<td class="comment name" style="width: 100%;"><label>Reset protected ranges</label></td>
-							<td class="comment"><button id="b-Reset">Reset</button></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<p>This can fix issues related with editable ranges affected by protection.</p>
-							</td>
-						</tr>
-						<tr>
-							<td class="comment name" style="width: 100%;"><label>Reinstall triggers</label></td>
-							<td class="comment"><button id="b-Reinstall">Reinstall</button></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<p>This can fix issues related with the add-on's automatic update and maintenance.<br>
-								<a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a></p>
-							</td>
-						</tr>
-					</table>
-				</div>
+    .header_tab.active {
+      border-bottom: solid 2px;
+    }
 
-        <div class="panel" id="panel_Backup">
-          <table>
-            <tr>
-              <th colspan="2"><span style="font-size:1.2em;">Back up data & settings</span></th>
-            </tr>
-            <tr>
-              <td>
-                <p>You can back up data and settings from your budget spreadsheet to your Google Drive. You can restore your backed-up information to a new budget spreadsheet.</p>
-              </td>
-            </tr>
-          </table>
+    .footer_table {
+      display: table;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 7px;
+      border-top: 1px solid #dadbe0;
+    }
 
-          <b>What gets backed up</b>
-          <ul>
-            <li>Jan, ..., Dec transactions</li>
-            <li>Cards transactions</li>
-            <li>Tags</li>
-            <li>Accounts and Cards</li>
-            <li>Add-on settings</li>
-          </ul>
+    .footer_cell {
+      display: table-cell;
+      vertical-align: middle;
+    }
+  </style>
+</head>
 
-          <b>Important notes regarding your backup:</b>
-          <ul>
-            <li>The backup file is <b>NOT encrypted</b>.</li>
-            <li>The size of the backup varies by spreadsheet and settings.</li>
-            <li>The backup is a text file, and changing its content can impact the integrity and corrupt it.</li>
-          </ul>
-
-          <p>An email will be sent to you with the backup file attached to it. You can <a href="https://support.google.com/mail/answer/30719" target="_blank">save the attachment to your Drive</a>.</p>
-
-          <button id="b-Backup" class="action">Back up now</button>
-
-          <p>For more information, visit <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank">Backup and Restore</a>.</p>
+<body>
+  <div id="wrapper">
+    <div id="header">
+      <div class="header_table">
+        <div class="table_row">
+          <div class="header_tab active" id="tab_settings">
+            <i class="material-icons-outlined md-24" title="Settings">settings</i>
+          </div>
+          <? if (hasEditors) { ?>
+          <div class="header_tab" id="tab_admin">
+            <i class="material-icons-outlined md-24" title="Group">groups</i>
+          </div>
+          <? } ?>
+          <div class="header_tab" id="tab_advanced">
+            <i class="material-icons-outlined md-24" title="Advanced">build</i>
+          </div>
+          <div class="header_tab" id="tab_backup">
+            <i class="material-icons-outlined md-24" title="Backup">backup</i>
+          </div>
         </div>
-        <? if (hasEditors) { ?>
+      </div>
+    </div>
 
-        <div class="panel" id="panel_Admin">
+    <div id="content" style="margin-top: 7px;margin-bottom: 4.3em;">
+      <div class="panel active" id="panel_Settings">
+        <form class="asidebar" accept-charset="UTF-8">
           <table style="width:100%;">
             <tr>
-              <td class="comment name" style="width: 100%;"><label for="isChangeableByEditors">Editors can change settings</label></td>
-              <td class="comment">
-                <select id="isChangeableByEditors" required>
-                  <option value="allow">Allow</option>
-                  <option value="deny" selected>Deny</option>
+              <th colspan="2"><span style="font-size:1.2em;">Spreadsheet</span></th>
+            </tr>
+            <tr>
+              <td class="name"><label>Name</label></td>
+              <td><?= doc_name ?></td>
+            </tr>
+            <tr>
+              <td class="name"><label>Financial year</label></td>
+              <td><?= financial_year ?></td>
+            </tr>
+            <tr>
+              <td class="name"><label for="initial_month">Initial month</label></td>
+              <td>
+                <select id="initial_month" required>
+                  <option value="0" selected>January</option>
+                  <option value="1">February</option>
+                  <option value="2">March</option>
+                  <option value="3">April</option>
+                  <option value="4">May</option>
+                  <option value="5">June</option>
+                  <option value="6">July</option>
+                  <option value="7">August</option>
+                  <option value="8">September</option>
+                  <option value="9">October</option>
+                  <option value="10">November</option>
+                  <option value="11">December</option>
                 </select>
               </td>
             </tr>
             <tr>
-              <td colspan="2">
-                <p>Only the admin can change the <b>calendar</b> and <b>deactivate the add-on</b>.<br>
-                <a href="<?= home_wiki ?>/Changing-Settings#editors-can-change-settings" target="_blank"><b>Learn more</b></a></p>
-              </td>
-            </tr>
-            <tr>
-              <td class="comment name" style="width: 100%;">Transfer admin role</td>
-              <td class="comment"><button id="b-Transfer" class="action">Transfer</button></td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <? if (isSharedDrive) { ?>
-                  <p>Transfers admin role to current owner of the spreadsheet.<br>
-                <? } else { ?>
-                  <p>Transfers admin role to an editor of the spreadsheet.<br>
-                <? } ?>
-                <a href="<?= home_wiki ?>/Changing-Settings#transfer-admin-role" target="_blank"><b>Learn more</b></a></p>
-              </td>
+              <td class="name"><label for="decimal_places">Decimal places</label></td>
+              <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
             </tr>
           </table>
+          <? if (isOperationActive) { ?>
+          <table style="width:100%;margin-top:1.3em;">
+            <tr>
+              <th colspan="2"><span style="font-size:1.2em;">Financial Calendar</span></th>
+            </tr>
+            <? if (isCalendarEnabled) { ?>
+            <tr>
+              <td class="comment name"><label for="financial_calendar">Calendar</label></td>
+              <td class="comment">
+                <select id="financial_calendar" style="width: 157px" required>
+                  <option value="" selected>Disable</option>
+                  <? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
+                  <option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
+                  <? } ?>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="secondary" colspan="2">
+                * Calendar is not owned by you.
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to the spreadsheet</label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
+              </td>
+            </tr>
+            <? } else { ?>
+            <tr>
+              <td>
+                It seems like Google Calendar is not enable for your account. <a href="<?= home_wiki ?>/Financial-Calendar" target="_blank"><b>Learn more</b></a>
+              </td>
+            </tr>
+            <? } ?>
+          </table>
+          <? } ?>
+        </form>
+      </div>
+
+      <div class="panel" id="panel_Advanced">
+        <table style="width:100%;">
+          <tr>
+            <td class="comment name" style="width: 100%;"><label>Reset protected ranges</label></td>
+            <td class="comment"><button id="b-Reset">Reset</button></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <p>This can fix issues related with editable ranges affected by protection.</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="comment name" style="width: 100%;"><label>Reinstall triggers</label></td>
+            <td class="comment"><button id="b-Reinstall">Reinstall</button></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <p>This can fix issues related with the add-on's automatic update and maintenance.<br>
+                <a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="panel" id="panel_Backup">
+        <table>
+          <tr>
+            <th colspan="2"><span style="font-size:1.2em;">Back up data & settings</span></th>
+          </tr>
+          <tr>
+            <td>
+              <p>You can back up data and settings from your budget spreadsheet to your Google Drive. You can restore your backed-up information to a new budget spreadsheet.</p>
+            </td>
+          </tr>
+        </table>
+
+        <b>What gets backed up</b>
+        <ul>
+          <li>Jan, ..., Dec transactions</li>
+          <li>Cards transactions</li>
+          <li>Tags</li>
+          <li>Accounts and Cards</li>
+          <li>Add-on settings</li>
+        </ul>
+
+        <b>Important notes regarding your backup:</b>
+        <ul>
+          <li>The backup file is <b>NOT encrypted</b>.</li>
+          <li>The size of the backup varies by spreadsheet and settings.</li>
+          <li>The backup is a text file, and changing its content can impact the integrity and corrupt it.</li>
+        </ul>
+
+        <p>An email will be sent to you with the backup file attached to it. You can <a href="https://support.google.com/mail/answer/30719" target="_blank">save the attachment to your Drive</a>.</p>
+
+        <button id="b-Backup" class="action">Back up now</button>
+
+        <p>For more information, visit <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank">Backup and Restore</a>.</p>
+      </div>
+      <? if (hasEditors) { ?>
+
+      <div class="panel" id="panel_Admin">
+        <table style="width:100%;">
+          <tr>
+            <td class="comment name" style="width: 100%;"><label for="isChangeableByEditors">Editors can change settings</label></td>
+            <td class="comment">
+              <select id="isChangeableByEditors" required>
+                <option value="allow">Allow</option>
+                <option value="deny" selected>Deny</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <p>Only the admin can change the <b>calendar</b> and <b>deactivate the add-on</b>.<br>
+                <a href="<?= home_wiki ?>/Changing-Settings#editors-can-change-settings" target="_blank"><b>Learn more</b></a>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="comment name" style="width: 100%;">Transfer admin role</td>
+            <td class="comment"><button id="b-Transfer" class="action">Transfer</button></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <? if (isSharedDrive) { ?>
+              <p>Transfers admin role to current owner of the spreadsheet.<br>
+                <? } else { ?>
+              <p>Transfers admin role to an editor of the spreadsheet.<br>
+                <? } ?>
+                <a href="<?= home_wiki ?>/Changing-Settings#transfer-admin-role" target="_blank"><b>Learn more</b></a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <? } ?>
+    </div>
+
+    <div id="footer">
+      <div class="current" id="footer_response" style="padding:0 7px;"></div>
+      <div class="footer_table">
+        <div class="table_row">
+          <div class="footer_cell left" style="width:100%;">
+            <button class="action" id="b-Save" disabled>Save</button>
+          </div>
+          <div class="footer_cell right">
+            <div class="md-footer"><a href="<?= home_wiki ?>/Changing-Settings" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a></div>
+          </div>
         </div>
-        <? } ?>
-			</div>
+      </div>
+    </div>
+  </div>
+  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <script>
+    $(document).ready(function() {
+      $("#b-Save").click(saveSettings);
+      $("#b-Reinstall").click(reinstallTriggers);
+      $("#b-Backup").click(backupNow);
 
-			<div id="footer">
-				<div class="current" id="footer_response" style="padding:0 7px;"></div>
-					<div class="footer_table">
-						<div class="table_row">
-							<div class="footer_cell left" style="width:100%;">
-								<button class="action" id="b-Save" disabled>Save</button>
-							</div>
-							<div class="footer_cell right">
-								<div class="md-footer"><a href="<?= home_wiki ?>/Changing-Settings" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a></div>
-							</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
-		<script>
-			$(document).ready(function() {
-				$("#b-Save").click(saveSettings);
-				$("#b-Reinstall").click(reinstallTriggers);
-        $("#b-Backup").click(backupNow);
+      <? if (hasEditors) { ?>
+      $("#b-Transfer").click(transferAdminRole);
+      <? } ?>
 
-				<? if (hasEditors) { ?>
-					$("#b-Transfer").click(transferAdminRole);
-				<? } ?>
+      google.script.run
+        .withSuccessHandler(loadAdminSettings)
+        .withFailureHandler(showError)
+        .retrieveAdminSettings();
+      $("#b-Reset").click(resetProtection);
 
-        google.script.run
-          .withSuccessHandler(loadAdminSettings)
-          .withFailureHandler(showError)
-          .retrieveAdminSettings();
-				$("#b-Reset").click(resetProtection);
+      google.script.run.withSuccessHandler(loadUserSettings)
+        .withFailureHandler(showError)
+        .retrieveUserSettings();
+    });
 
-				google.script.run.withSuccessHandler(loadUserSettings)
-					.withFailureHandler(showError)
-					.retrieveUserSettings();
-			});
+    $(document).on("click", ".header_tab", function() {
+      if ($(this).hasClass("active")) return;
 
-			$(document).on("click", ".header_tab", function() {
-				if ($(this).hasClass("active")) return;
+      var select = $(this).attr("id");
 
-				var select = $(this).attr("id");
+      $(this).addClass("active")
+        .siblings()
+        .removeClass("active");
+      $("#b-Save").hide();
 
-				$(this).addClass("active")
-					.siblings()
-					.removeClass("active");
-				$("#b-Save").hide();
-
-				window.scrollTo(0, 0);
-				if (select === "tab_settings") {
-					$("#b-Save").show();
-					$("#panel_Settings").show()
-						.siblings()
-						.hide();
-				} else if (select === "tab_advanced") {
-					$("#panel_Advanced").show()
-						.siblings()
-						.hide();
-        } else if (select === "tab_backup") {
-          $("#panel_Backup").show()
-            .siblings()
-            .hide();
-        <? if (hasEditors) { ?>
-        } else if (select === "tab_admin") {
-          $("#panel_Admin").show()
-            .siblings()
-            .hide();
-        <? } ?>
-				}
-			});
-
-			<? if (isCalendarEnabled) { ?>
-				$("#financial_calendar").change(function() {
-					if ($(this).val() === "") {
-						$(".options-calendar").prop("disabled", true);
-						$(".options-calendar").prop("checked", false);
-					} else {
-						$(".options-calendar").prop("disabled", false);
-					}
-					return;
-				});
-
-			<? } ?>
-      function loadAdminSettings(admin_settings) {
-        if (admin_settings.isChangeableByEditors) $("#isChangeableByEditors").val('allow');
+      window.scrollTo(0, 0);
+      if (select === "tab_settings") {
+        $("#b-Save").show();
+        $("#panel_Settings").show()
+          .siblings()
+          .hide();
+      } else if (select === "tab_advanced") {
+        $("#panel_Advanced").show()
+          .siblings()
+          .hide();
+      } else if (select === "tab_backup") {
+        $("#panel_Backup").show()
+          .siblings()
+          .hide();
+      <? if (hasEditors) { ?>
+      } else if (select === "tab_admin") {
+        $("#panel_Admin").show()
+          .siblings()
+          .hide();
+      <? } ?>
       }
+    });
 
-			<? if (hasEditors) { ?>
-				$("#isChangeableByEditors").change(function() {
-					this.disabled = true;
-					$("#footer_response").empty();
-					google.script.run.withSuccessHandler(function(r, o) {
-								o.disabled = false;
-							})
-						.withFailureHandler(showError)
-						.withUserObject(this)
-						.saveAdminSettings("isChangeableByEditors", $(this).val());
-				});
+    <? if (isCalendarEnabled) { ?>
+    $("#financial_calendar").change(function() {
+      if ($(this).val() === "") {
+        $(".options-calendar").prop("disabled", true);
+        $(".options-calendar").prop("checked", false);
+      } else {
+        $(".options-calendar").prop("disabled", false);
+      }
+      return;
+    });
 
-				function transferAdminRole() {
-					this.disabled = true;
-					$("#footer_response").empty();
+    <? } ?>
+    function loadAdminSettings(admin_settings) {
+      if (admin_settings.isChangeableByEditors) $("#isChangeableByEditors").val('allow');
+    }
 
-					google.script.run.withSuccessHandler(function(r, o) {
-								o.disabled = false;
-								if (!r) google.script.host.close();
-							})
-						.withFailureHandler(showError)
-						.withUserObject(this)
-						<? if (isSharedDrive) { ?>
-							.askTransferAdminSd();
-						<? } else { ?>
-							.askTransferAdmin();
-						<? } ?>
-				}
+    <? if (hasEditors) { ?>
+      $("#isChangeableByEditors").change(function() {
+        this.disabled = true;
+        $("#footer_response").empty();
+        google.script.run.withSuccessHandler(function(r, o) {
+            o.disabled = false;
+          })
+          .withFailureHandler(showError)
+          .withUserObject(this)
+          .saveAdminSettings("isChangeableByEditors", $(this).val());
+      });
 
-			<? } ?>
-
-      function backupNow () {
+      function transferAdminRole() {
         this.disabled = true;
         $("#footer_response").empty();
 
-        google.script.run
-          .withSuccessHandler(function(r, o) {
-              if (r > 1) showStatus("Something went wrong. Try again later.");
-              o.disabled = false;
-            })
+        google.script.run.withSuccessHandler(function(r, o) {
+            o.disabled = false;
+            if (!r) google.script.host.close();
+          })
           .withFailureHandler(showError)
           .withUserObject(this)
-          .backupRequestUi();
+          <? if (isSharedDrive) { ?>
+          .askTransferAdminSd();
+          <? } else { ?>
+          .askTransferAdmin();
+          <? } ?>
       }
 
-			function reinstallTriggers() {
-				this.disabled = true;
-				$("#footer_response").empty();
+      <? } ?>
 
-				google.script.run.withSuccessHandler(function(r, o) {
-							if (!r) showStatus("Reinstalled triggers");
-							o.disabled = false;
-						})
-					.withFailureHandler(showError)
-					.withUserObject(this)
-					.askReinstallTriggersUi();
-			}
+    function backupNow() {
+      this.disabled = true;
+      $("#footer_response").empty();
 
-			function resetProtection() {
-				this.disabled = true;
-				$("#footer_response").empty();
+      google.script.run
+        .withSuccessHandler(function(r, o) {
+          if (r > 1) showStatus("Something went wrong. Try again later.");
+          o.disabled = false;
+        })
+        .withFailureHandler(showError)
+        .withUserObject(this)
+        .backupRequestUi();
+    }
 
-				google.script.run.withSuccessHandler(function(r, o) {
-							showStatus("Reseted protection");
-							o.disabled = false;
-						})
-					.withFailureHandler(showError)
-					.withUserObject(this)
-					.askResetProtection();
-			}
+    function reinstallTriggers() {
+      this.disabled = true;
+      $("#footer_response").empty();
 
-			function loadUserSettings(user_settings) {
-				$("#initial_month").val(user_settings.initial_month);
-        $("#decimal_places").val(user_settings.decimal_places);
+      google.script.run.withSuccessHandler(function(r, o) {
+          if (!r) showStatus("Reinstalled triggers");
+          o.disabled = false;
+        })
+        .withFailureHandler(showError)
+        .withUserObject(this)
+        .askReinstallTriggersUi();
+    }
 
-				<? if (isCalendarEnabled) { ?>
-				$("#financial_calendar").val(user_settings.financial_calendar);
-				if (user_settings.financial_calendar) {
-					if (user_settings.post_day_events) $("#post_day_events").prop("checked", true);
-					if (user_settings.cash_flow_events) $("#cash_flow_events").prop("checked", true);
-					$(".options-calendar").prop("disabled", false);
-				}
-				<? } ?>
+    function resetProtection() {
+      this.disabled = true;
+      $("#footer_response").empty();
 
-				$("#b-Save").prop("disabled", false);
-			}
+      google.script.run.withSuccessHandler(function(r, o) {
+          showStatus("Reseted protection");
+          o.disabled = false;
+        })
+        .withFailureHandler(showError)
+        .withUserObject(this)
+        .askResetProtection();
+    }
 
-			function saveSettings() {
-				this.disabled = true;
-				$("#footer_response").empty();
+    function loadUserSettings(user_settings) {
+      $("#initial_month").val(user_settings.initial_month);
+      $("#decimal_places").val(user_settings.decimal_places);
 
-				var user_settings = {
-					<? if (isCalendarEnabled) { ?>
-						financial_calendar: $("#financial_calendar").val(),
-						post_day_events: $("#post_day_events").prop("checked"),
-						cash_flow_events: $("#cash_flow_events").prop("checked"),
-					<? } ?>
-          initial_month: $("#initial_month").val(),
-          decimal_places: $("#decimal_places").val()
-				};
+      <? if (isCalendarEnabled) { ?>
+      $("#financial_calendar").val(user_settings.financial_calendar);
+      if (user_settings.financial_calendar) {
+        if (user_settings.post_day_events) $("#post_day_events").prop("checked", true);
+        if (user_settings.cash_flow_events) $("#cash_flow_events").prop("checked", true);
+        $(".options-calendar").prop("disabled", false);
+      }
+      <? } ?>
 
-				google.script.run.withSuccessHandler(function(r, o) {
-              if (r) showError()
-							showStatus("Saved settings");
-							o.disabled = false;
-						})
-					.withFailureHandler(showError)
-					.withUserObject(this)
-					.saveUserSettings(user_settings);
-			}
+      $("#b-Save").prop("disabled", false);
+    }
 
-			function showStatus(msg) {
-				$("#footer_response").empty().append(msg);
-			}
-		</script>
-	</body>
+    function saveSettings() {
+      this.disabled = true;
+      $("#footer_response").empty();
+
+      var user_settings = {
+        <? if (isCalendarEnabled) { ?>
+        financial_calendar: $("#financial_calendar").val(),
+        post_day_events: $("#post_day_events").prop("checked"),
+        cash_flow_events: $("#cash_flow_events").prop("checked"),
+        <? } ?>
+        initial_month : $("#initial_month").val(),
+        decimal_places : $("#decimal_places").val()
+      };
+
+      google.script.run.withSuccessHandler(function(r, o) {
+          if (r) showError()
+          showStatus("Saved settings");
+          o.disabled = false;
+        })
+        .withFailureHandler(showError)
+        .withUserObject(this)
+        .saveUserSettings(user_settings);
+    }
+
+    function showStatus(msg) {
+      $("#footer_response").empty().append(msg);
+    }
+  </script>
+</body>
+
 </html>

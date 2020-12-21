@@ -1,267 +1,275 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<base target="_top">
-		<meta charset="UTF-8">
-		<?!= htmlInclude("gas-common/htmlStyles"); ?>
-		<style>
-			#header {
-				height: 3.7em;
-				margin-bottom: 0.5em;
-				width: 100%;
-				border-bottom: 1px solid #dadbe0;
-			}
 
-			.header_table {
-				display: table;
-				width: inherit;
-				height: inherit;
-				text-align: center;
-				border-collapse: separate;
-				border-spacing: 13px 7px;
-			}
-			.header_tab {
-				cursor: pointer;
-				display: table-cell;
-				vertical-align:middle;
-				color: rgba(0, 0, 0, 0.54);
-			}
-			.header_tab.active {
-				border-bottom: solid 2px;
-			}
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+  <style>
+    #header {
+      height: 3.7em;
+      margin-bottom: 0.5em;
+      width: 100%;
+      border-bottom: 1px solid #dadbe0;
+    }
 
-			.footer_table {
-				width: 100%;
-				display: table;
-				border-collapse: separate;
-				border-spacing: 7px;
-				border-top: 1px solid #dadbe0;
-			}
-			.footer_cell {
-				display: table-cell;
-				vertical-align: middle;
-			}
+    .header_table {
+      display: table;
+      width: inherit;
+      height: inherit;
+      text-align: center;
+      border-collapse: separate;
+      border-spacing: 13px 7px;
+    }
 
-			.item_table {
-				width: 100%;
-				margin-bottom: 17px;
-				display: table;
-				background: #f3f3f3;
-				border-radius: 7px;
-				border: 2px solid #d9d9d9;
-			}
-			.item_cell {
-				width: 100%;
-				padding: 11px;
-				display: table-cell;
-			}
+    .header_tab {
+      cursor: pointer;
+      display: table-cell;
+      vertical-align: middle;
+      color: rgba(0, 0, 0, 0.54);
+    }
 
-			.item_menu {
-				font-weight: bold;
-				word-spacing: 11px;
-			}
+    .header_tab.active {
+      border-bottom: solid 2px;
+    }
 
-			.table_row {
-				display: table-row;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="wrapper">
-			<div id="header">
-				<div class="header_table">
-					<div class="table_row">
-						<div class="header_tab <?= tab_acc ?>" id="tab_accounts">
-							<i class="material-icons-outlined md-24" title="Accounts">account_balance</i>
-						</div>
-						<div class="header_tab <?= tab_cards ?>" id="tab_cards">
-							<i class="material-icons-outlined md-24" title="Cards">credit_card</i>
-						</div>
-					</div>
-				</div>
-			</div>
+    .footer_table {
+      width: 100%;
+      display: table;
+      border-collapse: separate;
+      border-spacing: 7px;
+      border-top: 1px solid #dadbe0;
+    }
 
-			<div id="content" style="margin-bottom:4.7em;">
-				<div class="panel <?= tab_acc ?>" id="panel_Accounts">
-					<div id="box_Accounts">
-					</div>
-				</div>
+    .footer_cell {
+      display: table-cell;
+      vertical-align: middle;
+    }
 
-				<div class="panel <?= tab_cards ?>" id="panel_Cards">
-					<div id="box_Cards">
-					</div>
+    .item_table {
+      width: 100%;
+      margin-bottom: 17px;
+      display: table;
+      background: #f3f3f3;
+      border-radius: 7px;
+      border: 2px solid #d9d9d9;
+    }
 
-					<div class="item_table" id="item-AddCard" style="display: none;border: 2px dashed #d9d9d9;">
-						<div class="table_row">
-							<div class="item_cell" style="height: 2.3em;vertical-align: middle;">
-								<a id="b-AddCard"><i class="material-icons">add</i> Add card</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+    .item_cell {
+      width: 100%;
+      padding: 11px;
+      display: table-cell;
+    }
 
-			<div id="footer">
-				<div class="current" id="response" style="padding:0 7px;"></div>
-				<div class="footer_table">
-					<div class="table_row">
-						<div class="footer_cell" style="width:100%;">
-						</div>
-						<div class="footer_cell">
-							<div class="md-footer"><a href="<?= home_wiki ?>" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a>
-						</div></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
-		<script>
-			function formatCurrency() {
-				var dec_p = "<?= dec_p ?>";
-				var dec_ps = "<?= dec_ps ?>";
-				var n = this;
-				var i = parseInt(n = Math.abs(+n || 0).toFixed(2)) + '';
-				var j = (j = i.length) > 3 ? j % 3 : 0;
-				return (j ? i.substr(0, j) + dec_ps : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + dec_ps) + (2 ? dec_p + Math.abs(n - i).toFixed(2).slice(2) : '');
-			}
+    .item_menu {
+      font-weight: bold;
+      word-spacing: 11px;
+    }
 
-			$(document).ready(function() {
-				$("#b-AddCard").click(function(e) {
-					$("#response").empty();
-					google.script.run
-						.withFailureHandler(showError)
-						.showDialogAddCard();
-				});
+    .table_row {
+      display: table-row;
+    }
+  </style>
+</head>
 
-				google.script.run
-					.withSuccessHandler(listAccounts)
-					.withFailureHandler(showError)
-					.tablesService("get", "accounts");
+<body>
+  <div id="wrapper">
+    <div id="header">
+      <div class="header_table">
+        <div class="table_row">
+          <div class="header_tab <?= tab_acc ?>" id="tab_accounts">
+            <i class="material-icons-outlined md-24" title="Accounts">account_balance</i>
+          </div>
+          <div class="header_tab <?= tab_cards ?>" id="tab_cards">
+            <i class="material-icons-outlined md-24" title="Cards">credit_card</i>
+          </div>
+        </div>
+      </div>
+    </div>
 
-				google.script.run
-					.withSuccessHandler(listCards)
-					.withFailureHandler(showError)
-					.tablesService("get", "cards");
-			});
+    <div id="content" style="margin-bottom:4.7em;">
+      <div class="panel <?= tab_acc ?>" id="panel_Accounts">
+        <div id="box_Accounts">
+        </div>
+      </div>
 
-			$(document).on("click", ".header_tab", function() {
-				if ($(this).hasClass("active")) return;
+      <div class="panel <?= tab_cards ?>" id="panel_Cards">
+        <div id="box_Cards">
+        </div>
 
-				var id = $(this).attr("id");
-				var panel;
+        <div class="item_table" id="item-AddCard" style="display: none;border: 2px dashed #d9d9d9;">
+          <div class="table_row">
+            <div class="item_cell" style="height: 2.3em;vertical-align: middle;">
+              <a id="b-AddCard"><i class="material-icons">add</i> Add card</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-				window.scrollTo(0, 0);
-				$(this).addClass("active")
-					.siblings()
-					.removeClass("active");
+    <div id="footer">
+      <div class="current" id="response" style="padding:0 7px;"></div>
+      <div class="footer_table">
+        <div class="table_row">
+          <div class="footer_cell" style="width:100%;">
+          </div>
+          <div class="footer_cell">
+            <div class="md-footer"><a href="<?= home_wiki ?>" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <script>
+    function formatCurrency() {
+      var dec_p = "<?= dec_p ?>";
+      var dec_ps = "<?= dec_ps ?>";
+      var n = this;
+      var i = parseInt(n = Math.abs(+n || 0).toFixed(2)) + '';
+      var j = (j = i.length) > 3 ? j % 3 : 0;
+      return (j ? i.substr(0, j) + dec_ps : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + dec_ps) + (2 ? dec_p + Math.abs(n - i).toFixed(2).slice(2) : '');
+    }
 
-				if (id === "tab_accounts") panel = "#panel_Accounts";
-				else if (id === "tab_cards") panel = "#panel_Cards";
+    $(document).ready(function() {
+      $("#b-AddCard").click(function(e) {
+        $("#response").empty();
+        google.script.run
+          .withFailureHandler(showError)
+          .showDialogAddCard();
+      });
 
-				$(panel).show()
-					.siblings()
-					.hide();
-			});
+      google.script.run
+        .withSuccessHandler(listAccounts)
+        .withFailureHandler(showError)
+        .tablesService("get", "accounts");
 
-			$(document).on("click", ".a-edit", function(e) {
-				$("#response").empty();
-				google.script.run
-					.withSuccessHandler(responseHandler)
-					.withFailureHandler(showError)
-					.showDialogEditAccount($(this).attr("id"));
-			});
+      google.script.run
+        .withSuccessHandler(listCards)
+        .withFailureHandler(showError)
+        .tablesService("get", "cards");
+    });
 
-			$(document).on("click", ".c-edit", function(e) {
-				$("#response").empty();
-				google.script.run
-					.withSuccessHandler(responseHandler)
-					.withFailureHandler(showError)
-					.showDialogEditCard($(this).parent().attr("id"));
-			});
+    $(document).on("click", ".header_tab", function() {
+      if ($(this).hasClass("active")) return;
 
-			$(document).on("click", ".c-remove", function(e) {
-				$("#response").empty();
-				google.script.run
-					.withSuccessHandler(reloadListCards)
-					.withFailureHandler(showError)
-					.showDialogDeleteCard($(this).parent().attr("id"));
-			});
+      var id = $(this).attr("id");
+      var panel;
 
-			function reloadListCards(r) {
-				if (!r) return;
-				$("#item-AddCard").hide();
-				$("#box_Cards").empty();
-				google.script.run
-					.withSuccessHandler(listCards)
-					.withFailureHandler(showError)
-					.tablesService("get", "cards");
-			}
+      window.scrollTo(0, 0);
+      $(this).addClass("active")
+        .siblings()
+        .removeClass("active");
 
-			function listAccounts(db_accounts) {
-        const MN_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-				var item, k;
+      if (id === "tab_accounts") panel = "#panel_Accounts";
+      else if (id === "tab_cards") panel = "#panel_Cards";
 
-				for (k = 0; k < db_accounts.length; k++) {
-					item = "<div class=\"table_row\">";
-					item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_accounts[k].name + "</div>";
-					item += "</div>"
+      $(panel).show()
+        .siblings()
+        .hide();
+    });
 
-					item += "<div class=\"table_row\">";
-					item += "<div class=\"item_cell\" style=\"font-size: 14px;line-height: 1.3;\">";
-					item += "Initial month: " + MN_FULL[db_accounts[k].time_a] + "<br>";
-					item += "Initial balance: " + formatCurrency.call(db_accounts[k].balance);
-					item += "</div>";
-					item += "</div>";
+    $(document).on("click", ".a-edit", function(e) {
+      $("#response").empty();
+      google.script.run
+        .withSuccessHandler(responseHandler)
+        .withFailureHandler(showError)
+        .showDialogEditAccount($(this).attr("id"));
+    });
 
-					item += "<div class=\"table_row\">";
-					item += "<div class=\"item_cell item_menu\">";
-					item += "<a class=\"a-edit\" id=\"" + db_accounts[k].id + "\">Edit</a>";
-					item += "</div>";
-					item += "</div>";
+    $(document).on("click", ".c-edit", function(e) {
+      $("#response").empty();
+      google.script.run
+        .withSuccessHandler(responseHandler)
+        .withFailureHandler(showError)
+        .showDialogEditCard($(this).parent().attr("id"));
+    });
 
-					item = "<div class=\"item_table\">" + item + "</div>"
-					$("#box_Accounts").append(item);
-				}
-			}
+    $(document).on("click", ".c-remove", function(e) {
+      $("#response").empty();
+      google.script.run
+        .withSuccessHandler(reloadListCards)
+        .withFailureHandler(showError)
+        .showDialogDeleteCard($(this).parent().attr("id"));
+    });
 
-			function listCards(db_cards) {
-				var item, k, n;
+    function reloadListCards(r) {
+      if (!r) return;
+      $("#item-AddCard").hide();
+      $("#box_Cards").empty();
+      google.script.run
+        .withSuccessHandler(listCards)
+        .withFailureHandler(showError)
+        .tablesService("get", "cards");
+    }
 
-				n = 0;
-				for (k = 0; k < db_cards.length; k++) {
-					item = "<div class=\"table_row\">";
-					item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_cards[k].name + "</div>";
-					item += "</div>";
+    function listAccounts(db_accounts) {
+      const MN_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      var item, k;
 
-					item += "<div class=\"table_row\">";
-					item += "<div class=\"item_cell\" style=\"font-size: 14px;line-height: 1.3;\">";
-					item += "Code: " + db_cards[k].code + "<br>";
-					item += "Credit limit: " + formatCurrency.call(db_cards[k].limit);
-					if (db_cards[k].aliases.length > 0) {
-						item += "<br>";
-						item += "Code aliases: " + db_cards[k].aliases.join(", ");
-					}
-					item += "</div>";
-					item += "</div>";
+      for (k = 0; k < db_accounts.length; k++) {
+        item = "<div class=\"table_row\">";
+        item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_accounts[k].name + "</div>";
+        item += "</div>"
 
-					item += "<div class=\"table_row\">";
-					item += "<div class=\"item_cell item_menu\" id=\"" + db_cards[k].id + "\">";
-					item += "<a class=\"c-edit\">Edit</a> ";
-					item += "<a class=\"c-remove\">Remove</a>";
-					item += "</div>";
-					item += "</div>";
+        item += "<div class=\"table_row\">";
+        item += "<div class=\"item_cell\" style=\"font-size: 14px;line-height: 1.3;\">";
+        item += "Initial month: " + MN_FULL[db_accounts[k].time_a] + "<br>";
+        item += "Initial balance: " + formatCurrency.call(db_accounts[k].balance);
+        item += "</div>";
+        item += "</div>";
 
-					item = "<div class=\"item_table\">" + item + "</div>"
-					$("#box_Cards").append(item);
-					n++;
-				}
+        item += "<div class=\"table_row\">";
+        item += "<div class=\"item_cell item_menu\">";
+        item += "<a class=\"a-edit\" id=\"" + db_accounts[k].id + "\">Edit</a>";
+        item += "</div>";
+        item += "</div>";
 
-				if (n < 10) $("#item-AddCard").show();
-			}
+        item = "<div class=\"item_table\">" + item + "</div>"
+        $("#box_Accounts").append(item);
+      }
+    }
 
-			function responseHandler(r) {
-				if (r) $("#response").empty().append("Sorry, something went wrong. Please, try again.");
-			}
-		</script>
-	</body>
+    function listCards(db_cards) {
+      var item, k, n;
+
+      n = 0;
+      for (k = 0; k < db_cards.length; k++) {
+        item = "<div class=\"table_row\">";
+        item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_cards[k].name + "</div>";
+        item += "</div>";
+
+        item += "<div class=\"table_row\">";
+        item += "<div class=\"item_cell\" style=\"font-size: 14px;line-height: 1.3;\">";
+        item += "Code: " + db_cards[k].code + "<br>";
+        item += "Credit limit: " + formatCurrency.call(db_cards[k].limit);
+        if (db_cards[k].aliases.length > 0) {
+          item += "<br>";
+          item += "Code aliases: " + db_cards[k].aliases.join(", ");
+        }
+        item += "</div>";
+        item += "</div>";
+
+        item += "<div class=\"table_row\">";
+        item += "<div class=\"item_cell item_menu\" id=\"" + db_cards[k].id + "\">";
+        item += "<a class=\"c-edit\">Edit</a> ";
+        item += "<a class=\"c-remove\">Remove</a>";
+        item += "</div>";
+        item += "</div>";
+
+        item = "<div class=\"item_table\">" + item + "</div>"
+        $("#box_Cards").append(item);
+        n++;
+      }
+
+      if (n < 10) $("#item-AddCard").show();
+    }
+
+    function responseHandler(r) {
+      if (r) $("#response").empty().append("Sorry, something went wrong. Please, try again.");
+    }
+  </script>
+</body>
+
 </html>
