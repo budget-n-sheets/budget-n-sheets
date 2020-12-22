@@ -11,7 +11,7 @@ const PATCH_THIS = Object.freeze({
       [update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_, null, null, update_v0m34p10_, null, null],
       [update_v0m35p0_, update_v0m35p1_, update_v0m35p2_, null, null, null, null],
       [null, null, update_v0m36p2_, update_v0m36p3_, update_v0m36p4_, null],
-      [null, null, null, update_v0m37p3_, update_v0m37p4_]
+      [null, null, null, update_v0m37p3_, null, update_v0m37p5_]
     ]
   ],
   beta_list: []
@@ -173,9 +173,9 @@ function update_v0m0p0_ () {
 /**
  * Set missing reference to cards total expenses.
  *
- * 0.37.4
+ * 0.37.5
  */
-function update_v0m37p4_ () {
+function update_v0m37p5_ () {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;
