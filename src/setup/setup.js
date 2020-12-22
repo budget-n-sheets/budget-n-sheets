@@ -128,6 +128,7 @@ function setupRestore_ (fileId) {
   setupParts_();
 
   restoreFromBackup_(backup);
+  PropertiesService2.deleteProperty('document', 'settings_candidate');
 
   const class_version2 = {
     script: APPS_SCRIPT_GLOBAL.script_version,
@@ -180,6 +181,7 @@ function setupCopy_ (file_id) {
   setupParts_();
 
   restoreFromSpreadsheet_(settings_candidate.file_id);
+  PropertiesService2.deleteProperty('document', 'settings_candidate');
 
   const class_version2 = {
     script: APPS_SCRIPT_GLOBAL.script_version,
