@@ -171,6 +171,27 @@ function update_v0m0p0_ () {
 } */
 
 /**
+ * Set missing reference to cards total expenses.
+ *
+ * 0.37.4
+ */
+function update_v0m37p4_ () {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    if (!sheet) return;
+
+    const num_acc = getConstProperties_('number_accounts');
+    const card_total = ['B6', 'B7', 'B16', 'B17', 'B26', 'B27', 'B36', 'B37', 'B46', 'B47', 'B56', 'B57', 'B66', 'B67', 'B76', 'B77', 'B86', 'B87', 'B96', 'B97', 'B106', 'B107', 'B116', 'B117'];
+
+    const w_ = TABLE_DIMENSION.width;
+
+    sheet.getRangeList(card_total).setFormulaR1C1('R[-1]C[' + (w_ + w_ * num_acc) + ']');
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
+
+/**
  * Delete property 'settings_candidate'.
  * Update decimal separator.
  * Update 'BSCARDPART()' function based on decimal separator settings.
