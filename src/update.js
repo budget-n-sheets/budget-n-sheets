@@ -162,7 +162,7 @@ function setClassVersion_ (property, value) {
  *
  * 0.0.0
  *
-function update_v0m0p0_() {
+function update_v0m0p0_ () {
   try {
   } catch (err) {
     ConsoleLog.error(err);
