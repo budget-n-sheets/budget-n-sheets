@@ -31,7 +31,21 @@ function validateBackup (fileId) {
   const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
   const data = JSON.parse(string);
 
-  PropertiesService2.setProperty('document', 'settings_candidate', 'json', { backup: data, file_id: fileId });
+  const settings_candidate = {
+    file_id: fileId,
+    list_acc: [],
+    spreadsheet_title: data.backup.spreadsheet_title,
+    decimal_places: data.spreadsheet_settings.decimal_places,
+    financial_year: data.const_properties.financial_year,
+    initial_month: data.user_settings.initial_month,
+    number_accounts: data.const_properties.number_accounts
+  };
+
+  for (const i in data.db_tables.accounts) {
+    settings_candidate.list_acc.push(data.db_tables.accounts[i].name);
+  }
+
+  PropertiesService2.setProperty('document', 'settings_candidate', 'json', settings_candidate);
 
   const info = {
     file_name: file.getName(),

@@ -98,25 +98,27 @@ function setupRestore_ (fileId) {
   const settings_candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
   if (settings_candidate.file_id !== fileId) throw new Error('File ID does not match.');
 
-  const backup = settings_candidate.backup;
+  const parts = DriveApp.getFileById(fileId)
+    .getBlob()
+    .getAs('text/plain')
+    .getDataAsString()
+    .split(':');
 
-  const list_acc = [];
-  for (const i in backup.db_tables.accounts) {
-    list_acc.push(backup.db_tables.accounts[i].name);
-  }
+  const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+  if (sha !== parts[1]) throw new Error("Hashes doesn't match.");
 
   SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
 
   setupValidate_();
 
   SETUP_SETTINGS = {
-    spreadsheet_name: backup.backup.spreadsheet_title,
-    decimal_places: backup.spreadsheet_settings.decimal_places,
+    spreadsheet_name: settings_candidate.spreadsheet_title,
+    decimal_places: settings_candidate.decimal_places,
     number_format: '#,##0.00;(#,##0.00)',
-    financial_year: backup.const_properties.financial_year,
-    init_month: backup.user_settings.initial_month,
-    number_accounts: backup.const_properties.number_accounts,
-    list_acc: list_acc,
+    financial_year: settings_candidate.financial_year,
+    init_month: settings_candidate.initial_month,
+    number_accounts: settings_candidate.number_accounts,
+    list_acc: settings_candidate.list_acc,
     decimal_separator: true
   };
 
@@ -127,6 +129,7 @@ function setupRestore_ (fileId) {
   setupPrepare_();
   setupParts_();
 
+  const backup = JSON.parse(base64DecodeWebSafe(parts[0], 'UTF_8'));
   restoreFromBackup_(backup);
   PropertiesService2.deleteProperty('document', 'settings_candidate');
 
