@@ -185,7 +185,7 @@ function update_v0m37p4_ () {
 
     const w_ = TABLE_DIMENSION.width;
 
-    sheet.getRangeList(card_total).setFormulaR1C1('R[-1]C[' + (w_ + w_ * num_acc) + ']');
+    sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (w_ + w_ * num_acc) + ']');
   } catch (err) {
     ConsoleLog.error(err);
   }

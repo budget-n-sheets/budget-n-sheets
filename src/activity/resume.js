@@ -80,7 +80,7 @@ function resumeActivity_ (mm) {
   sheet.getRangeList([
     rollA1Notation(6 + h_ * mm, 2),
     rollA1Notation(7 + h_ * mm, 2)
-  ]).setFormulaR1C1('R[-1]C[' + (col - w_ - 2) + ']');
+  ]).setFormulaR1C1('R[-2]C[' + (col - w_ - 2) + ']');
   SpreadsheetApp.flush();
 
   const actual_month = getMonthFactored_('actual_month');
