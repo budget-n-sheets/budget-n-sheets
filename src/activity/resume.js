@@ -19,6 +19,7 @@ function resumeActivity_ (mm) {
 
   const max1 = spreadsheet.getSheetByName(MN_SHORT[mm]).getMaxRows();
   const num_acc = getConstProperties_('number_accounts');
+  const col = 2 + w_ + w_ * num_acc + w_;
 
   for (i = 0; i < 6; i++) {
     values[i] += max1;
@@ -76,6 +77,10 @@ function resumeActivity_ (mm) {
   sheet.getRange(3 + h_ * mm, 2).setFormula(income);
   sheet.getRange(5 + h_ * mm, 2).setFormula(expenses);
   sheet.getRange(2 + h_ * mm, 7, h_, width).setFormulas(accounts);
+  sheet.getRangeList([
+    rollA1Notation(6 + h_ * mm, 2),
+    rollA1Notation(7 + h_ * mm, 2)
+  ]).setFormulaR1C1('R[-1]C[' + (col - w_ - 2) + ']');
   SpreadsheetApp.flush();
 
   const actual_month = getMonthFactored_('actual_month');
@@ -124,8 +129,6 @@ function resumeActivity_ (mm) {
   }
 
   const dec_c = (getSpreadsheetSettings_('decimal_separator') ? ';' : '\\');
-
-  const col = 2 + w_ + w_ * num_acc + w_;
   const max2 = spreadsheet.getSheetByName('Cards').getMaxRows() - 5;
 
   formula = 'RC[' + w_ + ']';
