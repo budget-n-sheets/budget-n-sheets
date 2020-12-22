@@ -98,7 +98,6 @@ function setupBackstage_ () {
   sheet.getRange(2, 7, height, width).setFormulas(accounts);
 
   if (!dec_p) {
-    const col = 2 + w_ + w_ * SETUP_SETTINGS.number_accounts + w_;
     const max2 = 400;
 
     let mm = -1;
