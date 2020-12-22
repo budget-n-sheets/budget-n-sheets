@@ -108,7 +108,7 @@ function readSpreadsheetInfo (fileId) {
   }
   info.cards = list;
 
-  PropertiesService2.setProperty('document', 'settings_pc', 'json', info);
+  PropertiesService2.setProperty('document', 'settings_candidate', 'json', info);
 
   info.initial_month = MN_FULL[info.initial_month];
 
