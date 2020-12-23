@@ -172,10 +172,56 @@ function update_v0m0p0_ () {
 
 /**
  * Set missing reference to cards total expenses.
+ * Update sheet 'Summary'.
  *
  * 0.37.6
  */
 function update_v0m37p6_ () {
+  try {
+    update_v0m37p6s0_();
+
+    const rr = update_v0m37p6s1_();
+    if (rr) return rr;
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
+
+function update_v0m37p6s1_ () {
+  try {
+    SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet;
+
+    sheet = SPREADSHEET.getSheetByName('Summary');
+    if (sheet) SPREADSHEET.deleteSheet(sheet);
+
+    const template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
+    sheet = template.getSheetByName('Summary')
+      .copyTo(SPREADSHEET)
+      .setName('Summary');
+
+    sheet.setTabColor('#e69138');
+    SPREADSHEET.setActiveSheet(sheet);
+    SPREADSHEET.moveActiveSheet(1);
+
+    SETUP_SETTINGS = {
+      financial_year: getConstProperties_('financial_year'),
+      decimal_places: getSpreadsheetSettings_('decimal_places'),
+      number_format: '#,##0.00;(#,##0.00)'
+    };
+
+    const dec_p = SETUP_SETTINGS.decimal_places;
+    const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
+    SETUP_SETTINGS.number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
+
+    setupSummary_();
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p6s0_ () {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;
