@@ -185,7 +185,9 @@ function update_v0m37p5_ () {
 
     const w_ = TABLE_DIMENSION.width;
 
+    SpreadsheetApp.flush();
     sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (w_ + w_ * num_acc) + ']');
+    SpreadsheetApp.flush();
   } catch (err) {
     ConsoleLog.error(err);
   }

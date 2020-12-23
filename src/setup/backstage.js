@@ -97,7 +97,10 @@ function setupBackstage_ () {
 
   sheet.getRange(2, 2, height, 5).setFormulas(wallet);
   sheet.getRange(2, 7, height, width).setFormulas(accounts);
+
+  SpreadsheetApp.flush();
   sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (col - w_ - 2) + ']');
+  SpreadsheetApp.flush();
 
   if (!dec_p) {
     const max2 = 400;
