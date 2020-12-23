@@ -1,9 +1,10 @@
 function setupSummary_ () {
   const sheet = SPREADSHEET.getSheetByName('Summary');
+  let chart, options;
 
   const h_ = TABLE_DIMENSION.height;
 
-  const options = {
+  options = {
     0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Income' },
     1: { color: '#cccccc', type: 'bars', labelInLegend: 'Expenses' },
     2: { color: '#45818e', type: 'bars', labelInLegend: 'Income' },
@@ -12,7 +13,11 @@ function setupSummary_ () {
     5: { color: '#e69138', type: 'line', labelInLegend: 'Avg Expenses' }
   };
 
-  sheet.protect().setWarningOnly(true);
+  sheet.protect()
+    .setUnprotectedRanges([
+      sheet.getRange(50, 2, 1, 3), sheet.getRange(70, 2, 1, 3)
+    ])
+    .setWarningOnly(true);
   sheet.getRange('B2').setValue(SETUP_SETTINGS.financial_year + ' | Year Summary');
 
   formulas = [];
@@ -24,7 +29,7 @@ function setupSummary_ () {
   }
   sheet.getRange(11, 4, 12, 4).setFormulas(formulas);
 
-  const chart = sheet.newChart()
+  chart = sheet.newChart()
     .addRange(sheet.getRange('C25:I36'))
     .setChartType(Charts.ChartType.COMBO)
     .setPosition(24, 2, 0, 0)
@@ -40,6 +45,47 @@ function setupSummary_ () {
   if (SETUP_SETTINGS.decimal_places !== 2) {
     sheet.getRangeList(['D9:I22', 'D25:G36']).setNumberFormat(SETUP_SETTINGS.number_format);
   }
+
+  sheet.getRange(53, 2).setFormula('IF(AND(E50 > 0; _Settings!B7 > 0); QUERY({Tags!$B$1:$T}; "select Col1, sum(Col18), -1 * sum(Col"&(4 + E50)&") where Col3=true or Col3=\'TRUE\' group by Col1 label Col1 \'\', -1 * sum(Col"&(4 + E50)&") \'\', sum(Col18) \'\'"); )');
+
+  chart = sheet.newChart()
+    .addRange(sheet.getRange('B52:B62'))
+    .addRange(sheet.getRange('D52:D62'))
+    .setNumHeaders(1)
+    .setChartType(Charts.ChartType.PIE)
+    .setPosition(50, 8, 0, 0)
+    .setOption('mode', 'view')
+    .setOption('legend', 'top')
+    .setOption('focusTarget', 'category')
+    .setOption('backgroundColor', { fill: '#f3f3f3' })
+    .setOption('height', 447)
+    .setOption('width', 444);
+
+  sheet.insertChart(chart.build());
+
+  sheet.getRange(73, 4).setFormula('IF(AND(E50 > 0; _Settings!B7 > 0); INDEX(TRANSPOSE(QUERY({Tags!$B$1:$T}; "select -1 * sum(Col5), -1 * sum(Col6), -1 * sum(Col7), -1 * sum(Col8), -1 * sum(Col9), -1 * sum(Col10), -1 * sum(Col11), -1 * sum(Col12), -1 * sum(Col13), -1 * sum(Col14), -1 * sum(Col15), -1 * sum(Col16) where Col1=\'"&B70&"\' and (Col3=true or Col3=\'TRUE\') group by Col1")); 0; 2); )');
+
+  options = {
+    0: { color: '#cccccc', type: 'bars', labelInLegend: 'Total' },
+    1: { color: '#4285f4', type: 'bars', labelInLegend: 'Total' },
+    2: { color: '#ea4335', type: 'line', labelInLegend: 'Average' }
+  };
+
+  chart = sheet.newChart()
+    .addRange(sheet.getRange('B72:B84'))
+    .addRange(sheet.getRange('I72:K84'))
+    .setNumHeaders(1)
+    .setChartType(Charts.ChartType.COMBO)
+    .setPosition(70, 8, 0, 0)
+    .setOption('mode', 'view')
+    .setOption('legend', 'top')
+    .setOption('focusTarget', 'category')
+    .setOption('backgroundColor', { fill: '#f3f3f3' })
+    .setOption('series', options)
+    .setOption('height', 459)
+    .setOption('width', 444);
+
+  sheet.insertChart(chart.build());
 
   SpreadsheetApp.flush();
 }
