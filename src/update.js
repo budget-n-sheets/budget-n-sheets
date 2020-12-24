@@ -171,6 +171,40 @@ function update_v0m0p0_ () {
 } */
 
 /**
+ * Fix 'BSBLANK()' range reference.
+ *
+ * 0.37.7
+ */
+function update_v0m37p7_ () {
+  try {
+    let sheet;
+
+    sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
+    if (!sheet) return;
+
+    const max = sheet.getMaxRows() - 5;
+    if (max < 1) return;
+
+    sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    if (!sheet) return;
+
+    const number_accounts = getConstProperties_('number_accounts');
+
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const col = 2 + w_ + w_ * number_accounts + 4;
+
+    for (let i = 0; i < 12; i++) {
+      sheet.getRange(2 + h_ * i, col).setFormula('BSBLANK(TRANSPOSE(Cards!' + rollA1Notation(6, 4 + 6 * i, max, 1) + '))');
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
  * Set missing reference to cards total expenses.
  * Update sheet 'Summary'.
  *
