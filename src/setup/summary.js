@@ -1,5 +1,5 @@
 function setupSummary_ () {
-  const sheet = SPREADSHEET.getSheetByName('Summary');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
   let chart, options;
 
   const h_ = TABLE_DIMENSION.height;

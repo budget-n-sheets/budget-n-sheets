@@ -223,20 +223,20 @@ function update_v0m37p6_ () {
 
 function update_v0m37p6s1_ () {
   try {
-    SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     let sheet;
 
-    sheet = SPREADSHEET.getSheetByName('Summary');
-    if (sheet) SPREADSHEET.deleteSheet(sheet);
+    sheet = spreadsheet.getSheetByName('Summary');
+    if (sheet) spreadsheet.deleteSheet(sheet);
 
     const template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
     sheet = template.getSheetByName('Summary')
-      .copyTo(SPREADSHEET)
+      .copyTo(spreadsheet)
       .setName('Summary');
 
     sheet.setTabColor('#e69138');
-    SPREADSHEET.setActiveSheet(sheet);
-    SPREADSHEET.moveActiveSheet(1);
+    spreadsheet.setActiveSheet(sheet);
+    spreadsheet.moveActiveSheet(1);
 
     SETUP_SETTINGS = {
       financial_year: getConstProperties_('financial_year'),

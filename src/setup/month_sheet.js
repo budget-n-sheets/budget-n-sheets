@@ -1,5 +1,6 @@
 function setupMonthSheet_ () {
-  const sheetTTT = SPREADSHEET.getSheetByName('TTT');
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  const sheetTTT = spreadsheet.getSheetByName('TTT');
   let sheet, ranges, formula;
   let expr1, expr2, expr3, expr4;
   let i, k;
@@ -29,7 +30,7 @@ function setupMonthSheet_ () {
   }
 
   for (i = 0; i < 12; i++) {
-    sheet = SPREADSHEET.insertSheet(MN_SHORT[i], 3 + i, { template: sheetTTT });
+    sheet = spreadsheet.insertSheet(MN_SHORT[i], 3 + i, { template: sheetTTT });
     sheets[i] = sheet;
 
     sheet.getRange('A3').setFormula("CONCAT(\"Expenses \"; TO_TEXT('_Backstage'!$B" + (4 + h_ * i) + '))');
@@ -78,5 +79,5 @@ function setupMonthSheet_ () {
     }
   }
 
-  SPREADSHEET.deleteSheet(sheetTTT);
+  spreadsheet.deleteSheet(sheetTTT);
 }

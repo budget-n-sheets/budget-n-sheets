@@ -1,9 +1,10 @@
 function setupSettings_ (yyyy_mm) {
-  const sheet = SPREADSHEET.getSheetByName('_Settings');
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName('_Settings');
   let cell, dec_p;
 
-  SPREADSHEET.setActiveSheet(sheet);
-  SPREADSHEET.moveActiveSheet(7);
+  spreadsheet.setActiveSheet(sheet);
+  spreadsheet.moveActiveSheet(7);
 
   sheet.protect().setWarningOnly(true);
 

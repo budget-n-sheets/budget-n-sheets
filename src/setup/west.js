@@ -1,9 +1,10 @@
 function setupWest_ () {
-  SPREADSHEET.getSheetByName('_About BnS')
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  spreadsheet.getSheetByName('_About BnS')
     .protect()
     .setWarningOnly(true);
 
-  const sheet = SPREADSHEET.getSheetByName('Quick Actions');
+  const sheet = spreadsheet.getSheetByName('Quick Actions');
 
   const ranges = [];
   ranges[0] = sheet.getRange(3, 3, 3, 1);

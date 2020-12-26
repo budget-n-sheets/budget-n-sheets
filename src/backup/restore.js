@@ -143,7 +143,7 @@ function restoreTables_ (backup) {
 function restoreCards_ (backup) {
   let max, mm;
 
-  const sheet = SPREADSHEET.getSheetByName('Cards');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
   max = sheet.getMaxRows() - 5;
 
   mm = -1;
@@ -168,7 +168,7 @@ function restoreMonths_ (backup) {
   while (++mm < 12) {
     if (backup.ttt[mm] == null) continue;
 
-    sheet = SPREADSHEET.getSheetByName(MN_SHORT[mm]);
+    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
     max = sheet.getMaxRows() - 4;
 
     for (k = 0; k < num_acc + 1; k++) {
@@ -186,7 +186,7 @@ function restoreMonths_ (backup) {
 }
 
 function restoreTags_ (backup) {
-  const sheet = SPREADSHEET.getSheetByName('Tags');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
 
   let max = sheet.getMaxRows();
   while (max < backup.tags.length) {

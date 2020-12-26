@@ -1,5 +1,6 @@
 function setupCards_ () {
-  const sheet = SPREADSHEET.getSheetByName('Cards');
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName('Cards');
   let formula, head, cell;
   let expr1, expr2, expr3;
   let i, k;
@@ -14,8 +15,8 @@ function setupCards_ () {
   const dec_c = (dec_p ? ',' : '\\');
   const header = rollA1Notation(1, col, 1, w_ * 11);
 
-  SPREADSHEET.setActiveSheet(sheet);
-  SPREADSHEET.moveActiveSheet(14);
+  spreadsheet.setActiveSheet(sheet);
+  spreadsheet.moveActiveSheet(14);
 
   const ranges = [];
   for (i = 0; i < 12; i++) {
