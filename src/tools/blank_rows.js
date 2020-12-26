@@ -18,7 +18,7 @@ function addBlankRows_ (name) {
   }
 
   if (!sheet) {
-    sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
+    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(name);
     if (!sheet) return;
   }
 

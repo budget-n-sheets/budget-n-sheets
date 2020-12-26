@@ -3,7 +3,7 @@ function askOptimizeAll () {
 }
 
 function askSetRecalculation () {
-  SpreadsheetApp.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.HOUR);
+  SpreadsheetApp2.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.HOUR);
 }
 
 function rollOperationMode_ (mode) {
@@ -37,7 +37,7 @@ function askDeactivation () {
 
   const response1 = ui.alert(
     'Deactivate the add-on',
-    'The deactivation affects only this spreadsheet: ' + SpreadsheetApp.getActiveSpreadsheet().getName() + '.\n\n' +
+    'The deactivation affects only this spreadsheet: ' + SpreadsheetApp2.getActiveSpreadsheet().getName() + '.\n\n' +
     'By deactivating the add-on:\n' +
     '- All add-on features are disabled.\n' +
     '- Updates and maintenance cease.\n' +
@@ -74,7 +74,7 @@ function askResetProtection () {
     return;
   }
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, ranges, range;
   let protections, protection;
   let n, i, j, k;

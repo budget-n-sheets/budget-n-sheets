@@ -24,7 +24,7 @@ function validateUpdateCashFlow_ () {
 
 function updateCashFlow_ (mm) {
   console.time('tool/update-cash-flow');
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('Cash Flow');
   if (!sheet) return;
 

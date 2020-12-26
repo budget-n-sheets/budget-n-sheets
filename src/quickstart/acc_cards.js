@@ -41,7 +41,7 @@ function playQuickAccCards_ (n) {
     return;
   }
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let lastRow, col;
   let name, val, mm;
 

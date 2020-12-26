@@ -88,7 +88,7 @@ function askTransferAdmin () {
   const ui = SpreadsheetApp.getUi();
   let owner, owner_id;
 
-  owner = SpreadsheetApp.getActiveSpreadsheet().getOwner();
+  owner = SpreadsheetApp2.getActiveSpreadsheet().getOwner();
   if (owner) {
     owner = owner.getEmail();
     owner_id = computeDigest('SHA_256', owner, 'UTF_8');
@@ -127,7 +127,7 @@ function askTransferAdmin () {
 function askTransferAdminSd () {
   if (!isInstalled_()) return;
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let email, digest;
   const user = Session.getEffectiveUser().getEmail();
 
@@ -167,7 +167,7 @@ function askTransferAdminSd () {
 function continuedTransferAdminSd (editor) {
   if (!isInstalled_()) return;
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let email, digest;
   const user = Session.getEffectiveUser().getEmail();
 

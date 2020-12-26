@@ -1,5 +1,5 @@
 function coolFilterByTag_ (info) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName(info.sheet_name);
   let formula, range, rule;
   let text, aux1, aux2, aux3;

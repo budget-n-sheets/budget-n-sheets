@@ -43,7 +43,7 @@ function playQuickCalendar_ (n) {
     return;
   }
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('Cash Flow');
 
   if (!sheet) {

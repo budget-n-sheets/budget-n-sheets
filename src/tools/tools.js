@@ -61,7 +61,7 @@ function getTagData_ () {
     total: []
   };
 
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
   if (!sheet) return data;
   if (sheet.getMaxColumns() < 20) return data;
 

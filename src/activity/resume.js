@@ -1,5 +1,5 @@
 function resumeActivity_ (mm) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('_Backstage');
   let range1A1, range2A1, formula, width, i, k;
   let income, expenses;

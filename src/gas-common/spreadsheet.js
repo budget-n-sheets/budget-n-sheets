@@ -1,6 +1,6 @@
 function copySheetsFromSource_ () {
   const source = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
-  const destination = SpreadsheetApp.getActiveSpreadsheet();
+  const destination = SpreadsheetApp2.getActiveSpreadsheet();
   const sheets = destination.getSheets();
   let i;
 
@@ -18,7 +18,7 @@ function copySheetsFromSource_ () {
 }
 
 function deleteAllSheets_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheets = spreadsheet.getSheets();
 
   sheets[0].showSheet();
@@ -33,7 +33,7 @@ function deleteAllSheets_ () {
 }
 
 function isMissingSheet () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   const sheets = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '_Settings', 'Cash Flow', 'Tags', '_Backstage', 'Cards', 'Summary'];
 

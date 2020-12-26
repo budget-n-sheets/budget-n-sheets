@@ -147,7 +147,7 @@ function setAccount_ (account) {
 }
 
 function refreshAccountName_ (index, account) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet = spreadsheet.getSheetByName('_Backstage');
   let i;
 
@@ -202,7 +202,7 @@ function refreshAccountName_ (index, account) {
 }
 
 function refreshCashFlowReferences_ () {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cash Flow');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cash Flow');
   let string, mm, dd, i, k;
 
   if (!sheet) return 1;
