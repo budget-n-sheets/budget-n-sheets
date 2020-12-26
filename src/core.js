@@ -49,7 +49,7 @@ function onOpen (e) {
         .addSeparator()
         .addSubMenu(ui.createMenu('Open panel')
           .addItem('Accounts & Cards', 'showPanelTables')
-          .addItem('Cool Gallery', 'showPanelAnalytics'))
+          .addItem('BnS Gallery', 'showPanelAnalytics'))
         .addSubMenu(ui.createMenu('Pages view')
           .addItem('Collapse', 'toolHideSheets_')
           .addItem('Expand', 'toolShowSheets_'))
@@ -141,7 +141,7 @@ function showPanelAnalytics () {
 
   htmlTemplate.list = APPS_SCRIPT_GLOBAL.cool_gallery;
 
-  const htmlSidebar = htmlTemplate.evaluate().setTitle('Cool Gallery');
+  const htmlSidebar = htmlTemplate.evaluate().setTitle('BnS Gallery');
 
   SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
