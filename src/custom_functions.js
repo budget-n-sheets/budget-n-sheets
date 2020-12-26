@@ -25,23 +25,27 @@ function BSREPORT (data) {
   const n = sum_range.length;
 
   while (i < n && sum_range[i] !== '') {
-    if (/#wd/.test(range[i]) && sum_range[i] <= 0) {
+    if (range[i].indexOf('#wd') !== -1 && sum_range[i] <= 0) {
       stats[0][1]++;
       stats[0][0] += sum_range[i];
     }
-    if (/#dp/.test(range[i]) && sum_range[i] >= 0) {
+
+    if (range[i].indexOf('#dp') !== -1 && sum_range[i] >= 0) {
       stats[1][1]++;
       stats[1][0] += sum_range[i];
     }
-    if (/#trf/.test(range[i]) && sum_range[i] >= 0) {
-      stats[2][1]++;
-      stats[2][0] += sum_range[i];
+
+    if (range[i].indexOf('#trf') !== -1) {
+      if (sum_range[i] >= 0) {
+        stats[2][1]++;
+        stats[2][0] += sum_range[i];
+      } else {
+        stats[3][1]++;
+        stats[3][0] += sum_range[i];
+      }
     }
-    if (/#trf/.test(range[i]) && sum_range[i] < 0) {
-      stats[3][1]++;
-      stats[3][0] += sum_range[i];
-    }
-    if (/#rct/.test(range[i])) {
+
+    if (range[i].indexOf('#rct') !== -1) {
       stats[4][0] += sum_range[i];
     }
 
