@@ -81,7 +81,7 @@ function printHrefScriptlets (htmlTemplate) {
 }
 
 function showPanelQuickstart () {
-  console.log('quickstart');
+  console.log('menu/More/Show Quickstart');
 
   let htmlTemplate = HtmlService.createTemplateFromFile('quickstart/htmlQuickstart');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
@@ -104,6 +104,7 @@ function showPanelQuickstart () {
 }
 
 function showPanelTables (tab) {
+  console.info('menu/Open panel/Accounts & Cards');
   if (onlineUpdate_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('html/htmlSidebarTables');
@@ -132,6 +133,7 @@ function showPanelTables (tab) {
 }
 
 function showPanelAnalytics () {
+  console.info('menu/Open panel/BnS Gallery');
   if (onlineUpdate_()) return;
 
   let htmlTemplate;
@@ -147,6 +149,7 @@ function showPanelAnalytics () {
 }
 
 function showSidebarMainSettings () {
+  console.info('menu/Change settings');
   if (onlineUpdate_()) return;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
@@ -191,6 +194,7 @@ function showSidebarMainSettings () {
 }
 
 function showDialogAboutAddon () {
+  console.info('menu/About the add-on');
   let htmlTemplate;
   let v0;
 

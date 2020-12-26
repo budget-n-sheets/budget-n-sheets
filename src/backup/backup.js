@@ -1,4 +1,5 @@
 function backupRequestUi () {
+  console.info('sidebar/Settings/Backup/Back up now');
   const ui = SpreadsheetApp.getUi();
 
   if (!isInstalled_()) return 2;

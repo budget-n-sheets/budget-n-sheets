@@ -3,6 +3,7 @@ function toolSuspendActivity_ () {
 }
 
 function toolResumeActivity_ () {
+  console.info('menu/More/Resume month');
   switchActivityUi_('resume');
 }
 

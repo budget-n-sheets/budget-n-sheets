@@ -83,6 +83,7 @@ function setAdminSettings_ (select, value) {
 }
 
 function askTransferAdmin () {
+  console.info('sidebar/Settings/Group/Transfer');
   if (!isInstalled_()) return;
 
   const ui = SpreadsheetApp.getUi();
@@ -125,6 +126,7 @@ function askTransferAdmin () {
 }
 
 function askTransferAdminSd () {
+  console.info('sidebar/Settings/Group/Transfer');
   if (!isInstalled_()) return;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();

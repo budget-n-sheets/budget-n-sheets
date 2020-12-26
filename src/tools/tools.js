@@ -1,12 +1,15 @@
 function toolAddBlankRows () {
+  console.info('menu/Add blank rows');
   toolPicker_('AddBlankRows');
 }
 
 function toolUpdateCashFlow () {
+  console.info('menu/Update cash flow');
   toolPicker_('UpdateCashFlow');
 }
 
 function toolFormatRegistry () {
+  console.info('menu/Format table');
   toolPicker_('FormatRegistry');
 }
 

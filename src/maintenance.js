@@ -19,6 +19,7 @@ function rollOperationMode_ (mode) {
 }
 
 function askDeactivation () {
+  console.info('menu/More/Deactive the add-on');
   if (!isInstalled_()) {
     uninstall_();
     onOpen();
@@ -67,6 +68,7 @@ function askDeactivation () {
 }
 
 function askResetProtection () {
+  console.info('sidebar/Settings/Advanced/Reset');
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
@@ -155,6 +157,7 @@ function askResetProtection () {
 }
 
 function askReinstallTriggersUi () {
+  console.info('sidebar/Settings/Advanced/Reinstall');
   if (!isUserAdmin_()) {
     SpreadsheetApp.getUi().alert(
       'Permission denied',

@@ -29,6 +29,7 @@ function retrieveUserSettings () {
 }
 
 function saveUserSettings (settings) {
+  console.info('sidebar/Settings/Settings/Save');
   const user_id = getUserId_();
 
   let db_calendars, sheet, c;
