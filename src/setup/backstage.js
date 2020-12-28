@@ -1,5 +1,5 @@
 function setupBackstage_ () {
-  const sheet = SPREADSHEET.getSheetByName('_Backstage');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
   let formula;
   let income, expenses;
   let n, i, k;

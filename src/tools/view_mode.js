@@ -27,7 +27,7 @@ function toggleViewMode_ () {
 }
 
 function viewModeSimple_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, i, k;
   let expr, head, cell;
 
@@ -83,7 +83,7 @@ function viewModeSimple_ () {
 }
 
 function viewModeComplete_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, i, k;
   let formula, expr1, expr2, expr3, expr4;
   let head, cell;

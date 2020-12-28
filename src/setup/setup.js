@@ -44,7 +44,7 @@ function setupLock (select, param1, param2) {
 
 function setupNew_ (settings, list_acc) {
   console.time('setup/new');
-  SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   setupValidate_();
 
@@ -81,13 +81,12 @@ function setupNew_ (settings, list_acc) {
     ConsoleLog.error(err);
   }
 
-  SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
 
   showDialogSetupEnd();
   onOpen();
 
-  SPREADSHEET = null;
   SETUP_SETTINGS = null;
   console.timeEnd('setup/new');
 }
@@ -107,7 +106,7 @@ function setupRestore_ (fileId) {
   const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
   if (sha !== parts[1]) throw new Error("Hashes doesn't match.");
 
-  SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   setupValidate_();
 
@@ -148,13 +147,12 @@ function setupRestore_ (fileId) {
     ConsoleLog.error(err);
   }
 
-  SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
 
   showDialogSetupEnd();
   onOpen();
 
-  SPREADSHEET = null;
   SETUP_SETTINGS = null;
   console.timeEnd('setup/restore');
 }
@@ -165,7 +163,7 @@ function setupCopy_ (file_id) {
   const settings_candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
   if (settings_candidate.file_id !== file_id) throw new Error('File ID does not match.');
 
-  SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   setupValidate_();
 
@@ -201,13 +199,12 @@ function setupCopy_ (file_id) {
     ConsoleLog.error(err);
   }
 
-  SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
 
   showDialogSetupEnd();
   onOpen();
 
-  SPREADSHEET = null;
   SETUP_SETTINGS = null;
   console.timeEnd('setup/copy');
 }
@@ -217,24 +214,27 @@ function setupValidate_ () {
   if (isInstalled_()) throw new Error('Add-on is already installed.');
   if (PropertiesService2.getProperty('document', 'lock_spreadsheet', 'boolean')) throw new Error('Spreadsheet is locked.');
 
-  let owner = SPREADSHEET.getOwner();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+
+  let owner = spreadsheet.getOwner();
   if (owner) owner = owner.getEmail();
   else owner = '';
 
   const user = Session.getEffectiveUser().getEmail();
 
   if (owner && owner !== user) throw new Error('Missing ownership rights.');
-  if (SPREADSHEET.getFormUrl()) throw new Error('Spreadsheet has a form linked.');
+  if (spreadsheet.getFormUrl()) throw new Error('Spreadsheet has a form linked.');
 }
 
 function setupPrepare_ () {
-  SPREADSHEET.rename(SETUP_SETTINGS.spreadsheet_name);
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  spreadsheet.rename(SETUP_SETTINGS.spreadsheet_name);
 
   PropertiesService2.deleteAllProperties('document');
   deleteAllTriggers_();
   CacheService2.removeAll('document', CACHE_KEYS);
 
-  const metadata = SPREADSHEET.createDeveloperMetadataFinder()
+  const metadata = spreadsheet.createDeveloperMetadataFinder()
     .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
     .find();
 

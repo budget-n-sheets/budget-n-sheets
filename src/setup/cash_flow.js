@@ -1,5 +1,5 @@
 function setupCashFlow_ () {
-  const sheet = SPREADSHEET.getSheetByName('Cash Flow');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cash Flow');
   let ranges, formula;
   let d, s;
   let i, j, k;

@@ -98,7 +98,7 @@ function saveUserSettings (settings) {
   if (init_month === new_init_month) return;
 
   try {
-    sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Settings');
+    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Settings');
     if (sheet) {
       sheet.getRange('B4').setFormula('=' + numberFormatLocaleSignal.call(new_init_month + 1));
       SpreadsheetApp.flush();
@@ -111,7 +111,7 @@ function saveUserSettings (settings) {
 }
 
 function updateSettingsMetadata_ (user_settings) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Settings');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Settings');
 
   const metadata = {
     initial_month: user_settings.initial_month,

@@ -1,5 +1,5 @@
 function coolStatsForTags_ (info) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName(info.sheet_name);
   let range;
   let chart, options;

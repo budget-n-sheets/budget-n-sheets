@@ -102,7 +102,7 @@ function getTranslation () {
 }
 
 function getSpreadsheetDate () {
-  let timezone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
+  let timezone = SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetTimeZone();
   if (typeof timezone !== 'string' || timezone === '') {
     timezone = 'GMT';
   }

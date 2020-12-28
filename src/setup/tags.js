@@ -1,5 +1,5 @@
 function setupTags_ () {
-  const sheet = SPREADSHEET.getSheetByName('Tags');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
   let formula, rg, cd;
   let i, k;
 

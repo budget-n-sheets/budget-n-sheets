@@ -177,15 +177,16 @@ function update_v0m0p0_ () {
  */
 function update_v0m37p7_ () {
   try {
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     let sheet;
 
-    sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
+    sheet = spreadsheet.getSheetByName('Cards');
     if (!sheet) return;
 
     const max = sheet.getMaxRows() - 5;
     if (max < 1) return;
 
-    sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    sheet = spreadsheet.getSheetByName('_Backstage');
     if (!sheet) return;
 
     const number_accounts = getConstProperties_('number_accounts');
@@ -223,20 +224,20 @@ function update_v0m37p6_ () {
 
 function update_v0m37p6s1_ () {
   try {
-    SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     let sheet;
 
-    sheet = SPREADSHEET.getSheetByName('Summary');
-    if (sheet) SPREADSHEET.deleteSheet(sheet);
+    sheet = spreadsheet.getSheetByName('Summary');
+    if (sheet) spreadsheet.deleteSheet(sheet);
 
     const template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
     sheet = template.getSheetByName('Summary')
-      .copyTo(SPREADSHEET)
+      .copyTo(spreadsheet)
       .setName('Summary');
 
     sheet.setTabColor('#e69138');
-    SPREADSHEET.setActiveSheet(sheet);
-    SPREADSHEET.moveActiveSheet(1);
+    spreadsheet.setActiveSheet(sheet);
+    spreadsheet.moveActiveSheet(1);
 
     SETUP_SETTINGS = {
       financial_year: getConstProperties_('financial_year'),
@@ -257,7 +258,7 @@ function update_v0m37p6s1_ () {
 
 function update_v0m37p6s0_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;
 
     const num_acc = getConstProperties_('number_accounts');
@@ -289,7 +290,7 @@ function update_v0m37p3_ () {
     const decimal_separator = getSpreadsheetSettings_('decimal_separator');
     if (decimal_separator) return;
 
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;
 
     const number_accounts = getConstProperties_('number_accounts');
@@ -357,7 +358,7 @@ function update_v0m36p4_ () {
 
 function update_v0m36p4s2_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return 1;
 
     const db = getTablesService_('all');
@@ -414,7 +415,7 @@ function update_v0m36p4s2_ () {
 
 function update_v0m36p4s1_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const list = spreadsheet.createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .withKey('const_properties')
@@ -440,7 +441,7 @@ function update_v0m36p4s1_ () {
 
 function update_v0m36p4s0_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const list = spreadsheet.createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .withKey('bs_sig')
@@ -464,7 +465,7 @@ function update_v0m36p4s0_ () {
  */
 function update_v0m36p3_ () {
   try {
-    SpreadsheetApp.getActiveSpreadsheet()
+    SpreadsheetApp2.getActiveSpreadsheet()
       .setRecalculationInterval(SpreadsheetApp.RecalculationInterval.ON_CHANGE);
 
     let onOpen = PropertiesService2.getProperty('document', 'onOpenTriggerId', 'string');
@@ -520,7 +521,7 @@ function update_v0m36p2_ () {
  */
 function update_v0m35p2_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const sheet = spreadsheet.getSheetByName('Summary');
     if (!sheet) return;
 
@@ -539,7 +540,7 @@ function update_v0m35p2_ () {
  */
 function update_v0m35p1_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const sheet = spreadsheet.getSheetByName('Summary');
     if (!sheet) return;
 
@@ -588,7 +589,7 @@ function update_v0m35p0_ () {
 
 function update_v0m35p0s1_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const sheet = spreadsheet.getSheetByName('Summary');
     let i;
 
@@ -661,7 +662,7 @@ function update_v0m35p0s1_ () {
 
 function update_v0m35p0s0_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     let sheet;
     let expr1, expr2, expr3, expr4;
 
@@ -702,7 +703,7 @@ function update_v0m35p0s0_ () {
  */
 function update_v0m34p10_ () {
   try {
-    SpreadsheetApp.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.ON_CHANGE);
+    SpreadsheetApp2.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.ON_CHANGE);
   } catch (err) {
     ConsoleLog.error(err);
   }
@@ -742,7 +743,7 @@ function update_v0m34p0_ () {
  */
 function update_v0m33p9_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return 1;
 
     const h_ = TABLE_DIMENSION.height;
@@ -792,7 +793,7 @@ function update_v0m33p2_ () {
  */
 function update_v0m33p1_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
     let rule;
     if (!sheet) return;
 
@@ -842,7 +843,7 @@ function update_v0m33p1_ () {
 function update_v0m33p0_ () {
   try {
     let rr;
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     let i;
 
     const limits = [];
@@ -1119,7 +1120,7 @@ function update_v0m33p0s0_ (spreadsheet, limits) {
  */
 function update_v0m32p7_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const backstage = spreadsheet.getSheetByName('_Backstage');
     let n, i, k;
 
@@ -1197,7 +1198,7 @@ function update_v0m32p7_ () {
  */
 function update_v0m32p6_ () {
   try {
-    const triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet());
+    const triggers = ScriptApp.getUserTriggers(SpreadsheetApp2.getActiveSpreadsheet());
 
     for (let i = 0; i < triggers.length; i++) {
       if (triggers[i].getEventType() === ScriptApp.EventType.CLOCK) {
@@ -1249,7 +1250,7 @@ function update_v0m32p2_ () {
 
 function update_v0m32p2s1_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     let sheet;
 
     sheet = spreadsheet.getSheetByName('Quick Actions');
@@ -1289,7 +1290,7 @@ function update_v0m32p2s1_ () {
 
 function update_v0m32p2s0_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
     if (!sheet) return;
 
     sheet.getRange(1, 1, 1, 5).setValues([
@@ -1307,7 +1308,7 @@ function update_v0m32p2s0_ () {
  */
 function update_v0m31p8_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     let card, ranges, text, i, j;
 
     const h_ = TABLE_DIMENSION.height;
@@ -1348,7 +1349,7 @@ function update_v0m31p8_ () {
  */
 function update_v0m31p7_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     let formula, i;
 
     if (!sheet) return;
@@ -1428,7 +1429,7 @@ function update_v0m30p6_ () {
 
     installClock = false;
     installOnEdit = false;
-    const triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet());
+    const triggers = ScriptApp.getUserTriggers(SpreadsheetApp2.getActiveSpreadsheet());
 
     for (let i = 0; i < triggers.length; i++) {
       name = triggers[i].getHandlerFunction();

@@ -149,7 +149,7 @@ function showPanelAnalytics () {
 function showSidebarMainSettings () {
   if (onlineUpdate_()) return;
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let htmlTemplate;
 
   const isAdmin = isUserAdmin_();
@@ -262,7 +262,7 @@ function showDialogSetupAddon_ () {
     return;
   }
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let owner;
 
   owner = spreadsheet.getOwner();

@@ -31,7 +31,7 @@ function getInnerKey_ () {
 }
 
 function bsSignSetup_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   const key = getInnerKey_();
   if (key === 1) return 1;
@@ -81,17 +81,21 @@ function bsSignSetup_ () {
   SpreadsheetApp.flush();
 }
 
-function getAboutPage_ (spreadsheet) {
+function getAboutPage_ () {
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+
   let sheet = spreadsheet.getSheetByName('_About BnS');
   if (sheet) return sheet;
 
-  sheet = importAboutPage_(spreadsheet);
+  sheet = importAboutPage_();
   if (sheet === 1) return 1;
 
   return sheet;
 }
 
-function importAboutPage_ (spreadsheet) {
+function importAboutPage_ () {
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+
   try {
     var source = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
   } catch (err) {

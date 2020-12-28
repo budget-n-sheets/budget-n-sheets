@@ -174,7 +174,7 @@ function copyMonths_ (spreadsheet) {
     const last = source.getLastRow();
     if (last < 5) continue;
 
-    const destination = SPREADSHEET.getSheetByName(MN_SHORT[mm]);
+    const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
 
     let max = destination.getMaxRows();
     while (max < last) {
@@ -194,7 +194,7 @@ function copyCards_ (spreadsheet) {
   const last = source.getLastRow();
   if (last < 6) return;
 
-  const destination = SPREADSHEET.getSheetByName('Cards');
+  const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
 
   let max = destination.getMaxRows();
   while (max < last) {
@@ -207,7 +207,7 @@ function copyCards_ (spreadsheet) {
 }
 
 function copyTags_ (spreadsheet) {
-  const destination = SPREADSHEET.getSheetByName('Tags');
+  const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
   const source = spreadsheet.getSheetByName('Tags');
   if (!source) return;
 

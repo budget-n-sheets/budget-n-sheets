@@ -97,7 +97,7 @@ function deleteCard_ (card_id) {
 }
 
 function getCardsBalances_ () {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
   let data, code;
   let v, i, k;
 
@@ -153,7 +153,7 @@ function getCardsBalances_ () {
 }
 
 function refreshCardName_ (action, index, card) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
   let text, limit, i;
 
   if (!sheet) return;
@@ -212,7 +212,7 @@ function refreshCardName_ (action, index, card) {
 }
 
 function refreshCardsRules_ () {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
   let card;
   let i, j;
 

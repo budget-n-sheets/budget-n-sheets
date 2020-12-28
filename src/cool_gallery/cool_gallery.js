@@ -37,7 +37,7 @@ function coolGallery (option) {
 }
 
 function getCoolSheet_ (info) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let template;
 
   if (spreadsheet.getSheetByName(info.sheet_name)) return 0;

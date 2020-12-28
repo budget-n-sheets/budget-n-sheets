@@ -36,7 +36,7 @@ function playQuickTags0103_ (n) {
   const data = QUICKSTART_DATA_TAGS[n];
   if (!data) throw new Error("playQuickTags0103_(): Values for quickstart example couldn't be found. tags:" + n);
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('Tags');
   if (!sheet) {
     alertQuickstartSheetMissing('Tags');
@@ -62,7 +62,7 @@ function playQuickTags02_ (n) {
   }
 
   const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MN_SHORT[DATE_NOW.getMonth()] : MN_SHORT[0]);
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName(name);
   if (!sheet) {
     alertQuickstartSheetMissing(name);

@@ -1,5 +1,5 @@
 function postEventsForDate_ (date) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet;
 
   let list_eventos, evento;
@@ -128,7 +128,7 @@ function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
 }
 
 function updateDecimalPlaces_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, max;
 
   const h_ = TABLE_DIMENSION.height;
@@ -239,7 +239,7 @@ function updateDecimalPlaces_ () {
 }
 
 function updateDecimalSeparator_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, cell, t;
 
   const dec_p = getSpreadsheetSettings_('decimal_places');
@@ -267,7 +267,7 @@ function updateDecimalSeparator_ () {
 }
 
 function treatLayout_ (yyyy, mm) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const financial_year = getConstProperties_('financial_year');
   let month, i;
 
@@ -322,7 +322,7 @@ function updateHideShowSheets (sheets, financial_year, yyyy, mm) {
 }
 
 function updateTabsColors (sheets, financial_year, yyyy, mm) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let date, delta, i;
 
   const init_month = getUserSettings_('initial_month');
