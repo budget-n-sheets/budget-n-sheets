@@ -33,7 +33,7 @@ const SPREADSHEET_SPECS = Object.freeze({
   },
 
   tags: {
-    header: ['name',	'category',	'description',	'analytics',	'code']
+    header: ['name', 'category', 'description', 'analytics', 'code']
   },
 
   backstage: {
