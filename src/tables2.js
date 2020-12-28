@@ -225,7 +225,7 @@ function refreshCashFlowReferences_ () {
 
   for (k = 0; k < num_acc; k++) {
     mm = db_accounts.data[k].time_a;
-    formulas[mm] += " + '_Backstage'!" + ranges[k] + (2 + h_ * mm);
+    formulas[mm] += " + _Backstage!" + ranges[k] + (2 + h_ * mm);
   }
 
   for (i = 0; i < 12; i++) {

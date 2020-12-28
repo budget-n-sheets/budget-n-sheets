@@ -307,13 +307,13 @@ function update_v0m37p3_ () {
       for (let k = 0; k < 10; k++) {
         const header2 = rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
 
-        let formula = "REGEXEXTRACT(ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+        let formula = "REGEXEXTRACT(ARRAY_CONSTRAIN(Cards!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
         formula = 'ARRAYFORMULA(SPLIT(' + formula + '; "/"))';
-        formula = '{' + formula + "\\ ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1)}; ';
-        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range2A1 + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
+        formula = '{' + formula + "\\ ARRAY_CONSTRAIN(Cards!" + range1A1 + '; ' + header2 + '; 1)}; ';
+        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN(Cards!" + range2A1 + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
 
-        formula = formula + "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1))); ';
-        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+        formula = formula + "NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!" + range1A1 + '; ' + header2 + '; 1))); ';
+        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN(Cards!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
 
         formula = 'BSCARDPART(TRANSPOSE(IFNA(FILTER(' + formula + '); 0)))';
         formula = 'IF(' + rollA1Notation(1, col + w_ * k) + ' = ""; 0; ' + formula + ')';
@@ -597,9 +597,9 @@ function update_v0m35p0s1_ () {
     const h_ = TABLE_DIMENSION.height;
 
     sheet.getRange(2, 13, 3, 1).setFormulas([
-      ["'_Settings'!B3"],
-      ["'_Settings'!B4"],
-      ["'_Settings'!B6"]
+      ["_Settings!B3"],
+      ["_Settings!B4"],
+      ["_Settings!B6"]
     ]);
 
     sheet.getRange(2, 13).copyTo(
@@ -625,8 +625,8 @@ function update_v0m35p0s1_ () {
     // sheet.getRange(25, 4).setFormula('IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11, 4) + ', -' + rollA1Notation(11, 6) + ', 0, 0}; {0, 0, ' + rollA1Notation(11, 4) + ', -' + rollA1Notation(11, 6) + '})');
 
     sheet.getRange(9, 4, 1, 5).setFormulas([[
-      "=IF(_Settings!$B6 > 0;  {SUM(OFFSET($D10; '_Settings'!$B4; 0; '_Settings'!$B6; 1)); AVERAGE(OFFSET($D10; '_Settings'!$B4; 0; '_Settings'!$B6; 1))}; {0; 0})", null,
-      "=IF(_Settings!$B6 > 0;  {SUM(OFFSET($F10; '_Settings'!$B4; 0; '_Settings'!$B6; 1)); AVERAGE(OFFSET($F10; '_Settings'!$B4; 0; '_Settings'!$B6; 1))}; {0; 0})", null,
+      "=IF(_Settings!$B6 > 0;  {SUM(OFFSET($D10; _Settings!$B4; 0; _Settings!$B6; 1)); AVERAGE(OFFSET($D10; _Settings!$B4; 0; _Settings!$B6; 1))}; {0; 0})", null,
+      "=IF(_Settings!$B6 > 0;  {SUM(OFFSET($F10; _Settings!$B4; 0; _Settings!$B6; 1)); AVERAGE(OFFSET($F10; _Settings!$B4; 0; _Settings!$B6; 1))}; {0; 0})", null,
       '=D9 + F9'
     ]]);
 
@@ -675,17 +675,17 @@ function update_v0m35p0s0_ () {
       if (!sheet) continue;
 
       for (k = 0; k < num_acc; k++) {
-        expr1 = "TEXT('_Backstage'!" + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-        expr1 = '"Withdrawal: ["; \'_Backstage\'!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
+        expr1 = "TEXT(_Backstage!" + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr1 = '"Withdrawal: ["; _Backstage!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
 
-        expr2 = "TEXT('_Backstage'!" + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-        expr2 = '"Deposit: ["; \'_Backstage\'!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr2 + '; "\n"; ';
+        expr2 = "TEXT(_Backstage!" + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr2 = '"Deposit: ["; _Backstage!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr2 + '; "\n"; ';
 
-        expr3 = "TEXT('_Backstage'!" + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-        expr3 = '"Trf. in: ["; \'_Backstage\'!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr3 + '; "\n"; ';
+        expr3 = "TEXT(_Backstage!" + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr3 = '"Trf. in: ["; _Backstage!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr3 + '; "\n"; ';
 
-        expr4 = "TEXT('_Backstage'!" + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-        expr4 = '"Trf. out: ["; \'_Backstage\'!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
+        expr4 = "TEXT(_Backstage!" + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr4 = '"Trf. out: ["; _Backstage!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
 
         sheet.getRange(1, 8 + 5 * k).setFormula('CONCATENATE(' + expr1 + expr2 + expr3 + expr4 + ')');
       }
@@ -811,7 +811,7 @@ function update_v0m33p1_ () {
 
     range = sheet.getRange(2, 6, maxRows, 12);
     rule = SpreadsheetApp.newConditionalFormatRule()
-      .whenFormulaSatisfied("=COLUMN() - 5 < INDIRECT(\"'_Settings'!B4\")")
+      .whenFormulaSatisfied("=COLUMN() - 5 < INDIRECT(\"_Settings!B4\")")
       .setFontColor('#cccccc')
       .setRanges([range])
       .build();
@@ -819,7 +819,7 @@ function update_v0m33p1_ () {
 
     range = sheet.getRange(2, 6, maxRows, 12);
     rule = SpreadsheetApp.newConditionalFormatRule()
-      .whenFormulaSatisfied("=COLUMN() - 5 > INDIRECT(\"'_Settings'!B4\") - 1 + INDIRECT(\"'_Settings'!B6\")")
+      .whenFormulaSatisfied("=COLUMN() - 5 > INDIRECT(\"_Settings!B4\") - 1 + INDIRECT(\"_Settings!B6\")")
       .setFontColor('#999999')
       .setRanges([range])
       .build();
@@ -889,17 +889,17 @@ function update_v0m33p0s3_ (spreadsheet) {
     rules.push(rule);
     sheet.setConditionalFormatRules(rules);
 
-    formula = "ARRAYFORMULA(IF(E2:E <> \"\"; $T$2:$T/'_Settings'!B6; ))";
-    formula = "IF('_Settings'!$B$6 > 0; " + formula + '; ARRAYFORMULA($F$2:$F * 0))';
-    formula = "IF('_Settings'!$B$7 > 0; " + formula + '; "")';
+    formula = "ARRAYFORMULA(IF(E2:E <> \"\"; $T$2:$T/_Settings!B6; ))";
+    formula = "IF(_Settings!$B$6 > 0; " + formula + '; ARRAYFORMULA($F$2:$F * 0))';
+    formula = "IF(_Settings!$B$7 > 0; " + formula + '; "")';
     formula = '{"average"; ' + formula + '}';
     sheet.getRange(1, 19).setFormula(formula);
 
-    formula = 'IF(COLUMN(' + rollA1Notation(2, 6, n, 12) + ") - 5 < '_Settings'!$B$4 + '_Settings'!$B$6; ROW(" + rollA1Notation(2, 6, n) + '); 0)';
-    formula = 'IF(COLUMN(' + rollA1Notation(2, 6, n, 12) + ") - 5 >= '_Settings'!$B$4; " + formula + '; 0)';
+    formula = 'IF(COLUMN(' + rollA1Notation(2, 6, n, 12) + ") - 5 < _Settings!$B$4 + _Settings!$B$6; ROW(" + rollA1Notation(2, 6, n) + '); 0)';
+    formula = 'IF(COLUMN(' + rollA1Notation(2, 6, n, 12) + ") - 5 >= _Settings!$B$4; " + formula + '; 0)';
     formula = 'ARRAYFORMULA(IF(E2:E <> ""; SUMIF(' + formula + '; ROW(' + rollA1Notation(2, 6, n) + '); ' + rollA1Notation(2, 6, n) + '); ))';
-    formula = "IF('_Settings'!$B$6 > 0; " + formula + '; ARRAYFORMULA($F$2:$F * 0))';
-    formula = "IF('_Settings'!$B$7 > 0; " + formula + '; "")';
+    formula = "IF(_Settings!$B$6 > 0; " + formula + '; ARRAYFORMULA($F$2:$F * 0))';
+    formula = "IF(_Settings!$B$7 > 0; " + formula + '; "")';
     formula = '{"total"; ' + formula + '}';
     sheet.getRange(1, 20).setFormula(formula);
 
@@ -952,38 +952,38 @@ function update_v0m33p0s2_ (spreadsheet, limits) {
         header2 = rollA1Notation(2 + h_ * i, col + 4 + w_ * k);
 
         formula = 'IFERROR(IF(' + header + ' = ""; ""; SUM(FILTER(';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1); ';
-        formula += "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
-        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1))); ';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1) >= 0';
+        formula += "ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1); ';
+        formula += "REGEXMATCH(ARRAY_CONSTRAIN(Cards!" + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
+        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1))); ';
+        formula += "ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1) >= 0';
         formula += '))); 0)';
         sheet.getRange(3 + h_ * i, col + w_ * k).setFormula(formula);
 
         formula = 'IFERROR(IF(' + header + ' = ""; ""; SUM(FILTER(';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1); ';
-        formula += "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
-        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1))); ';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1) < 0; ';
-        formula += "NOT(REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range5[i] + '; ' + header2 + '; 1); ';
+        formula += "ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1); ';
+        formula += "REGEXMATCH(ARRAY_CONSTRAIN(Cards!" + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
+        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1))); ';
+        formula += "ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1) < 0; ';
+        formula += "NOT(REGEXMATCH(ARRAY_CONSTRAIN(Cards!" + range5[i] + '; ' + header2 + '; 1); ';
         formula += '"#ign"))';
         formula += '))); 0)';
         sheet.getRange(4 + h_ * i, col + w_ * k).setFormula(formula);
 
         formula = 'IFERROR(IF(' + header + ' = ""; ""; SUM(FILTER(';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1); ';
-        formula += "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
-        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1))); ';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1) < 0';
+        formula += "ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1); ';
+        formula += "REGEXMATCH(ARRAY_CONSTRAIN(Cards!" + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
+        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1))); ';
+        formula += "ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1) < 0';
         formula += '))); 0)';
         sheet.getRange(5 + h_ * i, col + w_ * k).setFormula(formula);
 
-        formula = "REGEXEXTRACT(ARRAY_CONSTRAIN('Cards'!" + range2[i] + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+        formula = "REGEXEXTRACT(ARRAY_CONSTRAIN(Cards!" + range2[i] + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
         formula = 'ARRAYFORMULA(SPLIT(' + formula + '; "/"))';
-        formula = '{' + formula + dec_c + " ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1)}; ';
-        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range3[i] + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
+        formula = '{' + formula + dec_c + " ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1)}; ';
+        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN(Cards!" + range3[i] + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
 
-        formula = formula + "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1))); ';
-        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range2[i] + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+        formula = formula + "NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!" + range4[i] + '; ' + header2 + '; 1))); ';
+        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN(Cards!" + range2[i] + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
 
         formula = 'BSCARDPART(TRANSPOSE(IFNA(FILTER(' + formula + '); 0)))';
         formula = 'IF(' + rollA1Notation(1, col + w_ * k) + ' = ""; 0; ' + formula + ')';
@@ -1025,17 +1025,17 @@ function update_v0m33p0s1_ (spreadsheet, limits) {
     while (++i < 12) {
       if (limits[i] < 6) continue;
 
-      rg = "{ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!C5:D" + limits[i] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6) + '; 2)';
-      cd = "{ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!D5:D" + limits[i] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6) + '; 1)';
+      rg = "{ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!C5:D" + limits[i] + "; _Backstage!" + rollA1Notation(2 + h_ * i, 6) + '; 2)';
+      cd = "{ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!D5:D" + limits[i] + "; _Backstage!" + rollA1Notation(2 + h_ * i, 6) + '; 1)';
 
       for (k = 0; k < num_acc; k++) {
-        rg += "; ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + combo[k] + limits[i] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 2)';
-        cd += "; ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[k] + limits[i] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 1)';
+        rg += "; ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + combo[k] + limits[i] + "; _Backstage!" + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 2)';
+        cd += "; ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + tags[k] + limits[i] + "; _Backstage!" + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 1)';
       }
 
       if (limit > 6) {
-        rg += "; ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 4 + 6 * i, limit - 5, 2) + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, col) + '; 2)}';
-        cd += "; ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 5 + 6 * i, limit - 5, 1) + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, col) + ' ; 1)}';
+        rg += "; ARRAY_CONSTRAIN(Cards!" + rollA1Notation(6, 4 + 6 * i, limit - 5, 2) + "; _Backstage!" + rollA1Notation(2 + h_ * i, col) + '; 2)}';
+        cd += "; ARRAY_CONSTRAIN(Cards!" + rollA1Notation(6, 5 + 6 * i, limit - 5, 1) + "; _Backstage!" + rollA1Notation(2 + h_ * i, col) + ' ; 1)}';
       } else {
         rg += '}';
         cd += '}';
@@ -1043,7 +1043,7 @@ function update_v0m33p0s1_ (spreadsheet, limits) {
 
       formula = 'IFERROR(FILTER(' + rg + '; NOT(ISBLANK(' + cd + '))); "")';
       formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';
-      formula = '{"' + MN_FULL[i] + "\"; IF('_Settings'!$B$7 > 0; " + formula + '; )}';
+      formula = '{"' + MN_FULL[i] + "\"; IF(_Settings!$B$7 > 0; " + formula + '; )}';
 
       sheet.getRange(1, 6 + i).setFormula(formula);
     }
@@ -1080,26 +1080,26 @@ function update_v0m33p0s0_ (spreadsheet, limits) {
     while (++i < 12) {
       if (limits[i] < 6) continue;
 
-      formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!D5:D" + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); "#ign"))';
-      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!C5:C" + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1))); ' + formula;
-      formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!C5:C" + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); ' + formula + ')';
+      formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!D5:D" + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); "#ign"))';
+      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!C5:C" + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1))); ' + formula;
+      formula = "FILTER(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!C5:C" + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); ' + formula + ')';
       formula = 'SUM(IFERROR(' + formula + '; 0))';
       sheet.getRange(4 + h_ * i, 2).setFormula(formula);
 
       for (k = 0; k < num_acc; k++) {
-        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
-        formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
+        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
+        formula = "FILTER(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
         formula = balance1[5 * i + k] + ' + IFERROR(SUM(' + formula + '); 0)';
         sheet.getRange(3 + h_ * i, 7 + w_ * k).setFormula(formula);
 
-        formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
-        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1))); ' + formula;
-        formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
+        formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
+        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1))); ' + formula;
+        formula = "FILTER(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
         formula = 'IFERROR(SUM(' + formula + '); 0)';
         sheet.getRange(4 + h_ * i, 7 + w_ * k).setFormula(formula);
 
-        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
-        formula = "IFERROR(FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + combo[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 2); ' + formula + '); "")';
+        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
+        formula = "IFERROR(FILTER(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + combo[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 2); ' + formula + '); "")';
         formula = 'BSREPORT(TRANSPOSE(' + formula + '))';
         sheet.getRange(2 + h_ * i, 8 + w_ * k).setFormula(formula);
       }
@@ -1155,9 +1155,9 @@ function update_v0m32p7_ () {
       n = sheet.getMaxRows() - 4;
       if (n < 1) continue;
 
-      wallet[h_ * i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + rollA1Notation(5, 3, n, 1) + '))'];
+      wallet[h_ * i] = ['BSBLANK(TRANSPOSE(' + MN_SHORT[i] + '!' + rollA1Notation(5, 3, n, 1) + '))'];
       for (k = 0; k < num_acc; k++) {
-        accounts[k][h_ * i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + rollA1Notation(5, 8 + 5 * k, n, 1) + '))'];
+        accounts[k][h_ * i] = ['BSBLANK(TRANSPOSE(' + MN_SHORT[i] + '!' + rollA1Notation(5, 8 + 5 * k, n, 1) + '))'];
       }
     }
 
@@ -1172,7 +1172,7 @@ function update_v0m32p7_ () {
     if (n < 1) return;
 
     for (i = 0; i < 12; i++) {
-      cards[h_ * i] = ['BSBLANK(TRANSPOSE(\'Cards\'!' + rollA1Notation(6, 4 + 6 * i, n, 1) + '))'];
+      cards[h_ * i] = ['BSBLANK(TRANSPOSE(Cards!' + rollA1Notation(6, 4 + 6 * i, n, 1) + '))'];
     }
     backstage.getRange(2, 6 + w_ * num_acc + w_, height, 1).setFormulas(cards);
 
@@ -1356,9 +1356,9 @@ function update_v0m31p7_ () {
     const h_ = TABLE_DIMENSION.height;
 
     for (i = 0; i < 12; i++) {
-      formula = "NOT(REGEXMATCH('" + MN_SHORT[i] + "'!D5:D404; \"#ign\"))";
-      formula = "NOT(ISBLANK('" + MN_SHORT[i] + "'!C5:C404)); " + formula;
-      formula = "FILTER('" + MN_SHORT[i] + "'!C5:C404; " + formula + ')';
+      formula = "NOT(REGEXMATCH(" + MN_SHORT[i] + "!D5:D404; \"#ign\"))";
+      formula = "NOT(ISBLANK(" + MN_SHORT[i] + "!C5:C404)); " + formula;
+      formula = "FILTER(" + MN_SHORT[i] + "!C5:C404; " + formula + ')';
       formula = 'SUM(IFNA(' + formula + '; 0))';
 
       sheet.getRange(4 + h_ * i, 2).setFormula(formula);
