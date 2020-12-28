@@ -48,10 +48,6 @@ const CONSTANTS = Object.freeze({
   month_name: {
     short: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     long: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-  },
-  tags: {
-    code: ['A', 'D', 'E', 'F', 'G', 'K', 'L', 'S', 'T', 'U'],
-    name: ['Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling']
   }
 });
 
