@@ -30,7 +30,7 @@ function setupMonthSheet_ () {
   }
 
   for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.insertSheet(MN_SHORT[i], 3 + i, { template: sheetTTT });
+    sheet = spreadsheet.insertSheet(MONTH_NAME.short[i], 3 + i, { template: sheetTTT });
     sheets[i] = sheet;
 
     sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(_Backstage!$B' + (4 + h_ * i) + '))');
@@ -75,7 +75,7 @@ function setupMonthSheet_ () {
 
   for (i = 1; i < 12; i++) {
     for (k = 0; k < 1 + num_acc; k++) {
-      sheets[i].getRange(1, 1 + 5 * k).setFormula('=' + MN_SHORT[i - 1] + '!' + headers[k]);
+      sheets[i].getRange(1, 1 + 5 * k).setFormula('=' + MONTH_NAME.short[i - 1] + '!' + headers[k]);
     }
   }
 

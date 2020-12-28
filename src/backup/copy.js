@@ -168,17 +168,17 @@ function copyMonths_ (spreadsheet) {
 
   let mm = -1;
   while (++mm < 12) {
-    const source = spreadsheet.getSheetByName(MN_SHORT[mm]);
+    const source = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
     if (!source) continue;
 
     const last = source.getLastRow();
     if (last < 5) continue;
 
-    const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
+    const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
 
     let max = destination.getMaxRows();
     while (max < last) {
-      addBlankRows_(MN_SHORT[mm]);
+      addBlankRows_(MONTH_NAME.short[mm]);
       max += 400;
     }
 

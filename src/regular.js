@@ -89,7 +89,7 @@ function postEventsForDate_ (date) {
     }
   }
 
-  sheet = spreadsheet.getSheetByName(MN_SHORT[mm]);
+  sheet = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
   if (!sheet) return;
 
   for (k = 0; k < num_acc; k++) {
@@ -155,7 +155,7 @@ function updateDecimalPlaces_ () {
   }
 
   for (let i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (!sheet) continue;
 
     max = sheet.getMaxRows() - 4;
@@ -276,7 +276,7 @@ function treatLayout_ (yyyy, mm) {
 
   const sheets = [];
   for (i = 0; i < 12; i++) {
-    sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
   }
 
   if (mm === 0) {
@@ -334,7 +334,7 @@ function updateTabsColors (sheets, financial_year, yyyy, mm) {
 
     sheets = [];
     for (i = 0; i < 12; i++) {
-      sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
+      sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     }
 
     financial_year = getConstProperties_('financial_year');

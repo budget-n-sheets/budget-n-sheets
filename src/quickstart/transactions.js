@@ -27,7 +27,7 @@ function playQuickTransactions_ (n) {
       throw new Error('playQuickTransactions_(): Switch case is default. ' + n);
   }
 
-  const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MN_SHORT[DATE_NOW.getMonth()] : MN_SHORT[0]);
+  const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MONTH_NAME.short[DATE_NOW.getMonth()] : MONTH_NAME.short[0]);
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName(name);
   if (!sheet) {

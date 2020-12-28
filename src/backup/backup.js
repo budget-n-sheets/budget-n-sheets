@@ -239,7 +239,7 @@ function backupMonths_ (backup) {
 
   i = -1;
   while (++i < 12) {
-    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (!sheet) continue;
 
     max = sheet.getLastRow();

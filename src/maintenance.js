@@ -82,7 +82,7 @@ function askResetProtection () {
   number_accounts = getConstProperties_('number_accounts');
 
   for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (!sheet) continue;
 
     n = sheet.getMaxRows() - 4;

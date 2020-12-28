@@ -51,8 +51,8 @@ function playQuickAccCards_ (n) {
   if (n === 3) {
     name = 'Cards';
   } else {
-    if (financial_year === DATE_NOW.getFullYear()) name = MN_SHORT[DATE_NOW.getMonth()];
-    else name = MN_SHORT[0];
+    if (financial_year === DATE_NOW.getFullYear()) name = MONTH_NAME.short[DATE_NOW.getMonth()];
+    else name = MONTH_NAME.short[0];
   }
 
   const sheet = spreadsheet.getSheetByName(name);

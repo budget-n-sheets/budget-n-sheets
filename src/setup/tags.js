@@ -21,13 +21,13 @@ function setupTags_ () {
 
   for (i = 0; i < 12; i++) {
     let ref = rollA1Notation(2 + h_ * i, 6);
-    rg = '{ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + combo[0] + '; _Backstage!' + ref + '; 2)';
-    cd = '{ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + tags[0] + '; _Backstage!' + ref + '; 1)';
+    rg = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + combo[0] + '; _Backstage!' + ref + '; 2)';
+    cd = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + tags[0] + '; _Backstage!' + ref + '; 1)';
 
     for (k = 1; k < 1 + num_acc; k++) {
       const ref = rollA1Notation(2 + h_ * i, 6 + w_ * k);
-      rg += '; ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + combo[k] + '; _Backstage!' + ref + '; 2)';
-      cd += '; ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + tags[k] + '; _Backstage!' + ref + '; 1)';
+      rg += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + combo[k] + '; _Backstage!' + ref + '; 2)';
+      cd += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + tags[k] + '; _Backstage!' + ref + '; 1)';
     }
 
     ref = rollA1Notation(2 + h_ * i, col);

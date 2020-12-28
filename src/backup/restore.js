@@ -168,7 +168,7 @@ function restoreMonths_ (backup) {
   while (++mm < 12) {
     if (backup.ttt[mm] == null) continue;
 
-    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
+    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
     max = sheet.getMaxRows() - 4;
 
     for (k = 0; k < num_acc + 1; k++) {
@@ -176,7 +176,7 @@ function restoreMonths_ (backup) {
       if (backup.ttt[mm][k].length === 0) continue;
 
       while (max < backup.ttt[mm][k].length) {
-        addBlankRows_(MN_SHORT[mm]);
+        addBlankRows_(MONTH_NAME.short[mm]);
         max += 400;
       }
 

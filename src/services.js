@@ -36,7 +36,7 @@ function onEditInstallable_ (e) {
   } catch (err) {
   }
 
-  if (name !== 'Quick Actions' && MN_SHORT.indexOf(name) === -1) return;
+  if (name !== 'Quick Actions' && MONTH_NAME.short.indexOf(name) === -1) return;
 
   if (name === 'Quick Actions') {
     try {
@@ -48,7 +48,7 @@ function onEditInstallable_ (e) {
     }
   } else {
     try {
-      const mm = MN_SHORT.indexOf(name);
+      const mm = MONTH_NAME.short.indexOf(name);
       const status = getSpreadsheetSettings_('optimize_load');
       if (status == null || status[mm] === 1) resumeActivity_(mm);
     } catch (err) {
@@ -105,7 +105,7 @@ function quickActions_ (range, value) {
 
   switch (row) {
     case 3:
-      toolPicker_('AddBlankRows', MN_SHORT[mm]);
+      toolPicker_('AddBlankRows', MONTH_NAME.short[mm]);
       break;
     case 4:
       toolPicker_('FormatAccount', mm);

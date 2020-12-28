@@ -53,7 +53,7 @@ function switchActivity_ (select) {
 
     suspendActivity_(mm);
   } else if (select === 'resume') {
-    mm = MN_SHORT.indexOf(SpreadsheetApp.getActiveSheet().getSheetName());
+    mm = MONTH_NAME.short.indexOf(SpreadsheetApp.getActiveSheet().getSheetName());
     if (mm === -1) return 2;
 
     resumeActivity_(mm);

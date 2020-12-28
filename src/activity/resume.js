@@ -15,9 +15,9 @@ function resumeActivity_ (mm) {
 
   if (!sheet) return;
   if (!spreadsheet.getSheetByName('Cards')) return;
-  if (!spreadsheet.getSheetByName(MN_SHORT[mm])) return;
+  if (!spreadsheet.getSheetByName(MONTH_NAME.short[mm])) return;
 
-  const max1 = spreadsheet.getSheetByName(MN_SHORT[mm]).getMaxRows();
+  const max1 = spreadsheet.getSheetByName(MONTH_NAME.short[mm]).getMaxRows();
   const num_acc = getConstProperties_('number_accounts');
   const col = 2 + w_ + w_ * num_acc + w_;
 
@@ -36,11 +36,11 @@ function resumeActivity_ (mm) {
     }
   }
 
-  sheet.getRange(2 + h_ * mm, 6).setFormula('BSBLANK(TRANSPOSE(' + MN_SHORT[mm] + '!' + values[0] + '))');
+  sheet.getRange(2 + h_ * mm, 6).setFormula('BSBLANK(TRANSPOSE(' + MONTH_NAME.short[mm] + '!' + values[0] + '))');
 
-  formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MN_SHORT[mm] + '!' + tags[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1); "#ign"))';
-  formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[mm] + '!' + values[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1))); ' + formula;
-  formula = 'FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[mm] + '!' + values[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1); ' + formula + ')';
+  formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + tags[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1); "#ign"))';
+  formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1))); ' + formula;
+  formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1); ' + formula + ')';
   formula = 'SUM(IFERROR(' + formula + '; 0))';
   sheet.getRange(4 + h_ * mm, 2).setFormula(formula);
 
@@ -55,21 +55,21 @@ function resumeActivity_ (mm) {
 
     accounts[0][w_ * k] = '=' + balance2[5 * mm + k];
 
-    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[mm] + '!' + tags[1 + k] + '; ' + range1A1 + '; 1)))';
-    formula = 'IFERROR(FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[mm] + '!' + combo[1 + k] + '; ' + range1A1 + '; 2); ' + formula + '); "")';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + tags[1 + k] + '; ' + range1A1 + '; 1)))';
+    formula = 'IFERROR(FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + combo[1 + k] + '; ' + range1A1 + '; 2); ' + formula + '); "")';
     formula = 'BSREPORT(TRANSPOSE(' + formula + '))';
     accounts[0][1 + w_ * k] = formula;
 
-    accounts[0][4 + w_ * k] = 'BSBLANK(TRANSPOSE(' + MN_SHORT[mm] + '!' + values[1 + k] + '))';
+    accounts[0][4 + w_ * k] = 'BSBLANK(TRANSPOSE(' + MONTH_NAME.short[mm] + '!' + values[1 + k] + '))';
 
-    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1)))';
-    formula = 'FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1)))';
+    formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
     formula = balance1[5 * mm + k] + ' + IFERROR(SUM(' + formula + '); 0)';
     accounts[1][w_ * k] = formula;
 
-    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MN_SHORT[mm] + '!' + tags[1 + k] + '; ' + range1A1 + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
-    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1))); ' + formula;
-    formula = 'FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
+    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + tags[1 + k] + '; ' + range1A1 + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1))); ' + formula;
+    formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
     formula = 'IFERROR(SUM(' + formula + '); 0)';
     accounts[2][w_ * k] = formula;
   }
@@ -92,8 +92,8 @@ function resumeActivity_ (mm) {
       rangeList[i - 1 - mm] = rollA1Notation(2 + h_ * i, 2 + w_ + w_ * k);
 
       range1A1 = rollA1Notation(2 + h_ * i, 11 + w_ * k);
-      formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[1 + k] + '; ' + range1A1 + '; 1)))';
-      formula = 'FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
+      formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[1 + k] + '; ' + range1A1 + '; 1)))';
+      formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
       formula = balance1[5 * i + k] + ' + IFERROR(SUM(' + formula + '); 0)';
       sheet.getRange(3 + h_ * i, 2 + w_ + w_ * k).setFormula(formula);
     }

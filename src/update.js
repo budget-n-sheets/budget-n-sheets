@@ -672,7 +672,7 @@ function update_v0m35p0s0_ () {
     const num_acc = getConstProperties_('number_accounts');
 
     for (let i = 0; i < 12; i++) {
-      sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+      sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
       if (!sheet) continue;
 
       for (k = 0; k < num_acc; k++) {
@@ -850,7 +850,7 @@ function update_v0m33p0_ () {
     const sheets = [];
 
     for (i = 0; i < 12; i++) {
-      sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
+      sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
       if (sheets[i]) limits[i] = sheets[i].getMaxRows();
       else limits[i] = 0;
     }
@@ -1026,12 +1026,12 @@ function update_v0m33p0s1_ (spreadsheet, limits) {
     while (++i < 12) {
       if (limits[i] < 6) continue;
 
-      rg = '{ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!C5:D' + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6) + '; 2)';
-      cd = '{ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!D5:D' + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6) + '; 1)';
+      rg = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!C5:D' + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6) + '; 2)';
+      cd = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!D5:D' + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6) + '; 1)';
 
       for (k = 0; k < num_acc; k++) {
-        rg += '; ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + combo[k] + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 2)';
-        cd += '; ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + tags[k] + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 1)';
+        rg += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + combo[k] + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 2)';
+        cd += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + tags[k] + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 1)';
       }
 
       if (limit > 6) {
@@ -1081,26 +1081,26 @@ function update_v0m33p0s0_ (spreadsheet, limits) {
     while (++i < 12) {
       if (limits[i] < 6) continue;
 
-      formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!D5:D' + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); "#ign"))';
-      formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!C5:C' + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1))); ' + formula;
-      formula = 'FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!C5:C' + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); ' + formula + ')';
+      formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!D5:D' + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); "#ign"))';
+      formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!C5:C' + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1))); ' + formula;
+      formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!C5:C' + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); ' + formula + ')';
       formula = 'SUM(IFERROR(' + formula + '; 0))';
       sheet.getRange(4 + h_ * i, 2).setFormula(formula);
 
       for (k = 0; k < num_acc; k++) {
-        formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
-        formula = 'FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
+        formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
+        formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
         formula = balance1[5 * i + k] + ' + IFERROR(SUM(' + formula + '); 0)';
         sheet.getRange(3 + h_ * i, 7 + w_ * k).setFormula(formula);
 
-        formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
-        formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1))); ' + formula;
-        formula = 'FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
+        formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
+        formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1))); ' + formula;
+        formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
         formula = 'IFERROR(SUM(' + formula + '); 0)';
         sheet.getRange(4 + h_ * i, 7 + w_ * k).setFormula(formula);
 
-        formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
-        formula = 'IFERROR(FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + combo[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 2); ' + formula + '); "")';
+        formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
+        formula = 'IFERROR(FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + combo[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 2); ' + formula + '); "")';
         formula = 'BSREPORT(TRANSPOSE(' + formula + '))';
         sheet.getRange(2 + h_ * i, 8 + w_ * k).setFormula(formula);
       }
@@ -1151,14 +1151,14 @@ function update_v0m32p7_ () {
     }
 
     for (i = 0; i < 12; i++) {
-      sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+      sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
       if (!sheet) continue;
       n = sheet.getMaxRows() - 4;
       if (n < 1) continue;
 
-      wallet[h_ * i] = ['BSBLANK(TRANSPOSE(' + MN_SHORT[i] + '!' + rollA1Notation(5, 3, n, 1) + '))'];
+      wallet[h_ * i] = ['BSBLANK(TRANSPOSE(' + MONTH_NAME.short[i] + '!' + rollA1Notation(5, 3, n, 1) + '))'];
       for (k = 0; k < num_acc; k++) {
-        accounts[k][h_ * i] = ['BSBLANK(TRANSPOSE(' + MN_SHORT[i] + '!' + rollA1Notation(5, 8 + 5 * k, n, 1) + '))'];
+        accounts[k][h_ * i] = ['BSBLANK(TRANSPOSE(' + MONTH_NAME.short[i] + '!' + rollA1Notation(5, 8 + 5 * k, n, 1) + '))'];
       }
     }
 
@@ -1357,9 +1357,9 @@ function update_v0m31p7_ () {
     const h_ = TABLE_DIMENSION.height;
 
     for (i = 0; i < 12; i++) {
-      formula = 'NOT(REGEXMATCH(' + MN_SHORT[i] + '!D5:D404; "#ign"))';
-      formula = 'NOT(ISBLANK(' + MN_SHORT[i] + '!C5:C404)); ' + formula;
-      formula = 'FILTER(' + MN_SHORT[i] + '!C5:C404; ' + formula + ')';
+      formula = 'NOT(REGEXMATCH(' + MONTH_NAME.short[i] + '!D5:D404; "#ign"))';
+      formula = 'NOT(ISBLANK(' + MONTH_NAME.short[i] + '!C5:C404)); ' + formula;
+      formula = 'FILTER(' + MONTH_NAME.short[i] + '!C5:C404; ' + formula + ')';
       formula = 'SUM(IFNA(' + formula + '; 0))';
 
       sheet.getRange(4 + h_ * i, 2).setFormula(formula);

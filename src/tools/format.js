@@ -11,7 +11,7 @@ function validateFormatRegistry_ () {
   } else if (name === 'Tags') {
     formatTags_();
   } else {
-    mm = MN_SHORT.indexOf(name);
+    mm = MONTH_NAME.short.indexOf(name);
     if (mm === -1) {
       SpreadsheetApp.getUi().alert(
         "Can't sort registry",
@@ -39,7 +39,7 @@ function formatTags_ () {
 }
 
 function formatAccounts_ (mm) {
-  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
   let date2;
   let table;
   let cc, n, i, k;
