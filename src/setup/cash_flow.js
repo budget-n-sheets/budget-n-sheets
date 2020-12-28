@@ -124,7 +124,7 @@ function setupCashFlow_ () {
   }
 
   for (k = 0; k < num_acc; k++) {
-    formula += " + _Backstage!" + ranges[k] + (2 + h_ * init_month);
+    formula += ' + _Backstage!' + ranges[k] + (2 + h_ * init_month);
   }
   sheet.getRange(4, 3 + 4 * init_month).setFormula(formula);
 

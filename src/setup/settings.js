@@ -26,7 +26,7 @@ function setupSettings_ (yyyy_mm) {
     ['=' + numberFormatLocaleSignal.call(SETUP_SETTINGS.init_month + 1, dec_p)],
     ['=IF($B4 > $B3; 0; $B3 - $B4 + 1)'],
     ['=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))'],
-    ["=COUNTIF(Tags!$E1:$E; \"<>\") - 1"],
+    ['=COUNTIF(Tags!$E1:$E; "<>") - 1'],
     ['=RAND()']
   ];
   sheet.getRange(2, 2, 7, 1).setFormulas(cell);

@@ -24,8 +24,8 @@ function setupSummary_ () {
   for (i = 0; i < 12; i++) {
     formulas[i] = ['', null, '', null];
 
-    formulas[i][0] = "=_Backstage!$B" + (3 + h_ * i);
-    formulas[i][2] = "=SUM(_Backstage!$B" + (4 + h_ * i) + ':$B' + (6 + h_ * i) + ')';
+    formulas[i][0] = '=_Backstage!$B' + (3 + h_ * i);
+    formulas[i][2] = '=SUM(_Backstage!$B' + (4 + h_ * i) + ':$B' + (6 + h_ * i) + ')';
   }
   sheet.getRange(11, 4, 12, 4).setFormulas(formulas);
 

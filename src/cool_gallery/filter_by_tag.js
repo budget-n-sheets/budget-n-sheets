@@ -14,34 +14,34 @@ function coolFilterByTag_ (info) {
   i = 0;
   formula = '';
   while (i < 12) {
-    aux1 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MN_SHORT[i] + "-\"; " + MN_SHORT[i] + "!" + rollA1Notation(5, 1, -1, 1) + '); "-"))' + dec_c;
-    aux1 += MN_SHORT[i] + "!" + rollA1Notation(5, 2, -1, 1) + dec_c;
-    aux1 += MN_SHORT[i] + "!" + rollA1Notation(5, 5, -1, 1) + dec_c;
-    aux1 += MN_SHORT[i] + "!" + rollA1Notation(5, 3, -1, 2);
+    aux1 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MN_SHORT[i] + '-"; ' + MN_SHORT[i] + '!' + rollA1Notation(5, 1, -1, 1) + '); "-"))' + dec_c;
+    aux1 += MN_SHORT[i] + '!' + rollA1Notation(5, 2, -1, 1) + dec_c;
+    aux1 += MN_SHORT[i] + '!' + rollA1Notation(5, 5, -1, 1) + dec_c;
+    aux1 += MN_SHORT[i] + '!' + rollA1Notation(5, 3, -1, 2);
 
-    aux1 = '{' + aux1 + "}; REGEXMATCH(" + MN_SHORT[i] + "!" + rollA1Notation(5, 4, -1, 1) + '; ' + header + ')';
+    aux1 = '{' + aux1 + '}; REGEXMATCH(' + MN_SHORT[i] + '!' + rollA1Notation(5, 4, -1, 1) + '; ' + header + ')';
     aux1 = 'FILTER(' + aux1 + ')';
     aux1 = 'IFNA(' + aux1 + '; {""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""})';
     aux1 = 'SORT(' + aux1 + '; 2; TRUE; 4; TRUE; 5; TRUE); \n';
     formula += aux1;
 
     for (k = 0; k < num_acc; k++) {
-      aux2 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MN_SHORT[i] + "-\"; " + MN_SHORT[i] + "!" + rollA1Notation(5, 6 + 5 * k, -1, 1) + '); "-"))' + dec_c;
-      aux2 += MN_SHORT[i] + "!" + rollA1Notation(5, 7 + 5 * k, -1, 1) + dec_c;
-      aux2 += MN_SHORT[i] + "!" + rollA1Notation(5, 10 + 5 * k, -1, 1) + dec_c;
-      aux2 += MN_SHORT[i] + "!" + rollA1Notation(5, 8 + 5 * k, -1, 2);
+      aux2 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MN_SHORT[i] + '-"; ' + MN_SHORT[i] + '!' + rollA1Notation(5, 6 + 5 * k, -1, 1) + '); "-"))' + dec_c;
+      aux2 += MN_SHORT[i] + '!' + rollA1Notation(5, 7 + 5 * k, -1, 1) + dec_c;
+      aux2 += MN_SHORT[i] + '!' + rollA1Notation(5, 10 + 5 * k, -1, 1) + dec_c;
+      aux2 += MN_SHORT[i] + '!' + rollA1Notation(5, 8 + 5 * k, -1, 2);
 
-      aux2 = '{' + aux2 + "}; REGEXMATCH(" + MN_SHORT[i] + "!" + rollA1Notation(5, 9 + 5 * k, -1, 1) + '; ' + header + ')';
+      aux2 = '{' + aux2 + '}; REGEXMATCH(' + MN_SHORT[i] + '!' + rollA1Notation(5, 9 + 5 * k, -1, 1) + '; ' + header + ')';
       aux2 = 'FILTER(' + aux2 + ')';
       aux2 = 'IFNA(' + aux2 + '; {""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""})';
       aux2 = 'SORT(' + aux2 + '; 2; TRUE; 4; TRUE; 5; TRUE); \n';
       formula += aux2;
     }
 
-    aux3 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MN_SHORT[i] + "-\"; Cards!" + rollA1Notation(6, 1 + 6 * i, -1, 1) + '); "-"))' + dec_c;
-    aux3 += "Cards!" + rollA1Notation(6, 2 + 6 * i, -1, 4);
+    aux3 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MN_SHORT[i] + '-"; Cards!' + rollA1Notation(6, 1 + 6 * i, -1, 1) + '); "-"))' + dec_c;
+    aux3 += 'Cards!' + rollA1Notation(6, 2 + 6 * i, -1, 4);
 
-    aux3 = '{' + aux3 + "}; REGEXMATCH(Cards!" + rollA1Notation(6, 5 + 6 * i, -1, 1) + '; ' + header + ')';
+    aux3 = '{' + aux3 + '}; REGEXMATCH(Cards!' + rollA1Notation(6, 5 + 6 * i, -1, 1) + '; ' + header + ')';
     aux3 = 'FILTER(' + aux3 + ')';
     aux3 = 'IFNA(' + aux3 + '; {""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""})';
     aux3 = 'SORT(' + aux3 + '; 2; TRUE; 4; TRUE; 5; TRUE); \n';

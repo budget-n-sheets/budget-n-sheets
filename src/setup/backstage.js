@@ -59,12 +59,12 @@ function setupBackstage_ () {
     income = '0';
     expenses = '0';
 
-    wallet[h_ * i][4] = "BSBLANK(TRANSPOSE(" + MN_SHORT[i] + "!" + values[k] + '))';
+    wallet[h_ * i][4] = 'BSBLANK(TRANSPOSE(' + MN_SHORT[i] + '!' + values[k] + '))';
 
     const bsblank = rollA1Notation(2 + h_ * i, 6);
-    formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + tags[k] + '; ' + bsblank + '; 1); "#ign"))';
-    formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + values[k] + '; ' + bsblank + '; 1))); ' + formula;
-    formula = "FILTER(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + values[k] + '; ' + bsblank + '; 1); ' + formula + ')';
+    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + tags[k] + '; ' + bsblank + '; 1); "#ign"))';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[k] + '; ' + bsblank + '; 1))); ' + formula;
+    formula = 'FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[k] + '; ' + bsblank + '; 1); ' + formula + ')';
     formula = 'SUM(IFERROR(' + formula + '; 0))';
     wallet[2 + h_ * i][0] = formula;
 
@@ -74,21 +74,21 @@ function setupBackstage_ () {
       expenses += ' + ' + rollA1Notation(4 + h_ * i, 7 + w_ * k);
 
       accounts[h_ * i][w_ * k] = '=' + balance2[5 * i + k];
-      accounts[h_ * i][4 + w_ * k] = "BSBLANK(TRANSPOSE(" + MN_SHORT[i] + "!" + values[1 + k] + '))';
+      accounts[h_ * i][4 + w_ * k] = 'BSBLANK(TRANSPOSE(' + MN_SHORT[i] + '!' + values[1 + k] + '))';
 
-      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + values[1 + k] + '; ' + bsblank + '; 1)))';
-      formula = "FILTER(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + values[1 + k] + '; ' + bsblank + '; 1); ' + formula + ')';
+      formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[1 + k] + '; ' + bsblank + '; 1)))';
+      formula = 'FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[1 + k] + '; ' + bsblank + '; 1); ' + formula + ')';
       formula = balance1[5 * i + k] + ' + IFERROR(SUM(' + formula + '); 0)';
       accounts[1 + h_ * i][w_ * k] = formula;
 
-      formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + tags[1 + k] + '; ' + bsblank + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
-      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + values[1 + k] + '; ' + bsblank + '; 1))); ' + formula;
-      formula = "FILTER(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + values[1 + k] + '; ' + bsblank + '; 1); ' + formula + ')';
+      formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + tags[1 + k] + '; ' + bsblank + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
+      formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[1 + k] + '; ' + bsblank + '; 1))); ' + formula;
+      formula = 'FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + values[1 + k] + '; ' + bsblank + '; 1); ' + formula + ')';
       formula = 'IFERROR(SUM(' + formula + '); 0)';
       accounts[2 + h_ * i][w_ * k] = formula;
 
-      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + tags[1 + k] + '; ' + bsblank + '; 1)))';
-      formula = "IFERROR(FILTER(ARRAY_CONSTRAIN(" + MN_SHORT[i] + "!" + combo[1 + k] + '; ' + bsblank + '; 2); ' + formula + '); "")';
+      formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + tags[1 + k] + '; ' + bsblank + '; 1)))';
+      formula = 'IFERROR(FILTER(ARRAY_CONSTRAIN(' + MN_SHORT[i] + '!' + combo[1 + k] + '; ' + bsblank + '; 2); ' + formula + '); "")';
       formula = 'BSREPORT(TRANSPOSE(' + formula + '))';
       accounts[h_ * i][1 + w_ * k] = formula;
     }
@@ -115,13 +115,13 @@ function setupBackstage_ () {
       for (let k = 0; k < 10; k++) {
         const header2 = rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
 
-        formula = "REGEXEXTRACT(ARRAY_CONSTRAIN(Cards!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+        formula = 'REGEXEXTRACT(ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
         formula = 'ARRAYFORMULA(SPLIT(' + formula + '; "/"))';
-        formula = '{' + formula + "\\ ARRAY_CONSTRAIN(Cards!" + range1A1 + '; ' + header2 + '; 1)}; ';
-        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN(Cards!" + range2A1 + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
+        formula = '{' + formula + '\\ ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1)}; ';
+        formula = formula + 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range2A1 + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
 
-        formula = formula + "NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!" + range1A1 + '; ' + header2 + '; 1))); ';
-        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN(Cards!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+        formula = formula + 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1))); ';
+        formula = formula + 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
 
         formula = 'BSCARDPART(TRANSPOSE(IFNA(FILTER(' + formula + '); 0)))';
         formula = 'IF(' + rollA1Notation(1, col + w_ * k) + ' = ""; 0; ' + formula + ')';

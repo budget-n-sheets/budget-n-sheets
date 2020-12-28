@@ -151,7 +151,7 @@ function updateDecimalPlaces_ () {
     sheet.getRangeList([
       'D9:I22', 'D25:G36', 'D53:E63', 'D73:E86', 'I73:K84'
     ])
-    .setNumberFormat(number_format);
+      .setNumberFormat(number_format);
   }
 
   for (let i = 0; i < 12; i++) {
@@ -165,16 +165,16 @@ function updateDecimalPlaces_ () {
     for (let k = 0; k < num_acc; k++) {
       list[k] = rollA1Notation(5, 8 + 5 * k, max, 1);
 
-      let expr1 = "TEXT(_Backstage!" + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      let expr1 = 'TEXT(_Backstage!' + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
       expr1 = '"Withdrawal: ["; _Backstage!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
 
-      let expr2 = "TEXT(_Backstage!" + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      let expr2 = 'TEXT(_Backstage!' + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
       expr2 = '"Deposit: ["; _Backstage!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr2 + '; "\n"; ';
 
-      let expr3 = "TEXT(_Backstage!" + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      let expr3 = 'TEXT(_Backstage!' + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
       expr3 = '"Trf. in: ["; _Backstage!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr3 + '; "\n"; ';
 
-      let expr4 = "TEXT(_Backstage!" + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      let expr4 = 'TEXT(_Backstage!' + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
       expr4 = '"Trf. out: ["; _Backstage!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
 
       const formula = 'CONCATENATE(' + expr1 + expr2 + expr3 + expr4 + ')';
@@ -191,7 +191,7 @@ function updateDecimalPlaces_ () {
     const list = [];
     for (let i = 0; i < 12; i++) {
       const head = rollA1Notation(2, 1 + 6 * i);
-      const cell = "_Backstage!" + rollA1Notation(2 + h_ * i, col);
+      const cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
 
       list[i] = rollA1Notation(6, 4 + 6 * i, max, 1);
 
