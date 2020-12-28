@@ -36,7 +36,7 @@ function setupTags_ () {
 
     formula = 'IFERROR(FILTER(' + rg + '; NOT(ISBLANK(' + cd + '))); "")';
     formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';
-    formula = '{"' + MN_FULL[i] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
+    formula = '{"' + MONTH_NAME.long[i] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
 
     formulas[0][i] = formula;
   }

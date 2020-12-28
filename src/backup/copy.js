@@ -110,7 +110,7 @@ function readSpreadsheetInfo (fileId) {
 
   PropertiesService2.setProperty('document', 'settings_candidate', 'json', info);
 
-  info.initial_month = MN_FULL[info.initial_month];
+  info.initial_month = MONTH_NAME.long[info.initial_month];
 
   info.accounts = info.accounts.join(', ');
   for (let i = 0; i < info.cards.length; i++) {

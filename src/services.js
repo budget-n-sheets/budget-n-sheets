@@ -100,7 +100,7 @@ function quickActions_ (range, value) {
       break;
   }
 
-  const mm = MN_FULL.indexOf(value);
+  const mm = MONTH_NAME.long.indexOf(value);
   if (mm === -1) return;
 
   switch (row) {

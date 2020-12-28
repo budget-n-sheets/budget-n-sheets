@@ -1044,7 +1044,7 @@ function update_v0m33p0s1_ (spreadsheet, limits) {
 
       formula = 'IFERROR(FILTER(' + rg + '; NOT(ISBLANK(' + cd + '))); "")';
       formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';
-      formula = '{"' + MN_FULL[i] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
+      formula = '{"' + MONTH_NAME.long[i] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
 
       sheet.getRange(1, 6 + i).setFormula(formula);
     }
