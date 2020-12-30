@@ -1,4 +1,7 @@
 function setupMonthSheet_ () {
+  const formulaBuild = FormulaBuild.ttt().header();
+  let testBuild;
+
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheetTTT = spreadsheet.getSheetByName('TTT');
   let sheet, ranges, formula;
@@ -39,8 +42,15 @@ function setupMonthSheet_ () {
     for (k = 0; k < num_acc; k++) {
       ranges[k] = sheet.getRange(5, 1 + 5 * k, 400, 4);
 
-      sheet.getRange(2, 6 + 5 * k).setFormula('CONCAT("Balance "; TO_TEXT(_Backstage!' + rollA1Notation(3 + h_ * i, 7 + w_ * k) + '))');
-      sheet.getRange(3, 6 + 5 * k).setFormula('CONCAT("Expenses "; TO_TEXT(_Backstage!' + rollA1Notation(4 + h_ * i, 7 + w_ * k) + '))');
+      formula = 'CONCAT("Balance "; TO_TEXT(_Backstage!' + rollA1Notation(3 + h_ * i, 7 + w_ * k) + '))';
+      testBuild = formulaBuild.balance(k, i);
+      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.ttt().header().balance()');
+      sheet.getRange(2, 6 + 5 * k).setFormula(formula);
+
+      formula = 'CONCAT("Expenses "; TO_TEXT(_Backstage!' + rollA1Notation(4 + h_ * i, 7 + w_ * k) + '))';
+      testBuild = formulaBuild.balance(k, i);
+      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.ttt().header().expenses()');
+      sheet.getRange(3, 6 + 5 * k).setFormula(formula);
 
       expr1 = 'TEXT(_Backstage!' + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "' + SETUP_SETTINGS.number_format + '")';
       expr1 = '"Withdrawal: ["; _Backstage!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
@@ -55,6 +65,9 @@ function setupMonthSheet_ () {
       expr4 = '"Trf. out: ["; _Backstage!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
 
       formula = 'CONCATENATE(' + expr1 + expr2 + expr3 + expr4 + ')';
+
+      testBuild = formulaBuild.report(k, i);
+      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.ttt().header().report()');
       sheet.getRange(1, 8 + 5 * k).setFormula(formula);
     }
 
