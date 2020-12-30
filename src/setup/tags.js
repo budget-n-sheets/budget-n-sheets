@@ -50,9 +50,9 @@ function setupTags_ () {
 
   const ref1 = rollA1Notation(2, 6, -1);
   const ref2 = rollA1Notation(2, 6, -1, 12);
-  formula = 'IF(COLUMN(' + ref2 + ') - 5 < _Settings!$B$4 + _Settings!$B$6; ROW(' + ref + '); 0)';
+  formula = 'IF(COLUMN(' + ref2 + ') - 5 < _Settings!$B$4 + _Settings!$B$6; ROW(' + ref1 + '); 0)';
   formula = 'IF(COLUMN(' + ref2 + ') - 5 >= _Settings!$B$4; ' + formula + '; 0)';
-  formula = 'ARRAYFORMULA(IF(E2:E <> ""; SUMIF(' + formula + '; ROW(' + ref + '); ' + ref + '); ))';
+  formula = 'ARRAYFORMULA(IF(E2:E <> ""; SUMIF(' + formula + '; ROW(' + ref1 + '); ' + ref1 + '); ))';
   formula = 'IF(_Settings!$B$6 > 0; ' + formula + '; ARRAYFORMULA($F$2:$F * 0))';
   formula = 'IF(_Settings!$B$7 > 0; ' + formula + '; "")';
   formula = '{"total"; ' + formula + '}';
