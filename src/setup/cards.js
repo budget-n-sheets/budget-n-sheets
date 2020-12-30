@@ -29,6 +29,7 @@ function setupCards_ () {
     .setWarningOnly(true);
 
   for (i = 0; i < 12; i++) {
+    const card = rollA1Notation(2, 2 + 6 * i);
     head = rollA1Notation(2, 1 + 6 * i);
     cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
 
@@ -36,7 +37,7 @@ function setupCards_ () {
 
     formula = 'OFFSET(' + cell + '; 4; 1 + 5*' + head + '; 1; 1)';
     formula = 'TEXT(' + formula + '; "' + SETUP_SETTINGS.number_format + '")';
-    formula = 'IF(' + rollA1Notation(2, 2 + 6 * i) + ' = "All"; ""; ' + formula + ')';
+    formula = 'IF(' + card + ' = "All"; ""; ' + formula + ')';
     formula = 'CONCATENATE("AVAIL credit: "; ' + formula + ')';
     sheet.getRange(3, 1 + 6 * i).setFormula(formula);
 
@@ -45,13 +46,13 @@ function setupCards_ () {
     expr3 = '{"charttype"' + dec_c + '"bar"; "max"' + dec_c + 'OFFSET(' + cell + '; 0; 1 + 5*' + head + '; 1; 1); "color1"' + dec_c + '"#45818e"; "color2"' + dec_c + '"#e69138"}';
 
     formula = '{' + expr1 + dec_c + expr2 + '}; ' + expr3;
-    formula = 'IF(' + rollA1Notation(2, 2 + 6 * i) + ' = "All"; ""; SPARKLINE(' + formula + '))';
+    formula = 'IF(' + card + ' = "All"; ""; SPARKLINE(' + formula + '))';
     sheet.getRange(4, 1 + 6 * i).setFormula(formula);
 
-    formula = 'REGEXMATCH(_Backstage!' + header + '; "\\^"&' + rollA1Notation(2, 2 + 6 * i) + '&"\\$")';
+    formula = 'REGEXMATCH(_Backstage!' + header + '; "\\^"&' + card + '&"\\$")';
     formula = 'FILTER(_Backstage!' + header + '; ' + formula + ')';
     formula = 'INDEX(' + formula + '; 0; 1)';
-    formula = 'IF(' + rollA1Notation(2, 2 + 6 * i) + ' = "All"; 1; MATCH(' + formula + '; _Backstage!' + header + '; 0))';
+    formula = 'IF(' + card + ' = "All"; 1; MATCH(' + formula + '; _Backstage!' + header + '; 0))';
     formula = 'IFERROR((' + formula + ' - 1)/5; "")';
     sheet.getRange(2, 1 + 6 * i).setFormula(formula);
 
