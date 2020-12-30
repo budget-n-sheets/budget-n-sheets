@@ -1,7 +1,7 @@
 function setupCards_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('Cards');
-  let formula, head, cell;
+  let formula;
   let expr1, expr2, expr3;
   let i, k;
 
@@ -29,21 +29,21 @@ function setupCards_ () {
     .setWarningOnly(true);
 
   for (i = 0; i < 12; i++) {
+    const index = rollA1Notation(2, 1 + 6 * i);
     const card = rollA1Notation(2, 2 + 6 * i);
-    head = rollA1Notation(2, 1 + 6 * i);
-    cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
+    const reference = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
 
     sheet.getRange(2, 2 + 6 * i).setValue('All');
 
-    formula = 'OFFSET(' + cell + '; 4; 1 + 5*' + head + '; 1; 1)';
+    formula = 'OFFSET(' + reference + '; 4; 1 + 5*' + index + '; 1; 1)';
     formula = 'TEXT(' + formula + '; "' + SETUP_SETTINGS.number_format + '")';
     formula = 'IF(' + card + ' = "All"; ""; ' + formula + ')';
     formula = 'CONCATENATE("AVAIL credit: "; ' + formula + ')';
     sheet.getRange(3, 1 + 6 * i).setFormula(formula);
 
-    expr1 = 'MAX(0; OFFSET(' + cell + '; 4; 1 + 5*' + head + '; 1; 1))';
-    expr2 = 'OFFSET(' + cell + '; 1; 1 + 5*' + head + '; 1; 1)';
-    expr3 = '{"charttype"' + dec_c + '"bar"; "max"' + dec_c + 'OFFSET(' + cell + '; 0; 1 + 5*' + head + '; 1; 1); "color1"' + dec_c + '"#45818e"; "color2"' + dec_c + '"#e69138"}';
+    expr1 = 'MAX(0; OFFSET(' + reference + '; 4; 1 + 5*' + index + '; 1; 1))';
+    expr2 = 'OFFSET(' + reference + '; 1; 1 + 5*' + index + '; 1; 1)';
+    expr3 = '{"charttype"' + dec_c + '"bar"; "max"' + dec_c + 'OFFSET(' + reference + '; 0; 1 + 5*' + index + '; 1; 1); "color1"' + dec_c + '"#45818e"; "color2"' + dec_c + '"#e69138"}';
 
     formula = '{' + expr1 + dec_c + expr2 + '}; ' + expr3;
     formula = 'IF(' + card + ' = "All"; ""; SPARKLINE(' + formula + '))';
@@ -56,13 +56,13 @@ function setupCards_ () {
     formula = 'IFERROR((' + formula + ' - 1)/5; "")';
     sheet.getRange(2, 1 + 6 * i).setFormula(formula);
 
-    expr1 = 'OFFSET(' + cell + '; 1; 5*' + head + '; 1; 1)';
+    expr1 = 'OFFSET(' + reference + '; 1; 5*' + index + '; 1; 1)';
     expr1 = '"Credit: "; TEXT(' + expr1 + '; "' + SETUP_SETTINGS.number_format + '"); "\n"; ';
 
-    expr2 = 'OFFSET(' + cell + '; 3; 5*' + head + '; 1; 1)';
+    expr2 = 'OFFSET(' + reference + '; 3; 5*' + index + '; 1; 1)';
     expr2 = '"Expenses: "; TEXT(' + expr2 + '; "' + SETUP_SETTINGS.number_format + '"); "\n"; ';
 
-    expr3 = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
+    expr3 = 'OFFSET(' + reference + '; 4; 5*' + index + '; 1; 1)';
     expr3 = '"Balance: "; TEXT(' + expr3 + '; "' + SETUP_SETTINGS.number_format + '")';
 
     formula = 'CONCATENATE(' + expr1 + expr2 + '"\n"; ' + expr3 + ')';
