@@ -128,7 +128,7 @@ function resumeActivity_ (mm) {
     }
   }
 
-  const dec_c = (getSpreadsheetSettings_('decimal_separator') ? ';' : '\\');
+  const dec_c = (getSpreadsheetSettings_('decimal_separator') ? ',' : '\\');
   const max2 = spreadsheet.getSheetByName('Cards').getMaxRows() - 5;
 
   formula = 'RC[' + w_ + ']';
