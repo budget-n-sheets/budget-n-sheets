@@ -26,6 +26,12 @@ const FormulaBuild = Object.freeze({
     return summary;
   },
 
+  tags: function () {
+    const tags = Object.create(FormulaBuild.Tags);
+    tags._settings = this._settings;
+    return tags;
+  },
+
   ttt: function () {
     const ttt = Object.create(FormulaBuild.Ttt);
     ttt._settings = this._settings;
@@ -421,6 +427,96 @@ const FormulaBuild = Object.freeze({
         const dec_s = this._settings.decimal_separator ? ',' : '\\';
 
         return 'IF(OR(ROW() - 72 < $M$3; ROW() - 72 > $M$3 - 1 + $M$4); {' + rollA1Notation(73 + mm, 4) + dec_s + ' ""}; {""' + dec_s + ' ' + rollA1Notation(73 + mm, 4) + '})';
+      }
+    }
+  },
+
+  Tags: {
+    stats: function () {
+      const stats = Object.create(FormulaBuild.Tags.Stats);
+      stats._settings = this._settings;
+      return stats;
+    },
+
+    table: function () {
+      const table = Object.create(FormulaBuild.Tags.Table);
+      table._settings = this._settings;
+      return table;
+    },
+
+    Stats: {
+      average: function () {
+        let formula;
+
+        formula = 'ARRAYFORMULA(IF(E2:E <> ""; $T$2:$T/_Settings!B6; ))';
+        formula = 'IF(_Settings!$B$6 > 0; ' + formula + '; ARRAYFORMULA($F$2:$F * 0))';
+        formula = 'IF(_Settings!$B$7 > 0; ' + formula + '; "")';
+        formula = '{"average"; ' + formula + '}';
+
+        return formula;
+      },
+
+      total: function () {
+        const jan = rollA1Notation(2, 6, -1, 1);
+        const months = rollA1Notation(2, 6, -1, 12);
+
+        let formula;
+
+        formula = 'IF(COLUMN(' + months + ') - 5 < _Settings!$B$4 + _Settings!$B$6; ROW(' + jan + '); 0)';
+        formula = 'IF(COLUMN(' + months + ') - 5 >= _Settings!$B$4; ' + formula + '; 0)';
+        formula = 'ARRAYFORMULA(IF(E2:E <> ""; SUMIF(' + formula + '; ROW(' + jan + '); ' + jan + '); ))';
+        formula = 'IF(_Settings!$B$6 > 0; ' + formula + '; ARRAYFORMULA($F$2:$F * 0))';
+        formula = 'IF(_Settings!$B$7 > 0; ' + formula + '; "")';
+        formula = '{"total"; ' + formula + '}';
+
+        return formula;
+      }
+    },
+
+    Table: {
+      loadSettings: function (name) {
+        if (this._settings[name]) return;
+
+        switch (name) {
+          case 'number_accounts':
+            this._settings.number_accounts = getConstProperties_('number_accounts');
+            break;
+        }
+      },
+
+      month: function (numRowsMonth, numRowsCards, mm) {
+        this.loadSettings('number_accounts');
+
+        const _h = TABLE_DIMENSION.height;
+        const _w = TABLE_DIMENSION.width;
+
+        const number_accounts = this._settings.number_accounts;
+
+        let formula, bsblank;
+        let concat_tags, concat_value_tags;
+
+        bsblank = rollA1Notation(2 + _h * mm, 6);
+
+        concat_tags = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + rollA1Notation(5, 4, numRowsMonth, 1) + '; _Backstage!' + bsblank + '; 1)';
+        concat_value_tags = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + rollA1Notation(5, 3, numRowsMonth, 2) + '; _Backstage!' + bsblank + '; 2)';
+
+        for (let k = 0; k < number_accounts; k++) {
+          const bsblank = rollA1Notation(2 + _h * mm, 11 + _w * k);
+
+          concat_tags += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + rollA1Notation(5, 9 + 5 * k, numRowsMonth, 1) + '; _Backstage!' + bsblank + '; 1)';
+          concat_value_tags += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + rollA1Notation(5, 8 + 5 * k, numRowsMonth, 2) + '; _Backstage!' + bsblank + '; 2)';
+        }
+
+        bsblank = rollA1Notation(2 + _h * mm, 6 + _w + _w * number_accounts);
+
+        concat_tags += '; ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 5 + 6 * mm, numRowsCards, 1) + '; _Backstage!' + bsblank + ' ; 1)}';
+        concat_value_tags += '; ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 4 + 6 * mm, numRowsCards, 2) + '; _Backstage!' + bsblank + '; 2)}';
+
+        formula = 'IFERROR(FILTER(' + concat_value_tags + '; NOT(ISBLANK(' + concat_tags + '))); "")';
+        formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';
+        formula = '{"' + MONTH_NAME.long[mm] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
+
+        return formula;
       }
     }
   },
