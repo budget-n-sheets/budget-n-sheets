@@ -44,6 +44,11 @@ function onlineUpdate_ () {
     return;
   }
 
+  const spreadsheet_locale = getSpreadsheetSettings_('spreadsheet_locale');
+  if (spreadsheet_locale !== SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetLocale()) {
+    updateDecimalSeparator_();
+  }
+
   showDialogMessage('Add-on update', 'Updating add-on...', 1);
 
   const r = update_();
@@ -76,6 +81,11 @@ function onlineUpdate_ () {
 function seamlessUpdate_ () {
   if (!isTemplateAvailable()) return 1;
   if (!isUserAdmin_()) return 1;
+
+  const spreadsheet_locale = getSpreadsheetSettings_('spreadsheet_locale');
+  if (spreadsheet_locale !== SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetLocale()) {
+    updateDecimalSeparator_();
+  }
 
   const v0 = isScriptUpToDate_();
   if (v0 === 1) return;
