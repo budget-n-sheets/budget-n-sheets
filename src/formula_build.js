@@ -327,6 +327,10 @@ const FormulaBuild = Object.freeze({
       return Object.create(FormulaBuild.Summary.Chart1);
     },
 
+    table2: function () {
+      return Object.create(FormulaBuild.Summary.Table2);
+    },
+
     table3: function () {
       return Object.create(FormulaBuild.Summary.Table3);
     },
@@ -342,6 +346,14 @@ const FormulaBuild = Object.freeze({
 
       expenses: function () {
         return 'IF(_Settings!$B6 > 0;  {SUM(OFFSET($F10; _Settings!$B4; 0; _Settings!$B6; 1)); AVERAGE(OFFSET($F10; _Settings!$B4; 0; _Settings!$B6; 1))}; {0; 0})';
+      },
+
+      expenses_month: function (mm) {
+        const _h = TABLE_DIMENSION.height;
+
+        let formula = 'SUM(_Backstage!$B' + (4 + h_ * mm) + ':$B' + (6 + h_ * mm) + ')';
+
+        return formula;
       }
     },
 
@@ -354,6 +366,12 @@ const FormulaBuild = Object.freeze({
       }
     },
 
+    Table2: {
+      data: function () {
+        return 'IF(AND(E50 > 0; _Settings!B7 > 0); QUERY({Tags!$B$1:$T}; "select Col1, sum(Col18), -1 * sum(Col"&(4 + E50)&") where Col3=true or Col3=\'TRUE\' group by Col1 label Col1 \'\', -1 * sum(Col"&(4 + E50)&") \'\', sum(Col18) \'\'"); )';
+      }
+    },
+
     Table3: {
       share: function () {
         let formula;
@@ -362,6 +380,10 @@ const FormulaBuild = Object.freeze({
         formula = 'IF(B70 <> ""; ARRAYFORMULA(IF(' + formula + '; D73:D84/$D$85; 0)); )';
 
         return formula;
+      },
+
+      total: function () {
+        return 'IF(AND(E50 > 0; _Settings!B7 > 0); INDEX(TRANSPOSE(QUERY({Tags!$B$1:$T}; "select -1 * sum(Col5), -1 * sum(Col6), -1 * sum(Col7), -1 * sum(Col8), -1 * sum(Col9), -1 * sum(Col10), -1 * sum(Col11), -1 * sum(Col12), -1 * sum(Col13), -1 * sum(Col14), -1 * sum(Col15), -1 * sum(Col16) where Col1=\'"&B70&"\' and (Col3=true or Col3=\'TRUE\') group by Col1")); 0; 2); )';
       }
     },
 
