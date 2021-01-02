@@ -250,7 +250,7 @@ const FormulaBuild = Object.freeze({
         return formula;
       },
 
-      sparkline: function (index, card, refrence) {
+      sparkline: function (index, card, reference) {
         this.loadSettings('decimal_separator');
 
         const dec_s = this._settings.decimal_separator ? ',' : '\\';
