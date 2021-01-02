@@ -181,6 +181,150 @@ function update_v0m0p0_ () {
 } */
 
 /**
+ * Fix array separator in 'BSCARDPART()' formula.
+ * Rebuild Summary charts.
+ * Reinstall 'timeBased' trigger.
+ * Treat layout.
+ *
+ * 0.37.8
+ */
+function update_v0m37p8_ () {
+  try {
+    let rr;
+
+    rr = update_v0m37p8s0_();
+    if (rr) return rr;
+
+    rr = update_v0m37p8s1_();
+    if (rr) return rr;
+
+    const financial_year = getConstProperties_('financial_year');
+    const yyyy = DATE_NOW.getFullYear();
+
+    if (financial_year === yyyy) treatLayout_(yyyy, DATE_NOW.getMonth());
+
+    if (financial_year > yyyy) {
+      stopTrigger_('timeBased');
+      Utilities.sleep(200);
+      startTrigger_('timeBased');
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p8s1_ () {
+  try {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
+    if (!sheet) return 1;
+
+    const formula = FormulaBuild.summary().chart3().data(0).replace(/""/g, '0');
+    sheet.getRange('I73').setFormula(formula);
+
+    const charts = sheet.getCharts();
+    for (let i = 0; i < charts.length; i++) {
+      sheet.removeChart(charts[i]);
+    }
+
+    options = {
+      0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Income' },
+      1: { color: '#cccccc', type: 'bars', labelInLegend: 'Expenses' },
+      2: { color: '#45818e', type: 'bars', labelInLegend: 'Income' },
+      3: { color: '#e69138', type: 'bars', labelInLegend: 'Expenses' },
+      4: { color: '#45818e', type: 'line', labelInLegend: 'Avg Income' },
+      5: { color: '#e69138', type: 'line', labelInLegend: 'Avg Expenses' }
+    };
+
+    chart = sheet.newChart()
+      .addRange(sheet.getRange('C25:I36'))
+      .setChartType(Charts.ChartType.COMBO)
+      .setPosition(24, 2, 0, 0)
+      .setOption('mode', 'view')
+      .setOption('legend', 'top')
+      .setOption('focusTarget', 'category')
+      .setOption('series', options)
+      .setOption('height', 482)
+      .setOption('width', 886)
+      .build();
+    sheet.insertChart(chart);
+
+    chart = sheet.newChart()
+      .addRange(sheet.getRange('B52:B62'))
+      .addRange(sheet.getRange('D52:D62'))
+      .setNumHeaders(1)
+      .setChartType(Charts.ChartType.PIE)
+      .setPosition(50, 8, 0, 0)
+      .setOption('mode', 'view')
+      .setOption('legend', 'top')
+      .setOption('focusTarget', 'category')
+      .setOption('height', 447)
+      .setOption('width', 444)
+      .build();
+    sheet.insertChart(chart);
+
+    options = {
+      0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Total' },
+      1: { color: '#45818e', type: 'bars', labelInLegend: 'Total' },
+      2: { color: '#45818e', type: 'line', labelInLegend: 'Average' }
+    };
+
+    chart = sheet.newChart()
+      .addRange(sheet.getRange('B73:B84'))
+      .addRange(sheet.getRange('I73:K84'))
+      .setChartType(Charts.ChartType.COMBO)
+      .setPosition(70, 8, 0, 0)
+      .setOption('mode', 'view')
+      .setOption('legend', 'top')
+      .setOption('focusTarget', 'category')
+      .setOption('series', options)
+      .setOption('height', 459)
+      .setOption('width', 444)
+      .build();
+    sheet.insertChart(chart);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p8s0_ () {
+  try {
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const formulaBuild = FormulaBuild.backstage().cards();
+
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const sheetCards = spreadsheet.getSheetByName('Cards');
+    if (!sheetCards) return 1;
+
+    const numRows = sheetCards.getMaxRows() - 5;
+    if (numRows < 1) return 1;
+
+    const sheet = spreadsheet.getSheetByName('_Backstage');
+    if (!sheet) return 1;
+
+    const number_accounts = getConstProperties_('number_accounts');
+    const column = 2 + w_ + w_ * number_accounts + w_;
+
+    for (let k = 0; k < 10; k++) {
+      const regex = rollA1Notation(1, column + w_ * k);
+
+      for (let mm = 0; mm < 12; mm++) {
+        const bsblank = rollA1Notation(2 + h_ * mm, column + 4 + w_ * k);
+        const formula = formulaBuild.bscardpart(numRows, mm, regex, bsblank);
+
+        sheet.getRange(5 + h_ * mm, 1 + column + w_ * k).setFormula(formula);
+      }
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
  * Fix 'BSBLANK()' range reference.
  *
  * 0.37.7
