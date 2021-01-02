@@ -215,6 +215,9 @@ const FormulaBuild = Object.freeze({
           case 'decimal_places':
             this._settings.decimal_places = getSpreadsheetSettings_('decimal_places');
             break;
+          case 'decimal_separator':
+            this._settings.decimal_separator = getSpreadsheetSettings_('decimal_separator');
+            break;
         }
       },
 
