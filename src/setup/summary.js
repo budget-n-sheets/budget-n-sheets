@@ -30,7 +30,7 @@ function setupSummary_ () {
 
     formulas[i][0] = '=_Backstage!$B' + (3 + h_ * i);
 
-    formula = '=SUM(_Backstage!$B' + (4 + h_ * i) + ':$B' + (6 + h_ * i) + ')';
+    formula = 'SUM(_Backstage!$B' + (4 + h_ * i) + ':$B' + (6 + h_ * i) + ')';
     testBuild = buildTable1.expenses_month(i);
     if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.summary().table1().expenses_month()');
 
