@@ -66,9 +66,9 @@ function setupSummary_ () {
   sheet.getRange(73, 4).setFormula('IF(AND(E50 > 0; _Settings!B7 > 0); INDEX(TRANSPOSE(QUERY({Tags!$B$1:$T}; "select -1 * sum(Col5), -1 * sum(Col6), -1 * sum(Col7), -1 * sum(Col8), -1 * sum(Col9), -1 * sum(Col10), -1 * sum(Col11), -1 * sum(Col12), -1 * sum(Col13), -1 * sum(Col14), -1 * sum(Col15), -1 * sum(Col16) where Col1=\'"&B70&"\' and (Col3=true or Col3=\'TRUE\') group by Col1")); 0; 2); )');
 
   options = {
-    0: { color: '#cccccc', type: 'bars', labelInLegend: 'Total' },
-    1: { color: '#4285f4', type: 'bars', labelInLegend: 'Total' },
-    2: { color: '#ea4335', type: 'line', labelInLegend: 'Average' }
+    0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Total' },
+    1: { color: '#45818e', type: 'bars', labelInLegend: 'Total' },
+    2: { color: '#45818e', type: 'line', labelInLegend: 'Average' }
   };
 
   chart = sheet.newChart()
