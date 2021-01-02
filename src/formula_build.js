@@ -361,11 +361,25 @@ const FormulaBuild = Object.freeze({
     },
 
     Chart1: {
+      loadSettings: function (name) {
+        if (this._settings[name]) return;
+
+        switch (name) {
+          case 'decimal_separator':
+            this._settings.decimal_separator = getSpreadsheetSettings_('decimal_separator');
+            break;
+        }
+      },
+
       data: function (mm) {
+        this.loadSettings('decimal_separator');
+
+        const dec_s = this._settings.decimal_separator ? ',' : '\\';
+
         const income = rollA1Notation(11 + mm, 4);
         const expenses = rollA1Notation(11 + mm, 6);
 
-        return 'IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + income + ', -' + expenses + ', "", ""}; {"", "", ' + income + ', -' + expenses + '})';
+        return 'IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + income + dec_s + ' -' + expenses + dec_s + ' ""' + dec_s + ' ""}; {""' + dec_s + ' ""' + dec_s + ' ' + income + dec_s + ' -' + expenses + '})';
       }
     },
 
@@ -391,8 +405,22 @@ const FormulaBuild = Object.freeze({
     },
 
     Chart3: {
+      loadSettings: function (name) {
+        if (this._settings[name]) return;
+
+        switch (name) {
+          case 'decimal_separator':
+            this._settings.decimal_separator = getSpreadsheetSettings_('decimal_separator');
+            break;
+        }
+      },
+
       data: function (mm) {
-        return 'IF(OR(ROW() - 72 < $M$3; ROW() - 72 > $M$3 - 1 + $M$4); {' + rollA1Notation(73 + mm, 4) + ', ""}; {"", ' + rollA1Notation(73 + mm, 4) + '})';
+        this.loadSettings('decimal_separator');
+
+        const dec_s = this._settings.decimal_separator ? ',' : '\\';
+
+        return 'IF(OR(ROW() - 72 < $M$3; ROW() - 72 > $M$3 - 1 + $M$4); {' + rollA1Notation(73 + mm, 4) + dec_s + ' ""}; {""' + dec_s + ' ' + rollA1Notation(73 + mm, 4) + '})';
       }
     }
   },
