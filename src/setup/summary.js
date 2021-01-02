@@ -57,7 +57,6 @@ function setupSummary_ () {
     .setOption('mode', 'view')
     .setOption('legend', 'top')
     .setOption('focusTarget', 'category')
-    .setOption('backgroundColor', { fill: '#f3f3f3' })
     .setOption('height', 447)
     .setOption('width', 444);
 
@@ -79,7 +78,6 @@ function setupSummary_ () {
     .setOption('mode', 'view')
     .setOption('legend', 'top')
     .setOption('focusTarget', 'category')
-    .setOption('backgroundColor', { fill: '#f3f3f3' })
     .setOption('series', options)
     .setOption('height', 459)
     .setOption('width', 444);
