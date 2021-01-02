@@ -13,7 +13,7 @@ function startTrigger_ (name) {
     const financial_year = getConstProperties_('financial_year');
 
     if (yyyy < financial_year) {
-      const day = new Date(financial_year, 0, 2).getDay();
+      const day = new Date(financial_year, 0, 1).getDay();
 
       handler = 'weeklyTriggerPre_';
       type = 'onWeekDay';
