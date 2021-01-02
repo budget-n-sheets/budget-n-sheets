@@ -1,4 +1,7 @@
 function setupTags_ () {
+  const formulaBuild = FormulaBuild.tags();
+  let testBuild;
+
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
   let formula, rg, cd;
   let i, k;
@@ -19,6 +22,8 @@ function setupTags_ () {
     .setUnprotectedRanges([ranges])
     .setWarningOnly(true);
 
+  const buildMonths = formulaBuild.table();
+
   for (i = 0; i < 12; i++) {
     let ref = rollA1Notation(2 + h_ * i, 6);
     rg = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + combo[0] + '; _Backstage!' + ref + '; 2)';
@@ -38,14 +43,22 @@ function setupTags_ () {
     formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';
     formula = '{"' + MONTH_NAME.long[i] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
 
+    testBuild = buildMonths.month(400, 400, i);
+    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.tags().table().month()');
+
     formulas[0][i] = formula;
   }
   sheet.getRange(1, 6, 1, 12).setFormulas(formulas);
+
+  const buildStats = formulaBuild.stats();
 
   formula = 'ARRAYFORMULA(IF(E2:E <> ""; $T$2:$T/_Settings!B6; ))';
   formula = 'IF(_Settings!$B$6 > 0; ' + formula + '; ARRAYFORMULA($F$2:$F * 0))';
   formula = 'IF(_Settings!$B$7 > 0; ' + formula + '; "")';
   formula = '{"average"; ' + formula + '}';
+
+  testBuild = buildStats.average();
+  if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.tags().stats().average()');
   sheet.getRange(1, 19).setFormula(formula);
 
   const ref1 = rollA1Notation(2, 6, -1);
@@ -56,6 +69,9 @@ function setupTags_ () {
   formula = 'IF(_Settings!$B$6 > 0; ' + formula + '; ARRAYFORMULA($F$2:$F * 0))';
   formula = 'IF(_Settings!$B$7 > 0; ' + formula + '; "")';
   formula = '{"total"; ' + formula + '}';
+
+  testBuild = buildStats.total();
+  if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.tags().stats().total()');
   sheet.getRange(1, 20).setFormula(formula);
 
   if (SETUP_SETTINGS.decimal_places !== 2) {
