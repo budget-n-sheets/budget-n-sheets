@@ -1,5 +1,5 @@
 function setupSettings_ (yyyy_mm) {
-  const buildFormulas = FormulaBuild.settings().formula();
+  const buildFormulas = FormulaBuild.settings().formulas();
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('_Settings');
   let cell, dec_p;
