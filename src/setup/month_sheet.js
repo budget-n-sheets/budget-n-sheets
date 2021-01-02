@@ -48,7 +48,7 @@ function setupMonthSheet_ () {
       sheet.getRange(2, 6 + 5 * k).setFormula(formula);
 
       formula = 'CONCAT("Expenses "; TO_TEXT(_Backstage!' + rollA1Notation(4 + h_ * i, 7 + w_ * k) + '))';
-      testBuild = formulaBuild.balance(k, i);
+      testBuild = formulaBuild.expenses(k, i);
       if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.ttt().header().expenses()');
       sheet.getRange(3, 6 + 5 * k).setFormula(formula);
 
