@@ -131,38 +131,6 @@ function setupBackstage_ () {
 
   SpreadsheetApp.flush();
   sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (col - w_ - 2) + ']');
-  SpreadsheetApp.flush();
-
-  if (!dec_p) {
-    const buildCards = formulasBackstage.cards();
-    const max2 = 400;
-
-    let mm = -1;
-    while (++mm < 12) {
-      const range1A1 = rollA1Notation(6, 4 + 6 * mm, max2);
-      const range2A1 = rollA1Notation(6, 3 + 6 * mm, max2);
-
-      for (let k = 0; k < 10; k++) {
-        const header2 = rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
-
-        formula = 'REGEXEXTRACT(ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
-        formula = 'ARRAYFORMULA(SPLIT(' + formula + '; "/"))';
-        formula = '{' + formula + '\\ ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1)}; ';
-        formula = formula + 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range2A1 + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
-
-        formula = formula + 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1))); ';
-        formula = formula + 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
-
-        formula = 'BSCARDPART(TRANSPOSE(IFNA(FILTER(' + formula + '); 0)))';
-        formula = 'IF(' + rollA1Notation(1, col + w_ * k) + ' = ""; 0; ' + formula + ')';
-
-        testBuild = buildCards.bscardpart(numRows, mm, header2, rollA1Notation(1, col + w_ * k));
-        if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().cards().bscardpart()');
-        accounts[h_ * i][1 + w_ * k] = formula;
-        sheet.getRange(5 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
-      }
-    }
-  }
 
   if (SETUP_SETTINGS.decimal_places !== 2) {
     sheet.getRange(2, 2, sheet.getMaxRows() - 1, sheet.getMaxColumns() - 1).setNumberFormat(SETUP_SETTINGS.number_format);
