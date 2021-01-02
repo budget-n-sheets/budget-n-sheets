@@ -242,7 +242,7 @@ const FormulaBuild = Object.freeze({
 
         let formula;
 
-        formula = 'OFFSET(_Backstage!' + reference + '; 4; 1 + 5*' + index + '; 1; 1)';
+        formula = 'OFFSET(' + reference + '; 4; 1 + 5*' + index + '; 1; 1)';
         formula = 'TEXT(' + formula + '; "' + num_f + '")';
         formula = 'IF(' + select + ' = "All"; ""; ' + formula + ')';
         formula = 'CONCATENATE("AVAIL credit: "; ' + formula + ')';
