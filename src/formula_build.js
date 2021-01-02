@@ -345,7 +345,9 @@ const FormulaBuild = Object.freeze({
     },
 
     chart3: function () {
-      return Object.create(FormulaBuild.Summary.Chart3);
+      const chart3 = Object.create(FormulaBuild.Summary.Chart3);
+      chart3._settings = this._settings;
+      return chart3;
     },
 
     Table1: {
