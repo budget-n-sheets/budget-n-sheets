@@ -72,9 +72,8 @@ function setupSummary_ () {
   };
 
   chart = sheet.newChart()
-    .addRange(sheet.getRange('B72:B84'))
-    .addRange(sheet.getRange('I72:K84'))
-    .setNumHeaders(1)
+    .addRange(sheet.getRange('B73:B84'))
+    .addRange(sheet.getRange('I73:K84'))
     .setChartType(Charts.ChartType.COMBO)
     .setPosition(70, 8, 0, 0)
     .setOption('mode', 'view')
