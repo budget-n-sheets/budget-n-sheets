@@ -224,10 +224,10 @@ const FormulaBuild = Object.freeze({
       index: function (card, headers) {
         let formula;
 
-        formula = 'REGEXMATCH(' + headers + '; "\\^"&' + card + '&"\\$")';
-        formula = 'FILTER(' + headers + '; ' + formula + ')';
+        formula = 'REGEXMATCH(_Backstage!' + headers + '; "\\^"&' + card + '&"\\$")';
+        formula = 'FILTER(_Backstage!' + headers + '; ' + formula + ')';
         formula = 'INDEX(' + formula + '; 0; 1)';
-        formula = 'IF(' + card + ' = "All"; 1; MATCH(' + formula + '; ' + headers + '; 0))';
+        formula = 'IF(' + card + ' = "All"; 1; MATCH(' + formula + '; _Backstage!' + headers + '; 0))';
         formula = 'IFERROR((' + formula + ' - 1)/5; "")';
 
         return formula;
