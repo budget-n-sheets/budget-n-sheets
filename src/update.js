@@ -11,7 +11,7 @@ const PATCH_THIS = Object.freeze({
       [update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_, null, null, update_v0m34p10_, null, null],
       [update_v0m35p0_, update_v0m35p1_, update_v0m35p2_, null, null, null, null],
       [null, null, update_v0m36p2_, update_v0m36p3_, update_v0m36p4_, null],
-      [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_]
+      [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_]
     ]
   ],
   beta_list: []
@@ -179,6 +179,79 @@ function update_v0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Fix Summary chart data formula.
+ * Fix formula of Tags.
+ *
+ * 0.37.9
+ */
+function update_v0m37p9_ () {
+  try {
+    let rr;
+
+    rr = update_v0m37p9s0_();
+    if (rr) return rr;
+
+    rr = update_v0m37p9s1_();
+    if (rr) return rr;
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p9s1_ () {
+  try {
+    const buildFormula = FormulaBuild.tags().table();
+
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const sheetTags = spreadsheet.getSheetByName('Tags');
+    if (!sheetTags) return 1;
+
+    const formulas = [[]];
+
+    let numRowsMonth, numRowsCards;
+
+    const sheetCards = spreadsheet.getSheetByName('Cards');
+    if (!sheetCards) numRowsCards = -1;
+    else {
+      numRowsCards = sheetCards.getMaxRows() - 5;
+      if (numRowsCards < 1) numRowsCards = -1;
+    }
+
+    for (let mm = 0; mm < 12; mm++) {
+      const sheet = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
+      let numRowsMonth;
+
+      if (!sheet) numRowsMonth = -1;
+      else {
+        numRowsMonth = sheet.getMaxRows() - 4;
+        if (numRowsMonth < 1) numRowsMonth = -1;
+      }
+
+      formulas[0][mm] = buildFormula.month(numRowsMonth, numRowsCards, mm);
+    }
+
+    sheetTags.getRange(1, 6, 1, 12).setFormulas(formulas);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p9s0_ () {
+  try {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
+    if (!sheet) return 1;
+
+    const formula = FormulaBuild.summary().chart3().data(0).replace(/""/g, '0');
+    sheet.getRange('I73').setFormula(formula);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
 
 /**
  * Fix array separator in 'BSCARDPART()' formula.
