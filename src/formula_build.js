@@ -351,7 +351,7 @@ const FormulaBuild = Object.freeze({
       expenses_month: function (mm) {
         const _h = TABLE_DIMENSION.height;
 
-        let formula = 'SUM(_Backstage!$B' + (4 + h_ * mm) + ':$B' + (6 + h_ * mm) + ')';
+        let formula = 'SUM(_Backstage!$B' + (4 + _h * mm) + ':$B' + (6 + _h * mm) + ')';
 
         return formula;
       }
