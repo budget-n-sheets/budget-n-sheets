@@ -92,13 +92,13 @@ function updateUserSettings (settings) {
   if (getUserId_() !== getAdminSettings_('admin_id') && !getAdminSettings_('isChangeableByEditors')) return;
 
   try {
-    if (!settings.decimal_places) updateDecimalPlaces_();
+    updateDecimalSeparator_();
   } catch (err) {
     ConsoleLog.error(err);
   }
 
   try {
-    updateDecimalSeparator_();
+    if (!settings.decimal_places) updateDecimalPlaces_();
   } catch (err) {
     ConsoleLog.error(err);
   }
