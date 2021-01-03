@@ -13,7 +13,11 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
     cards: 0
   };
 
-  const dec_p = getSpreadsheetSettings_('decimal_separator');
+  const dec_p = getSpreadsheetSettings_('decimal_places');
+  const dec_s = getSpreadsheetSettings_('decimal_separator');
+  const number_format = '-?\\$\\d+' + (dec_p > 0 ? (dec_s ? '\\.' : ',') + '\\d{' + dec_p + '}' : '');
+  const valueRegExp = new RegExp(number_format);
+
   const db_tables = getDbTables_();
 
   const list_acc = db_tables.accounts.names;
@@ -82,12 +86,8 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
     cell.hasAtMute = /@(ign|mute)/.test(cell.Description);
     cell.hasQcc = /#qcc/.test(cell.Description);
 
-    if (dec_p) {
-      cell.Value = cell.Description.match(/-?\$[\d]+\.[\d]{2}/);
-    } else {
-      cell.Value = cell.Description.match(/-?\$[\d]+,[\d]{2}/);
-      if (cell.Value) cell.Value[0] = cell.Value[0].replace(',', '.');
-    }
+    cell.Value = cell.Description.match(valueRegExp);
+    if (!dec_s && cell.Value) cell.Value[0] = cell.Value[0].replace(',', '.');
 
     if (cell.Value) cell.Value = Number(cell.Value[0].replace('$', ''));
     else cell.Value = NaN;
