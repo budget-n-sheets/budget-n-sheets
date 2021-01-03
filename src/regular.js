@@ -128,6 +128,8 @@ function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
 }
 
 function updateDecimalPlaces_ () {
+  let testBuild;
+
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, max;
 
@@ -154,6 +156,7 @@ function updateDecimalPlaces_ () {
       .setNumberFormat(number_format);
   }
 
+  const buildMonth = FormulaBuild.ttt().header();
   for (let i = 0; i < 12; i++) {
     sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (!sheet) continue;
@@ -178,6 +181,10 @@ function updateDecimalPlaces_ () {
       expr4 = '"Trf. out: ["; _Backstage!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
 
       const formula = 'CONCATENATE(' + expr1 + expr2 + expr3 + expr4 + ')';
+
+      testBuild = buildMonth.report(k, i);
+      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.ttt().header().report()');
+
       sheet.getRange(1, 8 + 5 * k).setFormula(formula);
     }
     list.push(rollA1Notation(5, 3, max, 1));
@@ -187,6 +194,7 @@ function updateDecimalPlaces_ () {
 
   sheet = spreadsheet.getSheetByName('Cards');
   max = (sheet ? sheet.getMaxRows() - 5 : 0);
+  const buildCards = FormulaBuild.cards().header();
   if (max > 0) {
     const list = [];
     for (let i = 0; i < 12; i++) {
@@ -211,6 +219,10 @@ function updateDecimalPlaces_ () {
       expr3 = '"Balance: "; TEXT(' + expr3 + '; "' + number_format + '")';
 
       formula = 'CONCATENATE(' + expr1 + expr2 + '"\n"; ' + expr3 + ')';
+
+      testBuild = buildCards.report(head, cell);
+      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.cards().header().report()');
+
       sheet.getRange(2, 4 + 6 * i).setFormula(formula);
     }
     sheet.getRangeList(list).setNumberFormat(number_format);
