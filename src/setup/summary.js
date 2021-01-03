@@ -17,7 +17,7 @@ function setupSummary_ () {
 
   sheet.protect()
     .setUnprotectedRanges([
-      sheet.getRange(50, 2, 1, 3), sheet.getRange(70, 2, 1, 3)
+      sheet.getRange(52, 2, 1, 3), sheet.getRange(72, 2, 1, 3)
     ])
     .setWarningOnly(true);
   sheet.getRange('B2').setValue(SETUP_SETTINGS.financial_year + ' | Year Summary');
@@ -50,14 +50,14 @@ function setupSummary_ () {
   }
 
   formula = formulaBuild.table2().data();
-  sheet.getRange(53, 2).setFormula(formula);
+  sheet.getRange(55, 2).setFormula(formula);
 
   chart = sheet.newChart()
-    .addRange(sheet.getRange('B52:B62'))
-    .addRange(sheet.getRange('D52:D62'))
+    .addRange(sheet.getRange('B54:B64'))
+    .addRange(sheet.getRange('D54:D64'))
     .setNumHeaders(1)
     .setChartType(Charts.ChartType.PIE)
-    .setPosition(50, 8, 0, 0)
+    .setPosition(52, 8, 0, 0)
     .setOption('mode', 'view')
     .setOption('legend', 'top')
     .setOption('focusTarget', 'category')
@@ -76,10 +76,10 @@ function setupSummary_ () {
   };
 
   chart = sheet.newChart()
-    .addRange(sheet.getRange('B73:B84'))
-    .addRange(sheet.getRange('I73:K84'))
+    .addRange(sheet.getRange('B75:B86'))
+    .addRange(sheet.getRange('I75:K86'))
     .setChartType(Charts.ChartType.COMBO)
-    .setPosition(70, 8, 0, 0)
+    .setPosition(72, 8, 0, 0)
     .setOption('mode', 'view')
     .setOption('legend', 'top')
     .setOption('focusTarget', 'category')
