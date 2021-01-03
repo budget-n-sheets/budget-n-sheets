@@ -30,9 +30,12 @@ function setupSettings_ (yyyy_mm) {
     [buildFormulas.active_months()],
     [buildFormulas.m_factor()],
     [buildFormulas.count_tags()],
-    ['=RAND()']
+    ['=RAND()'],
+    [SETUP_SETTINGS.decimal_places],
+    [SETUP_SETTINGS.decimal_separator],
+    ['CONCATENATE("#,##0."; REPT("0"; B9); ";(#,##0."; REPT("0"; B9); ")")']
   ];
-  sheet.getRange(2, 2, 7, 1).setFormulas(cell);
+  sheet.getRange(2, 2, 10, 1).setFormulas(cell);
 
   const metadata = {
     initial_month: SETUP_SETTINGS.init_month,
