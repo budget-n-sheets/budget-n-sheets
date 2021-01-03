@@ -82,10 +82,18 @@ function saveUserSettings (settings) {
   settings.decimal_places = Number(settings.decimal_places);
   setSpreadsheetSettings_('decimal_places', settings.decimal_places);
 
+  return {
+    initial_month: new_init_month,
+    decimal_places: decimal_places === settings.decimal_places,
+    bool_initial_month: init_month === new_init_month
+  };
+}
+
+function updateUserSettings (settings) {
+  if (getUserId_() !== getAdminSettings_('admin_id') && !getAdminSettings_('isChangeableByEditors')) return;
+
   try {
-    if (decimal_places !== settings.decimal_places) {
-      updateDecimalPlaces_();
-    }
+    if (!settings.decimal_places) updateDecimalPlaces_();
   } catch (err) {
     ConsoleLog.error(err);
   }
@@ -96,12 +104,12 @@ function saveUserSettings (settings) {
     ConsoleLog.error(err);
   }
 
-  if (init_month === new_init_month) return;
+  if (settings.initial_month) return;
 
   try {
-    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Settings');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Settings');
     if (sheet) {
-      sheet.getRange('B4').setFormula('=' + numberFormatLocaleSignal.call(new_init_month + 1));
+      sheet.getRange('B4').setFormula('=' + numberFormatLocaleSignal.call(settings.initial_month + 1));
       SpreadsheetApp.flush();
     }
 

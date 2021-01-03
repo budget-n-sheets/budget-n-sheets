@@ -459,7 +459,10 @@
       };
 
       google.script.run.withSuccessHandler(function(r, o) {
-          if (r) showError()
+          google.script.run
+            .withFailureHandler(null)
+            .updateUserSettings(r);
+
           showStatus("Saved settings");
           o.disabled = false;
         })
