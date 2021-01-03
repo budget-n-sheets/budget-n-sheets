@@ -333,7 +333,9 @@ const FormulaBuild = Object.freeze({
     },
 
     chart1: function () {
-      return Object.create(FormulaBuild.Summary.Chart1);
+      const chart1 = Object.create(FormulaBuild.Summary.Chart1);
+      chart1._settings = this._settings;
+      return chart1;
     },
 
     table2: function () {
@@ -393,7 +395,7 @@ const FormulaBuild = Object.freeze({
 
     Table2: {
       data: function () {
-        return 'IF(AND(E50 > 0; _Settings!B7 > 0); QUERY({Tags!$B$1:$T}; "select Col1, sum(Col18), -1 * sum(Col"&(4 + E50)&") where Col3=true or Col3=\'TRUE\' group by Col1 label Col1 \'\', -1 * sum(Col"&(4 + E50)&") \'\', sum(Col18) \'\'"); )';
+        return 'IF(AND(E52 > 0; _Settings!B7 > 0); QUERY({Tags!$B$1:$T}; "select Col1, sum(Col18), -1 * sum(Col"&(4 + E50)&") where Col3=true or Col3=\'TRUE\' group by Col1 label Col1 \'\', -1 * sum(Col"&(4 + E52)&") \'\', sum(Col18) \'\'"); )';
       }
     },
 
@@ -401,14 +403,14 @@ const FormulaBuild = Object.freeze({
       share: function () {
         let formula;
 
-        formula = 'NOT(ISBLANK(D73:D84)) * (ROW(D73:D84) - 72 >= $M$3) * (ROW(D73:D84) - 72 <= $M$3 - 1 + $M$4)';
-        formula = 'IF(B70 <> ""; ARRAYFORMULA(IF(' + formula + '; D73:D84/$D$85; 0)); )';
+        formula = 'NOT(ISBLANK(D75:D86)) * (ROW(D75:D86) - 74 >= $M$3) * (ROW(D75:D86) - 74 <= $M$3 - 1 + $M$4)';
+        formula = 'IF(B72 <> ""; ARRAYFORMULA(IF(' + formula + '; D75:D86/$D$87; 0)); )';
 
         return formula;
       },
 
       total: function () {
-        return 'IF(AND(E50 > 0; _Settings!B7 > 0); INDEX(TRANSPOSE(QUERY({Tags!$B$1:$T}; "select -1 * sum(Col5), -1 * sum(Col6), -1 * sum(Col7), -1 * sum(Col8), -1 * sum(Col9), -1 * sum(Col10), -1 * sum(Col11), -1 * sum(Col12), -1 * sum(Col13), -1 * sum(Col14), -1 * sum(Col15), -1 * sum(Col16) where Col1=\'"&B70&"\' and (Col3=true or Col3=\'TRUE\') group by Col1")); 0; 2); )';
+        return 'IF(AND(E52 > 0; _Settings!B7 > 0); INDEX(TRANSPOSE(QUERY({Tags!$B$1:$T}; "select -1 * sum(Col5), -1 * sum(Col6), -1 * sum(Col7), -1 * sum(Col8), -1 * sum(Col9), -1 * sum(Col10), -1 * sum(Col11), -1 * sum(Col12), -1 * sum(Col13), -1 * sum(Col14), -1 * sum(Col15), -1 * sum(Col16) where Col1=\'"&B72&"\' and (Col3=true or Col3=\'TRUE\') group by Col1")); 0; 2); )';
       }
     },
 
@@ -428,7 +430,7 @@ const FormulaBuild = Object.freeze({
 
         const dec_s = this._settings.decimal_separator ? ',' : '\\';
 
-        return 'IF(OR(ROW() - 72 < $M$3; ROW() - 72 > $M$3 - 1 + $M$4); {' + rollA1Notation(73 + mm, 4) + dec_s + ' ""}; {""' + dec_s + ' ' + rollA1Notation(73 + mm, 4) + '})';
+        return 'IF(OR(ROW() - 74 < $M$3; ROW() - 74 > $M$3 - 1 + $M$4); {' + rollA1Notation(75 + mm, 4) + dec_s + ' ""}; {""' + dec_s + ' ' + rollA1Notation(75 + mm, 4) + '})';
       }
     }
   },
