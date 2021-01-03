@@ -13,7 +13,7 @@ function playSpeedQuickstart (id) {
     lock.waitLock(200);
   } catch (err) {
     ConsoleLog.warn(err);
-    SpreadsheetApp.getActiveSpreadsheet().toast('The add-on is busy. Try again in a moment.', 'Budget n Sheets');
+    SpreadsheetApp2.getActiveSpreadsheet().toast('The add-on is busy. Try again in a moment.', 'Budget n Sheets');
     return;
   }
 
@@ -50,7 +50,7 @@ function playSpeedQuickstart (id) {
       throw new Error('playSpeedQuickstart(): Switch case is default. ' + job);
   }
 
-  SpreadsheetApp.getActiveSpreadsheet().toast('Done.', 'Quickstart');
+  SpreadsheetApp2.getActiveSpreadsheet().toast('Done.', 'Quickstart');
   lock.releaseLock();
 }
 

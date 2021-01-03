@@ -29,9 +29,9 @@ function retrieveUserSettings () {
 }
 
 function saveUserSettings (settings) {
+  console.info('sidebar/Settings/Settings/Save');
   const user_id = getUserId_();
 
-  let db_calendars, sheet, c;
   const calendar = {
     financial_calendar: '',
     post_day_events: false,
@@ -40,9 +40,9 @@ function saveUserSettings (settings) {
 
   if (user_id === getAdminSettings_('admin_id')) {
     if (settings.financial_calendar) {
-      db_calendars = getAllOwnedCalendars();
+      const db_calendars = getAllOwnedCalendars();
+      const c = db_calendars.md5.indexOf(settings.financial_calendar);
 
-      c = db_calendars.md5.indexOf(settings.financial_calendar);
       if (c !== -1) {
         calendar.financial_calendar = db_calendars.id[c];
         calendar.post_day_events = settings.post_day_events;
@@ -81,13 +81,15 @@ function saveUserSettings (settings) {
   settings.decimal_places = Number(settings.decimal_places);
   setSpreadsheetSettings_('decimal_places', settings.decimal_places);
 
-  try {
-    if (decimal_places !== settings.decimal_places) {
-      updateDecimalPlaces_();
-    }
-  } catch (err) {
-    ConsoleLog.error(err);
-  }
+  return {
+    initial_month: new_init_month,
+    decimal_places: decimal_places === settings.decimal_places,
+    bool_initial_month: init_month === new_init_month
+  };
+}
+
+function updateUserSettings (settings) {
+  if (getUserId_() !== getAdminSettings_('admin_id') && !getAdminSettings_('isChangeableByEditors')) return;
 
   try {
     updateDecimalSeparator_();
@@ -95,12 +97,18 @@ function saveUserSettings (settings) {
     ConsoleLog.error(err);
   }
 
-  if (init_month === new_init_month) return;
+  try {
+    if (!settings.decimal_places) updateDecimalPlaces_();
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+
+  if (settings.initial_month) return;
 
   try {
-    sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Settings');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Settings');
     if (sheet) {
-      sheet.getRange('B4').setFormula('=' + numberFormatLocaleSignal.call(new_init_month + 1));
+      sheet.getRange('B4').setFormula('=' + numberFormatLocaleSignal.call(settings.initial_month + 1));
       SpreadsheetApp.flush();
     }
 
@@ -111,7 +119,7 @@ function saveUserSettings (settings) {
 }
 
 function updateSettingsMetadata_ (user_settings) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Settings');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Settings');
 
   const metadata = {
     initial_month: user_settings.initial_month,

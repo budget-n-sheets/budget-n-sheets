@@ -31,7 +31,21 @@ function validateBackup (fileId) {
   const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
   const data = JSON.parse(string);
 
-  PropertiesService2.setProperty('document', 'settings_candidate', 'json', { backup: data, file_id: fileId });
+  const settings_candidate = {
+    file_id: fileId,
+    list_acc: [],
+    spreadsheet_title: data.backup.spreadsheet_title,
+    decimal_places: data.spreadsheet_settings.decimal_places,
+    financial_year: data.const_properties.financial_year,
+    initial_month: data.user_settings.initial_month,
+    number_accounts: data.const_properties.number_accounts
+  };
+
+  for (const i in data.db_tables.accounts) {
+    settings_candidate.list_acc.push(data.db_tables.accounts[i].name);
+  }
+
+  PropertiesService2.setProperty('document', 'settings_candidate', 'json', settings_candidate);
 
   const info = {
     file_name: file.getName(),
@@ -39,7 +53,7 @@ function validateBackup (fileId) {
 
     spreadsheet_title: data.backup.spreadsheet_title,
     financial_year: data.const_properties.financial_year,
-    initial_month: MN_FULL[data.user_settings.initial_month],
+    initial_month: MONTH_NAME.long[data.user_settings.initial_month],
     decimal_places: data.spreadsheet_settings.decimal_places,
     number_accounts: data.const_properties.number_accounts,
 
@@ -129,7 +143,7 @@ function restoreTables_ (backup) {
 function restoreCards_ (backup) {
   let max, mm;
 
-  const sheet = SPREADSHEET.getSheetByName('Cards');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
   max = sheet.getMaxRows() - 5;
 
   mm = -1;
@@ -154,7 +168,7 @@ function restoreMonths_ (backup) {
   while (++mm < 12) {
     if (backup.ttt[mm] == null) continue;
 
-    sheet = SPREADSHEET.getSheetByName(MN_SHORT[mm]);
+    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
     max = sheet.getMaxRows() - 4;
 
     for (k = 0; k < num_acc + 1; k++) {
@@ -162,7 +176,7 @@ function restoreMonths_ (backup) {
       if (backup.ttt[mm][k].length === 0) continue;
 
       while (max < backup.ttt[mm][k].length) {
-        addBlankRows_(MN_SHORT[mm]);
+        addBlankRows_(MONTH_NAME.short[mm]);
         max += 400;
       }
 
@@ -172,7 +186,7 @@ function restoreMonths_ (backup) {
 }
 
 function restoreTags_ (backup) {
-  const sheet = SPREADSHEET.getSheetByName('Tags');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
 
   let max = sheet.getMaxRows();
   while (max < backup.tags.length) {

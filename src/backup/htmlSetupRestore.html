@@ -21,14 +21,21 @@
     .wait_load-wrapper {
       width: 190px;
     }
+
     .wait_load-bar {
       width: 113px;
       animation-name: animateCustomProgressBar;
       animation-duration: 1493ms;
     }
+
     @keyframes animateCustomProgressBar {
-      from {left: -257px;}
-      to {left: 257px;}
+      from {
+        left: -257px;
+      }
+
+      to {
+        left: 257px;
+      }
     }
 
     #content {
@@ -154,22 +161,22 @@
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     let TIMEOUT_ID;
-    var fileId = <?= fileId ?> ;
+    var fileId = <?= fileId ?>;
 
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('#b-Select').click(pickFile);
       $('#b-Restore').click(restoreNow);
       <? if (hasFileId) { ?>
-        $('#b-Select').prop('disabled', true);
+      $('#b-Select').prop('disabled', true);
 
-        google.script.run
-          .withFailureHandler(showError)
-          .withSuccessHandler(refreshInfo)
-          .validateBackup(fileId);
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(refreshInfo)
+        .validateBackup(fileId);
       <? } ?>
     });
 
-    function restoreNow () {
+    function restoreNow() {
       this.disabled = true;
       window.scrollTo(0, 0);
       $("#response").empty();
@@ -189,7 +196,7 @@
         .setupLock('restore', fileId);
     }
 
-    function refreshInfo (info) {
+    function refreshInfo(info) {
       $("#response").empty();
       $('#b-Select').prop('disabled', false);
 
@@ -212,17 +219,17 @@
       $('#b-Restore').prop('disabled', false);
     }
 
-    function pickFile () {
+    function pickFile() {
       this.disabled = true;
       google.script.run
         .withFailureHandler(showError)
-        .withSuccessHandler(function () {
-            google.script.host.close();
-          })
+        .withSuccessHandler(function() {
+          google.script.host.close();
+        })
         .showDialogPickerRestore('restore');
     }
 
-    function panelError (err) {
+    function panelError(err) {
       clearTimeout(TIMEOUT_ID);
       google.script.host.setHeight(197);
       $("#error-panel").siblings().remove();

@@ -1,15 +1,47 @@
-const MN_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const MN_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-const TC_CODE = ['A', 'D', 'E', 'F', 'G', 'K', 'L', 'S', 'T', 'U'];
-const TC_NAME = ['Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling'];
+const MONTH_NAME = Object.freeze({
+  short: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  long: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+});
 
 const DATE_NOW = new Date();
 
-let SPREADSHEET, SETUP_SETTINGS;
+let SETUP_SETTINGS;
 const CACHE_KEYS = ['class_version2', 'admin_settings', 'user_settings', 'spreadsheet_settings', 'const_properties', 'DB_TABLES', 'DB_CALENDARS', 'is_installed', 'load_cache'];
 
 const TABLE_DIMENSION = Object.freeze({ height: 10, width: 5 });
+
+const SPREADSHEET_SPECS = Object.freeze({
+  initial_height: 400,
+
+  ttt: {
+    header: ['day', 'transaction', 'value', 'tags'],
+    width: 4,
+    row: 5
+  },
+
+  cards: {
+    header: ['day', 'transaction', 'card', 'value', 'tags'],
+    width: 5,
+    row: 6
+  },
+
+  cash_flow: {
+    header: ['flow', 'balance', 'transactions'],
+    width: 3,
+    row: 4
+  },
+
+  tags: {
+    header: ['name', 'category', 'description', 'analytics', 'code']
+  },
+
+  backstage: {
+    square: {
+      height: 10,
+      width: 5
+    }
+  }
+});
 
 const RESERVED_HREF = Object.freeze({
   home_developer: 'https://www.budgetnsheets.com',
@@ -27,13 +59,13 @@ const APPS_SCRIPT_GLOBAL = Object.freeze({
   script_version: {
     major: 0,
     minor: 37,
-    patch: 2
+    patch: 9
   },
 
   template_version: {
     major: 0,
-    minor: 10,
-    patch: 4
+    minor: 11,
+    patch: 2
   },
 
   backup_version: {
@@ -65,3 +97,14 @@ const APPS_SCRIPT_GLOBAL = Object.freeze({
     }
   }
 });
+
+const SpreadsheetApp2 = {
+  spreadsheet: null,
+
+  getActiveSpreadsheet: function () {
+    if (this.spreadsheet) return this.spreadsheet;
+
+    this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    return this.spreadsheet;
+  }
+};

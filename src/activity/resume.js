@@ -1,5 +1,8 @@
 function resumeActivity_ (mm) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const formulasBuild = FormulaBuild.backstage();
+  let testBuild;
+
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('_Backstage');
   let range1A1, range2A1, formula, width, i, k;
   let income, expenses;
@@ -15,10 +18,11 @@ function resumeActivity_ (mm) {
 
   if (!sheet) return;
   if (!spreadsheet.getSheetByName('Cards')) return;
-  if (!spreadsheet.getSheetByName(MN_SHORT[mm])) return;
+  if (!spreadsheet.getSheetByName(MONTH_NAME.short[mm])) return;
 
-  const max1 = spreadsheet.getSheetByName(MN_SHORT[mm]).getMaxRows();
+  const max1 = spreadsheet.getSheetByName(MONTH_NAME.short[mm]).getMaxRows();
   const num_acc = getConstProperties_('number_accounts');
+  const col = 2 + w_ + w_ * num_acc + w_;
 
   for (i = 0; i < 6; i++) {
     values[i] += max1;
@@ -35,17 +39,24 @@ function resumeActivity_ (mm) {
     }
   }
 
-  sheet.getRange(2 + h_ * mm, 6).setFormula("BSBLANK(TRANSPOSE('" + MN_SHORT[mm] + "'!" + values[0] + '))');
+  formula = 'BSBLANK(TRANSPOSE(' + MONTH_NAME.short[mm] + '!' + values[0] + '))';
+  testBuild = formulasBuild.wallet().bsblank(mm, values[0]);
+  if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().wallet().bsblank()');
+  sheet.getRange(2 + h_ * mm, 6).setFormula(formula);
 
-  formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN('" + MN_SHORT[mm] + "'!" + tags[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1); "#ign"))';
-  formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[mm] + "'!" + values[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1))); ' + formula;
-  formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[mm] + "'!" + values[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1); ' + formula + ')';
+  formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + tags[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1); "#ign"))';
+  formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1))); ' + formula;
+  formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[0] + '; ' + rollA1Notation(2 + h_ * mm, 6) + '; 1); ' + formula + ')';
   formula = 'SUM(IFERROR(' + formula + '; 0))';
+
+  testBuild = formulasBuild.wallet().expenses_ign(max1 - 4, mm, rollA1Notation(2 + h_ * mm, 6));
+  if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().wallet().expenses_ign()');
   sheet.getRange(4 + h_ * mm, 2).setFormula(formula);
 
   income = '0';
   expenses = '0';
 
+  const formulasAcc = formulasBuild.accounts();
   for (k = 0; k < num_acc; k++) {
     range1A1 = rollA1Notation(2 + h_ * mm, 11 + w_ * k);
 
@@ -54,28 +65,44 @@ function resumeActivity_ (mm) {
 
     accounts[0][w_ * k] = '=' + balance2[5 * mm + k];
 
-    formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[mm] + "'!" + tags[1 + k] + '; ' + range1A1 + '; 1)))';
-    formula = "IFERROR(FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[mm] + "'!" + combo[1 + k] + '; ' + range1A1 + '; 2); ' + formula + '); "")';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + tags[1 + k] + '; ' + range1A1 + '; 1)))';
+    formula = 'IFERROR(FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + combo[1 + k] + '; ' + range1A1 + '; 2); ' + formula + '); "")';
     formula = 'BSREPORT(TRANSPOSE(' + formula + '))';
+
+    testBuild = formulasAcc.bsreport(mm, tags[1 + k], combo[1 + k], range1A1);
+    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().accounts().bsreport()');
     accounts[0][1 + w_ * k] = formula;
 
-    accounts[0][4 + w_ * k] = "BSBLANK(TRANSPOSE('" + MN_SHORT[mm] + "'!" + values[1 + k] + '))';
+    formula = 'BSBLANK(TRANSPOSE(' + MONTH_NAME.short[mm] + '!' + values[1 + k] + '))';
+    testBuild = formulasAcc.bsblank(mm, values[1 + k]);
+    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().accounts().bsblank()');
+    accounts[0][4 + w_ * k] = formula;
 
-    formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[mm] + "'!" + values[1 + k] + '; ' + range1A1 + '; 1)))';
-    formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[mm] + "'!" + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1)))';
+    formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
     formula = balance1[5 * mm + k] + ' + IFERROR(SUM(' + formula + '); 0)';
+
+    testBuild = formulasAcc.balance(mm, values[1 + k], balance1[5 * mm + k], range1A1);
+    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().accounts().balance()');
     accounts[1][w_ * k] = formula;
 
-    formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN('" + MN_SHORT[mm] + "'!" + tags[1 + k] + '; ' + range1A1 + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
-    formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[mm] + "'!" + values[1 + k] + '; ' + range1A1 + '; 1))); ' + formula;
-    formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[mm] + "'!" + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
+    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + tags[1 + k] + '; ' + range1A1 + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1))); ' + formula;
+    formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
     formula = 'IFERROR(SUM(' + formula + '); 0)';
+
+    testBuild = formulasAcc.expenses_ign(mm, values[1 + k], tags[1 + k], range1A1);
+    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().accounts().expenses_ign()');
     accounts[2][w_ * k] = formula;
   }
 
   sheet.getRange(3 + h_ * mm, 2).setFormula(income);
   sheet.getRange(5 + h_ * mm, 2).setFormula(expenses);
   sheet.getRange(2 + h_ * mm, 7, h_, width).setFormulas(accounts);
+  sheet.getRangeList([
+    rollA1Notation(6 + h_ * mm, 2),
+    rollA1Notation(7 + h_ * mm, 2)
+  ]).setFormulaR1C1('R[-2]C[' + (col - w_ - 2) + ']');
   SpreadsheetApp.flush();
 
   const actual_month = getMonthFactored_('actual_month');
@@ -87,9 +114,12 @@ function resumeActivity_ (mm) {
       rangeList[i - 1 - mm] = rollA1Notation(2 + h_ * i, 2 + w_ + w_ * k);
 
       range1A1 = rollA1Notation(2 + h_ * i, 11 + w_ * k);
-      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[1 + k] + '; ' + range1A1 + '; 1)))';
-      formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
+      formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[1 + k] + '; ' + range1A1 + '; 1)))';
+      formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[1 + k] + '; ' + range1A1 + '; 1); ' + formula + ')';
       formula = balance1[5 * i + k] + ' + IFERROR(SUM(' + formula + '); 0)';
+
+      testBuild = formulasAcc.balance(i, values[1 + k], balance1[5 * i + k], range1A1);
+      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().accounts().balance()');
       sheet.getRange(3 + h_ * i, 2 + w_ + w_ * k).setFormula(formula);
     }
 
@@ -98,6 +128,7 @@ function resumeActivity_ (mm) {
     }
   }
 
+  const formulasCards = formulasBuild.cards();
   const db_accounts = getDbTables_('accounts');
   let account;
   for (k = 0; k < num_acc; k++) {
@@ -123,18 +154,19 @@ function resumeActivity_ (mm) {
     }
   }
 
-  const dec_c = (getSpreadsheetSettings_('decimal_separator') ? ';' : '\\');
-
-  const col = 2 + w_ + w_ * num_acc + w_;
+  const dec_c = (getSpreadsheetSettings_('decimal_separator') ? ',' : '\\');
   const max2 = spreadsheet.getSheetByName('Cards').getMaxRows() - 5;
 
   formula = 'RC[' + w_ + ']';
   for (k = 2; k <= 10; k++) {
     formula += ' + RC[' + w_ * k + ']';
   }
-
-  sheet.getRange(2 + h_ * mm, 4 + col - w_).setFormula('BSBLANK(TRANSPOSE(\'Cards\'!' + rollA1Notation(6, 4 + 6 * mm, max2, 1) + '))');
   sheet.getRange(3 + h_ * mm, col - w_, 4, 1).setFormulaR1C1(formula);
+
+  formula = 'BSBLANK(TRANSPOSE(Cards!' + rollA1Notation(6, 4 + 6 * mm, max2, 1) + '))';
+  testBuild = formulasCards.bsblank(max2, mm);
+  if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().cards().bsblank()');
+  sheet.getRange(2 + h_ * mm, 4 + col - w_).setFormula(formula);
 
   let header1, header2;
 
@@ -146,41 +178,53 @@ function resumeActivity_ (mm) {
     header2 = rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
 
     formula = 'IFERROR(IF(' + header1 + ' = ""; ""; SUM(FILTER(';
-    formula += "ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1); ';
-    formula += "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range2A1 + '; ' + header2 + '; 1); ' + header1 + '); ';
-    formula += "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1))); ';
-    formula += "ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1) >= 0';
+    formula += 'ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1); ';
+    formula += 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range2A1 + '; ' + header2 + '; 1); ' + header1 + '); ';
+    formula += 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1))); ';
+    formula += 'ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1) >= 0';
     formula += '))); 0)';
+
+    testBuild = formulasCards.credit(max2, mm, header1, header2);
+    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().cards().credit()');
     cards[1][w_ * k] = formula;
 
     formula = 'IFERROR(IF(' + header1 + ' = ""; ""; SUM(FILTER(';
-    formula += "ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1); ';
-    formula += "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range2A1 + '; ' + header2 + '; 1); ' + header1 + '); ';
-    formula += "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1))); ';
-    formula += "ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1) < 0; ';
-    formula += "NOT(REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 5 + 6 * mm, max2) + '; ' + header2 + '; 1); ';
+    formula += 'ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1); ';
+    formula += 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range2A1 + '; ' + header2 + '; 1); ' + header1 + '); ';
+    formula += 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1))); ';
+    formula += 'ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1) < 0; ';
+    formula += 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 5 + 6 * mm, max2) + '; ' + header2 + '; 1); ';
     formula += '"#ign"))';
     formula += '))); 0)';
+
+    testBuild = formulasCards.expenses_ign(max2, mm, header1, header2);
+    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().cards().expenses_ign()');
     cards[2][w_ * k] = formula;
 
     formula = 'IFERROR(IF(' + header1 + ' = ""; ""; SUM(FILTER(';
-    formula += "ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1); ';
-    formula += "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range2A1 + '; ' + header2 + '; 1); ' + header1 + '); ';
-    formula += "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1))); ';
-    formula += "ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1) < 0';
+    formula += 'ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1); ';
+    formula += 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range2A1 + '; ' + header2 + '; 1); ' + header1 + '); ';
+    formula += 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1))); ';
+    formula += 'ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1) < 0';
     formula += '))); 0)';
+
+    testBuild = formulasCards.expenses(max2, mm, header1, header2);
+    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().cards().expenses()');
     cards[3][w_ * k] = formula;
 
-    formula = "REGEXEXTRACT(ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+    formula = 'REGEXEXTRACT(ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
     formula = 'ARRAYFORMULA(SPLIT(' + formula + '; "/"))';
-    formula = '{' + formula + dec_c + " ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1)}; ';
-    formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range2A1 + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
+    formula = '{' + formula + dec_c + ' ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1)}; ';
+    formula = formula + 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range2A1 + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
 
-    formula = formula + "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range1A1 + '; ' + header2 + '; 1))); ';
-    formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+    formula = formula + 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1))); ';
+    formula = formula + 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
 
     formula = 'BSCARDPART(TRANSPOSE(IFNA(FILTER(' + formula + '); 0)))';
     formula = 'IF(' + rollA1Notation(1, col + w_ * k) + ' = ""; 0; ' + formula + ')';
+
+    testBuild = formulasCards.bscardpart(max2, mm, rollA1Notation(1, col + w_ * k), header2);
+    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.backstage().cards().bscardpart()');
     cards[3][1 + w_ * k] = formula;
 
     list1[k] = rollA1Notation(6 + h_ * mm, col + w_ * k);

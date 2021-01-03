@@ -1,6 +1,7 @@
 function setupProperties_ (yyyy_mm) {
   let properties, operation;
 
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const adminId = getUserId_();
   const hour = 2 + randomInteger(4);
 
@@ -33,7 +34,7 @@ function setupProperties_ (yyyy_mm) {
     financial_year: SETUP_SETTINGS.financial_year
   };
 
-  SPREADSHEET.addDeveloperMetadata(
+  spreadsheet.addDeveloperMetadata(
     'const_properties',
     JSON.stringify(metadata),
     SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
@@ -47,7 +48,7 @@ function setupProperties_ (yyyy_mm) {
     view_mode: 'complete',
     decimal_places: SETUP_SETTINGS.decimal_places,
     decimal_separator: SETUP_SETTINGS.decimal_separator,
-    spreadsheet_locale: SPREADSHEET.getSpreadsheetLocale(),
+    spreadsheet_locale: spreadsheet.getSpreadsheetLocale(),
     optimize_load: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   };
   PropertiesService2.setProperty('document', 'spreadsheet_settings', 'json', properties);

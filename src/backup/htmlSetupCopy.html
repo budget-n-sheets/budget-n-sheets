@@ -211,7 +211,7 @@
         .setupLock('copy', FILE_ID);
     }
 
-    function panelError (err) {
+    function panelError(err) {
       clearTimeout(TIMEOUT_ID);
       google.script.host.setHeight(197);
       $("#error-panel").siblings().remove();

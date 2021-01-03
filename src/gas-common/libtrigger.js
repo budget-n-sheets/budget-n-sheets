@@ -56,7 +56,7 @@ function saveTriggerId_ (trigger) {
 function createNewTrigger_ (name, type, param) {
   const weekday = [ScriptApp.WeekDay.SUNDAY, ScriptApp.WeekDay.MONDAY, ScriptApp.WeekDay.TUESDAY, ScriptApp.WeekDay.WEDNESDAY, ScriptApp.WeekDay.THURSDAY, ScriptApp.WeekDay.FRIDAY, ScriptApp.WeekDay.SATURDAY];
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let trigger = ScriptApp.newTrigger(name);
 
   switch (type) {

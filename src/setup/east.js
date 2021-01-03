@@ -1,5 +1,5 @@
 function setupEast_ (yyyy_mm) {
-  const spreadsheet = SPREADSHEET;
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet;
   let md, t, i;
 
@@ -14,7 +14,7 @@ function setupEast_ (yyyy_mm) {
 
   const sheets = [];
   for (i = 0; i < 12; i++) {
-    sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
   }
 
   sheet = spreadsheet.getSheetByName('Summary');

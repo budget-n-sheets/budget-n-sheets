@@ -3,6 +3,7 @@ function toolSuspendActivity_ () {
 }
 
 function toolResumeActivity_ () {
+  console.info('menu/More/Resume month');
   switchActivityUi_('resume');
 }
 
@@ -53,7 +54,7 @@ function switchActivity_ (select) {
 
     suspendActivity_(mm);
   } else if (select === 'resume') {
-    mm = MN_SHORT.indexOf(SpreadsheetApp.getActiveSheet().getSheetName());
+    mm = MONTH_NAME.short.indexOf(SpreadsheetApp.getActiveSheet().getSheetName());
     if (mm === -1) return 2;
 
     resumeActivity_(mm);

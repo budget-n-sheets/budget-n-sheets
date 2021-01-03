@@ -1,5 +1,5 @@
 function postEventsForDate_ (date) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet;
 
   let list_eventos, evento;
@@ -89,7 +89,7 @@ function postEventsForDate_ (date) {
     }
   }
 
-  sheet = spreadsheet.getSheetByName(MN_SHORT[mm]);
+  sheet = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
   if (!sheet) return;
 
   for (k = 0; k < num_acc; k++) {
@@ -128,7 +128,9 @@ function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
 }
 
 function updateDecimalPlaces_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  let testBuild;
+
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, max;
 
   const h_ = TABLE_DIMENSION.height;
@@ -148,11 +150,15 @@ function updateDecimalPlaces_ () {
 
   sheet = spreadsheet.getSheetByName('Summary');
   if (sheet) {
-    sheet.getRangeList(['D9:I22', 'D25:G36']).setNumberFormat(number_format);
+    sheet.getRangeList([
+      'D9:I22', 'D25:G36', 'D53:E63', 'D73:E86', 'I73:K84'
+    ])
+      .setNumberFormat(number_format);
   }
 
+  const buildMonth = FormulaBuild.ttt().header();
   for (let i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (!sheet) continue;
 
     max = sheet.getMaxRows() - 4;
@@ -162,19 +168,23 @@ function updateDecimalPlaces_ () {
     for (let k = 0; k < num_acc; k++) {
       list[k] = rollA1Notation(5, 8 + 5 * k, max, 1);
 
-      let expr1 = "TEXT('_Backstage'!" + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
-      expr1 = '"Withdrawal: ["; \'_Backstage\'!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
+      let expr1 = 'TEXT(_Backstage!' + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      expr1 = '"Withdrawal: ["; _Backstage!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
 
-      let expr2 = "TEXT('_Backstage'!" + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
-      expr2 = '"Deposit: ["; \'_Backstage\'!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr2 + '; "\n"; ';
+      let expr2 = 'TEXT(_Backstage!' + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      expr2 = '"Deposit: ["; _Backstage!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr2 + '; "\n"; ';
 
-      let expr3 = "TEXT('_Backstage'!" + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
-      expr3 = '"Trf. in: ["; \'_Backstage\'!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr3 + '; "\n"; ';
+      let expr3 = 'TEXT(_Backstage!' + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      expr3 = '"Trf. in: ["; _Backstage!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr3 + '; "\n"; ';
 
-      let expr4 = "TEXT('_Backstage'!" + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
-      expr4 = '"Trf. out: ["; \'_Backstage\'!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
+      let expr4 = 'TEXT(_Backstage!' + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "' + number_format + '")';
+      expr4 = '"Trf. out: ["; _Backstage!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
 
       const formula = 'CONCATENATE(' + expr1 + expr2 + expr3 + expr4 + ')';
+
+      testBuild = buildMonth.report(k, i);
+      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.ttt().header().report()');
+
       sheet.getRange(1, 8 + 5 * k).setFormula(formula);
     }
     list.push(rollA1Notation(5, 3, max, 1));
@@ -184,11 +194,12 @@ function updateDecimalPlaces_ () {
 
   sheet = spreadsheet.getSheetByName('Cards');
   max = (sheet ? sheet.getMaxRows() - 5 : 0);
+  const buildCards = FormulaBuild.cards().header();
   if (max > 0) {
     const list = [];
     for (let i = 0; i < 12; i++) {
       const head = rollA1Notation(2, 1 + 6 * i);
-      const cell = "'_Backstage'!" + rollA1Notation(2 + h_ * i, col);
+      const cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
 
       list[i] = rollA1Notation(6, 4 + 6 * i, max, 1);
 
@@ -208,6 +219,10 @@ function updateDecimalPlaces_ () {
       expr3 = '"Balance: "; TEXT(' + expr3 + '; "' + number_format + '")';
 
       formula = 'CONCATENATE(' + expr1 + expr2 + '"\n"; ' + expr3 + ')';
+
+      testBuild = buildCards.report(head, cell);
+      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.cards().header().report()');
+
       sheet.getRange(2, 4 + 6 * i).setFormula(formula);
     }
     sheet.getRangeList(list).setNumberFormat(number_format);
@@ -236,16 +251,11 @@ function updateDecimalPlaces_ () {
 }
 
 function updateDecimalSeparator_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, cell, t;
 
   const dec_p = getSpreadsheetSettings_('decimal_places');
   const format = '0' + (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
-
-  sheet = spreadsheet.getSheetByName('_Settings');
-  if (sheet) {
-    sheet.getRange(8, 2).setNumberFormat('0' + format);
-  }
 
   sheet = spreadsheet.getSheetByName('_Settings');
   if (!sheet) {
@@ -269,7 +279,7 @@ function updateDecimalSeparator_ () {
 }
 
 function treatLayout_ (yyyy, mm) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const financial_year = getConstProperties_('financial_year');
   let month, i;
 
@@ -278,7 +288,7 @@ function treatLayout_ (yyyy, mm) {
 
   const sheets = [];
   for (i = 0; i < 12; i++) {
-    sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
   }
 
   if (mm === 0) {
@@ -324,7 +334,7 @@ function updateHideShowSheets (sheets, financial_year, yyyy, mm) {
 }
 
 function updateTabsColors (sheets, financial_year, yyyy, mm) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let date, delta, i;
 
   const init_month = getUserSettings_('initial_month');
@@ -336,7 +346,7 @@ function updateTabsColors (sheets, financial_year, yyyy, mm) {
 
     sheets = [];
     for (i = 0; i < 12; i++) {
-      sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
+      sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     }
 
     financial_year = getConstProperties_('financial_year');

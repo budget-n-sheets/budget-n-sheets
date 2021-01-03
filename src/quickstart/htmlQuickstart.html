@@ -1,127 +1,130 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<base target="_top">
-		<meta charset="UTF-8">
-		<?!= htmlInclude("gas-common/htmlStyles"); ?>
-		<style>
-			p {
-				text-indent: 0;
-			}
 
-			.material-icons.md-slow,
-			.material-icons.md-speed,
-			.material-icons-outlined.md-slow,
-			.material-icons-outlined.md-speed {
-				cursor: pointer;
-				font-weight: bold;
-			}
-		</style>
-	</head>
-	<body>
-    <div id="content">
-  		<h1 style="margin-bottom: 5px;">Basics</h1>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+  <style>
+    p {
+      text-indent: 0;
+    }
 
-  		<h2>Decimal separator</h2>
-  		<p>Your spreadsheet uses <b><?= dec_p ?></b> (<?= dec_n ?>) as decimal separator.</p>
+    .material-icons.md-slow,
+    .material-icons.md-speed,
+    .material-icons-outlined.md-slow,
+    .material-icons-outlined.md-speed {
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
 
-  		<h2>Plus and minus signs</h2>
-  		<p><b>Positive numbers:</b> whenever values are <b>towards</b> your balance.</p>
-  		<p><b>Negative numbers:</b> whenever values are <b>outwards</b> your balance.</p>
+<body>
+  <div id="content">
+    <h1 style="margin-bottom: 5px;">Basics</h1>
 
-  		<h2>Protected sheets and ranges</h2>
-  		<p>Do <b>not</b> edit protected sheets and ranges!</p>
-  		<p>It is <b>safe</b> to: show/hide tabs, expand/collapse column and row groups, show/hide columns and rows.</p>
+    <h2>Decimal separator</h2>
+    <p>Your spreadsheet uses <b><?= dec_p ?></b> (<?= dec_n ?>) as decimal separator.</p>
 
-      <h2>Support</h2>
-      <p>Use the <b><a href="<?= send_feedback ?>" target="_blank">Send feedback</a></b> form to share your ideas and report issues.</p>
-      <p>You are encouraged to join the <a href="<?= join_forum ?>" target="_blank">forum</a> to discuss feature requests, make questions, and share feedback on the latests changes.</p>
-      <p>Find more in <b>Add-ons</b> > <b>Budget n Sheets</b> > <b>More</b> > <b>About the add-on</b> and <b><a href="<?= home_help ?>" target="_blank">Support</a></b> page.</p>
+    <h2>Plus and minus signs</h2>
+    <p><b>Positive numbers:</b> whenever values are <b>towards</b> your balance.</p>
+    <p><b>Negative numbers:</b> whenever values are <b>outwards</b> your balance.</p>
 
-  		<hr>
+    <h2>Protected sheets and ranges</h2>
+    <p>Do <b>not</b> edit protected sheets and ranges!</p>
+    <p>It is <b>safe</b> to: show/hide tabs, expand/collapse column and row groups, show/hide columns and rows.</p>
 
+    <h2>Support</h2>
+    <p>Use the <b><a href="<?= send_feedback ?>" target="_blank">Send feedback</a></b> form to share your ideas and report issues.</p>
+    <p>You are encouraged to join the <a href="<?= join_forum ?>" target="_blank">forum</a> to discuss feature requests, make questions, and share feedback on the latests changes.</p>
+    <p>Find more in <b>Add-ons</b> > <b>Budget n Sheets</b> > <b>More</b> > <b>About the add-on</b> and <b><a href="<?= home_help ?>" target="_blank">Support</a></b> page.</p>
 
-  		<h1 style="margin-bottom: 5px;">Registering Transactions</h1>
-
-  		<p>Expenses with <b>cash</b> <span class="material-icons md-18 md-speed" id="statements1">play_circle_outline</span></p>
-  		<p>Expenses with <b>debit card</b> <span class="material-icons md-18 md-speed" id="statements2">play_circle_outline</span></p>
-  		<p>Expenses with <b>credit card</b>: See <b>Accounts and Cards</b>.</p>
-  		<p>Register income <span class="material-icons md-18 md-speed" id="statements3">play_circle_outline</span></p>
-  		<p>Ignore a value <span class="material-icons md-18 md-speed" id="statements4">play_circle_outline</span></p>
-
-  		<h2>Account transactions</h2>
-  		<p>Deposits <span class="material-icons md-18 md-speed" id="transactions1">play_circle_outline</span></p>
-  		<p>Transfer from someone <span class="material-icons md-18 md-speed" id="transactions2">play_circle_outline</span></p>
-  		<p>Transfer to someone <span class="material-icons md-18 md-speed" id="transactions3">play_circle_outline</span></p>
-  		<p>Withdrawals <span class="material-icons md-18 md-speed" id="transactions4">play_circle_outline</span></p>
-
-  		<h2>Cash flow</h2>
-  		<p>After entering expenses and transactions, sync the cash flow. <span class="material-icons md-18 md-speed" id="cashflow1">play_circle_outline</span></p>
-
-      <h2>Blank value</h2>
-      <p>Transactions are not accounted for when below a row with a blank value. <span class="material-icons md-18 md-speed" id="blank_value1">play_circle_outline</span></p>
-      <p><b>Tip</b> Quickly peek the total expenses and balance. <span class="material-icons md-18 md-speed" id="blank_value2">play_circle_outline</span></p>
-
-  		<hr>
+    <hr>
 
 
-  		<h1 style="margin-bottom: 5px;">Accounts and Cards</h1>
+    <h1 style="margin-bottom: 5px;">Registering Transactions</h1>
 
-  		<p>Set an initial month and balance for each account. From the initial month and onwards, the balance is affected by the transactions. <span class="material-icons md-18 md-speed" id="acc_cards1">play_circle_outline</span></p>
+    <p>Expenses with <b>cash</b> <span class="material-icons md-18 md-speed" id="statements1">play_circle_outline</span></p>
+    <p>Expenses with <b>debit card</b> <span class="material-icons md-18 md-speed" id="statements2">play_circle_outline</span></p>
+    <p>Expenses with <b>credit card</b>: See <b>Accounts and Cards</b>.</p>
+    <p>Register income <span class="material-icons md-18 md-speed" id="statements3">play_circle_outline</span></p>
+    <p>Ignore a value <span class="material-icons md-18 md-speed" id="statements4">play_circle_outline</span></p>
 
-  		<p>Create a <b>card</b> for each credit card you own. <span class="material-icons md-18 md-speed" id="acc_cards2">play_circle_outline</span></p>
-  		<p>Register card expenses and refunds <span class="material-icons md-18 md-speed" id="acc_cards3">play_circle_outline</span></p>
-  		<p>Register card bill payment <span class="material-icons md-18 md-speed" id="acc_cards4">play_circle_outline</span></p>
+    <h2>Account transactions</h2>
+    <p>Deposits <span class="material-icons md-18 md-speed" id="transactions1">play_circle_outline</span></p>
+    <p>Transfer from someone <span class="material-icons md-18 md-speed" id="transactions2">play_circle_outline</span></p>
+    <p>Transfer to someone <span class="material-icons md-18 md-speed" id="transactions3">play_circle_outline</span></p>
+    <p>Withdrawals <span class="material-icons md-18 md-speed" id="transactions4">play_circle_outline</span></p>
 
-  		<hr>
+    <h2>Cash flow</h2>
+    <p>After entering expenses and transactions, sync the cash flow. <span class="material-icons md-18 md-speed" id="cashflow1">play_circle_outline</span></p>
 
+    <h2>Blank value</h2>
+    <p>Transactions are not accounted for when below a row with a blank value. <span class="material-icons md-18 md-speed" id="blank_value1">play_circle_outline</span></p>
+    <p><b>Tip</b> Quickly peek the total expenses and balance. <span class="material-icons md-18 md-speed" id="blank_value2">play_circle_outline</span></p>
 
-  		<h1 style="margin-bottom: 5px;">Custom tags</h1>
-
-  		<p>Use tags to track specific transactions and generate analytics by tag and category.</p>
-      <p><b>Note</b> The accepted charset for a code is: 0-9, a-z, A-Z, _</p>
-
-  		<p>Create a tag <span class="material-icons md-18 md-speed" id="tags1">play_circle_outline</span></p>
-  		<p>Create subtags <span class="material-icons md-18 md-speed" id="tags3">play_circle_outline</span></p>
-  		<p>Tag some expenses <span class="material-icons md-18 md-speed" id="tags2">play_circle_outline</span></p>
-      <p>Import an analytics sheet from the <b>Cool Gallery</b> <span class="material-icons md-18 md-speed" id="tags4">play_circle_outline</span></p>
-      <? if (isCurrent) { ?>
-
-  		<hr>
-
-
-  		<h1 style="margin-bottom: 5px;">Financial Calendar</h1>
-
-  		<p>Visit the wiki to learn how to setup, create events and sync your financial calendar: <a href="https://github.com/guimspace/budget-n-sheets/wiki/Financial-Calendar" target="_blank">Wiki - Financial Calendar</a>.</p>
+    <hr>
 
 
-      <p>After playing the demo below, open your <a href="https://calendar.google.com/" target="_blank">Calendar</a> and click each calendar event created to view a brief explanation in the description.</p>
-  		<p>Create calendar events and update the cash flow <span class="material-icons md-18 md-speed" id="calendar1">play_circle_outline</span></p>
-  		<? } ?>
-    </div>
+    <h1 style="margin-bottom: 5px;">Accounts and Cards</h1>
 
-		<hr>
+    <p>Set an initial month and balance for each account. From the initial month and onwards, the balance is affected by the transactions. <span class="material-icons md-18 md-speed" id="acc_cards1">play_circle_outline</span></p>
+
+    <p>Create a <b>card</b> for each credit card you own. <span class="material-icons md-18 md-speed" id="acc_cards2">play_circle_outline</span></p>
+    <p>Register card expenses and refunds <span class="material-icons md-18 md-speed" id="acc_cards3">play_circle_outline</span></p>
+    <p>Register card bill payment <span class="material-icons md-18 md-speed" id="acc_cards4">play_circle_outline</span></p>
+
+    <hr>
 
 
-		<h3>Was this Quickstart helpful?</h3>
+    <h1 style="margin-bottom: 5px;">Custom tags</h1>
 
-		<a href="https://docs.google.com/forms/d/e/1FAIpQLSeAkAgJYuABKsdz1S8fFT8wdZ1tJkw3V_xbQtbJ27tq5mnx-w/viewform?usp=pp_url&entry.1588138887=Yes" target="_blank"><button>Yes</button></a>
-		<a href="https://docs.google.com/forms/d/e/1FAIpQLSeAkAgJYuABKsdz1S8fFT8wdZ1tJkw3V_xbQtbJ27tq5mnx-w/viewform?usp=pp_url&entry.1588138887=No" target="_blank"><button>No</button></a>
+    <p>Use tags to track specific transactions and generate analytics by tag and category.</p>
+    <p><b>Note</b> The accepted charset for a code is: 0-9, a-z, A-Z, _</p>
 
-		<?!= htmlInclude("gas-common/htmlJavaScript"); ?>
-		<script>
-			$(document).on("click", ".md-speed", function() {
-        if ($('.md-speed').hasClass('lock')) return;
-        $('.md-speed').addClass('lock');
-        $('#content').css('opacity', 0.6);
-				google.script.run
-					.withFailureHandler(showError)
-          .withSuccessHandler(function () {
-              $('.md-speed').removeClass('lock');
-              $('#content').css('opacity', 1);
-            })
-					.playSpeedQuickstart($(this).attr("id"));
-			});
-		</script>
-	</body>
+    <p>Create a tag <span class="material-icons md-18 md-speed" id="tags1">play_circle_outline</span></p>
+    <p>Create subtags <span class="material-icons md-18 md-speed" id="tags3">play_circle_outline</span></p>
+    <p>Tag some expenses <span class="material-icons md-18 md-speed" id="tags2">play_circle_outline</span></p>
+    <p>Import an analytics sheet from the <b>BnS Gallery</b> <span class="material-icons md-18 md-speed" id="tags4">play_circle_outline</span></p>
+    <? if (isCurrent) { ?>
+
+    <hr>
+
+
+    <h1 style="margin-bottom: 5px;">Financial Calendar</h1>
+
+    <p>Visit the wiki to learn how to setup, create events and sync your financial calendar: <a href="https://github.com/guimspace/budget-n-sheets/wiki/Financial-Calendar" target="_blank">Wiki - Financial Calendar</a>.</p>
+
+
+    <p>After playing the demo below, open your <a href="https://calendar.google.com/" target="_blank">Calendar</a> and click each calendar event created to view a brief explanation in the description.</p>
+    <p>Create calendar events and update the cash flow <span class="material-icons md-18 md-speed" id="calendar1">play_circle_outline</span></p>
+    <? } ?>
+  </div>
+
+  <hr>
+
+
+  <h3>Was this Quickstart helpful?</h3>
+
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSeAkAgJYuABKsdz1S8fFT8wdZ1tJkw3V_xbQtbJ27tq5mnx-w/viewform?usp=pp_url&entry.1588138887=Yes" target="_blank"><button>Yes</button></a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSeAkAgJYuABKsdz1S8fFT8wdZ1tJkw3V_xbQtbJ27tq5mnx-w/viewform?usp=pp_url&entry.1588138887=No" target="_blank"><button>No</button></a>
+
+  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <script>
+    $(document).on("click", ".md-speed", function() {
+      if ($('.md-speed').hasClass('lock')) return;
+      $('.md-speed').addClass('lock');
+      $('#content').css('opacity', 0.6);
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(function() {
+          $('.md-speed').removeClass('lock');
+          $('#content').css('opacity', 1);
+        })
+        .playSpeedQuickstart($(this).attr("id"));
+    });
+  </script>
+</body>
+
 </html>

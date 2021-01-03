@@ -10,8 +10,6 @@ function BSBLANK (array) {
 function BSREPORT (data) {
   Utilities.sleep(300);
 
-  let i;
-
   const stats = [
     [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]
   ];
@@ -21,31 +19,33 @@ function BSREPORT (data) {
   const sum_range = data[0];
   const range = data[1];
 
-  i = 0;
+  let i = -1;
   const n = sum_range.length;
 
-  while (i < n && sum_range[i] !== '') {
-    if (/#wd/.test(range[i]) && sum_range[i] <= 0) {
+  while (++i < n && sum_range[i] !== '') {
+    if (range[i].indexOf('#wd') !== -1 && sum_range[i] <= 0) {
       stats[0][1]++;
       stats[0][0] += sum_range[i];
     }
-    if (/#dp/.test(range[i]) && sum_range[i] >= 0) {
+
+    if (range[i].indexOf('#dp') !== -1 && sum_range[i] >= 0) {
       stats[1][1]++;
       stats[1][0] += sum_range[i];
     }
-    if (/#trf/.test(range[i]) && sum_range[i] >= 0) {
-      stats[2][1]++;
-      stats[2][0] += sum_range[i];
-    }
-    if (/#trf/.test(range[i]) && sum_range[i] < 0) {
-      stats[3][1]++;
-      stats[3][0] += sum_range[i];
-    }
-    if (/#rct/.test(range[i])) {
-      stats[4][0] += sum_range[i];
+
+    if (range[i].indexOf('#trf') !== -1) {
+      if (sum_range[i] >= 0) {
+        stats[2][1]++;
+        stats[2][0] += sum_range[i];
+      } else {
+        stats[3][1]++;
+        stats[3][0] += sum_range[i];
+      }
     }
 
-    i++;
+    if (range[i].indexOf('#rct') !== -1) {
+      stats[4][0] += sum_range[i];
+    }
   }
 
   return stats;
@@ -54,11 +54,7 @@ function BSREPORT (data) {
 function BSSUMBYTAG (tag, range) {
   Utilities.sleep(300);
 
-  let regex;
-  let n, i, j;
-  let cr;
-
-  n = tag[0].length;
+  let n = tag[0].length;
   if (n < 2) return;
   else n--;
 
@@ -68,9 +64,9 @@ function BSSUMBYTAG (tag, range) {
   const sum = [];
   const pos = [];
 
-  cr = 0;
-  regex = [];
-  for (i = 0; i < n; i++) {
+  let cr = 0;
+  let regex = [];
+  for (let i = 0; i < n; i++) {
     if (/^\w+$/.test(tag[i])) {
       sum[i] = [0];
       regex[cr] = tag[i];
@@ -92,11 +88,11 @@ function BSSUMBYTAG (tag, range) {
   regex = '#(' + regex + ')';
   regex = new RegExp(regex);
 
-  for (i = 0; i < range.length; i++) {
+  for (let i = 0; i < range.length; i++) {
     if (!range[i][1]) continue;
     if (!regex.test(range[i][1])) continue;
 
-    for (j = 0; j < cr; j++) {
+    for (let j = 0; j < cr; j++) {
       if (range[i][1].indexOf(tag[pos[j]]) !== -1) {
         sum[pos[j]][0] += Number(range[i][0]);
       }

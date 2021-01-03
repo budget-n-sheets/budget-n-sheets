@@ -9,7 +9,7 @@ function validateUpdateCashFlow_ () {
     mm = range.getColumn() - 1;
     mm = (mm - (mm % 4)) / 4;
   } else {
-    mm = MN_SHORT.indexOf(name);
+    mm = MONTH_NAME.short.indexOf(name);
     if (mm === -1) {
       SpreadsheetApp.getUi().alert(
         "Can't update cash flow",
@@ -24,7 +24,7 @@ function validateUpdateCashFlow_ () {
 
 function updateCashFlow_ (mm) {
   console.time('tool/update-cash-flow');
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('Cash Flow');
   if (!sheet) return;
 
@@ -150,7 +150,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
   let start, offset, first;
   let cc, c, i, j, k;
 
-  const sheet = spreadsheet.getSheetByName(MN_SHORT[more.mm]);
+  const sheet = spreadsheet.getSheetByName(MONTH_NAME.short[more.mm]);
   if (!sheet) return;
 
   const maxRows = sheet.getLastRow() - 4;

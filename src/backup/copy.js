@@ -108,9 +108,9 @@ function readSpreadsheetInfo (fileId) {
   }
   info.cards = list;
 
-  PropertiesService2.setProperty('document', 'settings_pc', 'json', info);
+  PropertiesService2.setProperty('document', 'settings_candidate', 'json', info);
 
-  info.initial_month = MN_FULL[info.initial_month];
+  info.initial_month = MONTH_NAME.long[info.initial_month];
 
   info.accounts = info.accounts.join(', ');
   for (let i = 0; i < info.cards.length; i++) {
@@ -168,17 +168,17 @@ function copyMonths_ (spreadsheet) {
 
   let mm = -1;
   while (++mm < 12) {
-    const source = spreadsheet.getSheetByName(MN_SHORT[mm]);
+    const source = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
     if (!source) continue;
 
     const last = source.getLastRow();
     if (last < 5) continue;
 
-    const destination = SPREADSHEET.getSheetByName(MN_SHORT[mm]);
+    const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
 
     let max = destination.getMaxRows();
     while (max < last) {
-      addBlankRows_(MN_SHORT[mm]);
+      addBlankRows_(MONTH_NAME.short[mm]);
       max += 400;
     }
 
@@ -194,7 +194,7 @@ function copyCards_ (spreadsheet) {
   const last = source.getLastRow();
   if (last < 6) return;
 
-  const destination = SPREADSHEET.getSheetByName('Cards');
+  const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
 
   let max = destination.getMaxRows();
   while (max < last) {
@@ -207,7 +207,7 @@ function copyCards_ (spreadsheet) {
 }
 
 function copyTags_ (spreadsheet) {
-  const destination = SPREADSHEET.getSheetByName('Tags');
+  const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
   const source = spreadsheet.getSheetByName('Tags');
   if (!source) return;
 

@@ -8,7 +8,7 @@ function addBlankRows_ (name) {
 
   if (name === 'Cards') c = 5;
   else if (name === 'Tags') c = 1;
-  else if (MN_SHORT.indexOf(name) !== -1) c = 4;
+  else if (MONTH_NAME.short.indexOf(name) !== -1) c = 4;
   else {
     SpreadsheetApp.getUi().alert(
       "Can't add rows",
@@ -18,7 +18,7 @@ function addBlankRows_ (name) {
   }
 
   if (!sheet) {
-    sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
+    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(name);
     if (!sheet) return;
   }
 

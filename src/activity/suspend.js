@@ -1,5 +1,5 @@
 function suspendActivity_ (mm) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('_Backstage');
   const h_ = TABLE_DIMENSION.height;
 

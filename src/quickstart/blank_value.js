@@ -22,8 +22,8 @@ const QUICKSTART_DATA_BLANKVALUE = Object.freeze({
 function playQuickBlankValue_ (n) {
   let lastRow;
 
-  const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MN_SHORT[DATE_NOW.getMonth()] : MN_SHORT[0]);
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const name = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? MONTH_NAME.short[DATE_NOW.getMonth()] : MONTH_NAME.short[0]);
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   const sheet = spreadsheet.getSheetByName(name);
   if (!sheet) {

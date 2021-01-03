@@ -1,4 +1,5 @@
 function backupRequestUi () {
+  console.info('sidebar/Settings/Backup/Back up now');
   const ui = SpreadsheetApp.getUi();
 
   if (!isInstalled_()) return 2;
@@ -30,7 +31,7 @@ function backupRequestUi () {
 }
 
 function backupRequest_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const backup = {
     backup: {},
     ttt: {
@@ -73,13 +74,13 @@ function backupRequest_ () {
     class_version2: {}
   };
 
-  backupMonths_(backup, spreadsheet);
-  backupCards_(backup, spreadsheet);
-  backupTags_(backup, spreadsheet);
+  backupMonths_(backup);
+  backupCards_(backup);
+  backupTags_(backup);
   backupTables_(backup);
   backupProperties_(backup);
 
-  backupMeta_(backup, spreadsheet);
+  backupMeta_(backup);
 
   const blob = digestBackup_(backup);
   emailBackup_(blob);
@@ -87,7 +88,7 @@ function backupRequest_ () {
 }
 
 function emailBackup_ (blob) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlBackupEmail');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
@@ -124,7 +125,9 @@ function digestBackup_ (backup) {
   return blob;
 }
 
-function backupMeta_ (backup, spreadsheet) {
+function backupMeta_ (backup) {
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+
   backup.backup = {
     version: APPS_SCRIPT_GLOBAL.backup_version,
     date_request: DATE_NOW.getTime(),
@@ -182,7 +185,8 @@ function backupTables_ (backup) {
   }
 }
 
-function backupTags_ (backup, spreadsheet) {
+function backupTags_ (backup) {
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('Tags');
   let j;
 
@@ -203,7 +207,8 @@ function backupTags_ (backup, spreadsheet) {
   }
 }
 
-function backupCards_ (backup, spreadsheet) {
+function backupCards_ (backup) {
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('Cards');
   let i, j;
 
@@ -228,13 +233,14 @@ function backupCards_ (backup, spreadsheet) {
   }
 }
 
-function backupMonths_ (backup, spreadsheet) {
+function backupMonths_ (backup) {
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const num_acc = getConstProperties_('number_accounts') + 1;
   let sheet, table, max, i, j, k;
 
   i = -1;
   while (++i < 12) {
-    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (!sheet) continue;
 
     max = sheet.getLastRow();

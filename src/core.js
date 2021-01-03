@@ -49,7 +49,7 @@ function onOpen (e) {
         .addSeparator()
         .addSubMenu(ui.createMenu('Open panel')
           .addItem('Accounts & Cards', 'showPanelTables')
-          .addItem('Cool Gallery', 'showPanelAnalytics'))
+          .addItem('BnS Gallery', 'showPanelAnalytics'))
         .addSubMenu(ui.createMenu('Pages view')
           .addItem('Collapse', 'toolHideSheets_')
           .addItem('Expand', 'toolShowSheets_'))
@@ -81,7 +81,7 @@ function printHrefScriptlets (htmlTemplate) {
 }
 
 function showPanelQuickstart () {
-  console.log('quickstart');
+  console.log('menu/More/Show Quickstart');
 
   let htmlTemplate = HtmlService.createTemplateFromFile('quickstart/htmlQuickstart');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
@@ -104,6 +104,7 @@ function showPanelQuickstart () {
 }
 
 function showPanelTables (tab) {
+  console.info('menu/Open panel/Accounts & Cards');
   if (onlineUpdate_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('html/htmlSidebarTables');
@@ -132,6 +133,7 @@ function showPanelTables (tab) {
 }
 
 function showPanelAnalytics () {
+  console.info('menu/Open panel/BnS Gallery');
   if (onlineUpdate_()) return;
 
   let htmlTemplate;
@@ -141,15 +143,16 @@ function showPanelAnalytics () {
 
   htmlTemplate.list = APPS_SCRIPT_GLOBAL.cool_gallery;
 
-  const htmlSidebar = htmlTemplate.evaluate().setTitle('Cool Gallery');
+  const htmlSidebar = htmlTemplate.evaluate().setTitle('BnS Gallery');
 
   SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
 
 function showSidebarMainSettings () {
+  console.info('menu/Change settings');
   if (onlineUpdate_()) return;
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let htmlTemplate;
 
   const isAdmin = isUserAdmin_();
@@ -191,6 +194,7 @@ function showSidebarMainSettings () {
 }
 
 function showDialogAboutAddon () {
+  console.info('menu/About the add-on');
   let htmlTemplate;
   let v0;
 
@@ -262,7 +266,7 @@ function showDialogSetupAddon_ () {
     return;
   }
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let owner;
 
   owner = spreadsheet.getOwner();

@@ -1,4 +1,5 @@
 function toggleViewMode_ () {
+  console.info('menu/Toggle view mode');
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
@@ -27,14 +28,14 @@ function toggleViewMode_ () {
 }
 
 function viewModeSimple_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, i, k;
   let expr, head, cell;
 
   const num_acc = getConstProperties_('number_accounts');
 
   for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (!sheet) continue;
     if (sheet.getMaxRows() < 3) continue;
 
@@ -67,7 +68,7 @@ function viewModeSimple_ () {
 
   for (i = 0; i < 12; i++) {
     head = rollA1Notation(2, 1 + 6 * i);
-    cell = "'_Backstage'!" + rollA1Notation(2 + h_ * i, col);
+    cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
 
     expr = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
     expr = '"Balance: "; TEXT(' + expr + '; "#,##0.00;(#,##0.00)")';
@@ -83,7 +84,7 @@ function viewModeSimple_ () {
 }
 
 function viewModeComplete_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, i, k;
   let formula, expr1, expr2, expr3, expr4;
   let head, cell;
@@ -93,7 +94,7 @@ function viewModeComplete_ () {
   const num_acc = getConstProperties_('number_accounts');
 
   for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (!sheet) continue;
     if (sheet.getMaxRows() < 3) continue;
 
@@ -105,17 +106,17 @@ function viewModeComplete_ () {
     sheet.getRange(1, 1, 1, 2).setBorder(null, null, true, null, null, null, '#000000', SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
 
     for (k = 0; k < num_acc; k++) {
-      expr1 = "TEXT('_Backstage'!" + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-      expr1 = "\"Withdrawal: (\"; '_Backstage'!" + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr1 + '; "\n"; ';
+      expr1 = 'TEXT(_Backstage!' + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+      expr1 = '"Withdrawal: ("; _Backstage!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr1 + '; "\n"; ';
 
-      expr2 = "TEXT('_Backstage'!" + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-      expr2 = "\"Deposit: (\"; '_Backstage'!" + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr2 + '; "\n"; ';
+      expr2 = 'TEXT(_Backstage!' + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+      expr2 = '"Deposit: ("; _Backstage!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr2 + '; "\n"; ';
 
-      expr3 = "TEXT('_Backstage'!" + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-      expr3 = "\"Trf. in: (\"; '_Backstage'!" + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr3 + '; "\n"; ';
+      expr3 = 'TEXT(_Backstage!' + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+      expr3 = '"Trf. in: ("; _Backstage!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr3 + '; "\n"; ';
 
-      expr4 = "TEXT('_Backstage'!" + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-      expr4 = "\"Trf. out: (\"; '_Backstage'!" + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr4;
+      expr4 = 'TEXT(_Backstage!' + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+      expr4 = '"Trf. out: ("; _Backstage!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr4;
 
       sheet.getRange(1, 8 + 5 * k, 3, 2)
         .merge()
@@ -135,7 +136,7 @@ function viewModeComplete_ () {
 
   for (i = 0; i < 12; i++) {
     head = rollA1Notation(2, 1 + 6 * i);
-    cell = "'_Backstage'!" + rollA1Notation(2 + h_ * i, col);
+    cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
 
     expr1 = 'OFFSET(' + cell + '; 1; 5*' + head + '; 1; 1)';
     expr1 = '"Credit: "; TEXT(' + expr1 + '; "#,##0.00;(#,##0.00)"); "\n"; ';

@@ -11,7 +11,7 @@ function validateFormatRegistry_ () {
   } else if (name === 'Tags') {
     formatTags_();
   } else {
-    mm = MN_SHORT.indexOf(name);
+    mm = MONTH_NAME.short.indexOf(name);
     if (mm === -1) {
       SpreadsheetApp.getUi().alert(
         "Can't sort registry",
@@ -24,7 +24,7 @@ function validateFormatRegistry_ () {
 }
 
 function formatTags_ () {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
   if (!sheet) return;
 
   const maxRows = sheet.getMaxRows() - 1;
@@ -39,7 +39,7 @@ function formatTags_ () {
 }
 
 function formatAccounts_ (mm) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MN_SHORT[mm]);
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
   let date2;
   let table;
   let cc, n, i, k;
@@ -88,7 +88,7 @@ function formatAccounts_ (mm) {
 }
 
 function formatCards_ (mm) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Cards');
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
   let table, card;
   let c, n;
   let i, j;

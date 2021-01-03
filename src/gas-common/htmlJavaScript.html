@@ -1,11 +1,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
-	function showError(err, obj) {
-		google.script.run
-			.withSuccessHandler(function() {
-					google.script.host.close();
-				})
+  function showError(err, obj) {
+    google.script.run
+      .withSuccessHandler(function() {
+        google.script.host.close();
+      })
       .withFailureHandler(null)
-			.showDialogErrorMessage();
-	}
+      .showDialogErrorMessage();
+  }
 </script>

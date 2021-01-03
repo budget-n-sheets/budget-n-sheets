@@ -1,9 +1,11 @@
 function setupSettings_ (yyyy_mm) {
-  const sheet = SPREADSHEET.getSheetByName('_Settings');
+  const buildFormulas = FormulaBuild.settings().formulas();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName('_Settings');
   let cell, dec_p;
 
-  SPREADSHEET.setActiveSheet(sheet);
-  SPREADSHEET.moveActiveSheet(7);
+  spreadsheet.setActiveSheet(sheet);
+  spreadsheet.moveActiveSheet(7);
 
   sheet.protect().setWarningOnly(true);
 
@@ -22,11 +24,11 @@ function setupSettings_ (yyyy_mm) {
 
   cell = [
     ['=' + numberFormatLocaleSignal.call(SETUP_SETTINGS.financial_year, dec_p)],
-    ['=IF(YEAR(TODAY()) = $B2; MONTH(TODAY()); IF(YEAR(TODAY()) < $B2; 0; 12))'],
+    [buildFormulas.actual_month()],
     ['=' + numberFormatLocaleSignal.call(SETUP_SETTINGS.init_month + 1, dec_p)],
-    ['=IF($B4 > $B3; 0; $B3 - $B4 + 1)'],
-    ['=IF(AND($B3 = 12; YEAR(TODAY()) <> $B2); $B5; MAX($B5 - 1; 0))'],
-    ["=COUNTIF('Tags'!$E1:$E; \"<>\") - 1"],
+    [buildFormulas.active_months()],
+    [buildFormulas.m_factor()],
+    [buildFormulas.count_tags()],
     ['=RAND()']
   ];
   sheet.getRange(2, 2, 7, 1).setFormulas(cell);

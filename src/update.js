@@ -11,7 +11,7 @@ const PATCH_THIS = Object.freeze({
       [update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_, null, null, update_v0m34p10_, null, null],
       [update_v0m35p0_, update_v0m35p1_, update_v0m35p2_, null, null, null, null],
       [null, null, update_v0m36p2_, update_v0m36p3_, update_v0m36p4_, null],
-      [null, null, null]
+      [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_]
     ]
   ],
   beta_list: []
@@ -42,6 +42,11 @@ function onlineUpdate_ () {
       'Please, contact the spreadsheet admin to update the add-on.',
       ui.ButtonSet.OK);
     return;
+  }
+
+  const spreadsheet_locale = getSpreadsheetSettings_('spreadsheet_locale');
+  if (spreadsheet_locale !== SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetLocale()) {
+    updateDecimalSeparator_();
   }
 
   showDialogMessage('Add-on update', 'Updating add-on...', 1);
@@ -76,6 +81,11 @@ function onlineUpdate_ () {
 function seamlessUpdate_ () {
   if (!isTemplateAvailable()) return 1;
   if (!isUserAdmin_()) return 1;
+
+  const spreadsheet_locale = getSpreadsheetSettings_('spreadsheet_locale');
+  if (spreadsheet_locale !== SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetLocale()) {
+    updateDecimalSeparator_();
+  }
 
   const v0 = isScriptUpToDate_();
   if (v0 === 1) return;
@@ -162,13 +172,387 @@ function setClassVersion_ (property, value) {
  *
  * 0.0.0
  *
-function update_v0m0p0_() {
+function update_v0m0p0_ () {
   try {
   } catch (err) {
     ConsoleLog.error(err);
     return 2;
   }
 } */
+
+/**
+ * Fix Summary chart data formula.
+ * Fix formula of Tags.
+ *
+ * 0.37.9
+ */
+function update_v0m37p9_ () {
+  try {
+    let rr;
+
+    rr = update_v0m37p9s0_();
+    if (rr) return rr;
+
+    rr = update_v0m37p9s1_();
+    if (rr) return rr;
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p9s1_ () {
+  try {
+    const buildFormula = FormulaBuild.tags().table();
+
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const sheetTags = spreadsheet.getSheetByName('Tags');
+    if (!sheetTags) return 1;
+
+    const formulas = [[]];
+
+    let numRowsMonth, numRowsCards;
+
+    const sheetCards = spreadsheet.getSheetByName('Cards');
+    if (!sheetCards) numRowsCards = -1;
+    else {
+      numRowsCards = sheetCards.getMaxRows() - 5;
+      if (numRowsCards < 1) numRowsCards = -1;
+    }
+
+    for (let mm = 0; mm < 12; mm++) {
+      const sheet = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
+      let numRowsMonth;
+
+      if (!sheet) numRowsMonth = -1;
+      else {
+        numRowsMonth = sheet.getMaxRows() - 4;
+        if (numRowsMonth < 1) numRowsMonth = -1;
+      }
+
+      formulas[0][mm] = buildFormula.month(numRowsMonth, numRowsCards, mm);
+    }
+
+    sheetTags.getRange(1, 6, 1, 12).setFormulas(formulas);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p9s0_ () {
+  try {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
+    if (!sheet) return 1;
+
+    const formula = FormulaBuild.summary().chart3().data(0).replace(/""/g, '0');
+    sheet.getRange('I73').setFormula(formula);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
+ * Fix array separator in 'BSCARDPART()' formula.
+ * Rebuild Summary charts.
+ * Reinstall 'timeBased' trigger.
+ * Treat layout.
+ *
+ * 0.37.8
+ */
+function update_v0m37p8_ () {
+  try {
+    let rr;
+
+    rr = update_v0m37p8s0_();
+    if (rr) return rr;
+
+    rr = update_v0m37p8s1_();
+    if (rr) return rr;
+
+    const financial_year = getConstProperties_('financial_year');
+    const yyyy = DATE_NOW.getFullYear();
+
+    if (financial_year === yyyy) treatLayout_(yyyy, DATE_NOW.getMonth());
+
+    if (financial_year > yyyy) {
+      stopTrigger_('timeBased');
+      Utilities.sleep(200);
+      startTrigger_('timeBased');
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p8s1_ () {
+  try {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
+    if (!sheet) return 1;
+
+    const formula = FormulaBuild.summary().chart3().data(0).replace(/""/g, '0');
+    sheet.getRange('I73').setFormula(formula);
+
+    const charts = sheet.getCharts();
+    for (let i = 0; i < charts.length; i++) {
+      sheet.removeChart(charts[i]);
+    }
+
+    options = {
+      0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Income' },
+      1: { color: '#cccccc', type: 'bars', labelInLegend: 'Expenses' },
+      2: { color: '#45818e', type: 'bars', labelInLegend: 'Income' },
+      3: { color: '#e69138', type: 'bars', labelInLegend: 'Expenses' },
+      4: { color: '#45818e', type: 'line', labelInLegend: 'Avg Income' },
+      5: { color: '#e69138', type: 'line', labelInLegend: 'Avg Expenses' }
+    };
+
+    chart = sheet.newChart()
+      .addRange(sheet.getRange('C25:I36'))
+      .setChartType(Charts.ChartType.COMBO)
+      .setPosition(24, 2, 0, 0)
+      .setOption('mode', 'view')
+      .setOption('legend', 'top')
+      .setOption('focusTarget', 'category')
+      .setOption('series', options)
+      .setOption('height', 482)
+      .setOption('width', 886)
+      .build();
+    sheet.insertChart(chart);
+
+    chart = sheet.newChart()
+      .addRange(sheet.getRange('B52:B62'))
+      .addRange(sheet.getRange('D52:D62'))
+      .setNumHeaders(1)
+      .setChartType(Charts.ChartType.PIE)
+      .setPosition(50, 8, 0, 0)
+      .setOption('mode', 'view')
+      .setOption('legend', 'top')
+      .setOption('focusTarget', 'category')
+      .setOption('height', 447)
+      .setOption('width', 444)
+      .build();
+    sheet.insertChart(chart);
+
+    options = {
+      0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Total' },
+      1: { color: '#45818e', type: 'bars', labelInLegend: 'Total' },
+      2: { color: '#45818e', type: 'line', labelInLegend: 'Average' }
+    };
+
+    chart = sheet.newChart()
+      .addRange(sheet.getRange('B73:B84'))
+      .addRange(sheet.getRange('I73:K84'))
+      .setChartType(Charts.ChartType.COMBO)
+      .setPosition(70, 8, 0, 0)
+      .setOption('mode', 'view')
+      .setOption('legend', 'top')
+      .setOption('focusTarget', 'category')
+      .setOption('series', options)
+      .setOption('height', 459)
+      .setOption('width', 444)
+      .build();
+    sheet.insertChart(chart);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p8s0_ () {
+  try {
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const formulaBuild = FormulaBuild.backstage().cards();
+
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const sheetCards = spreadsheet.getSheetByName('Cards');
+    if (!sheetCards) return 1;
+
+    const numRows = sheetCards.getMaxRows() - 5;
+    if (numRows < 1) return 1;
+
+    const sheet = spreadsheet.getSheetByName('_Backstage');
+    if (!sheet) return 1;
+
+    const number_accounts = getConstProperties_('number_accounts');
+    const column = 2 + w_ + w_ * number_accounts + w_;
+
+    for (let k = 0; k < 10; k++) {
+      const regex = rollA1Notation(1, column + w_ * k);
+
+      for (let mm = 0; mm < 12; mm++) {
+        const bsblank = rollA1Notation(2 + h_ * mm, column + 4 + w_ * k);
+        const formula = formulaBuild.bscardpart(numRows, mm, regex, bsblank);
+
+        sheet.getRange(5 + h_ * mm, 1 + column + w_ * k).setFormula(formula);
+      }
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
+ * Fix 'BSBLANK()' range reference.
+ *
+ * 0.37.7
+ */
+function update_v0m37p7_ () {
+  try {
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    let sheet;
+
+    sheet = spreadsheet.getSheetByName('Cards');
+    if (!sheet) return;
+
+    const max = sheet.getMaxRows() - 5;
+    if (max < 1) return;
+
+    sheet = spreadsheet.getSheetByName('_Backstage');
+    if (!sheet) return;
+
+    const number_accounts = getConstProperties_('number_accounts');
+
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const col = 2 + w_ + w_ * number_accounts + 4;
+
+    for (let i = 0; i < 12; i++) {
+      sheet.getRange(2 + h_ * i, col).setFormula('BSBLANK(TRANSPOSE(Cards!' + rollA1Notation(6, 4 + 6 * i, max, 1) + '))');
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
+ * Set missing reference to cards total expenses.
+ * Update sheet 'Summary'.
+ *
+ * 0.37.6
+ */
+function update_v0m37p6_ () {
+  try {
+    update_v0m37p6s0_();
+
+    const rr = update_v0m37p6s1_();
+    if (rr) return rr;
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
+
+function update_v0m37p6s1_ () {
+  try {
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    let sheet;
+
+    sheet = spreadsheet.getSheetByName('Summary');
+    if (sheet) spreadsheet.deleteSheet(sheet);
+
+    const template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
+    sheet = template.getSheetByName('Summary')
+      .copyTo(spreadsheet)
+      .setName('Summary');
+
+    sheet.setTabColor('#e69138');
+    spreadsheet.setActiveSheet(sheet);
+    spreadsheet.moveActiveSheet(1);
+
+    SETUP_SETTINGS = {
+      financial_year: getConstProperties_('financial_year'),
+      decimal_places: getSpreadsheetSettings_('decimal_places'),
+      number_format: '#,##0.00;(#,##0.00)'
+    };
+
+    const dec_p = SETUP_SETTINGS.decimal_places;
+    const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
+    SETUP_SETTINGS.number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
+
+    setupSummary_();
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p6s0_ () {
+  try {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    if (!sheet) return;
+
+    const num_acc = getConstProperties_('number_accounts');
+    const card_total = ['B6', 'B7', 'B16', 'B17', 'B26', 'B27', 'B36', 'B37', 'B46', 'B47', 'B56', 'B57', 'B66', 'B67', 'B76', 'B77', 'B86', 'B87', 'B96', 'B97', 'B106', 'B107', 'B116', 'B117'];
+
+    const w_ = TABLE_DIMENSION.width;
+
+    SpreadsheetApp.flush();
+    sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (w_ + w_ * num_acc) + ']');
+    SpreadsheetApp.flush();
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
+
+/**
+ * Delete property 'settings_candidate'.
+ * Update decimal separator.
+ * Update 'BSCARDPART()' function based on decimal separator settings.
+ *
+ * 0.37.3
+ */
+function update_v0m37p3_ () {
+  try {
+    PropertiesService2.deleteProperty('document', 'settings_candidate');
+
+    updateDecimalSeparator_();
+
+    const decimal_separator = getSpreadsheetSettings_('decimal_separator');
+    if (decimal_separator) return;
+
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    if (!sheet) return;
+
+    const number_accounts = getConstProperties_('number_accounts');
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const col = 2 + w_ + w_ * number_accounts + w_;
+    const max2 = 400;
+
+    let mm = -1;
+    while (++mm < 12) {
+      const range1A1 = rollA1Notation(6, 4 + 6 * mm, max2);
+      const range2A1 = rollA1Notation(6, 3 + 6 * mm, max2);
+
+      for (let k = 0; k < 10; k++) {
+        const header2 = rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
+
+        let formula = 'REGEXEXTRACT(ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+        formula = 'ARRAYFORMULA(SPLIT(' + formula + '; "/"))';
+        formula = '{' + formula + '\\ ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1)}; ';
+        formula = formula + 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range2A1 + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
+
+        formula = formula + 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range1A1 + '; ' + header2 + '; 1))); ';
+        formula = formula + 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 2 + 6 * mm, max2) + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+
+        formula = 'BSCARDPART(TRANSPOSE(IFNA(FILTER(' + formula + '); 0)))';
+        formula = 'IF(' + rollA1Notation(1, col + w_ * k) + ' = ""; 0; ' + formula + ')';
+
+        sheet.getRange(5 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
+      }
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
 
 /**
  * Set spreadsheet and settings metadata.
@@ -201,7 +585,7 @@ function update_v0m36p4_ () {
 
 function update_v0m36p4s2_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return 1;
 
     const db = getTablesService_('all');
@@ -258,7 +642,7 @@ function update_v0m36p4s2_ () {
 
 function update_v0m36p4s1_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const list = spreadsheet.createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .withKey('const_properties')
@@ -284,7 +668,7 @@ function update_v0m36p4s1_ () {
 
 function update_v0m36p4s0_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const list = spreadsheet.createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .withKey('bs_sig')
@@ -308,7 +692,7 @@ function update_v0m36p4s0_ () {
  */
 function update_v0m36p3_ () {
   try {
-    SpreadsheetApp.getActiveSpreadsheet()
+    SpreadsheetApp2.getActiveSpreadsheet()
       .setRecalculationInterval(SpreadsheetApp.RecalculationInterval.ON_CHANGE);
 
     let onOpen = PropertiesService2.getProperty('document', 'onOpenTriggerId', 'string');
@@ -364,7 +748,7 @@ function update_v0m36p2_ () {
  */
 function update_v0m35p2_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const sheet = spreadsheet.getSheetByName('Summary');
     if (!sheet) return;
 
@@ -383,7 +767,7 @@ function update_v0m35p2_ () {
  */
 function update_v0m35p1_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const sheet = spreadsheet.getSheetByName('Summary');
     if (!sheet) return;
 
@@ -432,7 +816,7 @@ function update_v0m35p0_ () {
 
 function update_v0m35p0s1_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const sheet = spreadsheet.getSheetByName('Summary');
     let i;
 
@@ -441,9 +825,9 @@ function update_v0m35p0s1_ () {
     const h_ = TABLE_DIMENSION.height;
 
     sheet.getRange(2, 13, 3, 1).setFormulas([
-      ["'_Settings'!B3"],
-      ["'_Settings'!B4"],
-      ["'_Settings'!B6"]
+      ['_Settings!B3'],
+      ['_Settings!B4'],
+      ['_Settings!B6']
     ]);
 
     sheet.getRange(2, 13).copyTo(
@@ -469,8 +853,8 @@ function update_v0m35p0s1_ () {
     // sheet.getRange(25, 4).setFormula('IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11, 4) + ', -' + rollA1Notation(11, 6) + ', 0, 0}; {0, 0, ' + rollA1Notation(11, 4) + ', -' + rollA1Notation(11, 6) + '})');
 
     sheet.getRange(9, 4, 1, 5).setFormulas([[
-      "=IF(_Settings!$B6 > 0;  {SUM(OFFSET($D10; '_Settings'!$B4; 0; '_Settings'!$B6; 1)); AVERAGE(OFFSET($D10; '_Settings'!$B4; 0; '_Settings'!$B6; 1))}; {0; 0})", null,
-      "=IF(_Settings!$B6 > 0;  {SUM(OFFSET($F10; '_Settings'!$B4; 0; '_Settings'!$B6; 1)); AVERAGE(OFFSET($F10; '_Settings'!$B4; 0; '_Settings'!$B6; 1))}; {0; 0})", null,
+      '=IF(_Settings!$B6 > 0;  {SUM(OFFSET($D10; _Settings!$B4; 0; _Settings!$B6; 1)); AVERAGE(OFFSET($D10; _Settings!$B4; 0; _Settings!$B6; 1))}; {0; 0})', null,
+      '=IF(_Settings!$B6 > 0;  {SUM(OFFSET($F10; _Settings!$B4; 0; _Settings!$B6; 1)); AVERAGE(OFFSET($F10; _Settings!$B4; 0; _Settings!$B6; 1))}; {0; 0})', null,
       '=D9 + F9'
     ]]);
 
@@ -505,7 +889,7 @@ function update_v0m35p0s1_ () {
 
 function update_v0m35p0s0_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     let sheet;
     let expr1, expr2, expr3, expr4;
 
@@ -515,21 +899,21 @@ function update_v0m35p0s0_ () {
     const num_acc = getConstProperties_('number_accounts');
 
     for (let i = 0; i < 12; i++) {
-      sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+      sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
       if (!sheet) continue;
 
       for (k = 0; k < num_acc; k++) {
-        expr1 = "TEXT('_Backstage'!" + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-        expr1 = '"Withdrawal: ["; \'_Backstage\'!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
+        expr1 = 'TEXT(_Backstage!' + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr1 = '"Withdrawal: ["; _Backstage!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
 
-        expr2 = "TEXT('_Backstage'!" + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-        expr2 = '"Deposit: ["; \'_Backstage\'!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr2 + '; "\n"; ';
+        expr2 = 'TEXT(_Backstage!' + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr2 = '"Deposit: ["; _Backstage!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr2 + '; "\n"; ';
 
-        expr3 = "TEXT('_Backstage'!" + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-        expr3 = '"Trf. in: ["; \'_Backstage\'!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr3 + '; "\n"; ';
+        expr3 = 'TEXT(_Backstage!' + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr3 = '"Trf. in: ["; _Backstage!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr3 + '; "\n"; ';
 
-        expr4 = "TEXT('_Backstage'!" + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-        expr4 = '"Trf. out: ["; \'_Backstage\'!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
+        expr4 = 'TEXT(_Backstage!' + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+        expr4 = '"Trf. out: ["; _Backstage!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
 
         sheet.getRange(1, 8 + 5 * k).setFormula('CONCATENATE(' + expr1 + expr2 + expr3 + expr4 + ')');
       }
@@ -546,7 +930,7 @@ function update_v0m35p0s0_ () {
  */
 function update_v0m34p10_ () {
   try {
-    SpreadsheetApp.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.ON_CHANGE);
+    SpreadsheetApp2.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.ON_CHANGE);
   } catch (err) {
     ConsoleLog.error(err);
   }
@@ -586,7 +970,7 @@ function update_v0m34p0_ () {
  */
 function update_v0m33p9_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return 1;
 
     const h_ = TABLE_DIMENSION.height;
@@ -636,7 +1020,7 @@ function update_v0m33p2_ () {
  */
 function update_v0m33p1_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
     let rule;
     if (!sheet) return;
 
@@ -655,7 +1039,7 @@ function update_v0m33p1_ () {
 
     range = sheet.getRange(2, 6, maxRows, 12);
     rule = SpreadsheetApp.newConditionalFormatRule()
-      .whenFormulaSatisfied("=COLUMN() - 5 < INDIRECT(\"'_Settings'!B4\")")
+      .whenFormulaSatisfied('=COLUMN() - 5 < INDIRECT("_Settings!B4")')
       .setFontColor('#cccccc')
       .setRanges([range])
       .build();
@@ -663,7 +1047,7 @@ function update_v0m33p1_ () {
 
     range = sheet.getRange(2, 6, maxRows, 12);
     rule = SpreadsheetApp.newConditionalFormatRule()
-      .whenFormulaSatisfied("=COLUMN() - 5 > INDIRECT(\"'_Settings'!B4\") - 1 + INDIRECT(\"'_Settings'!B6\")")
+      .whenFormulaSatisfied('=COLUMN() - 5 > INDIRECT("_Settings!B4") - 1 + INDIRECT("_Settings!B6")')
       .setFontColor('#999999')
       .setRanges([range])
       .build();
@@ -686,14 +1070,14 @@ function update_v0m33p1_ () {
 function update_v0m33p0_ () {
   try {
     let rr;
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     let i;
 
     const limits = [];
     const sheets = [];
 
     for (i = 0; i < 12; i++) {
-      sheets[i] = spreadsheet.getSheetByName(MN_SHORT[i]);
+      sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
       if (sheets[i]) limits[i] = sheets[i].getMaxRows();
       else limits[i] = 0;
     }
@@ -733,17 +1117,17 @@ function update_v0m33p0s3_ (spreadsheet) {
     rules.push(rule);
     sheet.setConditionalFormatRules(rules);
 
-    formula = "ARRAYFORMULA(IF(E2:E <> \"\"; $T$2:$T/'_Settings'!B6; ))";
-    formula = "IF('_Settings'!$B$6 > 0; " + formula + '; ARRAYFORMULA($F$2:$F * 0))';
-    formula = "IF('_Settings'!$B$7 > 0; " + formula + '; "")';
+    formula = 'ARRAYFORMULA(IF(E2:E <> ""; $T$2:$T/_Settings!B6; ))';
+    formula = 'IF(_Settings!$B$6 > 0; ' + formula + '; ARRAYFORMULA($F$2:$F * 0))';
+    formula = 'IF(_Settings!$B$7 > 0; ' + formula + '; "")';
     formula = '{"average"; ' + formula + '}';
     sheet.getRange(1, 19).setFormula(formula);
 
-    formula = 'IF(COLUMN(' + rollA1Notation(2, 6, n, 12) + ") - 5 < '_Settings'!$B$4 + '_Settings'!$B$6; ROW(" + rollA1Notation(2, 6, n) + '); 0)';
-    formula = 'IF(COLUMN(' + rollA1Notation(2, 6, n, 12) + ") - 5 >= '_Settings'!$B$4; " + formula + '; 0)';
+    formula = 'IF(COLUMN(' + rollA1Notation(2, 6, n, 12) + ') - 5 < _Settings!$B$4 + _Settings!$B$6; ROW(' + rollA1Notation(2, 6, n) + '); 0)';
+    formula = 'IF(COLUMN(' + rollA1Notation(2, 6, n, 12) + ') - 5 >= _Settings!$B$4; ' + formula + '; 0)';
     formula = 'ARRAYFORMULA(IF(E2:E <> ""; SUMIF(' + formula + '; ROW(' + rollA1Notation(2, 6, n) + '); ' + rollA1Notation(2, 6, n) + '); ))';
-    formula = "IF('_Settings'!$B$6 > 0; " + formula + '; ARRAYFORMULA($F$2:$F * 0))';
-    formula = "IF('_Settings'!$B$7 > 0; " + formula + '; "")';
+    formula = 'IF(_Settings!$B$6 > 0; ' + formula + '; ARRAYFORMULA($F$2:$F * 0))';
+    formula = 'IF(_Settings!$B$7 > 0; ' + formula + '; "")';
     formula = '{"total"; ' + formula + '}';
     sheet.getRange(1, 20).setFormula(formula);
 
@@ -796,38 +1180,38 @@ function update_v0m33p0s2_ (spreadsheet, limits) {
         header2 = rollA1Notation(2 + h_ * i, col + 4 + w_ * k);
 
         formula = 'IFERROR(IF(' + header + ' = ""; ""; SUM(FILTER(';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1); ';
-        formula += "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
-        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1))); ';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1) >= 0';
+        formula += 'ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1); ';
+        formula += 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
+        formula += 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1))); ';
+        formula += 'ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1) >= 0';
         formula += '))); 0)';
         sheet.getRange(3 + h_ * i, col + w_ * k).setFormula(formula);
 
         formula = 'IFERROR(IF(' + header + ' = ""; ""; SUM(FILTER(';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1); ';
-        formula += "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
-        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1))); ';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1) < 0; ';
-        formula += "NOT(REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range5[i] + '; ' + header2 + '; 1); ';
+        formula += 'ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1); ';
+        formula += 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
+        formula += 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1))); ';
+        formula += 'ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1) < 0; ';
+        formula += 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range5[i] + '; ' + header2 + '; 1); ';
         formula += '"#ign"))';
         formula += '))); 0)';
         sheet.getRange(4 + h_ * i, col + w_ * k).setFormula(formula);
 
         formula = 'IFERROR(IF(' + header + ' = ""; ""; SUM(FILTER(';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1); ';
-        formula += "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
-        formula += "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1))); ';
-        formula += "ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1) < 0';
+        formula += 'ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1); ';
+        formula += 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range3[i] + '; ' + header2 + '; 1); ' + header + '); ';
+        formula += 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1))); ';
+        formula += 'ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1) < 0';
         formula += '))); 0)';
         sheet.getRange(5 + h_ * i, col + w_ * k).setFormula(formula);
 
-        formula = "REGEXEXTRACT(ARRAY_CONSTRAIN('Cards'!" + range2[i] + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+        formula = 'REGEXEXTRACT(ARRAY_CONSTRAIN(Cards!' + range2[i] + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
         formula = 'ARRAYFORMULA(SPLIT(' + formula + '; "/"))';
-        formula = '{' + formula + dec_c + " ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1)}; ';
-        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range3[i] + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
+        formula = '{' + formula + dec_c + ' ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1)}; ';
+        formula = formula + 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range3[i] + '; ' + header2 + '; 1); ' + rollA1Notation(1, col + w_ * k) + '); ';
 
-        formula = formula + "NOT(ISBLANK(ARRAY_CONSTRAIN('Cards'!" + range4[i] + '; ' + header2 + '; 1))); ';
-        formula = formula + "REGEXMATCH(ARRAY_CONSTRAIN('Cards'!" + range2[i] + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
+        formula = formula + 'NOT(ISBLANK(ARRAY_CONSTRAIN(Cards!' + range4[i] + '; ' + header2 + '; 1))); ';
+        formula = formula + 'REGEXMATCH(ARRAY_CONSTRAIN(Cards!' + range2[i] + '; ' + header2 + '; 1); "[0-9]+/[0-9]+")';
 
         formula = 'BSCARDPART(TRANSPOSE(IFNA(FILTER(' + formula + '); 0)))';
         formula = 'IF(' + rollA1Notation(1, col + w_ * k) + ' = ""; 0; ' + formula + ')';
@@ -869,17 +1253,17 @@ function update_v0m33p0s1_ (spreadsheet, limits) {
     while (++i < 12) {
       if (limits[i] < 6) continue;
 
-      rg = "{ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!C5:D" + limits[i] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6) + '; 2)';
-      cd = "{ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!D5:D" + limits[i] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6) + '; 1)';
+      rg = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!C5:D' + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6) + '; 2)';
+      cd = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!D5:D' + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6) + '; 1)';
 
       for (k = 0; k < num_acc; k++) {
-        rg += "; ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + combo[k] + limits[i] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 2)';
-        cd += "; ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[k] + limits[i] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 1)';
+        rg += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + combo[k] + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 2)';
+        cd += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + tags[k] + limits[i] + '; _Backstage!' + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 1)';
       }
 
       if (limit > 6) {
-        rg += "; ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 4 + 6 * i, limit - 5, 2) + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, col) + '; 2)}';
-        cd += "; ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 5 + 6 * i, limit - 5, 1) + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, col) + ' ; 1)}';
+        rg += '; ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 4 + 6 * i, limit - 5, 2) + '; _Backstage!' + rollA1Notation(2 + h_ * i, col) + '; 2)}';
+        cd += '; ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 5 + 6 * i, limit - 5, 1) + '; _Backstage!' + rollA1Notation(2 + h_ * i, col) + ' ; 1)}';
       } else {
         rg += '}';
         cd += '}';
@@ -887,7 +1271,7 @@ function update_v0m33p0s1_ (spreadsheet, limits) {
 
       formula = 'IFERROR(FILTER(' + rg + '; NOT(ISBLANK(' + cd + '))); "")';
       formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';
-      formula = '{"' + MN_FULL[i] + "\"; IF('_Settings'!$B$7 > 0; " + formula + '; )}';
+      formula = '{"' + MONTH_NAME.long[i] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
 
       sheet.getRange(1, 6 + i).setFormula(formula);
     }
@@ -924,26 +1308,26 @@ function update_v0m33p0s0_ (spreadsheet, limits) {
     while (++i < 12) {
       if (limits[i] < 6) continue;
 
-      formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!D5:D" + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); "#ign"))';
-      formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!C5:C" + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1))); ' + formula;
-      formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!C5:C" + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); ' + formula + ')';
+      formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!D5:D' + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); "#ign"))';
+      formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!C5:C' + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1))); ' + formula;
+      formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!C5:C' + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 6) + '; 1); ' + formula + ')';
       formula = 'SUM(IFERROR(' + formula + '; 0))';
       sheet.getRange(4 + h_ * i, 2).setFormula(formula);
 
       for (k = 0; k < num_acc; k++) {
-        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
-        formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
+        formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
+        formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
         formula = balance1[5 * i + k] + ' + IFERROR(SUM(' + formula + '); 0)';
         sheet.getRange(3 + h_ * i, 7 + w_ * k).setFormula(formula);
 
-        formula = "NOT(REGEXMATCH(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
-        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1))); ' + formula;
-        formula = "FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
+        formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
+        formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1))); ' + formula;
+        formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + values[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1); ' + formula + ')';
         formula = 'IFERROR(SUM(' + formula + '); 0)';
         sheet.getRange(4 + h_ * i, 7 + w_ * k).setFormula(formula);
 
-        formula = "NOT(ISBLANK(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
-        formula = "IFERROR(FILTER(ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + combo[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 2); ' + formula + '); "")';
+        formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + tags[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 1)))';
+        formula = 'IFERROR(FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + combo[k] + limits[i] + '; ' + rollA1Notation(2 + h_ * i, 11 + w_ * k) + '; 2); ' + formula + '); "")';
         formula = 'BSREPORT(TRANSPOSE(' + formula + '))';
         sheet.getRange(2 + h_ * i, 8 + w_ * k).setFormula(formula);
       }
@@ -963,7 +1347,7 @@ function update_v0m33p0s0_ (spreadsheet, limits) {
  */
 function update_v0m32p7_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const backstage = spreadsheet.getSheetByName('_Backstage');
     let n, i, k;
 
@@ -994,14 +1378,14 @@ function update_v0m32p7_ () {
     }
 
     for (i = 0; i < 12; i++) {
-      sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+      sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
       if (!sheet) continue;
       n = sheet.getMaxRows() - 4;
       if (n < 1) continue;
 
-      wallet[h_ * i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + rollA1Notation(5, 3, n, 1) + '))'];
+      wallet[h_ * i] = ['BSBLANK(TRANSPOSE(' + MONTH_NAME.short[i] + '!' + rollA1Notation(5, 3, n, 1) + '))'];
       for (k = 0; k < num_acc; k++) {
-        accounts[k][h_ * i] = ['BSBLANK(TRANSPOSE(\'' + MN_SHORT[i] + '\'!' + rollA1Notation(5, 8 + 5 * k, n, 1) + '))'];
+        accounts[k][h_ * i] = ['BSBLANK(TRANSPOSE(' + MONTH_NAME.short[i] + '!' + rollA1Notation(5, 8 + 5 * k, n, 1) + '))'];
       }
     }
 
@@ -1016,7 +1400,7 @@ function update_v0m32p7_ () {
     if (n < 1) return;
 
     for (i = 0; i < 12; i++) {
-      cards[h_ * i] = ['BSBLANK(TRANSPOSE(\'Cards\'!' + rollA1Notation(6, 4 + 6 * i, n, 1) + '))'];
+      cards[h_ * i] = ['BSBLANK(TRANSPOSE(Cards!' + rollA1Notation(6, 4 + 6 * i, n, 1) + '))'];
     }
     backstage.getRange(2, 6 + w_ * num_acc + w_, height, 1).setFormulas(cards);
 
@@ -1041,7 +1425,7 @@ function update_v0m32p7_ () {
  */
 function update_v0m32p6_ () {
   try {
-    const triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet());
+    const triggers = ScriptApp.getUserTriggers(SpreadsheetApp2.getActiveSpreadsheet());
 
     for (let i = 0; i < triggers.length; i++) {
       if (triggers[i].getEventType() === ScriptApp.EventType.CLOCK) {
@@ -1093,7 +1477,7 @@ function update_v0m32p2_ () {
 
 function update_v0m32p2s1_ () {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     let sheet;
 
     sheet = spreadsheet.getSheetByName('Quick Actions');
@@ -1133,7 +1517,7 @@ function update_v0m32p2s1_ () {
 
 function update_v0m32p2s0_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Tags');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
     if (!sheet) return;
 
     sheet.getRange(1, 1, 1, 5).setValues([
@@ -1151,7 +1535,7 @@ function update_v0m32p2s0_ () {
  */
 function update_v0m31p8_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     let card, ranges, text, i, j;
 
     const h_ = TABLE_DIMENSION.height;
@@ -1192,7 +1576,7 @@ function update_v0m31p8_ () {
  */
 function update_v0m31p7_ () {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     let formula, i;
 
     if (!sheet) return;
@@ -1200,9 +1584,9 @@ function update_v0m31p7_ () {
     const h_ = TABLE_DIMENSION.height;
 
     for (i = 0; i < 12; i++) {
-      formula = "NOT(REGEXMATCH('" + MN_SHORT[i] + "'!D5:D404; \"#ign\"))";
-      formula = "NOT(ISBLANK('" + MN_SHORT[i] + "'!C5:C404)); " + formula;
-      formula = "FILTER('" + MN_SHORT[i] + "'!C5:C404; " + formula + ')';
+      formula = 'NOT(REGEXMATCH(' + MONTH_NAME.short[i] + '!D5:D404; "#ign"))';
+      formula = 'NOT(ISBLANK(' + MONTH_NAME.short[i] + '!C5:C404)); ' + formula;
+      formula = 'FILTER(' + MONTH_NAME.short[i] + '!C5:C404; ' + formula + ')';
       formula = 'SUM(IFNA(' + formula + '; 0))';
 
       sheet.getRange(4 + h_ * i, 2).setFormula(formula);
@@ -1272,7 +1656,7 @@ function update_v0m30p6_ () {
 
     installClock = false;
     installOnEdit = false;
-    const triggers = ScriptApp.getUserTriggers(SpreadsheetApp.getActiveSpreadsheet());
+    const triggers = ScriptApp.getUserTriggers(SpreadsheetApp2.getActiveSpreadsheet());
 
     for (let i = 0; i < triggers.length; i++) {
       name = triggers[i].getHandlerFunction();

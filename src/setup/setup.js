@@ -44,7 +44,7 @@ function setupLock (select, param1, param2) {
 
 function setupNew_ (settings, list_acc) {
   console.time('setup/new');
-  SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   setupValidate_();
 
@@ -81,13 +81,12 @@ function setupNew_ (settings, list_acc) {
     ConsoleLog.error(err);
   }
 
-  SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
 
   showDialogSetupEnd();
   onOpen();
 
-  SPREADSHEET = null;
   SETUP_SETTINGS = null;
   console.timeEnd('setup/new');
 }
@@ -98,25 +97,27 @@ function setupRestore_ (fileId) {
   const settings_candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
   if (settings_candidate.file_id !== fileId) throw new Error('File ID does not match.');
 
-  const backup = settings_candidate.backup;
+  const parts = DriveApp.getFileById(fileId)
+    .getBlob()
+    .getAs('text/plain')
+    .getDataAsString()
+    .split(':');
 
-  const list_acc = [];
-  for (const i in backup.db_tables.accounts) {
-    list_acc.push(backup.db_tables.accounts[i].name);
-  }
+  const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+  if (sha !== parts[1]) throw new Error("Hashes doesn't match.");
 
-  SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   setupValidate_();
 
   SETUP_SETTINGS = {
-    spreadsheet_name: backup.backup.spreadsheet_title,
-    decimal_places: backup.spreadsheet_settings.decimal_places,
+    spreadsheet_name: settings_candidate.spreadsheet_title,
+    decimal_places: settings_candidate.decimal_places,
     number_format: '#,##0.00;(#,##0.00)',
-    financial_year: backup.const_properties.financial_year,
-    init_month: backup.user_settings.initial_month,
-    number_accounts: backup.const_properties.number_accounts,
-    list_acc: list_acc,
+    financial_year: settings_candidate.financial_year,
+    init_month: settings_candidate.initial_month,
+    number_accounts: settings_candidate.number_accounts,
+    list_acc: settings_candidate.list_acc,
     decimal_separator: true
   };
 
@@ -127,7 +128,9 @@ function setupRestore_ (fileId) {
   setupPrepare_();
   setupParts_();
 
+  const backup = JSON.parse(base64DecodeWebSafe(parts[0], 'UTF_8'));
   restoreFromBackup_(backup);
+  PropertiesService2.deleteProperty('document', 'settings_candidate');
 
   const class_version2 = {
     script: APPS_SCRIPT_GLOBAL.script_version,
@@ -144,13 +147,12 @@ function setupRestore_ (fileId) {
     ConsoleLog.error(err);
   }
 
-  SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
 
   showDialogSetupEnd();
   onOpen();
 
-  SPREADSHEET = null;
   SETUP_SETTINGS = null;
   console.timeEnd('setup/restore');
 }
@@ -158,10 +160,10 @@ function setupRestore_ (fileId) {
 function setupCopy_ (file_id) {
   console.time('setup/copy');
 
-  const settings_candidate = PropertiesService2.getProperty('document', 'settings_pc', 'json');
+  const settings_candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
   if (settings_candidate.file_id !== file_id) throw new Error('File ID does not match.');
 
-  SPREADSHEET = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   setupValidate_();
 
@@ -180,6 +182,7 @@ function setupCopy_ (file_id) {
   setupParts_();
 
   restoreFromSpreadsheet_(settings_candidate.file_id);
+  PropertiesService2.deleteProperty('document', 'settings_candidate');
 
   const class_version2 = {
     script: APPS_SCRIPT_GLOBAL.script_version,
@@ -196,13 +199,12 @@ function setupCopy_ (file_id) {
     ConsoleLog.error(err);
   }
 
-  SPREADSHEET.setActiveSheet(SPREADSHEET.getSheetByName('Summary'));
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
 
   showDialogSetupEnd();
   onOpen();
 
-  SPREADSHEET = null;
   SETUP_SETTINGS = null;
   console.timeEnd('setup/copy');
 }
@@ -212,24 +214,27 @@ function setupValidate_ () {
   if (isInstalled_()) throw new Error('Add-on is already installed.');
   if (PropertiesService2.getProperty('document', 'lock_spreadsheet', 'boolean')) throw new Error('Spreadsheet is locked.');
 
-  let owner = SPREADSHEET.getOwner();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+
+  let owner = spreadsheet.getOwner();
   if (owner) owner = owner.getEmail();
   else owner = '';
 
   const user = Session.getEffectiveUser().getEmail();
 
   if (owner && owner !== user) throw new Error('Missing ownership rights.');
-  if (SPREADSHEET.getFormUrl()) throw new Error('Spreadsheet has a form linked.');
+  if (spreadsheet.getFormUrl()) throw new Error('Spreadsheet has a form linked.');
 }
 
 function setupPrepare_ () {
-  SPREADSHEET.rename(SETUP_SETTINGS.spreadsheet_name);
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  spreadsheet.rename(SETUP_SETTINGS.spreadsheet_name);
 
   PropertiesService2.deleteAllProperties('document');
   deleteAllTriggers_();
   CacheService2.removeAll('document', CACHE_KEYS);
 
-  const metadata = SPREADSHEET.createDeveloperMetadataFinder()
+  const metadata = spreadsheet.createDeveloperMetadataFinder()
     .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
     .find();
 

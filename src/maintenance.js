@@ -3,7 +3,7 @@ function askOptimizeAll () {
 }
 
 function askSetRecalculation () {
-  SpreadsheetApp.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.HOUR);
+  SpreadsheetApp2.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.HOUR);
 }
 
 function rollOperationMode_ (mode) {
@@ -19,6 +19,7 @@ function rollOperationMode_ (mode) {
 }
 
 function askDeactivation () {
+  console.info('menu/More/Deactive the add-on');
   if (!isInstalled_()) {
     uninstall_();
     onOpen();
@@ -37,7 +38,7 @@ function askDeactivation () {
 
   const response1 = ui.alert(
     'Deactivate the add-on',
-    'The deactivation affects only this spreadsheet: ' + SpreadsheetApp.getActiveSpreadsheet().getName() + '.\n\n' +
+    'The deactivation affects only this spreadsheet: ' + SpreadsheetApp2.getActiveSpreadsheet().getName() + '.\n\n' +
     'By deactivating the add-on:\n' +
     '- All add-on features are disabled.\n' +
     '- Updates and maintenance cease.\n' +
@@ -67,6 +68,7 @@ function askDeactivation () {
 }
 
 function askResetProtection () {
+  console.info('sidebar/Settings/Advanced/Reset');
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
@@ -74,7 +76,7 @@ function askResetProtection () {
     return;
   }
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, ranges, range;
   let protections, protection;
   let n, i, j, k;
@@ -82,7 +84,7 @@ function askResetProtection () {
   number_accounts = getConstProperties_('number_accounts');
 
   for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (!sheet) continue;
 
     n = sheet.getMaxRows() - 4;
@@ -155,6 +157,7 @@ function askResetProtection () {
 }
 
 function askReinstallTriggersUi () {
+  console.info('sidebar/Settings/Advanced/Reinstall');
   if (!isUserAdmin_()) {
     SpreadsheetApp.getUi().alert(
       'Permission denied',

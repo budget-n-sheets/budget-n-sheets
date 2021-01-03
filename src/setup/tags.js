@@ -1,5 +1,8 @@
 function setupTags_ () {
-  const sheet = SPREADSHEET.getSheetByName('Tags');
+  const formulaBuild = FormulaBuild.tags();
+  let testBuild;
+
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
   let formula, rg, cd;
   let i, k;
 
@@ -19,38 +22,56 @@ function setupTags_ () {
     .setUnprotectedRanges([ranges])
     .setWarningOnly(true);
 
+  const buildMonths = formulaBuild.table();
+
   for (i = 0; i < 12; i++) {
-    rg = "{ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + combo[0] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6) + '; 2)';
-    cd = "{ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[0] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6) + '; 1)';
+    let ref = rollA1Notation(2 + h_ * i, 6);
+    rg = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + combo[0] + '; _Backstage!' + ref + '; 2)';
+    cd = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + tags[0] + '; _Backstage!' + ref + '; 1)';
 
     for (k = 1; k < 1 + num_acc; k++) {
-      rg += "; ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + combo[k] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 2)';
-      cd += "; ARRAY_CONSTRAIN('" + MN_SHORT[i] + "'!" + tags[k] + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, 6 + w_ * k) + '; 1)';
+      const ref = rollA1Notation(2 + h_ * i, 6 + w_ * k);
+      rg += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + combo[k] + '; _Backstage!' + ref + '; 2)';
+      cd += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[i] + '!' + tags[k] + '; _Backstage!' + ref + '; 1)';
     }
 
-    rg += "; ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 4 + 6 * i, 400, 2) + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, col) + '; 2)}';
-    cd += "; ARRAY_CONSTRAIN('Cards'!" + rollA1Notation(6, 5 + 6 * i, 400, 1) + "; '_Backstage'!" + rollA1Notation(2 + h_ * i, col) + ' ; 1)}';
+    ref = rollA1Notation(2 + h_ * i, col);
+    rg += '; ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 4 + 6 * i, 400, 2) + '; _Backstage!' + ref + '; 2)}';
+    cd += '; ARRAY_CONSTRAIN(Cards!' + rollA1Notation(6, 5 + 6 * i, 400, 1) + '; _Backstage!' + ref + ' ; 1)}';
 
     formula = 'IFERROR(FILTER(' + rg + '; NOT(ISBLANK(' + cd + '))); "")';
     formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';
-    formula = '{"' + MN_FULL[i] + "\"; IF('_Settings'!$B$7 > 0; " + formula + '; )}';
+    formula = '{"' + MONTH_NAME.long[i] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
+
+    testBuild = buildMonths.month(400, 400, i);
+    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.tags().table().month()');
 
     formulas[0][i] = formula;
   }
   sheet.getRange(1, 6, 1, 12).setFormulas(formulas);
 
-  formula = "ARRAYFORMULA(IF(E2:E <> \"\"; $T$2:$T/'_Settings'!B6; ))";
-  formula = "IF('_Settings'!$B$6 > 0; " + formula + '; ARRAYFORMULA($F$2:$F * 0))';
-  formula = "IF('_Settings'!$B$7 > 0; " + formula + '; "")';
+  const buildStats = formulaBuild.stats();
+
+  formula = 'ARRAYFORMULA(IF(E2:E <> ""; $T$2:$T/_Settings!B6; ))';
+  formula = 'IF(_Settings!$B$6 > 0; ' + formula + '; ARRAYFORMULA($F$2:$F * 0))';
+  formula = 'IF(_Settings!$B$7 > 0; ' + formula + '; "")';
   formula = '{"average"; ' + formula + '}';
+
+  testBuild = buildStats.average();
+  if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.tags().stats().average()');
   sheet.getRange(1, 19).setFormula(formula);
 
-  formula = 'IF(COLUMN(' + rollA1Notation(2, 6, -1, 12) + ") - 5 < '_Settings'!$B$4 + '_Settings'!$B$6; ROW(" + rollA1Notation(2, 6, -1) + '); 0)';
-  formula = 'IF(COLUMN(' + rollA1Notation(2, 6, -1, 12) + ") - 5 >= '_Settings'!$B$4; " + formula + '; 0)';
-  formula = 'ARRAYFORMULA(IF(E2:E <> ""; SUMIF(' + formula + '; ROW(' + rollA1Notation(2, 6, -1) + '); ' + rollA1Notation(2, 6, -1) + '); ))';
-  formula = "IF('_Settings'!$B$6 > 0; " + formula + '; ARRAYFORMULA($F$2:$F * 0))';
-  formula = "IF('_Settings'!$B$7 > 0; " + formula + '; "")';
+  const ref1 = rollA1Notation(2, 6, -1);
+  const ref2 = rollA1Notation(2, 6, -1, 12);
+  formula = 'IF(COLUMN(' + ref2 + ') - 5 < _Settings!$B$4 + _Settings!$B$6; ROW(' + ref1 + '); 0)';
+  formula = 'IF(COLUMN(' + ref2 + ') - 5 >= _Settings!$B$4; ' + formula + '; 0)';
+  formula = 'ARRAYFORMULA(IF(E2:E <> ""; SUMIF(' + formula + '; ROW(' + ref1 + '); ' + ref1 + '); ))';
+  formula = 'IF(_Settings!$B$6 > 0; ' + formula + '; ARRAYFORMULA($F$2:$F * 0))';
+  formula = 'IF(_Settings!$B$7 > 0; ' + formula + '; "")';
   formula = '{"total"; ' + formula + '}';
+
+  testBuild = buildStats.total();
+  if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.tags().stats().total()');
   sheet.getRange(1, 20).setFormula(formula);
 
   if (SETUP_SETTINGS.decimal_places !== 2) {

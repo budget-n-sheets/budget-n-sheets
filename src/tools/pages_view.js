@@ -1,8 +1,10 @@
 function toolShowSheets_ () {
+  console.info('menu/Pages view/Expand');
   pagesView_('show');
 }
 
 function toolHideSheets_ () {
+  console.info('menu/Pages view/Collapse');
   pagesView_('hide');
 }
 
@@ -44,7 +46,7 @@ function hideSheets_ (a) {
     mm = getSpreadsheetDate.call(DATE_NOW).getMonth();
   } else {
     sheet = SpreadsheetApp.getActiveSheet();
-    mm = MN_SHORT.indexOf(sheet.getName());
+    mm = MONTH_NAME.short.indexOf(sheet.getName());
     if (mm === -1) {
       SpreadsheetApp.getUi().alert(
         "Can't collapse pages view",
@@ -54,11 +56,11 @@ function hideSheets_ (a) {
     }
   }
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const delta = getMonthDelta(mm);
 
   for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (sheet) {
       if (i < mm + delta[0] || i > mm + delta[1]) sheet.hideSheet();
       else sheet.showSheet();
@@ -67,11 +69,11 @@ function hideSheets_ (a) {
 }
 
 function showSheets_ () {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, i;
 
   for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MN_SHORT[i]);
+    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (sheet) sheet.showSheet();
   }
 }
