@@ -32,7 +32,6 @@ function saveUserSettings (settings) {
   console.info('sidebar/Settings/Settings/Save');
   const user_id = getUserId_();
 
-  let db_calendars, sheet, c;
   const calendar = {
     financial_calendar: '',
     post_day_events: false,
@@ -41,9 +40,9 @@ function saveUserSettings (settings) {
 
   if (user_id === getAdminSettings_('admin_id')) {
     if (settings.financial_calendar) {
-      db_calendars = getAllOwnedCalendars();
+      const db_calendars = getAllOwnedCalendars();
+      const c = db_calendars.md5.indexOf(settings.financial_calendar);
 
-      c = db_calendars.md5.indexOf(settings.financial_calendar);
       if (c !== -1) {
         calendar.financial_calendar = db_calendars.id[c];
         calendar.post_day_events = settings.post_day_events;
