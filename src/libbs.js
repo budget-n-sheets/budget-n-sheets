@@ -123,25 +123,6 @@ function numberFormatLocaleSignal (p_dec_p) {
   return s + i.substr(0, j) + DEC_P + Math.abs(n - i).toFixed(2).slice(2);
 }
 
-/**
- * Number format $0.00;-$0.00
- */
-function numberFormatCalendarSignal (p_dec_p) {
-  let DEC_P;
-
-  if (p_dec_p != null) {
-    DEC_P = p_dec_p ? '.' : ',';
-  } else {
-    DEC_P = getSpreadsheetSettings_('decimal_separator') ? '.' : ',';
-  }
-
-  let n = this;
-  const s = n < 0 ? '-$' : '$';
-  const i = parseInt(n = Math.abs(n).toFixed(2)) + '';
-  const j = i.length;
-  return s + i.substr(0, j) + DEC_P + Math.abs(n - i).toFixed(2).slice(2);
-}
-
 function getTranslation () {
   const translation = { type: '', number: 0 };
   const match = this.match(/@(M(\+|-)(\d+)|Avg|Total)/);
