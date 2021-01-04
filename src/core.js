@@ -110,15 +110,17 @@ function showPanelTables (tab) {
   let htmlTemplate = HtmlService.createTemplateFromFile('html/htmlSidebarTables');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  const dec_p = getSpreadsheetSettings_('decimal_separator');
+  const dec_s = getSpreadsheetSettings_('decimal_separator');
 
-  if (dec_p) {
-    htmlTemplate.dec_p = '.';
-    htmlTemplate.dec_ps = ',';
+  if (dec_s) {
+    htmlTemplate.dec_s = '.';
+    htmlTemplate.dec_t = ',';
   } else {
-    htmlTemplate.dec_p = ',';
-    htmlTemplate.dec_ps = '.';
+    htmlTemplate.dec_s = ',';
+    htmlTemplate.dec_t = '.';
   }
+
+  htmlTemplate.decimal_places = getSpreadsheetSettings_('decimal_places');
 
   if (tab) {
     htmlTemplate.tab_acc = '';

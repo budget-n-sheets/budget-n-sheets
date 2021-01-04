@@ -123,13 +123,26 @@
   </div>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    function formatCurrency() {
-      var dec_p = "<?= dec_p ?>";
-      var dec_ps = "<?= dec_ps ?>";
-      var n = this;
-      var i = parseInt(n = Math.abs(+n || 0).toFixed(2)) + '';
-      var j = (j = i.length) > 3 ? j % 3 : 0;
-      return (j ? i.substr(0, j) + dec_ps : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + dec_ps) + (2 ? dec_p + Math.abs(n - i).toFixed(2).slice(2) : '');
+    function formatCurrency(number) {
+      const dec_s = "<?= dec_s ?>";
+      const dec_t = "<?= dec_t ?>";
+      const dec_p = Number(<?= decimal_places ?>);
+
+      let n = number;
+
+      const s = n < 0;
+
+      n = Math.abs(+n || 0).toFixed(dec_p);
+      const i = parseInt(n) + '';
+
+      let j = i.length;
+      j = j > 3 ? j % 3 : 0;
+
+      let a = (j ? i.substr(0, j) + dec_t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + dec_t) + (dec_p > 0 ? dec_s + Math.abs(n - i).toFixed(dec_p).slice(2) : '');
+
+      if (s) a = '(' + a + ')';
+
+      return a;
     }
 
     $(document).ready(function() {
@@ -216,7 +229,7 @@
         item += "<div class=\"table_row\">";
         item += "<div class=\"item_cell\" style=\"font-size: 14px;line-height: 1.3;\">";
         item += "Initial month: " + MN_FULL[db_accounts[k].time_a] + "<br>";
-        item += "Initial balance: " + formatCurrency.call(db_accounts[k].balance);
+        item += "Initial balance: " + formatCurrency(db_accounts[k].balance);
         item += "</div>";
         item += "</div>";
 
@@ -243,7 +256,7 @@
         item += "<div class=\"table_row\">";
         item += "<div class=\"item_cell\" style=\"font-size: 14px;line-height: 1.3;\">";
         item += "Code: " + db_cards[k].code + "<br>";
-        item += "Credit limit: " + formatCurrency.call(db_cards[k].limit);
+        item += "Credit limit: " + formatCurrency(db_cards[k].limit);
         if (db_cards[k].aliases.length > 0) {
           item += "<br>";
           item += "Code aliases: " + db_cards[k].aliases.join(", ");
