@@ -105,56 +105,6 @@ const FormatNumber = {
 };
 
 /**
- * Number format $ x,xx0.00;-$ x,xx0.00
- */
-function numberFormatCurrency (p_dec_p) {
-  let DEC_P;
-
-  if (p_dec_p != null) {
-    DEC_P = p_dec_p ? '.' : ',';
-  } else {
-    DEC_P = getSpreadsheetSettings_('decimal_separator') ? '.' : ',';
-  }
-
-  const DEC_PS = (DEC_P === '.' ? ',' : '.');
-
-  let n = this;
-  const s = n < 0 ? '-$ ' : '$ ';
-  const i = parseInt(n = Math.abs(+n || 0).toFixed(2)) + '';
-  let j = i.length;
-  j = j > 3 ? j % 3 : 0;
-  return s + (j ? i.substr(0, j) + DEC_PS : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + DEC_PS) + DEC_P + Math.abs(n - i).toFixed(2).slice(2);
-}
-
-/**
- * Number format x,xx0.00;(x,xx0.00)
- */
-function numberFormatFinancial (p_dec_p) {
-  let DEC_P;
-
-  if (p_dec_p != null) {
-    DEC_P = p_dec_p ? '.' : ',';
-  } else {
-    DEC_P = getSpreadsheetSettings_('decimal_separator') ? '.' : ',';
-  }
-
-  const DEC_PS = (DEC_P === '.' ? ',' : '.');
-
-  let n = this;
-  const s = n < 0;
-  const i = parseInt(n = Math.abs(+n || 0).toFixed(2)) + '';
-  let j = i.length;
-  j = j > 3 ? j % 3 : 0;
-  let a = (j ? i.substr(0, j) + DEC_PS : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + DEC_PS) + DEC_P + Math.abs(n - i).toFixed(2).slice(2);
-
-  if (s) {
-    a = '(' + a + ')';
-  }
-
-  return a;
-}
-
-/**
  * Number format +0.00;-0.00
  */
 function numberFormatLocaleSignal (p_dec_p) {
