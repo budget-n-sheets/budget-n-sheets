@@ -37,9 +37,117 @@ function setupLock (select, param1, param2) {
     return;
   }
 
-  if (select === 'new') return setupNew_(param1, param2);
-  if (select === 'restore') return setupRestore_(param1);
-  if (select === 'copy') return setupCopy_(param1);
+  setupAddon_(select, param1, param2);
+}
+
+function setupAddon_ (name, param1, param2) {
+  console.time('setup/' + name);
+
+  const settings = {};
+  const list_accounts = [];
+
+  if (name === 'new') {
+    for (const key in param1) {
+      settings[key] = param1[key];
+    }
+
+    for (let i = 0; i < param2.length; i++) {
+      list_accounts[i] = param2[i];
+    }
+  } else if (name === 'restore') {
+    const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
+    if (candidate.file_id !== fileId) throw new Error('File ID does not match.');
+
+    const parts = DriveApp.getFileById(fileId)
+      .getBlob()
+      .getAs('text/plain')
+      .getDataAsString()
+      .split(':');
+
+    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+    if (sha !== parts[1]) throw new Error("Hashes doesn't match.");
+
+    for (const key in candidate) {
+      settings[key] = candidate[key];
+    }
+
+    settings.backup = parts[0];
+
+    for (let i = 0; i < candidate.list_acc.length; i++) {
+      list_accounts[i] = candidate.list_acc[i];
+    }
+  } else if (name === 'copy') {
+    const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
+    if (candidate.file_id !== file_id) throw new Error('File ID does not match.');
+
+    for (const key in candidate) {
+      settings[key] = candidate[key];
+    }
+
+    settings.spreadsheet_name = candidate.spreadsheet_title;
+    settings.decimal_places = 2;
+    settings.number_accounts = candidate.accounts.length;
+    settings.file_id = candidate.file_id;
+
+    for (let i = 0; i < candidate.accounts.length; i++) {
+      list_accounts[i] = candidate.accounts[i];
+    }
+  }
+
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+
+  setupValidate_();
+
+  SETUP_SETTINGS = {
+    spreadsheet_name: settings.spreadsheet_name,
+    decimal_places: Number(settings.decimal_places),
+    number_format: '#,##0.00;(#,##0.00)',
+    financial_year: Number(settings.financial_year),
+    init_month: Number(settings.initial_month),
+    number_accounts: Number(settings.number_accounts),
+    list_acc: list_accounts,
+    decimal_separator: true
+  };
+
+  const dec_p = SETUP_SETTINGS.decimal_places;
+  const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
+  SETUP_SETTINGS.number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
+
+  setupPrepare_();
+  setupParts_();
+
+  if (name === 'restore') {
+    const backup = JSON.parse(base64DecodeWebSafe(settings.backup, 'UTF_8'));
+    restoreFromBackup_(backup);
+    PropertiesService2.deleteProperty('document', 'settings_candidate');
+  } else if (name === 'copy') {
+    restoreFromSpreadsheet_(settings.file_id);
+    PropertiesService2.deleteProperty('document', 'settings_candidate');
+  }
+
+  const class_version2 = {
+    script: APPS_SCRIPT_GLOBAL.script_version,
+    template: APPS_SCRIPT_GLOBAL.template_version
+  };
+  class_version2.script.beta = PATCH_THIS.beta_list.length;
+  PropertiesService2.setProperty('document', 'class_version2', 'json', class_version2);
+
+  if (bsSignSetup_()) throw new Error('Failed to sign document.');
+
+  try {
+    setupTriggers_();
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
+  PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
+
+  showDialogSetupEnd();
+  onOpen();
+
+  SETUP_SETTINGS = null;
+  console.timeEnd('setup/' + name);
 }
 
 function setupNew_ (settings, list_acc) {
