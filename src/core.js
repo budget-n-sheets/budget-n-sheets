@@ -381,12 +381,16 @@ function showDialogSetupEnd () {
 function showDialogEditAccount (acc_id) {
   const htmlTemplate = HtmlService.createTemplateFromFile('html/htmlEditAccount');
 
+  const decimal_places = getSpreadsheetSettings_('decimal_places');
   const account = tablesService('get', 'account', acc_id);
   if (!account) return 1;
 
   for (const key in account) {
     htmlTemplate['acc_' + key] = account[key];
   }
+
+  htmlTemplate.step = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1');
+  htmlTemplate.placeholder = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0');
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(300)
@@ -398,7 +402,11 @@ function showDialogEditAccount (acc_id) {
 function showDialogAddCard () {
   const htmlTemplate = HtmlService.createTemplateFromFile('html/htmlAddEditCard');
 
+  const decimal_places = getSpreadsheetSettings_('decimal_places');
+
   htmlTemplate.is_edit = false;
+  htmlTemplate.step = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1');
+  htmlTemplate.placeholder = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0');
 
   const card = { id: '', name: '', code: '', aliases: '', limit: 0 };
 
@@ -416,7 +424,11 @@ function showDialogAddCard () {
 function showDialogEditCard (card_id) {
   const htmlTemplate = HtmlService.createTemplateFromFile('html/htmlAddEditCard');
 
+  const decimal_places = getSpreadsheetSettings_('decimal_places');
+
   htmlTemplate.is_edit = true;
+  htmlTemplate.step = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1');
+  htmlTemplate.placeholder = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0');
 
   const card = tablesService('get', 'card', card_id);
   if (!card) return 1;
