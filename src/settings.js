@@ -108,7 +108,7 @@ function updateUserSettings (settings) {
   try {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Settings');
     if (sheet) {
-      sheet.getRange('B4').setFormula('=' + numberFormatLocaleSignal.call(settings.initial_month + 1));
+      sheet.getRange('B4').setFormula('=' + FormatNumber.localeSignal(settings.initial_month + 1));
       SpreadsheetApp.flush();
     }
 

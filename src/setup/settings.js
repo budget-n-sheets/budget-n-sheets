@@ -24,9 +24,9 @@ function setupSettings_ (yyyy_mm) {
   SETUP_SETTINGS.decimal_separator = dec_p;
 
   cell = [
-    ['=' + numberFormatLocaleSignal.call(SETUP_SETTINGS.financial_year, dec_p)],
+    ['=' + FormatNumber.localeSignal(SETUP_SETTINGS.financial_year, dec_p)],
     [buildFormulas.actual_month()],
-    ['=' + numberFormatLocaleSignal.call(SETUP_SETTINGS.init_month + 1, dec_p)],
+    ['=' + FormatNumber.localeSignal(SETUP_SETTINGS.init_month + 1, dec_p)],
     [buildFormulas.active_months()],
     [buildFormulas.m_factor()],
     [buildFormulas.count_tags()],

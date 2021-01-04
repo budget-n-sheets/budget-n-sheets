@@ -135,7 +135,7 @@ function resumeActivity_ (mm) {
     account = db_accounts.data[k];
     if (account.time_a < mm) continue;
 
-    formula = '=' + numberFormatLocaleSignal.call(account.balance);
+    formula = '=' + FormatNumber.localeSignal(account.balance);
     sheet.getRange(2 + h_ * account.time_a, 2 + w_ + w_ * k).setFormula(formula);
   }
 
@@ -243,7 +243,7 @@ function resumeActivity_ (mm) {
 
   const db_cards = getDbTables_('cards');
   for (k = 0; k < db_cards.count; k++) {
-    formula = '=' + numberFormatLocaleSignal.call(db_cards.data[k].limit);
+    formula = '=' + FormatNumber.localeSignal(db_cards.data[k].limit);
     sheet.getRange(2 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
   }
 

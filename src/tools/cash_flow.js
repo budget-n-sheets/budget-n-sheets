@@ -135,7 +135,7 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
       continue;
     }
 
-    value = numberFormatLocaleSignal.call(value, dec_p);
+    value = FormatNumber.localeSignal(value);
     title = '@' + evento.Title + ' ';
     for (j = 0; j < evento.Day.length; j++) {
       day = evento.Day[j] - 1;
@@ -248,7 +248,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
     if (typeof value !== 'number') continue;
 
     day--;
-    cf_flow[day] += numberFormatLocaleSignal.call(value, dec_p);
+    cf_flow[day] += FormatNumber.localeSignal(value);
     cf_transactions[day] += '@' + table[i][1 + cc] + ' ';
   }
 }

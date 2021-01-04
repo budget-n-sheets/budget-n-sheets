@@ -171,7 +171,7 @@ function refreshCardName_ (action, index, card) {
   }
 
   if (action === 'set') {
-    limit = '=' + numberFormatLocaleSignal.call(card.limit);
+    limit = '=' + FormatNumber.localeSignal(card.limit);
     text = '^' + card.code + '$';
     for (i = 0; i < card.aliases.length; i++) {
       text += '|^' + card.aliases[i] + '$';

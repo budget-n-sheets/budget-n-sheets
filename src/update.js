@@ -990,7 +990,7 @@ function update_v0m33p9_ () {
 
       sheet.getRange(2, col).setFormula('0');
       sheet.getRangeList(list).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
-      sheet.getRange(2 + h_ * account.time_a, col).setFormula('=' + numberFormatLocaleSignal.call(account.balance));
+      sheet.getRange(2 + h_ * account.time_a, col).setFormula('=' + FormatNumber.localeSignal(account.balance));
     }
   } catch (err) {
     ConsoleLog.error(err);
@@ -1555,7 +1555,7 @@ function update_v0m31p8_ () {
         ranges[j] = rollA1Notation(2 + h_ * j, col + w_ * i);
       }
 
-      limit = '=' + numberFormatLocaleSignal.call(card.limit);
+      limit = '=' + FormatNumber.localeSignal(card.limit);
       text = '^' + card.code + '$';
       for (j = 0; j < card.aliases.length; j++) {
         text += '|^' + card.aliases[j] + '$';
