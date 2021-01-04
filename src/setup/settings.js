@@ -10,7 +10,7 @@ function setupSettings_ (yyyy_mm) {
   sheet.protect().setWarningOnly(true);
 
   dec_p = SETUP_SETTINGS.decimal_places;
-  const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
+  const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '.0');
 
   cell = sheet.getRange(8, 2);
   cell.setNumberFormat('0' + dec_c);
@@ -19,6 +19,7 @@ function setupSettings_ (yyyy_mm) {
 
   cell = cell.getDisplayValue();
   dec_p = /\./.test(cell);
+  if (dec_p === 0) sheet.getRange(8, 2).setNumberFormat('0');
 
   SETUP_SETTINGS.decimal_separator = dec_p;
 

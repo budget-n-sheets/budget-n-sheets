@@ -255,7 +255,7 @@ function updateDecimalSeparator_ () {
   let sheet, cell, t;
 
   const dec_p = getSpreadsheetSettings_('decimal_places');
-  const format = '0' + (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
+  const format = '0' + (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '.0');
 
   sheet = spreadsheet.getSheetByName('_Settings');
   if (!sheet) {
@@ -271,6 +271,7 @@ function updateDecimalSeparator_ () {
 
   cell = cell.getDisplayValue();
   const v = /\./.test(cell);
+  if (dec_p === 0) sheet.getRange(8, 2).setNumberFormat('0');
 
   if (t) spreadsheet.deleteSheet(sheet);
 
