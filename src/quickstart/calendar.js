@@ -32,6 +32,12 @@ function playQuickCalendar_ (n) {
     return;
   }
 
+  const response = ui.alert(
+    'Permission Required',
+    'Allow add-on "Budget n Sheets" to create calendar events?',
+    ui.ButtonSet.YES_NO);
+  if (response === ui.Button.NO) return;
+
   const yyyy = DATE_NOW.getFullYear();
   const financial_year = getConstProperties_('financial_year');
 
