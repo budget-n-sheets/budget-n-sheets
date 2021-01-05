@@ -1,5 +1,5 @@
 function setupProperties_ (yyyy_mm) {
-  let properties, operation;
+  let properties;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const adminId = getUserId_();
@@ -43,11 +43,7 @@ function setupProperties_ (yyyy_mm) {
     SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
   );
 
-  if (SETUP_SETTINGS.financial_year === yyyy_mm.yyyy) operation = 'active';
-  else operation = 'passive';
-
   properties = {
-    operation_mode: operation,
     view_mode: 'complete',
     decimal_places: SETUP_SETTINGS.decimal_places,
     decimal_separator: SETUP_SETTINGS.decimal_separator,

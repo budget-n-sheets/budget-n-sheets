@@ -210,7 +210,6 @@ function getSpreadsheetSettings_ (select) {
   }
 
   switch (select) {
-    case 'operation_mode':
     case 'decimal_separator':
     case 'decimal_places':
     case 'spreadsheet_locale':
@@ -228,7 +227,6 @@ function setSpreadsheetSettings_ (select, value) {
   const spreadsheet_settings = PropertiesService2.getProperty('document', 'spreadsheet_settings', 'json');
 
   switch (select) {
-    case 'operation_mode':
     case 'decimal_separator':
     case 'decimal_places':
     case 'spreadsheet_locale':

@@ -15,7 +15,6 @@ function rollOperationMode_ (mode) {
   startTrigger_('timeBased');
 
   console.log('mode/' + mode);
-  setSpreadsheetSettings_('operation_mode', mode);
 }
 
 function askDeactivation () {
@@ -180,7 +179,4 @@ function reinstallTriggers_ () {
   startTrigger_('onOpen');
   startTrigger_('onEdit');
   startTrigger_('timeBased');
-
-  if (DATE_NOW.getFullYear() === financial_year) setSpreadsheetSettings_('operation_mode', 'active');
-  else setSpreadsheetSettings_('operation_mode', 'passive');
 }
