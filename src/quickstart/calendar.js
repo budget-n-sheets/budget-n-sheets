@@ -9,7 +9,7 @@ const QUICKSTART_DATA_CALENDAR = Object.freeze({
     { day: 7, title: 'Card bill payment', description: 'card_code\n\n#qcc\n---\nThis event has the "#qcc" built-in tag and no number formatted. The add-on gets the card\'s balance of the previous month and puts it in the cash flow.' }
   ],
   3: [
-    { day: 11, length: 2, title: 'Two-days event', description: 'acc_name\n-$1.23\n---\nMultiple-days events behave like a one-day event.' }
+    { day: 11, length: 2, title: 'Two-days event', description: 'acc_name\nvalue\n---\nMultiple-days events behave like a one-day event.', value: -1.23 }
   ]
 });
 
