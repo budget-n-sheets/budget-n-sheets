@@ -31,19 +31,8 @@ function setupBackstage_ () {
 
   n = height;
   while (n--) {
-    wallet[n] = new Array(5);
-    accounts[n] = new Array(width);
-
-    i = -1;
-    while (++i < 5) {
-      wallet[n][i] = null;
-      accounts[n][i] = null;
-    }
-
-    i--;
-    while (++i < width) {
-      accounts[n][i] = null;
-    }
+    wallet[n] = new Array(5).fill(null);
+    accounts[n] = new Array(width).fill(null);
   }
 
   sheet.protect().setWarningOnly(true);

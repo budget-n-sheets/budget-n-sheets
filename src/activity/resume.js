@@ -32,10 +32,7 @@ function resumeActivity_ (mm) {
   const accounts = new Array(h_);
 
   for (i = 0; i < h_; i++) {
-    accounts[i] = new Array(width);
-    for (k = 0; k < width; k++) {
-      accounts[i][k] = null;
-    }
+    accounts[i] = new Array(width).fill(null);
   }
 
   formula = formulasBuild.wallet().bsblank(mm, values[0]);
@@ -109,10 +106,7 @@ function resumeActivity_ (mm) {
   const cards = new Array(h_);
 
   for (i = 0; i < h_; i++) {
-    cards[i] = new Array(width);
-    for (k = 0; k < width; k++) {
-      cards[i][k] = null;
-    }
+    cards[i] = new Array(width).fill(null);
   }
 
   const dec_c = (getSpreadsheetSettings_('decimal_separator') ? ',' : '\\');
