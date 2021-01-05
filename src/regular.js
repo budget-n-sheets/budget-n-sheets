@@ -189,6 +189,10 @@ function updateDecimalPlaces_ () {
       formula = 'TEXT(' + formula + '; "' + number_format + '")';
       formula = 'IF(' + rollA1Notation(2, 2 + 6 * i) + ' = "All"; ""; ' + formula + ')';
       formula = 'CONCATENATE("AVAIL credit: "; ' + formula + ')';
+
+      const testBuild = buildCards.avail_credit(i, cell);
+      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.cards().header().avail_credit()');
+
       sheet.getRange(3, 1 + 6 * i).setFormula(formula);
 
       formula = buildCards.report(head, cell);
