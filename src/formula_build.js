@@ -395,7 +395,7 @@ const FormulaBuild = Object.freeze({
 
     Table2: {
       data: function () {
-        return 'IF(AND(E52 > 0; _Settings!B7 > 0); QUERY({Tags!$B$1:$T}; "select Col1, sum(Col18), -1 * sum(Col"&(4 + E50)&") where Col3=true or Col3=\'TRUE\' group by Col1 label Col1 \'\', -1 * sum(Col"&(4 + E52)&") \'\', sum(Col18) \'\'"); )';
+        return 'IF(AND(E52 > 0; _Settings!B7 > 0); QUERY({Tags!$B$1:$T}; "select Col1, sum(Col18), -1 * sum(Col"&(4 + E52)&") where Col3=true or Col3=\'TRUE\' group by Col1 label Col1 \'\', -1 * sum(Col"&(4 + E52)&") \'\', sum(Col18) \'\'"); )';
       }
     },
 
