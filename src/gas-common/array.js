@@ -6,18 +6,7 @@
 
 /**
  * Transpose a 2D array.
- * @param  {array} src The array to be transposed.
- * @return {array}     The tranposed array.
+ * @param  {array} m   The 2D array to be transposed.
+ * @return {array}     The tranposed 2D array.
  */
-function transpose (src) {
-  const dest = [];
-
-  for (let i = 0; i < src[0].length; i++) {
-    dest[i] = [];
-    for (let j = 0; j < src.length; j++) {
-      dest[i][j] = src[j][i];
-    }
-  }
-
-  return dest;
-}
+const transpose = m => m[0].map((x, i) => m.map(x => x[i]));
