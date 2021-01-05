@@ -1,6 +1,5 @@
 function setupMonthSheet_ () {
   const formulaBuild = FormulaBuild.ttt().header();
-  let testBuild;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheetTTT = spreadsheet.getSheetByName('TTT');
@@ -42,32 +41,13 @@ function setupMonthSheet_ () {
     for (k = 0; k < num_acc; k++) {
       ranges[k] = sheet.getRange(5, 1 + 5 * k, 400, 4);
 
-      formula = 'CONCAT("Balance "; TO_TEXT(_Backstage!' + rollA1Notation(3 + h_ * i, 7 + w_ * k) + '))';
-      testBuild = formulaBuild.balance(k, i);
-      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.ttt().header().balance()');
+      formula = formulaBuild.balance(k, i);
       sheet.getRange(2, 6 + 5 * k).setFormula(formula);
 
-      formula = 'CONCAT("Expenses "; TO_TEXT(_Backstage!' + rollA1Notation(4 + h_ * i, 7 + w_ * k) + '))';
-      testBuild = formulaBuild.expenses(k, i);
-      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.ttt().header().expenses()');
+      formula = formulaBuild.expenses(k, i);
       sheet.getRange(3, 6 + 5 * k).setFormula(formula);
 
-      expr1 = 'TEXT(_Backstage!' + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "' + SETUP_SETTINGS.number_format + '")';
-      expr1 = '"Withdrawal: ["; _Backstage!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
-
-      expr2 = 'TEXT(_Backstage!' + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "' + SETUP_SETTINGS.number_format + '")';
-      expr2 = '"Deposit: ["; _Backstage!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr2 + '; "\n"; ';
-
-      expr3 = 'TEXT(_Backstage!' + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "' + SETUP_SETTINGS.number_format + '")';
-      expr3 = '"Trf. in: ["; _Backstage!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr3 + '; "\n"; ';
-
-      expr4 = 'TEXT(_Backstage!' + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "' + SETUP_SETTINGS.number_format + '")';
-      expr4 = '"Trf. out: ["; _Backstage!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr4;
-
-      formula = 'CONCATENATE(' + expr1 + expr2 + expr3 + expr4 + ')';
-
-      testBuild = formulaBuild.report(k, i);
-      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.ttt().header().report()');
+      formula = formulaBuild.report(k, i);
       sheet.getRange(1, 8 + 5 * k).setFormula(formula);
     }
 

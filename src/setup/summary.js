@@ -1,6 +1,5 @@
 function setupSummary_ () {
   const formulaBuild = FormulaBuild.summary();
-  let testBuild;
 
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
   let formula, chart, options;
@@ -29,12 +28,7 @@ function setupSummary_ () {
     formulas[i] = ['', null, '', null];
 
     formulas[i][0] = '=_Backstage!$B' + (3 + h_ * i);
-
-    formula = 'SUM(_Backstage!$B' + (4 + h_ * i) + ':$B' + (6 + h_ * i) + ')';
-    testBuild = buildTable1.expenses_month(i);
-    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.summary().table1().expenses_month()');
-
-    formulas[i][2] = formula;
+    formulas[i][2] = buildTable1.expenses_month(i);
   }
   sheet.getRange(11, 4, 12, 4).setFormulas(formulas);
 
@@ -55,9 +49,7 @@ function setupSummary_ () {
     sheet.getRangeList(['D9:I22', 'D25:G36']).setNumberFormat(SETUP_SETTINGS.number_format);
   }
 
-  formula = 'IF(AND(E50 > 0; _Settings!B7 > 0); QUERY({Tags!$B$1:$T}; "select Col1, sum(Col18), -1 * sum(Col"&(4 + E50)&") where Col3=true or Col3=\'TRUE\' group by Col1 label Col1 \'\', -1 * sum(Col"&(4 + E50)&") \'\', sum(Col18) \'\'"); )';
-  testBuild = formulaBuild.table2().data();
-  if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.summary().table2().data()');
+  formula = formulaBuild.table2().data();
   sheet.getRange(53, 2).setFormula(formula);
 
   chart = sheet.newChart()
@@ -74,9 +66,7 @@ function setupSummary_ () {
 
   sheet.insertChart(chart.build());
 
-  formula = 'IF(AND(E50 > 0; _Settings!B7 > 0); INDEX(TRANSPOSE(QUERY({Tags!$B$1:$T}; "select -1 * sum(Col5), -1 * sum(Col6), -1 * sum(Col7), -1 * sum(Col8), -1 * sum(Col9), -1 * sum(Col10), -1 * sum(Col11), -1 * sum(Col12), -1 * sum(Col13), -1 * sum(Col14), -1 * sum(Col15), -1 * sum(Col16) where Col1=\'"&B70&"\' and (Col3=true or Col3=\'TRUE\') group by Col1")); 0; 2); )';
-  testBuild = formulaBuild.table3().total();
-  if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.summary().table3().total()');
+  formula = formulaBuild.table3().total();
   sheet.getRange(73, 4).setFormula(formula);
 
   options = {

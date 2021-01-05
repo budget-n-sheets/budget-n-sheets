@@ -1,6 +1,5 @@
 function setupCards_ () {
   const formulasCards = FormulaBuild.cards().header();
-  let testBuild;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('Cards');
@@ -38,49 +37,16 @@ function setupCards_ () {
 
     sheet.getRange(2, 2 + 6 * i).setValue('All');
 
-    formula = 'OFFSET(' + reference + '; 4; 1 + 5*' + index + '; 1; 1)';
-    formula = 'TEXT(' + formula + '; "' + SETUP_SETTINGS.number_format + '")';
-    formula = 'IF(' + card + ' = "All"; ""; ' + formula + ')';
-    formula = 'CONCATENATE("AVAIL credit: "; ' + formula + ')';
-
-    testBuild = formulasCards.avail_credit(i, reference);
-    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.cards().header().avail_credit()');
+    formula = formulasCards.avail_credit(i, reference);
     sheet.getRange(3, 1 + 6 * i).setFormula(formula);
 
-    expr1 = 'MAX(0; OFFSET(' + reference + '; 4; 1 + 5*' + index + '; 1; 1))';
-    expr2 = 'OFFSET(' + reference + '; 1; 1 + 5*' + index + '; 1; 1)';
-    expr3 = '{"charttype"' + dec_c + '"bar"; "max"' + dec_c + 'OFFSET(' + reference + '; 0; 1 + 5*' + index + '; 1; 1); "color1"' + dec_c + '"#45818e"; "color2"' + dec_c + '"#e69138"}';
-
-    formula = '{' + expr1 + dec_c + expr2 + '}; ' + expr3;
-    formula = 'IF(' + card + ' = "All"; ""; SPARKLINE(' + formula + '))';
-
-    testBuild = formulasCards.sparkline(index, card, reference);
-    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.cards().header().sparkline()');
+    formula = formulasCards.sparkline(index, card, reference);
     sheet.getRange(4, 1 + 6 * i).setFormula(formula);
 
-    formula = 'REGEXMATCH(_Backstage!' + header + '; "\\^"&' + card + '&"\\$")';
-    formula = 'FILTER(_Backstage!' + header + '; ' + formula + ')';
-    formula = 'INDEX(' + formula + '; 0; 1)';
-    formula = 'IF(' + card + ' = "All"; 1; MATCH(' + formula + '; _Backstage!' + header + '; 0))';
-    formula = 'IFERROR((' + formula + ' - 1)/5; "")';
-
-    testBuild = formulasCards.index(card, header);
-    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.cards().header().index()');
+    formula = formulasCards.index(card, header);
     sheet.getRange(2, 1 + 6 * i).setFormula(formula);
 
-    expr1 = 'OFFSET(' + reference + '; 1; 5*' + index + '; 1; 1)';
-    expr1 = '"Credit: "; TEXT(' + expr1 + '; "' + SETUP_SETTINGS.number_format + '"); "\n"; ';
-
-    expr2 = 'OFFSET(' + reference + '; 3; 5*' + index + '; 1; 1)';
-    expr2 = '"Expenses: "; TEXT(' + expr2 + '; "' + SETUP_SETTINGS.number_format + '"); "\n"; ';
-
-    expr3 = 'OFFSET(' + reference + '; 4; 5*' + index + '; 1; 1)';
-    expr3 = '"Balance: "; TEXT(' + expr3 + '; "' + SETUP_SETTINGS.number_format + '")';
-
-    formula = 'CONCATENATE(' + expr1 + expr2 + '"\n"; ' + expr3 + ')';
-
-    testBuild = formulasCards.report(index, reference);
-    if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.cards().header().report()');
+    formula = formulasCards.report(index, reference);
     sheet.getRange(2, 4 + 6 * i).setFormula(formula);
   }
 
