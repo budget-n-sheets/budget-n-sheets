@@ -51,7 +51,7 @@ function setupProperties_ (yyyy_mm) {
     optimize_load: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   };
   PropertiesService2.setProperty('document', 'spreadsheet_settings', 'json', properties);
-  CacheService2.put('document', 'const_properties', 'json', properties);
+  CacheService2.put('document', 'spreadsheet_settings', 'json', properties);
 
   properties = {
     owner: adminId,
