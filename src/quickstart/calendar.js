@@ -37,7 +37,7 @@ const QUICKSTART_DATA_CALENDAR = Object.freeze({
       day: 11,
       length: 2,
       title: 'Two-days event',
-      description: 'acc_name\nvalue\n---\nMultiple-days events behave like a one-day event.',
+      description: 'acc_name\nvalue\n---\nMultiple-days events behave like a series of one-day event.',
       value: -1.23
     }
   ]
