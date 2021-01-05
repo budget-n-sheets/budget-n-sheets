@@ -14,6 +14,7 @@ function setupProperties_ (yyyy_mm) {
     optimize_load: true
   };
   PropertiesService2.setProperty('document', 'user_settings', 'json', properties);
+  CacheService2.put('document', 'user_settings', 'json', properties);
 
   properties = {
     admin_id: adminId,
@@ -21,6 +22,7 @@ function setupProperties_ (yyyy_mm) {
     automatic_backup: false
   };
   PropertiesService2.setProperty('document', 'admin_settings', 'json', properties);
+  CacheService2.put('document', 'admin_settings', 'json', properties);
 
   properties = {
     date_created: yyyy_mm.time,
@@ -28,6 +30,7 @@ function setupProperties_ (yyyy_mm) {
     financial_year: SETUP_SETTINGS.financial_year
   };
   PropertiesService2.setProperty('document', 'const_properties', 'json', properties);
+  CacheService2.put('document', 'const_properties', 'json', properties);
 
   const metadata = {
     number_accounts: SETUP_SETTINGS.number_accounts,
@@ -52,6 +55,7 @@ function setupProperties_ (yyyy_mm) {
     optimize_load: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   };
   PropertiesService2.setProperty('document', 'spreadsheet_settings', 'json', properties);
+  CacheService2.put('document', 'const_properties', 'json', properties);
 
   properties = {
     owner: adminId,
@@ -60,4 +64,5 @@ function setupProperties_ (yyyy_mm) {
     timeBased: { id: '', time_created: 0 }
   };
   PropertiesService2.setProperty('document', 'spreadsheet_triggers', 'json', properties);
+  CacheService2.put('document', 'const_properties', 'json', properties);
 }
