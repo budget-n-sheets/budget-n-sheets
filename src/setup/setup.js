@@ -51,8 +51,12 @@ function setupAddon_ (name, param1, param2) {
       settings[key] = param1[key];
     }
 
+    settings.spreadsheet_name = settings.spreadsheet_name.trim();
+    if (settings.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.');
+
     for (let i = 0; i < param2.length; i++) {
-      list_accounts[i] = param2[i];
+      list_accounts[i] = param2[i].trim();
+      if (list_accounts[i] === '') throw new Error('Invalid account name.');
     }
   } else if (name === 'restore') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');

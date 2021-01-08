@@ -7,6 +7,7 @@ function getCardById_ (card_id) {
 function addCard_ (card) {
   let aliases, c;
 
+  card.code = card.code.trim();
   if (!/^\w+$/.test(card.code)) return 10;
 
   const db_cards = getDbTables_('cards');
@@ -45,6 +46,7 @@ function setCard_ (card) {
   let aliases;
   let c, i;
 
+  card.code = card.code.trim();
   if (!/^\w+$/.test(card.code)) return 10;
 
   const db_cards = getDbTables_('cards');

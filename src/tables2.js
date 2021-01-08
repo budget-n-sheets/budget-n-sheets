@@ -124,6 +124,9 @@ function getAccountById_ (acc_id) {
 }
 
 function setAccount_ (account) {
+  account.name = account.name.trim();
+  if (account.names === '') throw new Error('Invalid account name.');
+
   const db_accounts = getDbTables_('accounts');
 
   const c = db_accounts.ids.indexOf(account.id);
