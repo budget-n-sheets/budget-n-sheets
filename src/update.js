@@ -11,7 +11,7 @@ const PATCH_THIS = Object.freeze({
       [update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_, null, null, update_v0m34p10_, null, null],
       [update_v0m35p0_, update_v0m35p1_, update_v0m35p2_, null, null, null, null],
       [null, null, update_v0m36p2_, update_v0m36p3_, update_v0m36p4_, null],
-      [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_, null, null, null, null]
+      [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_, null, null, null, null, update_v0m37p14_]
     ]
   ],
   beta_list: []
@@ -179,6 +179,48 @@ function update_v0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Removes whitespace from both ends of a string.
+ *
+ * 0.37.14
+ */
+function update_v0m37p14_ () {
+  try {
+    const db_accounts = getDbTables_('accounts');
+
+    for (let i = 0; i < db_accounts.ids.length; i++) {
+      let trimmed = db_accounts.names[i].trim();
+
+      if (db_accounts.names[i] !== trimmed) {
+        if (trimmed === '') trimmed = 'Account ' + (1 + i);
+        db_accounts.data[i].name = trimmed;
+        tablesService('set', 'account', db_accounts.data[i]);
+      }
+    }
+
+    const db_cards = getDbTables_('cards');
+
+    for (let i = 0; i < db_cards.codes.length; i++) {
+      let code = db_cards.codes[i].trim();
+      let name = db_cards.data[i].name.trim();
+
+      if (db_cards.codes[i] !== code || db_cards.data[i].name !== name) {
+        if (code === '') code = 'CARD00' + (1 + i);
+        if (name === '') name = 'Card 00' + (1 + i);
+
+        db_cards.data[i].name = name;
+        db_cards.data[i].code = code;
+        db_cards.data[i].aliases = db_cards.data[i].aliases.join(',');
+
+        tablesService('set', 'setcard', db_cards.data[i]);
+      }
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
 
 /**
  * Fix Summary chart data formula.
