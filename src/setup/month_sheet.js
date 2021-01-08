@@ -23,13 +23,21 @@ function setupMonthSheet_ () {
   if (num_acc < 5) {
     sheetTTT.deleteColumns(6 + 5 * num_acc, 5 * (5 - num_acc));
   }
-  SpreadsheetApp.flush();
 
-  const list_format = [];
-  list_format[0] = rollA1Notation(5, 3, 400, 1);
-  for (k = 1; k <= num_acc; k++) {
-    list_format[k] = rollA1Notation(5, 8 + 5 * k, 400, 1);
+  if (SETUP_SETTINGS.decimal_places !== 2) {
+    const list_format = [];
+
+    list_format[0] = rollA1Notation(5, 3, 400, 1);
+
+    for (let k = 1; k <= num_acc; k++) {
+      list_format[k] = rollA1Notation(5, 8 + 5 * k, 400, 1);
+    }
+
+    sheet.getRangeList(list_format)
+      .setNumberFormat(SETUP_SETTINGS.number_format);
   }
+
+  SpreadsheetApp.flush();
 
   for (i = 0; i < 12; i++) {
     sheet = spreadsheet.insertSheet(MONTH_NAME.short[i], 3 + i, { template: sheetTTT });
@@ -49,10 +57,6 @@ function setupMonthSheet_ () {
 
       formula = formulaBuild.report(k, i);
       sheet.getRange(1, 8 + 5 * k).setFormula(formula);
-    }
-
-    if (SETUP_SETTINGS.decimal_places !== 2) {
-      sheet.getRangeList(list_format).setNumberFormat(SETUP_SETTINGS.number_format);
     }
 
     ranges[k] = sheet.getRange(5, 1 + 5 * k, 400, 4);
