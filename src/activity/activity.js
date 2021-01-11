@@ -38,7 +38,7 @@ function switchActivity_ (select) {
   SpreadsheetApp.flush();
 
   if (select === 'suspend') {
-    const date = getSpreadsheetDate.call(DATE_NOW);
+    const date = getSpreadsheetDate();
     const yyyy = date.getFullYear();
 
     const financial_year = getConstProperties_('financial_year');

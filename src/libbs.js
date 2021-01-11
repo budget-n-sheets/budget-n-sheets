@@ -119,18 +119,20 @@ function getTranslation () {
   return translation;
 }
 
-function getSpreadsheetDate () {
+function getSpreadsheetDate (date) {
   let timezone = SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetTimeZone();
   if (typeof timezone !== 'string' || timezone === '') {
     timezone = 'GMT';
   }
-  const date = Utilities.formatDate(this, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
-  return new Date(date);
+
+  const formatDate = Utilities.formatDate(date || DATE_NOW, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+  return new Date(formatDate);
 }
 
 function getMonthDelta (mm) {
   if (mm == null) {
-    mm = getSpreadsheetDate.call(DATE_NOW).getMonth();
+    mm = getSpreadsheetDate().getMonth();
   }
 
   switch (mm) {
