@@ -83,7 +83,7 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
 
     if (cell.Table === -1 && cell.Card === -1) continue;
 
-    cell.hasAtMute = /@(ign|mute)/.test(cell.Description);
+    cell.hasAtMute = /@mute/.test(cell.Description);
     cell.hasQcc = /#qcc/.test(cell.Description);
 
     cell.Value = cell.Description.match(valueRegExp);
