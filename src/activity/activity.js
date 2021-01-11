@@ -1,9 +1,6 @@
 function toolResumeActivity_ () {
   console.info('menu/More/Resume month');
-  switchActivityUi_('resume');
-}
 
-function switchActivityUi_ (select) {
   if (!isInstalled_()) return;
   if (onlineUpdate_()) return;
 
