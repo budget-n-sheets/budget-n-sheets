@@ -128,7 +128,7 @@ function dailyTrigger_ (e) {
   if (!isInstalled_()) return;
   if (seamlessUpdate_()) return;
 
-  const date = getSpreadsheetDate();
+  const date = getLocaleDate();
   const yyyymmdd = {
     year: date.getFullYear(),
     month: date.getMonth(),
@@ -178,7 +178,7 @@ function weeklyTriggerPre_ (e) {
 
   let mode;
   const financial_year = getConstProperties_('financial_year');
-  const date = getSpreadsheetDate();
+  const date = getLocaleDate();
   const yyyymm = {
     year: date.getFullYear(),
     month: date.getMonth()

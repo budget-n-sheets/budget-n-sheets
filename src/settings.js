@@ -266,7 +266,7 @@ function getConstProperties_ (select) {
 }
 
 function getMonthFactored_ (select) {
-  const date = getSpreadsheetDate();
+  const date = getLocaleDate();
   let yyyy, mm;
 
   const financial_year = getConstProperties_('financial_year');
