@@ -1,24 +1,26 @@
-function suspendActivity_ (mm) {
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  const sheet = spreadsheet.getSheetByName('_Backstage');
+function suspendActivity_ (mm0, mm1) {
+  if (mm0 > mm1) throw new Error('suspendActivity_(): Invalid range.');
+
   const h_ = TABLE_DIMENSION.height;
 
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
   if (!sheet) return;
-  const max = sheet.getMaxColumns();
 
-  const range = sheet.getRange(2, 2, h_ * mm, max - 1);
+  const max = sheet.getMaxColumns();
+  if (max < 2) return;
+
+  const range = sheet.getRange(2 + h_ * mm0, 2, h_ * (mm1 - mm0 + 1), max - 1);
+
+  SpreadsheetApp.flush();
   const values = range.getValues();
   range.setValues(values);
 
-  let i;
-  const list = [];
-  for (i = 0; i < mm; i++) {
+  const list = new Array(12).fill(0);
+
+  for (let i = mm0; i <= mm1; i++) {
     list[i] = 1;
   }
-  for (; i < 12; i++) {
-    list[i] = 0;
-  }
-  setSpreadsheetSettings_('optimize_load', list);
 
+  setSpreadsheetSettings_('optimize_load', list);
   SpreadsheetApp.flush();
 }

@@ -47,12 +47,12 @@ function switchActivity_ (select) {
       return;
     } else if (yyyy === financial_year) {
       if (date.getMonth() < 3) return;
-      mm = date.getMonth() - 3 + 1;
+      mm = date.getMonth() - 3;
     } else {
-      mm = 12;
+      mm = 11;
     }
 
-    suspendActivity_(mm);
+    suspendActivity_(0, mm);
   } else if (select === 'resume') {
     mm = MONTH_NAME.short.indexOf(SpreadsheetApp.getActiveSheet().getSheetName());
     if (mm === -1) return 2;
