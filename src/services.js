@@ -148,7 +148,7 @@ function dailyTrigger_ (e) {
 
     try {
       if (yyyymmdd.month > 2) {
-        switchActivity_('suspend');
+        switchActivity_('suspend', 0, yyyymmdd.month - 3);
       }
     } catch (err) {
       ConsoleLog.error(err);
@@ -166,8 +166,18 @@ function weeklyTriggerPos_ (e) {
 
   seamlessUpdate_();
 
-  if (DATE_NOW.getMonth() % 4 === 0) {
-    switchActivity_('suspend');
+  const date = getLocaleDate();
+  const month = date.getMonth();
+
+  if (month % 3 === 0) {
+    const financial_year = getConstProperties_('financial_year');
+    const yyyy = date.getFullYear();
+
+    if (yyyy > financial_year) {
+      switchActivity_('suspend', 0, 11);
+    } else if (yyyy === financial_year && month >= 3) {
+      switchActivity_('suspend', 0, mm - 3);
+    }
   }
 }
 
