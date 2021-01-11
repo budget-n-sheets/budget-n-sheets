@@ -169,7 +169,7 @@ function weeklyTriggerPos_ (e) {
   const date = getSpreadsheetDate.call(DATE_NOW);
   const month = date.getMonth();
 
-  if (month % 4 === 0) {
+  if (month % 3 === 0) {
     const financial_year = getConstProperties_('financial_year');
     const yyyy = date.getFullYear();
 
