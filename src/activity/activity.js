@@ -24,7 +24,7 @@ function toolResumeActivity_ () {
   }
 }
 
-function switchActivity_ (select, param) {
+function switchActivity_ (select, param1, param2) {
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
@@ -32,28 +32,16 @@ function switchActivity_ (select, param) {
     return 1;
   }
 
-  let mm;
+  switch (select) {
+    case 'resume':
+      resumeActivity_(param1);
+      break;
+    case 'suspend':
+      suspendActivity_(param1, param2);
+      break;
 
-  SpreadsheetApp.flush();
-
-  if (select === 'suspend') {
-    const date = getSpreadsheetDate.call(DATE_NOW);
-    const yyyy = date.getFullYear();
-
-    const financial_year = getConstProperties_('financial_year');
-
-    if (yyyy < financial_year) {
-      return;
-    } else if (yyyy === financial_year) {
-      if (date.getMonth() < 3) return;
-      mm = date.getMonth() - 3;
-    } else {
-      mm = 11;
-    }
-
-    suspendActivity_(0, mm);
-  } else if (select === 'resume') {
-    resumeActivity_(param);
+    default:
+      throw new Error('switchActivity_(): Invalid case. ' + select);
   }
 
   lock.releaseLock();
