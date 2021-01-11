@@ -1,7 +1,3 @@
-function askSetRecalculation () {
-  SpreadsheetApp2.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.HOUR);
-}
-
 function rollOperationMode_ (mode) {
   const hour = 2 + randomInteger(4);
   let trigger;
