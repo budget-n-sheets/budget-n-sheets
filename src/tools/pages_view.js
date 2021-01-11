@@ -43,7 +43,7 @@ function hideSheets_ (a) {
   let mm, i;
 
   if (a) {
-    mm = getSpreadsheetDate.call(DATE_NOW).getMonth();
+    mm = getSpreadsheetDate().getMonth();
   } else {
     sheet = SpreadsheetApp.getActiveSheet();
     mm = MONTH_NAME.short.indexOf(sheet.getName());
