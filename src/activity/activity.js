@@ -15,7 +15,7 @@ function toolResumeActivity_ () {
     return;
   }
 
-  const r = switchActivity_('resume', mm);
+  const r = switchActivity_('resume', mm, mm);
 
   if (r === 1) {
     SpreadsheetApp.getActiveSheet().toast(
@@ -34,7 +34,7 @@ function switchActivity_ (select, param1, param2) {
 
   switch (select) {
     case 'resume':
-      resumeActivity_(param1);
+      resumeActivity_(param1, param2);
       break;
     case 'suspend':
       suspendActivity_(param1, param2);

@@ -50,7 +50,7 @@ function onEditInstallable_ (e) {
     try {
       const mm = MONTH_NAME.short.indexOf(name);
       const status = getSpreadsheetSettings_('optimize_load');
-      if (status == null || status[mm] === 1) resumeActivity_(mm);
+      if (status == null || status[mm] === 1) switchActivity_('resume', mm, mm);
     } catch (err) {
       ConsoleLog.error(err);
     }
