@@ -3,8 +3,7 @@ function resumeActivity_ (mm) {
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheetBackstage = spreadsheet.getSheetByName('_Backstage');
-  let formula, width, i, k;
-  let income, expenses;
+  let formula, width;
 
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
@@ -23,7 +22,7 @@ function resumeActivity_ (mm) {
   const num_acc = getConstProperties_('number_accounts');
   const col = 2 + w_ + w_ * num_acc + w_;
 
-  for (i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++) {
     values[i] += max1;
     tags[i] += max1;
   }
@@ -31,7 +30,7 @@ function resumeActivity_ (mm) {
   width = w_ * num_acc;
   const accounts = new Array(h_);
 
-  for (i = 0; i < h_; i++) {
+  for (let i = 0; i < h_; i++) {
     accounts[i] = new Array(width).fill(null);
   }
 
@@ -41,11 +40,11 @@ function resumeActivity_ (mm) {
   formula = formulasBuild.wallet().expenses_ign(max1 - 4, mm, rollA1Notation(2 + h_ * mm, 6));
   sheetBackstage.getRange(4 + h_ * mm, 2).setFormula(formula);
 
-  income = '0';
-  expenses = '0';
+  let income = '0';
+  let expenses = '0';
 
   const formulasAcc = formulasBuild.accounts();
-  for (k = 0; k < num_acc; k++) {
+  for (let k = 0; k < num_acc; k++) {
     const bsblank = rollA1Notation(2 + h_ * mm, 11 + w_ * k);
 
     income += ' + ' + rollA1Notation(6 + h_ * mm, 8 + w_ * k);
@@ -68,11 +67,11 @@ function resumeActivity_ (mm) {
   SpreadsheetApp.flush();
 
   const actual_month = getMonthFactored_('actual_month');
-  let rangeList;
-  for (k = 0; k < num_acc; k++) {
-    rangeList = [];
 
-    for (i = 1 + mm; i < actual_month; i++) {
+  for (let k = 0; k < num_acc; k++) {
+    const rangeList = [];
+
+    for (let i = 1 + mm; i < actual_month; i++) {
       rangeList[i - 1 - mm] = rollA1Notation(2 + h_ * i, 2 + w_ + w_ * k);
 
       const bsblank = rollA1Notation(2 + h_ * i, 11 + w_ * k);
@@ -88,9 +87,9 @@ function resumeActivity_ (mm) {
 
   const formulasCards = formulasBuild.cards();
   const db_accounts = getDbTables_('accounts');
-  let account;
-  for (k = 0; k < num_acc; k++) {
-    account = db_accounts.data[k];
+
+  for (let k = 0; k < num_acc; k++) {
+    const account = db_accounts.data[k];
     if (account.time_a < mm) continue;
 
     formula = '=' + FormatNumber.localeSignal(account.balance);
@@ -105,14 +104,14 @@ function resumeActivity_ (mm) {
   width = 10 * w_;
   const cards = new Array(h_);
 
-  for (i = 0; i < h_; i++) {
+  for (let i = 0; i < h_; i++) {
     cards[i] = new Array(width).fill(null);
   }
 
   const max2 = spreadsheet.getSheetByName('Cards').getMaxRows() - 5;
 
   formula = 'RC[' + w_ + ']';
-  for (k = 2; k <= 10; k++) {
+  for (let k = 2; k <= 10; k++) {
     formula += ' + RC[' + w_ * k + ']';
   }
   sheetBackstage.getRange(3 + h_ * mm, col - w_, 4, 1).setFormulaR1C1(formula);
@@ -120,7 +119,7 @@ function resumeActivity_ (mm) {
   formula = formulasCards.bsblank(max2, mm);
   sheetBackstage.getRange(2 + h_ * mm, 4 + col - w_).setFormula(formula);
 
-  for (k = 0; k < 10; k++) {
+  for (let k = 0; k < 10; k++) {
     const regex = rollA1Notation(1, col + w_ * k);
     const bsblank = rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
 
@@ -144,8 +143,8 @@ function resumeActivity_ (mm) {
   SpreadsheetApp.flush();
 
   const db_cards = getDbTables_('cards');
-  for (k = 0; k < db_cards.count; k++) {
-    formula = '=' + FormatNumber.localeSignal(db_cards.data[k].limit);
+  for (let k = 0; k < db_cards.count; k++) {
+    const formula = '=' + FormatNumber.localeSignal(db_cards.data[k].limit);
     sheetBackstage.getRange(2 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
   }
 
