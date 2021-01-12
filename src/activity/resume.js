@@ -3,7 +3,7 @@ function resumeActivity_ (mm) {
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheetBackstage = spreadsheet.getSheetByName('_Backstage');
-  let range1A1, range2A1, formula, width, i, k;
+  let formula, width, i, k;
   let income, expenses;
 
   const h_ = TABLE_DIMENSION.height;
@@ -109,7 +109,6 @@ function resumeActivity_ (mm) {
     cards[i] = new Array(width).fill(null);
   }
 
-  const dec_c = (getSpreadsheetSettings_('decimal_separator') ? ',' : '\\');
   const max2 = spreadsheet.getSheetByName('Cards').getMaxRows() - 5;
 
   formula = 'RC[' + w_ + ']';
@@ -122,9 +121,6 @@ function resumeActivity_ (mm) {
   sheetBackstage.getRange(2 + h_ * mm, 4 + col - w_).setFormula(formula);
 
   for (k = 0; k < 10; k++) {
-    range1A1 = rollA1Notation(6, 4 + 6 * mm, max2);
-    range2A1 = rollA1Notation(6, 3 + 6 * mm, max2);
-
     const regex = rollA1Notation(1, col + w_ * k);
     const bsblank = rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
 
