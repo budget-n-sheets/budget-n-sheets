@@ -92,21 +92,21 @@ function resumeActivity_ (mm) {
   ]).setFormulaR1C1('R[-2]C[' + (col - w_ - 2) + ']');
   SpreadsheetApp.flush();
 
-  for (let k = 0; k < num_acc; k++) {
+  if (1 + mm < actual_month) {
     const rangeList = [];
 
-    for (let i = 1 + mm; i < actual_month; i++) {
-      rangeList[i - 1 - mm] = rollA1Notation(2 + h_ * i, 2 + w_ + w_ * k);
+    for (let k = 0; k < num_acc; k++) {
+      for (let i = 1 + mm; i < actual_month; i++) {
+        rangeList.push(rollA1Notation(2 + h_ * i, 2 + w_ + w_ * k));
 
-      const bsblank = rollA1Notation(2 + h_ * i, 11 + w_ * k);
+        const bsblank = rollA1Notation(2 + h_ * i, 11 + w_ * k);
 
-      formula = formulasAcc.balance(i, values[1 + k], balance1[5 * i + k], bsblank);
-      sheetBackstage.getRange(3 + h_ * i, 2 + w_ + w_ * k).setFormula(formula);
+        formula = formulasAcc.balance(i, values[1 + k], balance1[5 * i + k], bsblank);
+        sheetBackstage.getRange(3 + h_ * i, 2 + w_ + w_ * k).setFormula(formula);
+      }
     }
 
-    if (rangeList.length > 0) {
-      sheetBackstage.getRangeList(rangeList).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
-    }
+    sheetBackstage.getRangeList(rangeList).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
   }
 
   for (let k = 0; k < num_acc; k++) {
