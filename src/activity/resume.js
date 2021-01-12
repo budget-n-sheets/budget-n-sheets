@@ -1,5 +1,8 @@
 function resumeActivity_ (mm) {
   const formulasBuild = FormulaBuild.backstage();
+  const formulasWallet = formulasBuild.wallet();
+  const formulasAcc = formulasBuild.accounts();
+  const formulasCards = formulasBuild.cards();
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheetBackstage = spreadsheet.getSheetByName('_Backstage');
@@ -7,6 +10,11 @@ function resumeActivity_ (mm) {
 
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
+
+  const list1 = [];
+  const list2 = [];
+  const list3 = [];
+  const list4 = [];
 
   const values = ['C5:C', 'H5:H', 'M5:M', 'R5:R', 'W5:W', 'AB5:AB'];
   const tags = ['D5:D', 'I5:I', 'N5:N', 'S5:S', 'X5:X', 'AC5:AC'];
@@ -19,7 +27,14 @@ function resumeActivity_ (mm) {
   if (!spreadsheet.getSheetByName(MONTH_NAME.short[mm])) return;
 
   const max1 = spreadsheet.getSheetByName(MONTH_NAME.short[mm]).getMaxRows();
+  const max2 = spreadsheet.getSheetByName('Cards').getMaxRows() - 5;
+
   const num_acc = getConstProperties_('number_accounts');
+  const actual_month = getMonthFactored_('actual_month');
+
+  const db_accounts = getDbTables_('accounts');
+  const db_cards = getDbTables_('cards');
+
   const col = 2 + w_ + w_ * num_acc + w_;
 
   for (let i = 0; i < 6; i++) {
@@ -27,23 +42,28 @@ function resumeActivity_ (mm) {
     tags[i] += max1;
   }
 
-  width = w_ * num_acc;
   const accounts = new Array(h_);
+  const cards = new Array(h_);
 
+  width = w_ * num_acc;
   for (let i = 0; i < h_; i++) {
     accounts[i] = new Array(width).fill(null);
   }
 
-  formula = formulasBuild.wallet().bsblank(mm, values[0]);
+  width = 10 * w_;
+  for (let i = 0; i < h_; i++) {
+    cards[i] = new Array(width).fill(null);
+  }
+
+  formula = formulasWallet.bsblank(mm, values[0]);
   sheetBackstage.getRange(2 + h_ * mm, 6).setFormula(formula);
 
-  formula = formulasBuild.wallet().expenses_ign(max1 - 4, mm, rollA1Notation(2 + h_ * mm, 6));
+  formula = formulasWallet.expenses_ign(max1 - 4, mm, rollA1Notation(2 + h_ * mm, 6));
   sheetBackstage.getRange(4 + h_ * mm, 2).setFormula(formula);
 
   let income = '0';
   let expenses = '0';
 
-  const formulasAcc = formulasBuild.accounts();
   for (let k = 0; k < num_acc; k++) {
     const bsblank = rollA1Notation(2 + h_ * mm, 11 + w_ * k);
 
@@ -59,14 +79,12 @@ function resumeActivity_ (mm) {
 
   sheetBackstage.getRange(3 + h_ * mm, 2).setFormula(income);
   sheetBackstage.getRange(5 + h_ * mm, 2).setFormula(expenses);
-  sheetBackstage.getRange(2 + h_ * mm, 7, h_, width).setFormulas(accounts);
+  sheetBackstage.getRange(2 + h_ * mm, 7, h_, w_ * num_acc).setFormulas(accounts);
   sheetBackstage.getRangeList([
     rollA1Notation(6 + h_ * mm, 2),
     rollA1Notation(7 + h_ * mm, 2)
   ]).setFormulaR1C1('R[-2]C[' + (col - w_ - 2) + ']');
   SpreadsheetApp.flush();
-
-  const actual_month = getMonthFactored_('actual_month');
 
   for (let k = 0; k < num_acc; k++) {
     const rangeList = [];
@@ -85,9 +103,6 @@ function resumeActivity_ (mm) {
     }
   }
 
-  const formulasCards = formulasBuild.cards();
-  const db_accounts = getDbTables_('accounts');
-
   for (let k = 0; k < num_acc; k++) {
     const account = db_accounts.data[k];
     if (account.time_a < mm) continue;
@@ -95,20 +110,6 @@ function resumeActivity_ (mm) {
     formula = '=' + FormatNumber.localeSignal(account.balance);
     sheetBackstage.getRange(2 + h_ * account.time_a, 2 + w_ + w_ * k).setFormula(formula);
   }
-
-  const list1 = [];
-  const list2 = [];
-  const list3 = [];
-  const list4 = [];
-
-  width = 10 * w_;
-  const cards = new Array(h_);
-
-  for (let i = 0; i < h_; i++) {
-    cards[i] = new Array(width).fill(null);
-  }
-
-  const max2 = spreadsheet.getSheetByName('Cards').getMaxRows() - 5;
 
   formula = 'RC[' + w_ + ']';
   for (let k = 2; k <= 10; k++) {
@@ -142,7 +143,6 @@ function resumeActivity_ (mm) {
   sheetBackstage.getRangeList(list4).setFormula(rollA1Notation(2 + h_ * mm, 4 + col - w_));
   SpreadsheetApp.flush();
 
-  const db_cards = getDbTables_('cards');
   for (let k = 0; k < db_cards.count; k++) {
     const formula = '=' + FormatNumber.localeSignal(db_cards.data[k].limit);
     sheetBackstage.getRange(2 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
