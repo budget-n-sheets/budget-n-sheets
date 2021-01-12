@@ -4,10 +4,6 @@ function resumeActivity_ (mm) {
   const formulasAcc = formulasBuild.accounts();
   const formulasCards = formulasBuild.cards();
 
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  const sheetBackstage = spreadsheet.getSheetByName('_Backstage');
-  let formula, width;
-
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
 
@@ -22,12 +18,21 @@ function resumeActivity_ (mm) {
   const balance1 = ['G2', 'L2', 'Q2', 'V2', 'AA2', 'G12', 'L12', 'Q12', 'V12', 'AA12', 'G22', 'L22', 'Q22', 'V22', 'AA22', 'G32', 'L32', 'Q32', 'V32', 'AA32', 'G42', 'L42', 'Q42', 'V42', 'AA42', 'G52', 'L52', 'Q52', 'V52', 'AA52', 'G62', 'L62', 'Q62', 'V62', 'AA62', 'G72', 'L72', 'Q72', 'V72', 'AA72', 'G82', 'L82', 'Q82', 'V82', 'AA82', 'G92', 'L92', 'Q92', 'V92', 'AA92', 'G102', 'L102', 'Q102', 'V102', 'AA102', 'G112', 'L112', 'Q112', 'V112', 'AA112'];
   const balance2 = ['0', '0', '0', '0', '0', 'G3', 'L3', 'Q3', 'V3', 'AA3', 'G13', 'L13', 'Q13', 'V13', 'AA13', 'G23', 'L23', 'Q23', 'V23', 'AA23', 'G33', 'L33', 'Q33', 'V33', 'AA33', 'G43', 'L43', 'Q43', 'V43', 'AA43', 'G53', 'L53', 'Q53', 'V53', 'AA53', 'G63', 'L63', 'Q63', 'V63', 'AA63', 'G73', 'L73', 'Q73', 'V73', 'AA73', 'G83', 'L83', 'Q83', 'V83', 'AA83', 'G93', 'L93', 'Q93', 'V93', 'AA93', 'G103', 'L103', 'Q103', 'V103', 'AA103'];
 
-  if (!sheetBackstage) return;
-  if (!spreadsheet.getSheetByName('Cards')) return;
-  if (!spreadsheet.getSheetByName(MONTH_NAME.short[mm])) return;
+  let formula, width;
 
-  const max1 = spreadsheet.getSheetByName(MONTH_NAME.short[mm]).getMaxRows();
-  const max2 = spreadsheet.getSheetByName('Cards').getMaxRows() - 5;
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  const sheetBackstage = spreadsheet.getSheetByName('_Backstage');
+  if (!sheetBackstage) return;
+
+  const month = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
+  if (!month) return;
+  const max1 = month.getMaxRows();
+  if (max1 < 5) return;
+
+  const sheetCards = spreadsheet.getSheetByName('Cards');
+  if (!sheetCards) return;
+  const max2 = sheetCards.getMaxRows() - 5;
+  if (max2 < 1) return;
 
   const num_acc = getConstProperties_('number_accounts');
   const actual_month = getMonthFactored_('actual_month');
