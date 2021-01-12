@@ -15,7 +15,7 @@ function toolResumeActivity_ () {
     return;
   }
 
-  const r = switchActivity_(select, mm);
+  const r = switchActivity_('resume', mm);
 
   if (r === 1) {
     SpreadsheetApp.getActiveSheet().toast(
