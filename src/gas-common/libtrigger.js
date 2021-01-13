@@ -163,6 +163,14 @@ function deleteAllTriggers_ () {
   for (let i = 0; i < triggers.length; i++) {
     ScriptApp.deleteTrigger(triggers[i]);
   }
+
+  const properties = {
+    owner: getUserId_(),
+    onOpen: { id: '', time_created: 0 },
+    onEdit: { id: '', time_created: 0 },
+    timeBased: { id: '', time_created: 0 }
+  };
+  PropertiesService2.setProperty('document', 'spreadsheet_triggers', 'json', properties);
 }
 
 /**
