@@ -169,15 +169,15 @@ function weeklyTriggerPos_ (e) {
   const date = getLocaleDate();
   const month = date.getMonth();
 
-  if (month % 3 === 0) {
-    const financial_year = getConstProperties_('financial_year');
-    const yyyy = date.getFullYear();
+  if (month % 3 !== 0) return;
 
-    if (yyyy > financial_year) {
-      switchActivity_('suspend', 0, 11);
-    } else if (yyyy === financial_year && month >= 3) {
-      switchActivity_('suspend', 0, mm - 3);
-    }
+  const financial_year = getConstProperties_('financial_year');
+  const yyyy = date.getFullYear();
+
+  if (yyyy > financial_year) {
+    switchActivity_('suspend', 0, 11);
+  } else if (yyyy === financial_year && month >= 3) {
+    switchActivity_('suspend', 0, mm - 3);
   }
 }
 
