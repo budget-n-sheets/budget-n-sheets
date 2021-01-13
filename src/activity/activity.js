@@ -7,15 +7,22 @@ function toolResumeActivity_ () {
   const name = SpreadsheetApp.getActiveSheet().getSheetName();
   const mm = MONTH_NAME.short.indexOf(name);
 
+  let mm0 = mm, mm1 = mm;
+
   if (mm === -1) {
-    SpreadsheetApp.getUi().alert(
-      "Can't change activity",
-      'Select a month to resume the activity.',
-      SpreadsheetApp.getUi().ButtonSet.OK);
-    return;
+    if (name !== 'Summary') {
+      SpreadsheetApp.getUi().alert(
+        "Can't change activity",
+        'Select tab Summary or a month to resume the activity.',
+        SpreadsheetApp.getUi().ButtonSet.OK);
+      return;
+    }
+
+    mm0 = 0;
+    mm1 = 11;
   }
 
-  const r = switchActivity_('resume', mm);
+  const r = switchActivity_('resume', mm0, mm1);
 
   if (r === 1) {
     SpreadsheetApp.getActiveSheet().toast(
@@ -34,7 +41,7 @@ function switchActivity_ (select, param1, param2) {
 
   switch (select) {
     case 'resume':
-      resumeActivity_(param1);
+      resumeActivity_(param1, param2);
       break;
     case 'suspend':
       suspendActivity_(param1, param2);
