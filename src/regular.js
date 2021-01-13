@@ -144,6 +144,8 @@ function updateDecimalPlaces_ () {
   sheet = spreadsheet.getSheetByName('_Settings');
   if (sheet) {
     sheet.getRange(8, 2).setNumberFormat('0' + dec_c).setFormula('RAND()');
+    sheet.getRange(9, 2).setValue(dec_p);
+    sheet.getRange(11, 2).setValue(number_format);
   }
 
   sheet = spreadsheet.getSheetByName('Summary');
