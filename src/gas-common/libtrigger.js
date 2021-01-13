@@ -156,19 +156,8 @@ function deleteTrigger_ (category, select, onlyFirst) {
 function deleteAllTriggers_ () {
   const triggers = ScriptApp.getUserTriggers(SpreadsheetApp2.getActiveSpreadsheet());
 
-  const spreadsheet_triggers = PropertiesService2.getProperty('document', 'spreadsheet_triggers', 'json');
-  if (!spreadsheet_triggers) return;
-
-  const ids = [
-    spreadsheet_triggers.onOpen.id,
-    spreadsheet_triggers.onEdit.id,
-    spreadsheet_triggers.timeBased.id
-  ];
-
   for (let i = 0; i < triggers.length; i++) {
-    if (ids.indexOf(triggers[i].getUniqueId()) !== -1) {
-      ScriptApp.deleteTrigger(triggers[i]);
-    }
+    ScriptApp.deleteTrigger(triggers[i]);
   }
 }
 
