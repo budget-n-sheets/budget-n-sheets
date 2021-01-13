@@ -67,7 +67,7 @@ function setupSummary_ () {
   sheet.insertChart(chart.build());
 
   formula = formulaBuild.table3().total();
-  sheet.getRange(73, 4).setFormula(formula);
+  sheet.getRange(75, 4).setFormula(formula);
 
   options = {
     0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Total' },
