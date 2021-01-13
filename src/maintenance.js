@@ -161,8 +161,6 @@ function askReinstallTriggersUi () {
 }
 
 function reinstallTriggers_ () {
-  if (!isInstalled_()) return;
-
   deleteAllTriggers_();
   Utilities.sleep(1000);
 
