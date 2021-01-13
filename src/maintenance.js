@@ -163,8 +163,6 @@ function askReinstallTriggersUi () {
 function reinstallTriggers_ () {
   if (!isInstalled_()) return;
 
-  const financial_year = getConstProperties_('financial_year');
-
   deleteAllTriggers_();
   Utilities.sleep(1000);
 
