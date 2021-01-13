@@ -128,16 +128,20 @@ function deleteTrigger_ (category, select, onlyFirst) {
   let watch;
 
   switch (category) {
+    case 'EventType':
+      watch = getEventType(select);
+      break;
     case 'KeyId':
       method = 'getUniqueId';
       watch = PropertiesService2.getProperty(select.scope, select.key, 'string');
       break;
     case 'UniqueId':
+    case 'HandlerFunction':
       watch = select;
       break;
   }
 
-  const triggers = ScriptApp.getProjectTriggers();
+  const triggers = ScriptApp.getUserTriggers(SpreadsheetApp2.getActiveSpreadsheet());
 
   for (let i = 0; i < triggers.length; i++) {
     if (triggers[i][method]() === watch) {
@@ -154,21 +158,10 @@ function deleteTrigger_ (category, select, onlyFirst) {
  * Purges all triggers.
  */
 function deleteAllTriggers_ () {
-  const triggers = ScriptApp.getProjectTriggers();
-
-  const spreadsheet_triggers = PropertiesService2.getProperty('document', 'spreadsheet_triggers', 'json');
-  if (!spreadsheet_triggers) return;
-
-  const ids = [
-    spreadsheet_triggers.onOpen.id,
-    spreadsheet_triggers.onEdit.id,
-    spreadsheet_triggers.timeBased.id
-  ];
+  const triggers = ScriptApp.getUserTriggers(SpreadsheetApp2.getActiveSpreadsheet());
 
   for (let i = 0; i < triggers.length; i++) {
-    if (ids.indexOf(triggers[i].getUniqueId()) !== -1) {
-      ScriptApp.deleteTrigger(triggers[i]);
-    }
+    ScriptApp.deleteTrigger(triggers[i]);
   }
 }
 
