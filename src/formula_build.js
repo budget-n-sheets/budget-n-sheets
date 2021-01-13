@@ -240,19 +240,13 @@ const FormulaBuild = Object.freeze({
       },
 
       avail_credit: function (mm, reference) {
-        this.loadSettings('decimal_places');
-
         const index = rollA1Notation(2, 1 + 6 * mm);
         const select = rollA1Notation(2, 2 + 6 * mm);
-
-        const dec_p = this._settings.decimal_places;
-        const mantissa = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
-        const num_f = '#,##0' + mantissa + ';' + '(#,##0' + mantissa + ')';
 
         let formula;
 
         formula = 'OFFSET(' + reference + '; 4; 1 + 5*' + index + '; 1; 1)';
-        formula = 'TEXT(' + formula + '; "' + num_f + '")';
+        formula = 'TO_TEXT(' + formula + ')';
         formula = 'IF(' + select + ' = "All"; ""; ' + formula + ')';
         formula = 'CONCATENATE("AVAIL credit: "; ' + formula + ')';
 
@@ -277,22 +271,16 @@ const FormulaBuild = Object.freeze({
       },
 
       report: function (index, reference) {
-        this.loadSettings('decimal_places');
-
-        const dec_p = this._settings.decimal_places;
-        const mantissa = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
-        const num_f = '#,##0' + mantissa + ';' + '(#,##0' + mantissa + ')';
-
         let formula, part_1, part_2, part_3;
 
         part_1 = 'OFFSET(' + reference + '; 1; 5*' + index + '; 1; 1)';
-        part_1 = '"Credit: "; TEXT(' + part_1 + '; "' + num_f + '"); "\n"; ';
+        part_1 = '"Credit: "; TO_TEXT(' + part_1 + '); "\n"; ';
 
         part_2 = 'OFFSET(' + reference + '; 3; 5*' + index + '; 1; 1)';
-        part_2 = '"Expenses: "; TEXT(' + part_2 + '; "' + num_f + '"); "\n"; ';
+        part_2 = '"Expenses: "; TO_TEXT(' + part_2 + '); "\n"; ';
 
         part_3 = 'OFFSET(' + reference + '; 4; 5*' + index + '; 1; 1)';
-        part_3 = '"Balance: "; TEXT(' + part_3 + '; "' + num_f + '")';
+        part_3 = '"Balance: "; TO_TEXT(' + part_3 + ')';
 
         formula = 'CONCATENATE(' + part_1 + part_2 + '"\n"; ' + part_3 + ')';
 
@@ -556,26 +544,21 @@ const FormulaBuild = Object.freeze({
       },
 
       report: function (index, mm) {
-        this.loadSettings('decimal_places');
-
         const _h = TABLE_DIMENSION.height;
         const _w = TABLE_DIMENSION.width;
 
-        const dec_m = (this._settings.decimal_places > 0 ? '.' + '0'.repeat(this._settings.decimal_places) : '');
-        const number_format = '#,##0' + dec_m + ';' + '(#,##0' + dec_m + ')';
-
         let formula, part_1, part_2, part_3, part_4;
 
-        part_1 = 'TEXT(_Backstage!' + rollA1Notation(2 + _h * mm, 8 + _w * index) + '; "' + number_format + '")';
+        part_1 = 'TO_TEXT(_Backstage!' + rollA1Notation(2 + _h * mm, 8 + _w * index) + ')';
         part_1 = '"Withdrawal: ["; _Backstage!' + rollA1Notation(2 + _h * mm, 9 + _w * index) + '; "] "; ' + part_1 + '; "\n"; ';
 
-        part_2 = 'TEXT(_Backstage!' + rollA1Notation(3 + _h * mm, 8 + _w * index) + '; "' + number_format + '")';
+        part_2 = 'TO_TEXT(_Backstage!' + rollA1Notation(3 + _h * mm, 8 + _w * index) + ')';
         part_2 = '"Deposit: ["; _Backstage!' + rollA1Notation(3 + _h * mm, 9 + _w * index) + '; "] "; ' + part_2 + '; "\n"; ';
 
-        part_3 = 'TEXT(_Backstage!' + rollA1Notation(4 + _h * mm, 8 + _w * index) + '; "' + number_format + '")';
+        part_3 = 'TO_TEXT(_Backstage!' + rollA1Notation(4 + _h * mm, 8 + _w * index) + ')';
         part_3 = '"Trf. in: ["; _Backstage!' + rollA1Notation(4 + _h * mm, 9 + _w * index) + '; "] "; ' + part_3 + '; "\n"; ';
 
-        part_4 = 'TEXT(_Backstage!' + rollA1Notation(5 + _h * mm, 8 + _w * index) + '; "' + number_format + '")';
+        part_4 = 'TO_TEXT(_Backstage!' + rollA1Notation(5 + _h * mm, 8 + _w * index) + ')';
         part_4 = '"Trf. out: ["; _Backstage!' + rollA1Notation(5 + _h * mm, 9 + _w * index) + '; "] "; ' + part_4;
 
         formula = 'CONCATENATE(' + part_1 + part_2 + part_3 + part_4 + ')';
