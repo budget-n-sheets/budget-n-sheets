@@ -229,6 +229,7 @@ function updateDecimalSeparator_ () {
   if (dec_p === 0) sheet.getRange(8, 2).setNumberFormat('0');
 
   if (t) spreadsheet.deleteSheet(sheet);
+  else sheet.getRange(10, 2).setValue(v);
 
   setSpreadsheetSettings_('decimal_separator', v);
   setSpreadsheetSettings_('spreadsheet_locale', spreadsheet.getSpreadsheetLocale());
