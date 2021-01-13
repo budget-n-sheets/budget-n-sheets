@@ -137,7 +137,7 @@ function deleteTrigger_ (category, select, onlyFirst) {
       break;
   }
 
-  const triggers = ScriptApp.getProjectTriggers();
+  const triggers = ScriptApp.getUserTriggers(SpreadsheetApp2.getActiveSpreadsheet());
 
   for (let i = 0; i < triggers.length; i++) {
     if (triggers[i][method]() === watch) {
@@ -154,7 +154,7 @@ function deleteTrigger_ (category, select, onlyFirst) {
  * Purges all triggers.
  */
 function deleteAllTriggers_ () {
-  const triggers = ScriptApp.getProjectTriggers();
+  const triggers = ScriptApp.getUserTriggers(SpreadsheetApp2.getActiveSpreadsheet());
 
   const spreadsheet_triggers = PropertiesService2.getProperty('document', 'spreadsheet_triggers', 'json');
   if (!spreadsheet_triggers) return;
