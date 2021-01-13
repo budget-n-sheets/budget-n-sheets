@@ -154,7 +154,6 @@ function updateDecimalPlaces_ () {
       .setNumberFormat(number_format);
   }
 
-  const buildMonth = FormulaBuild.ttt().header();
   for (let i = 0; i < 12; i++) {
     sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (!sheet) continue;
@@ -165,9 +164,6 @@ function updateDecimalPlaces_ () {
     const list = [];
     for (let k = 0; k < num_acc; k++) {
       list[k] = rollA1Notation(5, 8 + 5 * k, max, 1);
-
-      formula = buildMonth.report(k, i);
-      sheet.getRange(1, 8 + 5 * k).setFormula(formula);
     }
     list.push(rollA1Notation(5, 3, max, 1));
 
@@ -176,28 +172,12 @@ function updateDecimalPlaces_ () {
 
   sheet = spreadsheet.getSheetByName('Cards');
   max = (sheet ? sheet.getMaxRows() - 5 : 0);
-  const buildCards = FormulaBuild.cards().header();
   if (max > 0) {
     const list = [];
     for (let i = 0; i < 12; i++) {
-      const head = rollA1Notation(2, 1 + 6 * i);
-      const cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
-
       list[i] = rollA1Notation(6, 4 + 6 * i, max, 1);
-
-      let formula = 'OFFSET(' + cell + '; 4; 1 + 5*' + head + '; 1; 1)';
-      formula = 'TEXT(' + formula + '; "' + number_format + '")';
-      formula = 'IF(' + rollA1Notation(2, 2 + 6 * i) + ' = "All"; ""; ' + formula + ')';
-      formula = 'CONCATENATE("AVAIL credit: "; ' + formula + ')';
-
-      const testBuild = buildCards.avail_credit(i, cell);
-      if (formula !== testBuild) ConsoleLog.warn('Formula build failed: FormulaBuild.cards().header().avail_credit()');
-
-      sheet.getRange(3, 1 + 6 * i).setFormula(formula);
-
-      formula = buildCards.report(head, cell);
-      sheet.getRange(2, 4 + 6 * i).setFormula(formula);
     }
+
     sheet.getRangeList(list).setNumberFormat(number_format);
   }
 
