@@ -202,7 +202,7 @@ function update_v0m37p16_ () {
     rr = update_v0m37p16s1_();
     if (rr) return rr;
 
-    rr = update_v0m37p16s1_();
+    rr = update_v0m37p16s2_();
     if (rr) return rr;
   } catch (err) {
     ConsoleLog.error(err);
