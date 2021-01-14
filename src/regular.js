@@ -151,7 +151,7 @@ function updateDecimalPlaces_ () {
   sheet = spreadsheet.getSheetByName('Summary');
   if (sheet) {
     sheet.getRangeList([
-      'D9:I22', 'D25:G36', 'D53:E63', 'D73:E86', 'I73:K84'
+      'D9:I22', 'D25:G36', 'D55:E65', 'D75:E88', 'I75:K86'
     ])
       .setNumberFormat(number_format);
   }
