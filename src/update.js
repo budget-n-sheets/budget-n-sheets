@@ -181,6 +181,118 @@ function update_v0m0p0_ () {
 } */
 
 /**
+ * Update decimal separator and decimal places.
+ * Reinstall triggers.
+ * Update table headers formula.
+ * Append new info to _Settings tab.
+ * Update Summary content.
+ *
+ * 0.37.16
+ */
+function update_v0m37p16_ () {
+  try {
+    updateDecimalSeparator_();
+    updateDecimalPlaces_();
+    reinstallTriggers_();
+
+    let rr;
+
+    rr = update_v0m37p16s0_();
+    if (rr) return rr;
+
+    rr = update_v0m37p16s1_();
+    if (rr) return rr;
+
+    rr = update_v0m37p16s1_();
+    if (rr) return rr;
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p16s2_ () {
+  try {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
+    if (!sheet) return;
+
+    sheet.insertRowsAfter(48, 2);
+    sheet.setRowHeights(50, 2, 21);
+    sheet.autoResizeRows(50, 2);
+
+    sheet.getRange(50, 2)
+      .setFontSize(19)
+      .setFontStyle('italic')
+      .setValue('Stats for Tags');
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p16s1_ () {
+  try {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Settings');
+    if (!sheet) return 1;
+
+    sheet.getRange(9, 1, 3, 1)
+      .setValues([
+        ['Decimal places'],
+        ['Decimal separator'],
+        ['Number format']
+      ])
+      .setNumberFormats([
+        ['0'], ['0'], ['@']
+      ]);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m37p16s0_ () {
+  try {
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+
+    const h_ = TABLE_DIMENSION.height;
+
+    const num_acc = getConstProperties_('number_accounts');
+    const col = 2 + w_ + w_ * num_acc;
+
+    const buildMonth = FormulaBuild.ttt().header();
+    for (let i = 0; i < 12; i++) {
+      const sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+      if (!sheet) continue;
+
+      for (let k = 0; k < num_acc; k++) {
+        const formula = buildMonth.report(k, i);
+        sheet.getRange(1, 8 + 5 * k).setFormula(formula);
+      }
+    }
+
+    const sheetCards = spreadsheet.getSheetByName('Cards');
+    if (!sheetCards) return;
+
+    const buildCards = FormulaBuild.cards().header();
+    for (let i = 0; i < 12; i++) {
+      const head = rollA1Notation(2, 1 + 6 * i);
+      const cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
+
+      let formula;
+
+      formula = buildCards.avail_credit(i, cell);
+      sheet.getRange(3, 1 + 6 * i).setFormula(formula);
+
+      formula = buildCards.report(head, cell);
+      sheet.getRange(2, 4 + 6 * i).setFormula(formula);
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
  * Removes whitespace from both ends of a string.
  *
  * 0.37.14

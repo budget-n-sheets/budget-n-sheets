@@ -33,7 +33,7 @@ function setupMonthSheet_ () {
       list_format[k] = rollA1Notation(5, 8 + 5 * k, 400, 1);
     }
 
-    sheet.getRangeList(list_format)
+    sheetTTT.getRangeList(list_format)
       .setNumberFormat(SETUP_SETTINGS.number_format);
   }
 

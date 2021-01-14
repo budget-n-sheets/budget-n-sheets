@@ -1,11 +1,3 @@
-function askOptimizeAll () {
-  switchActivity_('suspend');
-}
-
-function askSetRecalculation () {
-  SpreadsheetApp2.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.HOUR);
-}
-
 function rollOperationMode_ (mode) {
   const hour = 2 + randomInteger(4);
   let trigger;
@@ -157,11 +149,15 @@ function askResetProtection () {
 
 function askReinstallTriggersUi () {
   console.info('sidebar/Settings/Advanced/Reinstall');
+
   if (!isUserAdmin_()) {
+    deleteAllTriggers_();
+
     SpreadsheetApp.getUi().alert(
       'Permission denied',
       "You don't have permission to reinstall the triggers.",
       SpreadsheetApp.getUi().ButtonSet.OK);
+
     return 1;
   }
 
@@ -169,10 +165,6 @@ function askReinstallTriggersUi () {
 }
 
 function reinstallTriggers_ () {
-  if (!isInstalled_()) return;
-
-  const financial_year = getConstProperties_('financial_year');
-
   deleteAllTriggers_();
   Utilities.sleep(1000);
 

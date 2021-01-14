@@ -1,31 +1,37 @@
-function toolSuspendActivity_ () {
-  switchActivityUi_('suspend');
-}
-
 function toolResumeActivity_ () {
   console.info('menu/More/Resume month');
-  switchActivityUi_('resume');
-}
 
-function switchActivityUi_ (select) {
   if (!isInstalled_()) return;
   if (onlineUpdate_()) return;
 
-  const r = switchActivity_(select);
+  const name = SpreadsheetApp.getActiveSheet().getSheetName();
+  const mm = MONTH_NAME.short.indexOf(name);
+
+  let mm0 = mm, mm1 = mm;
+
+  if (mm === -1) {
+    if (name !== 'Summary') {
+      SpreadsheetApp.getUi().alert(
+        "Can't change activity",
+        'Select tab Summary or a month to resume the activity.',
+        SpreadsheetApp.getUi().ButtonSet.OK);
+      return;
+    }
+
+    mm0 = 0;
+    mm1 = 11;
+  }
+
+  const r = switchActivity_('resume', mm0, mm1);
 
   if (r === 1) {
     SpreadsheetApp.getActiveSheet().toast(
       'The add-on is busy. Try again in a moment.',
       'Budget n Sheets');
-  } else if (r === 2) {
-    SpreadsheetApp.getUi().alert(
-      "Can't change activity",
-      'Select a month to change the activity.',
-      SpreadsheetApp.getUi().ButtonSet.OK);
   }
 }
 
-function switchActivity_ (select) {
+function switchActivity_ (select, param1, param2) {
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
@@ -33,31 +39,16 @@ function switchActivity_ (select) {
     return 1;
   }
 
-  let mm;
+  switch (select) {
+    case 'resume':
+      resumeActivity_(param1, param2);
+      break;
+    case 'suspend':
+      suspendActivity_(param1, param2);
+      break;
 
-  SpreadsheetApp.flush();
-
-  if (select === 'suspend') {
-    const date = getSpreadsheetDate();
-    const yyyy = date.getFullYear();
-
-    const financial_year = getConstProperties_('financial_year');
-
-    if (yyyy < financial_year) {
-      return;
-    } else if (yyyy === financial_year) {
-      if (date.getMonth() < 3) return;
-      mm = date.getMonth() - 3 + 1;
-    } else {
-      mm = 12;
-    }
-
-    suspendActivity_(mm);
-  } else if (select === 'resume') {
-    mm = MONTH_NAME.short.indexOf(SpreadsheetApp.getActiveSheet().getSheetName());
-    if (mm === -1) return 2;
-
-    resumeActivity_(mm);
+    default:
+      throw new Error('switchActivity_(): Invalid case. ' + select);
   }
 
   lock.releaseLock();

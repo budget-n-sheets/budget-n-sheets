@@ -119,9 +119,10 @@ function getTranslation () {
   return translation;
 }
 
-function getSpreadsheetDate (date) {
+function getLocaleDate (date) {
   let timezone = SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetTimeZone();
   if (typeof timezone !== 'string' || timezone === '') {
+    ConsoleLog.warn('getLocaleDate(): Timezone was invalid. ' + { timezone: timezone, isEmpty: timezone === '' });
     timezone = 'GMT';
   }
 
@@ -132,7 +133,7 @@ function getSpreadsheetDate (date) {
 
 function getMonthDelta (mm) {
   if (mm == null) {
-    mm = getSpreadsheetDate().getMonth();
+    mm = getLocaleDate().getMonth();
   }
 
   switch (mm) {

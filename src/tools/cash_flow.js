@@ -174,7 +174,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
       first = 0;
     }
     if (first !== 0 && first !== 99) {
-      offset = getSpreadsheetDate(start);
+      offset = getLocaleDate(start);
       offset = start.getTime() - offset.getTime();
 
       start = new Date(start.getTime() + offset);

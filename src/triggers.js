@@ -9,7 +9,7 @@ function startTrigger_ (name) {
     let handler, type, parameters;
 
     const hour = 2 + randomInteger(4);
-    const yyyy = getSpreadsheetDate().getFullYear();
+    const yyyy = getLocaleDate().getFullYear();
     const financial_year = getConstProperties_('financial_year');
 
     if (yyyy < financial_year) {
@@ -36,7 +36,22 @@ function startTrigger_ (name) {
 }
 
 function stopTrigger_ (name) {
-  const spreadsheet_triggers = PropertiesService2.getProperty('document', 'spreadsheet_triggers', 'json');
+  let select;
 
-  deleteTrigger_('UniqueId', spreadsheet_triggers[name].id);
+  switch (name) {
+    case 'onOpen':
+      select = 'ON_OPEN';
+      break;
+    case 'onEdit':
+      select = 'ON_EDIT';
+      break;
+    case 'timeBased':
+      select = 'CLOCK';
+      break;
+
+    default:
+      throw new Error('stopTrigger_(): Invalid trigger type. ' + name);
+  }
+
+  deleteTrigger_('EventType', select);
 }

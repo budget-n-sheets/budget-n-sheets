@@ -50,7 +50,7 @@ function onEditInstallable_ (e) {
     try {
       const mm = MONTH_NAME.short.indexOf(name);
       const status = getSpreadsheetSettings_('optimize_load');
-      if (status == null || status[mm] === 1) resumeActivity_(mm);
+      if (status == null || status[mm] === 1) switchActivity_('resume', mm, mm);
     } catch (err) {
       ConsoleLog.error(err);
     }
@@ -128,7 +128,7 @@ function dailyTrigger_ (e) {
   if (!isInstalled_()) return;
   if (seamlessUpdate_()) return;
 
-  const date = getSpreadsheetDate();
+  const date = getLocaleDate();
   const yyyymmdd = {
     year: date.getFullYear(),
     month: date.getMonth(),
@@ -148,7 +148,7 @@ function dailyTrigger_ (e) {
 
     try {
       if (yyyymmdd.month > 2) {
-        switchActivity_('suspend');
+        switchActivity_('suspend', 0, yyyymmdd.month - 3);
       }
     } catch (err) {
       ConsoleLog.error(err);
@@ -166,8 +166,18 @@ function weeklyTriggerPos_ (e) {
 
   seamlessUpdate_();
 
-  if (DATE_NOW.getMonth() % 4 === 0) {
-    switchActivity_('suspend');
+  const date = getLocaleDate();
+  const month = date.getMonth();
+
+  if (month % 3 !== 0) return;
+
+  const financial_year = getConstProperties_('financial_year');
+  const yyyy = date.getFullYear();
+
+  if (yyyy > financial_year) {
+    switchActivity_('suspend', 0, 11);
+  } else if (yyyy === financial_year && month >= 3) {
+    switchActivity_('suspend', 0, mm - 3);
   }
 }
 
@@ -178,7 +188,7 @@ function weeklyTriggerPre_ (e) {
 
   let mode;
   const financial_year = getConstProperties_('financial_year');
-  const date = getSpreadsheetDate();
+  const date = getLocaleDate();
   const yyyymm = {
     year: date.getFullYear(),
     month: date.getMonth()

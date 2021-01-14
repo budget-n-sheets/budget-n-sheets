@@ -24,15 +24,18 @@ function setupSettings_ (yyyy_mm) {
   SETUP_SETTINGS.decimal_separator = dec_p;
 
   cell = [
-    ['=' + Number(SETUP_SETTINGS.financial_year)],
+    [Number(SETUP_SETTINGS.financial_year)],
     [buildFormulas.actual_month()],
-    ['=' + Number(SETUP_SETTINGS.init_month + 1)],
+    [Number(SETUP_SETTINGS.init_month + 1)],
     [buildFormulas.active_months()],
     [buildFormulas.m_factor()],
     [buildFormulas.count_tags()],
-    ['=RAND()']
+    ['RAND()'],
+    [SETUP_SETTINGS.decimal_places],
+    [SETUP_SETTINGS.decimal_separator],
+    ['CONCATENATE("#,##0."; REPT("0"; B9); ";(#,##0."; REPT("0"; B9); ")")']
   ];
-  sheet.getRange(2, 2, 7, 1).setFormulas(cell);
+  sheet.getRange(2, 2, 10, 1).setFormulas(cell);
 
   const metadata = {
     initial_month: SETUP_SETTINGS.init_month,

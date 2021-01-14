@@ -240,19 +240,13 @@ const FormulaBuild = Object.freeze({
       },
 
       avail_credit: function (mm, reference) {
-        this.loadSettings('decimal_places');
-
         const index = rollA1Notation(2, 1 + 6 * mm);
         const select = rollA1Notation(2, 2 + 6 * mm);
-
-        const dec_p = this._settings.decimal_places;
-        const mantissa = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
-        const num_f = '#,##0' + mantissa + ';' + '(#,##0' + mantissa + ')';
 
         let formula;
 
         formula = 'OFFSET(' + reference + '; 4; 1 + 5*' + index + '; 1; 1)';
-        formula = 'TEXT(' + formula + '; "' + num_f + '")';
+        formula = 'TO_TEXT(' + formula + ')';
         formula = 'IF(' + select + ' = "All"; ""; ' + formula + ')';
         formula = 'CONCATENATE("AVAIL credit: "; ' + formula + ')';
 
@@ -277,22 +271,16 @@ const FormulaBuild = Object.freeze({
       },
 
       report: function (index, reference) {
-        this.loadSettings('decimal_places');
-
-        const dec_p = this._settings.decimal_places;
-        const mantissa = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
-        const num_f = '#,##0' + mantissa + ';' + '(#,##0' + mantissa + ')';
-
         let formula, part_1, part_2, part_3;
 
         part_1 = 'OFFSET(' + reference + '; 1; 5*' + index + '; 1; 1)';
-        part_1 = '"Credit: "; TEXT(' + part_1 + '; "' + num_f + '"); "\n"; ';
+        part_1 = '"Credit: "; TO_TEXT(' + part_1 + '); "\n"; ';
 
         part_2 = 'OFFSET(' + reference + '; 3; 5*' + index + '; 1; 1)';
-        part_2 = '"Expenses: "; TEXT(' + part_2 + '; "' + num_f + '"); "\n"; ';
+        part_2 = '"Expenses: "; TO_TEXT(' + part_2 + '); "\n"; ';
 
         part_3 = 'OFFSET(' + reference + '; 4; 5*' + index + '; 1; 1)';
-        part_3 = '"Balance: "; TEXT(' + part_3 + '; "' + num_f + '")';
+        part_3 = '"Balance: "; TO_TEXT(' + part_3 + ')';
 
         formula = 'CONCATENATE(' + part_1 + part_2 + '"\n"; ' + part_3 + ')';
 
@@ -333,7 +321,9 @@ const FormulaBuild = Object.freeze({
     },
 
     chart1: function () {
-      return Object.create(FormulaBuild.Summary.Chart1);
+      const chart1 = Object.create(FormulaBuild.Summary.Chart1);
+      chart1._settings = this._settings;
+      return chart1;
     },
 
     table2: function () {
@@ -393,7 +383,7 @@ const FormulaBuild = Object.freeze({
 
     Table2: {
       data: function () {
-        return 'IF(AND(E50 > 0; _Settings!B7 > 0); QUERY({Tags!$B$1:$T}; "select Col1, sum(Col18), -1 * sum(Col"&(4 + E50)&") where Col3=true or Col3=\'TRUE\' group by Col1 label Col1 \'\', -1 * sum(Col"&(4 + E50)&") \'\', sum(Col18) \'\'"); )';
+        return 'IF(AND(E52 > 0; _Settings!B7 > 0); QUERY({Tags!$B$1:$T}; "select Col1, sum(Col18), -1 * sum(Col"&(4 + E52)&") where Col3=true or Col3=\'TRUE\' group by Col1 label Col1 \'\', -1 * sum(Col"&(4 + E52)&") \'\', sum(Col18) \'\'"); )';
       }
     },
 
@@ -401,14 +391,14 @@ const FormulaBuild = Object.freeze({
       share: function () {
         let formula;
 
-        formula = 'NOT(ISBLANK(D73:D84)) * (ROW(D73:D84) - 72 >= $M$3) * (ROW(D73:D84) - 72 <= $M$3 - 1 + $M$4)';
-        formula = 'IF(B70 <> ""; ARRAYFORMULA(IF(' + formula + '; D73:D84/$D$85; 0)); )';
+        formula = 'NOT(ISBLANK(D75:D86)) * (ROW(D75:D86) - 74 >= $M$3) * (ROW(D75:D86) - 74 <= $M$3 - 1 + $M$4)';
+        formula = 'IF(B72 <> ""; ARRAYFORMULA(IF(' + formula + '; D75:D86/$D$87; 0)); )';
 
         return formula;
       },
 
       total: function () {
-        return 'IF(AND(E50 > 0; _Settings!B7 > 0); INDEX(TRANSPOSE(QUERY({Tags!$B$1:$T}; "select -1 * sum(Col5), -1 * sum(Col6), -1 * sum(Col7), -1 * sum(Col8), -1 * sum(Col9), -1 * sum(Col10), -1 * sum(Col11), -1 * sum(Col12), -1 * sum(Col13), -1 * sum(Col14), -1 * sum(Col15), -1 * sum(Col16) where Col1=\'"&B70&"\' and (Col3=true or Col3=\'TRUE\') group by Col1")); 0; 2); )';
+        return 'IF(AND(E52 > 0; _Settings!B7 > 0); INDEX(TRANSPOSE(QUERY({Tags!$B$1:$T}; "select -1 * sum(Col5), -1 * sum(Col6), -1 * sum(Col7), -1 * sum(Col8), -1 * sum(Col9), -1 * sum(Col10), -1 * sum(Col11), -1 * sum(Col12), -1 * sum(Col13), -1 * sum(Col14), -1 * sum(Col15), -1 * sum(Col16) where Col1=\'"&B72&"\' and (Col3=true or Col3=\'TRUE\') group by Col1")); 0; 2); )';
       }
     },
 
@@ -428,7 +418,7 @@ const FormulaBuild = Object.freeze({
 
         const dec_s = this._settings.decimal_separator ? ',' : '\\';
 
-        return 'IF(OR(ROW() - 72 < $M$3; ROW() - 72 > $M$3 - 1 + $M$4); {' + rollA1Notation(73 + mm, 4) + dec_s + ' ""}; {""' + dec_s + ' ' + rollA1Notation(73 + mm, 4) + '})';
+        return 'IF(OR(ROW() - 74 < $M$3; ROW() - 74 > $M$3 - 1 + $M$4); {' + rollA1Notation(75 + mm, 4) + dec_s + ' ""}; {""' + dec_s + ' ' + rollA1Notation(75 + mm, 4) + '})';
       }
     }
   },
@@ -554,26 +544,21 @@ const FormulaBuild = Object.freeze({
       },
 
       report: function (index, mm) {
-        this.loadSettings('decimal_places');
-
         const _h = TABLE_DIMENSION.height;
         const _w = TABLE_DIMENSION.width;
 
-        const dec_m = (this._settings.decimal_places > 0 ? '.' + '0'.repeat(this._settings.decimal_places) : '');
-        const number_format = '#,##0' + dec_m + ';' + '(#,##0' + dec_m + ')';
-
         let formula, part_1, part_2, part_3, part_4;
 
-        part_1 = 'TEXT(_Backstage!' + rollA1Notation(2 + _h * mm, 8 + _w * index) + '; "' + number_format + '")';
+        part_1 = 'TO_TEXT(_Backstage!' + rollA1Notation(2 + _h * mm, 8 + _w * index) + ')';
         part_1 = '"Withdrawal: ["; _Backstage!' + rollA1Notation(2 + _h * mm, 9 + _w * index) + '; "] "; ' + part_1 + '; "\n"; ';
 
-        part_2 = 'TEXT(_Backstage!' + rollA1Notation(3 + _h * mm, 8 + _w * index) + '; "' + number_format + '")';
+        part_2 = 'TO_TEXT(_Backstage!' + rollA1Notation(3 + _h * mm, 8 + _w * index) + ')';
         part_2 = '"Deposit: ["; _Backstage!' + rollA1Notation(3 + _h * mm, 9 + _w * index) + '; "] "; ' + part_2 + '; "\n"; ';
 
-        part_3 = 'TEXT(_Backstage!' + rollA1Notation(4 + _h * mm, 8 + _w * index) + '; "' + number_format + '")';
+        part_3 = 'TO_TEXT(_Backstage!' + rollA1Notation(4 + _h * mm, 8 + _w * index) + ')';
         part_3 = '"Trf. in: ["; _Backstage!' + rollA1Notation(4 + _h * mm, 9 + _w * index) + '; "] "; ' + part_3 + '; "\n"; ';
 
-        part_4 = 'TEXT(_Backstage!' + rollA1Notation(5 + _h * mm, 8 + _w * index) + '; "' + number_format + '")';
+        part_4 = 'TO_TEXT(_Backstage!' + rollA1Notation(5 + _h * mm, 8 + _w * index) + ')';
         part_4 = '"Trf. out: ["; _Backstage!' + rollA1Notation(5 + _h * mm, 9 + _w * index) + '; "] "; ' + part_4;
 
         formula = 'CONCATENATE(' + part_1 + part_2 + part_3 + part_4 + ')';

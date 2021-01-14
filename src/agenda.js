@@ -207,7 +207,7 @@ function getCalendarEventsForCashFlow_ (financial_year, mm) {
     if (start > end) return [];
   }
 
-  offset = getSpreadsheetDate(start);
+  offset = getLocaleDate(start);
   offset = start.getTime() - offset.getTime();
 
   const a = new Date(start.getTime() + offset);
