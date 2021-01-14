@@ -281,10 +281,10 @@ function update_v0m37p16s0_ () {
       let formula;
 
       formula = buildCards.avail_credit(i, cell);
-      sheet.getRange(3, 1 + 6 * i).setFormula(formula);
+      sheetCards.getRange(3, 1 + 6 * i).setFormula(formula);
 
       formula = buildCards.report(head, cell);
-      sheet.getRange(2, 4 + 6 * i).setFormula(formula);
+      sheetCards.getRange(2, 4 + 6 * i).setFormula(formula);
     }
   } catch (err) {
     ConsoleLog.error(err);
