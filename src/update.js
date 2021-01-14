@@ -254,6 +254,7 @@ function update_v0m37p16s0_ () {
     const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
     const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
 
     const num_acc = getConstProperties_('number_accounts');
     const col = 2 + w_ + w_ * num_acc;
