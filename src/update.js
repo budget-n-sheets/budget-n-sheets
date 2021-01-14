@@ -181,7 +181,7 @@ function update_v0m0p0_ () {
 } */
 
 /**
- * Update decimal separator and decimal places.
+ * Update decimal separator.
  * Reinstall triggers.
  * Update table headers formula.
  * Append new info to _Settings tab.
@@ -192,7 +192,6 @@ function update_v0m0p0_ () {
 function update_v0m37p16_ () {
   try {
     updateDecimalSeparator_();
-    updateDecimalPlaces_();
     reinstallTriggers_();
 
     let rr;
