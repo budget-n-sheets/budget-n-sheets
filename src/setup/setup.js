@@ -76,6 +76,7 @@ function setupAddon_ (name, param1, param2) {
     }
 
     settings.backup = parts[0];
+    settings.spreadsheet_name = candidate.spreadsheet_title;
 
     for (let i = 0; i < candidate.list_acc.length; i++) {
       list_accounts[i] = candidate.list_acc[i];
