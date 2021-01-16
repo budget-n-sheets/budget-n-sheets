@@ -64,7 +64,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <span class="error" id="response"></span>
+              <span class="error"><?= msg ?></span>
               <div>
                 <button class="action" id="b-Select">Select backup</button>
                 <button onclick="google.script.host.close()">Cancel</button>
@@ -160,26 +160,25 @@
   <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    let TIMEOUT_ID;
-    var fileId = <?= fileId ?>;
+    let TIMEOUT_ID, FILE_ID;
 
     $(document).ready(function() {
       $('#b-Select').click(pickFile);
+      <? if (isValid) { ?>
       $('#b-Restore').click(restoreNow);
-      <? if (hasFileId) { ?>
       $('#b-Select').prop('disabled', true);
 
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
-        .validateBackup(fileId);
+        .retrieveBackupInfo();
       <? } ?>
     });
 
+    <? if (isValid) { ?>
     function restoreNow() {
       this.disabled = true;
       window.scrollTo(0, 0);
-      $("#response").empty();
 
       $(".panel").hide();
       $("#setup-panel").fadeIn("fast").addClass("active");
@@ -193,23 +192,14 @@
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupLock('restore', fileId);
+        .setupLock('restore', FILE_ID);
     }
 
     function refreshInfo(info) {
-      $("#response").empty();
+      if (!info) return;
       $('#b-Select').prop('disabled', false);
 
-      if (info === 1) {
-        $("#response").append('Sorry, something went wrong. Try again in a moment.');
-        return;
-      } else if (info === 2) {
-        $("#response").append('No file with the given ID could be found, or you do not have permission to access it.');
-        return;
-      } else if (info === 3) {
-        $("#response").append('The file is either not a supported file type or the file is corrupted.');
-        return;
-      }
+      FILE_ID = info.file_id;
 
       for (var key in info) {
         $("#" + key).append(info[key]);
@@ -218,6 +208,7 @@
       $('#details').fadeIn('fast');
       $('#b-Restore').prop('disabled', false);
     }
+    <? } ?>
 
     function pickFile() {
       this.disabled = true;

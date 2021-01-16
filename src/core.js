@@ -313,14 +313,14 @@ function showDialogSetupAddon_ () {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Start budget spreadsheet');
 }
 
-function showDialogSetupRestore (fileId) {
+function showDialogSetupRestore (status, msg) {
   if (isInstalled_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupRestore');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlTemplate.hasFileId = (fileId != null);
-  htmlTemplate.fileId = (fileId != null ? fileId : '');
+  htmlTemplate.isValid = (status === 0);
+  htmlTemplate.msg = (msg ? msg : '');
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)
@@ -329,14 +329,14 @@ function showDialogSetupRestore (fileId) {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Restore from backup');
 }
 
-function showDialogSetupCopy (fileId) {
+function showDialogSetupCopy (status, msg) {
   if (isInstalled_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupCopy');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlTemplate.hasFileId = (fileId != null);
-  htmlTemplate.fileId = (fileId != null ? fileId : '');
+  htmlTemplate.isValid = (status === 0);
+  htmlTemplate.msg = (msg ? msg : '');
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)

@@ -1,10 +1,45 @@
-function validateSpreadsheet (fileId) {
+function restrieveSpreadsheetInfo () {
+  const spreadsheet_candidate = CacheService2.get('document', 'spreadsheet_candidate', 'json');
+  CacheService2.remove('document', 'spreadsheet_candidate');
+  return spreadsheet_candidate;
+}
+
+function requestValidateSpreadsheet (file_id) {
+  const status = validateSpreadsheet_(file_id);
+
+  let msg = '';
+
+  switch (status) {
+    case 0:
+      break;
+    case 1:
+      msg = 'Sorry, something went wrong. Try again in a moment.';
+      break;
+    case 2:
+      msg = 'No spreadsheet with the given ID could be found, or you do not have permission to access it.';
+      break;
+    case 3:
+      msg = 'Sorry, it was not possible to verify the spreadsheet.';
+      break;
+
+    default:
+      throw new Error('requestValidateBackup(): Invalid switch case.' + rr);
+  }
+
+
+  showDialogSetupCopy(status, msg);
+}
+
+function validateSpreadsheet_ (file_id) {
   if (isInstalled_()) return 1;
+
+  CacheService2.remove('document', 'spreadsheet_candidate');
+  showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', 1);
 
   let spreadsheet, file, metadata;
 
   try {
-    file = DriveApp.getFileById(fileId);
+    file = DriveApp.getFileById(file_id);
 
     const owner = file.getOwner().getEmail();
     const user = Session.getEffectiveUser().getEmail();
@@ -18,7 +53,7 @@ function validateSpreadsheet (fileId) {
   if (file.getMimeType() !== MimeType.GOOGLE_SHEETS) return 3;
 
   try {
-    spreadsheet = SpreadsheetApp.openById(fileId);
+    spreadsheet = SpreadsheetApp.openById(file_id);
 
     const inner_key = getInnerKey_();
     if (inner_key === 1) return 1;
@@ -44,25 +79,19 @@ function validateSpreadsheet (fileId) {
   const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
   const data = JSON.parse(string);
 
-  // if (data.spreadsheet_id !== fileId) return 2;
+  // if (data.spreadsheet_id !== file_id) return 2;
   if (data.admin_id !== getUserId_()) return 2;
 
-  return {
-    file_name: spreadsheet.getName(),
-    file_url: spreadsheet.getUrl(),
-    last_updated: file.getLastUpdated().toString()
-  };
-}
-
-function readSpreadsheetInfo (fileId) {
-  const spreadsheet = SpreadsheetApp.openById(fileId);
   let sheet, values, cols;
   let list;
 
   const w_ = TABLE_DIMENSION.width;
 
   const info = {
-    file_id: fileId,
+    file_id: file_id,
+    file_name: spreadsheet.getName(),
+    file_url: spreadsheet.getUrl(),
+    last_updated: file.getLastUpdated().toString(),
     spreadsheet_title: spreadsheet.getName(),
 
     financial_year: DATE_NOW.getFullYear(),
@@ -121,7 +150,9 @@ function readSpreadsheetInfo (fileId) {
   if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tag(s) found.';
   else info.tags = '-';
 
-  return info;
+  CacheService2.put('document', 'spreadsheet_candidate', 'json', info);
+
+  return 0;
 }
 
 function restoreFromSpreadsheet_ (file_id) {

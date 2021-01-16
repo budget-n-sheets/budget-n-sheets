@@ -98,9 +98,9 @@
       google.script.run
         .withFailureHandler(showError)
         <? if (isRestore) { ?>
-        .showDialogSetupRestore(doc[google.picker.Document.ID]);
+        .requestValidateBackup(doc[google.picker.Document.ID]);
         <? } else { ?>
-        .showDialogSetupCopy(doc[google.picker.Document.ID]);
+        .requestValidateSpreadsheet(doc[google.picker.Document.ID]);
         <? } ?>
     }
   </script>

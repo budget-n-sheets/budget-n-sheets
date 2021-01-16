@@ -44,7 +44,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <span class="error" id="response"></span>
+              <span class="error" id="response"><?= msg ?></span>
               <div>
                 <button class="action" id="b-Select">Select spreadsheet</button>
                 <button onclick="google.script.host.close()">Cancel</button>
@@ -126,69 +126,36 @@
   <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    const FILE_ID = <?= fileId ?>;
-    let TIMEOUT_ID;
+    let TIMEOUT_ID, FILE_ID;
 
     $(document).ready(function() {
       $('#b-Select').click(pickFile);
+      <? if (isValid) { ?>
       $('#b-Copy').click(copyNow);
-      <? if (hasFileId) { ?>
       $('#b-Select').prop('disabled', true);
 
       google.script.run
         .withFailureHandler(showError)
-        .withSuccessHandler(requestInfo)
-        .validateSpreadsheet(FILE_ID);
+        .withSuccessHandler(refreshInfo)
+        .restrieveSpreadsheetInfo();
       <? } ?>
     });
 
-    <? if (hasFileId) { ?>
-    function requestInfo(info) {
-      $("#response").empty();
-
-      if (info === 1) {
-        $('#b-Select').prop('disabled', false);
-        $("#response").append('Sorry, something went wrong. Try again in a moment.');
-        return;
-      } else if (info === 2) {
-        $('#b-Select').prop('disabled', false);
-        $("#response").append('No spreadsheet with the given ID could be found, or you do not have permission to access it.');
-        return;
-      } else if (info === 3) {
-        $('#b-Select').prop('disabled', false);
-        $("#response").append('Sorry, it was not possible to verify the spreadsheet.');
-        return;
-      }
-
-      $("#file_name").append('<a href="' + info.file_url + '" target="_blank">' + info.file_name + '</a>');
-      $('#last_updated').append(info.last_updated);
-
-      google.script.run
-        .withFailureHandler(showError)
-        .withSuccessHandler(refreshInfo)
-        .readSpreadsheetInfo(FILE_ID);
-    }
-
+    <? if (isValid) { ?>
     function refreshInfo(info) {
+      if (!info) return;
       $('#b-Select').prop('disabled', false);
+
+      FILE_ID = info.file_id;
 
       for (let key in info) {
         $("#" + key).append(info[key]);
       }
 
+      $("#file_name").empty().append('<a href="' + info.file_url + '" target="_blank">' + info.file_name + '</a>');
+
       $('#details').fadeIn('fast');
       $('#b-Copy').prop('disabled', false);
-    }
-    <? } ?>
-
-    function pickFile() {
-      this.disabled = true;
-      google.script.run
-        .withFailureHandler(showError)
-        .withSuccessHandler(function() {
-          google.script.host.close();
-        })
-        .showDialogPickerRestore('copy');
     }
 
     function copyNow() {
@@ -209,6 +176,17 @@
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
         .setupLock('copy', FILE_ID);
+    }
+    <? } ?>
+
+    function pickFile() {
+      this.disabled = true;
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(function() {
+          google.script.host.close();
+        })
+        .showDialogPickerRestore('copy');
     }
 
     function panelError(err) {

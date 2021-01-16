@@ -1,10 +1,45 @@
-function validateBackup (fileId) {
+function retrieveBackupInfo () {
+  const backup_candidate = CacheService2.get('document', 'backup_candidate', 'json');
+  CacheService2.remove('document', 'backup_candidate');
+  return backup_candidate;
+}
+
+function requestValidateBackup (file_id) {
+  const status = validateBackup_(file_id);
+
+  let msg = '';
+
+  switch (status) {
+    case 0:
+      break;
+    case 1:
+      msg = 'Sorry, something went wrong. Try again in a moment.';
+      break;
+    case 2:
+      msg = 'No file with the given ID could be found, or you do not have permission to access it.';
+      break;
+    case 3:
+      msg = 'The file is either not a supported file type or the file is corrupted.';
+      break;
+
+    default:
+      throw new Error('requestValidateBackup(): Invalid switch case.' + rr);
+  }
+
+
+  showDialogSetupRestore(status, msg);
+}
+
+function validateBackup_ (file_id) {
   if (isInstalled_()) return 1;
+
+  CacheService2.remove('document', 'backup_candidate');
+  showDialogMessage('Add-on restore', 'Verifying the backup...', 1);
 
   let file, sha, parts;
 
   try {
-    file = DriveApp.getFileById(fileId);
+    file = DriveApp.getFileById(file_id);
 
     const owner = file.getOwner().getEmail();
     const user = Session.getEffectiveUser().getEmail();
@@ -32,7 +67,7 @@ function validateBackup (fileId) {
   const data = JSON.parse(string);
 
   const settings_candidate = {
-    file_id: fileId,
+    file_id: file_id,
     list_acc: [],
     spreadsheet_title: data.backup.spreadsheet_title,
     decimal_places: data.spreadsheet_settings.decimal_places,
@@ -48,6 +83,7 @@ function validateBackup (fileId) {
   PropertiesService2.setProperty('document', 'settings_candidate', 'json', settings_candidate);
 
   const info = {
+    file_id: file_id,
     file_name: file.getName(),
     date_created: new Date(data.backup.date_request).toString(),
 
@@ -97,7 +133,9 @@ function validateBackup (fileId) {
     info.cards = 'No cards found.';
   }
 
-  return info;
+  CacheService2.put('document', 'backup_candidate', 'json', info);
+
+  return 0;
 }
 
 function restoreFromBackup_ (backup) {
