@@ -21,8 +21,29 @@ function backupRequestUi () {
 
   if (response === ui.Button.NO) return 1;
 
+  const passphrase1 = ui.prompt(
+    'Budget n Sheets Backup',
+    'Enter passphrase:',
+    ui.ButtonSet.OK_CANCEL);
+  if (passphrase1.getSelectedButton() === ui.Button.CANCEL) return 0;
+
+  const passphrase2 = ui.prompt(
+    'Budget n Sheets Backup',
+    'Please re-enter this passphrase:',
+    ui.ButtonSet.OK_CANCEL);
+  if (passphrase2.getSelectedButton() === ui.Button.CANCEL) return 0;
+
+  const passphrase = passphrase1.getResponseText();
+  if (passphrase !== passphrase2.getResponseText() || passphrase.length === 0) {
+    ui.alert(
+      'Budget n Sheets Backup',
+      'Invalid passphrase.',
+      ui.ButtonSet.OK);
+    return 1;
+  }
+
   showDialogMessage('Add-on backup', 'Backing up...', 1);
-  backupRequest_();
+  backupRequest_(passphrase);
   ui.alert(
     'Add-on backup',
     'The backup was completed successfully.',
@@ -30,7 +51,7 @@ function backupRequestUi () {
   return 0;
 }
 
-function backupRequest_ () {
+function backupRequest_ (passphrase) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const backup = {
     backup: {},
@@ -82,7 +103,9 @@ function backupRequest_ () {
 
   backupMeta_(backup);
 
-  const blob = digestBackup_(backup);
+  const blob = digestBackup_(backup, passphrase);
+  if (blob === 0) throw new Error('digestBackup_(): Backup digest failed.');
+
   emailBackup_(blob);
   console.info('backup/success');
 }
@@ -111,16 +134,35 @@ function emailBackup_ (blob) {
   );
 }
 
-function digestBackup_ (backup) {
+function digestBackup_ (backup, passphrase) {
   const string = JSON.stringify(backup);
   const webSafeCode = Utilities.base64EncodeWebSafe(string, Utilities.Charset.UTF_8);
 
-  const sha = computeDigest('SHA_1', webSafeCode, 'UTF_8');
+  const sha = computeDigest('SHA_256', webSafeCode, 'UTF_8');
   const data = webSafeCode + ':' + sha;
+
+  let encrypted = '';
+  try {
+    encrypted = sjcl.encrypt(passphrase, data, { mode: "gcm", adata: sha });
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 0;
+  }
+
+  try {
+    const decrypted = sjcl.decrypt(passphrase, encrypted);
+    const parts = decrypted.split(':');
+    const test_sha = computeDigest('SHA_256', parts[0], 'UTF_8');
+
+    if (test_sha !== parts[1]) throw new Error('digestBackup_(): Bad decryption.');
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 0;
+  }
 
   const date = Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss');
   const name = 'budget-n-sheets-' + date + '.backup';
-  const blob = Utilities.newBlob(data, 'text/plain', name);
+  const blob = Utilities.newBlob(encrypted, 'application/octet-stream', name);
 
   return blob;
 }
