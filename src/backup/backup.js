@@ -14,13 +14,6 @@ function backupRequestUi () {
     return 1;
   }
 
-  const response = ui.alert(
-    'Back up now?',
-    'The backup file will be sent to your email when the backup completes.',
-    ui.ButtonSet.YES_NO);
-
-  if (response === ui.Button.NO) return 1;
-
   const passphrase1 = ui.prompt(
     'Budget n Sheets Backup',
     'Enter passphrase:',
