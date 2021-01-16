@@ -60,9 +60,9 @@ function setupAddon_ (name, param1, param2) {
     }
   } else if (name === 'restore') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
-    if (candidate.file_id !== fileId) throw new Error('File ID does not match.');
+    if (candidate.file_id !== param1) throw new Error('File ID does not match.');
 
-    const parts = DriveApp.getFileById(fileId)
+    const parts = DriveApp.getFileById(param1)
       .getBlob()
       .getAs('text/plain')
       .getDataAsString()
@@ -82,7 +82,7 @@ function setupAddon_ (name, param1, param2) {
     }
   } else if (name === 'copy') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
-    if (candidate.file_id !== file_id) throw new Error('File ID does not match.');
+    if (candidate.file_id !== param1) throw new Error('File ID does not match.');
 
     for (const key in candidate) {
       settings[key] = candidate[key];
