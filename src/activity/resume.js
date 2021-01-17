@@ -56,10 +56,8 @@ function resumeActivity_ (mm0, mm1) {
     cards[i] = new Array(width).fill(null);
   }
 
-  let formulaR1C1 = 'RC[' + w_ + ']';
   const regex = [rollA1Notation(1, col)];
   for (let k = 2; k <= 10; k++) {
-    formulaR1C1 += ' + RC[' + w_ * k + ']';
     regex[k - 1] = rollA1Notation(1, col + w_ * (k - 1));
   }
 
@@ -100,7 +98,9 @@ function resumeActivity_ (mm0, mm1) {
 
     formula = formulasCards.bsblank(cardsRows, mm);
     sheetBackstage.getRange(2 + h_ * mm, 4 + col - w_).setFormula(formula);
-    sheetBackstage.getRange(3 + h_ * mm, col - w_, 4, 1).setFormulaR1C1(formulaR1C1);
+
+    formula = 'RC[5] + RC[10] + RC[15] + RC[20] + RC[25] + RC[30] + RC[35] + RC[40] + RC[45] + RC[50]';
+    sheetBackstage.getRange(3 + h_ * mm, col - w_, 4, 1).setFormulaR1C1(formula);
 
     const list4 = [];
     for (let k = 0; k < 10; k++) {
