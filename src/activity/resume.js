@@ -56,6 +56,11 @@ function resumeActivity_ (mm0, mm1) {
     cards[i] = new Array(width).fill(null);
   }
 
+  const list_bsblank = [];
+  for (let i = mm0; i <= mm1; i++) {
+    list_bsblank.push(rollA1Notation(2 + h_ * i, col - 1));
+  }
+
   const regex = [rollA1Notation(1, col)];
   for (let k = 2; k <= 10; k++) {
     regex[k - 1] = rollA1Notation(1, col + w_ * (k - 1));
@@ -106,6 +111,7 @@ function resumeActivity_ (mm0, mm1) {
     for (let k = 0; k < 10; k++) {
       const bsblank = rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
 
+      cards[0 + h_ * mm - offset][4 + w_ * k] = list_bsblank[mm];
       cards[1 + h_ * mm - offset][w_ * k] = formulasCards.credit(cardsRows, mm, regex[k], bsblank);
       cards[2 + h_ * mm - offset][w_ * k] = formulasCards.expenses_ign(cardsRows, mm, regex[k], bsblank);
       cards[3 + h_ * mm - offset][w_ * k] = formulasCards.expenses(cardsRows, mm, regex[k], bsblank);
