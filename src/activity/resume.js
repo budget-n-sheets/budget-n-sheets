@@ -163,7 +163,7 @@ function resumeActivity_ (mm0, mm1) {
 
   for (let k = 0; k < db_cards.count; k++) {
     const formula = '=' + FormatNumber.localeSignal(db_cards.data[k].limit);
-    for (let mm = mm0; mm <= m1; mm++) {
+    for (let mm = mm0; mm <= mm1; mm++) {
       sheetBackstage.getRange(2 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
     }
   }
