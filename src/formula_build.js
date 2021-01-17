@@ -69,7 +69,8 @@ const FormulaBuild = Object.freeze({
       },
 
       bsblank: function (mm, value) {
-        return 'BSBLANK(TRANSPOSE(' + MONTH_NAME.short[mm] + '!' + value + '))';
+        const header = 'C4'; // rollA1Notation(4, 3);
+        return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + MONTH_NAME.short[mm] + '!' + value + '); ROW(' + MONTH_NAME.short[mm] + '!' + value + ') - ROW(' + MONTH_NAME.short[mm] + '!' + header + '); FALSE)); ROWS(' + MONTH_NAME.short[mm] + '!' + value + '))';
       }
     },
 
@@ -105,8 +106,8 @@ const FormulaBuild = Object.freeze({
         return formula;
       },
 
-      bsblank: function (mm, value) {
-        return 'BSBLANK(TRANSPOSE(' + MONTH_NAME.short[mm] + '!' + value + '))';
+      bsblank: function (mm, header, value) {
+        return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + MONTH_NAME.short[mm] + '!' + value + '); ROW(' + MONTH_NAME.short[mm] + '!' + value + ') - ROW(' + MONTH_NAME.short[mm] + '!' + header + '); FALSE)); ROWS(' + MONTH_NAME.short[mm] + '!' + value + '))';
       }
     },
 
@@ -201,7 +202,8 @@ const FormulaBuild = Object.freeze({
       },
 
       bsblank: function (numRows, mm) {
-        return 'BSBLANK(TRANSPOSE(Cards!' + rollA1Notation(6, 4 + 6 * mm, numRows, 1) + '))';
+        const header = rollA1Notation(5, 4 + 6 * mm);
+        return 'MIN(ARRAYFORMULA(IF(ISBLANK(Cards!' + rollA1Notation(6, 4 + 6 * mm, numRows, 1) + '); ROW(Cards!' + rollA1Notation(6, 4 + 6 * mm, numRows, 1) + ') - ROW(Cards!' + header + '); FALSE)); ROWS(Cards!' + rollA1Notation(6, 4 + 6 * mm, numRows, 1) + '))';
       }
     }
   },

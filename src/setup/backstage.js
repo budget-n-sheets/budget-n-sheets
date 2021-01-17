@@ -62,11 +62,12 @@ function setupBackstage_ () {
 
     for (; k < num_acc; k++) {
       const bsblank = rollA1Notation(2 + h_ * i, 11 + w_ * k);
+      const header_value = rollA1Notation(4, 8 + 5 * k);
       income += ' + ' + rollA1Notation(6 + h_ * i, 8 + w_ * k);
       expenses += ' + ' + rollA1Notation(4 + h_ * i, 7 + w_ * k);
 
       accounts[h_ * i][w_ * k] = '=' + balance2[5 * i + k];
-      accounts[h_ * i][4 + w_ * k] = buildAccounts.bsblank(i, values[1 + k]);
+      accounts[h_ * i][4 + w_ * k] = buildAccounts.bsblank(i, header_value, values[1 + k]);
       accounts[1 + h_ * i][w_ * k] = buildAccounts.balance(i, values[1 + k], balance1[5 * i + k], bsblank);
       accounts[2 + h_ * i][w_ * k] = buildAccounts.expenses_ign(i, values[1 + k], tags[1 + k], bsblank);
       accounts[h_ * i][1 + w_ * k] = buildAccounts.bsreport(i, tags[1 + k], combo[1 + k], bsblank);

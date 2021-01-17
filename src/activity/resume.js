@@ -83,13 +83,14 @@ function resumeActivity_ (mm0, mm1) {
     let expenses = '0';
     for (let k = 0; k < num_acc; k++) {
       const bsblank = rollA1Notation(2 + h_ * mm, 11 + w_ * k);
+      const header_value = rollA1Notation(4, 8 + 5 * k);
 
       income += ' + ' + rollA1Notation(6 + h_ * mm, 8 + w_ * k);
       expenses += ' + ' + rollA1Notation(4 + h_ * mm, 7 + w_ * k);
 
       accounts[h_ * mm - offset][w_ * k] = '=' + balance2[5 * mm + k];
       accounts[h_ * mm - offset][1 + w_ * k] = formulasAcc.bsreport(mm, tags[1 + k] + numRows, combo[1 + k] + numRows, bsblank);
-      accounts[h_ * mm - offset][4 + w_ * k] = formulasAcc.bsblank(mm, values[1 + k] + numRows);
+      accounts[h_ * mm - offset][4 + w_ * k] = formulasAcc.bsblank(mm, header_value, values[1 + k] + numRows);
       accounts[1 + h_ * mm - offset][w_ * k] = formulasAcc.balance(mm, values[1 + k] + numRows, balance1[5 * mm + k], bsblank);
       accounts[2 + h_ * mm - offset][w_ * k] = formulasAcc.expenses_ign(mm, values[1 + k] + numRows, tags[1 + k] + numRows, bsblank);
     }
