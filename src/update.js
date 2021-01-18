@@ -181,6 +181,68 @@ function update_v0m0p0_ () {
 } */
 
 /**
+ * Fix missing reference to cards BSBLANK().
+ * Update BSBLANK formulas.
+ *
+ * 0.37.19
+ */
+function update_v0m37p19_ () {
+  try {
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const formulasBuild = FormulaBuild.backstage();
+    const formulasWallet = formulasBuild.wallet();
+    const formulasAcc = formulasBuild.accounts();
+    const formulasCards = formulasBuild.cards();
+
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const backstage = spreadsheet.getSheetByName('_Backstage');
+    if (!backstage) return 1;
+
+    const num_acc = getConstProperties_('number_accounts');
+    const col = 2 + w_ + w_ * num_acc + w_;
+
+    for (let mm = 0; mm < 12; mm++) {
+      const sheet = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
+      if (!sheet) continue;
+
+      const numRows = sheet.getMaxRows() - 4;
+      if (numRows < 1) continue;
+
+      const formula = formulasWallet.bsblank(mm, rollA1Notation(5, 3, numRows));
+      backstage.getRange(2 + h_ * mm, 6).setFormula(formula);
+
+      for (let k = 0; k < num_acc; k++) {
+        const header_value = rollA1Notation(4, 8 + 5 * k);
+
+        const formula = formulasAcc.bsblank(mm, header_value, rollA1Notation(5, 8 + 5 * k, numRows));
+        backstage.getRange(2 + h_ * mm, 11 + w_ * k).setFormula(formula);
+      }
+    }
+
+    const cards = spreadsheet.getSheetByName('Cards');
+    if (!cards) return 1;
+
+    const numRows = cards.getMaxRows() - 5;
+    if (numRows < 1) return 1;
+
+    for (let mm = 0; mm < 12; mm++) {
+      const formula = formulasCards.bsblank(numRows, mm);
+      backstage.getRange(2 + h_ * mm, 4 + col - w_).setFormula(formula);
+
+      const ref = rollA1Notation(2 + h_ * mm, 4 + col - w_);
+      for (let k = 0; k < 10; k++) {
+        backstage.getRange(2 + h_ * mm, 4 + col + w_ * k).setFormula(ref);
+      }
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
  * Update decimal separator.
  * Reinstall triggers.
  * Update table headers formula.
