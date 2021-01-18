@@ -7,7 +7,8 @@ function toolResumeActivity_ () {
   const name = SpreadsheetApp.getActiveSheet().getSheetName();
   const mm = MONTH_NAME.short.indexOf(name);
 
-  let mm0 = mm, mm1 = mm;
+  let mm0 = mm;
+  let mm1 = mm;
 
   if (mm === -1) {
     if (name !== 'Summary') {

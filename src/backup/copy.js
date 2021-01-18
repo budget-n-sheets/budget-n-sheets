@@ -26,7 +26,6 @@ function requestValidateSpreadsheet (file_id) {
       throw new Error('requestValidateBackup(): Invalid switch case.' + rr);
   }
 
-
   showDialogSetupCopy(status, msg);
 }
 

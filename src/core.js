@@ -320,7 +320,7 @@ function showDialogSetupRestore (status, msg) {
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.isValid = (status === 0);
-  htmlTemplate.msg = (msg ? msg : '');
+  htmlTemplate.msg = (msg || '');
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)
@@ -336,7 +336,7 @@ function showDialogSetupCopy (status, msg) {
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.isValid = (status === 0);
-  htmlTemplate.msg = (msg ? msg : '');
+  htmlTemplate.msg = (msg || '');
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)

@@ -26,7 +26,6 @@ function requestValidateBackup (file_id) {
       throw new Error('requestValidateBackup(): Invalid switch case.' + rr);
   }
 
-
   showDialogSetupRestore(status, msg);
 }
 
