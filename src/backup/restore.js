@@ -50,21 +50,8 @@ function validateBackup_ (file_id) {
     return 2;
   }
 
-  try {
-    const blob = file.getBlob().getAs('text/plain');
-    const raw = blob.getDataAsString();
-
-    parts = raw.split(':');
-    sha = computeDigest('SHA_1', parts[0], 'UTF_8');
-  } catch (err) {
-    ConsoleLog.error(err);
-    return 3;
-  }
-  if (sha !== parts[1]) return 3;
-
-  const webSafeCode = parts[0];
-  const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
-  const data = JSON.parse(string);
+  const data = developBackup_(file);
+  if (data === 3) return 3;
 
   const settings_candidate = {
     file_id: file_id,
@@ -136,6 +123,49 @@ function validateBackup_ (file_id) {
   CacheService2.put('document', 'backup_candidate', 'json', info);
 
   return 0;
+}
+
+function developBackup_ (file) {
+  const blob = file.getBlob();
+  const data = blob.getDataAsString();
+  const contentType = blob.getContentType();
+
+  if (contentType === 'text/plain') {
+    const parts = data.split(':');
+    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+
+    if (sha !== parts[1]) return 3;
+
+    const string = base64DecodeWebSafe(parts[0], 'UTF_8');
+    return JSON.parse(string);
+  }
+
+  if (contentType === 'application/octet-stream') {
+    const ui = SpreadsheetApp.getUi();
+    const passphrase = ui.prompt(
+      'Budget n Sheets Restore',
+      'Enter passphrase:',
+      ui.ButtonSet.OK_CANCEL);
+    if (passphrase.getSelectedButton() === ui.Button.CANCEL) return 0;
+
+    let decrypted = null;
+
+    try {
+      decrypted = sjcl.decrypt(passphrase.getResponseText(), data);
+    } catch (err) {
+      ConsoleLog.error(err);
+      return 3;
+    }
+    const parts = decrypted.split(':');
+    const test_sha = computeDigest('SHA_256', parts[0], 'UTF_8');
+
+    if (test_sha !== parts[1]) return 3;
+
+    const string = base64DecodeWebSafe(parts[0], 'UTF_8');
+    return JSON.parse(string);
+  }
+
+  return 3;
 }
 
 function restoreFromBackup_ (backup) {
