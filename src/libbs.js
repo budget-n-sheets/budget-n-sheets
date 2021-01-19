@@ -2,6 +2,15 @@ const FormatNumber = {
   _settings: {
   },
 
+  setSettings: function (name, value) {
+    switch (name) {
+      case 'decimal_separator':
+      case 'decimal_places':
+        this._settings[name] = value;
+        break;
+    }
+  },
+
   loadSettings: function (name) {
     if (this._settings[name]) return;
 
