@@ -23,15 +23,18 @@ function setupSettings_ (yyyy_mm) {
 
   SETUP_SETTINGS.decimal_separator = dec_p;
 
+  FormatNumber.setSettings('decimal_places', SETUP_SETTINGS.decimal_places);
+  FormatNumber.setSettings('decimal_separator', SETUP_SETTINGS.decimal_separator);
+
   cell = [
-    [Number(SETUP_SETTINGS.financial_year)],
+    [FormatNumber.localeSignal(SETUP_SETTINGS.financial_year)],
     [buildFormulas.actual_month()],
-    [Number(SETUP_SETTINGS.init_month + 1)],
+    [FormatNumber.localeSignal(SETUP_SETTINGS.init_month + 1)],
     [buildFormulas.active_months()],
     [buildFormulas.m_factor()],
     [buildFormulas.count_tags()],
     ['RAND()'],
-    [SETUP_SETTINGS.decimal_places],
+    [FormatNumber.localeSignal(SETUP_SETTINGS.decimal_places)],
     [SETUP_SETTINGS.decimal_separator],
     ['CONCATENATE("#,##0."; REPT("0"; B9); ";(#,##0."; REPT("0"; B9); ")")']
   ];
