@@ -159,6 +159,9 @@ function developBackup_ (file) {
       ConsoleLog.error(err);
       return 4;
     }
+
+    CacheService2.put('user', file.getId(), 'string', passphrase.getResponseText(), 120);
+
     const parts = decrypted.split(':');
     const test_sha = computeDigest('SHA_256', parts[0], 'UTF_8');
 
