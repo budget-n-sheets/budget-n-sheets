@@ -12,7 +12,7 @@ const FormatNumber = {
   },
 
   loadSettings: function (name) {
-    if (this._settings[name]) return;
+    if (this._settings[name] != null) return;
 
     switch (name) {
       case 'decimal_separator':
