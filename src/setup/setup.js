@@ -62,14 +62,37 @@ function setupAddon_ (name, param1, param2) {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
     if (candidate.file_id !== param1) throw new Error('File ID does not match.');
 
-    const parts = DriveApp.getFileById(param1)
-      .getBlob()
-      .getAs('text/plain')
-      .getDataAsString()
-      .split(':');
+    const blob = DriveApp.getFileById(param1).getBlob();
+    const data = blob.getDataAsString();
+    const contentType = blob.getContentType();
 
-    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
-    if (sha !== parts[1]) throw new Error("Hashes doesn't match.");
+    let parts;
+
+    if (contentType === 'text/plain') {
+      parts = data.split(':');
+
+      const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+      if (sha !== parts[1]) throw new Error("Hashes don't match.");
+    }
+
+    if (contentType === 'application/octet-stream') {
+      const passphrase = CacheService2.get('user', param1, 'string');
+      let decrypted = 0;
+
+      try {
+        decrypted = sjcl.decrypt(passphrase, data);
+      } catch (err) {
+        ConsoleLog.error(err);
+        decrypted = 0;
+      }
+
+      if (!decrypted) throw new Error('setupAddon_(): Decryption failed.');
+
+      parts = decrypted.split(':');
+      const test_sha = computeDigest('SHA_256', parts[0], 'UTF_8');
+
+      if (test_sha !== parts[1]) throw new Error("Hashe don't match.");
+    }
 
     for (const key in candidate) {
       settings[key] = candidate[key];
