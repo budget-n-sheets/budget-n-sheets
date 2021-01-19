@@ -11,7 +11,7 @@ const PATCH_THIS = Object.freeze({
       [update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_, null, null, update_v0m34p10_, null, null],
       [update_v0m35p0_, update_v0m35p1_, update_v0m35p2_, null, null, null, null],
       [null, null, update_v0m36p2_, update_v0m36p3_, update_v0m36p4_, null],
-      [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_, null, null, null, null, update_v0m37p14_, null, update_v0m37p16_, null, null, update_v0m37p19_]
+      [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_, null, null, null, null, update_v0m37p14_, null, update_v0m37p16_, null, null, update_v0m37p19_, update_v0m37p20_]
     ]
   ],
   beta_list: []
@@ -179,6 +179,29 @@ function update_v0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Fix bad values in _Settings.
+ *
+ * 0.37.20
+ */
+function update_v0m37p20_ () {
+  try {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Settings');
+    if (!sheet) return 1;
+
+    const financial_year = getConstProperties_('financial_year');
+    const initial_month = getUserSettings_('initial_month');
+    const decimal_places = getSpreadsheetSettings_('decimal_places');
+
+    sheet.getRange(2, 2).setFormula(FormatNumber.localeSignal(financial_year));
+    sheet.getRange(4, 2).setFormula(FormatNumber.localeSignal(initial_month + 1));
+    sheet.getRange(9, 2).setFormula(FormatNumber.localeSignal(decimal_places));
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
 
 /**
  * Fix missing reference to cards BSBLANK().
