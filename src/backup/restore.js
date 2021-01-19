@@ -21,6 +21,9 @@ function requestValidateBackup (file_id) {
     case 3:
       msg = 'The file is either not a supported file type or the file is corrupted.';
       break;
+    case 4:
+      msg = 'The passphrase is incorrect or the file is corrupted.';
+      break;
 
     default:
       throw new Error('requestValidateBackup(): Invalid switch case.' + rr);
@@ -51,7 +54,7 @@ function validateBackup_ (file_id) {
   }
 
   const data = developBackup_(file);
-  if (data === 3) return 3;
+  if (typeof data === 'number') return data;
 
   const settings_candidate = {
     file_id: file_id,
@@ -154,12 +157,12 @@ function developBackup_ (file) {
       decrypted = sjcl.decrypt(passphrase.getResponseText(), data);
     } catch (err) {
       ConsoleLog.error(err);
-      return 3;
+      return 4;
     }
     const parts = decrypted.split(':');
     const test_sha = computeDigest('SHA_256', parts[0], 'UTF_8');
 
-    if (test_sha !== parts[1]) return 3;
+    if (test_sha !== parts[1]) return 4;
 
     const string = base64DecodeWebSafe(parts[0], 'UTF_8');
     return JSON.parse(string);
