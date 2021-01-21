@@ -76,7 +76,11 @@ function setupAddon_ (name, param1, param2) {
     }
 
     if (contentType === 'application/octet-stream') {
-      const passphrase = CacheService2.get('user', param1, 'string');
+      const address = computeDigest(
+        'SHA_1',
+        param1 + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+        'UTF_8');
+      const passphrase = CacheService2.get('user', address, 'string');
       CacheService2.remove('user', param1, 'string');
       let decrypted = 0;
 
