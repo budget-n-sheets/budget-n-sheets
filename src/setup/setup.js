@@ -82,8 +82,13 @@ function setupAddon_ (name, param1, param2) {
         'UTF_8');
       const passphrase = CacheService2.get('user', address, 'string');
       CacheService2.remove('user', param1, 'string');
-      let decrypted = 0;
 
+      if (passphrase == null) {
+        showSessionExpired();
+        return;
+      }
+
+      let decrypted = 0;
       try {
         decrypted = sjcl.decrypt(passphrase, data);
       } catch (err) {

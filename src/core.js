@@ -378,6 +378,15 @@ function showDialogSetupEnd () {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Add-on Budget n Sheets');
 }
 
+function showSessionExpired () {
+  const ui = SpreadsheetApp.getUi();
+
+  ui.alert(
+    'Session expired',
+    'Your session timed out. Please try again.',
+    ui.ButtonSet.OK);
+}
+
 function showDialogEditAccount (acc_id) {
   const htmlTemplate = HtmlService.createTemplateFromFile('html/htmlEditAccount');
 
