@@ -95,8 +95,7 @@ function setupAddon_ (name, param1, param2) {
         ConsoleLog.error(err);
         decrypted = 0;
       }
-
-      if (!decrypted) throw new Error('setupAddon_(): Decryption failed.');
+      if (decrypted === 0) throw new Error('setupAddon_(): Decryption failed.');
 
       parts = decrypted.split(':');
       const test_sha = computeDigest('SHA_256', parts[0], 'UTF_8');
