@@ -247,59 +247,7 @@ function showDialogMessage (title, message, timeout) {
 function showDialogSetupAddon_ () {
   console.log('setup/intent');
   setUserId_();
-
-  const ui = SpreadsheetApp.getUi();
-
-  if (!isTemplateAvailable()) {
-    ui.alert(
-      'New version available',
-      'Please, re-open the spreadsheet to update the add-on.',
-      ui.ButtonSet.OK);
-    return;
-  } else if (isInstalled_()) {
-    showDialogSetupEnd();
-    onOpen();
-    return;
-  } else if (PropertiesService.getDocumentProperties().getProperty('lock_spreadsheet')) {
-    ui.alert(
-      "Can't create budget sheet",
-      'The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.',
-      ui.ButtonSet.OK);
-    return;
-  }
-
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  let owner;
-
-  owner = spreadsheet.getOwner();
-  if (owner) owner = owner.getEmail();
-  else owner = '';
-
-  const user = Session.getEffectiveUser().getEmail();
-
-  if (owner && owner !== user) {
-    ui.alert(
-      'Permission denied',
-      "You don't own the spreadsheet. Please start in a new spreadsheet.",
-      ui.ButtonSet.OK);
-    return;
-  } else if (spreadsheet.getFormUrl()) {
-    ui.alert(
-      'Linked form',
-      'The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.',
-      ui.ButtonSet.OK);
-    return;
-  }
-
-  ui.alert(
-    'Notice',
-    `Due to a bug with Google Sheets, if you experience
-    any issues with the "Start budget spreadsheet" dialog,
-    please use your browser in incognito/private mode
-    and try again.
-
-    Learn more at budgetnsheets.com/notice-to-x-frame`,
-    ui.ButtonSet.OK);
+  if (conditionalInstallTest_()) return;
 
   let htmlTemplate;
 
