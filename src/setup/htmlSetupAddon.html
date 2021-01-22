@@ -89,6 +89,7 @@
               Copy content from an old budget spreadsheet.
             </td>
           </tr>
+          <? if (setup_restore) { ?>
           <tr id="b-Restore">
             <td style="vertical-align: middle;"><span class="material-icons-outlined">restore</span></td>
             <td style="cursor: pointer;">
@@ -96,6 +97,7 @@
               Restore a budget spreadsheet from a backup.
             </td>
           </tr>
+          <? } ?>
         </table>
       </div>
 
@@ -252,7 +254,9 @@
 
     $(document).ready(function() {
       $("#b-Continue").click(clickNext);
+      <? if (setup_restore) { ?>
       $("#b-Restore").click(showRestore);
+      <? } ?>
       $("#b-Copy").click(showCopy);
 
       var date = new Date();
@@ -275,6 +279,7 @@
       $("input[name=account_name]").slice(num_acc).attr("required", false).val("");
     });
 
+    <? if (setup_restore) { ?>
     function showRestore() {
       $("#restore-panel").fadeOut();
       google.script.run
@@ -284,6 +289,7 @@
         })
         .showDialogSetupRestore(uuid);
     }
+    <? } ?>
 
     function showCopy() {
       $("#restore-panel").fadeOut();

@@ -249,10 +249,10 @@ function showDialogSetupAddon_ () {
   setUserId_();
   if (conditionalInstallTest_()) return;
 
-  let htmlTemplate;
-
-  htmlTemplate = HtmlService.createTemplateFromFile('setup/htmlSetupAddon');
+  let htmlTemplate = HtmlService.createTemplateFromFile('setup/htmlSetupAddon');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+  htmlTemplate.setup_restore = getFeatureFlagStatus_('setup/restore');
 
   const uuid = Utilities.getUuid();
   CacheService2.put('user', uuid, 'boolean', true);

@@ -1,6 +1,6 @@
 function getFeatureFlagStatus_ (name) {
   switch (name) {
-    case 0:
+    case 'setup/restore':
       break;
 
     default:

@@ -119,6 +119,7 @@ function setupLock (uuid, select, config) {
       if (list_accounts[i] === '') throw new Error('Invalid account name.');
     }
   } else if (select === 'restore') {
+    if (!getFeatureFlagStatus_('setup/restore')) return;
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
     if (candidate.file_id !== config) throw new Error('File ID does not match.');
 
