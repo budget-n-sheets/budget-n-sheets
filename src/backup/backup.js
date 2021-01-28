@@ -14,20 +14,20 @@ function backupRequestUi () {
     return 1;
   }
 
-  const passphrase1 = ui.prompt(
+  const passphraseEnter = ui.prompt(
     'Budget n Sheets Backup',
     'Enter passphrase:',
     ui.ButtonSet.OK_CANCEL);
-  if (passphrase1.getSelectedButton() === ui.Button.CANCEL) return 0;
+  if (passphraseEnter.getSelectedButton() === ui.Button.CANCEL) return 0;
 
-  const passphrase2 = ui.prompt(
+  const passphraseReenter = ui.prompt(
     'Budget n Sheets Backup',
     'Please re-enter this passphrase:',
     ui.ButtonSet.OK_CANCEL);
-  if (passphrase2.getSelectedButton() === ui.Button.CANCEL) return 0;
+  if (passphraseReenter.getSelectedButton() === ui.Button.CANCEL) return 0;
 
-  const passphrase = passphrase1.getResponseText();
-  if (passphrase !== passphrase2.getResponseText() || passphrase.length < 10 || testPassphrasePolicy(passphrase)) {
+  const passphrase = passphraseEnter.getResponseText();
+  if (passphrase !== passphraseReenter.getResponseText() || passphrase.length < 10 || testPassphrasePolicy(passphrase)) {
     ui.alert(
       'Budget n Sheets Backup',
       'Invalid passphrase.',
