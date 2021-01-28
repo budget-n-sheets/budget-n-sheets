@@ -73,9 +73,7 @@ function setupAddon_ (name, param1, param2) {
       if (sha !== parts[1]) throw new Error("Hashes don't match.");
 
       settings.backup = parts[0];
-    }
-
-    if (contentType === 'application/octet-stream') {
+    } else if (contentType === 'application/octet-stream') {
       const address = computeDigest(
         'SHA_1',
         param1 + SpreadsheetApp2.getActiveSpreadsheet().getId(),

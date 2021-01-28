@@ -141,9 +141,7 @@ function developBackup_ (file) {
 
     const string = base64DecodeWebSafe(parts[0], 'UTF_8');
     return JSON.parse(string);
-  }
-
-  if (contentType === 'application/octet-stream') {
+  } else if (contentType === 'application/octet-stream') {
     const ui = SpreadsheetApp.getUi();
     const passphrase = ui.prompt(
       'Budget n Sheets Restore',
