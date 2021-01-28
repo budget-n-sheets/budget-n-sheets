@@ -145,20 +145,21 @@ function emailBackup_ (blob) {
 }
 
 function digestBackup_ (backup, passphrase) {
-  const string = JSON.stringify(backup);
-  const webSafeCode = Utilities.base64EncodeWebSafe(string, Utilities.Charset.UTF_8);
+  const stringify = JSON.stringify(backup);
 
   let encrypted;
   try {
-    encrypted = sjcl.encrypt(passphrase, webSafeCode, { mode: "gcm" });
+    encrypted = sjcl.encrypt(passphrase, stringify, { mode: "gcm" });
   } catch (err) {
     ConsoleLog.error(err);
     return 0;
   }
 
+  const webSafe = Utilities.base64EncodeWebSafe(encrypted, Utilities.Charset.UTF_8);
+
   const date = Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss');
   const name = 'budget-n-sheets-' + date + '.backup';
-  const blob = Utilities.newBlob(encrypted, 'application/octet-stream', name);
+  const blob = Utilities.newBlob(webSafe, 'application/octet-stream', name);
 
   return blob;
 }
