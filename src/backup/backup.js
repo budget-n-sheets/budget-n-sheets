@@ -20,17 +20,24 @@ function backupRequestUi () {
     ui.ButtonSet.OK_CANCEL);
   if (passphraseEnter.getSelectedButton() === ui.Button.CANCEL) return 0;
 
+  const passphrase = passphraseEnter.getResponseText();
+  if (testPassphrasePolicy(passphrase)) {
+    ui.alert(
+      'Budget n Sheets Backup',
+      'Invalid passphrase.',
+      ui.ButtonSet.OK);
+    return 1;
+  }
+
   const passphraseReenter = ui.prompt(
     'Budget n Sheets Backup',
     'Please re-enter this passphrase:',
     ui.ButtonSet.OK_CANCEL);
   if (passphraseReenter.getSelectedButton() === ui.Button.CANCEL) return 0;
-
-  const passphrase = passphraseEnter.getResponseText();
-  if (passphrase !== passphraseReenter.getResponseText() || testPassphrasePolicy(passphrase)) {
+  if (passphrase !== passphraseReenter.getResponseText()) {
     ui.alert(
       'Budget n Sheets Backup',
-      'Invalid passphrase.',
+      'Passphrase does not match.',
       ui.ButtonSet.OK);
     return 1;
   }
