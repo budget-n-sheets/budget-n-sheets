@@ -159,17 +159,6 @@ function digestBackup_ (backup, passphrase) {
     return 0;
   }
 
-  try {
-    const decrypted = sjcl.decrypt(passphrase, encrypted);
-    const parts = decrypted.split(':');
-    const test_sha = computeDigest('SHA_256', parts[0], 'UTF_8');
-
-    if (test_sha !== parts[1]) throw new Error('digestBackup_(): Bad decryption.');
-  } catch (err) {
-    ConsoleLog.error(err);
-    return 0;
-  }
-
   const date = Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss');
   const name = 'budget-n-sheets-' + date + '.backup';
   const blob = Utilities.newBlob(encrypted, 'application/octet-stream', name);
