@@ -113,8 +113,8 @@ function backupRequest_ (passphrase) {
 
   backupMeta_(backup);
 
-  const blob = digestBackup_(backup, passphrase);
-  if (blob === 0) throw new Error('digestBackup_(): Backup digest failed.');
+  const blob = encryptBackup_(backup, passphrase);
+  if (blob === 0) throw new Error('encryptBackup_(): Backup encryption failed.');
 
   emailBackup_(blob);
   console.info('backup/success');
@@ -144,7 +144,7 @@ function emailBackup_ (blob) {
   );
 }
 
-function digestBackup_ (backup, passphrase) {
+function encryptBackup_ (backup, passphrase) {
   const stringify = JSON.stringify(backup);
 
   let encrypted;
