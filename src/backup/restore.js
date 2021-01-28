@@ -151,10 +151,11 @@ function developBackup_ (file) {
       ui.ButtonSet.OK_CANCEL);
     if (passphrase.getSelectedButton() === ui.Button.CANCEL) return 0;
 
-    let decrypted = null;
+    const decoded = base64DecodeWebSafe(data, 'UTF_8');
+    let decrypted;
 
     try {
-      decrypted = sjcl.decrypt(passphrase.getResponseText(), data);
+      decrypted = sjcl.decrypt(passphrase.getResponseText(), decoded);
     } catch (err) {
       ConsoleLog.error(err);
       return 4;
@@ -166,8 +167,7 @@ function developBackup_ (file) {
       'UTF_8');
     CacheService2.put('user', address, 'string', passphrase.getResponseText(), 120);
 
-    const string = base64DecodeWebSafe(decrypted, 'UTF_8');
-    return JSON.parse(string);
+    return JSON.parse(decrypted);
   }
 
   return 3;

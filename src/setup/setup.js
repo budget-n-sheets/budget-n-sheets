@@ -88,14 +88,17 @@ function setupAddon_ (name, param1, param2) {
         return;
       }
 
+      const decoded = base64DecodeWebSafe(data, 'UTF_8');
       let decrypted = 0;
       try {
-        decrypted = sjcl.decrypt(passphrase, data);
+        decrypted = sjcl.decrypt(passphrase, decoded);
       } catch (err) {
         ConsoleLog.error(err);
         decrypted = 0;
       }
       if (decrypted === 0) throw new Error('setupAddon_(): Decryption failed.');
+
+      parts = [JSON.parse(decrypted)];
     }
 
     for (const key in candidate) {
@@ -149,8 +152,7 @@ function setupAddon_ (name, param1, param2) {
   setupParts_();
 
   if (name === 'restore') {
-    const backup = JSON.parse(base64DecodeWebSafe(settings.backup, 'UTF_8'));
-    restoreFromBackup_(backup);
+    restoreFromBackup_(settings.backup);
     PropertiesService2.deleteProperty('document', 'settings_candidate');
   } else if (name === 'copy') {
     restoreFromSpreadsheet_(settings.file_id);
