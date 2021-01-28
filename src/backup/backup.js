@@ -148,12 +148,9 @@ function digestBackup_ (backup, passphrase) {
   const string = JSON.stringify(backup);
   const webSafeCode = Utilities.base64EncodeWebSafe(string, Utilities.Charset.UTF_8);
 
-  const sha = computeDigest('SHA_256', webSafeCode, 'UTF_8');
-  const data = webSafeCode + ':' + sha;
-
-  let encrypted = '';
+  let encrypted;
   try {
-    encrypted = sjcl.encrypt(passphrase, data, { mode: "gcm", adata: sha });
+    encrypted = sjcl.encrypt(passphrase, webSafeCode, { mode: "gcm" });
   } catch (err) {
     ConsoleLog.error(err);
     return 0;
