@@ -27,7 +27,7 @@ function backupRequestUi () {
   if (passphraseReenter.getSelectedButton() === ui.Button.CANCEL) return 0;
 
   const passphrase = passphraseEnter.getResponseText();
-  if (passphrase !== passphraseReenter.getResponseText() || passphrase.length < 10 || testPassphrasePolicy(passphrase)) {
+  if (passphrase !== passphraseReenter.getResponseText() || testPassphrasePolicy(passphrase)) {
     ui.alert(
       'Budget n Sheets Backup',
       'Invalid passphrase.',
@@ -45,6 +45,7 @@ function backupRequestUi () {
 }
 
 function testPassphrasePolicy (passphrase) {
+  if (passphrase.length < 10) return 1;
   if (!/[a-z]+/.test(passphrase)) return 1;
   if (!/[A-Z]+/.test(passphrase)) return 1;
   if (!/[0-9]+/.test(passphrase)) return 1;
