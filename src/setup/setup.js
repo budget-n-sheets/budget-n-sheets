@@ -66,13 +66,13 @@ function setupAddon_ (name, param1, param2) {
     const data = blob.getDataAsString();
     const contentType = blob.getContentType();
 
-    let parts;
-
     if (contentType === 'text/plain') {
-      parts = data.split(':');
+      const parts = data.split(':');
 
       const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
       if (sha !== parts[1]) throw new Error("Hashes don't match.");
+
+      settings.backup = parts[0];
     }
 
     if (contentType === 'application/octet-stream') {
@@ -98,14 +98,13 @@ function setupAddon_ (name, param1, param2) {
       }
       if (decrypted === 0) throw new Error('setupAddon_(): Decryption failed.');
 
-      parts = [JSON.parse(decrypted)];
+      settings.backup = JSON.parse(decrypted);
     }
 
     for (const key in candidate) {
       settings[key] = candidate[key];
     }
 
-    settings.backup = parts[0];
     settings.spreadsheet_name = candidate.spreadsheet_title;
 
     for (let i = 0; i < candidate.list_acc.length; i++) {
