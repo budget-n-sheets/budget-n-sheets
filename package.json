@@ -1,5 +1,6 @@
 {
   "standard": {
+    "globals": [ "sjcl" ],
     "ignore": [
       "sjcl_minified.js"
     ]
