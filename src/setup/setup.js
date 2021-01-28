@@ -96,11 +96,6 @@ function setupAddon_ (name, param1, param2) {
         decrypted = 0;
       }
       if (decrypted === 0) throw new Error('setupAddon_(): Decryption failed.');
-
-      parts = decrypted.split(':');
-      const test_sha = computeDigest('SHA_256', parts[0], 'UTF_8');
-
-      if (test_sha !== parts[1]) throw new Error("Hashe don't match.");
     }
 
     for (const key in candidate) {

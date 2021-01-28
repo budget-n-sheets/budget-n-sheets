@@ -166,12 +166,7 @@ function developBackup_ (file) {
       'UTF_8');
     CacheService2.put('user', address, 'string', passphrase.getResponseText(), 120);
 
-    const parts = decrypted.split(':');
-    const test_sha = computeDigest('SHA_256', parts[0], 'UTF_8');
-
-    if (test_sha !== parts[1]) return 4;
-
-    const string = base64DecodeWebSafe(parts[0], 'UTF_8');
+    const string = base64DecodeWebSafe(decrypted, 'UTF_8');
     return JSON.parse(string);
   }
 
