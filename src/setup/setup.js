@@ -79,7 +79,7 @@ function setupAddon_ (name, param1, param2) {
         param1 + SpreadsheetApp2.getActiveSpreadsheet().getId(),
         'UTF_8');
       const passphrase = CacheService2.get('user', address, 'string');
-      CacheService2.remove('user', param1, 'string');
+      CacheService2.remove('user', address, 'string');
 
       if (passphrase == null) {
         showSessionExpired();
