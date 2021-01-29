@@ -86,17 +86,10 @@ function setupAddon_ (name, param1, param2) {
         return;
       }
 
-      const decoded = base64DecodeWebSafe(data, 'UTF_8');
-      let decrypted = 0;
-      try {
-        decrypted = sjcl.decrypt(passphrase, decoded);
-      } catch (err) {
-        ConsoleLog.error(err);
-        decrypted = 0;
-      }
-      if (decrypted === 0) throw new Error('setupAddon_(): Decryption failed.');
+      const decrypted = decryptBackup_(passphrase, data);
+      if (decrypted == null) throw new Error('setupAddon_(): Decryption failed.');
 
-      settings.backup = JSON.parse(decrypted);
+      settings.backup = decrypted;
     }
 
     for (const key in candidate) {

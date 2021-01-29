@@ -29,7 +29,6 @@ function requestValidateBackup (file_id) {
       throw new Error('requestValidateBackup(): Invalid switch case.' + rr);
   }
 
-
   showDialogSetupRestore(status, msg);
 }
 
@@ -149,15 +148,8 @@ function developBackup_ (file) {
       ui.ButtonSet.OK_CANCEL);
     if (passphrase.getSelectedButton() === ui.Button.CANCEL) return 0;
 
-    const decoded = base64DecodeWebSafe(data, 'UTF_8');
-    let decrypted;
-
-    try {
-      decrypted = sjcl.decrypt(passphrase.getResponseText(), decoded);
-    } catch (err) {
-      ConsoleLog.error(err);
-      return 4;
-    }
+    const decrypted = decryptBackup_(passphrase.getResponseText(), data);
+    if (decrypted == null) return 4;
 
     const address = computeDigest(
       'SHA_1',
@@ -165,10 +157,20 @@ function developBackup_ (file) {
       'UTF_8');
     CacheService2.put('user', address, 'string', passphrase.getResponseText(), 120);
 
-    return JSON.parse(decrypted);
+    return decrypted;
   }
 
   return 3;
+}
+
+function decryptBackup_ (passphrase, backup) {
+  try {
+    const decoded = base64DecodeWebSafe(backup, 'UTF_8');
+    const decrypted = sjcl.decrypt(passphrase, decoded);
+    return JSON.parse(decrypted);
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
 }
 
 function restoreFromBackup_ (backup) {
