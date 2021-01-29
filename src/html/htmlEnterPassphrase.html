@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+</head>
+
+<body>
+  <p style="text-indent: 0;">Enter a passphrase to protect your budget spreadsheet backup.</p>
+
+  <h3>Passphrase Requirements</h3>
+  <ul style="padding-left: 13px">
+    <li id="pass_length">At least 12 characters long</li>
+    <li id="pass_lower">At least 1 lowercase letter</li>
+    <li id="pass_upper">At least 1 uppercase letter</li>
+    <li id="pass_number">At least 1 number</li>
+    <li id="pass_symbol">
+      At least 1 symbol<br>
+      <span style="color: black;">The allowed symbols are:<br>
+        ~ ! @ # $ % ^ * - _ = + [ { ] } / ; : , . ?</span>
+    </li>
+  </ul>
+
+  <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
+    <table style="width: 100%;">
+      <tr>
+        <td>
+          <input class="pass" id="pass" type="password" placeholder="Passphrase" style="width: 100%;" required>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input class="pass" id="re_pass" type="password" placeholder="Confirm passphrase" style="width: 100%;" required>
+        </td>
+      </tr>
+    </table>
+  </form>
+
+  <span class="error" id="warn"></span>
+
+  <p style="text-indent: 0;font-weight: bold;">If you lose your passphrase, you will not be able to restore the backup.</p>
+
+  <button class="action" id="b-Ok" type="submit" form="the_form" disabled>Ok</button>
+  <button onclick="google.script.host.close()">Cancel</button>
+
+  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <script>
+    $('.pass').on('input', function() {
+      $('#b-Ok').prop('disabled', true);
+      $('#warn').empty();
+
+      const pass = $('#pass').val();
+      const re_pass = $('#re_pass').val();
+
+      let status = re_pass === pass;
+      if (re_pass !== '' && !status) $('#warn').append('Passphrases do not match.');
+
+      let test;
+
+      $('li').css('color', '#990000');
+
+      test = pass.length >= 12;
+      status *= test;
+      if (test) $('#pass_length').css('color', '#38761d');
+
+      test = /[a-z]+/.test(pass);
+      status *= test;
+      if (test) $('#pass_lower').css('color', '#38761d');
+
+      test = /[A-Z]+/.test(pass);
+      status *= test;
+      if (test) $('#pass_upper').css('color', '#38761d');
+
+      test = /[0-9]+/.test(pass);
+      status *= test;
+      if (test) $('#pass_number').css('color', '#38761d');
+
+      test = /[~!@#$%\^*\-_=+[{\]}/;:,.?]+/.test(pass);
+      status *= test;
+      if (test) $('#pass_symbol').css('color', '#38761d');
+
+      $('#b-Ok').prop('disabled', !status);
+    });
+
+    function submitForm() {
+      $('#warn').empty();
+      $('button').prop('disabled', true);
+
+      google.script.run
+        .withSuccessHandler(submitAftermath)
+        .withFailureHandler(showError)
+        .backupRequestUi($('#pass').val());
+    }
+
+    function submitAftermath(r) {
+      if (r === 3) $('#warn').empty().append('Something went wrong. Try again later.');
+      else if (r === 2) $('#warn').empty().append('Invalid passphrase.');
+      $('button').prop('disabled', false);
+    }
+  </script>
+</body>
+
+</html>

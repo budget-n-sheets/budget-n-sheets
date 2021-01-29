@@ -1,10 +1,11 @@
-function backupRequestUi () {
+function requestBackupSession () {
   console.info('sidebar/Settings/Backup/Back up now');
-  const ui = SpreadsheetApp.getUi();
 
   if (!isInstalled_()) return 2;
   if (!isUserAdmin_()) return 2;
   if (isScriptUpToDate_() !== 1) return 2;
+
+  const ui = SpreadsheetApp.getUi();
 
   if (MailApp.getRemainingDailyQuota() === 0) {
     ui.alert(
@@ -14,36 +15,27 @@ function backupRequestUi () {
     return 1;
   }
 
-  const passphraseEnter = ui.prompt(
-    'Budget n Sheets Backup',
-    'Enter passphrase:',
-    ui.ButtonSet.OK_CANCEL);
-  if (passphraseEnter.getSelectedButton() === ui.Button.CANCEL) return 0;
+  let htmlTemplate = HtmlService.createTemplateFromFile('html/htmlEnterPassphrase');
+  htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  const passphrase = passphraseEnter.getResponseText();
-  if (testPassphrasePolicy(passphrase)) {
-    ui.alert(
-      'Budget n Sheets Backup',
-      'Invalid passphrase.',
-      ui.ButtonSet.OK);
-    return 1;
-  }
+  const htmlDialog = htmlTemplate.evaluate()
+    .setWidth(281)
+    .setHeight(443);
 
-  const passphraseReenter = ui.prompt(
-    'Budget n Sheets Backup',
-    'Please re-enter this passphrase:',
-    ui.ButtonSet.OK_CANCEL);
-  if (passphraseReenter.getSelectedButton() === ui.Button.CANCEL) return 0;
-  if (passphrase !== passphraseReenter.getResponseText()) {
-    ui.alert(
-      'Budget n Sheets Backup',
-      'Passphrase does not match.',
-      ui.ButtonSet.OK);
-    return 1;
-  }
+  ui.showModalDialog(htmlDialog, 'Enter passphrase');
+}
+
+function backupRequestUi (passphrase) {
+  if (!isInstalled_()) return 3;
+  if (!isUserAdmin_()) return 3;
+  if (isScriptUpToDate_() !== 1) return 3;
+  if (testPassphrasePolicy(passphrase)) return 2;
+
+  const ui = SpreadsheetApp.getUi();
 
   showDialogMessage('Add-on backup', 'Backing up...', 1);
   backupRequest_(passphrase);
+
   ui.alert(
     'Add-on backup',
     'The backup was completed successfully.',
