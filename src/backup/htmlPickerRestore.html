@@ -55,7 +55,7 @@
         const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
           .setIncludeFolders(false)
           .setSelectFolderEnabled(false)
-          .setMimeTypes('text/plain')
+          .setMimeTypes('text/plain,application/octet-stream')
         <? } else { ?>
         const docsView = new google.picker.DocsView(google.picker.ViewId.SPREADSHEETS)
           .setMimeTypes('application/vnd.google-apps.spreadsheet')

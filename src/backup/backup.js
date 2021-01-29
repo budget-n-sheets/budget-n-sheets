@@ -14,15 +14,36 @@ function backupRequestUi () {
     return 1;
   }
 
-  const response = ui.alert(
-    'Back up now?',
-    'The backup file will be sent to your email when the backup completes.',
-    ui.ButtonSet.YES_NO);
+  const passphraseEnter = ui.prompt(
+    'Budget n Sheets Backup',
+    'Enter passphrase:',
+    ui.ButtonSet.OK_CANCEL);
+  if (passphraseEnter.getSelectedButton() === ui.Button.CANCEL) return 0;
 
-  if (response === ui.Button.NO) return 1;
+  const passphrase = passphraseEnter.getResponseText();
+  if (testPassphrasePolicy(passphrase)) {
+    ui.alert(
+      'Budget n Sheets Backup',
+      'Invalid passphrase.',
+      ui.ButtonSet.OK);
+    return 1;
+  }
+
+  const passphraseReenter = ui.prompt(
+    'Budget n Sheets Backup',
+    'Please re-enter this passphrase:',
+    ui.ButtonSet.OK_CANCEL);
+  if (passphraseReenter.getSelectedButton() === ui.Button.CANCEL) return 0;
+  if (passphrase !== passphraseReenter.getResponseText()) {
+    ui.alert(
+      'Budget n Sheets Backup',
+      'Passphrase does not match.',
+      ui.ButtonSet.OK);
+    return 1;
+  }
 
   showDialogMessage('Add-on backup', 'Backing up...', 1);
-  backupRequest_();
+  backupRequest_(passphrase);
   ui.alert(
     'Add-on backup',
     'The backup was completed successfully.',
@@ -30,7 +51,17 @@ function backupRequestUi () {
   return 0;
 }
 
-function backupRequest_ () {
+function testPassphrasePolicy (passphrase) {
+  if (passphrase.length < 12) return 1;
+  if (!/[a-z]+/.test(passphrase)) return 1;
+  if (!/[A-Z]+/.test(passphrase)) return 1;
+  if (!/[0-9]+/.test(passphrase)) return 1;
+  if (!/[~!@#$%^*-_=+[{\]}/;:,.?]+/.test(passphrase)) return 1;
+
+  return 0;
+}
+
+function backupRequest_ (passphrase) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const backup = {
     backup: {},
@@ -82,7 +113,9 @@ function backupRequest_ () {
 
   backupMeta_(backup);
 
-  const blob = digestBackup_(backup);
+  const blob = encryptBackup_(backup, passphrase);
+  if (blob === 0) throw new Error('encryptBackup_(): Backup encryption failed.');
+
   emailBackup_(blob);
   console.info('backup/success');
 }
@@ -111,16 +144,22 @@ function emailBackup_ (blob) {
   );
 }
 
-function digestBackup_ (backup) {
-  const string = JSON.stringify(backup);
-  const webSafeCode = Utilities.base64EncodeWebSafe(string, Utilities.Charset.UTF_8);
+function encryptBackup_ (backup, passphrase) {
+  const stringify = JSON.stringify(backup);
 
-  const sha = computeDigest('SHA_1', webSafeCode, 'UTF_8');
-  const data = webSafeCode + ':' + sha;
+  let encrypted;
+  try {
+    encrypted = sjcl.encrypt(passphrase, stringify, { mode: 'gcm', iter: 100100 });
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 0;
+  }
+
+  const webSafe = Utilities.base64EncodeWebSafe(encrypted, Utilities.Charset.UTF_8);
 
   const date = Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss');
   const name = 'budget-n-sheets-' + date + '.backup';
-  const blob = Utilities.newBlob(data, 'text/plain', name);
+  const blob = Utilities.newBlob(webSafe, 'application/octet-stream', name);
 
   return blob;
 }

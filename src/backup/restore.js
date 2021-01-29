@@ -21,11 +21,13 @@ function requestValidateBackup (file_id) {
     case 3:
       msg = 'The file is either not a supported file type or the file is corrupted.';
       break;
+    case 4:
+      msg = 'The passphrase is incorrect or the file is corrupted.';
+      break;
 
     default:
       throw new Error('requestValidateBackup(): Invalid switch case.' + rr);
   }
-
 
   showDialogSetupRestore(status, msg);
 }
@@ -50,21 +52,8 @@ function validateBackup_ (file_id) {
     return 2;
   }
 
-  try {
-    const blob = file.getBlob().getAs('text/plain');
-    const raw = blob.getDataAsString();
-
-    parts = raw.split(':');
-    sha = computeDigest('SHA_1', parts[0], 'UTF_8');
-  } catch (err) {
-    ConsoleLog.error(err);
-    return 3;
-  }
-  if (sha !== parts[1]) return 3;
-
-  const webSafeCode = parts[0];
-  const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
-  const data = JSON.parse(string);
+  const data = developBackup_(file);
+  if (typeof data === 'number') return data;
 
   const settings_candidate = {
     file_id: file_id,
@@ -136,6 +125,52 @@ function validateBackup_ (file_id) {
   CacheService2.put('document', 'backup_candidate', 'json', info);
 
   return 0;
+}
+
+function developBackup_ (file) {
+  const blob = file.getBlob();
+  const data = blob.getDataAsString();
+  const contentType = blob.getContentType();
+
+  if (contentType === 'text/plain') {
+    const parts = data.split(':');
+    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+
+    if (sha !== parts[1]) return 3;
+
+    const string = base64DecodeWebSafe(parts[0], 'UTF_8');
+    return JSON.parse(string);
+  } else if (contentType === 'application/octet-stream') {
+    const ui = SpreadsheetApp.getUi();
+    const passphrase = ui.prompt(
+      'Budget n Sheets Restore',
+      'Enter passphrase:',
+      ui.ButtonSet.OK_CANCEL);
+    if (passphrase.getSelectedButton() === ui.Button.CANCEL) return 0;
+
+    const decrypted = decryptBackup_(passphrase.getResponseText(), data);
+    if (decrypted == null) return 4;
+
+    const address = computeDigest(
+      'SHA_1',
+      file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+      'UTF_8');
+    CacheService2.put('user', address, 'string', passphrase.getResponseText(), 120);
+
+    return decrypted;
+  }
+
+  return 3;
+}
+
+function decryptBackup_ (passphrase, backup) {
+  try {
+    const decoded = base64DecodeWebSafe(backup, 'UTF_8');
+    const decrypted = sjcl.decrypt(passphrase, decoded);
+    return JSON.parse(decrypted);
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
 }
 
 function restoreFromBackup_ (backup) {

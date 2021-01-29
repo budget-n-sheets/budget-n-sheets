@@ -62,20 +62,40 @@ function setupAddon_ (name, param1, param2) {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
     if (candidate.file_id !== param1) throw new Error('File ID does not match.');
 
-    const parts = DriveApp.getFileById(param1)
-      .getBlob()
-      .getAs('text/plain')
-      .getDataAsString()
-      .split(':');
+    const blob = DriveApp.getFileById(param1).getBlob();
+    const data = blob.getDataAsString();
+    const contentType = blob.getContentType();
 
-    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
-    if (sha !== parts[1]) throw new Error("Hashes doesn't match.");
+    if (contentType === 'text/plain') {
+      const parts = data.split(':');
+
+      const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+      if (sha !== parts[1]) throw new Error("Hashes don't match.");
+
+      settings.backup = parts[0];
+    } else if (contentType === 'application/octet-stream') {
+      const address = computeDigest(
+        'SHA_1',
+        param1 + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+        'UTF_8');
+      const passphrase = CacheService2.get('user', address, 'string');
+      CacheService2.remove('user', address, 'string');
+
+      if (passphrase == null) {
+        showSessionExpired();
+        return;
+      }
+
+      const decrypted = decryptBackup_(passphrase, data);
+      if (decrypted == null) throw new Error('setupAddon_(): Decryption failed.');
+
+      settings.backup = decrypted;
+    }
 
     for (const key in candidate) {
       settings[key] = candidate[key];
     }
 
-    settings.backup = parts[0];
     settings.spreadsheet_name = candidate.spreadsheet_title;
 
     for (let i = 0; i < candidate.list_acc.length; i++) {
@@ -122,8 +142,7 @@ function setupAddon_ (name, param1, param2) {
   setupParts_();
 
   if (name === 'restore') {
-    const backup = JSON.parse(base64DecodeWebSafe(settings.backup, 'UTF_8'));
-    restoreFromBackup_(backup);
+    restoreFromBackup_(settings.backup);
     PropertiesService2.deleteProperty('document', 'settings_candidate');
   } else if (name === 'copy') {
     restoreFromSpreadsheet_(settings.file_id);
