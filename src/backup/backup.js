@@ -49,6 +49,7 @@ function testPassphrasePolicy (passphrase) {
   if (!/[A-Z]+/.test(passphrase)) return 1;
   if (!/[0-9]+/.test(passphrase)) return 1;
   if (!/[~!@#$%\^*\-_=+[{\]}/;:,.?]+/.test(passphrase)) return 1;
+  if (!/^[0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(passphrase)) return 1;
 
   return 0;
 }
