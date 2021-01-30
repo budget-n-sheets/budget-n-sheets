@@ -81,7 +81,7 @@
       status = status && test;
       if (test) $('#pass_symbol').css('color', '#38761d');
 
-      status = status && /^[0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(pass);
+      status = status && /^[ 0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(pass);
 
       $('#b-Ok').prop('disabled', !status);
     });
