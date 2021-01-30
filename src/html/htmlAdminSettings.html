@@ -231,8 +231,6 @@
 
         <p>An email will be sent to you with the backup file attached to it. You can <a href="https://support.google.com/mail/answer/30719" target="_blank">save the attachment to your Google Drive</a>.</p>
 
-        <button id="b-Backup" class="action">Back up now</button>
-
         <p>For more information, visit <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank">Backup and Restore</a>.</p>
       </div>
       <? if (hasEditors) { ?>
@@ -292,9 +290,7 @@
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     $(document).ready(function() {
-      $("#b-Save").click(saveSettings);
       $("#b-Reinstall").click(reinstallTriggers);
-      $("#b-Backup").click(backupNow);
 
       <? if (hasEditors) { ?>
       $("#b-Transfer").click(transferAdminRole);
@@ -311,6 +307,9 @@
         .retrieveUserSettings();
     });
 
+    $(document).on('click', '#b-Save', saveSettings);
+    $(document).on('click', '#b-Backup', backupNow);
+
     $(document).on("click", ".header_tab", function() {
       if ($(this).hasClass("active")) return;
 
@@ -319,11 +318,11 @@
       $(this).addClass("active")
         .siblings()
         .removeClass("active");
-      $("#b-Save").hide();
+      $('.footer_cell.left button').remove();
 
       window.scrollTo(0, 0);
       if (select === "tab_settings") {
-        $("#b-Save").show();
+        $('.footer_cell.left').append('<button class="action" id="b-Save">Save</button>');
         $("#panel_Settings").show()
           .siblings()
           .hide();
@@ -332,6 +331,7 @@
           .siblings()
           .hide();
       } else if (select === "tab_backup") {
+        $('.footer_cell.left').append('<button id="b-Backup" class="action">Back up now</button>');
         $("#panel_Backup").show()
           .siblings()
           .hide();
