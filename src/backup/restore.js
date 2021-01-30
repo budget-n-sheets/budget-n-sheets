@@ -10,6 +10,8 @@ function requestValidateBackup (file_id) {
   let msg = '';
 
   switch (status) {
+    case -1:
+      return;
     case 0:
       break;
     case 1:
@@ -55,6 +57,10 @@ function validateBackup_ (file_id) {
   const data = developBackup_(file);
   if (typeof data === 'number') return data;
 
+  return processBackup_(file, file_id, data);
+}
+
+function processBackup_ (file, file_id, data) {
   const settings_candidate = {
     file_id: file_id,
     list_acc: [],
@@ -127,13 +133,65 @@ function validateBackup_ (file_id) {
   return 0;
 }
 
+function requestDevelopBackup (file_id, passphrase) {
+  const session = computeDigest(
+    'SHA_1',
+    'new_session:' + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+    'UTF_8');
+
+  if (!CacheService2.get('user', session, 'boolean')) {
+    showSessionExpired();
+    return;
+  }
+  CacheService2.remove('user', session);
+
+  if (testPassphrasePolicy(passphrase)) {
+    showDialogSetupRestore(2, 'The passphrase is incorrect or the file is corrupted.');
+    return;
+  }
+
+  let decrypted, file;
+
+  try {
+    file = DriveApp.getFileById(file_id);
+
+    const owner = file.getOwner().getEmail();
+    const user = Session.getEffectiveUser().getEmail();
+
+    if (owner !== user) {
+      showDialogSetupRestore(2, 'No file with the given ID could be found, or you do not have permission to access it.');
+      return;
+    }
+
+    const data = file.getBlob().getDataAsString();
+
+    decrypted = decryptBackup_(passphrase, data);
+  } catch (err) {
+    ConsoleLog.error(err);
+    decrypted = null;
+  }
+
+  if (decrypted == null) {
+    showDialogSetupRestore(2, 'The passphrase is incorrect or the file is corrupted.');
+    return;
+  }
+
+  const address = computeDigest(
+    'SHA_1',
+    file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+    'UTF_8');
+  CacheService2.put('user', address, 'string', passphrase, 120);
+
+  processBackup_(file, file_id, decrypted);
+  showDialogSetupRestore(0, '');
+}
+
 function developBackup_ (file) {
   const blob = file.getBlob();
-  const data = blob.getDataAsString();
   const contentType = blob.getContentType();
 
   if (contentType === 'text/plain') {
-    const parts = data.split(':');
+    const parts = blob.getDataAsString().split(':');
     const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
 
     if (sha !== parts[1]) return 3;
@@ -142,22 +200,25 @@ function developBackup_ (file) {
     return JSON.parse(string);
   } else if (contentType === 'application/octet-stream') {
     const ui = SpreadsheetApp.getUi();
-    const passphrase = ui.prompt(
-      'Budget n Sheets Restore',
-      'Enter passphrase:',
-      ui.ButtonSet.OK_CANCEL);
-    if (passphrase.getSelectedButton() === ui.Button.CANCEL) return 0;
-
-    const decrypted = decryptBackup_(passphrase.getResponseText(), data);
-    if (decrypted == null) return 4;
+    const file_id = file.getId();
 
     const address = computeDigest(
       'SHA_1',
-      file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+      'new_session:' + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
       'UTF_8');
-    CacheService2.put('user', address, 'string', passphrase.getResponseText(), 120);
+    CacheService2.put('user', address, 'boolean', true, 120);
 
-    return decrypted;
+    let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlEnterPassphrase');
+    htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+    htmlTemplate.file_id = file_id;
+
+    const htmlDialog = htmlTemplate.evaluate()
+      .setWidth(281)
+      .setHeight(300);
+
+    ui.showModalDialog(htmlDialog, 'Enter passphrase');
+    return -1;
   }
 
   return 3;
