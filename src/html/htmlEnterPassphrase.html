@@ -62,26 +62,26 @@
       $('li').css('color', '#990000');
 
       test = pass.length >= 12;
-      status *= test;
+      status = status && test;
       if (test) $('#pass_length').css('color', '#38761d');
 
       test = /[a-z]+/.test(pass);
-      status *= test;
+      status = status && test;
       if (test) $('#pass_lower').css('color', '#38761d');
 
       test = /[A-Z]+/.test(pass);
-      status *= test;
+      status = status && test;
       if (test) $('#pass_upper').css('color', '#38761d');
 
       test = /[0-9]+/.test(pass);
-      status *= test;
+      status = status && test;
       if (test) $('#pass_number').css('color', '#38761d');
 
       test = /[~!@#$%\^*\-_=+[{\]}/;:,.?]+/.test(pass);
-      status *= test;
+      status = status && test;
       if (test) $('#pass_symbol').css('color', '#38761d');
 
-      status *= /^[0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(pass);
+      status = status && /^[0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(pass);
 
       $('#b-Ok').prop('disabled', !status);
     });
