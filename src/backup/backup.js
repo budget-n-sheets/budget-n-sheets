@@ -15,7 +15,7 @@ function requestBackupSession () {
     return 1;
   }
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('html/htmlEnterPassphrase');
+  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlNewPassphrase');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   const htmlDialog = htmlTemplate.evaluate()
