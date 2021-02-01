@@ -90,7 +90,12 @@
     function pickerCallback(data) {
       const action = data[google.picker.Response.ACTION];
       if (action == google.picker.Action.CANCEL) {
-        google.script.run.showDialogSetupRestore();
+        google.script.run
+        <? if (isRestore) { ?>
+          .showDialogSetupRestore();
+        <? } else { ?>
+          .showDialogSetupCopy();
+        <? } ?>
         return;
       }
 
