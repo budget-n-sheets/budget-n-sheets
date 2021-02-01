@@ -98,8 +98,9 @@
     }
 
     function submitAftermath(r) {
-      if (r === 3) $('#warn').empty().append('Something went wrong. Try again later.');
-      else if (r === 2) $('#warn').empty().append('Invalid passphrase.');
+      if (r === 0) google.script.host.close();
+      else if (r === 1) $('#warn').empty().append('Invalid passphrase.');
+      else if (r === 2) $('#warn').empty().append('Something went wrong. Try again later.');
       $('button').prop('disabled', false);
       $('input').prop('disabled', false);
     }

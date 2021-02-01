@@ -39,7 +39,7 @@
     function submitAftermath(r) {
       if (r === 3) $('#warn').empty().append('Something went wrong. Try again later.');
       else if (r === 2) $('#warn').empty().append('Invalid passphrase.');
-      else if(r === 1) google.script.host.close();
+      else if (r === 1) google.script.host.close();
       $('button').prop('disabled', false);
     }
   </script>

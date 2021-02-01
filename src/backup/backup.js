@@ -26,10 +26,10 @@ function requestBackupSession () {
 }
 
 function backupRequestUi (passphrase) {
-  if (!isInstalled_()) return 3;
-  if (!isUserAdmin_()) return 3;
-  if (isScriptUpToDate_() !== 1) return 3;
-  if (testPassphrasePolicy(passphrase)) return 2;
+  if (!isInstalled_()) return 2;
+  if (!isUserAdmin_()) return 2;
+  if (isScriptUpToDate_() !== 1) return 2;
+  if (testPassphrasePolicy(passphrase)) return 1;
 
   const ui = SpreadsheetApp.getUi();
 
@@ -108,7 +108,7 @@ function backupRequest_ (passphrase) {
   backupMeta_(backup);
 
   const blob = encryptBackup_(backup, passphrase);
-  if (blob === 0) throw new Error('encryptBackup_(): Backup encryption failed.');
+  if (blob === 1) throw new Error('encryptBackup_(): Backup encryption failed.');
 
   emailBackup_(blob);
   console.info('backup/success');
@@ -146,7 +146,7 @@ function encryptBackup_ (backup, passphrase) {
     encrypted = sjcl.encrypt(passphrase, stringify, { mode: 'gcm', iter: 1010010 });
   } catch (err) {
     ConsoleLog.error(err);
-    return 0;
+    return 1;
   }
 
   const webSafe = Utilities.base64EncodeWebSafe(encrypted, Utilities.Charset.UTF_8);
