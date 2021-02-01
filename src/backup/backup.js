@@ -44,6 +44,7 @@ function backupRequestUi (passphrase) {
 }
 
 function testPassphrasePolicy (passphrase) {
+  if (typeof passphrase !== 'string') return 1;
   if (passphrase.length < 12) return 1;
   if (!/[a-z]+/.test(passphrase)) return 1;
   if (!/[A-Z]+/.test(passphrase)) return 1;
