@@ -44,15 +44,15 @@ function backupRequestUi (passphrase) {
 }
 
 function testPassphrasePolicy (passphrase) {
-  if (typeof passphrase !== 'string') return 1;
-  if (passphrase.length < 12) return 1;
-  if (!/[a-z]+/.test(passphrase)) return 1;
-  if (!/[A-Z]+/.test(passphrase)) return 1;
-  if (!/[0-9]+/.test(passphrase)) return 1;
-  if (!/[~!@#$%\^*\-_=+[{\]}/;:,.?]+/.test(passphrase)) return 1;
-  if (!/^[ 0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(passphrase)) return 1;
+  if (typeof passphrase !== 'string') return true;
+  if (passphrase.length < 12) return true;
+  if (!/[a-z]+/.test(passphrase)) return true;
+  if (!/[A-Z]+/.test(passphrase)) return true;
+  if (!/[0-9]+/.test(passphrase)) return true;
+  if (!/[~!@#$%\^*\-_=+[{\]}/;:,.?]+/.test(passphrase)) return true;
+  if (!/^[ 0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(passphrase)) return true;
 
-  return 0;
+  return false;
 }
 
 function backupRequest_ (passphrase) {
