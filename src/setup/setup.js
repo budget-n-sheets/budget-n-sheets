@@ -88,7 +88,7 @@ function setupAddon_ (name, param1, param2) {
       }
 
       const decrypted = decryptBackup_(passphrase, data);
-      if (decrypted == null) throw new Error('setupAddon_(): Decryption failed.');
+      if (decrypted == null) throw new Error('decryptBackup_(): Decryption failed.');
 
       settings.backup = decrypted;
     }
