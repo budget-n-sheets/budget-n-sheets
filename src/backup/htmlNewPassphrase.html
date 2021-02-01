@@ -48,8 +48,8 @@
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     $('.pass').on('input', function() {
-      $('#b-Ok').prop('disabled', true);
       $('#warn').empty();
+      $('#b-Ok').prop('disabled', true);
 
       const pass = $('#pass').val();
       const re_pass = $('#re_pass').val();
@@ -89,6 +89,7 @@
     function submitForm() {
       $('#warn').empty();
       $('button').prop('disabled', true);
+      $('input').prop('disabled', true);
 
       google.script.run
         .withSuccessHandler(submitAftermath)
@@ -100,6 +101,7 @@
       if (r === 3) $('#warn').empty().append('Something went wrong. Try again later.');
       else if (r === 2) $('#warn').empty().append('Invalid passphrase.');
       $('button').prop('disabled', false);
+      $('input').prop('disabled', false);
     }
   </script>
 </body>
