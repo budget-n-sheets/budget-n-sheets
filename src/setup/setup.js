@@ -37,17 +37,13 @@ function setupLock (select, param1, param2) {
     return;
   }
 
-  setupAddon_(select, param1, param2);
-}
-
-function setupAddon_ (name, param1, param2) {
-  console.time('setup/' + name);
+  console.time('setup/' + select);
   setupValidate_();
 
   const settings = {};
   const list_accounts = [];
 
-  if (name === 'new') {
+  if (select === 'new') {
     for (const key in param1) {
       settings[key] = param1[key];
     }
@@ -59,7 +55,7 @@ function setupAddon_ (name, param1, param2) {
       list_accounts[i] = param2[i].trim();
       if (list_accounts[i] === '') throw new Error('Invalid account name.');
     }
-  } else if (name === 'restore') {
+  } else if (select === 'restore') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
     if (candidate.file_id !== param1) throw new Error('File ID does not match.');
 
@@ -102,7 +98,7 @@ function setupAddon_ (name, param1, param2) {
     for (let i = 0; i < candidate.list_acc.length; i++) {
       list_accounts[i] = candidate.list_acc[i];
     }
-  } else if (name === 'copy') {
+  } else if (select === 'copy') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
     if (candidate.file_id !== param1) throw new Error('File ID does not match.');
 
@@ -140,10 +136,10 @@ function setupAddon_ (name, param1, param2) {
   setupPrepare_();
   setupParts_();
 
-  if (name === 'restore') {
+  if (select === 'restore') {
     restoreFromBackup_(settings.backup);
     PropertiesService2.deleteProperty('document', 'settings_candidate');
-  } else if (name === 'copy') {
+  } else if (select === 'copy') {
     restoreFromSpreadsheet_(settings.file_id);
     PropertiesService2.deleteProperty('document', 'settings_candidate');
   }
@@ -170,7 +166,7 @@ function setupAddon_ (name, param1, param2) {
   onOpen();
 
   SETUP_SETTINGS = null;
-  console.timeEnd('setup/' + name);
+  console.timeEnd('setup/' + select);
 }
 
 function setupValidate_ () {
