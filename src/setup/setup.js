@@ -42,6 +42,7 @@ function setupLock (select, param1, param2) {
 
 function setupAddon_ (name, param1, param2) {
   console.time('setup/' + name);
+  setupValidate_();
 
   const settings = {};
   const list_accounts = [];
@@ -120,8 +121,6 @@ function setupAddon_ (name, param1, param2) {
   }
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-
-  setupValidate_();
 
   SETUP_SETTINGS = {
     spreadsheet_name: settings.spreadsheet_name,
