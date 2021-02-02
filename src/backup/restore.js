@@ -125,6 +125,8 @@ function retrieveBackupInfo () {
 }
 
 function requestDevelopBackup (file_id, passphrase) {
+  showDialogMessage('Add-on restore', 'Verifying backup...', 1);
+
   const session = computeDigest(
     'SHA_1',
     'new_session:' + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),

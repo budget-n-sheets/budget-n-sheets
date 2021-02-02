@@ -19,13 +19,8 @@
     <input id="file_id" style="display: none;" type="text" value="<?= file_id ?>" required>
   </form>
 
-  <div>
-    <span class="error" id="warn"></span>
-  </div>
-  <div>
-    <button class="action" id="b-Ok" type="submit" form="the_form">Ok</button>
-    <button onclick="google.script.host.close()">Cancel</button>
-  </div>
+  <button class="action" id="b-Ok" type="submit" form="the_form">Ok</button>
+  <button onclick="google.script.host.close()">Cancel</button>
 
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
@@ -34,16 +29,11 @@
       $('button').prop('disabled', true);
 
       google.script.run
-        .withSuccessHandler(submitAftermath)
+        .withSuccessHandler(function(r, o) {
+          google.script.host.close();
+        })
         .withFailureHandler(showError)
         .requestDevelopBackup($('#file_id').val(), $('#pass').val());
-    }
-
-    function submitAftermath(r) {
-      if (r === 3) $('#warn').empty().append('Something went wrong. Try again later.');
-      else if (r === 2) $('#warn').empty().append('Invalid passphrase.');
-      else if (r === 1) google.script.host.close();
-      $('button').prop('disabled', false);
     }
   </script>
 </body>
