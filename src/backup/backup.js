@@ -141,18 +141,18 @@ function emailBackup_ (blob) {
 function encryptBackup_ (backup, passphrase) {
   const stringify = JSON.stringify(backup);
 
+  const date = Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss');
+  const name = 'budget-n-sheets-' + date + '.backup';
+
   let encrypted;
   try {
-    encrypted = sjcl.encrypt(passphrase, stringify, { mode: 'gcm', iter: 1010010 });
+    encrypted = sjcl.encrypt(passphrase, stringify, { mode: 'gcm', iter: 1010010, adata: name });
   } catch (err) {
     ConsoleLog.error(err);
     return 1;
   }
 
   const webSafe = Utilities.base64EncodeWebSafe(encrypted, Utilities.Charset.UTF_8);
-
-  const date = Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss');
-  const name = 'budget-n-sheets-' + date + '.backup';
   const blob = Utilities.newBlob(webSafe, 'application/octet-stream', name);
 
   return blob;
