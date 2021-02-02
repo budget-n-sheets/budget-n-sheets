@@ -136,11 +136,6 @@ function requestDevelopBackup (file_id, passphrase) {
   }
   CacheService2.remove('user', session);
 
-  if (testPassphrasePolicy(passphrase)) {
-    showDialogSetupRestore('The passphrase is incorrect or the file is corrupted.');
-    return;
-  }
-
   if (!isUserOwner(file_id)) {
     showDialogSetupRestore('No file with the given ID could be found, or you do not have permission to access it.');
     return;
