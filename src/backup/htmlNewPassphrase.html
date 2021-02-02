@@ -27,18 +27,20 @@
     <table style="width: 100%;">
       <tr>
         <td>
-          <input class="pass" id="pass" type="password" placeholder="Passphrase" style="width: 100%;" required>
+          <input class="pass" id="pass" type="password" placeholder="Passphrase" style="width: 100%;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" required>
         </td>
       </tr>
       <tr>
         <td>
-          <input class="pass" id="re_pass" type="password" placeholder="Confirm passphrase" style="width: 100%;" required>
+          <input class="pass" id="re_pass" type="password" placeholder="Confirm passphrase" style="width: 100%;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" required>
         </td>
       </tr>
     </table>
   </form>
 
-  <span class="error" id="warn"></span>
+  <div>
+    <span class="error" id="warn"></span>
+  </div>
 
   <p style="text-indent: 0;font-weight: bold;">If you lose your passphrase, you will not be able to restore the backup.</p>
 

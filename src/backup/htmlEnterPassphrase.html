@@ -12,17 +12,20 @@
     <table style="width: 100%;">
       <tr>
         <td>
-          <input id="pass" type="password" placeholder="Passphrase" style="width: 100%;" required>
+          <input id="pass" type="password" placeholder="Passphrase" style="width: 100%;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" required>
         </td>
       </tr>
     </table>
     <input id="file_id" style="display: none;" type="text" value="<?= file_id ?>" required>
   </form>
 
-  <span class="error" id="warn"></span>
-
-  <button class="action" id="b-Ok" type="submit" form="the_form">Ok</button>
-  <button onclick="google.script.host.close()">Cancel</button>
+  <div>
+    <span class="error" id="warn"></span>
+  </div>
+  <div>
+    <button class="action" id="b-Ok" type="submit" form="the_form">Ok</button>
+    <button onclick="google.script.host.close()">Cancel</button>
+  </div>
 
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
