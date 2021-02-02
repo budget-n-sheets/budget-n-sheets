@@ -27,7 +27,7 @@ function requestValidateBackup (file_id) {
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(281)
-    .setHeight(300);
+    .setHeight(127);
 
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Enter passphrase');
 }
