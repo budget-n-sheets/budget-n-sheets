@@ -146,7 +146,7 @@ function encryptBackup_ (backup, passphrase) {
 
   let encrypted;
   try {
-    encrypted = sjcl.encrypt(passphrase, stringify, { mode: 'gcm', iter: 1010010, adata: name });
+    encrypted = sjcl.encrypt(passphrase, stringify, { mode: 'gcm', iter: 1010010, adata: name, ts: 128 });
   } catch (err) {
     ConsoleLog.error(err);
     return 1;
