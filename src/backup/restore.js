@@ -162,7 +162,7 @@ function requestDevelopBackup (file_id, passphrase) {
   CacheService2.put('user', address, 'string', passphrase, 120);
 
   processBackup_(file, file_id, decrypted);
-  showDialogSetupRestore();
+  showDialogSetupRestore('');
 }
 
 function decryptBackup_ (passphrase, backup) {

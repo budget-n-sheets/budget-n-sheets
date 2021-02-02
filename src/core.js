@@ -313,13 +313,13 @@ function showDialogSetupAddon_ () {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Start budget spreadsheet');
 }
 
-function showDialogSetupRestore (status, msg) {
+function showDialogSetupRestore (msg) {
   if (isInstalled_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupRestore');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlTemplate.isValid = status || false;
+  htmlTemplate.isValid = msg === '';
   htmlTemplate.msg = msg || '';
 
   const htmlDialog = htmlTemplate.evaluate()
