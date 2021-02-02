@@ -1,63 +1,50 @@
-function retrieveBackupInfo () {
-  const backup_candidate = CacheService2.get('document', 'backup_candidate', 'json');
-  CacheService2.remove('document', 'backup_candidate');
-  return backup_candidate;
-}
-
 function requestValidateBackup (file_id) {
-  const status = validateBackup_(file_id);
+  CacheService2.remove('document', 'backup_candidate');
 
-  let msg = '';
-
-  switch (status) {
-    case -1:
-      return;
-    case 0:
-      break;
-    case 1:
-      msg = 'Sorry, something went wrong. Try again in a moment.';
-      break;
-    case 2:
-      msg = 'No file with the given ID could be found, or you do not have permission to access it.';
-      break;
-    case 3:
-      msg = 'The file is either not a supported file type or the file is corrupted.';
-      break;
-    case 4:
-      msg = 'The passphrase is incorrect or the file is corrupted.';
-      break;
-
-    default:
-      throw new Error('requestValidateBackup(): Invalid switch case.' + rr);
+  if (!isUserOwner(file_id)) {
+    showDialogSetupRestore('No file with the given ID could be found, or you do not have permission to access it.');
+    return;
   }
 
-  showDialogSetupRestore(status, msg);
+  const file = DriveApp.getFileById(file_id);
+  const blob = file.getBlob();
+
+  if (blob.getContentType() === 'text/plain') {
+    processLegacyBackup_(file, file_id, blob);
+    return;
+  }
+
+  const address = computeDigest(
+    'SHA_1',
+    'new_session:' + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+    'UTF_8');
+  CacheService2.put('user', address, 'boolean', true, 120);
+
+  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlEnterPassphrase');
+  htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+  htmlTemplate.file_id = file_id;
+
+  const htmlDialog = htmlTemplate.evaluate()
+    .setWidth(281)
+    .setHeight(300);
+
+  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Enter passphrase');
 }
 
-function validateBackup_ (file_id) {
-  if (isInstalled_()) return 1;
+function processLegacyBackup_ (file, file_id, blob) {
+  const parts = blob.getDataAsString().split(':');
+  const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
 
-  CacheService2.remove('document', 'backup_candidate');
-  showDialogMessage('Add-on restore', 'Verifying the backup...', 1);
-
-  let file, sha, parts;
-
-  try {
-    file = DriveApp.getFileById(file_id);
-
-    const owner = file.getOwner().getEmail();
-    const user = Session.getEffectiveUser().getEmail();
-
-    if (owner !== user) return 2;
-  } catch (err) {
-    ConsoleLog.error(err);
-    return 2;
+  if (sha !== parts[1]) {
+    showDialogSetupRestore('The file is either not a supported file type or the file is corrupted.');
+    return;
   }
 
-  const data = developBackup_(file);
-  if (typeof data === 'number') return data;
+  const string = base64DecodeWebSafe(parts[0], 'UTF_8');
+  processBackup_(file, file_id, JSON.parse(string));
 
-  return processBackup_(file, file_id, data);
+  showDialogSetupRestore('');
 }
 
 function processBackup_ (file, file_id, data) {
@@ -129,8 +116,12 @@ function processBackup_ (file, file_id, data) {
   }
 
   CacheService2.put('document', 'backup_candidate', 'json', info);
+}
 
-  return 0;
+function retrieveBackupInfo () {
+  const backup_candidate = CacheService2.get('document', 'backup_candidate', 'json');
+  CacheService2.remove('document', 'backup_candidate');
+  return backup_candidate;
 }
 
 function requestDevelopBackup (file_id, passphrase) {
@@ -146,33 +137,21 @@ function requestDevelopBackup (file_id, passphrase) {
   CacheService2.remove('user', session);
 
   if (testPassphrasePolicy(passphrase)) {
-    showDialogSetupRestore(2, 'The passphrase is incorrect or the file is corrupted.');
+    showDialogSetupRestore('The passphrase is incorrect or the file is corrupted.');
     return;
   }
 
-  let decrypted, file;
-
-  try {
-    file = DriveApp.getFileById(file_id);
-
-    const owner = file.getOwner().getEmail();
-    const user = Session.getEffectiveUser().getEmail();
-
-    if (owner !== user) {
-      showDialogSetupRestore(2, 'No file with the given ID could be found, or you do not have permission to access it.');
-      return;
-    }
-
-    const data = file.getBlob().getDataAsString();
-
-    decrypted = decryptBackup_(passphrase, data);
-  } catch (err) {
-    ConsoleLog.error(err);
-    decrypted = null;
+  if (!isUserOwner(file_id)) {
+    showDialogSetupRestore('No file with the given ID could be found, or you do not have permission to access it.');
+    return;
   }
 
+  const file = DriveApp.getFileById(file_id);
+  const data = file.getBlob().getDataAsString();
+  const decrypted = decryptBackup_(passphrase, data);
+
   if (decrypted == null) {
-    showDialogSetupRestore(2, 'The passphrase is incorrect or the file is corrupted.');
+    showDialogSetupRestore('The passphrase is incorrect or the file is corrupted.');
     return;
   }
 
@@ -183,45 +162,7 @@ function requestDevelopBackup (file_id, passphrase) {
   CacheService2.put('user', address, 'string', passphrase, 120);
 
   processBackup_(file, file_id, decrypted);
-  showDialogSetupRestore(0, '');
-}
-
-function developBackup_ (file) {
-  const blob = file.getBlob();
-  const contentType = blob.getContentType();
-
-  if (contentType === 'text/plain') {
-    const parts = blob.getDataAsString().split(':');
-    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
-
-    if (sha !== parts[1]) return 3;
-
-    const string = base64DecodeWebSafe(parts[0], 'UTF_8');
-    return JSON.parse(string);
-  } else if (contentType === 'application/octet-stream') {
-    const ui = SpreadsheetApp.getUi();
-    const file_id = file.getId();
-
-    const address = computeDigest(
-      'SHA_1',
-      'new_session:' + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
-      'UTF_8');
-    CacheService2.put('user', address, 'boolean', true, 120);
-
-    let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlEnterPassphrase');
-    htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-    htmlTemplate.file_id = file_id;
-
-    const htmlDialog = htmlTemplate.evaluate()
-      .setWidth(281)
-      .setHeight(300);
-
-    ui.showModalDialog(htmlDialog, 'Enter passphrase');
-    return -1;
-  }
-
-  return 3;
+  showDialogSetupRestore();
 }
 
 function decryptBackup_ (passphrase, backup) {

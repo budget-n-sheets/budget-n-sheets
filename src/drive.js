@@ -12,3 +12,16 @@ function getOAuthToken () {
   DriveApp.getRootFolder();
   return ScriptApp.getOAuthToken();
 }
+
+function isUserOwner (fileId) {
+  let file;
+
+  try {
+    file = DriveApp.getFileById(fileId);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return false;
+  }
+
+  return file.getOwner().getEmail() === Session.getEffectiveUser().getEmail();
+}

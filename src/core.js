@@ -319,8 +319,8 @@ function showDialogSetupRestore (status, msg) {
   let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupRestore');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlTemplate.isValid = (status === 0);
-  htmlTemplate.msg = (msg ? msg : '');
+  htmlTemplate.isValid = status || false;
+  htmlTemplate.msg = msg || '';
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)
