@@ -9,7 +9,7 @@ function requestValidateBackup (file_id) {
   const file = DriveApp.getFileById(file_id);
   const blob = file.getBlob();
 
-  if (blob.getContentType() === 'text/plain') {
+  if (blob.getContentType() === 'text/plain' || /:[0-9a-fA-F]+$/.test(blob.getDataAsString())) {
     processLegacyBackup_(file, file_id, blob);
     return;
   }

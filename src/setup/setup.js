@@ -63,7 +63,7 @@ function setupLock (select, param1, param2) {
     const data = blob.getDataAsString();
     const contentType = blob.getContentType();
 
-    if (contentType === 'text/plain') {
+    if (contentType === 'text/plain' || /:[0-9a-fA-F]+$/.test(data)) {
       const parts = data.split(':');
 
       const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
