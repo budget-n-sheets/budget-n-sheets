@@ -60,34 +60,8 @@ function setupLock (select, param1, param2) {
     if (candidate.file_id !== param1) throw new Error('File ID does not match.');
 
     const blob = DriveApp.getFileById(param1).getBlob();
-    const data = blob.getDataAsString();
-    const contentType = blob.getContentType();
-
-    if (contentType === 'text/plain' || /:[0-9a-fA-F]+$/.test(data)) {
-      const parts = data.split(':');
-
-      const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
-      if (sha !== parts[1]) throw new Error("Hashes don't match.");
-
-      settings.backup = parts[0];
-    } else if (contentType === 'application/octet-stream') {
-      const address = computeDigest(
-        'SHA_1',
-        param1 + SpreadsheetApp2.getActiveSpreadsheet().getId(),
-        'UTF_8');
-      const passphrase = CacheService2.get('user', address, 'string');
-      CacheService2.remove('user', address, 'string');
-
-      if (passphrase == null) {
-        showSessionExpired();
-        return;
-      }
-
-      const decrypted = decryptBackup_(passphrase, data);
-      if (decrypted == null) throw new Error('decryptBackup_(): Decryption failed.');
-
-      settings.backup = decrypted;
-    }
+    settings.backup = unwrapBackup_(blob, param1);
+    if (settings.backup == null) return;
 
     for (const key in candidate) {
       settings[key] = candidate[key];

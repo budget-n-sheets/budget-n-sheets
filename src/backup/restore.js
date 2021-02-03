@@ -1,3 +1,33 @@
+function unwrapBackup_ (blob, file_id) {
+  const data = blob.getDataAsString();
+
+  if (blob.getContentType() === 'text/plain' || /:[0-9a-fA-F]+$/.test(data)) {
+    const parts = data.split(':');
+
+    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+    if (sha !== parts[1]) throw new Error("Hashes don't match.");
+
+    return parts[0];
+  }
+
+  const address = computeDigest(
+    'SHA_1',
+    file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+    'UTF_8');
+  const passphrase = CacheService2.get('user', address, 'string');
+  CacheService2.remove('user', address, 'string');
+
+  if (passphrase == null) {
+    showSessionExpired();
+    return;
+  }
+
+  const decrypted = decryptBackup_(passphrase, data);
+  if (decrypted == null) throw new Error('decryptBackup_(): Decryption failed.');
+
+  return decrypted;
+}
+
 function requestValidateBackup (file_id) {
   CacheService2.remove('document', 'backup_candidate');
 
