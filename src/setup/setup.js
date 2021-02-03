@@ -138,10 +138,8 @@ function setupLock (select, param1, param2) {
 
   if (select === 'restore') {
     restoreFromBackup_(settings.backup);
-    PropertiesService2.deleteProperty('document', 'settings_candidate');
   } else if (select === 'copy') {
     restoreFromSpreadsheet_(settings.file_id);
-    PropertiesService2.deleteProperty('document', 'settings_candidate');
   }
 
   const class_version2 = {
