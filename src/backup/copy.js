@@ -5,82 +5,68 @@ function restrieveSpreadsheetInfo () {
 }
 
 function requestValidateSpreadsheet (file_id) {
-  const status = validateSpreadsheet_(file_id);
-
-  let msg = '';
-
-  switch (status) {
-    case 0:
-      break;
-    case 1:
-      msg = 'Sorry, something went wrong. Try again in a moment.';
-      break;
-    case 2:
-      msg = 'No spreadsheet with the given ID could be found, or you do not have permission to access it.';
-      break;
-    case 3:
-      msg = 'Sorry, it was not possible to verify the spreadsheet.';
-      break;
-
-    default:
-      throw new Error('requestValidateBackup(): Invalid switch case.' + rr);
-  }
-
-  showDialogSetupCopy(status, msg);
-}
-
-function validateSpreadsheet_ (file_id) {
-  if (isInstalled_()) return 1;
-
   CacheService2.remove('document', 'spreadsheet_candidate');
   showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', 1);
 
-  let spreadsheet, file, metadata;
-
-  try {
-    file = DriveApp.getFileById(file_id);
-
-    const owner = file.getOwner().getEmail();
-    const user = Session.getEffectiveUser().getEmail();
-
-    if (owner !== user) return 2;
-  } catch (err) {
-    ConsoleLog.error(err);
-    return 2;
+  if (!isUserOwner(file_id)) {
+    showDialogSetupCopy('No spreadsheet with the given ID could be found, or you do not have permission to access it.');
+    return;
   }
 
-  if (file.getMimeType() !== MimeType.GOOGLE_SHEETS) return 3;
+  const file = DriveApp.getFileById(file_id);
+  if (file.getMimeType() !== MimeType.GOOGLE_SHEETS) {
+    showDialogSetupCopy('Sorry, it was not possible to verify the spreadsheet.');
+    return;
+  }
+
+  const spreadsheet = SpreadsheetApp.openById(file_id);
+  let metadata;
+
+  const inner_key = getInnerKey_();
+  if (inner_key === 1) {
+    showDialogSetupCopy('Sorry, something went wrong. Try again in a moment.');
+    return;
+  }
 
   try {
-    spreadsheet = SpreadsheetApp.openById(file_id);
-
-    const inner_key = getInnerKey_();
-    if (inner_key === 1) return 1;
-
     const list = spreadsheet.createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .withKey('bs_sig')
       .find();
 
-    if (list.length === 0) return 3;
+    if (list.length === 0) {
+      showDialogSetupCopy('Sorry, it was not possible to verify the spreadsheet.');
+      return;
+    }
 
     metadata = list[0].getValue();
     metadata = JSON.parse(metadata);
 
     const hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
-    if (hmac !== metadata.hmac) return 3;
+    if (hmac !== metadata.hmac) {
+      showDialogSetupCopy('Sorry, it was not possible to verify the spreadsheet.');
+      return;
+    }
   } catch (err) {
     ConsoleLog.error(err);
-    return 3;
+    showDialogSetupCopy('Sorry, something went wrong. Try again in a moment.');
+    return;
   }
 
   const webSafeCode = metadata.encoded;
   const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
   const data = JSON.parse(string);
 
-  // if (data.spreadsheet_id !== file_id) return 2;
-  if (data.admin_id !== getUserId_()) return 2;
+  if (data.admin_id !== getUserId_()) {
+    showDialogSetupCopy('No spreadsheet with the given ID could be found, or you do not have permission to access it.');
+    return;
+  }
 
+  processSpreadsheet_(spreadsheet, file_id);
+  showDialogSetupCopy('');
+}
+
+function processSpreadsheet_ (spreadsheet, file_id) {
   let sheet, values, cols;
   let list;
 
@@ -150,8 +136,6 @@ function validateSpreadsheet_ (file_id) {
   else info.tags = '-';
 
   CacheService2.put('document', 'spreadsheet_candidate', 'json', info);
-
-  return 0;
 }
 
 function restoreFromSpreadsheet_ (file_id) {

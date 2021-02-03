@@ -329,14 +329,14 @@ function showDialogSetupRestore (msg) {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Restore from backup');
 }
 
-function showDialogSetupCopy (status, msg) {
+function showDialogSetupCopy (msg) {
   if (isInstalled_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupCopy');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlTemplate.isValid = (status === 0);
-  htmlTemplate.msg = (msg || '');
+  htmlTemplate.isValid = status === '';
+  htmlTemplate.msg = msg || '';
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)
