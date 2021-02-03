@@ -55,7 +55,7 @@
         const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
           .setIncludeFolders(false)
           .setSelectFolderEnabled(false)
-          .setMimeTypes('text/plain')
+          .setMimeTypes('text/plain,application/octet-stream')
         <? } else { ?>
         const docsView = new google.picker.DocsView(google.picker.ViewId.SPREADSHEETS)
           .setMimeTypes('application/vnd.google-apps.spreadsheet')
@@ -97,6 +97,9 @@
       const doc = data[google.picker.Response.DOCUMENTS][0];
       google.script.run
         .withFailureHandler(showError)
+        .withSuccessHandler(function() {
+          google.script.host.close();
+        })
         <? if (isRestore) { ?>
         .requestValidateBackup(doc[google.picker.Document.ID]);
         <? } else { ?>

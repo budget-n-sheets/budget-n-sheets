@@ -313,14 +313,14 @@ function showDialogSetupAddon_ () {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Start budget spreadsheet');
 }
 
-function showDialogSetupRestore (status, msg) {
+function showDialogSetupRestore (msg) {
   if (isInstalled_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupRestore');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlTemplate.isValid = (status === 0);
-  htmlTemplate.msg = (msg || '');
+  htmlTemplate.isValid = msg === '';
+  htmlTemplate.msg = msg || '';
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)
@@ -376,6 +376,15 @@ function showDialogSetupEnd () {
     .setHeight(367);
 
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Add-on Budget n Sheets');
+}
+
+function showSessionExpired () {
+  const ui = SpreadsheetApp.getUi();
+
+  ui.alert(
+    'Session expired',
+    'Your session timed out. Please try again.',
+    ui.ButtonSet.OK);
 }
 
 function showDialogEditAccount (acc_id) {

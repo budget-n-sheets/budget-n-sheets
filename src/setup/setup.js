@@ -37,16 +37,13 @@ function setupLock (select, param1, param2) {
     return;
   }
 
-  setupAddon_(select, param1, param2);
-}
-
-function setupAddon_ (name, param1, param2) {
-  console.time('setup/' + name);
+  console.time('setup/' + select);
+  setupValidate_();
 
   const settings = {};
   const list_accounts = [];
 
-  if (name === 'new') {
+  if (select === 'new') {
     for (const key in param1) {
       settings[key] = param1[key];
     }
@@ -58,30 +55,24 @@ function setupAddon_ (name, param1, param2) {
       list_accounts[i] = param2[i].trim();
       if (list_accounts[i] === '') throw new Error('Invalid account name.');
     }
-  } else if (name === 'restore') {
+  } else if (select === 'restore') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
     if (candidate.file_id !== param1) throw new Error('File ID does not match.');
 
-    const parts = DriveApp.getFileById(param1)
-      .getBlob()
-      .getAs('text/plain')
-      .getDataAsString()
-      .split(':');
-
-    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
-    if (sha !== parts[1]) throw new Error("Hashes doesn't match.");
+    const blob = DriveApp.getFileById(param1).getBlob();
+    settings.backup = unwrapBackup_(blob, param1);
+    if (settings.backup == null) return;
 
     for (const key in candidate) {
       settings[key] = candidate[key];
     }
 
-    settings.backup = parts[0];
     settings.spreadsheet_name = candidate.spreadsheet_title;
 
     for (let i = 0; i < candidate.list_acc.length; i++) {
       list_accounts[i] = candidate.list_acc[i];
     }
-  } else if (name === 'copy') {
+  } else if (select === 'copy') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
     if (candidate.file_id !== param1) throw new Error('File ID does not match.');
 
@@ -101,8 +92,6 @@ function setupAddon_ (name, param1, param2) {
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
-  setupValidate_();
-
   SETUP_SETTINGS = {
     spreadsheet_name: settings.spreadsheet_name,
     decimal_places: Number(settings.decimal_places),
@@ -121,13 +110,10 @@ function setupAddon_ (name, param1, param2) {
   setupPrepare_();
   setupParts_();
 
-  if (name === 'restore') {
-    const backup = JSON.parse(base64DecodeWebSafe(settings.backup, 'UTF_8'));
-    restoreFromBackup_(backup);
-    PropertiesService2.deleteProperty('document', 'settings_candidate');
-  } else if (name === 'copy') {
+  if (select === 'restore') {
+    restoreFromBackup_(settings.backup);
+  } else if (select === 'copy') {
     restoreFromSpreadsheet_(settings.file_id);
-    PropertiesService2.deleteProperty('document', 'settings_candidate');
   }
 
   const class_version2 = {
@@ -152,7 +138,7 @@ function setupAddon_ (name, param1, param2) {
   onOpen();
 
   SETUP_SETTINGS = null;
-  console.timeEnd('setup/' + name);
+  console.timeEnd('setup/' + select);
 }
 
 function setupValidate_ () {

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+</head>
+
+<body>
+  <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
+    <table style="width: 100%;">
+      <tr>
+        <td>
+          <input id="pass" type="password" placeholder="Passphrase" style="width: 100%;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" required>
+        </td>
+      </tr>
+    </table>
+    <input id="file_id" style="display: none;" type="text" value="<?= file_id ?>" required>
+  </form>
+
+  <button class="action" id="b-Ok" type="submit" form="the_form">Ok</button>
+  <button onclick="google.script.host.close()">Cancel</button>
+
+  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <script>
+    function submitForm() {
+      $('#warn').empty();
+      $('button').prop('disabled', true);
+
+      google.script.run
+        .withSuccessHandler(function(r, o) {
+          google.script.host.close();
+        })
+        .withFailureHandler(showError)
+        .requestDevelopBackup($('#file_id').val(), $('#pass').val());
+    }
+  </script>
+</body>
+
+</html>

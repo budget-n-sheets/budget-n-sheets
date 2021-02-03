@@ -205,7 +205,7 @@
           </tr>
           <tr>
             <td>
-              <p>You can back up data and settings from your budget spreadsheet to your Google Drive. You can restore your backed-up information to a new budget spreadsheet.</p>
+              <p>You can back up data and settings from your budget spreadsheet to your Google Drive. You can restore your backed-up information to a new budget spreadsheet. The size of the backup varies by spreadsheet and settings.</p>
             </td>
           </tr>
         </table>
@@ -219,18 +219,19 @@
           <li>Add-on settings</li>
         </ul>
 
-        <b>Important notes regarding your backup:</b>
+        <p>You need to make a passphrase to encrypt your backup. Your passphrase must contain:</p>
+
         <ul>
-          <li>The backup file is <b>NOT encrypted</b>.</li>
-          <li>The size of the backup varies by spreadsheet and settings.</li>
-          <li>The backup is a text file, and changing its content can impact the integrity and corrupt it.</li>
+          <li>At least 12 characters long</li>
+          <li>At least 1 lowercase letter</li>
+          <li>At least 1 uppercase letter</li>
+          <li>At least 1 number</li>
+          <li>At least 1 symbol. The allowed symbols are: ~ ! @ # $ % ^ * - _ = + [ { ] } / ; : , . ?</li>
         </ul>
 
-        <p>An email will be sent to you with the backup file attached to it. You can <a href="https://support.google.com/mail/answer/30719" target="_blank">save the attachment to your Drive</a>.</p>
+        <p style="font-weight: bold;">If you lose your passphrase, you will not be able to restore the backup.</p>
 
-        <button id="b-Backup" class="action">Back up now</button>
-
-        <p>For more information, visit <a href="<?= home_wiki ?>/Backup-and-Restore" target="_blank">Backup and Restore</a>.</p>
+        <p>An email will be sent to you with the backup file attached to it. You can <a href="https://support.google.com/mail/answer/30719" target="_blank">save the attachment to your Google Drive</a>.</p>
       </div>
       <? if (hasEditors) { ?>
 
@@ -289,9 +290,7 @@
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     $(document).ready(function() {
-      $("#b-Save").click(saveSettings);
       $("#b-Reinstall").click(reinstallTriggers);
-      $("#b-Backup").click(backupNow);
 
       <? if (hasEditors) { ?>
       $("#b-Transfer").click(transferAdminRole);
@@ -308,6 +307,9 @@
         .retrieveUserSettings();
     });
 
+    $(document).on('click', '#b-Save', saveSettings);
+    $(document).on('click', '#b-Backup', backupNow);
+
     $(document).on("click", ".header_tab", function() {
       if ($(this).hasClass("active")) return;
 
@@ -316,11 +318,11 @@
       $(this).addClass("active")
         .siblings()
         .removeClass("active");
-      $("#b-Save").hide();
+      $('.footer_cell.left button').remove();
 
       window.scrollTo(0, 0);
       if (select === "tab_settings") {
-        $("#b-Save").show();
+        $('.footer_cell.left').append('<button class="action" id="b-Save">Save</button>');
         $("#panel_Settings").show()
           .siblings()
           .hide();
@@ -329,6 +331,7 @@
           .siblings()
           .hide();
       } else if (select === "tab_backup") {
+        $('.footer_cell.left').append('<button id="b-Backup" class="action">Back up now</button>');
         $("#panel_Backup").show()
           .siblings()
           .hide();
@@ -399,7 +402,7 @@
         })
         .withFailureHandler(showError)
         .withUserObject(this)
-        .backupRequestUi();
+        .requestBackupSession();
     }
 
     function reinstallTriggers() {

@@ -1,10 +1,11 @@
-function backupRequestUi () {
+function requestBackupSession () {
   console.info('sidebar/Settings/Backup/Back up now');
-  const ui = SpreadsheetApp.getUi();
 
   if (!isInstalled_()) return 2;
   if (!isUserAdmin_()) return 2;
   if (isScriptUpToDate_() !== 1) return 2;
+
+  const ui = SpreadsheetApp.getUi();
 
   if (MailApp.getRemainingDailyQuota() === 0) {
     ui.alert(
@@ -14,15 +15,27 @@ function backupRequestUi () {
     return 1;
   }
 
-  const response = ui.alert(
-    'Back up now?',
-    'The backup file will be sent to your email when the backup completes.',
-    ui.ButtonSet.YES_NO);
+  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlNewPassphrase');
+  htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  if (response === ui.Button.NO) return 1;
+  const htmlDialog = htmlTemplate.evaluate()
+    .setWidth(281)
+    .setHeight(443);
+
+  ui.showModalDialog(htmlDialog, 'Enter passphrase');
+}
+
+function backupRequestUi (passphrase) {
+  if (!isInstalled_()) return 2;
+  if (!isUserAdmin_()) return 2;
+  if (isScriptUpToDate_() !== 1) return 2;
+  if (testPassphrasePolicy(passphrase)) return 1;
+
+  const ui = SpreadsheetApp.getUi();
 
   showDialogMessage('Add-on backup', 'Backing up...', 1);
-  backupRequest_();
+  backupRequest_(passphrase);
+
   ui.alert(
     'Add-on backup',
     'The backup was completed successfully.',
@@ -30,7 +43,19 @@ function backupRequestUi () {
   return 0;
 }
 
-function backupRequest_ () {
+function testPassphrasePolicy (passphrase) {
+  if (typeof passphrase !== 'string') return true;
+  if (passphrase.length < 12) return true;
+  if (!/[a-z]+/.test(passphrase)) return true;
+  if (!/[A-Z]+/.test(passphrase)) return true;
+  if (!/[0-9]+/.test(passphrase)) return true;
+  if (!/[~!@#$%\^*\-_=+[{\]}/;:,.?]+/.test(passphrase)) return true;
+  if (!/^[ 0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(passphrase)) return true;
+
+  return false;
+}
+
+function backupRequest_ (passphrase) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const backup = {
     backup: {},
@@ -82,7 +107,9 @@ function backupRequest_ () {
 
   backupMeta_(backup);
 
-  const blob = digestBackup_(backup);
+  const blob = encryptBackup_(backup, passphrase);
+  if (blob === 1) throw new Error('encryptBackup_(): Backup encryption failed.');
+
   emailBackup_(blob);
   console.info('backup/success');
 }
@@ -111,16 +138,22 @@ function emailBackup_ (blob) {
   );
 }
 
-function digestBackup_ (backup) {
-  const string = JSON.stringify(backup);
-  const webSafeCode = Utilities.base64EncodeWebSafe(string, Utilities.Charset.UTF_8);
-
-  const sha = computeDigest('SHA_1', webSafeCode, 'UTF_8');
-  const data = webSafeCode + ':' + sha;
+function encryptBackup_ (backup, passphrase) {
+  const stringify = JSON.stringify(backup);
 
   const date = Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss');
   const name = 'budget-n-sheets-' + date + '.backup';
-  const blob = Utilities.newBlob(data, 'text/plain', name);
+
+  let encrypted;
+  try {
+    encrypted = sjcl.encrypt(passphrase, stringify, { mode: 'gcm', iter: 1010010, adata: name, ts: 128 });
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 1;
+  }
+
+  const webSafe = Utilities.base64EncodeWebSafe(encrypted, Utilities.Charset.UTF_8);
+  const blob = Utilities.newBlob(webSafe, 'application/octet-stream', name);
 
   return blob;
 }

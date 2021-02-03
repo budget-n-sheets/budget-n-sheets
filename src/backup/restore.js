@@ -1,70 +1,83 @@
-function retrieveBackupInfo () {
-  const backup_candidate = CacheService2.get('document', 'backup_candidate', 'json');
-  CacheService2.remove('document', 'backup_candidate');
-  return backup_candidate;
+function unwrapBackup_ (blob, file_id) {
+  const data = blob.getDataAsString();
+
+  if (blob.getContentType() === 'text/plain' || /:[0-9a-fA-F]+$/.test(data)) {
+    const parts = data.split(':');
+
+    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+    if (sha !== parts[1]) throw new Error("Hashes don't match.");
+
+    return parts[0];
+  }
+
+  const address = computeDigest(
+    'SHA_1',
+    file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+    'UTF_8');
+  const passphrase = CacheService2.get('user', address, 'string');
+  CacheService2.remove('user', address, 'string');
+
+  if (passphrase == null) {
+    showSessionExpired();
+    return;
+  }
+
+  const decrypted = decryptBackup_(passphrase, data);
+  if (decrypted == null) throw new Error('decryptBackup_(): Decryption failed.');
+
+  return decrypted;
 }
 
 function requestValidateBackup (file_id) {
-  const status = validateBackup_(file_id);
+  CacheService2.remove('document', 'backup_candidate');
 
-  let msg = '';
-
-  switch (status) {
-    case 0:
-      break;
-    case 1:
-      msg = 'Sorry, something went wrong. Try again in a moment.';
-      break;
-    case 2:
-      msg = 'No file with the given ID could be found, or you do not have permission to access it.';
-      break;
-    case 3:
-      msg = 'The file is either not a supported file type or the file is corrupted.';
-      break;
-
-    default:
-      throw new Error('requestValidateBackup(): Invalid switch case.' + rr);
+  if (!isUserOwner(file_id)) {
+    showDialogSetupRestore('No file with the given ID could be found, or you do not have permission to access it.');
+    return;
   }
 
-  showDialogSetupRestore(status, msg);
+  const file = DriveApp.getFileById(file_id);
+  const blob = file.getBlob();
+
+  if (blob.getContentType() === 'text/plain' || /:[0-9a-fA-F]+$/.test(blob.getDataAsString())) {
+    processLegacyBackup_(file, file_id, blob);
+    return;
+  }
+
+  const address = computeDigest(
+    'SHA_1',
+    'new_session:' + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+    'UTF_8');
+  CacheService2.put('user', address, 'boolean', true, 120);
+
+  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlEnterPassphrase');
+  htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+  htmlTemplate.file_id = file_id;
+
+  const htmlDialog = htmlTemplate.evaluate()
+    .setWidth(281)
+    .setHeight(127);
+
+  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Enter passphrase');
 }
 
-function validateBackup_ (file_id) {
-  if (isInstalled_()) return 1;
+function processLegacyBackup_ (file, file_id, blob) {
+  const parts = blob.getDataAsString().split(':');
+  const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
 
-  CacheService2.remove('document', 'backup_candidate');
-  showDialogMessage('Add-on restore', 'Verifying the backup...', 1);
-
-  let file, sha, parts;
-
-  try {
-    file = DriveApp.getFileById(file_id);
-
-    const owner = file.getOwner().getEmail();
-    const user = Session.getEffectiveUser().getEmail();
-
-    if (owner !== user) return 2;
-  } catch (err) {
-    ConsoleLog.error(err);
-    return 2;
+  if (sha !== parts[1]) {
+    showDialogSetupRestore('The file is either not a supported file type or the file is corrupted.');
+    return;
   }
 
-  try {
-    const blob = file.getBlob().getAs('text/plain');
-    const raw = blob.getDataAsString();
+  const string = base64DecodeWebSafe(parts[0], 'UTF_8');
+  processBackup_(file, file_id, JSON.parse(string));
 
-    parts = raw.split(':');
-    sha = computeDigest('SHA_1', parts[0], 'UTF_8');
-  } catch (err) {
-    ConsoleLog.error(err);
-    return 3;
-  }
-  if (sha !== parts[1]) return 3;
+  showDialogSetupRestore('');
+}
 
-  const webSafeCode = parts[0];
-  const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
-  const data = JSON.parse(string);
-
+function processBackup_ (file, file_id, data) {
   const settings_candidate = {
     file_id: file_id,
     list_acc: [],
@@ -133,8 +146,60 @@ function validateBackup_ (file_id) {
   }
 
   CacheService2.put('document', 'backup_candidate', 'json', info);
+}
 
-  return 0;
+function retrieveBackupInfo () {
+  const backup_candidate = CacheService2.get('document', 'backup_candidate', 'json');
+  CacheService2.remove('document', 'backup_candidate');
+  return backup_candidate;
+}
+
+function requestDevelopBackup (file_id, passphrase) {
+  showDialogMessage('Add-on restore', 'Verifying backup...', 1);
+
+  const session = computeDigest(
+    'SHA_1',
+    'new_session:' + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+    'UTF_8');
+
+  if (!CacheService2.get('user', session, 'boolean')) {
+    showSessionExpired();
+    return;
+  }
+  CacheService2.remove('user', session);
+
+  if (!isUserOwner(file_id)) {
+    showDialogSetupRestore('No file with the given ID could be found, or you do not have permission to access it.');
+    return;
+  }
+
+  const file = DriveApp.getFileById(file_id);
+  const data = file.getBlob().getDataAsString();
+  const decrypted = decryptBackup_(passphrase, data);
+
+  if (decrypted == null) {
+    showDialogSetupRestore('The passphrase is incorrect or the file is corrupted.');
+    return;
+  }
+
+  const address = computeDigest(
+    'SHA_1',
+    file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+    'UTF_8');
+  CacheService2.put('user', address, 'string', passphrase, 120);
+
+  processBackup_(file, file_id, decrypted);
+  showDialogSetupRestore('');
+}
+
+function decryptBackup_ (passphrase, backup) {
+  try {
+    const decoded = base64DecodeWebSafe(backup, 'UTF_8');
+    const decrypted = sjcl.decrypt(passphrase, decoded);
+    return JSON.parse(decrypted);
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
 }
 
 function restoreFromBackup_ (backup) {
