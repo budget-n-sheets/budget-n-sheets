@@ -8,6 +8,13 @@ function requestValidateSpreadsheet (file_id) {
   CacheService2.remove('document', 'spreadsheet_candidate');
   showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', 1);
 
+  if (validateSpreadsheet_(file_id) !== 0) return;
+  if (processSpreadsheet_(file_id) !== 0) return;
+
+  showDialogSetupCopy('');
+}
+
+function validateSpreadsheet_ (file_id) {
   if (!isUserOwner(file_id)) {
     showDialogSetupCopy('No spreadsheet with the given ID could be found, or you do not have permission to access it.');
     return;
@@ -62,11 +69,12 @@ function requestValidateSpreadsheet (file_id) {
     return;
   }
 
-  processSpreadsheet_(spreadsheet, file_id);
-  showDialogSetupCopy('');
+  return 0;
 }
 
-function processSpreadsheet_ (spreadsheet, file_id) {
+function processSpreadsheet_ (file_id) {
+  const spreadsheet = SpreadsheetApp.openById(file_id);
+
   let sheet, values, cols;
   let list;
 
@@ -136,6 +144,7 @@ function processSpreadsheet_ (spreadsheet, file_id) {
   else info.tags = '-';
 
   CacheService2.put('document', 'spreadsheet_candidate', 'json', info);
+  return 0;
 }
 
 function restoreFromSpreadsheet_ (file_id) {
