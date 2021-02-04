@@ -4,13 +4,13 @@ function retrieveBackupInfo (uuid) {
     return;
   }
 
-  const backup_candidate = CacheService2.get('document', 'backup_candidate', 'json');
-  CacheService2.remove('document', 'backup_candidate');
-  return backup_candidate;
+  const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
+  const settings_summary = CacheService2.get('document', address, 'json');
+  CacheService2.remove('document', address);
+  return settings_summary;
 }
 
 function requestValidateBackup (uuid, file_id) {
-  CacheService2.remove('document', 'backup_candidate');
   if (!CacheService2.get('user', uuid, 'boolean')) {
     showSessionExpired();
     return;
@@ -58,7 +58,7 @@ function processLegacyBackup_ (uuid, file, file_id, blob) {
   }
 
   const string = base64DecodeWebSafe(parts[0], 'UTF_8');
-  processBackup_(file, file_id, JSON.parse(string));
+  processBackup_(uuid, file, file_id, JSON.parse(string));
 
   CacheService2.put('user', uuid, 'boolean', true);
   showDialogSetupRestore(uuid, '');
@@ -103,7 +103,7 @@ function requestDevelopBackup (uuid, file_id, passphrase) {
     'UTF_8');
   CacheService2.put('user', address, 'string', passphrase, 120);
 
-  processBackup_(file, file_id, decrypted);
+  processBackup_(uuid, file, file_id, decrypted);
 
   CacheService2.put('user', uuid, 'boolean', true);
   showDialogSetupRestore(uuid, '');
@@ -149,7 +149,7 @@ function decryptBackup_ (passphrase, backup) {
   }
 }
 
-function processBackup_ (file, file_id, data) {
+function processBackup_ (uuid, file, file_id, data) {
   const settings_candidate = {
     file_id: file_id,
     list_acc: [],
@@ -217,7 +217,8 @@ function processBackup_ (file, file_id, data) {
     info.cards = 'No cards found.';
   }
 
-  CacheService2.put('document', 'backup_candidate', 'json', info);
+  const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
+  CacheService2.put('document', address, 'json', info);
 }
 
 function restoreFromBackup_ (backup) {

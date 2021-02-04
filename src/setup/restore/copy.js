@@ -4,13 +4,13 @@ function restrieveSpreadsheetInfo (uuid) {
     return;
   }
 
-  const spreadsheet_candidate = CacheService2.get('document', 'spreadsheet_candidate', 'json');
-  CacheService2.remove('document', 'spreadsheet_candidate');
-  return spreadsheet_candidate;
+  const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
+  const settings_summary = CacheService2.get('document', address, 'json');
+  CacheService2.remove('document', address);
+  return settings_summary;
 }
 
 function requestValidateSpreadsheet (uuid, file_id) {
-  CacheService2.remove('document', 'spreadsheet_candidate');
   if (!CacheService2.get('user', uuid, 'boolean')) {
     showSessionExpired();
     return;
@@ -19,7 +19,7 @@ function requestValidateSpreadsheet (uuid, file_id) {
   showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', 1);
 
   if (validateSpreadsheet_(file_id) !== 0) return;
-  if (processSpreadsheet_(file_id) !== 0) return;
+  if (processSpreadsheet_(uuid, file_id) !== 0) return;
 
   CacheService2.put('user', uuid, 'boolean', true);
   showDialogSetupCopy(uuid, '');
@@ -82,7 +82,7 @@ function validateSpreadsheet_ (file_id) {
   return 0;
 }
 
-function processSpreadsheet_ (file_id) {
+function processSpreadsheet_ (uuid, file_id) {
   const spreadsheet = SpreadsheetApp.openById(file_id);
 
   let sheet, values, cols;
@@ -153,7 +153,8 @@ function processSpreadsheet_ (file_id) {
   if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tag(s) found.';
   else info.tags = '-';
 
-  CacheService2.put('document', 'spreadsheet_candidate', 'json', info);
+  const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
+  CacheService2.put('document', address, 'json', info);
   return 0;
 }
 
