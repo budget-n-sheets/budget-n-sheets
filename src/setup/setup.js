@@ -101,7 +101,7 @@ function setupLock (uuid, select, config) {
   CacheService2.remove('user', uuid);
 
   console.time('setup/' + select);
-  setupValidate_();
+  setupValidate_(select);
 
   const settings = {};
   const list_accounts = [];
@@ -119,7 +119,6 @@ function setupLock (uuid, select, config) {
       if (list_accounts[i] === '') throw new Error('Invalid account name.');
     }
   } else if (select === 'restore') {
-    if (!getFeatureFlagStatus_('setup/restore')) return;
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
     if (candidate.file_id !== config) throw new Error('File ID does not match.');
 
@@ -137,7 +136,6 @@ function setupLock (uuid, select, config) {
       list_accounts[i] = candidate.list_acc[i];
     }
   } else if (select === 'copy') {
-    if (!getFeatureFlagStatus_('setup/copy')) return;
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
     if (candidate.file_id !== config) throw new Error('File ID does not match.');
 
@@ -206,7 +204,10 @@ function setupLock (uuid, select, config) {
   console.timeEnd('setup/' + select);
 }
 
-function setupValidate_ () {
+function setupValidate_ (select) {
+  if (select === 'restore' && !getFeatureFlagStatus_('setup/restore')) throw new Error('Feature flag is disabled.');
+  if (select === 'copy' && !getFeatureFlagStatus_('setup/copy')) throw new Error('Feature flag is disabled.');
+
   if (!isTemplateAvailable()) throw new Error('Template is not available.');
   if (isInstalled_()) throw new Error('Add-on is already installed.');
   if (PropertiesService2.getProperty('document', 'lock_spreadsheet', 'boolean')) throw new Error('Spreadsheet is locked.');
