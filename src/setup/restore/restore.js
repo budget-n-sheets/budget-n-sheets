@@ -50,7 +50,7 @@ function requestValidateBackup (file_id) {
     'UTF_8');
   CacheService2.put('user', address, 'boolean', true, 120);
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlEnterPassphrase');
+  let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlEnterPassphrase');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.file_id = file_id;

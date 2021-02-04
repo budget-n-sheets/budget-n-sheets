@@ -316,7 +316,7 @@ function showDialogSetupAddon_ () {
 function showDialogSetupRestore (msg) {
   if (isInstalled_()) return;
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupRestore');
+  let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlSetupRestore');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.isValid = msg === '';
@@ -332,7 +332,7 @@ function showDialogSetupRestore (msg) {
 function showDialogSetupCopy (msg) {
   if (isInstalled_()) return;
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlSetupCopy');
+  let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlSetupCopy');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.isValid = status === '';
@@ -354,7 +354,7 @@ function showDialogPickerRestore (topic) {
   const developer_key = getDeveloperKey_();
   if (developer_key === 1) showDialogErrorMessage();
 
-  const htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlPickerRestore');
+  const htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlPickerRestore');
   htmlTemplate.picker_key = developer_key;
   htmlTemplate.isRestore = isRestore;
 
