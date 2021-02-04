@@ -137,6 +137,7 @@ function setupLock (uuid, select, config) {
       list_accounts[i] = candidate.list_acc[i];
     }
   } else if (select === 'copy') {
+    if (!getFeatureFlagStatus_('setup/copy')) return;
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
     if (candidate.file_id !== config) throw new Error('File ID does not match.');
 

@@ -253,6 +253,7 @@ function showDialogSetupAddon_ () {
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.setup_restore = getFeatureFlagStatus_('setup/restore');
+  htmlTemplate.setup_copy = getFeatureFlagStatus_('setup/copy');
 
   const uuid = Utilities.getUuid();
   CacheService2.put('user', uuid, 'boolean', true);
