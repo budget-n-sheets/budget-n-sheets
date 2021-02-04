@@ -26,37 +26,37 @@ function validateSpreadsheet_ (file_id) {
     return;
   }
 
-  const spreadsheet = SpreadsheetApp.openById(file_id);
-  let metadata;
-
   const inner_key = getInnerKey_();
   if (inner_key === 1) {
     showDialogSetupCopy('Sorry, something went wrong. Try again in a moment.');
     return;
   }
 
+  const spreadsheet = SpreadsheetApp.openById(file_id);
+  let list;
+
   try {
-    const list = spreadsheet.createDeveloperMetadataFinder()
+    list = spreadsheet.createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .withKey('bs_sig')
       .find();
-
-    if (list.length === 0) {
-      showDialogSetupCopy('Sorry, it was not possible to verify the spreadsheet.');
-      return;
-    }
-
-    metadata = list[0].getValue();
-    metadata = JSON.parse(metadata);
-
-    const hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
-    if (hmac !== metadata.hmac) {
-      showDialogSetupCopy('Sorry, it was not possible to verify the spreadsheet.');
-      return;
-    }
   } catch (err) {
     ConsoleLog.error(err);
     showDialogSetupCopy('Sorry, something went wrong. Try again in a moment.');
+    return;
+  }
+
+  if (list.length === 0) {
+    showDialogSetupCopy('Sorry, it was not possible to verify the spreadsheet.');
+    return;
+  }
+
+  const metadata = list[0].getValue();
+  metadata = JSON.parse(metadata);
+
+  const hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
+  if (hmac !== metadata.hmac) {
+    showDialogSetupCopy('Sorry, it was not possible to verify the spreadsheet.');
     return;
   }
 
