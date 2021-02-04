@@ -51,8 +51,7 @@ function validateSpreadsheet_ (file_id) {
     return;
   }
 
-  const metadata = list[0].getValue();
-  metadata = JSON.parse(metadata);
+  const metadata = JSON.parse(list[0].getValue());
 
   const hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
   if (hmac !== metadata.hmac) {
