@@ -283,7 +283,7 @@ function showDialogSetupCopy (msg) {
   let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlSetupCopy');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlTemplate.isValid = status === '';
+  htmlTemplate.isValid = msg === '';
   htmlTemplate.msg = msg || '';
 
   const htmlDialog = htmlTemplate.evaluate()
