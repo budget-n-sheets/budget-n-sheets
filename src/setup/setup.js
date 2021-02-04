@@ -24,7 +24,7 @@ function uninstall_ (putLock) {
   }
 }
 
-function setupLock (select, param1, param2) {
+function setupLock (select, config) {
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
@@ -44,23 +44,23 @@ function setupLock (select, param1, param2) {
   const list_accounts = [];
 
   if (select === 'new') {
-    for (const key in param1) {
-      settings[key] = param1[key];
+    for (const key in config) {
+      settings[key] = config[key];
     }
 
     settings.spreadsheet_name = settings.spreadsheet_name.trim();
     if (settings.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.');
 
-    for (let i = 0; i < param2.length; i++) {
-      list_accounts[i] = param2[i].trim();
+    for (let i = 0; i < config.name_accounts.length; i++) {
+      list_accounts[i] = config.name_accounts[i].trim();
       if (list_accounts[i] === '') throw new Error('Invalid account name.');
     }
   } else if (select === 'restore') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
-    if (candidate.file_id !== param1) throw new Error('File ID does not match.');
+    if (candidate.file_id !== config) throw new Error('File ID does not match.');
 
-    const blob = DriveApp.getFileById(param1).getBlob();
-    settings.backup = unwrapBackup_(blob, param1);
+    const blob = DriveApp.getFileById(config).getBlob();
+    settings.backup = unwrapBackup_(blob, config);
     if (settings.backup == null) return;
 
     for (const key in candidate) {
@@ -74,7 +74,7 @@ function setupLock (select, param1, param2) {
     }
   } else if (select === 'copy') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
-    if (candidate.file_id !== param1) throw new Error('File ID does not match.');
+    if (candidate.file_id !== config) throw new Error('File ID does not match.');
 
     for (const key in candidate) {
       settings[key] = candidate[key];

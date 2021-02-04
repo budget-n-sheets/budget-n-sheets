@@ -332,19 +332,19 @@
       $("#setup-panel").fadeIn("fast").addClass("active");
       google.script.host.setHeight(233);
 
-      var settings = {
-        spreadsheet_name: $("#spreadsheet_name").val(),
-        decimal_places: $("#decimal_places").val(),
-        financial_year: $("#financial_year").val(),
-        initial_month: $("#initial_month").val(),
-        number_accounts: $("#number_accounts").val()
-      };
-
-      var list_names = [];
-
+      const list_names = [];
       $("input[required][name=account_name]").each(function(i) {
         list_names[i] = $(this).val();
       });
+
+      const config = {
+        spreadsheet_name: $("#spreadsheet_name").val(),
+        financial_year: $("#financial_year").val(),
+        initial_month: $("#initial_month").val(),
+        decimal_places: $("#decimal_places").val(),
+        number_accounts: $("#number_accounts").val(),
+        name_accounts: list_names;
+      };
 
       TIMEOUT_ID = setTimeout(function() {
         google.script.host.setHeight(293);
@@ -355,7 +355,7 @@
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupLock('new', settings, list_names);
+        .setupLock('new', config);
     }
 
     function panelError(err) {
