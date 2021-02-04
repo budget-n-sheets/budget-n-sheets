@@ -83,7 +83,7 @@ function processSpreadsheet_ (file_id) {
     file_id: file_id,
     file_name: spreadsheet.getName(),
     file_url: spreadsheet.getUrl(),
-    last_updated: file.getLastUpdated().toString(),
+    last_updated: DriveApp.getFileById(file_id).getLastUpdated().toString(),
     spreadsheet_title: spreadsheet.getName(),
 
     financial_year: DATE_NOW.getFullYear(),
