@@ -83,9 +83,11 @@
           <div class="header_tab" id="tab_advanced">
             <i class="material-icons-outlined md-24" title="Advanced">build</i>
           </div>
+          <? if (settings_backup) { ?>
           <div class="header_tab" id="tab_backup">
             <i class="material-icons-outlined md-24" title="Backup">backup</i>
           </div>
+          <? } ?>
         </div>
       </div>
     </div>
@@ -198,6 +200,7 @@
         </table>
       </div>
 
+      <? if (settings_backup) { ?>
       <div class="panel" id="panel_Backup">
         <table>
           <tr>
@@ -233,6 +236,7 @@
 
         <p>An email will be sent to you with the backup file attached to it. You can <a href="https://support.google.com/mail/answer/30719" target="_blank">save the attachment to your Google Drive</a>.</p>
       </div>
+      <? } ?>
       <? if (hasEditors) { ?>
 
       <div class="panel" id="panel_Admin">
@@ -308,7 +312,6 @@
     });
 
     $(document).on('click', '#b-Save', saveSettings);
-    $(document).on('click', '#b-Backup', backupNow);
 
     $(document).on("click", ".header_tab", function() {
       if ($(this).hasClass("active")) return;
@@ -330,11 +333,13 @@
         $("#panel_Advanced").show()
           .siblings()
           .hide();
+      <? if (settings_backup) { ?>
       } else if (select === "tab_backup") {
         $('.footer_cell.left').append('<button id="b-Backup" class="action">Back up now</button>');
         $("#panel_Backup").show()
           .siblings()
           .hide();
+      <? } ?>
       <? if (hasEditors) { ?>
       } else if (select === "tab_admin") {
         $("#panel_Admin").show()
@@ -390,6 +395,9 @@
       }
 
       <? } ?>
+    <? if (settings_backup) { ?>
+
+    $(document).on('click', '#b-Backup', backupNow);
 
     function backupNow() {
       this.disabled = true;
@@ -404,6 +412,7 @@
         .withUserObject(this)
         .requestBackupSession();
     }
+    <? } ?>
 
     function reinstallTriggers() {
       this.disabled = true;

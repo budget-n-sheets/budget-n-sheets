@@ -2,6 +2,7 @@ function getFeatureFlagStatus_ (name) {
   switch (name) {
     case 'setup/restore':
     case 'setup/copy':
+    case 'settings/backup':
       break;
 
     default:

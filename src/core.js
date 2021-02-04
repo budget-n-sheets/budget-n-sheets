@@ -170,6 +170,7 @@ function showSidebarMainSettings () {
   if (isAdmin) {
     htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
     htmlTemplate.hasEditors = (spreadsheet.getEditors().length > 1);
+    htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
 
     if (isOperationActive) {
       const calendars = getAllOwnedCalendars();
