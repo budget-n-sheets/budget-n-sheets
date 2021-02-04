@@ -107,7 +107,7 @@ function showPanelTables (tab) {
   console.info('menu/Open panel/Accounts & Cards');
   if (onlineUpdate_()) return;
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('html/htmlSidebarTables');
+  let htmlTemplate = HtmlService.createTemplateFromFile('tables/htmlSidebarTables');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   const dec_s = getSpreadsheetSettings_('decimal_separator');
@@ -409,7 +409,7 @@ function showDialogEditAccount (acc_id) {
 }
 
 function showDialogAddCard () {
-  const htmlTemplate = HtmlService.createTemplateFromFile('html/htmlAddEditCard');
+  const htmlTemplate = HtmlService.createTemplateFromFile('tables/htmlAddEditCard');
 
   const decimal_places = getSpreadsheetSettings_('decimal_places');
 
@@ -431,7 +431,7 @@ function showDialogAddCard () {
 }
 
 function showDialogEditCard (card_id) {
-  const htmlTemplate = HtmlService.createTemplateFromFile('html/htmlAddEditCard');
+  const htmlTemplate = HtmlService.createTemplateFromFile('tables/htmlAddEditCard');
 
   const decimal_places = getSpreadsheetSettings_('decimal_places');
 
