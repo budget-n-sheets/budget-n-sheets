@@ -144,9 +144,16 @@ function encryptBackup_ (backup, passphrase) {
   const date = Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss');
   const name = 'budget-n-sheets-' + date + '.backup';
 
+  const options = {
+    mode: 'gcm',
+    iter: 1010010,
+    ts: 128,
+    adata: name
+  };
+
   let encrypted;
   try {
-    encrypted = sjcl.encrypt(passphrase, stringify, { mode: 'gcm', iter: 1010010, adata: name, ts: 128 });
+    encrypted = sjcl.encrypt(passphrase, stringify, options);
   } catch (err) {
     ConsoleLog.error(err);
     return 1;
