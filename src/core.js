@@ -303,7 +303,7 @@ function showDialogSetupAddon_ () {
 
   let htmlTemplate;
 
-  htmlTemplate = HtmlService.createTemplateFromFile('html/htmlSetupAddon');
+  htmlTemplate = HtmlService.createTemplateFromFile('setup/htmlSetupAddon');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   const htmlDialog = htmlTemplate.evaluate()
@@ -368,7 +368,7 @@ function showDialogPickerRestore (topic) {
 function showDialogSetupEnd () {
   let htmlTemplate;
 
-  htmlTemplate = HtmlService.createTemplateFromFile('html/htmlSetupEnd');
+  htmlTemplate = HtmlService.createTemplateFromFile('setup/htmlSetupEnd');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   const htmlDialog = htmlTemplate.evaluate()
