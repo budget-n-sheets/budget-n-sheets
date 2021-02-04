@@ -24,6 +24,8 @@
 
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
+    const uuid = <?= uuid ?>;
+
     function submitForm() {
       $('#warn').empty();
       $('button').prop('disabled', true);
@@ -33,7 +35,7 @@
           google.script.host.close();
         })
         .withFailureHandler(showError)
-        .requestDevelopBackup($('#file_id').val(), $('#pass').val());
+        .requestDevelopBackup(uuid, $('#file_id').val(), $('#pass').val());
     }
   </script>
 </body>

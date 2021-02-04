@@ -126,6 +126,7 @@
   <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
+    const uuid = <?= uuid ?>;
     let TIMEOUT_ID, FILE_ID;
 
     $(document).ready(function() {
@@ -137,7 +138,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
-        .restrieveSpreadsheetInfo();
+        .restrieveSpreadsheetInfo(uuid);
       <? } ?>
     });
 
@@ -175,7 +176,7 @@
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupLock('copy', FILE_ID);
+        .setupLock(uuid, 'copy', FILE_ID);
     }
     <? } ?>
 
@@ -186,7 +187,7 @@
         .withSuccessHandler(function() {
           google.script.host.close();
         })
-        .showDialogPickerRestore('copy');
+        .showDialogPickerRestore(uuid, 'copy');
     }
 
     function panelError(err) {

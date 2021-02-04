@@ -160,6 +160,7 @@
   <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
+    const uuid = <?= uuid ?>;
     let TIMEOUT_ID, FILE_ID;
 
     $(document).ready(function() {
@@ -171,7 +172,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
-        .retrieveBackupInfo();
+        .retrieveBackupInfo(uuid);
       <? } ?>
     });
 
@@ -192,7 +193,7 @@
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupLock('restore', FILE_ID);
+        .setupLock(uuid, 'restore', FILE_ID);
     }
 
     function refreshInfo(info) {
@@ -217,7 +218,7 @@
         .withSuccessHandler(function() {
           google.script.host.close();
         })
-        .showDialogPickerRestore('restore');
+        .showDialogPickerRestore(uuid, 'restore');
     }
 
     function panelError(err) {

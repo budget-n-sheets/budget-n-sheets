@@ -1,17 +1,28 @@
-function restrieveSpreadsheetInfo () {
+function restrieveSpreadsheetInfo (uuid) {
+  if (!CacheService2.get('user', uuid, 'boolean')) {
+    showSessionExpired();
+    return;
+  }
+
   const spreadsheet_candidate = CacheService2.get('document', 'spreadsheet_candidate', 'json');
   CacheService2.remove('document', 'spreadsheet_candidate');
   return spreadsheet_candidate;
 }
 
-function requestValidateSpreadsheet (file_id) {
+function requestValidateSpreadsheet (uuid, file_id) {
   CacheService2.remove('document', 'spreadsheet_candidate');
+  if (!CacheService2.get('user', uuid, 'boolean')) {
+    showSessionExpired();
+    return;
+  }
+
   showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', 1);
 
   if (validateSpreadsheet_(file_id) !== 0) return;
   if (processSpreadsheet_(file_id) !== 0) return;
 
-  showDialogSetupCopy('');
+  CacheService2.put('user', uuid, 'boolean', true);
+  showDialogSetupCopy(uuid, '');
 }
 
 function validateSpreadsheet_ (file_id) {

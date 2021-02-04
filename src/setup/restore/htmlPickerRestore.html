@@ -8,6 +8,7 @@
 
 <body>
   <script>
+    const uuid = <?= uuid ?>;
     const DEVELOPER_KEY = <?= picker_key ?>;
     var pickerApiLoaded = false;
     var fileId = '';
@@ -92,9 +93,9 @@
       if (action == google.picker.Action.CANCEL) {
         google.script.run
         <? if (isRestore) { ?>
-          .showDialogSetupRestore();
+          .showDialogSetupRestore(uuid);
         <? } else { ?>
-          .showDialogSetupCopy();
+          .showDialogSetupCopy(uuid);
         <? } ?>
         return;
       }
@@ -106,9 +107,9 @@
           google.script.host.close();
         })
         <? if (isRestore) { ?>
-        .requestValidateBackup(doc[google.picker.Document.ID]);
+        .requestValidateBackup(uuid, doc[google.picker.Document.ID]);
         <? } else { ?>
-        .requestValidateSpreadsheet(doc[google.picker.Document.ID]);
+        .requestValidateSpreadsheet(uuid, doc[google.picker.Document.ID]);
         <? } ?>
     }
   </script>

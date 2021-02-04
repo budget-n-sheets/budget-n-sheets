@@ -1,14 +1,23 @@
-function retrieveBackupInfo () {
+function retrieveBackupInfo (uuid) {
+  if (!CacheService2.get('user', uuid, 'boolean')) {
+    showSessionExpired();
+    return;
+  }
+
   const backup_candidate = CacheService2.get('document', 'backup_candidate', 'json');
   CacheService2.remove('document', 'backup_candidate');
   return backup_candidate;
 }
 
-function requestValidateBackup (file_id) {
+function requestValidateBackup (uuid, file_id) {
   CacheService2.remove('document', 'backup_candidate');
+  if (!CacheService2.get('user', uuid, 'boolean')) {
+    showSessionExpired();
+    return;
+  }
 
   if (!isUserOwner(file_id)) {
-    showDialogSetupRestore('No file with the given ID could be found, or you do not have permission to access it.');
+    showDialogSetupRestore(uuid, 'No file with the given ID could be found, or you do not have permission to access it.');
     return;
   }
 
@@ -16,7 +25,7 @@ function requestValidateBackup (file_id) {
   const blob = file.getBlob();
 
   if (blob.getContentType() === 'text/plain' || /:[0-9a-fA-F]+$/.test(blob.getDataAsString())) {
-    processLegacyBackup_(file, file_id, blob);
+    processLegacyBackup_(uuid, file, file_id, blob);
     return;
   }
 
@@ -30,6 +39,7 @@ function requestValidateBackup (file_id) {
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.file_id = file_id;
+  htmlTemplate.uuid = uuid;
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(281)
@@ -38,22 +48,28 @@ function requestValidateBackup (file_id) {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Enter passphrase');
 }
 
-function processLegacyBackup_ (file, file_id, blob) {
+function processLegacyBackup_ (uuid, file, file_id, blob) {
   const parts = blob.getDataAsString().split(':');
   const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
 
   if (sha !== parts[1]) {
-    showDialogSetupRestore('The file is either not a supported file type or the file is corrupted.');
+    showDialogSetupRestore(uuid, 'The file is either not a supported file type or the file is corrupted.');
     return;
   }
 
   const string = base64DecodeWebSafe(parts[0], 'UTF_8');
   processBackup_(file, file_id, JSON.parse(string));
 
-  showDialogSetupRestore('');
+  CacheService2.put('user', uuid, 'boolean', true);
+  showDialogSetupRestore(uuid, '');
 }
 
-function requestDevelopBackup (file_id, passphrase) {
+function requestDevelopBackup (uuid, file_id, passphrase) {
+  if (!CacheService2.get('user', uuid, 'boolean')) {
+    showSessionExpired();
+    return;
+  }
+
   showDialogMessage('Add-on restore', 'Verifying backup...', 1);
 
   const session = computeDigest(
@@ -68,7 +84,7 @@ function requestDevelopBackup (file_id, passphrase) {
   CacheService2.remove('user', session);
 
   if (!isUserOwner(file_id)) {
-    showDialogSetupRestore('No file with the given ID could be found, or you do not have permission to access it.');
+    showDialogSetupRestore(uuid, 'No file with the given ID could be found, or you do not have permission to access it.');
     return;
   }
 
@@ -77,7 +93,7 @@ function requestDevelopBackup (file_id, passphrase) {
   const decrypted = decryptBackup_(passphrase, data);
 
   if (decrypted == null) {
-    showDialogSetupRestore('The passphrase is incorrect or the file is corrupted.');
+    showDialogSetupRestore(uuid, 'The passphrase is incorrect or the file is corrupted.');
     return;
   }
 
@@ -88,7 +104,9 @@ function requestDevelopBackup (file_id, passphrase) {
   CacheService2.put('user', address, 'string', passphrase, 120);
 
   processBackup_(file, file_id, decrypted);
-  showDialogSetupRestore('');
+
+  CacheService2.put('user', uuid, 'boolean', true);
+  showDialogSetupRestore(uuid, '');
 }
 
 function unwrapBackup_ (blob, file_id) {

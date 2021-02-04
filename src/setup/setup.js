@@ -81,7 +81,7 @@ function conditionalInstallTest_ () {
   return false;
 }
 
-function setupLock (select, config) {
+function setupLock (uuid, select, config) {
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
@@ -93,6 +93,12 @@ function setupLock (select, config) {
     ConsoleLog.warn(err);
     return;
   }
+
+  if (!CacheService2.get('user', uuid, 'boolean')) {
+    showSessionExpired();
+    return;
+  }
+  CacheService2.remove('user', uuid);
 
   console.time('setup/' + select);
   setupValidate_();

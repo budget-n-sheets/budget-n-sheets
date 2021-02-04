@@ -254,6 +254,11 @@ function showDialogSetupAddon_ () {
   htmlTemplate = HtmlService.createTemplateFromFile('setup/htmlSetupAddon');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
+  const uuid = Utilities.getUuid();
+  CacheService2.put('user', uuid, 'boolean', true);
+
+  htmlTemplate.uuid = uuid;
+
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)
     .setHeight(359);
@@ -261,7 +266,7 @@ function showDialogSetupAddon_ () {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Start budget spreadsheet');
 }
 
-function showDialogSetupRestore (msg) {
+function showDialogSetupRestore (uuid, msg) {
   if (isInstalled_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlSetupRestore');
@@ -269,6 +274,7 @@ function showDialogSetupRestore (msg) {
 
   htmlTemplate.isValid = msg === '';
   htmlTemplate.msg = msg || '';
+  htmlTemplate.uuid = uuid;
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)
@@ -277,7 +283,7 @@ function showDialogSetupRestore (msg) {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Restore from backup');
 }
 
-function showDialogSetupCopy (msg) {
+function showDialogSetupCopy (uuid, msg) {
   if (isInstalled_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlSetupCopy');
@@ -285,6 +291,7 @@ function showDialogSetupCopy (msg) {
 
   htmlTemplate.isValid = msg === '';
   htmlTemplate.msg = msg || '';
+  htmlTemplate.uuid = uuid;
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(353)
@@ -293,8 +300,12 @@ function showDialogSetupCopy (msg) {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Copy from spreadsheet');
 }
 
-function showDialogPickerRestore (topic) {
+function showDialogPickerRestore (uuid, topic) {
   if (isInstalled_()) return;
+  if (!CacheService2.get('user', uuid, 'boolean')) {
+    showSessionExpired();
+    return;
+  }
 
   const isRestore = (topic === 'restore');
   const title = (isRestore ? 'Select backup' : 'Select spreadsheet');
@@ -305,6 +316,7 @@ function showDialogPickerRestore (topic) {
   const htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlPickerRestore');
   htmlTemplate.picker_key = developer_key;
   htmlTemplate.isRestore = isRestore;
+  htmlTemplate.uuid = uuid;
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(617)
