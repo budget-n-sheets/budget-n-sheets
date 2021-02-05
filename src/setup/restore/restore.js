@@ -82,7 +82,7 @@ function requestDevelopBackup (uuid, file_id, passphrase) {
 
   const address = computeDigest(
     'SHA_1',
-    file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+    uuid + file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
     'UTF_8');
   CacheService2.put('user', address, 'string', passphrase, 120);
 
@@ -92,7 +92,7 @@ function requestDevelopBackup (uuid, file_id, passphrase) {
   showDialogSetupRestore(uuid, '');
 }
 
-function unwrapBackup_ (blob, file_id) {
+function unwrapBackup_ (uuid, blob, file_id) {
   const data = blob.getDataAsString();
 
   if (/:[0-9a-fA-F]+$/.test(data)) {
@@ -106,7 +106,7 @@ function unwrapBackup_ (blob, file_id) {
 
   const address = computeDigest(
     'SHA_1',
-    file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+    uuid + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
     'UTF_8');
   const passphrase = CacheService2.get('user', address, 'string');
   CacheService2.remove('user', address, 'string');

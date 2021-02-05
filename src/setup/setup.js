@@ -123,7 +123,7 @@ function setupLock (uuid, select, config) {
     if (candidate.file_id !== config) throw new Error('File ID does not match.');
 
     const blob = DriveApp.getFileById(config).getBlob();
-    settings.backup = unwrapBackup_(blob, config);
+    settings.backup = unwrapBackup_(uuid, blob, config);
     if (settings.backup == null) return;
 
     for (const key in candidate) {
