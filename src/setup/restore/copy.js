@@ -18,7 +18,7 @@ function requestValidateSpreadsheet (uuid, file_id) {
 
   showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', 1);
 
-  if (validateSpreadsheet_(file_id) !== 0) {
+  if (validateSpreadsheet_(uuid, file_id) !== 0) {
     showDialogSetupCopy(uuid, 'Sorry, it was not possible to verify the spreadsheet.');
     return;
   }
@@ -32,21 +32,21 @@ function requestValidateSpreadsheet (uuid, file_id) {
   showDialogSetupCopy(uuid, '');
 }
 
-function validateSpreadsheet_ (file_id) {
+function validateSpreadsheet_ (uuid, file_id) {
   if (!isUserOwner(file_id)) {
-    showDialogSetupCopy('No spreadsheet with the given ID could be found, or you do not have permission to access it.');
+    showDialogSetupCopy(uuid, 'No spreadsheet with the given ID could be found, or you do not have permission to access it.');
     return;
   }
 
   const file = DriveApp.getFileById(file_id);
   if (file.getMimeType() !== MimeType.GOOGLE_SHEETS) {
-    showDialogSetupCopy('Sorry, it was not possible to verify the spreadsheet.');
+    showDialogSetupCopy(uuid, 'Sorry, it was not possible to verify the spreadsheet.');
     return;
   }
 
   const inner_key = getInnerKey_();
   if (inner_key === 1) {
-    showDialogSetupCopy('Sorry, something went wrong. Try again in a moment.');
+    showDialogSetupCopy(uuid, 'Sorry, something went wrong. Try again in a moment.');
     return;
   }
 
@@ -60,12 +60,12 @@ function validateSpreadsheet_ (file_id) {
       .find();
   } catch (err) {
     ConsoleLog.error(err);
-    showDialogSetupCopy('Sorry, something went wrong. Try again in a moment.');
+    showDialogSetupCopy(uuid, 'Sorry, something went wrong. Try again in a moment.');
     return;
   }
 
   if (list.length === 0) {
-    showDialogSetupCopy('Sorry, it was not possible to verify the spreadsheet.');
+    showDialogSetupCopy(uuid, 'Sorry, it was not possible to verify the spreadsheet.');
     return;
   }
 
@@ -73,7 +73,7 @@ function validateSpreadsheet_ (file_id) {
 
   const hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
   if (hmac !== metadata.hmac) {
-    showDialogSetupCopy('Sorry, it was not possible to verify the spreadsheet.');
+    showDialogSetupCopy(uuid, 'Sorry, it was not possible to verify the spreadsheet.');
     return;
   }
 
@@ -82,7 +82,7 @@ function validateSpreadsheet_ (file_id) {
   const data = JSON.parse(string);
 
   if (data.admin_id !== getUserId_()) {
-    showDialogSetupCopy('No spreadsheet with the given ID could be found, or you do not have permission to access it.');
+    showDialogSetupCopy(uuid, 'No spreadsheet with the given ID could be found, or you do not have permission to access it.');
     return;
   }
 
