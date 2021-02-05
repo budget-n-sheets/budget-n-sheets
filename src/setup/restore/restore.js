@@ -29,12 +29,6 @@ function requestValidateBackup (uuid, file_id) {
     return;
   }
 
-  const address = computeDigest(
-    'SHA_1',
-    'new_session:' + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
-    'UTF_8');
-  CacheService2.put('user', address, 'boolean', true, 120);
-
   let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlEnterPassphrase');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
@@ -71,17 +65,6 @@ function requestDevelopBackup (uuid, file_id, passphrase) {
   }
 
   showDialogMessage('Add-on restore', 'Verifying backup...', 1);
-
-  const session = computeDigest(
-    'SHA_1',
-    'new_session:' + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
-    'UTF_8');
-
-  if (!CacheService2.get('user', session, 'boolean')) {
-    showSessionExpired();
-    return;
-  }
-  CacheService2.remove('user', session);
 
   if (!isUserOwner(file_id)) {
     showDialogSetupRestore(uuid, 'No file with the given ID could be found, or you do not have permission to access it.');
