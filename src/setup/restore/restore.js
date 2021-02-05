@@ -133,6 +133,8 @@ function decryptBackup_ (passphrase, backup) {
 }
 
 function processBackup_ (uuid, file, file_id, data) {
+  if (!getFeatureFlagStatus_('setup/restore')) return 1;
+
   const settings_candidate = {
     file_id: file_id,
     list_acc: [],

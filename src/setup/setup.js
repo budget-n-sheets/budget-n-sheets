@@ -205,9 +205,6 @@ function setupLock (uuid, select, config) {
 }
 
 function setupValidate_ (select) {
-  if (select === 'restore' && !getFeatureFlagStatus_('setup/restore')) throw new Error('Feature flag is disabled.');
-  if (select === 'copy' && !getFeatureFlagStatus_('setup/copy')) throw new Error('Feature flag is disabled.');
-
   if (!isTemplateAvailable()) throw new Error('Template is not available.');
   if (isInstalled_()) throw new Error('Add-on is already installed.');
   if (PropertiesService2.getProperty('document', 'lock_spreadsheet', 'boolean')) throw new Error('Spreadsheet is locked.');
