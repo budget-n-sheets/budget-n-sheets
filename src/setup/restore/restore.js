@@ -24,7 +24,7 @@ function requestValidateBackup (uuid, file_id) {
   const file = DriveApp.getFileById(file_id);
   const blob = file.getBlob();
 
-  if (blob.getContentType() === 'text/plain' || /:[0-9a-fA-F]+$/.test(blob.getDataAsString())) {
+  if (/:[0-9a-fA-F]+$/.test(blob.getDataAsString())) {
     processLegacyBackup_(uuid, file, file_id, blob);
     return;
   }
@@ -112,7 +112,7 @@ function requestDevelopBackup (uuid, file_id, passphrase) {
 function unwrapBackup_ (blob, file_id) {
   const data = blob.getDataAsString();
 
-  if (blob.getContentType() === 'text/plain' || /:[0-9a-fA-F]+$/.test(data)) {
+  if (/:[0-9a-fA-F]+$/.test(data)) {
     const parts = data.split(':');
 
     const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
