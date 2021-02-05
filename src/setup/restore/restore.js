@@ -52,7 +52,10 @@ function processLegacyBackup_ (uuid, file, file_id, blob) {
   }
 
   const string = base64DecodeWebSafe(parts[0], 'UTF_8');
-  processBackup_(uuid, file, file_id, JSON.parse(string));
+  if (processBackup_(uuid, file, file_id, JSON.parse(string)) !== 0) {
+    showDialogSetupRestore(uuid, 'Sorry, something went wrong. Try again in a moment.');
+    return;
+  }
 
   CacheService2.put('user', uuid, 'boolean', true);
   showDialogSetupRestore(uuid, '');
@@ -204,6 +207,7 @@ function processBackup_ (uuid, file, file_id, data) {
 
   const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
   CacheService2.put('document', address, 'json', info);
+  return 0;
 }
 
 function restoreFromBackup_ (backup) {

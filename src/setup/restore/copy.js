@@ -18,8 +18,15 @@ function requestValidateSpreadsheet (uuid, file_id) {
 
   showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', 1);
 
-  if (validateSpreadsheet_(file_id) !== 0) return;
-  if (processSpreadsheet_(uuid, file_id) !== 0) return;
+  if (validateSpreadsheet_(file_id) !== 0) {
+    showDialogSetupCopy(uuid, 'Sorry, it was not possible to verify the spreadsheet.');
+    return;
+  }
+
+  if (processSpreadsheet_(uuid, file_id) !== 0) {
+    showDialogSetupCopy(uuid, 'Sorry, something went wrong. Try again in a moment.');
+    return;
+  }
 
   CacheService2.put('user', uuid, 'boolean', true);
   showDialogSetupCopy(uuid, '');
