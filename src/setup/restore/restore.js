@@ -22,10 +22,10 @@ function requestValidateBackup (uuid, file_id) {
   }
 
   const file = DriveApp.getFileById(file_id);
-  const blob = file.getBlob();
+  const data = file.getBlob().getDataAsString();
 
-  if (/:[0-9a-fA-F]+$/.test(blob.getDataAsString())) {
-    processLegacyBackup_(uuid, file, file_id, blob);
+  if (/:[0-9a-fA-F]+$/.test(data)) {
+    processLegacyBackup_(uuid, { file: file, id: file_id, name: file.getName() }, data);
     return;
   }
 
@@ -42,8 +42,8 @@ function requestValidateBackup (uuid, file_id) {
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Enter passphrase');
 }
 
-function processLegacyBackup_ (uuid, file, file_id, blob) {
-  const parts = blob.getDataAsString().split(':');
+function processLegacyBackup_ (uuid, file, data) {
+  const parts = data.split(':');
   const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
 
   if (sha !== parts[1]) {
@@ -52,7 +52,7 @@ function processLegacyBackup_ (uuid, file, file_id, blob) {
   }
 
   const string = base64DecodeWebSafe(parts[0], 'UTF_8');
-  if (processBackup_(uuid, file, file_id, JSON.parse(string)) !== 0) {
+  if (processBackup_(uuid, file, JSON.parse(string)) !== 0) {
     showDialogSetupRestore(uuid, 'Sorry, something went wrong. Try again in a moment.');
     return;
   }
@@ -89,7 +89,7 @@ function requestDevelopBackup (uuid, file_id, passphrase) {
     'UTF_8');
   CacheService2.put('user', address, 'string', passphrase, 180);
 
-  processBackup_(uuid, file, file_id, decrypted);
+  processBackup_(uuid, { file: file, id: file_id, name: file.getName() }, decrypted);
 
   CacheService2.put('user', uuid, 'boolean', true);
   showDialogSetupRestore(uuid, '');
@@ -135,11 +135,11 @@ function decryptBackup_ (passphrase, backup) {
   }
 }
 
-function processBackup_ (uuid, file, file_id, data) {
+function processBackup_ (uuid, file, data) {
   if (!getFeatureFlagStatus_('setup/restore')) return 1;
 
   const settings_candidate = {
-    file_id: file_id,
+    file_id: file.id,
     list_acc: [],
     spreadsheet_title: data.backup.spreadsheet_title,
     decimal_places: data.spreadsheet_settings.decimal_places,
@@ -155,8 +155,8 @@ function processBackup_ (uuid, file, file_id, data) {
   PropertiesService2.setProperty('document', 'settings_candidate', 'json', settings_candidate);
 
   const info = {
-    file_id: file_id,
-    file_name: file.getName(),
+    file_id: file.id,
+    file_name: file.name,
     date_created: new Date(data.backup.date_request).toString(),
 
     spreadsheet_title: data.backup.spreadsheet_title,
