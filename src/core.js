@@ -267,8 +267,6 @@ function showDialogSetupAddon_ () {
 }
 
 function showDialogSetupRestore (uuid, msg) {
-  if (isInstalled_()) return;
-
   let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlSetupRestore');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
@@ -284,8 +282,6 @@ function showDialogSetupRestore (uuid, msg) {
 }
 
 function showDialogSetupCopy (uuid, msg) {
-  if (isInstalled_()) return;
-
   let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlSetupCopy');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
@@ -301,7 +297,6 @@ function showDialogSetupCopy (uuid, msg) {
 }
 
 function showDialogPickerRestore (uuid, topic) {
-  if (isInstalled_()) return;
   if (!CacheService2.get('user', uuid, 'boolean')) {
     showSessionExpired();
     return;
