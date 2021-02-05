@@ -84,7 +84,7 @@ function requestDevelopBackup (uuid, file_id, passphrase) {
     'SHA_1',
     uuid + file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
     'UTF_8');
-  CacheService2.put('user', address, 'string', passphrase, 120);
+  CacheService2.put('user', address, 'string', passphrase, 180);
 
   processBackup_(uuid, file, file_id, decrypted);
 
