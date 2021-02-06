@@ -29,7 +29,7 @@ function requestValidateBackup (uuid, file_id) {
     return;
   }
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlEnterPassphrase');
+  let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlEnterPassword');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   htmlTemplate.file_id = file_id;
@@ -39,7 +39,7 @@ function requestValidateBackup (uuid, file_id) {
     .setWidth(281)
     .setHeight(127);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Enter passphrase');
+  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Enter password');
 }
 
 function processLegacyBackup_ (uuid, file, data) {
@@ -61,7 +61,7 @@ function processLegacyBackup_ (uuid, file, data) {
   showDialogSetupRestore(uuid, '');
 }
 
-function requestDevelopBackup (uuid, file_id, passphrase) {
+function requestDevelopBackup (uuid, file_id, password) {
   if (!CacheService2.get('user', uuid, 'boolean')) {
     showSessionExpired();
     return;
@@ -76,10 +76,10 @@ function requestDevelopBackup (uuid, file_id, passphrase) {
 
   const file = DriveApp.getFileById(file_id);
   const data = file.getBlob().getDataAsString();
-  const decrypted = decryptBackup_(passphrase, data);
+  const decrypted = decryptBackup_(password, data);
 
   if (decrypted == null) {
-    showDialogSetupRestore(uuid, 'The passphrase is incorrect or the file is corrupted.');
+    showDialogSetupRestore(uuid, 'The password is incorrect or the file is corrupted.');
     return;
   }
 
@@ -87,7 +87,7 @@ function requestDevelopBackup (uuid, file_id, passphrase) {
     'SHA_1',
     uuid + file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
     'UTF_8');
-  CacheService2.put('user', address, 'string', passphrase, 180);
+  CacheService2.put('user', address, 'string', password, 180);
 
   processBackup_(uuid, { file: file, id: file_id, name: file.getName() }, decrypted);
 
@@ -111,24 +111,24 @@ function unwrapBackup_ (uuid, blob, file_id) {
     'SHA_1',
     uuid + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
     'UTF_8');
-  const passphrase = CacheService2.get('user', address, 'string');
+  const password = CacheService2.get('user', address, 'string');
   CacheService2.remove('user', address, 'string');
 
-  if (passphrase == null) {
+  if (password == null) {
     showSessionExpired();
     return;
   }
 
-  const decrypted = decryptBackup_(passphrase, data);
+  const decrypted = decryptBackup_(password, data);
   if (decrypted == null) throw new Error('decryptBackup_(): Decryption failed.');
 
   return decrypted;
 }
 
-function decryptBackup_ (passphrase, backup) {
+function decryptBackup_ (password, backup) {
   try {
     const decoded = base64DecodeWebSafe(backup, 'UTF_8');
-    const decrypted = sjcl.decrypt(passphrase, decoded);
+    const decrypted = sjcl.decrypt(password, decoded);
     return JSON.parse(decrypted);
   } catch (err) {
     ConsoleLog.error(err);

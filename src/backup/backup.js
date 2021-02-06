@@ -15,27 +15,27 @@ function requestBackupSession () {
     return 1;
   }
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlNewPassphrase');
+  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlNewPassword');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(281)
     .setHeight(443);
 
-  ui.showModalDialog(htmlDialog, 'Enter passphrase');
+  ui.showModalDialog(htmlDialog, 'Enter password');
 }
 
-function backupRequestUi (passphrase) {
+function backupRequestUi (password) {
   if (!getFeatureFlagStatus_('settings/backup')) return 2;
   if (!isInstalled_()) return 2;
   if (!isUserAdmin_()) return 2;
   if (isScriptUpToDate_() !== 1) return 2;
-  if (testPassphrasePolicy(passphrase)) return 1;
+  if (testPasswordPolicy(password)) return 1;
 
   const ui = SpreadsheetApp.getUi();
 
   showDialogMessage('Add-on backup', 'Backing up...', 1);
-  backupRequest_(passphrase);
+  backupRequest_(password);
 
   ui.alert(
     'Add-on backup',
@@ -44,19 +44,19 @@ function backupRequestUi (passphrase) {
   return 0;
 }
 
-function testPassphrasePolicy (passphrase) {
-  if (typeof passphrase !== 'string') return true;
-  if (passphrase.length < 12) return true;
-  if (!/[a-z]+/.test(passphrase)) return true;
-  if (!/[A-Z]+/.test(passphrase)) return true;
-  if (!/[0-9]+/.test(passphrase)) return true;
-  if (!/[~!@#$%\^*\-_=+[{\]}/;:,.?]+/.test(passphrase)) return true;
-  if (!/^[ 0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(passphrase)) return true;
+function testPasswordPolicy (password) {
+  if (typeof password !== 'string') return true;
+  if (password.length < 12) return true;
+  if (!/[a-z]+/.test(password)) return true;
+  if (!/[A-Z]+/.test(password)) return true;
+  if (!/[0-9]+/.test(password)) return true;
+  if (!/[~!@#$%\^*\-_=+[{\]}/;:,.?]+/.test(password)) return true;
+  if (!/^[0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(password)) return true;
 
   return false;
 }
 
-function backupRequest_ (passphrase) {
+function backupRequest_ (password) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const backup = {
     backup: {},
@@ -108,7 +108,7 @@ function backupRequest_ (passphrase) {
 
   backupMeta_(backup);
 
-  const blob = encryptBackup_(backup, passphrase);
+  const blob = encryptBackup_(backup, password);
   if (blob === 1) throw new Error('encryptBackup_(): Backup encryption failed.');
 
   emailBackup_(blob);
@@ -139,7 +139,7 @@ function emailBackup_ (blob) {
   );
 }
 
-function encryptBackup_ (backup, passphrase) {
+function encryptBackup_ (backup, password) {
   const stringify = JSON.stringify(backup);
 
   const date = Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss');
@@ -154,7 +154,7 @@ function encryptBackup_ (backup, passphrase) {
 
   let encrypted;
   try {
-    encrypted = sjcl.encrypt(passphrase, stringify, options);
+    encrypted = sjcl.encrypt(password, stringify, options);
   } catch (err) {
     ConsoleLog.error(err);
     return 1;
