@@ -11,7 +11,8 @@ const PATCH_THIS = Object.freeze({
       [update_v0m34p0_, null, null, null, null, null, null, update_v0m34p7_, null, null, update_v0m34p10_, null, null],
       [update_v0m35p0_, update_v0m35p1_, update_v0m35p2_, null, null, null, null],
       [null, null, update_v0m36p2_, update_v0m36p3_, update_v0m36p4_, null],
-      [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_, null, null, null, null, update_v0m37p14_, null, update_v0m37p16_, null, null, update_v0m37p19_, update_v0m37p20_]
+      [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_, null, null, null, null, update_v0m37p14_, null, update_v0m37p16_, null, null, update_v0m37p19_, update_v0m37p20_],
+      [update_v0m38p0_]
     ]
   ],
   beta_list: []
@@ -179,6 +180,33 @@ function update_v0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Fix colors and hidden tabs.
+ *
+ * 0.38.0
+ */
+function update_v0m38p0_ () {
+  try {
+    const financial_year = getConstProperties_('financial_year');
+    const yyyy = DATE_NOW.getFullYear();
+    if (yyyy !== financial_year) return;
+
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const mm = DATE_NOW.getMonth();
+
+    const sheets = [];
+    for (let i = 0; i < 12; i++) {
+      sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+    }
+
+    updateHideShowSheets(sheets, financial_year, yyyy, mm);
+    updateTabsColors(sheets, financial_year, yyyy, mm);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
 
 /**
  * Fix bad values in _Settings.
