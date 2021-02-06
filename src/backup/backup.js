@@ -146,6 +146,7 @@ function encryptBackup_ (backup, password) {
   const name = 'budget-n-sheets-' + date + '.backup';
 
   const options = {
+    ks: 256,
     mode: 'gcm',
     iter: 1010010,
     ts: 128,
