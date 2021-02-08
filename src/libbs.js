@@ -196,6 +196,14 @@ const ConsoleLog = {
 
 const SpreadsheetApp2 = {
   _spreadsheet: null,
+  _ui: null,
+
+  getUi: function () {
+    if (this._ui) return this._ui;
+
+    this._ui = SpreadsheetApp.getUi();
+    return this._ui;
+  },
 
   getActiveSpreadsheet: function () {
     if (this._spreadsheet) return this._spreadsheet;
