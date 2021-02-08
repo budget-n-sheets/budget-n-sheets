@@ -97,14 +97,3 @@ const APPS_SCRIPT_GLOBAL = Object.freeze({
     }
   }
 });
-
-const SpreadsheetApp2 = {
-  spreadsheet: null,
-
-  getActiveSpreadsheet: function () {
-    if (this.spreadsheet) return this.spreadsheet;
-
-    this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    return this.spreadsheet;
-  }
-};

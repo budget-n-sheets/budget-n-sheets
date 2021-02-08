@@ -193,3 +193,14 @@ const ConsoleLog = {
     console.error(payload);
   }
 };
+
+const SpreadsheetApp2 = {
+  spreadsheet: null,
+
+  getActiveSpreadsheet: function () {
+    if (this.spreadsheet) return this.spreadsheet;
+
+    this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    return this.spreadsheet;
+  }
+};
