@@ -211,7 +211,7 @@ function showDialogAboutAddon () {
 
   const htmlDialog = htmlTemplate.evaluate()
     .setWidth(281)
-    .setHeight(359);
+    .setHeight(373);
 
   SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'About the add-on');
 }
