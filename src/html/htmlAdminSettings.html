@@ -75,11 +75,6 @@
           <div class="header_tab active" id="tab_settings">
             <i class="material-icons-outlined md-24" title="Settings">settings</i>
           </div>
-          <? if (hasEditors) { ?>
-          <div class="header_tab" id="tab_admin">
-            <i class="material-icons-outlined md-24" title="Group">groups</i>
-          </div>
-          <? } ?>
           <div class="header_tab" id="tab_advanced">
             <i class="material-icons-outlined md-24" title="Advanced">build</i>
           </div>
@@ -197,6 +192,18 @@
               </p>
             </td>
           </tr>
+          <? if (hasEditors) { ?>
+          <tr>
+            <td class="comment name" style="width: 100%;">Transfer admin role</td>
+            <td class="comment"><button id="b-Transfer" class="action">Transfer</button></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <p>Transfers the role of add-on administrator in this spreadsheet.<br>
+              <a href="<?= home_wiki ?>/Changing-Settings#transfer-admin-role" target="_blank"><b>Learn more</b></a></p>
+            </td>
+          </tr>
+          <? } ?>
         </table>
       </div>
 
@@ -241,28 +248,6 @@
         <p>An email will be sent to you with the backup file attached to it. You can <a href="https://support.google.com/mail/answer/30719" target="_blank">save the attachment to your Google Drive</a>.</p>
       </div>
       <? } ?>
-      <? if (hasEditors) { ?>
-
-      <div class="panel" id="panel_Admin">
-        <table style="width:100%;">
-          <tr>
-            <td class="comment name" style="width: 100%;">Transfer admin role</td>
-            <td class="comment"><button id="b-Transfer" class="action">Transfer</button></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <? if (isSharedDrive) { ?>
-              <p>Transfers admin role to current owner of the spreadsheet.<br>
-                <? } else { ?>
-              <p>Transfers admin role to an editor of the spreadsheet.<br>
-                <? } ?>
-                <a href="<?= home_wiki ?>/Changing-Settings#transfer-admin-role" target="_blank"><b>Learn more</b></a>
-              </p>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <? } ?>
     </div>
 
     <div id="footer">
@@ -283,7 +268,6 @@
   <script>
     $(document).ready(function() {
       $("#b-Reinstall").click(reinstallTriggers);
-
       <? if (hasEditors) { ?>
       $("#b-Transfer").click(transferAdminRole);
       <? } ?>
@@ -321,12 +305,6 @@
       } else if (select === "tab_backup") {
         $('.footer_cell.left').append('<button id="b-Backup" class="action">Back up now</button>');
         $("#panel_Backup").show()
-          .siblings()
-          .hide();
-      <? } ?>
-      <? if (hasEditors) { ?>
-      } else if (select === "tab_admin") {
-        $("#panel_Admin").show()
           .siblings()
           .hide();
       <? } ?>
