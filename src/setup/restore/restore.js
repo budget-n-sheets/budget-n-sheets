@@ -89,7 +89,10 @@ function requestDevelopBackup (uuid, file_id, password) {
     'UTF_8');
   CacheService2.put('user', address, 'string', password, 180);
 
-  processBackup_(uuid, { file: file, id: file_id, name: file.getName() }, decrypted);
+  if (processBackup_(uuid, { file: file, id: file_id, name: file.getName() }, decrypted) !== 0) {
+    showDialogSetupRestore(uuid, 'Sorry, something went wrong. Try again in a moment.');
+    return;
+  }
 
   CacheService2.put('user', uuid, 'boolean', true);
   showDialogSetupRestore(uuid, '');
