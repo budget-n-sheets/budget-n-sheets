@@ -152,47 +152,40 @@ function showPanelAnalytics () {
 
 function showSidebarMainSettings () {
   console.info('menu/Change settings');
-  if (onlineUpdate_()) return;
-
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  let htmlTemplate;
-
-  const isAdmin = isUserAdmin_();
-  const financial_year = getConstProperties_('financial_year');
-  const isOperationActive = (financial_year >= DATE_NOW.getFullYear());
-
-  htmlTemplate = (isAdmin ? 'html/htmlAdminSettings' : 'html/htmlEditorSettings');
-  htmlTemplate = HtmlService.createTemplateFromFile(htmlTemplate);
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-  htmlTemplate.isOperationActive = isOperationActive;
-
-  if (isAdmin) {
-    htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
-    htmlTemplate.hasEditors = (spreadsheet.getEditors().length > 1);
-    htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
-
-    if (isOperationActive) {
-      const calendars = getAllOwnedCalendars();
-      htmlTemplate.isCalendarEnabled = (calendars.md5.length > 0);
-      htmlTemplate.calendars_data = calendars;
-    } else {
-      htmlTemplate.isCalendarEnabled = false;
-    }
-  } else if (!getAdminSettings_('isChangeableByEditors')) {
+  if (!isUserAdmin_()) {
     SpreadsheetApp.getUi().alert(
       'Permission denied',
       "You don't have permission to change the settings.",
       SpreadsheetApp.getUi().ButtonSet.OK);
-
     return;
+  }
+
+  if (onlineUpdate_()) return;
+
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  const financial_year = getConstProperties_('financial_year');
+  const isOperationActive = (financial_year >= DATE_NOW.getFullYear());
+
+  let htmlTemplate = HtmlService.createTemplateFromFile('html/htmlAdminSettings');
+  htmlTemplate = printHrefScriptlets(htmlTemplate);
+
+  htmlTemplate.isOperationActive = isOperationActive;
+  htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
+  htmlTemplate.hasEditors = (spreadsheet.getEditors().length > 1);
+  htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
+
+  if (isOperationActive) {
+    const calendars = getAllOwnedCalendars();
+    htmlTemplate.isCalendarEnabled = (calendars.md5.length > 0);
+    htmlTemplate.calendars_data = calendars;
+  } else {
+    htmlTemplate.isCalendarEnabled = false;
   }
 
   htmlTemplate.doc_name = spreadsheet.getName();
   htmlTemplate.financial_year = financial_year;
 
   const htmlSidebar = htmlTemplate.evaluate().setTitle('Settings');
-
   SpreadsheetApp.getUi().showSidebar(htmlSidebar);
 }
 

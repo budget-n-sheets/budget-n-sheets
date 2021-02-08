@@ -24,19 +24,6 @@ function isUserAdmin_ () {
   return getUserId_() === getAdminSettings_('admin_id');
 }
 
-function retrieveAdminSettings () {
-  let admin_settings = CacheService2.get('document', 'admin_settings', 'json');
-  if (!admin_settings) {
-    admin_settings = PropertiesService2.getProperty('document', 'admin_settings', 'json');
-    CacheService2.put('document', 'admin_settings', 'json', admin_settings);
-  }
-
-  if (getUserId_() !== admin_settings.admin_id) return 1;
-  delete admin_settings.admin_id;
-
-  return admin_settings;
-}
-
 function saveAdminSettings (key, value) {
   if (!isUserAdmin_()) return 1;
   return setAdminSettings_(key, value);
@@ -51,7 +38,6 @@ function getAdminSettings_ (select) {
 
   switch (select) {
     case 'admin_id':
-    case 'isChangeableByEditors':
     case 'automatic_backup':
       return admin_settings[select];
 
@@ -68,9 +54,6 @@ function setAdminSettings_ (select, value) {
     case 'admin_id':
     case 'automatic_backup':
       admin_settings[select] = value;
-      break;
-    case 'isChangeableByEditors':
-      admin_settings[select] = (value === 'allow');
       break;
 
     default:
