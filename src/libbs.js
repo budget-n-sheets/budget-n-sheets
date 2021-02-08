@@ -199,16 +199,10 @@ const SpreadsheetApp2 = {
   _ui: null,
 
   getUi: function () {
-    if (this._ui) return this._ui;
-
-    this._ui = SpreadsheetApp.getUi();
-    return this._ui;
+    return this._ui || (this._ui = SpreadsheetApp.getUi());
   },
 
   getActiveSpreadsheet: function () {
-    if (this._spreadsheet) return this._spreadsheet;
-
-    this._spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    return this._spreadsheet;
+    return this._spreadsheet || (this._spreadsheet = SpreadsheetApp.getActiveSpreadsheet());
   }
 };
