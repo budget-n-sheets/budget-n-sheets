@@ -13,10 +13,10 @@ function pagesView_ (select, a) {
   try {
     lock.waitLock(200);
   } catch (err) {
-    SpreadsheetApp.getUi().alert(
+    SpreadsheetApp2.getUi().alert(
       'Add-on is busy',
       'The add-on is busy. Try again in a moment.',
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK);
 
     ConsoleLog.warn(err);
     return;
@@ -48,10 +48,10 @@ function hideSheets_ (a) {
     sheet = SpreadsheetApp.getActiveSheet();
     mm = MONTH_NAME.short.indexOf(sheet.getName());
     if (mm === -1) {
-      SpreadsheetApp.getUi().alert(
+      SpreadsheetApp2.getUi().alert(
         "Can't collapse pages view",
         'Select a month to collapse pages view.',
-        SpreadsheetApp.getUi().ButtonSet.OK);
+        SpreadsheetApp2.getUi().ButtonSet.OK);
       return;
     }
   }

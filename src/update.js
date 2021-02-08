@@ -27,7 +27,7 @@ function onlineUpdate_ () {
     return 1;
   }
 
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp2.getUi();
 
   if (!isTemplateAvailable()) {
     ui.alert(

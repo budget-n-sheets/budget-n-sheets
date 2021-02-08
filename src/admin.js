@@ -86,7 +86,7 @@ function askTransferAdmin () {
   console.info('sidebar/Settings/Group/Transfer');
   if (!isInstalled_()) return;
 
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp2.getUi();
   let owner, owner_id;
 
   owner = SpreadsheetApp2.getActiveSpreadsheet().getOwner();
@@ -137,10 +137,10 @@ function askTransferAdminSd () {
 
   const editors = spreadsheet.getEditors();
   if (editors.length === 1) {
-    SpreadsheetApp.getUi().alert(
+    SpreadsheetApp2.getUi().alert(
       "Can't transfer admin role",
       'You are the only editor of the spreadsheet.',
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK);
     return 1;
   }
 
@@ -163,7 +163,7 @@ function askTransferAdminSd () {
     .setWidth(281)
     .setHeight(233);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Transfer the admin role');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Transfer the admin role');
 }
 
 function continuedTransferAdminSd (editor) {
@@ -177,10 +177,10 @@ function continuedTransferAdminSd (editor) {
 
   const editors = spreadsheet.getEditors();
   if (editors.length === 1) {
-    SpreadsheetApp.getUi().alert(
+    SpreadsheetApp2.getUi().alert(
       "Can't transfer admin role",
       'You are the only editor of the spreadsheet.',
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK);
     return 1;
   }
 

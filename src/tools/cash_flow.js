@@ -11,19 +11,19 @@ function validateUpdateCashFlow_ () {
   } else {
     mm = MONTH_NAME.short.indexOf(name);
     if (mm === -1) {
-      SpreadsheetApp.getUi().alert(
+      SpreadsheetApp2.getUi().alert(
         "Can't update cash flow",
         'Select a month or Cash Flow to update cash flow.',
-        SpreadsheetApp.getUi().ButtonSet.OK);
+        SpreadsheetApp2.getUi().ButtonSet.OK);
       return;
     }
   }
 
   if (!getFinancialCalendar_()) {
-    SpreadsheetApp.getUi().alert(
+    SpreadsheetApp2.getUi().alert(
       "Can't update cash flow",
       'The financial calendar does not exist, or you cannot access it.',
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK);
     return;
   }
 

@@ -199,7 +199,7 @@ const SpreadsheetApp2 = {
   _ui: null,
 
   getUi: function () {
-    return this._ui || (this._ui = SpreadsheetApp.getUi());
+    return this._ui || (this._ui = SpreadsheetApp2.getUi());
   },
 
   getActiveSpreadsheet: function () {

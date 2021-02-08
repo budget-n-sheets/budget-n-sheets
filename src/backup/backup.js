@@ -5,7 +5,7 @@ function requestBackupSession () {
   if (!isUserAdmin_()) return 2;
   if (isScriptUpToDate_() !== 1) return 2;
 
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp2.getUi();
 
   if (MailApp.getRemainingDailyQuota() === 0) {
     ui.alert(
@@ -32,7 +32,7 @@ function backupRequestUi (password) {
   if (isScriptUpToDate_() !== 1) return 2;
   if (testPasswordPolicy(password)) return 1;
 
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp2.getUi();
 
   showDialogMessage('Add-on backup', 'Backing up...', 1);
   backupRequest_(password);

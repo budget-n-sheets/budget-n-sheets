@@ -17,10 +17,10 @@ function coolGallery (option) {
   lock.releaseLock();
 
   if (s === 0) {
-    SpreadsheetApp.getUi().alert(
+    SpreadsheetApp2.getUi().alert(
       "Can't import analytics page",
       'A page with the name "' + info.sheet_name + '" already exists. Please rename, or delete the page.',
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK);
     return -1;
   } else if (s === 1) {
     return 1;

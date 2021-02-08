@@ -39,7 +39,7 @@ function requestValidateBackup (uuid, file_id) {
     .setWidth(281)
     .setHeight(127);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Enter password');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Enter password');
 }
 
 function processLegacyBackup_ (uuid, file, data) {

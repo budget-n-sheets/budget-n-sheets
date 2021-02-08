@@ -17,7 +17,7 @@ function askDeactivation () {
     return true;
   }
 
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp2.getUi();
 
   if (!isUserAdmin_()) {
     ui.alert(
@@ -153,10 +153,10 @@ function askReinstallTriggersUi () {
   if (!isUserAdmin_()) {
     deleteAllTriggers_();
 
-    SpreadsheetApp.getUi().alert(
+    SpreadsheetApp2.getUi().alert(
       'Permission denied',
       "You don't have permission to reinstall the triggers.",
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK);
 
     return 1;
   }

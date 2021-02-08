@@ -4,10 +4,10 @@ function toggleViewMode_ () {
   try {
     lock.waitLock(200);
   } catch (err) {
-    SpreadsheetApp.getUi().alert(
+    SpreadsheetApp2.getUi().alert(
       'Add-on is busy',
       'The add-on is busy. Try again in a moment.',
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK);
 
     ConsoleLog.warn(err);
     return;

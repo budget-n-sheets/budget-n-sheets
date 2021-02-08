@@ -1,8 +1,8 @@
 function alertQuickstartSheetMissing (name) {
-  SpreadsheetApp.getUi().alert(
+  SpreadsheetApp2.getUi().alert(
     "Can't show example",
     'Sheet "' + name + "\" couldn't be found.",
-    SpreadsheetApp.getUi().ButtonSet.OK);
+    SpreadsheetApp2.getUi().ButtonSet.OK);
 }
 
 function playSpeedQuickstart (id) {

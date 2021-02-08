@@ -12,10 +12,10 @@ function toolResumeActivity_ () {
 
   if (mm === -1) {
     if (name !== 'Summary') {
-      SpreadsheetApp.getUi().alert(
+      SpreadsheetApp2.getUi().alert(
         "Can't change activity",
         'Select tab Summary or a month to resume the activity.',
-        SpreadsheetApp.getUi().ButtonSet.OK);
+        SpreadsheetApp2.getUi().ButtonSet.OK);
       return;
     }
 

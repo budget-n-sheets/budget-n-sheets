@@ -13,10 +13,10 @@ function validateFormatRegistry_ () {
   } else {
     mm = MONTH_NAME.short.indexOf(name);
     if (mm === -1) {
-      SpreadsheetApp.getUi().alert(
+      SpreadsheetApp2.getUi().alert(
         "Can't sort registry",
         'Select a month, Cards or Tags to sort the registry.',
-        SpreadsheetApp.getUi().ButtonSet.OK);
+        SpreadsheetApp2.getUi().ButtonSet.OK);
       return;
     }
     formatAccounts_(mm);

@@ -34,7 +34,7 @@ function onInstall (e) {
   * @param {Object} e The event parameter for a simple onOpen trigger.
   */
 function onOpen (e) {
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp2.getUi();
   const menu = ui.createAddonMenu();
 
   if (e && e.authMode === ScriptApp.AuthMode.NONE) {
@@ -100,7 +100,7 @@ function showPanelQuickstart () {
   htmlTemplate.isCurrent = (DATE_NOW < new Date(financial_year, 11, 1));
 
   const htmlSidebar = htmlTemplate.evaluate().setTitle('Quickstart');
-  SpreadsheetApp.getUi().showSidebar(htmlSidebar);
+  SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
 }
 
 function showPanelTables (tab) {
@@ -131,7 +131,7 @@ function showPanelTables (tab) {
   }
 
   const htmlSidebar = htmlTemplate.evaluate().setTitle('Accounts & Cards');
-  SpreadsheetApp.getUi().showSidebar(htmlSidebar);
+  SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
 }
 
 function showPanelAnalytics () {
@@ -147,7 +147,7 @@ function showPanelAnalytics () {
 
   const htmlSidebar = htmlTemplate.evaluate().setTitle('BnS Gallery');
 
-  SpreadsheetApp.getUi().showSidebar(htmlSidebar);
+  SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
 }
 
 function showSidebarMainSettings () {
@@ -180,10 +180,10 @@ function showSidebarMainSettings () {
       htmlTemplate.isCalendarEnabled = false;
     }
   } else if (!getAdminSettings_('isChangeableByEditors')) {
-    SpreadsheetApp.getUi().alert(
+    SpreadsheetApp2.getUi().alert(
       'Permission denied',
       "You don't have permission to change the settings.",
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK);
 
     return;
   }
@@ -193,7 +193,7 @@ function showSidebarMainSettings () {
 
   const htmlSidebar = htmlTemplate.evaluate().setTitle('Settings');
 
-  SpreadsheetApp.getUi().showSidebar(htmlSidebar);
+  SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
 }
 
 function showDialogAboutAddon () {
@@ -213,7 +213,7 @@ function showDialogAboutAddon () {
     .setWidth(281)
     .setHeight(373);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'About the add-on');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'About the add-on');
 }
 
 function showDialogErrorMessage () {
@@ -226,7 +226,7 @@ function showDialogErrorMessage () {
     .setWidth(373)
     .setHeight(137);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Something went wrong');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Something went wrong');
 }
 
 function showDialogMessage (title, message, timeout) {
@@ -242,7 +242,7 @@ function showDialogMessage (title, message, timeout) {
     .setWidth(263)
     .setHeight(113);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, title);
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, title);
 }
 
 function showDialogSetupAddon_ () {
@@ -265,7 +265,7 @@ function showDialogSetupAddon_ () {
     .setWidth(353)
     .setHeight(359);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Start budget spreadsheet');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Start budget spreadsheet');
 }
 
 function showDialogSetupRestore (uuid, msg) {
@@ -280,7 +280,7 @@ function showDialogSetupRestore (uuid, msg) {
     .setWidth(353)
     .setHeight(359);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Restore from backup');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Restore from backup');
 }
 
 function showDialogSetupCopy (uuid, msg) {
@@ -295,7 +295,7 @@ function showDialogSetupCopy (uuid, msg) {
     .setWidth(353)
     .setHeight(359);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Copy from spreadsheet');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Copy from spreadsheet');
 }
 
 function showDialogPickerRestore (uuid, topic) {
@@ -319,7 +319,7 @@ function showDialogPickerRestore (uuid, topic) {
     .setWidth(617)
     .setHeight(487);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, title);
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, title);
 }
 
 function showDialogSetupEnd () {
@@ -332,11 +332,11 @@ function showDialogSetupEnd () {
     .setWidth(353)
     .setHeight(367);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Add-on Budget n Sheets');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Add-on Budget n Sheets');
 }
 
 function showSessionExpired () {
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp2.getUi();
 
   ui.alert(
     'Session expired',
@@ -362,7 +362,7 @@ function showDialogEditAccount (acc_id) {
     .setWidth(300)
     .setHeight(359);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Edit Account');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Edit Account');
 }
 
 function showDialogAddCard () {
@@ -384,7 +384,7 @@ function showDialogAddCard () {
     .setWidth(300)
     .setHeight(359);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Add Card');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Add Card');
 }
 
 function showDialogEditCard (card_id) {
@@ -409,14 +409,14 @@ function showDialogEditCard (card_id) {
     .setWidth(300)
     .setHeight(359);
 
-  SpreadsheetApp.getUi().showModalDialog(htmlDialog, 'Edit Card');
+  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Edit Card');
 }
 
 function showDialogDeleteCard (card_id) {
   const card = tablesService('get', 'card', card_id);
   if (!card) return 1;
 
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp2.getUi();
   const response = ui.alert(
     'Delete card',
     'Are you sure you want to delete ' + card.name + '?',

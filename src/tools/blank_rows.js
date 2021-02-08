@@ -10,10 +10,10 @@ function addBlankRows_ (name) {
   else if (name === 'Tags') c = 1;
   else if (MONTH_NAME.short.indexOf(name) !== -1) c = 4;
   else {
-    SpreadsheetApp.getUi().alert(
+    SpreadsheetApp2.getUi().alert(
       "Can't add rows",
       'Select a month, Cards or Tags to add rows.',
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK);
     return;
   }
 

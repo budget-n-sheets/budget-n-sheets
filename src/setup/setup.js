@@ -25,7 +25,7 @@ function uninstall_ (putLock) {
 }
 
 function conditionalInstallTest_ () {
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp2.getUi();
 
   if (!isTemplateAvailable()) {
     ui.alert(
@@ -86,10 +86,10 @@ function setupLock (uuid, select, config) {
   try {
     lock.waitLock(200);
   } catch (err) {
-    SpreadsheetApp.getUi().alert(
+    SpreadsheetApp2.getUi().alert(
       'Add-on setup in progress',
       'A budget spreadsheet setup is already in progress.',
-      SpreadsheetApp.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK);
     ConsoleLog.warn(err);
     return;
   }
