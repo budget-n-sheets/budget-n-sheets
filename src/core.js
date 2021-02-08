@@ -169,9 +169,16 @@ function showSidebarMainSettings () {
   let htmlTemplate = HtmlService.createTemplateFromFile('html/htmlAdminSettings');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
+  const owner = spreadsheet.getOwner();
+  if (owner) {
+    htmlTemplate.isOwner = (Session.getEffectiveUser().getEmail() === owner.getEmail());
+    htmlTemplate.isSharedDrive = false;
+  } else {
+    htmlTemplate.isOwner = false;
+    htmlTemplate.isSharedDrive = true;
+  }
+
   htmlTemplate.isOperationActive = isOperationActive;
-  htmlTemplate.isSharedDrive = (spreadsheet.getOwner() == null);
-  htmlTemplate.hasEditors = (spreadsheet.getEditors().length > 1);
   htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
 
   if (isOperationActive) {
