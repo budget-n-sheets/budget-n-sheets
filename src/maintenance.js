@@ -59,7 +59,7 @@ function askDeactivation () {
 }
 
 function askResetProtection () {
-  console.info('sidebar/Settings/Advanced/Reset');
+  console.info('sidebar/Settings/Maintenance/Reset');
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
@@ -148,7 +148,7 @@ function askResetProtection () {
 }
 
 function askReinstallTriggersUi () {
-  console.info('sidebar/Settings/Advanced/Reinstall');
+  console.info('sidebar/Settings/Maintenance/Reinstall');
 
   if (!isUserAdmin_()) {
     deleteAllTriggers_();

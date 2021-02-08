@@ -18,7 +18,6 @@ function setupProperties_ (yyyy_mm) {
 
   properties = {
     admin_id: adminId,
-    isChangeableByEditors: false,
     automatic_backup: false
   };
   PropertiesService2.setProperty('document', 'admin_settings', 'json', properties);

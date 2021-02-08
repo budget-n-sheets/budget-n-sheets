@@ -75,13 +75,8 @@
           <div class="header_tab active" id="tab_settings">
             <i class="material-icons-outlined md-24" title="Settings">settings</i>
           </div>
-          <? if (hasEditors) { ?>
-          <div class="header_tab" id="tab_admin">
-            <i class="material-icons-outlined md-24" title="Group">groups</i>
-          </div>
-          <? } ?>
-          <div class="header_tab" id="tab_advanced">
-            <i class="material-icons-outlined md-24" title="Advanced">build</i>
+          <div class="header_tab" id="tab_maintenance">
+            <i class="material-icons-outlined md-24" title="Maintenance">build</i>
           </div>
           <? if (settings_backup) { ?>
           <div class="header_tab" id="tab_backup">
@@ -175,8 +170,11 @@
         </form>
       </div>
 
-      <div class="panel" id="panel_Advanced">
+      <div class="panel" id="panel_Maintenance">
         <table style="width:100%;">
+          <tr>
+            <th colspan="2"><span style="font-size:1.2em;">Maintenance</span></th>
+          </tr>
           <tr>
             <td class="comment name" style="width: 100%;"><label>Reset protected ranges</label></td>
             <td class="comment"><button id="b-Reset">Reset</button></td>
@@ -198,6 +196,23 @@
             </td>
           </tr>
         </table>
+        <? if (!isOwner || isSharedDrive) { ?>
+        <table style="width:100%;margin-top:1.3em;">
+          <tr>
+            <th colspan="2"><span style="font-size:1.2em;">Add-on Admin</span></th>
+          </tr>
+          <tr>
+            <td class="comment name" style="width: 100%;">Transfer add-on admin role</td>
+            <td class="comment"><button id="b-Transfer">Transfer</button></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <p>Transfers the role of add-on administrator in this spreadsheet.<br>
+              <a href="<?= home_wiki ?>/Changing-Settings#transfer-admin-role" target="_blank"><b>Learn more</b></a></p>
+            </td>
+          </tr>
+        </table>
+        <? } ?>
       </div>
 
       <? if (settings_backup) { ?>
@@ -241,44 +256,6 @@
         <p>An email will be sent to you with the backup file attached to it. You can <a href="https://support.google.com/mail/answer/30719" target="_blank">save the attachment to your Google Drive</a>.</p>
       </div>
       <? } ?>
-      <? if (hasEditors) { ?>
-
-      <div class="panel" id="panel_Admin">
-        <table style="width:100%;">
-          <tr>
-            <td class="comment name" style="width: 100%;"><label for="isChangeableByEditors">Editors can change settings</label></td>
-            <td class="comment">
-              <select id="isChangeableByEditors" required>
-                <option value="allow">Allow</option>
-                <option value="deny" selected>Deny</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <p>Only the admin can change the <b>calendar</b> and <b>deactivate the add-on</b>.<br>
-                <a href="<?= home_wiki ?>/Changing-Settings#editors-can-change-settings" target="_blank"><b>Learn more</b></a>
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td class="comment name" style="width: 100%;">Transfer admin role</td>
-            <td class="comment"><button id="b-Transfer" class="action">Transfer</button></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <? if (isSharedDrive) { ?>
-              <p>Transfers admin role to current owner of the spreadsheet.<br>
-                <? } else { ?>
-              <p>Transfers admin role to an editor of the spreadsheet.<br>
-                <? } ?>
-                <a href="<?= home_wiki ?>/Changing-Settings#transfer-admin-role" target="_blank"><b>Learn more</b></a>
-              </p>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <? } ?>
     </div>
 
     <div id="footer">
@@ -299,15 +276,10 @@
   <script>
     $(document).ready(function() {
       $("#b-Reinstall").click(reinstallTriggers);
-
-      <? if (hasEditors) { ?>
+      <? if (!isOwner || isSharedDrive) { ?>
       $("#b-Transfer").click(transferAdminRole);
       <? } ?>
 
-      google.script.run
-        .withSuccessHandler(loadAdminSettings)
-        .withFailureHandler(showError)
-        .retrieveAdminSettings();
       $("#b-Reset").click(resetProtection);
 
       google.script.run.withSuccessHandler(loadUserSettings)
@@ -333,20 +305,14 @@
         $("#panel_Settings").show()
           .siblings()
           .hide();
-      } else if (select === "tab_advanced") {
-        $("#panel_Advanced").show()
+      } else if (select === "tab_maintenance") {
+        $("#panel_Maintenance").show()
           .siblings()
           .hide();
       <? if (settings_backup) { ?>
       } else if (select === "tab_backup") {
         $('.footer_cell.left').append('<button id="b-Backup" class="action">Back up now</button>');
         $("#panel_Backup").show()
-          .siblings()
-          .hide();
-      <? } ?>
-      <? if (hasEditors) { ?>
-      } else if (select === "tab_admin") {
-        $("#panel_Admin").show()
           .siblings()
           .hide();
       <? } ?>
@@ -365,40 +331,26 @@
     });
 
     <? } ?>
-    function loadAdminSettings(admin_settings) {
-      if (admin_settings.isChangeableByEditors) $("#isChangeableByEditors").val('allow');
+
+    <? if (!isOwner || isSharedDrive) { ?>
+    function transferAdminRole() {
+      this.disabled = true;
+      $("#footer_response").empty();
+
+      google.script.run.withSuccessHandler(function(r, o) {
+          o.disabled = false;
+          if (!r) google.script.host.close();
+        })
+        .withFailureHandler(showError)
+        .withUserObject(this)
+        <? if (isSharedDrive) { ?>
+        .askTransferAdminSd();
+        <? } else { ?>
+        .askTransferAdmin();
+        <? } ?>
     }
 
-    <? if (hasEditors) { ?>
-      $("#isChangeableByEditors").change(function() {
-        this.disabled = true;
-        $("#footer_response").empty();
-        google.script.run.withSuccessHandler(function(r, o) {
-            o.disabled = false;
-          })
-          .withFailureHandler(showError)
-          .withUserObject(this)
-          .saveAdminSettings("isChangeableByEditors", $(this).val());
-      });
-
-      function transferAdminRole() {
-        this.disabled = true;
-        $("#footer_response").empty();
-
-        google.script.run.withSuccessHandler(function(r, o) {
-            o.disabled = false;
-            if (!r) google.script.host.close();
-          })
-          .withFailureHandler(showError)
-          .withUserObject(this)
-          <? if (isSharedDrive) { ?>
-          .askTransferAdminSd();
-          <? } else { ?>
-          .askTransferAdmin();
-          <? } ?>
-      }
-
-      <? } ?>
+    <? } ?>
     <? if (settings_backup) { ?>
 
     $(document).on('click', '#b-Backup', backupNow);
