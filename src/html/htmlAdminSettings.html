@@ -75,8 +75,8 @@
           <div class="header_tab active" id="tab_settings">
             <i class="material-icons-outlined md-24" title="Settings">settings</i>
           </div>
-          <div class="header_tab" id="tab_advanced">
-            <i class="material-icons-outlined md-24" title="Advanced">build</i>
+          <div class="header_tab" id="tab_maintenance">
+            <i class="material-icons-outlined md-24" title="Maintenance">build</i>
           </div>
           <? if (settings_backup) { ?>
           <div class="header_tab" id="tab_backup">
@@ -170,7 +170,7 @@
         </form>
       </div>
 
-      <div class="panel" id="panel_Advanced">
+      <div class="panel" id="panel_Maintenance">
         <table style="width:100%;">
           <tr>
             <th colspan="2"><span style="font-size:1.2em;">Maintenance</span></th>
@@ -305,8 +305,8 @@
         $("#panel_Settings").show()
           .siblings()
           .hide();
-      } else if (select === "tab_advanced") {
-        $("#panel_Advanced").show()
+      } else if (select === "tab_maintenance") {
+        $("#panel_Maintenance").show()
           .siblings()
           .hide();
       <? if (settings_backup) { ?>
