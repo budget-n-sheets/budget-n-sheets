@@ -195,12 +195,12 @@ const ConsoleLog = {
 };
 
 const SpreadsheetApp2 = {
-  spreadsheet: null,
+  _spreadsheet: null,
 
   getActiveSpreadsheet: function () {
-    if (this.spreadsheet) return this.spreadsheet;
+    if (this._spreadsheet) return this._spreadsheet;
 
-    this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    return this.spreadsheet;
+    this._spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    return this._spreadsheet;
   }
 };
