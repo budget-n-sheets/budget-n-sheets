@@ -40,7 +40,7 @@ function pagesView_ (select, a) {
 
 function hideSheets_ (a) {
   let sheet;
-  let mm, i;
+  let mm;
 
   if (a) {
     mm = getLocaleDate().getMonth();
@@ -59,7 +59,7 @@ function hideSheets_ (a) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const delta = getMonthDelta(mm);
 
-  for (i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (sheet) {
       if (i < mm + delta[0] || i > mm + delta[1]) sheet.hideSheet();
@@ -70,10 +70,9 @@ function hideSheets_ (a) {
 
 function showSheets_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  let sheet, i;
 
-  for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+  for (let i = 0; i < 12; i++) {
+    const sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     if (sheet) sheet.showSheet();
   }
 }
