@@ -264,7 +264,7 @@ function restoreCards_ (backup) {
     if (backup.cards[mm].length === 0) continue;
 
     while (max < backup.cards[mm].length) {
-      addBlankRows_('Cards');
+      blankRows_('Cards');
       max += 400;
     }
 
@@ -289,7 +289,7 @@ function restoreMonths_ (backup) {
       if (backup.ttt[mm][k].length === 0) continue;
 
       while (max < backup.ttt[mm][k].length) {
-        addBlankRows_(MONTH_NAME.short[mm]);
+        blankRows_(MONTH_NAME.short[mm]);
         max += 400;
       }
 
@@ -303,7 +303,7 @@ function restoreTags_ (backup) {
 
   let max = sheet.getMaxRows();
   while (max < backup.tags.length) {
-    addBlankRows_('Tags');
+    blankRows_('Tags');
     max += 400;
   }
 

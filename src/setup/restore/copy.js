@@ -221,7 +221,7 @@ function copyMonths_ (spreadsheet) {
 
     let max = destination.getMaxRows();
     while (max < last) {
-      addBlankRows_(MONTH_NAME.short[mm]);
+      blankRows_(MONTH_NAME.short[mm]);
       max += 400;
     }
 
@@ -241,7 +241,7 @@ function copyCards_ (spreadsheet) {
 
   let max = destination.getMaxRows();
   while (max < last) {
-    addBlankRows_('Cards');
+    blankRows_('Cards');
     max += 400;
   }
 
@@ -259,7 +259,7 @@ function copyTags_ (spreadsheet) {
 
   let max = destination.getMaxRows();
   while (max < last) {
-    addBlankRows_('Tags');
+    blankRows_('Tags');
     max += 400;
   }
 

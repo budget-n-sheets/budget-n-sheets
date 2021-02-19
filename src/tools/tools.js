@@ -42,7 +42,7 @@ function toolPicker_ (select, value) {
 
   switch (select) {
     case 'AddBlankRows':
-      addBlankRows_(value);
+      blankRows_(value);
       break;
     case 'UpdateCashFlow':
       validateUpdateCashFlow_();

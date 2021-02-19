@@ -1,45 +1,46 @@
-function addBlankRows_ (name) {
-  let sheet, c;
+function blankRows_ (name) {
+  let sheet;
 
   if (!name) {
     sheet = SpreadsheetApp.getActiveSheet();
     name = sheet.getSheetName();
-  }
-
-  if (name === 'Cards') c = 5;
-  else if (name === 'Tags') c = 1;
-  else if (MONTH_NAME.short.indexOf(name) !== -1) c = 4;
-  else {
-    SpreadsheetApp2.getUi().alert(
-      "Can't add rows",
-      'Select a month, Cards or Tags to add rows.',
-      SpreadsheetApp2.getUi().ButtonSet.OK);
-    return;
-  }
-
-  if (!sheet) {
+  } else {
     sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(name);
     if (!sheet) return;
   }
 
-  let maxRows = sheet.getMaxRows();
-  let maxCols, values;
+  const maxRows = sheet.getMaxRows();
+  let header;
 
-  const n = 400;
-
-  if (maxRows < c + 3) return;
-
-  if (sheet.getLastRow() === maxRows) {
-    maxCols = sheet.getMaxColumns();
-    values = sheet.getRange(maxRows, 1, 1, maxCols).getValues();
+  if (name === 'Cards') header = 5;
+  else if (name === 'Tags') header = 1;
+  else if (MONTH_NAME.short.indexOf(name) !== -1) header = 4;
+  else {
+    if (!name) {
+      SpreadsheetApp2.getUi().alert(
+        "Can't add rows",
+        'Select a month, Cards or Tags to add rows.',
+        SpreadsheetApp2.getUi().ButtonSet.OK);
+    }
+    return;
   }
 
-  sheet.insertRowsBefore(maxRows, n);
-  maxRows += n;
+  if (maxRows < header + 3) return;
 
-  if (values) {
-    sheet.getRange(maxRows, 1, 1, maxCols).clearContent();
-    sheet.getRange(maxRows - n, 1, 1, maxCols).setValues(values);
+  insertRowsBefore_(sheet, maxRows);
+}
+
+function insertRowsBefore_ (sheet, maxRows) {
+  const num = 400;
+
+  sheet.insertRowsBefore(maxRows, num);
+
+  if (sheet.getLastRow() === maxRows + num) {
+    const maxCols = sheet.getMaxColumns();
+    const values = sheet.getRange(maxRows + num, 1, 1, maxCols).getValues();
+
+    sheet.getRange(maxRows + num, 1, 1, maxCols).clearContent();
+    sheet.getRange(maxRows, 1, 1, maxCols).setValues(values);
   }
 
   SpreadsheetApp.flush();
