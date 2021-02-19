@@ -88,45 +88,49 @@ function formatAccounts_ (mm) {
 }
 
 function formatCards_ (mm) {
-  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
-  let table, numRows, card;
-  let c;
-  let i, j;
+  const w_ = 6;
 
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
   if (!sheet) return;
 
-  const w_ = 6;
-  const cc = w_ * mm;
+  const numRows = sheet.getLastRow() - 5;
+  if (numRows < 1) return;
 
-  const lastRow = sheet.getLastRow();
-  if (lastRow < 6) return;
+  let range = sheet.getRange(6, 4 + w_ * mm, numRows, 1);
+  const snapshot = range.getValues();
 
-  i = 0;
-  numRows = lastRow - 5;
-  table = sheet.getRange(6, 4 + cc, numRows, 1).getValues();
-  while (i < numRows && table[i][0] !== '') { i++; }
-
+  let i = 0;
+  while (i < snapshot.length && snapshot[i][0] !== '') { i++; }
   if (i === 0) return;
-  numRows = i;
 
-  sheet.getRange(6, 1 + w_ * mm, numRows, 5).sort([
-    { column: (3 + cc), ascending: true },
-    { column: (1 + cc), ascending: true },
-    { column: (4 + cc), ascending: true }
+  range = range.offset(0, -3, i, 5);
+  sortCardsRange_(sheet, range);
+}
+
+function sortCardsRange_ (sheet, range) {
+  const col = range.getColumn() - 1;
+
+  range.sort([
+    { column: (3 + col), ascending: true },
+    { column: (1 + col), ascending: true },
+    { column: (4 + col), ascending: true }
   ]);
 
-  i = 0;
-  j = 0;
-  table = sheet.getRange(6, 1 + cc, numRows, 5).getValues();
-  while (i < numRows) {
-    c = j;
-    card = table[i][2];
-    while (j < numRows && table[j][2] === card && table[j][0] < 0) { j++; }
-    c = j - c;
+  const snapshot = range.getValues();
 
-    if (c > 1) sheet.getRange(6 + i, 1 + cc, c, 5).sort({ column: 1 + cc, ascending: false });
+  let i = 0;
+  let j = 0;
+  let num = 0;
+  while (i < snapshot.length) {
+    const card = snapshot[i][2];
 
-    while (j < numRows && table[j][2] === card) { j++; }
+    num = j;
+    while (j < snapshot.length && snapshot[j][2] === card && snapshot[j][0] < 0) { j++; }
+
+    num = j - num;
+    if (num > 1) sheet.getRange(6 + i, 1 + col, num, 5).sort({ column: 1 + col, ascending: false });
+
+    while (j < snapshot.length && snapshot[j][2] === card) { j++; }
     i = j;
   }
 }
