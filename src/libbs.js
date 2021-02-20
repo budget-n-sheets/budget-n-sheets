@@ -130,10 +130,7 @@ function getTranslation () {
 
 function getLocaleDate (date) {
   let timezone = SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetTimeZone();
-  if (typeof timezone !== 'string' || timezone === '') {
-    ConsoleLog.warn('getLocaleDate(): Timezone was invalid. ', { timezone: timezone, isEmpty: timezone === '' });
-    timezone = 'GMT';
-  }
+  if (typeof timezone !== 'string' || timezone === '') timezone = 'GMT';
 
   const formatDate = Utilities.formatDate(date || DATE_NOW, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
 
