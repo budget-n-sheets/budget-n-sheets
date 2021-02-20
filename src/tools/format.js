@@ -40,51 +40,55 @@ function formatTags_ () {
 
 function formatAccounts_ (mm) {
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
-  let date2;
-  let table;
-  let cc, i, k;
+  if (!sheet) return;
 
-  const w_ = TABLE_DIMENSION.width;
   const num_acc = getConstProperties_('number_accounts');
 
-  if (!sheet) return;
   if (sheet.getMaxColumns() < 5 + 5 * num_acc) return;
 
-  const lastRow = sheet.getLastRow() - 4;
-  if (lastRow < 1) return;
+  const numRows = sheet.getLastRow() - 4;
+  if (numRows < 1) return;
 
-  sheet.showRows(5, lastRow);
+  sheet.showRows(5, numRows);
 
-  const snapshot = sheet.getRange(5, 1, lastRow, w_ * (1 + num_acc)).getValues();
+  const range = sheet.getRange(5, 1, numRows, 5 * (1 + num_acc));
+  const snapshot = range.getValues();
 
-  for (k = 0; k < 1 + num_acc; k++) {
-    i = 0;
-    cc = w_ * k;
-    while (i < lastRow && snapshot[i][2 + cc] !== '') { i++; }
+  for (let k = 0; k < 1 + num_acc; k++) {
+    const col = 5 * k;
+
+    let i = 0;
+    while (i < snapshot.length && snapshot[i][2 + col] !== '') { i++; }
 
     if (i === 0) continue;
-    const numRows = i;
 
-    range = sheet.getRange(5, 1 + cc, numRows, 4);
-
-    range.sort([
-      { column: (1 + cc), ascending: true },
-      { column: (3 + cc), ascending: true }
-    ]);
-
-    i = 0;
-    table = range.getValues();
-    while (i < numRows && table[i][0] < 0) { i++; }
-
-    if (i > 1) sheet.getRange(5, 1 + cc, i, 4).sort({ column: 1 + cc, ascending: false });
+    const rangeOffset = range.offset(0, col, i, 4);
+    sortAccountsRange_(rangeOffset);
   }
 
   const date1 = DATE_NOW.getTime();
-  date2 = getConstProperties_('financial_year');
+  let date2 = getConstProperties_('financial_year');
   date2 = new Date(date2, mm + 1, 0).getTime();
 
-  const numRows = sheet.getMaxRows();
-  if (lastRow + 4 < numRows && date2 < date1) sheet.hideRows(lastRow + 5, numRows - lastRow - 4);
+  const maxRows = sheet.getMaxRows();
+  if (numRows + 4 < maxRows && date2 < date1) sheet.hideRows(numRows + 5, maxRows - numRows - 4);
+}
+
+function sortAccountsRange_ (range) {
+  const col = range.getColumn() - 1;
+
+  range.sort([
+    { column: (1 + col), ascending: true },
+    { column: (3 + col), ascending: true }
+  ]);
+
+  const snapshot = range.getValues();
+
+  let i = 0;
+  while (i < snapshot.length && snapshot[i][0] < 0) { i++; }
+  if (i < 2) return;
+
+  range.offset(0, 0, i, 4).sort({ column: 1 + col, ascending: false });
 }
 
 function formatCards_ (mm) {
