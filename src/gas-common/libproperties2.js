@@ -5,31 +5,26 @@
  */
 
 const PropertiesService2 = {
-  document: null,
-  user: null,
+  _document: null,
+  _user: null,
 
   getScope: function (scope) {
-    if (this[scope]) return;
     switch (scope) {
       case 'document':
-        this.document = PropertiesService.getDocumentProperties();
-        break;
+        return this._document || (this._document = PropertiesService.getDocumentProperties());
       case 'user':
-        this.user = PropertiesService.getUserProperties();
-        break;
+        return this._user || (this._user = PropertiesService.getUserProperties());
       default:
         throw new Error('Invalid scope.');
     }
   },
 
   getKeys: function (scope) {
-    this.getScope(scope);
-    return this[scope].getKeys();
+    return this.getScope(scope).getKeys();
   },
 
   getProperty: function (scope, key, type) {
-    this.getScope(scope);
-    const value = this[scope].getProperty(key);
+    const value = this.getScope(scope).getProperty(key);
     switch (type) {
       case 'number':
         return Number(value);
@@ -45,12 +40,10 @@ const PropertiesService2 = {
   },
 
   getProperties: function (scope) {
-    this.getScope(scope);
-    return this[scope].getProperties();
+    return this.getScope(scope).getProperties();
   },
 
   setProperty: function (scope, key, type, value) {
-    this.getScope(scope);
     switch (type) {
       case 'number':
         value = value.toString();
@@ -66,17 +59,15 @@ const PropertiesService2 = {
       default:
         throw new Error('Invalid type.');
     }
-    this[scope].setProperty(key, value);
+    this.getScope(scope).setProperty(key, value);
   },
 
   setProperties: function (scope, properties, deleteAllOthers) {
-    this.getScope(scope);
     deleteAllOthers = !!deleteAllOthers;
-    this[scope].setProperties(properties, deleteAllOthers);
+    this.getScope(scope).setProperties(properties, deleteAllOthers);
   },
 
-  setPropertiesType: function (scope, pairs, del) {
-    this.getScope(scope);
+  setPropertiesType: function (scope, pairs, deleteAllOthers) {
     for (const key in pairs) {
       switch (pairs[key].type) {
         case 'number':
@@ -95,16 +86,15 @@ const PropertiesService2 = {
           throw new Error('Invalid type.');
       }
     }
-    this[scope].setProperties(pairs, del);
+    deleteAllOthers = !!deleteAllOthers;
+    this.getScope(scope).setProperties(pairs, deleteAllOthers);
   },
 
   deleteProperty: function (scope, key) {
-    this.getScope(scope);
-    this[scope].deleteProperty(key);
+    this.getScope(scope).deleteProperty(key);
   },
 
   deleteAllProperties: function (scope) {
-    this.getScope(scope);
-    this[scope].deleteAllProperties();
+    this.getScope(scope).deleteAllProperties();
   }
 };
