@@ -346,7 +346,7 @@ function showSessionExpired () {
 }
 
 function showDialogEditAccount (acc_id) {
-  const htmlTemplate = HtmlService.createTemplateFromFile('html/htmlEditAccount');
+  const htmlTemplate = HtmlService.createTemplateFromFile('tables/htmlEditAccount');
 
   const decimal_places = getSpreadsheetSettings_('decimal_places');
   const account = tablesService('get', 'account', acc_id);
