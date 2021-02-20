@@ -9,7 +9,6 @@ function blankRows_ (name) {
     if (!sheet) return;
   }
 
-  const maxRows = sheet.getMaxRows();
   let header;
 
   if (name === 'Cards') header = 5;
@@ -25,12 +24,13 @@ function blankRows_ (name) {
     return;
   }
 
-  if (maxRows < header + 3) return;
+  if (sheet.getMaxRows() < header + 3) return;
 
-  insertRowsBefore_(sheet, maxRows);
+  insertRowsBefore_(sheet);
 }
 
-function insertRowsBefore_ (sheet, maxRows) {
+function insertRowsBefore_ (sheet) {
+  const maxRows = sheet.getMaxRows();
   const num = 400;
 
   sheet.insertRowsBefore(maxRows, num);
