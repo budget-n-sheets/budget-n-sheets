@@ -108,10 +108,10 @@ function formatCards_ (mm) {
   if (i === 0) return;
 
   range = range.offset(0, -3, i, 5);
-  sortCardsRange_(sheet, range);
+  sortCardsRange_(range);
 }
 
-function sortCardsRange_ (sheet, range) {
+function sortCardsRange_ (range) {
   const col = range.getColumn() - 1;
 
   range.sort([
@@ -132,7 +132,7 @@ function sortCardsRange_ (sheet, range) {
     while (j < snapshot.length && snapshot[j][2] === card && snapshot[j][0] < 0) { j++; }
 
     num = j - num;
-    if (num > 1) sheet.getRange(6 + i, 1 + col, num, 5).sort({ column: 1 + col, ascending: false });
+    if (num > 1) range.offset(i, 0, num, 5).sort({ column: 1 + col, ascending: false });
 
     while (j < snapshot.length && snapshot[j][2] === card) { j++; }
     i = j;
