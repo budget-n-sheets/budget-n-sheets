@@ -1,43 +1,31 @@
 function postEventsForDate_ (date) {
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  let sheet;
-
-  let list_eventos, evento;
-  let value, tags;
-  let c1, a, c, i, j, k;
-
   const calendar = getFinancialCalendar_();
   if (!calendar) return;
-  list_eventos = calendar.getEventsForDay(date);
+
+  const eventos_day = calendar.getEventsForDay(date);
+  if (eventos_day.length === 0) return;
+
+  const list_eventos = calendarDigestListEvents_(eventos_day);
   if (list_eventos.length === 0) return;
-  list_eventos = calendarDigestListEvents_(list_eventos);
 
-  const mm = date.getMonth();
-  const dd = date.getDate();
-
-  const dec_p = getSpreadsheetSettings_('decimal_separator');
   const num_acc = getConstProperties_('number_accounts') + 1;
-
-  const accounts = [];
-  for (k = 0; k < num_acc; k++) {
-    accounts[k] = {
-      table: [],
-      values: []
-    };
-  }
 
   const cards_balances = getTablesService_('cardsbalances');
   const hasCards = (cards_balances && cards_balances !== 1);
 
-  c1 = 0;
-  const cards = {
-    table: [],
-    values: []
-  };
+  const mm = date.getMonth();
+  const dd = date.getDate();
 
-  i = -1;
-  while (++i < list_eventos.length) {
-    evento = list_eventos[i];
+  const accounts = {};
+  for (let k = 0; k < num_acc; k++) {
+    accounts[k] = { table: [], values: [] };
+  }
+
+  const cards = { table: [], values: [] };
+
+  for (let i = 0; i < list_eventos.length; i++) {
+    const evento = list_eventos[i];
+    let value = 0;
 
     if (evento.Description === '') continue;
     if (evento.hasAtMute) continue;
@@ -45,11 +33,11 @@ function postEventsForDate_ (date) {
     if (!isNaN(evento.Value)) {
       value = evento.Value;
     } else if (hasCards && evento.hasQcc) {
+      let c = 0;
+
       if (evento.Card !== -1) {
         c = cards_balances.cards.indexOf(evento.Card);
         if (c === -1) continue;
-      } else {
-        c = 0;
       }
 
       if (evento.TranslationType === 'M' &&
@@ -66,33 +54,32 @@ function postEventsForDate_ (date) {
     } else {
       continue;
     }
+
     value = FormatNumber.localeSignal(value);
 
+    let tags = '';
     if (evento.Tags.length > 0) tags = '#' + evento.Tags.join(' #');
-    else tags = '';
 
     if (evento.Table !== -1) {
-      k = evento.Table;
-      accounts[k].table.push([dd, evento.Title, '', tags]);
-      accounts[k].values.push(value);
+      accounts[evento.Table].table.push([dd, evento.Title, '', tags]);
+      accounts[evento.Table].values.push(value);
     } else if (evento.Card !== -1) {
-      cards.table[c1] = [dd, evento.Title, evento.Card, '', tags];
-      cards.values[c1] = value;
-      c1++;
+      cards.table.push([dd, evento.Title, evento.Card, '', tags]);
+      cards.values.push(value);
     }
   }
 
   if (cards.table.length > 0) {
-    sheet = spreadsheet.getSheetByName('Cards');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
     if (sheet) {
       mergeEventsInTable_(sheet, cards, 6, 1 + 6 * mm, 5, 3);
     }
   }
 
-  sheet = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
   if (!sheet) return;
 
-  for (k = 0; k < num_acc; k++) {
+  for (let k = 0; k < num_acc; k++) {
     if (accounts[k].table.length === 0) continue;
     mergeEventsInTable_(sheet, accounts[k], 5, 1 + 5 * k, 4, 2);
   }
