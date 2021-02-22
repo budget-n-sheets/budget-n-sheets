@@ -1,28 +1,41 @@
 function validateUpdateCashFlow_ () {
   if (onlineUpdate_()) return;
 
-  const range = SpreadsheetApp.getActiveRange();
-  const name = range.getSheet().getSheetName();
-  let mm;
-
-  if (name === 'Cash Flow') {
-    mm = range.getColumn() - 1;
-    mm = (mm - (mm % 4)) / 4;
-  } else {
-    mm = MONTH_NAME.short.indexOf(name);
-    if (mm === -1) {
-      SpreadsheetApp2.getUi().alert(
-        "Can't update cash flow",
-        'Select a month or Cash Flow to update cash flow.',
-        SpreadsheetApp2.getUi().ButtonSet.OK);
-      return;
-    }
-  }
-
   if (getFinancialCalendar_() == null) {
     SpreadsheetApp2.getUi().alert(
       "Can't update cash flow",
       'The financial calendar does not exist, or you cannot access it.',
+      SpreadsheetApp2.getUi().ButtonSet.OK);
+    return;
+  }
+
+  const ranges = SpreadsheetApp.getActiveRangeList().getRanges();
+  const name = ranges[0].getSheet().getSheetName();
+
+  if (name === 'Cash Flow') {
+    let list = new Array(12).fill(false);
+
+    for (let i = 0; i < ranges.length; i++) {
+      let mm = ranges[i].getColumn() - 2;
+      if (mm < 0) continue;
+
+      mm = (mm - (mm % 4)) / 4;
+
+      if (!list[mm]) {
+        updateCashFlow_(mm);
+        list[mm] = true;
+      }
+    }
+
+    return;
+  }
+
+  const mm = MONTH_NAME.short.indexOf(name);
+
+  if (mm === -1) {
+    SpreadsheetApp2.getUi().alert(
+      "Can't update cash flow",
+      'Select a month or Cash Flow to update cash flow.',
       SpreadsheetApp2.getUi().ButtonSet.OK);
     return;
   }

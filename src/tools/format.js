@@ -1,13 +1,20 @@
 function validateFormatRegistry_ () {
-  const range = SpreadsheetApp.getActiveRange();
-  const name = range.getSheet().getSheetName();
+  const ranges = SpreadsheetApp.getActiveRangeList().getRanges();
+  const name = ranges[0].getSheet().getSheetName();
 
   if (name === 'Tags') {
     formatTags_();
   } else if (name === 'Cards') {
-    let mm = range.getColumn();
-    mm = (mm - (mm % 6)) / 6;
-    formatCards_(mm);
+    for (let i = 0; i < ranges.length; i++) {
+      let mm = ranges[i].getColumn() - 1;
+
+      if (mm % 6 === 0 && ranges[i].getNumColumns() === 5) {
+        if (ranges[i].getNumRows() > 1) sortCardsRange_(ranges[i]);
+      } else {
+        mm = (mm - (mm % 6)) / 6;
+        formatCards_(mm);
+      }
+    }
   } else {
     const mm = MONTH_NAME.short.indexOf(name);
 
@@ -19,7 +26,16 @@ function validateFormatRegistry_ () {
       return;
     }
 
-    formatAccounts_(mm);
+    let t = false;
+
+    for (let i = 0; i < ranges.length; i++) {
+      if ((ranges[i].getColumn() - 1) % 5 === 0 && ranges[i].getNumColumns() === 4) {
+        if (ranges[i].getNumRows() > 1) sortAccountsRange_(ranges[i]);
+      } else if (t) {
+        formatAccounts_(mm);
+        t = true;
+      }
+    }
   }
 }
 
