@@ -1,16 +1,10 @@
-function rollOperationMode_ (mode) {
-  const hour = 2 + randomInteger(4);
-  let trigger;
-
+function rollOperationMode_ () {
   stopTrigger_('timeBased');
   Utilities.sleep(1000);
   startTrigger_('timeBased');
-
-  console.log('mode/' + mode);
 }
 
 function askDeactivation () {
-  console.info('menu/More/Deactive the add-on');
   if (!isInstalled_()) {
     uninstall_();
     onOpen();
@@ -54,12 +48,10 @@ function askDeactivation () {
     'The add-on was deactivated.',
     ui.ButtonSet.OK);
 
-  console.log('deactivate');
   return true;
 }
 
 function askResetProtection () {
-  console.info('sidebar/Settings/Maintenance/Reset');
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
@@ -148,7 +140,6 @@ function askResetProtection () {
 }
 
 function askReinstallTriggersUi () {
-  console.info('sidebar/Settings/Maintenance/Reinstall');
 
   if (!isUserAdmin_()) {
     deleteAllTriggers_();

@@ -1,5 +1,4 @@
 function toggleViewMode_ () {
-  console.info('menu/Toggle view mode');
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);

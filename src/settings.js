@@ -18,7 +18,6 @@ function retrieveUserSettings () {
 }
 
 function saveUserSettings (settings) {
-  console.info('sidebar/Settings/Settings/Save');
   if (!isUserAdmin_()) return 1;
 
   const calendar = {

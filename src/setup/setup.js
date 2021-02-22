@@ -17,10 +17,8 @@ function uninstall_ (putLock) {
 
   if (putLock) {
     PropertiesService.getDocumentProperties().setProperties({ lock_spreadsheet: 'true' }, true);
-    console.log('uninstall-with-lock');
   } else {
     PropertiesService.getDocumentProperties().deleteAllProperties();
-    console.log('uninstall');
   }
 }
 

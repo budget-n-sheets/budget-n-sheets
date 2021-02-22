@@ -66,7 +66,6 @@ function setAdminSettings_ (select, value) {
 }
 
 function askTransferAdmin () {
-  console.info('sidebar/Settings/Maintenance/Transfer');
   if (!isInstalled_()) return;
 
   const ui = SpreadsheetApp2.getUi();
@@ -101,7 +100,6 @@ function askTransferAdmin () {
     setUserSettings_('post_day_events', false);
     setUserSettings_('cash_flow_events', false);
 
-    console.log('admin-role/transferred');
     return;
   }
 
@@ -109,7 +107,6 @@ function askTransferAdmin () {
 }
 
 function askTransferAdminSd () {
-  console.info('sidebar/Settings/Maintenance/Transfer');
   if (!isInstalled_()) return;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
@@ -185,7 +182,6 @@ function continuedTransferAdminSd (editor) {
       setUserSettings_('post_day_events', false);
       setUserSettings_('cash_flow_events', false);
 
-      console.log('admin-role/transferred');
       return;
     }
   }

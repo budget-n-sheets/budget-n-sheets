@@ -186,7 +186,6 @@ function weeklyTriggerPre_ (e) {
   if (!isInstalled_()) return;
   if (seamlessUpdate_()) return;
 
-  let mode;
   const financial_year = getConstProperties_('financial_year');
   const date = getLocaleDate();
   const yyyymm = {
@@ -197,8 +196,5 @@ function weeklyTriggerPre_ (e) {
   if (yyyymm.year > financial_year) return;
 
   treatLayout_(yyyymm.year, yyyymm.month);
-  if (yyyymm.year === financial_year) mode = 'active';
-  else mode = 'passive';
-
-  rollOperationMode_(mode);
+  rollOperationMode_();
 }

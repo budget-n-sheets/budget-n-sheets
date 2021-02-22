@@ -1,10 +1,8 @@
 function toolShowSheets_ () {
-  console.info('menu/Pages view/Expand');
   pagesView_('show');
 }
 
 function toolHideSheets_ () {
-  console.info('menu/Pages view/Collapse');
   pagesView_('hide');
 }
 

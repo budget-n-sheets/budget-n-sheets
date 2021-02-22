@@ -53,8 +53,6 @@ function coolGallery (option) {
 
   if (option === 'stats_for_tags') coolStatsForTags_(info);
   else if (option === 'filter_by_tag') coolFilterByTag_(info);
-
-  console.info('add-on/cool_gallery/import/', info.sheet_name);
 }
 
 function importGalleryTemplate_ (id, name) {

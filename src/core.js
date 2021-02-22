@@ -9,23 +9,6 @@
 function onInstall (e) {
   onOpen(e);
   setUserId_();
-
-  const installationSource = ScriptApp.getInstallationSource();
-
-  switch (installationSource) {
-    case ScriptApp.InstallationSource.NONE:
-      console.info('purchase/NONE');
-      break;
-    case ScriptApp.InstallationSource.WEB_STORE_ADD_ON:
-      console.info('purchase/WEB_STORE_ADD_ON');
-      break;
-    case ScriptApp.InstallationSource.APPS_MARKETPLACE_DOMAIN_ADD_ON:
-      console.info('purchase/APPS_MARKETPLACE_DOMAIN_ADD_ON');
-      break;
-    default:
-      console.info('purchase/DEAFULT');
-      break;
-  }
 }
 
 /**
@@ -61,8 +44,6 @@ function onOpen (e) {
           .addItem('Deactive the add-on', 'askDeactivation')
           .addItem('Resume month', 'toolResumeActivity_')
           .addItem('Show Quickstart', 'showPanelQuickstart'));
-
-      console.log('open');
     } else {
       menu.addItem('Start budget sheet', 'showDialogSetupAddon_')
         .addSeparator()
@@ -81,8 +62,6 @@ function printHrefScriptlets (htmlTemplate) {
 }
 
 function showPanelQuickstart () {
-  console.log('menu/More/Show Quickstart');
-
   let htmlTemplate = HtmlService.createTemplateFromFile('quickstart/htmlQuickstart');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
@@ -104,7 +83,6 @@ function showPanelQuickstart () {
 }
 
 function showPanelTables (tab) {
-  console.info('menu/Open panel/Accounts & Cards');
   if (onlineUpdate_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('tables/htmlSidebarTables');
@@ -135,7 +113,6 @@ function showPanelTables (tab) {
 }
 
 function showPanelAnalytics () {
-  console.info('menu/Open panel/BnS Gallery');
   if (onlineUpdate_()) return;
 
   let htmlTemplate = HtmlService.createTemplateFromFile('cool_gallery/htmlCoolGallery');
@@ -146,7 +123,6 @@ function showPanelAnalytics () {
 }
 
 function showSidebarMainSettings () {
-  console.info('menu/Change settings');
   if (!isUserAdmin_()) {
     SpreadsheetApp2.getUi().alert(
       'Permission denied',
@@ -193,7 +169,6 @@ function showSidebarMainSettings () {
 }
 
 function showDialogAboutAddon () {
-  console.info('menu/About the add-on');
   let htmlTemplate;
   let v0;
 
@@ -242,7 +217,6 @@ function showDialogMessage (title, message, timeout) {
 }
 
 function showDialogSetupAddon_ () {
-  console.log('setup/intent');
   setUserId_();
   if (conditionalInstallTest_()) return;
 

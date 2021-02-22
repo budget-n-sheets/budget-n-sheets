@@ -1,6 +1,4 @@
 function requestBackupSession () {
-  console.info('sidebar/Settings/Backup/Back up now');
-
   if (!isInstalled_()) return 2;
   if (!isUserAdmin_()) return 2;
   if (isScriptUpToDate_() !== 1) return 2;
@@ -112,7 +110,6 @@ function backupRequest_ (password) {
   if (blob === 1) throw new Error('encryptBackup_(): Backup encryption failed.');
 
   emailBackup_(blob);
-  console.info('backup/success');
 }
 
 function emailBackup_ (blob) {

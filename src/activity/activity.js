@@ -1,6 +1,4 @@
 function toolResumeActivity_ () {
-  console.info('menu/More/Resume month');
-
   if (!isInstalled_()) return;
   if (onlineUpdate_()) return;
 
