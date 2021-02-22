@@ -184,7 +184,7 @@ function getAllOwnedCalendars () {
 
 function getFinancialCalendar_ () {
   const financial_calendar = getUserSettings_('financial_calendar');
-  if (!financial_calendar) return;
+  if (!financial_calendar) return 0;
   return CalendarApp.getCalendarById(financial_calendar);
 }
 

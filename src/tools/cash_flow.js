@@ -19,7 +19,7 @@ function validateUpdateCashFlow_ () {
     }
   }
 
-  if (!getFinancialCalendar_()) {
+  if (getFinancialCalendar_() == null) {
     SpreadsheetApp2.getUi().alert(
       "Can't update cash flow",
       'The financial calendar does not exist, or you cannot access it.',
