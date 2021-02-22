@@ -209,7 +209,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
     value = table[i][2 + cc];
 
     if (value === 0 && day >= first && table[i][3 + cc] && hasTags) {
-      translation = getTranslation.call(table[i][1 + cc]);
+      translation = getTranslation(table[i][1 + cc]);
 
       if (translation.type) {
         important = table[i][3 + cc].match(/!#\w+/);

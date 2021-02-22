@@ -113,9 +113,9 @@ const FormatNumber = {
   }
 };
 
-function getTranslation () {
+function getTranslation (description) {
   const translation = { type: '', number: 0 };
-  const match = this.match(/@(M(\+|-)(\d+)|Avg|Total)/);
+  const match = description.match(/@(M(\+|-)(\d+)|Avg|Total)/);
   if (match) {
     if (match[1] === 'Total' || match[1] === 'Avg') {
       translation.type = match[1];
