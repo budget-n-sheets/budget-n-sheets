@@ -1,8 +1,7 @@
-function calendarDigestListEvents_ (listEvents, start, end, offset) {
-  let evento, description;
-  let translation, match;
-  let list, cell, s, i, j;
-  let startDate, endDate, a, d;
+function calendarDigestListEvents_ (eventos, start, end, offset) {
+  let startDate, endDate;
+  let match, list;
+  let a, s;
 
   const end2 = new Date(end);
   end2.setDate(end2.getDate() - 1);
@@ -46,13 +45,13 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
     regexp.cards = new RegExp(s, 'g');
   }
 
-  for (i = 0; i < listEvents.length; i++) {
-    evento = listEvents[i];
+  for (let i = 0; i < eventos.length; i++) {
+    const evento = eventos[i];
 
-    description = evento.getDescription();
+    const description = evento.getDescription();
     if (description === '') continue;
 
-    cell = {
+    const cell = {
       Id: evento.getId(),
       Day: [],
       Title: evento.getTitle(),
@@ -70,15 +69,11 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
     };
 
     match = cell.Description.match(regexp.accounts);
-    if (match) {
-      cell.Table = list_acc.indexOf(match[0]);
-    }
+    if (match) cell.Table = list_acc.indexOf(match[0]);
 
     if (db_tables.cards.count > 0) {
-      match = cell.Description.match(regexp.cards);
-      if (match) {
-        cell.Card = match[0];
-      }
+      const match = cell.Description.match(regexp.cards);
+      if (match) cell.Card = match[0];
     }
 
     if (cell.Table === -1 && cell.Card === -1) continue;
@@ -92,17 +87,17 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
     if (cell.Value) cell.Value = Number(cell.Value[0].replace('$', ''));
     else cell.Value = NaN;
 
-    translation = getTranslation.call(cell.Description);
+    const translation = getTranslation.call(cell.Description);
     cell.TranslationType = translation.type;
     cell.TranslationNumber = translation.number;
 
     match = cell.Description.match(/!#\w+/);
-    cell.TagImportant = (match ? match[0].slice(2) : '');
+    if (match) cell.TagImportant = match[0].slice(2);
 
     cell.Tags = cell.Description.match(/#\w+/g);
     if (!cell.Tags) cell.Tags = [];
     else {
-      for (j = 0; j < cell.Tags.length; j++) {
+      for (let j = 0; j < cell.Tags.length; j++) {
         cell.Tags[j] = cell.Tags[j].slice(1);
       }
     }
@@ -128,10 +123,8 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
     startDate = startDate.getDate();
     endDate = endDate.getDate() + a;
 
-    j = 0;
-    for (d = startDate; d < endDate; d++) {
-      cell.Day[j] = d;
-      j++;
+    for (let day = startDate; day < endDate; day++) {
+      cell.Day.push(day);
     }
 
     output.push(cell);
@@ -142,7 +135,6 @@ function calendarDigestListEvents_ (listEvents, start, end, offset) {
 
 function getAllOwnedCalendars () {
   let calendars;
-  let digest, id, name, i;
 
   try {
     calendars = CalendarApp.getAllCalendars();
@@ -166,12 +158,13 @@ function getAllOwnedCalendars () {
     md5: []
   };
 
-  for (i = 0; i < calendars.length; i++) {
-    id = calendars[i].getId();
-    digest = computeDigest('MD5', id, 'UTF_8');
+  for (let i = 0; i < calendars.length; i++) {
+    const id = calendars[i].getId();
+
+    let digest = computeDigest('MD5', id, 'UTF_8');
     digest = digest.substring(0, 12);
 
-    name = calendars[i].getName();
+    let name = calendars[i].getName();
     if (!calendars[i].isOwnedByMe()) name += ' *';
 
     db_calendars.name[i] = name;
@@ -189,10 +182,6 @@ function getFinancialCalendar_ () {
 }
 
 function getCalendarEventsForCashFlow_ (financial_year, mm) {
-  let eventos;
-  let today;
-  let start, offset;
-
   if (!getUserSettings_('cash_flow_events')) return [];
 
   const calendar = getFinancialCalendar_();
@@ -201,21 +190,20 @@ function getCalendarEventsForCashFlow_ (financial_year, mm) {
   const end = new Date(financial_year, mm + 1, 1);
   if (DATE_NOW >= end) return [];
 
-  start = new Date(financial_year, mm, 1);
+  let start = new Date(financial_year, mm, 1);
   if (start <= DATE_NOW) {
     start = new Date(financial_year, mm, DATE_NOW.getDate() + 1);
     if (start > end) return [];
   }
 
-  offset = getLocaleDate(start);
+  let offset = getLocaleDate(start);
   offset = start.getTime() - offset.getTime();
 
   const a = new Date(start.getTime() + offset);
   const b = new Date(end.getTime() + offset);
 
-  eventos = calendar.getEvents(a, b);
+  const eventos = calendar.getEvents(a, b);
   if (!eventos) return [];
 
-  eventos = calendarDigestListEvents_(eventos, start, end, offset);
-  return eventos;
+  return calendarDigestListEvents_(eventos, start, end, offset);
 }
