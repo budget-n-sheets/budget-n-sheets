@@ -49,12 +49,12 @@
   <div id="wrapper">
 
     <div id="content" style="margin-bottom:4.7em;">
-      <div class="panel active" id="panel_List">
+      <div class="panel" id="panel_List">
       </div>
 
 
-      <div class="panel" id="wait_load" align="center">
-        <b>Importing now...</b><br>
+      <div class="panel active" id="wait_load" align="center">
+        <b>Loading templates...</b><br>
 
         <div class="wait_load-wrapper">
           <div class="wait_load-bar"></div>
@@ -103,25 +103,22 @@
 
         $('#panel_List').append(item);
       }
+
+      $('#panel_List').fadeIn('fast')
+        .siblings()
+        .hide();
     }
 
     $(document).on('click', '.m-la', function() {
       var id = $(this).attr('id');
 
       $("#p-Response").empty();
-      $('#wait_load').fadeIn('fast')
-        .siblings()
-        .hide();
       google.script.run.withSuccessHandler(response)
         .withFailureHandler(showError)
         .coolGallery(id);
     });
 
     function response(r) {
-      $('#panel_List').fadeIn('fast')
-        .siblings()
-        .hide();
-
       if (r === 0) {
         $("#p-Response").empty().append("Add-on is busy. Try again in a moment.");
       } else if (r === 1) {
