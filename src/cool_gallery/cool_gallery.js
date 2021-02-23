@@ -20,69 +20,59 @@ function getGalleryTemplates () {
 function coolGallery (option) {
   const ui = SpreadsheetApp2.getUi();
 
-  let s;
-  let info;
-
-  info = APPS_SCRIPT_GLOBAL.cool_gallery;
-  info = info[option];
-  if (!info) {
-    ConsoleLog.warn('getCoolSheet_(): Details of page not found.', { option: option, info: info });
-    showDialogErrorMessage();
-    return 2;
-  }
+  const info = APPS_SCRIPT_GLOBAL.cool_gallery[option];
+  if (!info) throw new Error('Details of page not found.');
 
   const lock = LockService.getDocumentLock();
-  s = lock.tryLock(200);
-  if (!s) {
+  try {
+    lock.waitLock(200);
+  } catch (err) {
     ui.alert(
       "Can't import analytics page",
       'Add-on is busy. Try again in a moment.',
       ui.ButtonSet.OK);
-    return 0;
+    return;
   }
 
-  s = getCoolSheet_(info);
+  const status = importGalleryTemplate_(info.id, info.sheet_name);
   lock.releaseLock();
 
-  if (s === 0) {
+  if (status === 0) {
     ui.alert(
       "Can't import analytics page",
       'A page with the name "' + info.sheet_name + '" already exists. Please rename, or delete the page.',
       ui.ButtonSet.OK);
-    return -1;
-  } else if (s === 1) {
+    return;
+  } else if (status === 1) {
     ui.alert(
       "Can't import analytics page",
       'The spreadsheet is not available. Try again later.',
       ui.ButtonSet.OK);
-    return 1;
+    return;
   }
 
-  if (option === 'stats_for_tags') {
-    coolStatsForTags_(info);
-  } else if (option === 'filter_by_tag') {
-    coolFilterByTag_(info);
-  }
+  if (option === 'stats_for_tags') coolStatsForTags_(info);
+  else if (option === 'filter_by_tag') coolFilterByTag_(info);
 
   console.info('add-on/cool_gallery/import/', info.sheet_name);
-  return -1;
 }
 
-function getCoolSheet_ (info) {
+function importGalleryTemplate_ (id, name) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let template;
 
-  if (spreadsheet.getSheetByName(info.sheet_name)) return 0;
+  if (spreadsheet.getSheetByName(name)) return 0;
 
   try {
-    template = SpreadsheetApp.openById(info.id);
+    template = SpreadsheetApp.openById(id);
   } catch (err) {
     ConsoleLog.error(err);
     return 1;
   }
 
-  template.getSheetByName(info.sheet_name)
+  const sheet = template.getSheetByName(name)
     .copyTo(spreadsheet)
-    .setName(info.sheet_name);
+    .setName(name);
+
   SpreadsheetApp.flush();
 }

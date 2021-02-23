@@ -1,7 +1,7 @@
 function coolStatsForTags_ (info) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName(info.sheet_name);
-  let range;
+
   let chart, options;
 
   sheet.getRange('E2').setFormula('_Settings!B4');
@@ -76,9 +76,9 @@ function coolStatsForTags_ (info) {
   const sheetTags = spreadsheet.getSheetByName('Tags');
   const n = sheetTags.getMaxRows();
   if (n > 1) {
-    range = sheetTags.getRange(2, 5, n - 1, 1);
+    const range = sheetTags.getRange(2, 5, n - 1, 1);
 
-    rule = SpreadsheetApp.newDataValidation()
+    const rule = SpreadsheetApp.newDataValidation()
       .requireValueInRange(range, true)
       .setAllowInvalid(false)
       .build();
