@@ -138,15 +138,10 @@ function showPanelAnalytics () {
   console.info('menu/Open panel/BnS Gallery');
   if (onlineUpdate_()) return;
 
-  let htmlTemplate;
-
-  htmlTemplate = HtmlService.createTemplateFromFile('cool_gallery/htmlCoolGallery');
+  let htmlTemplate = HtmlService.createTemplateFromFile('cool_gallery/htmlCoolGallery');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlTemplate.list = APPS_SCRIPT_GLOBAL.cool_gallery;
-
   const htmlSidebar = htmlTemplate.evaluate().setTitle('BnS Gallery');
-
   SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
 }
 

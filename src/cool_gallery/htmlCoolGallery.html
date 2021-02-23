@@ -50,26 +50,6 @@
 
     <div id="content" style="margin-bottom:4.7em;">
       <div class="panel active" id="panel_List">
-        <? for (var i in list) { ?>
-        <div class="item_table">
-          <div class="table_row">
-            <div class="item_cell">
-              <span style="font-size: 23px;"><?= list[i].name ?></span><br>
-              <p style="text-indent: 0;font-size: 17px;"><?= list[i].description ?></p>
-              <span class="gray"><?= list[i].version_date ?></span><br>
-              <span class="gray"><?= list[i].version_name ?></span>
-            </div>
-          </div>
-          <div class="table_row">
-            <div class="item_cell item_menu">
-              <? if (list[i].preview_id != null) { ?>
-              <a href="https://docs.google.com/spreadsheets/d/e/<?= list[i].preview_id ?>/pubhtml" target="_blank">Preview</a>
-              <? } ?>
-              <a class="m-la" id="<?= i ?>">Import</a>
-            </div>
-          </div>
-        </div>
-        <? } ?>
       </div>
 
 
@@ -98,6 +78,33 @@
 
   <?!= htmlInclude('gas-common/htmlJavaScript'); ?>
   <script>
+    $(document).ready(function() {
+      google.script.run
+        .withSuccessHandler(listTemplates)
+        .withFailureHandler(showError)
+        .getGalleryTemplates();
+    });
+
+    function listTemplates(list) {
+      for (const key in list) {
+        const template = list[key];
+
+        let item = '';
+
+        item += '<div class="item_table"><div class="table_row"><div class="item_cell">';
+        item += '<span style="font-size: 23px;">' + template.name + '</span><br>';
+        item += '<p style="text-indent: 0;font-size: 17px;">' + template.description + '</p>';
+        item += '<span class="gray">' + template.version_date + '</span><br>';
+        item += '<span class="gray">' + template.version_name + '</span>';
+        item += '</div></div><div class="table_row"><div class="item_cell item_menu">';
+        if (template.preview_id) item += '<a href="https://docs.google.com/spreadsheets/d/e/' + template.preview_id + '/pubhtml" target="_blank">Preview</a>';
+        item += '<a class="m-la" id="' + key + '">Import</a>';
+        item += '</div></div></div>';
+
+        $('#panel_List').append(item);
+      }
+    }
+
     $(document).on('click', '.m-la', function() {
       var id = $(this).attr('id');
 
