@@ -109,12 +109,18 @@
     }
 
     $(document).on('click', '.m-la', function() {
-      var id = $(this).attr('id');
+      if ($('.m-la').hasClass('lock')) return;
+      $('.m-la').addClass('lock');
+
+      $('#content').css('opacity', 0.6);
 
       google.script.run
-        .withSuccessHandler(null)
+        .withSuccessHandler(function() {
+          $('.m-la').removeClass('lock');
+          $('#content').css('opacity', 1);
+        })
         .withFailureHandler(showError)
-        .coolGallery(id);
+        .coolGallery($(this).attr('id'));
     });
   </script>
 </body>
