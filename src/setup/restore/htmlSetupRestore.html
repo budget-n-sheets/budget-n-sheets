@@ -86,7 +86,7 @@
             </tr>
             <tr>
               <td class="name">Financial year</td>
-              <td id="financial_year"></td>
+              <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
             </tr>
             <tr>
               <td class="name">Initial month</td>
@@ -190,10 +190,15 @@
         $("#timeout").fadeIn();
       }, 240000);
 
+      const config = {
+        file_id: FILE_ID,
+        financial_year: $('#financial_year').val()
+      };
+
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupLock(uuid, 'restore', FILE_ID);
+        .setupLock(uuid, 'restore', config);
     }
 
     function refreshInfo(info) {
@@ -202,7 +207,10 @@
 
       FILE_ID = info.file_id;
 
-      for (var key in info) {
+      $('#financial_year').val(info.financial_year);
+      delete info.financial_year;
+
+      for (const key in info) {
         $("#" + key).append(info[key]);
       }
 

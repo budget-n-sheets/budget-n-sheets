@@ -120,10 +120,10 @@ function setupLock (uuid, select, config) {
     }
   } else if (select === 'restore') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
-    if (candidate.file_id !== config) throw new Error('File ID does not match.');
+    if (candidate.file_id !== config.file_id) throw new Error('File ID does not match.');
 
-    const blob = DriveApp.getFileById(config).getBlob();
-    settings.backup = unwrapBackup_(uuid, blob, config);
+    const blob = DriveApp.getFileById(config.file_id).getBlob();
+    settings.backup = unwrapBackup_(uuid, blob, config.file_id);
     if (settings.backup == null) return;
 
     for (const key in candidate) {
@@ -131,19 +131,21 @@ function setupLock (uuid, select, config) {
     }
 
     settings.spreadsheet_name = candidate.spreadsheet_title;
+    settings.financial_year = config.financial_year;
 
     for (let i = 0; i < candidate.list_acc.length; i++) {
       list_accounts[i] = candidate.list_acc[i];
     }
   } else if (select === 'copy') {
     const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
-    if (candidate.file_id !== config) throw new Error('File ID does not match.');
+    if (candidate.file_id !== config.file_id) throw new Error('File ID does not match.');
 
     for (const key in candidate) {
       settings[key] = candidate[key];
     }
 
     settings.spreadsheet_name = candidate.spreadsheet_title;
+    settings.financial_year = config.financial_year;
     settings.decimal_places = 2;
     settings.number_accounts = candidate.accounts.length;
     settings.file_id = candidate.file_id;
