@@ -66,7 +66,6 @@
       <div class="footer_table">
         <div class="table_row">
           <div class="footer_cell left" style="width: 100%;">
-            <span class="current" id="p-Response"></span>
           </div>
           <div class="footer_cell right">
             <div class="md-footer"><a href="<?= send_feedback ?>" target="_blank"><i class="material-icons-outlined md-24 md-click" title="Send feedback">feedback</i></a></div>
@@ -112,23 +111,11 @@
     $(document).on('click', '.m-la', function() {
       var id = $(this).attr('id');
 
-      $("#p-Response").empty();
-      google.script.run.withSuccessHandler(response)
+      google.script.run
+        .withSuccessHandler(null)
         .withFailureHandler(showError)
         .coolGallery(id);
     });
-
-    function response(r) {
-      if (r === 0) {
-        $("#p-Response").empty().append("Add-on is busy. Try again in a moment.");
-      } else if (r === 1) {
-        $("#p-Response").empty().append("The spreadsheet is not available. Try again later.");
-      } else if (r === 2) {
-        $("#p-Response").empty().append("Something went wrong. Try again in a moment.");
-      } else if (r === 3) {
-        showError();
-      }
-    }
   </script>
 </body>
 

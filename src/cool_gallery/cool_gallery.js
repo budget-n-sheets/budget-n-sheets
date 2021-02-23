@@ -18,6 +18,8 @@ function getGalleryTemplates () {
 }
 
 function coolGallery (option) {
+  const ui = SpreadsheetApp2.getUi();
+
   let s;
   let info;
 
@@ -31,17 +33,28 @@ function coolGallery (option) {
 
   const lock = LockService.getDocumentLock();
   s = lock.tryLock(200);
-  if (!s) return 0;
+  if (!s) {
+    ui.alert(
+      "Can't import analytics page",
+      'Add-on is busy. Try again in a moment.',
+      ui.ButtonSet.OK);
+    return 0;
+  }
+
   s = getCoolSheet_(info);
   lock.releaseLock();
 
   if (s === 0) {
-    SpreadsheetApp2.getUi().alert(
+    ui.alert(
       "Can't import analytics page",
       'A page with the name "' + info.sheet_name + '" already exists. Please rename, or delete the page.',
-      SpreadsheetApp2.getUi().ButtonSet.OK);
+      ui.ButtonSet.OK);
     return -1;
   } else if (s === 1) {
+    ui.alert(
+      "Can't import analytics page",
+      'The spreadsheet is not available. Try again later.',
+      ui.ButtonSet.OK);
     return 1;
   }
 
