@@ -175,10 +175,10 @@ function resumeActivity_ (mm0, mm1) {
     }
   }
 
-  let status = getSpreadsheetSettings_('optimize_load');
-  if (status == null) status = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  let optimize_load = getSpreadsheetSettings_('optimize_load');
+  if (optimize_load == null) optimize_load = new Array(12).fill(true);
   for (let mm = mm0; mm <= mm1; mm++) {
-    status[mm] = 0;
+    optimize_load[mm] = false;
   }
-  setSpreadsheetSettings_('optimize_load', status);
+  setSpreadsheetSettings_('optimize_load', optimize_load);
 }

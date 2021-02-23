@@ -47,7 +47,7 @@ function setupProperties_ (yyyy_mm) {
     decimal_places: SETUP_SETTINGS.decimal_places,
     decimal_separator: SETUP_SETTINGS.decimal_separator,
     spreadsheet_locale: spreadsheet.getSpreadsheetLocale(),
-    optimize_load: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    optimize_load: [false, false, false, false, false, false, false, false, false, false, false, false]
   };
   PropertiesService2.setProperty('document', 'spreadsheet_settings', 'json', properties);
   CacheService2.put('document', 'spreadsheet_settings', 'json', properties);

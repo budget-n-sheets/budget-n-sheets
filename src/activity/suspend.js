@@ -15,12 +15,12 @@ function suspendActivity_ (mm0, mm1) {
   const values = range.getValues();
   range.setValues(values);
 
-  const list = new Array(12).fill(0);
+  const optimize_load = new Array(12).fill(false);
 
   for (let i = mm0; i <= mm1; i++) {
-    list[i] = 1;
+    optimize_load[i] = true;
   }
 
-  setSpreadsheetSettings_('optimize_load', list);
+  setSpreadsheetSettings_('optimize_load', optimize_load);
   SpreadsheetApp.flush();
 }
