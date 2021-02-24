@@ -87,7 +87,7 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
     if (cell.Value) cell.Value = Number(cell.Value[0].replace('$', ''));
     else cell.Value = NaN;
 
-    const translation = getTranslation.call(cell.Description);
+    const translation = getTranslation(cell.Description);
     cell.TranslationType = translation.type;
     cell.TranslationNumber = translation.number;
 
