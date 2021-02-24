@@ -36,7 +36,6 @@ function onOpen (e) {
         .addSubMenu(ui.createMenu('Pages view')
           .addItem('Collapse', 'toolHideSheets_')
           .addItem('Expand', 'toolShowSheets_'))
-        .addItem('Toggle view mode', 'toggleViewMode_')
         .addSeparator()
         .addItem('Change settings', 'showSidebarMainSettings')
         .addSubMenu(ui.createMenu('More')

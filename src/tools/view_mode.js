@@ -26,6 +26,25 @@ function toggleViewMode_ () {
   lock.releaseLock();
 }
 
+function setViewMode_ (view_mode) {
+  if (view_mode === getSpreadsheetSettings_('view_mode')) return;
+
+  const lock = LockService.getDocumentLock();
+  try {
+    lock.waitLock(200);
+  } catch (err) {
+    ConsoleLog.warn(err);
+    return;
+  }
+
+  if (view_mode === 'complete') viewModeComplete_();
+  else if (view_mode === 'simple') viewModeSimple_();
+  else return;
+
+  setSpreadsheetSettings_('view_mode', view_mode);
+  lock.releaseLock();
+}
+
 function viewModeSimple_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, i, k;

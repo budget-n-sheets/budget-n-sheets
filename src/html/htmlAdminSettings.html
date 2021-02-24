@@ -125,6 +125,15 @@
               <td class="name"><label for="decimal_places">Decimal places</label></td>
               <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
             </tr>
+            <tr>
+              <td class="name"><label for="view_mode">View mode</label></td>
+              <td>
+                <select id="view_mode" required>
+                  <option value="complete" selected>Complete</option>
+                  <option value="simple">Simple</option>
+                </select>
+              </td>
+            </tr>
           </table>
           <? if (isOperationActive) { ?>
           <table style="width:100%;margin-top:1.3em;">
@@ -399,6 +408,7 @@
     function loadUserSettings(user_settings) {
       $("#initial_month").val(user_settings.initial_month);
       $("#decimal_places").val(user_settings.decimal_places);
+      $('#view_mode').val(user_settings.view_mode);
 
       <? if (isCalendarEnabled) { ?>
       $("#financial_calendar").val(user_settings.financial_calendar);
@@ -423,7 +433,8 @@
         cash_flow_events: $("#cash_flow_events").prop("checked"),
         <? } ?>
         initial_month : $("#initial_month").val(),
-        decimal_places : $("#decimal_places").val()
+        decimal_places : $("#decimal_places").val(),
+        view_mode: $('#view_mode').val()
       };
 
       google.script.run.withSuccessHandler(function(r, o) {

@@ -13,6 +13,7 @@ function retrieveUserSettings () {
   }
 
   user_settings.decimal_places = getSpreadsheetSettings_('decimal_places');
+  user_settings.view_mode = getSpreadsheetSettings_('view_mode');
 
   return user_settings;
 }
@@ -72,6 +73,12 @@ function saveUserSettings (settings) {
     if (decimal_places !== settings.decimal_places) {
       updateDecimalPlaces_();
     }
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+
+  try {
+    setViewMode_(settings.view_mode)
   } catch (err) {
     ConsoleLog.error(err);
   }
