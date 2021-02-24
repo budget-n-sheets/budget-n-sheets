@@ -13,7 +13,7 @@ function validateUpdateCashFlow_ () {
   const name = ranges[0].getSheet().getSheetName();
 
   if (name === 'Cash Flow') {
-    let list = new Array(12).fill(false);
+    const list = new Array(12).fill(false);
 
     for (let i = 0; i < ranges.length; i++) {
       let mm = ranges[i].getColumn() - 2;

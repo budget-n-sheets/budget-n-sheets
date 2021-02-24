@@ -143,7 +143,6 @@ function askResetProtection () {
 }
 
 function askReinstallTriggersUi () {
-
   if (!isUserAdmin_()) {
     deleteAllTriggers_();
 

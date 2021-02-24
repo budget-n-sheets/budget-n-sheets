@@ -21,7 +21,7 @@ function setupCards_ () {
   spreadsheet.moveActiveSheet(14);
 
   const ranges = [
-    sheet.getRange(6, 1 , 400, 5),
+    sheet.getRange(6, 1, 400, 5),
     sheet.getRange(2, 2, 1, 2)
   ];
   for (i = 1; i < 12; i++) {

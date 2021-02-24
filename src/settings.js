@@ -78,7 +78,7 @@ function saveUserSettings (settings) {
   }
 
   try {
-    setViewMode_(settings.view_mode)
+    setViewMode_(settings.view_mode);
   } catch (err) {
     ConsoleLog.error(err);
   }
