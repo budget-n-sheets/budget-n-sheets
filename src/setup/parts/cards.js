@@ -20,34 +20,38 @@ function setupCards_ () {
   spreadsheet.setActiveSheet(sheet);
   spreadsheet.moveActiveSheet(14);
 
-  const ranges = [];
-  for (i = 0; i < 12; i++) {
-    ranges[2 * i] = sheet.getRange(6, 1 + 6 * i, 400, 5);
-    ranges[2 * i + 1] = sheet.getRange(2, 2 + 6 * i, 1, 2);
+  const ranges = [
+    sheet.getRange(6, 1 , 400, 5),
+    sheet.getRange(2, 2, 1, 2)
+  ];
+  for (i = 1; i < 12; i++) {
+    ranges[2 * i] = ranges[0].offset(0, 6 * i);
+    ranges[2 * i + 1] = ranges[1].offset(0, 6 * i);
   }
 
   sheet.protect()
     .setUnprotectedRanges(ranges)
     .setWarningOnly(true);
 
+  const rangeOff = sheet.getRange(2, 1);
   for (i = 0; i < 12; i++) {
     const index = rollA1Notation(2, 1 + 6 * i);
     const card = rollA1Notation(2, 2 + 6 * i);
     const reference = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
 
-    sheet.getRange(2, 2 + 6 * i).setValue('All');
+    rangeOff.offset(0, 1 + 6 * i).setValue('All');
 
     formula = formulasCards.avail_credit(i, reference);
-    sheet.getRange(3, 1 + 6 * i).setFormula(formula);
+    rangeOff.offset(1, 6 * i).setFormula(formula);
 
     formula = formulasCards.sparkline(index, card, reference);
-    sheet.getRange(4, 1 + 6 * i).setFormula(formula);
+    rangeOff.offset(2, 6 * i).setFormula(formula);
 
     formula = formulasCards.index(card, header);
-    sheet.getRange(2, 1 + 6 * i).setFormula(formula);
+    rangeOff.offset(0, 6 * i).setFormula(formula);
 
     formula = formulasCards.report(index, reference);
-    sheet.getRange(2, 4 + 6 * i).setFormula(formula);
+    rangeOff.offset(0, 3 + 6 * i).setFormula(formula);
   }
 
   if (SETUP_SETTINGS.decimal_places !== 2) {

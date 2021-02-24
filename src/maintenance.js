@@ -81,8 +81,9 @@ function askResetProtection () {
     }
 
     ranges = [];
+    const rangeOff = sheet.getRange(5, 1, n, 4);
     for (k = 0; k < 1 + number_accounts; k++) {
-      range = sheet.getRange(5, 1 + 5 * k, n, 4);
+      range = rangeOff.offset(0, 5 * k);
       ranges.push(range);
     }
 
@@ -105,11 +106,13 @@ function askResetProtection () {
 
     ranges = [];
 
+    const rangeOff1 = sheet.getRange(6, 1, n, 5);
+    const rangeOff2 = sheet.getRange(2, 1, 1, 3);
     for (i = 0; i < 12; i++) {
-      range = sheet.getRange(6, 1 + 6 * i, n, 5);
+      range = rangeOff1.offset(0, 6 * i);
       ranges.push(range);
 
-      range = sheet.getRange(2, 1 + 6 * i, 1, 3);
+      range = rangeOff2.offset(0, 6 * i);
       ranges.push(range);
     }
 

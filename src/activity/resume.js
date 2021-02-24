@@ -66,6 +66,9 @@ function resumeActivity_ (mm0, mm1) {
     regex[k - 1] = rollA1Notation(1, col + w_ * (k - 1));
   }
 
+  const rangeOff1 = sheetBackstage.getRange(2, 4 + col - w_);
+  const rangeOff2 = sheetBackstage.getRange(3, col - w_, 4, 1);
+
   let mm = mm0 - 1;
   while (++mm <= mm1) {
     const month = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
@@ -102,10 +105,10 @@ function resumeActivity_ (mm0, mm1) {
     wallet[3 + h_ * mm - offset][0] = expenses;
 
     formula = formulasCards.bsblank(cardsRows, mm);
-    sheetBackstage.getRange(2 + h_ * mm, 4 + col - w_).setFormula(formula);
+    rangeOff1.offset(h_ * mm, 0).setFormula(formula);
 
     formula = 'RC[5] + RC[10] + RC[15] + RC[20] + RC[25] + RC[30] + RC[35] + RC[40] + RC[45] + RC[50]';
-    sheetBackstage.getRange(3 + h_ * mm, col - w_, 4, 1).setFormulaR1C1(formula);
+    rangeOff2.offset(h_ * mm, 0).setFormulaR1C1(formula);
 
     const list4 = [];
     for (let k = 0; k < 10; k++) {
@@ -126,9 +129,13 @@ function resumeActivity_ (mm0, mm1) {
     sheetBackstage.getRangeList(list4).setFormula(rollA1Notation(2 + h_ * mm, 4 + col - w_));
   }
 
-  sheetBackstage.getRange(2 + h_ * mm0, 2, height, w_).setFormulas(wallet);
-  sheetBackstage.getRange(2 + h_ * mm0, 7, height, w_ * num_acc).setFormulas(accounts);
-  sheetBackstage.getRange(2 + h_ * mm0, col, height, 10 * w_).setFormulas(cards);
+  {
+    const rangeOff = sheetBackstage.getRange(2 + h_ * mm0, 2, height, 1);
+
+    rangeOff.offset(0, 0, height, w_).setFormulas(wallet);
+    rangeOff.offset(0, 5, height, w_ * num_acc).setFormulas(accounts);
+    rangeOff.offset(0, col - 2, height, 10 * w_).setFormulas(cards);
+  }
 
   SpreadsheetApp.flush();
   sheetBackstage.getRangeList(list1).setFormulaR1C1('R[-1]C + R[-3]C');
@@ -147,31 +154,41 @@ function resumeActivity_ (mm0, mm1) {
       const numRows = month.getMaxRows();
       if (numRows < 5) continue;
 
+      const rangeOff = sheetBackstage.getRange(3 + h_ * mm, 2 + w_);
+
       for (let k = 0; k < num_acc; k++) {
         rangeList.push(rollA1Notation(2 + h_ * mm, 2 + w_ + w_ * k));
 
         const bsblank = rollA1Notation(2 + h_ * mm, 11 + w_ * k);
 
         formula = formulasAcc.balance(mm, values[1 + k] + numRows, balance1[5 * mm + k], bsblank);
-        sheetBackstage.getRange(3 + h_ * mm, 2 + w_ + w_ * k).setFormula(formula);
+        rangeOff.offset(0, w_ * k).setFormula(formula);
       }
     }
 
     sheetBackstage.getRangeList(rangeList).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
   }
 
-  for (let k = 0; k < num_acc; k++) {
-    const account = db_accounts.data[k];
-    if (account.time_a < mm0) continue;
+  {
+    const rangeOff = sheetBackstage.getRange(2 + h_ * account.time_a, 2 + w_);
 
-    formula = '=' + FormatNumber.localeSignal(account.balance);
-    sheetBackstage.getRange(2 + h_ * account.time_a, 2 + w_ + w_ * k).setFormula(formula);
+    for (let k = 0; k < num_acc; k++) {
+      const account = db_accounts.data[k];
+      if (account.time_a < mm0) continue;
+
+      formula = '=' + FormatNumber.localeSignal(account.balance);
+      rangeOff.offset(0, w_ * k).setFormula(formula);
+    }
   }
 
-  for (let k = 0; k < db_cards.count; k++) {
-    const formula = '=' + FormatNumber.localeSignal(db_cards.data[k].limit);
-    for (let mm = mm0; mm <= mm1; mm++) {
-      sheetBackstage.getRange(2 + h_ * mm, 1 + col + w_ * k).setFormula(formula);
+  {
+    const rangeOff = sheetBackstage.getRange(2 + h_ * mm, 1 + col);
+
+    for (let k = 0; k < db_cards.count; k++) {
+      const formula = '=' + FormatNumber.localeSignal(db_cards.data[k].limit);
+      for (let mm = mm0; mm <= mm1; mm++) {
+        rangeOff.offset(0, w_ * k).setFormula(formula);
+      }
     }
   }
 

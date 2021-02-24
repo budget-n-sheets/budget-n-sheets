@@ -14,10 +14,12 @@ function setupCashFlow_ () {
   const dec_c = (dec_p ? ',' : '\\');
   const options = '{"charttype"' + dec_c + '"column"; "color"' + dec_c + '"#93c47d"; "negcolor"' + dec_c + '"#e06666"; "empty"' + dec_c + '"zero"; "nan"' + dec_c + '"convert"}';
 
-  ranges = [];
-  for (i = 0; i < 12; i++) {
-    ranges[2 * i] = sheet.getRange(4, 2 + 4 * i, 31);
-    ranges[2 * i + 1] = sheet.getRange(4, 4 + 4 * i, 31);
+  ranges = [
+    sheet.getRange(4, 2, 31), sheet.getRange(4, 4, 31)
+  ];
+  for (i = 1; i < 12; i++) {
+    ranges[2 * i] = ranges[0].offset(0, 4 * i);
+    ranges[2 * i + 1] = ranges[1].offset(0, 2 + 4 * i);
   }
 
   sheet.protect()
@@ -73,8 +75,10 @@ function setupCashFlow_ () {
     }
   }
 
+  const rangeOff1 = sheet.getRange(4, 3);
+  const rangeOff2 = sheet.getRange(2, 2);
   for (i = 1; i < 12; i++) {
-    sheet.getRange(4, 3 + 4 * i).setFormulaR1C1('=R[' + (d - 1) + ']C[-4] + RC[-1]');
+    rangeOff1.offset(0, 4 * i).setFormulaR1C1('=R[' + (d - 1) + ']C[-4] + RC[-1]');
 
     d = new Date(financial_year, 1 + i, 0).getDate();
     ranges.push([rollA1Notation(5, 3 + 4 * i, d - 1)]);
@@ -83,7 +87,7 @@ function setupCashFlow_ () {
     }
 
     formula = 'SPARKLINE(' + rollA1Notation(4, 3 + 4 * i, d, 1) + '; ' + options + ')';
-    sheet.getRange(2, 2 + 4 * i).setFormula(formula);
+    rangeOff2.offset(0, 4 * i).setFormula(formula);
 
     j = 0;
     s = new Date(financial_year, i, 1).getDay();

@@ -57,18 +57,24 @@ function viewModeSimple_ () {
     if (!sheet) continue;
     if (sheet.getMaxRows() < 3) continue;
 
-    sheet.getRange(1, 3, 3, 2).breakApart();
-    sheet.getRange(1, 3, 1, 2)
-      .merge()
-      .setFormulaR1C1('R[2]C[-2]');
-    sheet.getRange(1, 1, 1, 2).setBorder(null, null, false, null, null, null);
+    {
+      const rangeOff = sheet.getRange(1, 3, 1, 2);
 
-    for (k = 0; k < num_acc; k++) {
-      sheet.getRange(1, 8 + 5 * k, 3, 2).breakApart();
-      sheet.getRange(1, 8 + 5 * k, 1, 2)
-        .merge()
-        .setFormulaR1C1('R[2]C[-2]');
-      sheet.getRange(1, 6 + 5 * k, 1, 2).setBorder(null, null, false, null, null, null);
+      rangeOff.offset(0, 0, 3, 2).breakApart();
+      rangeOff.merge().setFormulaR1C1('R[2]C[-2]');
+      rangeOff.offset(0, -2).setBorder(null, null, false, null, null, null);
+    }
+
+    {
+      const rangeOff = sheet.getRange(1, 8, 1, 2);
+
+      for (k = 0; k < num_acc; k++) {
+        rangeOff.offset(0, 5 * k, 3, 2).breakApart();
+        rangeOff.offset(0, 5 * k)
+          .merge()
+          .setFormulaR1C1('R[2]C[-2]');
+        rangeOff.offset(0, -2 + 5 * k).setBorder(null, null, false, null, null, null);
+      }
     }
 
     sheet.hideRows(2, 2);
@@ -84,17 +90,21 @@ function viewModeSimple_ () {
 
   const col = 2 + w_ + w_ * num_acc;
 
-  for (i = 0; i < 12; i++) {
-    head = rollA1Notation(2, 1 + 6 * i);
-    cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
+  {
+    const rangeOff = sheet.getRange(2, 4, 1, 2);
 
-    expr = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
-    expr = '"Balance: "; TEXT(' + expr + '; "#,##0.00;(#,##0.00)")';
+    for (i = 0; i < 12; i++) {
+      head = rollA1Notation(2, 1 + 6 * i);
+      cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
 
-    sheet.getRange(2, 4 + 6 * i, 3, 2).breakApart();
-    sheet.getRange(2, 4 + 6 * i, 1, 2)
-      .merge()
-      .setFormula('CONCATENATE(' + expr + ')');
+      expr = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
+      expr = '"Balance: "; TEXT(' + expr + '; "#,##0.00;(#,##0.00)")';
+
+      rangeOff.offset(0, 6 * i, 3, 2).breakApart();
+      rangeOff.offset(0, 6 * i)
+        .merge()
+        .setFormula('CONCATENATE(' + expr + ')');
+    }
   }
 
   sheet.hideRows(3, 2);
@@ -118,11 +128,14 @@ function viewModeComplete_ () {
 
     sheet.showRows(2, 2);
 
-    sheet.getRange(1, 3, 3, 2)
+    let rangeOff = sheet.getRange(1, 1, 1, 2);
+
+    rangeOff.offset(0, 2, 3, 2)
       .merge()
       .clearContent();
-    sheet.getRange(1, 1, 1, 2).setBorder(null, null, true, null, null, null, '#000000', SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
+    rangeOff.setBorder(null, null, true, null, null, null, '#000000', SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
 
+    rangeOff = rangeOff.offset(0, 5);
     for (k = 0; k < num_acc; k++) {
       expr1 = 'TEXT(_Backstage!' + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
       expr1 = '"Withdrawal: ("; _Backstage!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr1 + '; "\n"; ';
@@ -136,10 +149,10 @@ function viewModeComplete_ () {
       expr4 = 'TEXT(_Backstage!' + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
       expr4 = '"Trf. out: ("; _Backstage!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr4;
 
-      sheet.getRange(1, 8 + 5 * k, 3, 2)
+      rangeOff.offset(0, 2 + 5 * k, 3, 2)
         .merge()
         .setFormula('CONCATENATE(' + expr1 + expr2 + expr3 + expr4 + ')');
-      sheet.getRange(1, 6 + 5 * k, 1, 2).setBorder(null, null, true, null, null, null, '#000000', SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
+      rangeOff.offset(0, 5 * k).setBorder(null, null, true, null, null, null, '#000000', SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
     }
   }
   SpreadsheetApp.flush();
@@ -152,21 +165,25 @@ function viewModeComplete_ () {
 
   sheet.showRows(3, 2);
 
-  for (i = 0; i < 12; i++) {
-    head = rollA1Notation(2, 1 + 6 * i);
-    cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
+  {
+    const rangeOff = sheet.getRange(2, 4, 3, 2);
 
-    expr1 = 'OFFSET(' + cell + '; 1; 5*' + head + '; 1; 1)';
-    expr1 = '"Credit: "; TEXT(' + expr1 + '; "#,##0.00;(#,##0.00)"); "\n"; ';
+    for (i = 0; i < 12; i++) {
+      head = rollA1Notation(2, 1 + 6 * i);
+      cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
 
-    expr2 = 'OFFSET(' + cell + '; 3; 5*' + head + '; 1; 1)';
-    expr2 = '"Expenses: "; TEXT(' + expr2 + '; "#,##0.00;(#,##0.00)"); "\n"; ';
+      expr1 = 'OFFSET(' + cell + '; 1; 5*' + head + '; 1; 1)';
+      expr1 = '"Credit: "; TEXT(' + expr1 + '; "#,##0.00;(#,##0.00)"); "\n"; ';
 
-    expr3 = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
-    expr3 = '"Balance: "; TEXT(' + expr3 + '; "#,##0.00;(#,##0.00)")';
+      expr2 = 'OFFSET(' + cell + '; 3; 5*' + head + '; 1; 1)';
+      expr2 = '"Expenses: "; TEXT(' + expr2 + '; "#,##0.00;(#,##0.00)"); "\n"; ';
 
-    formula = 'CONCATENATE(' + expr1 + expr2 + '"\n"; ' + expr3 + ')';
-    sheet.getRange(2, 4 + 6 * i, 3, 2).merge().setFormula(formula);
+      expr3 = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
+      expr3 = '"Balance: "; TEXT(' + expr3 + '; "#,##0.00;(#,##0.00)")';
+
+      formula = 'CONCATENATE(' + expr1 + expr2 + '"\n"; ' + expr3 + ')';
+      rangeOff.offset(0, 6 * i).merge().setFormula(formula);
+    }
   }
   SpreadsheetApp.flush();
 }

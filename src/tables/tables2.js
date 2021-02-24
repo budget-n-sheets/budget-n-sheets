@@ -166,11 +166,15 @@ function refreshAccountName_ (index, account) {
     list[i - 1] = rollA1Notation(2 + h_ * i, col);
   }
 
-  sheet.getRange(2, col).setFormula('0');
-  sheet.getRangeList(list).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
+  {
+    const rangeOff = sheet.getRange(1, col);
 
-  sheet.getRange(1, col).setValue(account.name);
-  sheet.getRange(2 + h_ * account.time_a, col).setFormula('=' + FormatNumber.localeSignal(account.balance));
+    rangeOff.offset(1, 0).setFormula('0');
+    sheet.getRangeList(list).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
+
+    rangeOff.setValue(account.name);
+    rangeOff.offset(1 + h_ * account.time_a, 0).setFormula('=' + FormatNumber.localeSignal(account.balance));
+  }
 
   sheet = spreadsheet.getSheetByName('Jan');
   if (sheet) {
@@ -231,8 +235,12 @@ function refreshCashFlowReferences_ () {
     formulas[mm] += ' + _Backstage!' + ranges[k] + (2 + h_ * mm);
   }
 
-  for (i = 0; i < 12; i++) {
-    sheet.getRange(4, 3 + 4 * i).setFormula(formulas[i]);
+  {
+    const rangeOff = sheet.getRange(4, 3);
+
+    for (i = 0; i < 12; i++) {
+      rangeOff.offset(0, 4 * i).setFormula(formulas[i]);
+    }
   }
 }
 

@@ -244,9 +244,12 @@ function refreshCardsRules_ () {
   if (n < 1) return;
 
   if (list2.length === 0) {
+    const rangeOff1 = sheet.getRange(2, 2);
+    const rangeOff2 = sheet.getRange(6, 3, n, 1);
+
     for (i = 0; i < 12; i++) {
-      sheet.getRange(2, 2 + 6 * i).clearDataValidations();
-      sheet.getRange(6, 3 + 6 * i, n, 1).clearDataValidations();
+      rangeOff1.offset(0, 6 * i).clearDataValidations();
+      rangeOff2.offset(0, 6 * i).clearDataValidations();
     }
     SpreadsheetApp.flush();
     return;
@@ -262,14 +265,19 @@ function refreshCardsRules_ () {
     .setAllowInvalid(true)
     .build();
 
-  for (i = 0; i < 12; i++) {
-    sheet.getRange(2, 2 + 6 * i)
-      .clearDataValidations()
-      .setDataValidation(rule1);
+  {
+    const rangeOff1 = sheet.getRange(2, 2);
+    const rangeOff2 = sheet.getRange(6, 3, n, 1);
 
-    sheet.getRange(6, 3 + 6 * i, n, 1)
-      .clearDataValidations()
-      .setDataValidation(rule2);
+    for (i = 0; i < 12; i++) {
+      rangeOff1.offset(0, 6 * i)
+        .clearDataValidations()
+        .setDataValidation(rule1);
+
+      rangeOff2.offset(0, 6 * i)
+        .clearDataValidations()
+        .setDataValidation(rule2);
+    }
   }
 
   SpreadsheetApp.flush();

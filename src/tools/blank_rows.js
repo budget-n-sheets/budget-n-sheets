@@ -37,10 +37,12 @@ function insertRowsBefore_ (sheet) {
 
   if (sheet.getLastRow() === maxRows + num) {
     const maxCols = sheet.getMaxColumns();
-    const values = sheet.getRange(maxRows + num, 1, 1, maxCols).getValues();
+    const rangeOff = sheet.getRange(maxRows + num, 1, 1, maxCols);
 
-    sheet.getRange(maxRows + num, 1, 1, maxCols).clearContent();
-    sheet.getRange(maxRows, 1, 1, maxCols).setValues(values);
+    const values = rangeOff.getValues();
+
+    rangeOff.clearContent();
+    rangeOff.offset(0 - num, 0).setValues(values);
   }
 
   SpreadsheetApp.flush();

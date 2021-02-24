@@ -3,7 +3,7 @@ function setupMonthSheet_ () {
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheetTTT = spreadsheet.getSheetByName('TTT');
-  let sheet, ranges, formula;
+  let sheet, formula;
   let expr1, expr2, expr3, expr4;
   let i, k;
 
@@ -45,21 +45,23 @@ function setupMonthSheet_ () {
 
     sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(_Backstage!$B' + (4 + h_ * i) + '))');
 
-    ranges = [];
+    const ranges = [];
+    const rangeOff1 = sheet.getRange(2, 6);
+    const rangeOff2 = sheet.getRange(5, 1, 400, 4);
     for (k = 0; k < num_acc; k++) {
-      ranges[k] = sheet.getRange(5, 1 + 5 * k, 400, 4);
+      ranges[k] = rangeOff2.offset(0, 5 * k);
 
       formula = formulaBuild.balance(k, i);
-      sheet.getRange(2, 6 + 5 * k).setFormula(formula);
+      rangeOff1.offset(0, 5 * k).setFormula(formula);
 
       formula = formulaBuild.expenses(k, i);
-      sheet.getRange(3, 6 + 5 * k).setFormula(formula);
+      rangeOff1.offset(1, 5 * k).setFormula(formula);
 
       formula = formulaBuild.report(k, i);
-      sheet.getRange(1, 8 + 5 * k).setFormula(formula);
+      rangeOff1.offset(-1, 2 + 5 * k).setFormula(formula);
     }
 
-    ranges[k] = sheet.getRange(5, 1 + 5 * k, 400, 4);
+    ranges[k] = rangeOff2.offset(0, 5 * k);
     sheet.protect()
       .setUnprotectedRanges(ranges)
       .setWarningOnly(true);
@@ -71,8 +73,10 @@ function setupMonthSheet_ () {
   }
 
   for (i = 1; i < 12; i++) {
+    const rangeOff = sheets[i].getRange(1, 1);
+
     for (k = 0; k < 1 + num_acc; k++) {
-      sheets[i].getRange(1, 1 + 5 * k).setFormula('=' + MONTH_NAME.short[i - 1] + '!' + headers[k]);
+      rangeOff.offset(0, 5 * k).setFormula('=' + MONTH_NAME.short[i - 1] + '!' + headers[k]);
     }
   }
 
