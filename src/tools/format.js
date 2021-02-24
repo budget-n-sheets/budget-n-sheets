@@ -26,14 +26,14 @@ function validateFormatRegistry_ () {
       return;
     }
 
-    let t = false;
+    let t = true;
 
     for (let i = 0; i < ranges.length; i++) {
       if ((ranges[i].getColumn() - 1) % 5 === 0 && ranges[i].getNumColumns() === 4) {
         if (ranges[i].getNumRows() > 1) sortAccountsRange_(ranges[i]);
       } else if (t) {
         formatAccounts_(mm);
-        t = true;
+        t = false;
       }
     }
   }
