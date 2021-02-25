@@ -85,35 +85,6 @@ function postEventsForDate_ (date) {
   }
 }
 
-function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
-  const lastRow = sheet.getLastRow();
-  let table, i;
-
-  if (sheet.getMaxRows() < lastRow + data.table.length) {
-    addBlankRows_(sheet.getName());
-  }
-
-  if (lastRow < row) {
-    i = 0;
-    table = data.table;
-  } else {
-    table = sheet.getRange(row, offset, lastRow - row + 1, width).getValues();
-
-    i = 0;
-    while (i < table.length && table[i][col] !== '') { i++; }
-    if (i < table.length) {
-      table.splice.apply(table, [i, 0].concat(data.table));
-    } else {
-      table = table.concat(data.table);
-    }
-  }
-
-  sheet.getRange(row, offset, table.length, width).setValues(table);
-
-  const value = transpose([data.values]);
-  sheet.getRange(row + i, offset + col, value.length, 1).setFormulas(value);
-}
-
 function treatLayout_ (yyyy, mm) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const financial_year = getConstProperties_('financial_year');
