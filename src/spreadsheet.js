@@ -1,4 +1,6 @@
 function mergeEventsInTable_ (sheet, data, dest) {
+  if (data.table.length === 0) return;
+
   const _s = {};
   if (dest.name === 'accs') {
     _s.row = 5;
@@ -15,8 +17,11 @@ function mergeEventsInTable_ (sheet, data, dest) {
   const lastRow = sheet.getLastRow();
   let table, i;
 
-  if (sheet.getMaxRows() < lastRow + data.table.length) {
-    blankRows_(sheet.getName());
+  {
+    const num = (lastRow < _s.row ? _s.row - 1 : lastRow) + data.table.length;
+    while (sheet.getMaxRows() < num) {
+      blankRows_(sheet.getName());
+    }
   }
 
   if (lastRow < _s.row) {
