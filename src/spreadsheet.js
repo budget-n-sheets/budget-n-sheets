@@ -16,7 +16,7 @@ function mergeEventsInTable_ (sheet, data, dest) {
   let table, i;
 
   if (sheet.getMaxRows() < lastRow + data.table.length) {
-    addBlankRows_(sheet.getName());
+    blankRows_(sheet.getName());
   }
 
   if (lastRow < _s.row) {
