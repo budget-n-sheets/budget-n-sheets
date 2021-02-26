@@ -1,4 +1,17 @@
-function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
+function mergeEventsInTable_ (sheet, data, dest) {
+  const _s = {};
+  if (dest.name === 'accs') {
+    _s.row = 5;
+    _s.offset = 1 + 5 * dest.k;
+    _s.width = 4;
+    _s.col = 2;
+  } else if (dest.name === 'cards') {
+    _s.row = 6;
+    _s.offset = 1 + 6 * dest.k;
+    _s.width = 5;
+    _s.col = 3;
+  }
+
   const lastRow = sheet.getLastRow();
   let table, i;
 
@@ -6,14 +19,15 @@ function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
     addBlankRows_(sheet.getName());
   }
 
-  if (lastRow < row) {
+  if (lastRow < _s.row) {
     i = 0;
     table = data.table;
   } else {
-    table = sheet.getRange(row, offset, lastRow - row + 1, width).getValues();
+    table = sheet.getRange(_s.row, _s.offset, lastRow - _s.row + 1, _s.width).getValues();
 
     i = 0;
-    while (i < table.length && table[i][col] !== '') { i++; }
+    while (i < table.length && table[i][_s.col] !== '') { i++; }
+
     if (i < table.length) {
       table.splice.apply(table, [i, 0].concat(data.table));
     } else {
@@ -21,10 +35,10 @@ function mergeEventsInTable_ (sheet, data, row, offset, width, col) {
     }
   }
 
-  sheet.getRange(row, offset, table.length, width).setValues(table);
+  sheet.getRange(_s.row, _s.offset, table.length, _s.width).setValues(table);
 
   const value = transpose([data.values]);
-  sheet.getRange(row + i, offset + col, value.length, 1).setFormulas(value);
+  sheet.getRange(_s.row + i, _s.offset + _s.col, value.length, 1).setFormulas(value);
 }
 
 function updateDecimalPlaces_ () {

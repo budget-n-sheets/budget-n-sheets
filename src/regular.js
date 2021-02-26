@@ -72,7 +72,7 @@ function postEventsForDate_ (date) {
   if (cards.table.length > 0) {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
     if (sheet) {
-      mergeEventsInTable_(sheet, cards, 6, 1 + 6 * mm, 5, 3);
+      mergeEventsInTable_(sheet, cards, { name: 'cards', k: mm });
     }
   }
 
@@ -81,7 +81,7 @@ function postEventsForDate_ (date) {
 
   for (let k = 0; k < num_acc; k++) {
     if (accounts[k].table.length === 0) continue;
-    mergeEventsInTable_(sheet, accounts[k], 5, 1 + 5 * k, 4, 2);
+    mergeEventsInTable_(sheet, accounts[k], { name: 'accs', k: k });
   }
 }
 
