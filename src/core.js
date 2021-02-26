@@ -40,9 +40,10 @@ function onOpen (e) {
         .addItem('About the add-on', 'showDialogAboutAddon')
         .addItem('Change settings', 'showSidebarMainSettings')
         .addSubMenu(ui.createMenu('More')
-          .addItem('Deactive the add-on', 'askDeactivation')
           .addItem('Resume month', 'toolResumeActivity_')
-          .addItem('Show Quickstart', 'showPanelQuickstart'));
+          .addItem('Show Quickstart', 'showPanelQuickstart')
+          .addSeparator()
+          .addItem('Deactive the add-on', 'askDeactivation'));
     } else {
       menu.addItem('Start budget sheet', 'showDialogSetupAddon_')
         .addSeparator()
