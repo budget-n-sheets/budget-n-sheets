@@ -37,10 +37,9 @@ function onOpen (e) {
           .addItem('Collapse', 'toolHideSheets_')
           .addItem('Expand', 'toolShowSheets_'))
         .addSeparator()
-        .addItem('About the add-on', 'showDialogAboutAddon')
         .addItem('Change settings', 'showSidebarMainSettings')
         .addSubMenu(ui.createMenu('More')
-          .addItem('Resume month', 'toolResumeActivity_')
+          .addItem('About the add-on', 'showDialogAboutAddon')
           .addItem('Show Quickstart', 'showPanelQuickstart')
           .addSeparator()
           .addItem('Deactive the add-on', 'askDeactivation'));
