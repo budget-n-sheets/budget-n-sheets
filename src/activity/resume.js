@@ -170,14 +170,12 @@ function resumeActivity_ (mm0, mm1) {
   }
 
   {
-    const rangeOff = sheetBackstage.getRange(2 + h_ * account.time_a, 2 + w_);
-
     for (let k = 0; k < num_acc; k++) {
       const account = db_accounts.data[k];
       if (account.time_a < mm0) continue;
 
       formula = '=' + FormatNumber.localeSignal(account.balance);
-      rangeOff.offset(0, w_ * k).setFormula(formula);
+      sheetBackstage.getRange(3 + h_ * mm, 2 + w_ + w_ * k).setFormula(formula);
     }
   }
 
