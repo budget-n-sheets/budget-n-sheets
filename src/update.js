@@ -13,7 +13,7 @@ const PATCH_THIS = Object.freeze({
       [null, null, update_v0m36p2_, update_v0m36p3_, update_v0m36p4_, null],
       [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_, null, null, null, null, update_v0m37p14_, null, update_v0m37p16_, null, null, update_v0m37p19_, update_v0m37p20_],
       [update_v0m38p0_, null, null, null],
-      [null, null, null, null, null]
+      [null, null, null, null, null, update_v0m39p5_]
     ]
   ],
   beta_list: []
@@ -181,6 +181,46 @@ function update_v0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Fix card expenses total not summing total credit.
+ *
+ * 0.39.5
+ */
+function update_v0m39p5_ () {
+  try {
+    const h_ = TABLE_DIMENSION.height;
+    const w_ = TABLE_DIMENSION.width;
+
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const sheet = spreadsheet.getSheetByName('_Backstage');
+    if (!sheet) return 1;
+
+    const num_acc = getConstProperties_('number_accounts');
+
+    const list = [];
+    const col1 = 2 + w_ + w_ * num_acc + w_;
+    const col2 = 2 + w_ + w_ * num_acc;
+
+    let formula = 'RC[' + (1 + w_) + ']';
+    for (let k = 2; k <= 10; k++) {
+      formula += ' + RC[' + (1 + w_ * k) + ']';
+    }
+
+    for (let i = 0; i < 12; i++) {
+      for (let k = 0; k < 10; k++) {
+        list[12 * k + i] = rollA1Notation(4 + h_ * i, 1 + col1 + w_ * k);
+      }
+
+      sheet.getRange(4 + h_ * i, col2).setFormulaR1C1(formula);
+    }
+
+    sheet.getRangeList(list).setFormulaR1C1('RC[-1] + R[-1]C[-1]');
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
 
 /**
  * Fix colors and hidden tabs.
