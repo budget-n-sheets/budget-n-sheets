@@ -13,7 +13,7 @@ const PATCH_THIS = Object.freeze({
       [null, null, update_v0m36p2_, update_v0m36p3_, update_v0m36p4_, null],
       [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_, null, null, null, null, update_v0m37p14_, null, update_v0m37p16_, null, null, update_v0m37p19_, update_v0m37p20_],
       [update_v0m38p0_, null, null, null],
-      [null, null, null, null, null, update_v0m39p5_]
+      [null, null, null, null, null, update_v0m39p5_, update_v0m39p6_]
     ]
   ],
   beta_list: []
@@ -181,6 +181,33 @@ function update_v0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Fix number format in month sheet.
+ * Delete exceeding columns.
+ *
+ * 0.39.6
+ */
+function update_v0m39p6_ () {
+  try {
+    updateDecimalPlaces_();
+
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const num_acc = getConstProperties_('number_accounts');
+    const init = 5 * num_acc;
+
+    for (let i = 0; i < 12; i++) {
+      const sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+      const max = sheet.getMaxColumns();
+
+      if (max <= init || max % 5 == 0) continue;
+
+      sheet.deleteColumns(max - (max % 5) + 1, max % 5);
+    }
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
 
 /**
  * Fix card expenses total not summing total credit.
