@@ -30,7 +30,7 @@ function setupMonthSheet_ () {
     list_format[0] = rollA1Notation(5, 3, 400, 1);
 
     for (let k = 1; k <= num_acc; k++) {
-      list_format[k] = rollA1Notation(5, 8 + 5 * k, 400, 1);
+      list_format[k] = rollA1Notation(5, 3 + 5 * k, 400, 1);
     }
 
     sheetTTT.getRangeList(list_format)
