@@ -7,6 +7,10 @@
 
 **Budget n Sheets** is an add-on for Google Sheets. The add-on can build, format, manage, and maintain an annual budget spreadsheet for the user. There is space to annotate expenses, bank transactions, and credit card transactions. The transactions can be tagged and review with stats. The budget spreadsheet also has a cash flow system synced with Google Calendar.
 
+### Third-party dependencies
+
+[ACKNOWLEDGEMENTS.md](https://github.com/guimspace/budget-n-sheets/blob/master/ACKNOWLEDGEMENTS.md)
+
 ## Contribute code and ideas
 
 Contributors *sign-off* that they adhere to the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) by adding a `Signed-off-by` line to commit messages.
