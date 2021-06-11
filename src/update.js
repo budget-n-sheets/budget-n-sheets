@@ -13,7 +13,7 @@ const PATCH_THIS = Object.freeze({
       [null, null, update_v0m36p2_, update_v0m36p3_, update_v0m36p4_, null],
       [null, null, null, update_v0m37p3_, null, null, update_v0m37p6_, update_v0m37p7_, update_v0m37p8_, update_v0m37p9_, null, null, null, null, update_v0m37p14_, null, update_v0m37p16_, null, null, update_v0m37p19_, update_v0m37p20_],
       [update_v0m38p0_, null, null, null],
-      [null, null, null, null, null, update_v0m39p5_, update_v0m39p6_]
+      [null, null, null, null, null, update_v0m39p5_, update_v0m39p6_, update_v0m39p7_]
     ]
   ],
   beta_list: []
@@ -181,6 +181,80 @@ function update_v0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Reset conditional formmating in Summary.
+ * Fix offset in formulas.
+ *
+ * 0.39.7
+ */
+function update_v0m39p7_ () {
+  try {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
+    if (!sheet) return 1;
+
+    sheet.clearConditionalFormatRules();
+
+    const rules = sheet.getConditionalFormatRules();
+    let range, rule;
+
+    range = sheet.getRange(11, 8, 12, 2);
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenNumberLessThan(0.0)
+      .setFontColor('#c53929')
+      .setBold(true)
+      .setRanges([range])
+      .build();
+    rules.push(rule);
+
+    range = sheet.getRange(11, 2, 12, 8);
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=ROW() - 10 < INDIRECT("_Settings!B4")')
+      .setFontColor('#cccccc')
+      .setRanges([range])
+      .build();
+    rules.push(rule);
+
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=ROW() - 10 > INDIRECT("_Settings!B4") - 1 + INDIRECT("_Settings!B6")')
+      .setFontColor('#999999')
+      .setRanges([range])
+      .build();
+    rules.push(rule);
+
+    range = sheet.getRange(75, 2, 12, 5);
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=ROW() - 74 < INDIRECT("_Settings!B4")')
+      .setFontColor('#cccccc')
+      .setRanges([range])
+      .build();
+    rules.push(rule);
+
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=ROW() - 74 > INDIRECT("_Settings!B4") - 1 + INDIRECT("_Settings!B6")')
+      .setFontColor('#999999')
+      .setRanges([range])
+      .build();
+    rules.push(rule);
+
+    sheet.setConditionalFormatRules(rules);
+
+    const formulaBuild = FormulaBuild.summary();
+    let formula = formulaBuild.table3().share();
+    sheet.getRange(75, 6).setFormula(formula);
+
+    const formulas = [];
+    const buildChart3 = formulaBuild.chart3();
+    for (let i = 0; i < 12; i++) {
+      const formula = buildChart3.data(i);
+      formulas[i] = [formula];
+    }
+    sheet.getRange(75, 9, 12, 1).setFormulas(formulas);
+    SpreadsheetApp.flush();
+  } catch (err) {
+    ConsoleLog.error(err);
+  }
+}
 
 /**
  * Fix number format in month sheet.
