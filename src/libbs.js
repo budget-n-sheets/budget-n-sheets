@@ -114,15 +114,18 @@ const FormatNumber = {
 };
 
 function getTranslation (description) {
-  const translation = { type: '', number: 0 };
-  const match = description.match(/@(M(\+|-)(\d+)|Avg|Total)/);
-  if (match) {
-    if (match[1] === 'Total' || match[1] === 'Avg') {
-      translation.type = match[1];
-    } else {
-      translation.type = 'M';
-      translation.number = Number(match[2] + match[3]);
-    }
+  const translation = { type: '', number: 0, signal: 1 };
+
+  const match = description.match(/(-?)@(M(\+|-)(\d+)|Avg|Total)/);
+  if (!match) return translation;
+
+  translation.signal = match[1] === '-' ? -1 : 1;
+
+  if (match[2] === 'Total' || match[2] === 'Avg') {
+    translation.type = match[2];
+  } else {
+    translation.type = 'M';
+    translation.number = Number(match[3] + match[4]);
   }
 
   return translation;
