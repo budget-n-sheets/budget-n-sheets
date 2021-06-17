@@ -90,6 +90,7 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
     const translation = getTranslation(cell.Description);
     cell.TranslationType = translation.type;
     cell.TranslationNumber = translation.number;
+    cell.TranslationSignal = translation.signal;
 
     match = cell.Description.match(/!#\w+/);
     if (match) cell.TagImportant = match[0].slice(2);

@@ -152,6 +152,8 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
           value = tags.months[c][mm + evento.TranslationNumber];
           break;
       }
+
+      value *= evento.TranslationSignal;
     } else {
       continue;
     }
@@ -262,6 +264,8 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
               }
               break;
           }
+
+          value *= translation.signal;
         }
       }
     }
