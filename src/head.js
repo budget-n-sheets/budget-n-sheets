@@ -75,7 +75,7 @@ const APPS_SCRIPT_GLOBAL = Object.freeze({
   },
 
   template_id: '',
-  template_sheets: ['_Settings', 'Cards', 'Summary', 'TTT', 'Cash Flow', 'Tags', 'Quick Actions', '_Backstage', '_About BnS'],
+  template_sheets: ['_Settings', '_Unique', 'Cards', 'Summary', 'TTT', 'Cash Flow', 'Tags', 'Quick Actions', '_Backstage', '_About BnS'],
 
   cool_gallery: {
     stats_for_tags: {
