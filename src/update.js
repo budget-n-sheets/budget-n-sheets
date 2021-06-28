@@ -183,6 +183,127 @@ function update_v0m0p0_ () {
 } */
 
 /**
+ * Setup suggested description.
+ *
+ * 0.40.0
+ */
+function update_v0m40p0_ () {
+  try {
+    let rr;
+
+    rr = update_v0m40p0s0_();
+    if (rr) return rr;
+
+    rr = update_v0m40p0s1_();
+    if (rr) return rr;
+
+    rr = update_v0m40p0s2_();
+    if (rr) return rr;
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m40p0s2_ () {
+  try {
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const unique = spreadsheet.getSheetByName('_Unique');
+    if (!unique) return 1;
+
+    const cards = spreadsheet.getSheetByName('Cards');
+    if (!cards) return;
+
+    const max = cards.getMaxRows() - 5;
+    if (max < 1) return;
+
+    const rule = SpreadsheetApp.newDataValidation()
+      .requireValueInRange(unique.getRange('B:B'), false)
+      .setAllowInvalid(true)
+      .build();
+
+    let range_cards = '';
+
+    for (let i = 0 ; i < 12; i++) {
+      cards.getRange(6, 2 + 6 * i, max, 1)
+        .clearDataValidations()
+        .setDataValidation(rule);
+
+      range_cards += 'Cards!' + rollA1Notation(6, 2 + 6 * i, max, 1) + '; ';
+    }
+
+    unique.getRange(1, 2).setFormula('SORT(UNIQUE({' + range_cards.slice(0, -2) + '}))');
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m40p0s1_ () {
+  try {
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const unique = spreadsheet.getSheetByName('_Unique');
+    if (!unique) return 1;
+
+    const num_acc = getConstProperties_('number_accounts');
+    const rule = SpreadsheetApp.newDataValidation()
+      .requireValueInRange(unique.getRange('A:A'), false)
+      .setAllowInvalid(true)
+      .build();
+
+    let range_accounts = '';
+
+    for (let i = 0 ; i < 12; i++) {
+      const month = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+      if (!month) continue;
+
+      const max = month.getMaxRows() - 4;
+      if (max < 1) continue;
+
+      for (let k = 0; k <= num_acc; k++) {
+        range_accounts += MONTH_NAME.short[i] + '!' + rollA1Notation(5, 2 + 5 * k, max, 1) + '; ';
+
+        month.getRange(5, 2 + 5 * k, max, 1)
+          .clearDataValidations()
+          .setDataValidation(rule);
+      }
+    }
+
+    if (range_accounts === '') return;
+
+    unique.getRange(1, 1).setFormula('SORT(UNIQUE({' + range_accounts.slice(0, -2) + '}))');
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+function update_v0m40p0s0_ () {
+  try {
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+
+    let sheet = spreadsheet.getSheetByName('_Unique');
+    if (sheet) spreadsheet.deleteSheet(sheet);
+
+    const template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
+
+    sheet = template.getSheetByName('_Unique')
+      .copyTo(spreadsheet)
+      .setName('_Unique')
+      .setTabColor('#cc0000');
+
+    spreadsheet.setActiveSheet(sheet);
+    spreadsheet.moveActiveSheet(spreadsheet.getNumSheets());
+
+    sheet.protect().setWarningOnly(true);
+    sheet.hideSheet();
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
  * Reset conditional formmating in Summary.
  * Fix offset in formulas.
  *
