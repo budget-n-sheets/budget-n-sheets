@@ -252,6 +252,7 @@ function setupParts_ () {
   setupProperties_(yyyy_mm);
   setupTables_();
   setupMonthSheet_();
+  setupUnique_();
   setupBackstage_();
   setupSummary_();
   setupTags_();

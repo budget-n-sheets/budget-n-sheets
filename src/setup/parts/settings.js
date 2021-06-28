@@ -5,7 +5,7 @@ function setupSettings_ (yyyy_mm) {
   let cell, dec_p;
 
   spreadsheet.setActiveSheet(sheet);
-  spreadsheet.moveActiveSheet(7);
+  spreadsheet.moveActiveSheet(8);
 
   sheet.protect().setWarningOnly(true);
 

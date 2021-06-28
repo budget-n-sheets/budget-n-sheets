@@ -49,6 +49,7 @@ function setupEast_ (yyyy_mm) {
   spreadsheet.getSheetByName('Cash Flow').setTabColor('#e69138');
   spreadsheet.getSheetByName('Tags').setTabColor('#e69138');
   spreadsheet.getSheetByName('_Backstage').setTabColor('#cc0000');
+  spreadsheet.getSheetByName('_Unique').setTabColor('#cc0000');
   spreadsheet.getSheetByName('_Settings').setTabColor('#cc0000');
   spreadsheet.getSheetByName('Quick Actions').setTabColor('#6aa84f');
   spreadsheet.getSheetByName('_About BnS').setTabColor('#6aa84f');
@@ -70,6 +71,7 @@ function setupEast_ (yyyy_mm) {
   }
 
   spreadsheet.getSheetByName('_Backstage').hideSheet();
+  spreadsheet.getSheetByName('_Unique').hideSheet();
   spreadsheet.getSheetByName('_Settings').hideSheet();
   spreadsheet.getSheetByName('_About BnS').hideSheet();
 
