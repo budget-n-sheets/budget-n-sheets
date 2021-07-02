@@ -25,11 +25,11 @@ function setupUnique_ () {
     }
   }
 
-  range_accounts = range_accounts.slice(0, -2);
-  range_cards = range_cards.slice(0, -2);
+  range_accounts = '{' + range_accounts.slice(0, -2) + '}';
+  range_cards = '{' + range_cards.slice(0, -2) + '}';
 
-  sheet.getRange(1, 1).setFormula('SORT(UNIQUE({' + range_accounts + '}))');
-  sheet.getRange(1, 2).setFormula('SORT(UNIQUE({' + range_cards + '}))');
+  sheet.getRange(1, 1).setFormula('SORT(UNIQUE(' + range_accounts + '))');
+  sheet.getRange(1, 2).setFormula('SORT(UNIQUE(' + range_cards + '))');
 
   SpreadsheetApp.flush();
 }
