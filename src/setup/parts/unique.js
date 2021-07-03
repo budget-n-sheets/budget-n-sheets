@@ -26,10 +26,17 @@ function setupUnique_ () {
   }
 
   range_accounts = '{' + range_accounts.slice(0, -2) + '}';
+  sheet.getRange(1, 1).setFormula('SORT(UNIQUE(' + range_accounts + '))');
+
   range_cards = '{' + range_cards.slice(0, -2) + '}';
 
-  sheet.getRange(1, 1).setFormula('SORT(UNIQUE(' + range_accounts + '))');
-  sheet.getRange(1, 2).setFormula('SORT(UNIQUE(' + range_cards + '))');
+  let formula = 'FILTER(' + range_cards + '; NOT(REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+"))); ';
+  formula += 'ARRAYFORMULA(REGEXREPLACE(FILTER(' + range_cards + '; REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+")); "[0-9]+/[0-9]+"; ""))';
+  formula = 'SORT(UNIQUE({' + formula + '})); ';
+  formula += 'SORT(FILTER(' + range_cards + '; REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+")))';
+  formula = '{' + formula + '}';
+
+  sheet.getRange(1, 2).setFormula(formula);
 
   SpreadsheetApp.flush();
 }
