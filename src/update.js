@@ -184,6 +184,44 @@ function update_v0m0p0_ () {
 } */
 
 /**
+ * Update formula of suggested description.
+ *
+ * 0.40.1
+ */
+function update_v0m40p1_ () {
+  try {
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const unique = spreadsheet.getSheetByName('_Unique');
+    if (!unique) return;
+
+    const cards = spreadsheet.getSheetByName('Cards');
+    if (!cards) return;
+
+    const max = cards.getMaxRows() - 5;
+    if (max < 1) return;
+
+    let range_cards = '';
+
+    for (let i = 0 ; i < 12; i++) {
+      range_cards += 'Cards!' + rollA1Notation(6, 2 + 6 * i, max, 1) + '; ';
+    }
+
+    range_cards = '{' + range_cards.slice(0, -2) + '}';
+
+    let formula = 'FILTER(' + range_cards + '; NOT(REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+"))); ';
+    formula += 'ARRAYFORMULA(REGEXREPLACE(FILTER(' + range_cards + '; REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+")); "[0-9]+/[0-9]+"; ""))';
+    formula = 'SORT(UNIQUE({' + formula + '})); ';
+    formula += 'SORT(FILTER(' + range_cards + '; REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+")))';
+    formula = '{' + formula + '}';
+
+    unique.getRange(1, 2).setFormula(formula);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
+
+/**
  * Setup suggested description.
  *
  * 0.40.0
