@@ -23,12 +23,19 @@ function askDeactivation () {
 
   const response1 = ui.alert(
     'Deactivate the add-on',
-    'The deactivation affects only this spreadsheet: ' + SpreadsheetApp2.getActiveSpreadsheet().getName() + '.\n\n' +
+    'Before you deactivate the add-on we recommend\n' +
+    'backing-up your data so that you can restore it later.\n\n' +
+
+    'The deactivation affects only this spreadsheet:\n' +
+    SpreadsheetApp2.getActiveSpreadsheet().getName() + '\n\n' +
+
     'By deactivating the add-on:\n' +
-    '- All add-on features are disabled.\n' +
+    '- The spreadshet is locked.\n' +
+    '- Add-on features are disabled.\n' +
     '- Updates and maintenance cease.\n' +
     '- Data and functions are unaffected.\n' +
     '- This action cannot be undone.\n\n' +
+
     'For more information, visit the wiki.\n' +
     'Click OK to continue.',
     ui.ButtonSet.OK_CANCEL);
