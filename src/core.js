@@ -29,6 +29,7 @@ function onOpen (e) {
       menu.addItem('Add blank rows', 'toolAddBlankRows')
         .addItem('Format table', 'toolFormatRegistry')
         .addItem('Update cash flow', 'toolUpdateCashFlow')
+        .addItem('Forward installments', 'toolForwardInstallments')
         .addSeparator()
         .addSubMenu(ui.createMenu('Open panel')
           .addItem('Accounts & Cards', 'showPanelTables')

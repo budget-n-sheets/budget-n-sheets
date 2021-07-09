@@ -10,11 +10,16 @@ function toolFormatRegistry () {
   toolPickerUi_('FormatRegistry');
 }
 
+function toolForwardInstallments () {
+  toolPickerUi_('ForwardInstallments');
+}
+
 function toolPickerUi_ (select) {
   switch (select) {
     case 'AddBlankRows':
     case 'UpdateCashFlow':
     case 'FormatRegistry':
+    case 'ForwardInstallments':
       break;
 
     default:
@@ -56,6 +61,9 @@ function toolPicker_ (select, value) {
       break;
     case 'FormatCards':
       formatCards_(value);
+      break;
+    case 'ForwardInstallments':
+      forwardInstallments_();
       break;
 
     default:
