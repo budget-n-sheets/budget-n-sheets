@@ -63,7 +63,7 @@ function toolPicker_ (select, value) {
       formatCards_(value);
       break;
     case 'ForwardInstallments':
-      forwardInstallments_();
+      validateForwardInstallments_();
       break;
 
     default:
