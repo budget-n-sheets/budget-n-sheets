@@ -1,6 +1,6 @@
 function validateForwardInstallments_ () {
-  const activeRange = SpreadsheetApp.getActiveRange();
-  const sheet = activeRange.getSheet();
+  const ranges = SpreadsheetApp.getActiveRangeList().getRanges();
+  const sheet = ranges[0].getSheet();
 
   if (sheet.getSheetName() !== 'Cards') {
     SpreadsheetApp2.getUi().alert(
@@ -13,27 +13,54 @@ function validateForwardInstallments_ () {
   const numRows = sheet.getLastRow() - 5;
   if (numRows < 1) return;
 
-  const col = activeRange.getColumn() - 1;
-  if (col > 65) return;
+  if (ranges.length === 1) {
+    const range = ranges[0];
 
-  if (col % 6 === 0 && activeRange.getNumColumns() === 5) {
-    forwardInstallments_(activeRange);
-    return;
+    const col = range.getColumn() - 1;
+    if (col > 65) return;
+
+    if (col % 6 === 0 && range.getNumColumns() === 5) {
+      forwardInstallments_(range);
+      return;
+    }
   }
 
   const _w = 6;
-  const mm = (col - (col % _w)) / _w;
+  let list = [];
 
-  let range = sheet.getRange(6, 1 + _w * mm, numRows, 5);
-  const snapshot = range.getValues();
+  for (let i = 0; i < ranges.length; i++) {
+    const range = ranges[i];
 
-  let n = 0;
-  while (n < snapshot.length && snapshot[n][3] !== '') { n++; }
-  if (n === 0) return;
+    const col = range.getColumn() - 1;
+    const mm = (col - (col % _w)) / _w;
 
-  range = range.offset(0, 0, n, 5);
+    let last = range.getLastColumn() - 1;
+    last = (last - (last % _w)) / _w + 1;
 
-  forwardInstallments_(range);
+    for (let j = mm; j < last; j++) list.push(j);
+  }
+
+  list = list.filter((value, index, self) => {
+                return self.indexOf(value) === index;
+              })
+              .sort((a, b) => {
+                return a - b;
+              });
+
+  for (let i = 0; i < list.length; i++) {
+    const mm = list[i];
+
+    let range = sheet.getRange(6, 1 + _w * mm, numRows, 5);
+    const snapshot = range.getValues();
+
+    let n = 0;
+    while (n < snapshot.length && snapshot[n][3] !== '') { n++; }
+    if (n === 0) return;
+
+    range = range.offset(0, 0, n, 5);
+
+    forwardInstallments_(range);
+  }
 }
 
 function forwardInstallments_ (range) {
