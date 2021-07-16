@@ -35,6 +35,7 @@ function validateForwardInstallments_ () {
 
     let last = range.getLastColumn() - 1;
     last = (last - (last % _w)) / _w + 1;
+    if (last > 11) last = 11;
 
     for (let j = mm; j < last; j++) list.push(j);
   }

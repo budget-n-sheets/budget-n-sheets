@@ -1,5 +1,6 @@
 function mergeEventsInTable_ (sheet, data, dest) {
   if (data.table.length === 0) return;
+  if (dest.k > 11) return;
 
   const _s = {};
   if (dest.name === 'accs') {
