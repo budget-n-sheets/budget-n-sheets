@@ -28,9 +28,11 @@ function onOpen (e) {
     if (isInstalled_()) {
       menu.addItem('Add blank rows', 'toolAddBlankRows')
         .addItem('Format table', 'toolFormatRegistry')
-        .addItem('Update cash flow', 'toolUpdateCashFlow')
-        .addItem('Forward installments', 'toolForwardInstallments')
-        .addSeparator()
+        .addItem('Update cash flow', 'toolUpdateCashFlow');
+
+      if (hasCards_()) menu.addItem('Forward installments', 'toolForwardInstallments');
+
+      menu.addSeparator()
         .addSubMenu(ui.createMenu('Open panel')
           .addItem('Accounts & Cards', 'showPanelTables')
           .addItem('BnS Gallery', 'showPanelAnalytics'))
