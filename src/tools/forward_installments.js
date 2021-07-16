@@ -10,8 +10,7 @@ function validateForwardInstallments_ () {
     return;
   }
 
-  const numRows = sheet.getLastRow() - 5;
-  if (numRows < 1) return;
+  if (sheet.getLastRow() < 6) return;
 
   if (ranges.length === 1) {
     const range = ranges[0];
@@ -48,6 +47,7 @@ function validateForwardInstallments_ () {
               });
 
   for (let i = 0; i < list.length; i++) {
+    const numRows = sheet.getLastRow() - 5;
     const mm = list[i];
 
     let range = sheet.getRange(6, 1 + _w * mm, numRows, 5);
