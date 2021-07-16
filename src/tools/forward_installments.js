@@ -97,4 +97,5 @@ function forwardInstallments_ (range) {
   const mm = (col - (col % _w)) / _w;
 
   mergeEventsInTable_(sheet, merge, { name: 'cards', k: (mm + 1) });
+  if (merge.table.length > 0) SpreadsheetApp.flush();
 }
