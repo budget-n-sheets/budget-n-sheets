@@ -14,6 +14,7 @@ function validateForwardInstallments_ () {
 
   const _w = 6;
   let list = [];
+  let isRangeOnly = false;
 
   for (let i = 0; i < ranges.length; i++) {
     const range = ranges[i];
@@ -22,9 +23,11 @@ function validateForwardInstallments_ () {
     if (col > 65) continue;
 
     if (col % 6 === 0 && range.getNumColumns() === 5) {
+      isRangeOnly = true;
       fastForwardInstallments_(range);
-      continue;
     }
+
+    if (isRangeOnly) continue;
 
     const mm = (col - (col % _w)) / _w;
 
@@ -34,6 +37,8 @@ function validateForwardInstallments_ () {
 
     for (let j = mm; j < last; j++) list.push(j);
   }
+
+  if (isRangeOnly) return;
 
   list = list.filter((value, index, self) => {
                 return self.indexOf(value) === index;
