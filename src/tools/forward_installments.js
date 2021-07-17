@@ -15,6 +15,7 @@ function validateForwardInstallments_ () {
   const _w = 6;
   let list = [];
   let isRangeOnly = false;
+  let mm0 = -1;
 
   for (let i = 0; i < ranges.length; i++) {
     const range = ranges[i];
@@ -23,7 +24,13 @@ function validateForwardInstallments_ () {
     if (col > 65) continue;
 
     if (col % 6 === 0 && range.getNumColumns() === 5) {
-      isRangeOnly = true;
+      if (!isRangeOnly) {
+        isRangeOnly = true;
+        mm0 = col / 6;
+      } else if (col / 6 !== mm0) {
+        continue;
+      }
+
       fastForwardInstallments_(range);
     }
 
