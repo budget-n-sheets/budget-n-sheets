@@ -12,18 +12,6 @@ function validateForwardInstallments_ () {
 
   if (sheet.getLastRow() < 6) return;
 
-  if (ranges.length === 1) {
-    const range = ranges[0];
-
-    const col = range.getColumn() - 1;
-    if (col > 65) return;
-
-    if (col % 6 === 0 && range.getNumColumns() === 5) {
-      forwardInstallments_(range);
-      return;
-    }
-  }
-
   const _w = 6;
   let list = [];
 
@@ -31,6 +19,13 @@ function validateForwardInstallments_ () {
     const range = ranges[i];
 
     const col = range.getColumn() - 1;
+    if (col > 65) continue;
+
+    if (col % 6 === 0 && range.getNumColumns() === 5) {
+      forwardInstallments_(range);
+      continue;
+    }
+
     const mm = (col - (col % _w)) / _w;
 
     let last = range.getLastColumn() - 1;
