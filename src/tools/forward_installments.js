@@ -22,7 +22,7 @@ function validateForwardInstallments_ () {
     if (col > 65) continue;
 
     if (col % 6 === 0 && range.getNumColumns() === 5) {
-      forwardInstallments_(range);
+      fastForwardInstallments_(range);
       continue;
     }
 
@@ -57,6 +57,68 @@ function validateForwardInstallments_ () {
 
     forwardInstallments_(range);
   }
+}
+
+function fastForwardInstallments_ (range) {
+  const snapshot = range.getValues();
+  const list = [];
+
+  for (let i = 0; i < snapshot.length; i++) {
+    if (snapshot[i][1] === '') continue;
+
+    const match = snapshot[i][1].match(/((\d+)\/(\d+))/);
+    if (!match) continue;
+
+    const p1 = +match[2];
+    const p2 = +match[3];
+    if (p1 >= p2) continue;
+
+    if (snapshot[i][0] > 0) snapshot[i][0] *= -1;
+
+    const value = FormatNumber.localeSignal(snapshot[i][3]);
+    snapshot[i][3] = '';
+
+    list.push({
+      line: snapshot[i],
+      value: value,
+
+      reg: match[1],
+      p1: p1,
+      p2: p2
+    });
+  }
+
+  if (list.length === 0) return;
+
+  const sheet = range.getSheet();
+
+  const _w = 6;
+  const col = range.getColumn() - 1;
+
+  let mm = (col - (col % _w)) / _w + 1;
+  while (list.length > 0 && mm < 12) {
+    const merge = { table: [], values: [] };
+
+    for (let i = 0; i < list.length; i++) {
+      list[i].p1++;
+
+      const line = list[i].line.slice();
+      line[1] = line[1].replace(list[i].reg, list[i].p1 + '/' + list[i].p2);
+
+      merge.table.push(line);
+      merge.values.push(list.value);
+
+      if (list[i].p1 === list[i].p2) {
+        list.splice(i, 1);
+        i--;
+      }
+    }
+
+    mergeEventsInTable_(sheet, merge, { name: 'cards', k: mm });
+    mm++;
+  }
+
+  SpreadsheetApp.flush();
 }
 
 function forwardInstallments_ (range) {
