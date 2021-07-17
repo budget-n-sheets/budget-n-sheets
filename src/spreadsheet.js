@@ -1,14 +1,17 @@
 function mergeEventsInTable_ (sheet, data, dest) {
   if (data.table.length === 0) return;
-  if (dest.k > 11) return;
 
   const _s = {};
   if (dest.name === 'accs') {
+    if (dest.k > 5) return;
+
     _s.row = 5;
     _s.offset = 1 + 5 * dest.k;
     _s.width = 4;
     _s.col = 2;
   } else if (dest.name === 'cards') {
+    if (dest.k > 11) return;
+
     _s.row = 6;
     _s.offset = 1 + 6 * dest.k;
     _s.width = 5;
