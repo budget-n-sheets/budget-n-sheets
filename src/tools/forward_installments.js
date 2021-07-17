@@ -14,8 +14,9 @@ function validateForwardInstallments_ () {
 
   const _w = 6;
   let list = [];
+  let listRanges = [];
   let isRangeOnly = false;
-  let mm0 = -1;
+  let mm0 = 12;
 
   for (let i = 0; i < ranges.length; i++) {
     const range = ranges[i];
@@ -23,28 +24,31 @@ function validateForwardInstallments_ () {
     const col = range.getColumn() - 1;
     if (col > 65) continue;
 
-    if (col % 6 === 0 && range.getNumColumns() === 5) {
-      if (!isRangeOnly) {
-        isRangeOnly = true;
-        mm0 = col / 6;
-      } else if (col / 6 !== mm0) {
-        continue;
-      }
+    if (col % _w === 0 && range.getNumColumns() === 5) {
+      isRangeOnly = true;
 
-      fastForwardInstallments_(range);
+      const mm = col / _w;
+      if (mm < mm0) mm0 = mm;
+
+      listRanges.push({
+        range: range,
+        mm: mm
+      });
+    } else if (!isRangeOnly) {
+      const mm = (col - (col % _w)) / _w;
+
+      let last = range.getLastColumn() - 1;
+      last = (last - (last % _w)) / _w + 1;
+      if (last > 11) last = 11;
+
+      for (let j = mm; j < last; j++) list.push(j);
     }
-
-    if (isRangeOnly) continue;
-
-    const mm = (col - (col % _w)) / _w;
-
-    let last = range.getLastColumn() - 1;
-    last = (last - (last % _w)) / _w + 1;
-    if (last > 11) last = 11;
-
-    for (let j = mm; j < last; j++) list.push(j);
   }
 
+  for (let i = 0; i < listRanges.length; i++) {
+    if (listRanges[i].mm !== mm0) continue;
+    fastForwardInstallments_(listRanges[i].range);
+  }
   if (isRangeOnly) return;
 
   list = list.filter((value, index, self) => {
