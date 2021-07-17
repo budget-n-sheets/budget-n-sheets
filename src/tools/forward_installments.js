@@ -131,10 +131,9 @@ function fastForwardInstallments_ (range) {
     }
 
     mergeEventsInTable_(sheet, merge, { name: 'cards', k: mm });
+    SpreadsheetApp.flush();
     mm++;
   }
-
-  SpreadsheetApp.flush();
 }
 
 function forwardInstallments_ (range) {
