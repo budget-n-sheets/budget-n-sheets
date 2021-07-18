@@ -1,3 +1,16 @@
+const SpreadsheetApp2 = {
+  _spreadsheet: null,
+  _ui: null,
+
+  getUi: function () {
+    return this._ui || (this._ui = SpreadsheetApp.getUi());
+  },
+
+  getActiveSpreadsheet: function () {
+    return this._spreadsheet || (this._spreadsheet = SpreadsheetApp.getActiveSpreadsheet());
+  }
+};
+
 function mergeEventsInTable_ (sheet, data, dest) {
   if (data.table.length === 0) return;
 
