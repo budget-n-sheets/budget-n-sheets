@@ -139,7 +139,7 @@ function showSidebarSettings () {
   const financial_year = getConstProperties_('financial_year');
   const isOperationActive = (financial_year >= DATE_NOW.getFullYear());
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('html/htmlSidebarSettings');
+  let htmlTemplate = HtmlService.createTemplateFromFile('settings/htmlSidebarSettings');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
   const owner = spreadsheet.getOwner();
