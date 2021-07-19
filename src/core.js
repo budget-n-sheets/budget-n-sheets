@@ -40,7 +40,7 @@ function onOpen (e) {
           .addItem('Collapse', 'toolHideSheets_')
           .addItem('Expand', 'toolShowSheets_'))
         .addSeparator()
-        .addItem('Change settings', 'showSidebarMainSettings')
+        .addItem('Change settings', 'showSidebarSettings')
         .addSubMenu(ui.createMenu('More')
           .addItem('About the add-on', 'showDialogAboutAddon')
           .addItem('Show Quickstart', 'showPanelQuickstart')
@@ -124,7 +124,7 @@ function showPanelAnalytics () {
   SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
 }
 
-function showSidebarMainSettings () {
+function showSidebarSettings () {
   if (!isUserAdmin_()) {
     SpreadsheetApp2.getUi().alert(
       'Permission denied',
