@@ -139,8 +139,9 @@ function showSidebarSettings () {
   const financial_year = getConstProperties_('financial_year');
   const isOperationActive = (financial_year >= DATE_NOW.getFullYear());
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('settings/htmlSidebarSettings');
+  let htmlTemplate = HtmlService.createTemplateFromFile('settings/sidebar/htmlSidebar');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
+  htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
 
   const owner = spreadsheet.getOwner();
   if (owner) {
@@ -152,7 +153,6 @@ function showSidebarSettings () {
   }
 
   htmlTemplate.isOperationActive = isOperationActive;
-  htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
 
   if (isOperationActive) {
     const calendars = getAllOwnedCalendars();

@@ -1,0 +1,17 @@
+<script>
+  $(document).on('click', '#b-Backup', backupNow);
+
+  function backupNow() {
+    this.disabled = true;
+    $("#footer_response").empty();
+
+    google.script.run
+      .withSuccessHandler(function(r, o) {
+        if (r > 1) showStatus("Something went wrong. Try again later.");
+        o.disabled = false;
+      })
+      .withFailureHandler(showError)
+      .withUserObject(this)
+      .requestBackupSession();
+  }
+</script>
