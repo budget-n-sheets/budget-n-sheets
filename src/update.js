@@ -15,7 +15,7 @@ const PATCH_THIS = Object.freeze({
       [update_v0m38p0_, null, null, null],
       [null, null, null, null, null, update_v0m39p5_, update_v0m39p6_, update_v0m39p7_, null],
       [update_v0m40p0_, update_v0m40p1_],
-      [null, null, null]
+      [null, null, null, update_v0m41p3_]
     ]
   ],
   beta_list: []
@@ -183,6 +183,21 @@ function update_v0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Fix initial month value in _Settings.
+ *
+ * 0.41.3
+ */
+function update_v0m41p3_ () {
+  try {
+    const initial_month = getUserSettings_('initial_month');
+    setUserSettings_('initial_month', initial_month);
+  } catch (err) {
+    ConsoleLog.error(err);
+    return 2;
+  }
+}
 
 /**
  * Update formula of suggested description.
