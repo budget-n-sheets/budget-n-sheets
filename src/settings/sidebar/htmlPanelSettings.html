@@ -1,0 +1,90 @@
+<div class="panel active" id="panel_Settings">
+  <form class="asidebar" accept-charset="UTF-8">
+    <table style="width:100%;">
+      <tr>
+        <th colspan="2"><span style="font-size:1.2em;">Spreadsheet</span></th>
+      </tr>
+      <tr>
+        <td class="name"><label>Name</label></td>
+        <td><?= doc_name ?></td>
+      </tr>
+      <tr>
+        <td class="name"><label>Financial year</label></td>
+        <td><?= financial_year ?></td>
+      </tr>
+      <tr>
+        <td class="name"><label for="initial_month">Initial month</label></td>
+        <td>
+          <select id="initial_month" required>
+            <option value="0" selected>January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td class="name"><label for="decimal_places">Decimal places</label></td>
+        <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+      </tr>
+      <tr>
+        <td class="name"><label for="view_mode">View mode</label></td>
+        <td>
+          <select id="view_mode" required>
+            <option value="complete" selected>Complete</option>
+            <option value="simple">Simple</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+    <? if (isOperationActive) { ?>
+    <table style="width:100%;margin-top:1.3em;">
+      <tr>
+        <th colspan="2"><span style="font-size:1.2em;">Financial calendar</span></th>
+      </tr>
+      <? if (isCalendarEnabled) { ?>
+      <tr>
+        <td class="comment name"><label for="financial_calendar">Calendar</label></td>
+        <td class="comment">
+          <select id="financial_calendar" style="width: 157px" required>
+            <option value="" selected>Disable</option>
+            <? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
+            <option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
+            <? } ?>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td class="secondary" colspan="2">
+          * Calendar is not owned by you.
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to the spreadsheet</label>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
+        </td>
+      </tr>
+      <? } else { ?>
+      <tr>
+        <td>
+          It seems like Google Calendar is not enable for your account. <a href="<?= home_wiki ?>/Financial-Calendar" target="_blank"><b>Learn more</b></a>
+        </td>
+      </tr>
+      <? } ?>
+    </table>
+    <? } ?>
+  </form>
+</div>
