@@ -88,51 +88,6 @@
     </div>
 
     <div id="content" style="margin-top: 7px;margin-bottom: 4.3em;">
-      <div class="panel" id="panel_Maintenance">
-        <table style="width:100%;">
-          <tr>
-            <th colspan="2"><span style="font-size:1.2em;">Maintenance</span></th>
-          </tr>
-          <tr>
-            <td class="comment name" style="width: 100%;"><label>Reset protected ranges</label></td>
-            <td class="comment"><button id="b-Reset">Reset</button></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <p>This can fix issues related with editable ranges affected by protection.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="comment name" style="width: 100%;"><label>Reinstall triggers</label></td>
-            <td class="comment"><button id="b-Reinstall">Reinstall</button></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <p>This can fix issues related with the add-on's automatic update and maintenance.<br>
-                <a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
-              </p>
-            </td>
-          </tr>
-        </table>
-        <? if (!isOwner || isSharedDrive) { ?>
-        <table style="width:100%;margin-top:1.3em;">
-          <tr>
-            <th colspan="2"><span style="font-size:1.2em;">Add-on Admin</span></th>
-          </tr>
-          <tr>
-            <td class="comment name" style="width: 100%;">Transfer add-on admin role</td>
-            <td class="comment"><button id="b-Transfer">Transfer</button></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <p>Transfers the role of add-on administrator in this spreadsheet.<br>
-              <a href="<?= home_wiki ?>/Changing-Settings#transfer-add-on-admin-role" target="_blank"><b>Learn more</b></a></p>
-            </td>
-          </tr>
-        </table>
-        <? } ?>
-      </div>
-
       <? if (settings_backup) { ?>
         <?!= htmlInclude("settings/sidebar/htmlPanelBackup"); ?>
       <? } ?>
@@ -154,15 +109,6 @@
   </div>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    $(document).ready(function() {
-      $("#b-Reinstall").click(reinstallTriggers);
-      <? if (!isOwner || isSharedDrive) { ?>
-      $("#b-Transfer").click(transferAdminRole);
-      <? } ?>
-
-      $("#b-Reset").click(resetProtection);
-    });
-
     $(document).on("click", ".header_tab", function() {
       if ($(this).hasClass("active")) return;
 
@@ -192,54 +138,6 @@
       <? } ?>
       }
     });
-
-
-
-    <? if (!isOwner || isSharedDrive) { ?>
-    function transferAdminRole() {
-      this.disabled = true;
-      $("#footer_response").empty();
-
-      google.script.run.withSuccessHandler(function(r, o) {
-          o.disabled = false;
-          if (!r) google.script.host.close();
-        })
-        .withFailureHandler(showError)
-        .withUserObject(this)
-        <? if (isSharedDrive) { ?>
-        .askTransferAdminSd();
-        <? } else { ?>
-        .askTransferAdmin();
-        <? } ?>
-    }
-
-    <? } ?>
-
-    function reinstallTriggers() {
-      this.disabled = true;
-      $("#footer_response").empty();
-
-      google.script.run.withSuccessHandler(function(r, o) {
-          if (!r) showStatus("Reinstalled triggers");
-          o.disabled = false;
-        })
-        .withFailureHandler(showError)
-        .withUserObject(this)
-        .askReinstallTriggersUi();
-    }
-
-    function resetProtection() {
-      this.disabled = true;
-      $("#footer_response").empty();
-
-      google.script.run.withSuccessHandler(function(r, o) {
-          showStatus("Reseted protection");
-          o.disabled = false;
-        })
-        .withFailureHandler(showError)
-        .withUserObject(this)
-        .askResetProtection();
-    }
 
     function showStatus(msg) {
       $("#footer_response").empty().append(msg);
