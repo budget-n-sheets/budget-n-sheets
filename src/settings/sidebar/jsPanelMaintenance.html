@@ -1,12 +1,37 @@
 <script>
   $(document).ready(function() {
+    $("#b-Reset").click(resetProtection);
     $("#b-Reinstall").click(reinstallTriggers);
     <? if (!isOwner || isSharedDrive) { ?>
     $("#b-Transfer").click(transferAdminRole);
     <? } ?>
-
-    $("#b-Reset").click(resetProtection);
   });
+
+  function resetProtection() {
+    this.disabled = true;
+    $("#footer_response").empty();
+
+    google.script.run.withSuccessHandler(function(r, o) {
+        showStatus("Reseted protection");
+        o.disabled = false;
+      })
+      .withFailureHandler(showError)
+      .withUserObject(this)
+      .askResetProtection();
+  }
+
+  function reinstallTriggers() {
+    this.disabled = true;
+    $("#footer_response").empty();
+
+    google.script.run.withSuccessHandler(function(r, o) {
+        if (!r) showStatus("Reinstalled triggers");
+        o.disabled = false;
+      })
+      .withFailureHandler(showError)
+      .withUserObject(this)
+      .askReinstallTriggersUi();
+  }
 
   <? if (!isOwner || isSharedDrive) { ?>
   function transferAdminRole() {
@@ -26,30 +51,4 @@
       <? } ?>
   }
   <? } ?>
-
-  function reinstallTriggers() {
-    this.disabled = true;
-    $("#footer_response").empty();
-
-    google.script.run.withSuccessHandler(function(r, o) {
-        if (!r) showStatus("Reinstalled triggers");
-        o.disabled = false;
-      })
-      .withFailureHandler(showError)
-      .withUserObject(this)
-      .askReinstallTriggersUi();
-  }
-
-  function resetProtection() {
-    this.disabled = true;
-    $("#footer_response").empty();
-
-    google.script.run.withSuccessHandler(function(r, o) {
-        showStatus("Reseted protection");
-        o.disabled = false;
-      })
-      .withFailureHandler(showError)
-      .withUserObject(this)
-      .askResetProtection();
-  }
 </script>
