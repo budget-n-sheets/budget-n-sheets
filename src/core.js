@@ -125,39 +125,7 @@ function showSidebarSettings () {
 
   if (onlineUpdate_()) return;
 
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  const financial_year = getConstProperties_('financial_year');
-  const isOperationActive = (financial_year >= DATE_NOW.getFullYear());
-
-  const htmlTemplate = HtmlService2.createTemplateFromFile('settings/sidebar/htmlSidebar')
-    .assignReservedHref()
-    .htmlTemplate;
-  htmlTemplate.settings_backup = FeatureFlag.getStatusOf('settings/backup');
-
-  const owner = spreadsheet.getOwner();
-  if (owner) {
-    htmlTemplate.isOwner = (Session.getEffectiveUser().getEmail() === owner.getEmail());
-    htmlTemplate.isSharedDrive = false;
-  } else {
-    htmlTemplate.isOwner = false;
-    htmlTemplate.isSharedDrive = true;
-  }
-
-  htmlTemplate.isOperationActive = isOperationActive;
-
-  if (isOperationActive) {
-    const calendars = getAllOwnedCalendars();
-    htmlTemplate.isCalendarEnabled = (calendars.md5.length > 0);
-    htmlTemplate.calendars_data = calendars;
-  } else {
-    htmlTemplate.isCalendarEnabled = false;
-  }
-
-  htmlTemplate.doc_name = spreadsheet.getName();
-  htmlTemplate.financial_year = financial_year;
-
-  const htmlSidebar = htmlTemplate.evaluate().setTitle('Settings');
-
+  const htmlSidebar = new SettingsSidebar().build();
   SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
 }
 
