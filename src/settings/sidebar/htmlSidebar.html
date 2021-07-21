@@ -88,6 +88,8 @@
     </div>
 
     <div id="content" style="margin-top: 7px;margin-bottom: 4.3em;">
+      <?!= htmlPanelSettings ?>
+      <?!= htmlPanelMaintenance ?>
       <? if (settings_backup) { ?>
         <?!= htmlInclude("settings/sidebar/htmlPanelBackup"); ?>
       <? } ?>
@@ -143,6 +145,8 @@
       $("#footer_response").empty().append(msg);
     }
   </script>
+  <?!= jsPanelSettings ?>
+  <?!= jsPanelMaintenance ?>
   <? if (settings_backup) { ?>
     <?!= htmlInclude("settings/sidebar/jsPanelBackup"); ?>
   <? } ?>
