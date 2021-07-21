@@ -91,7 +91,7 @@
       <?!= htmlPanelSettings ?>
       <?!= htmlPanelMaintenance ?>
       <? if (settings_backup) { ?>
-        <?!= htmlInclude("settings/sidebar/htmlPanelBackup"); ?>
+        <?!= htmlPanelBackup ?>
       <? } ?>
     </div>
 
@@ -148,7 +148,7 @@
   <?!= jsPanelSettings ?>
   <?!= jsPanelMaintenance ?>
   <? if (settings_backup) { ?>
-    <?!= htmlInclude("settings/sidebar/jsPanelBackup"); ?>
+    <?!= jsPanelBackup ?>
   <? } ?>
 </body>
 

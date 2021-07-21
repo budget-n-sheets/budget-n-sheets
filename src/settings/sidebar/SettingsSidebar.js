@@ -11,6 +11,7 @@ class SettingsSidebar extends HtmlTemplate2 {
   loadPanels_ () {
     this.loadPanelSettings_();
     this.loadPanelMaintenance_();
+    this.loadPanelBackup_();
   }
 
   loadPanelSettings_ () {
@@ -25,6 +26,13 @@ class SettingsSidebar extends HtmlTemplate2 {
 
     this._htmlTemplate.htmlPanelMaintenance = panelMaintenance.getHtmlContent();
     this._htmlTemplate.jsPanelMaintenance = panelMaintenance.getJsContent();
+  }
+
+  loadPanelBackup_ () {
+    const panelBackup = new SettingsSidebarPanelBackup();
+
+    this._htmlTemplate.htmlPanelBackup = panelBackup.getHtmlContent();
+    this._htmlTemplate.jsPanelBackup = panelBackup.getJsContent();
   }
 
   build () {
