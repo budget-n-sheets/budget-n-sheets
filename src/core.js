@@ -141,7 +141,7 @@ function showSidebarSettings () {
 
   let htmlTemplate = HtmlService.createTemplateFromFile('settings/sidebar/htmlSidebar');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
-  htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
+  htmlTemplate.settings_backup = FeatureFlag.getStatusOf('settings/backup');
 
   const owner = spreadsheet.getOwner();
   if (owner) {
@@ -225,8 +225,8 @@ function showDialogSetupAddon_ () {
   let htmlTemplate = HtmlService.createTemplateFromFile('setup/htmlSetupAddon');
   htmlTemplate = printHrefScriptlets(htmlTemplate);
 
-  htmlTemplate.setup_restore = getFeatureFlagStatus_('setup/restore');
-  htmlTemplate.setup_copy = getFeatureFlagStatus_('setup/copy');
+  htmlTemplate.setup_restore = FeatureFlag.getStatusOf('setup/restore');
+  htmlTemplate.setup_copy = FeatureFlag.getStatusOf('setup/copy');
 
   const uuid = Utilities.getUuid();
   CacheService2.put('user', uuid, 'boolean', true);

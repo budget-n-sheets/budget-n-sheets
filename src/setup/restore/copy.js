@@ -90,7 +90,7 @@ function validateSpreadsheet_ (uuid, file_id) {
 }
 
 function processSpreadsheet_ (uuid, file_id) {
-  if (!getFeatureFlagStatus_('setup/copy')) return 1;
+  if (!FeatureFlag.getStatusOf('setup/copy')) return 1;
 
   const spreadsheet = SpreadsheetApp.openById(file_id);
 

@@ -24,7 +24,7 @@ function requestBackupSession () {
 }
 
 function backupRequestUi (password) {
-  if (!getFeatureFlagStatus_('settings/backup')) return 2;
+  if (!FeatureFlag.getStatusOf('settings/backup')) return 2;
   if (!isInstalled_()) return 2;
   if (!isUserAdmin_()) return 2;
   if (isScriptUpToDate_() !== 1) return 2;
