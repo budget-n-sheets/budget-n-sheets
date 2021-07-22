@@ -1,5 +1,5 @@
 function getMonthFactored_ (select) {
-  const date = getLocaleDate();
+  const date = Utils.getLocaleDate();
   let yyyy, mm;
 
   const financial_year = getConstProperties_('financial_year');

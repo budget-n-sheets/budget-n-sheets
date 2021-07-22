@@ -87,7 +87,7 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
     if (cell.Value) cell.Value = Number(cell.Value[0].replace('$', ''));
     else cell.Value = NaN;
 
-    const translation = getTranslation(cell.Description);
+    const translation = Utils.getTranslation(cell.Description);
     cell.TranslationType = translation.type;
     cell.TranslationNumber = translation.number;
     cell.TranslationSignal = translation.signal;
@@ -197,7 +197,7 @@ function getCalendarEventsForCashFlow_ (financial_year, mm) {
     if (start > end) return [];
   }
 
-  let offset = getLocaleDate(start);
+  let offset = Utils.getLocaleDate(start);
   offset = start.getTime() - offset.getTime();
 
   const a = new Date(start.getTime() + offset);
