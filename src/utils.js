@@ -15,10 +15,10 @@ function getMonthFactored_ (select) {
     else if (date.getFullYear() < financial_year) mm = 0;
     else mm = 12;
 
-    user_settings.initial_month++;
+    const initial_month = getUserSettings_('initial_month') + 1;
 
-    if (user_settings.initial_month > mm) return 0;
-    else return (mm - user_settings.initial_month + 1);
+    if (initial_month > mm) return 0;
+    else return (mm - initial_month + 1);
   } else if (select === 'm_factor') {
     yyyy = date.getFullYear();
     mm = getMonthFactored_('active_months');
