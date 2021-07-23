@@ -7,7 +7,6 @@ class FeatureFlag {
         break;
 
       default:
-        ConsoleLog.warn('FeatureFlag: getStatusOf(name): Switch case is default. ' + name);
         return false;
     }
 
