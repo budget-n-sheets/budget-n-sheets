@@ -250,8 +250,10 @@ function genUniqueTableId_ () {
 
   const ids = db_acc.ids.concat(db_cards.ids);
   let i = 0;
+  let random = '';
+
   do {
-    var random = randomString(7, 'lonum');
+    random = randomString(7, 'lonum');
     i++;
   } while (ids.indexOf(random) !== -1 && i < 99);
   if (i < 99) return random;

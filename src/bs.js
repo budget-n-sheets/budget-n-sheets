@@ -110,16 +110,18 @@ function getAboutPage_ () {
 
 function importAboutPage_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  let source = null;
+  let sheet = null;
 
   try {
-    var source = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
+    source = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
   } catch (err) {
     ConsoleLog.error(err);
     return 1;
   }
 
   try {
-    var sheet = source.getSheetByName('_About BnS')
+    sheet = source.getSheetByName('_About BnS')
       .copyTo(spreadsheet)
       .setName('_About BnS')
       .setTabColor('#6aa84f')

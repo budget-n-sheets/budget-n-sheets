@@ -273,7 +273,7 @@ const FormulaBuild = Object.freeze({
       },
 
       report: function (index, reference) {
-        let formula, part_1, part_2, part_3;
+        let part_1, part_2, part_3;
 
         part_1 = 'OFFSET(' + reference + '; 1; 5*' + index + '; 1; 1)';
         part_1 = '"Credit: "; TO_TEXT(' + part_1 + '); "\n"; ';
@@ -284,9 +284,7 @@ const FormulaBuild = Object.freeze({
         part_3 = 'OFFSET(' + reference + '; 4; 5*' + index + '; 1; 1)';
         part_3 = '"Balance: "; TO_TEXT(' + part_3 + ')';
 
-        formula = 'CONCATENATE(' + part_1 + part_2 + '"\n"; ' + part_3 + ')';
-
-        return formula;
+        return 'CONCATENATE(' + part_1 + part_2 + '"\n"; ' + part_3 + ')';
       }
     }
   },
@@ -549,7 +547,7 @@ const FormulaBuild = Object.freeze({
         const _h = TABLE_DIMENSION.height;
         const _w = TABLE_DIMENSION.width;
 
-        let formula, part_1, part_2, part_3, part_4;
+        let part_1, part_2, part_3, part_4;
 
         part_1 = 'TO_TEXT(_Backstage!' + rollA1Notation(2 + _h * mm, 8 + _w * index) + ')';
         part_1 = '"Withdrawal: ["; _Backstage!' + rollA1Notation(2 + _h * mm, 9 + _w * index) + '; "] "; ' + part_1 + '; "\n"; ';
@@ -563,9 +561,7 @@ const FormulaBuild = Object.freeze({
         part_4 = 'TO_TEXT(_Backstage!' + rollA1Notation(5 + _h * mm, 8 + _w * index) + ')';
         part_4 = '"Trf. out: ["; _Backstage!' + rollA1Notation(5 + _h * mm, 9 + _w * index) + '; "] "; ' + part_4;
 
-        formula = 'CONCATENATE(' + part_1 + part_2 + part_3 + part_4 + ')';
-
-        return formula;
+        return 'CONCATENATE(' + part_1 + part_2 + part_3 + part_4 + ')';
       }
     }
   }

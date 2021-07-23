@@ -30,9 +30,11 @@ function loadCache_ () {
 function onEditInstallable_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
+  let name = '';
+
   try {
     const sheet = e.range.getSheet();
-    var name = sheet.getName();
+    name = sheet.getName();
   } catch (err) {
   }
 

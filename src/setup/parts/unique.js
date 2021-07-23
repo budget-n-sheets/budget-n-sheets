@@ -17,7 +17,7 @@ function setupUnique_ () {
     ranges[k] = rollA1Notation(5, 2 + 5 * k, 400, 1);
   }
 
-  for (let i = 0 ; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     range_cards += 'Cards!' + rollA1Notation(6, 2 + 6 * i, 400, 1) + '; ';
 
     for (let k = 0; k <= num_acc; k++) {

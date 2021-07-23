@@ -48,8 +48,8 @@ function testPasswordPolicy (password) {
   if (!/[a-z]+/.test(password)) return true;
   if (!/[A-Z]+/.test(password)) return true;
   if (!/[0-9]+/.test(password)) return true;
-  if (!/[~!@#$%\^*\-_=+[{\]}/;:,.?]+/.test(password)) return true;
-  if (!/^[0-9a-zA-Z~!@#$%\^*\-_=+[{\]}/;:,.?]{12,}$/.test(password)) return true;
+  if (!/[~!@#$%^*\-_=+[{\]}/;:,.?]+/.test(password)) return true;
+  if (!/^[0-9a-zA-Z~!@#$%^*\-_=+[{\]}/;:,.?]{12,}$/.test(password)) return true;
 
   return false;
 }

@@ -14,7 +14,7 @@ function validateForwardInstallments_ () {
 
   const _w = 6;
   let list = [];
-  let listRanges = [];
+  const listRanges = [];
   let isRangeOnly = false;
   let mm0 = 12;
 
@@ -52,11 +52,11 @@ function validateForwardInstallments_ () {
   if (isRangeOnly) return;
 
   list = list.filter((value, index, self) => {
-                return self.indexOf(value) === index;
-              })
-              .sort((a, b) => {
-                return a - b;
-              });
+    return self.indexOf(value) === index;
+  })
+    .sort((a, b) => {
+      return a - b;
+    });
 
   for (let i = 0; i < list.length; i++) {
     const numRows = sheet.getLastRow() - 5;
@@ -143,7 +143,7 @@ function forwardInstallments_ (range) {
   for (let i = 0; i < snapshot.length; i++) {
     if (snapshot[i][1] === '') continue;
 
-    let match = snapshot[i][1].match(/((\d+)\/(\d+))/);
+    const match = snapshot[i][1].match(/((\d+)\/(\d+))/);
     if (!match) continue;
 
     let p1 = +match[2];
@@ -154,7 +154,7 @@ function forwardInstallments_ (range) {
 
     if (snapshot[i][0] > 0) snapshot[i][0] *= -1;
 
-    snapshot[i][1] = snapshot[i][1].replace(match[1], p1 + "/" + p2);
+    snapshot[i][1] = snapshot[i][1].replace(match[1], p1 + '/' + p2);
 
     const value = FormatNumber.localeSignal(snapshot[i][3]);
     snapshot[i][3] = '';

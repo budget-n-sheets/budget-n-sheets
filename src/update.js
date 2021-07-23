@@ -218,7 +218,7 @@ function update_v0m40p1_ () {
 
     let range_cards = '';
 
-    for (let i = 0 ; i < 12; i++) {
+    for (let i = 0; i < 12; i++) {
       range_cards += 'Cards!' + rollA1Notation(6, 2 + 6 * i, max, 1) + '; ';
     }
 
@@ -279,7 +279,7 @@ function update_v0m40p0s2_ () {
 
     let range_cards = '';
 
-    for (let i = 0 ; i < 12; i++) {
+    for (let i = 0; i < 12; i++) {
       cards.getRange(6, 2 + 6 * i, max, 1)
         .clearDataValidations()
         .setDataValidation(rule);
@@ -308,7 +308,7 @@ function update_v0m40p0s1_ () {
 
     let range_accounts = '';
 
-    for (let i = 0 ; i < 12; i++) {
+    for (let i = 0; i < 12; i++) {
       const month = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
       if (!month) continue;
 
@@ -416,7 +416,7 @@ function update_v0m39p7_ () {
     sheet.setConditionalFormatRules(rules);
 
     const formulaBuild = FormulaBuild.summary();
-    let formula = formulaBuild.table3().share();
+    const formula = formulaBuild.table3().share();
     sheet.getRange(75, 6).setFormula(formula);
 
     const formulas = [];
@@ -450,7 +450,7 @@ function update_v0m39p6_ () {
       const sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
       const max = sheet.getMaxColumns();
 
-      if (max <= init || max % 5 == 0) continue;
+      if (max <= init || max % 5 === 0) continue;
 
       sheet.deleteColumns(max - (max % 5) + 1, max % 5);
     }
@@ -1487,7 +1487,7 @@ function update_v0m35p0s0_ () {
       sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
       if (!sheet) continue;
 
-      for (k = 0; k < num_acc; k++) {
+      for (let k = 0; k < num_acc; k++) {
         expr1 = 'TEXT(_Backstage!' + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
         expr1 = '"Withdrawal: ["; _Backstage!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; "] "; ' + expr1 + '; "\n"; ';
 
