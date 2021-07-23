@@ -3,6 +3,10 @@ const Goldfish = {
     cache: {
       document: null,
       user: null
+    },
+    properties: {
+      document: null,
+      user: null
     }
   }
 };
@@ -23,6 +27,22 @@ class RapidAccessServicesCache {
   }
 }
 
+class RapidAccessServicesProperties {
+  constructor (properties) {
+    this._properties = properties;
+  }
+
+  document () {
+    return this._properties.document ||
+          (this._properties.document = PropertiesService.getDocumentProperties());
+  }
+
+  user () {
+    return this._properties.user ||
+          (this._properties.user = PropertiesService.getUserProperties());
+  }
+}
+
 class RapidAccessServices {
   constructor (services) {
     this._services = services;
@@ -30,6 +50,10 @@ class RapidAccessServices {
 
   cache () {
     return new RapidAccessServicesCache(this._services.cache);
+  }
+
+  properties () {
+    return new RapidAccessServicesProperties(this._services.properties);
   }
 }
 
