@@ -13,14 +13,13 @@ function requestBackupSession () {
     return 1;
   }
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlNewPassword');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
+  const htmlOutput = HtmlService2.createTemplateFromFile('backup/htmlNewPassword')
+    .assignReservedHref()
+    .evaluate()
+    .setHeight(443)
+    .setWidth(281);
 
-  const htmlDialog = htmlTemplate.evaluate()
-    .setWidth(281)
-    .setHeight(443);
-
-  ui.showModalDialog(htmlDialog, 'Enter password');
+  ui.showModalDialog(htmlOutput, 'Enter password');
 }
 
 function backupRequestUi (password) {
@@ -114,22 +113,25 @@ function backupRequest_ (password) {
 
 function emailBackup_ (blob) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  const scriptlet = {
+    spreadsheet_url: spreadsheet.getUrl(),
+    spreadsheet_name: spreadsheet.getName(),
+    time: DATE_NOW
+  };
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('backup/htmlBackupEmail');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
+  const htmlMessage = HtmlService2.createTemplateFromFile('backup/htmlBackupEmail')
+    .assignReservedHref()
+    .setScriptletValues(scriptlet)
+    .evaluate()
+    .getContent();
 
-  htmlTemplate.spreadsheet_url = spreadsheet.getUrl();
-  htmlTemplate.spreadsheet_name = spreadsheet.getName();
-  htmlTemplate.time = DATE_NOW;
-
-  const htmlMessage = htmlTemplate.evaluate();
   MailApp.sendEmail(
     Session.getEffectiveUser().getEmail(),
     'Your Budget n Sheets Backup',
-    htmlMessage.getContent(),
+    htmlMessage,
     {
       name: 'Add-on Budget n Sheets',
-      htmlBody: htmlMessage.getContent(),
+      htmlBody: htmlMessage,
       noReply: true,
       attachments: [blob]
     }
