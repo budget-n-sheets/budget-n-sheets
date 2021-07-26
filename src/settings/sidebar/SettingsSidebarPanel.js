@@ -5,10 +5,14 @@ class SettingsSidebarPanel {
   }
 
   getHtmlContent () {
-    return this._htmlTemplate.evaluate().getContent();
+    return this._htmlTemplate.assignReservedHref()
+      .evaluate()
+      .getContent();
   }
 
   getJsContent () {
-    return this._jsTemplate.evaluate().getContent();
+    return this._jsTemplate.assignReservedHref()
+      .evaluate()
+      .getContent();
   }
 }
