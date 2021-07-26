@@ -165,7 +165,7 @@ function deleteAllTriggers_ () {
   }
 
   const properties = {
-    owner: getUserId_(),
+    owner: User2.getId(),
     onOpen: { id: '', time_created: 0 },
     onEdit: { id: '', time_created: 0 },
     timeBased: { id: '', time_created: 0 }

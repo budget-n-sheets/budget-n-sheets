@@ -25,7 +25,7 @@ function isUserAdmin_ () {
 }
 
 function saveAdminSettings (key, value) {
-  if (!isUserAdmin_()) return 1;
+  if (!User2.isAdmin()) return 1;
   return setAdminSettings_(key, value);
 }
 
@@ -72,7 +72,7 @@ function askTransferAdmin () {
     owner_id = computeDigest('SHA_256', owner, 'UTF_8');
   }
 
-  if (!owner || getUserId_() === owner_id) {
+  if (!owner || User2.getId() === owner_id) {
     ui.alert(
       "Can't transfer admin role",
       'The admin role can only be transferred to the owner of the spreadsheet.\nMake an editor the owner and try again.',
@@ -108,7 +108,7 @@ function askTransferAdminSd () {
   let email, digest;
   const user = Session.getEffectiveUser().getEmail();
 
-  if (spreadsheet.getowner() || !isUserAdmin_()) return 1;
+  if (spreadsheet.getowner() || !User2.isAdmin()) return 1;
 
   const editors = spreadsheet.getEditors();
   if (editors.length === 1) {
@@ -148,7 +148,7 @@ function continuedTransferAdminSd (editor) {
   let email, digest;
   const user = Session.getEffectiveUser().getEmail();
 
-  if (spreadsheet.getowner() || !isUserAdmin_()) return 1;
+  if (spreadsheet.getowner() || !User2.isAdmin()) return 1;
 
   const editors = spreadsheet.getEditors();
   if (editors.length === 1) {

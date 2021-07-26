@@ -2,7 +2,7 @@ function setupProperties_ (yyyy_mm) {
   let properties;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  const adminId = getUserId_();
+  const adminId = User2.getId();
   const hour = 2 + randomInteger(4);
 
   properties = {

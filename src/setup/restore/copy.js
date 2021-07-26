@@ -81,7 +81,7 @@ function validateSpreadsheet_ (uuid, file_id) {
   const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
   const data = JSON.parse(string);
 
-  if (data.admin_id !== getUserId_()) {
+  if (data.admin_id !== User2.getId()) {
     showDialogSetupCopy(uuid, 'No spreadsheet with the given ID could be found, or you do not have permission to access it.');
     return;
   }
