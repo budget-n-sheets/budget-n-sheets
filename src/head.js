@@ -58,8 +58,8 @@ const RESERVED_HREF = Object.freeze({
 const APPS_SCRIPT_GLOBAL = Object.freeze({
   script_version: {
     major: 0,
-    minor: 41,
-    patch: 4
+    minor: 42,
+    patch: 0
   },
 
   template_version: {
