@@ -5,7 +5,7 @@ class SettingsSidebar extends HtmlTemplate2 {
   }
 
   assignFeatureFlag_ () {
-    this.htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
+    this.htmlTemplate.settings_backup = FeatureFlag.getStatusOf('settings/backup');
   }
 
   loadPanels_ () {
