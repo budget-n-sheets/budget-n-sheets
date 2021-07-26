@@ -13,23 +13,20 @@ function setupProperties_ (yyyy_mm) {
     override_zero: false,
     optimize_load: true
   };
-  PropertiesService2.setProperty('document', 'user_settings', 'json', properties);
-  CacheService2.put('document', 'user_settings', 'json', properties);
+  CachedAccess.update('user_settings', properties);
 
   properties = {
     admin_id: adminId,
     automatic_backup: false
   };
-  PropertiesService2.setProperty('document', 'admin_settings', 'json', properties);
-  CacheService2.put('document', 'admin_settings', 'json', properties);
+  CachedAccess.update('admin_settings', properties);
 
   properties = {
     date_created: yyyy_mm.time,
     number_accounts: SETUP_SETTINGS.number_accounts,
     financial_year: SETUP_SETTINGS.financial_year
   };
-  PropertiesService2.setProperty('document', 'const_properties', 'json', properties);
-  CacheService2.put('document', 'const_properties', 'json', properties);
+  CachedAccess.update('const_properties', properties);
 
   const metadata = {
     number_accounts: SETUP_SETTINGS.number_accounts,
@@ -49,8 +46,7 @@ function setupProperties_ (yyyy_mm) {
     spreadsheet_locale: spreadsheet.getSpreadsheetLocale(),
     optimize_load: [false, false, false, false, false, false, false, false, false, false, false, false]
   };
-  PropertiesService2.setProperty('document', 'spreadsheet_settings', 'json', properties);
-  CacheService2.put('document', 'spreadsheet_settings', 'json', properties);
+  CachedAccess.update('spreadsheet_settings', properties);
 
   properties = {
     owner: adminId,

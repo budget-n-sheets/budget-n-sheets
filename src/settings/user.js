@@ -1,9 +1,5 @@
 function getUserSettings_ (select) {
-  let user_settings = CacheService2.get('document', 'user_settings', 'json');
-  if (!user_settings) {
-    user_settings = PropertiesService2.getProperty('document', 'user_settings', 'json');
-    CacheService2.put('document', 'user_settings', 'json', user_settings);
-  }
+  const user_settings = CachedAccess.get('user_settings');
 
   switch (select) {
     case 'financial_calendar':
@@ -38,9 +34,7 @@ function setUserSettings_ (select, value) {
       return false;
   }
 
-  PropertiesService2.setProperty('document', 'user_settings', 'json', user_settings);
-  CacheService2.put('document', 'user_settings', 'json', user_settings);
-
+  CachedAccess.update('user_settings', user_settings);
   updateSettingsMetadata_(user_settings);
 
   return true;

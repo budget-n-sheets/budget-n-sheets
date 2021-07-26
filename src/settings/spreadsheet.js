@@ -1,11 +1,5 @@
 function getSpreadsheetSettings_ (select) {
-  let spreadsheet_settings;
-
-  spreadsheet_settings = CacheService2.get('document', 'spreadsheet_settings', 'json');
-  if (!spreadsheet_settings) {
-    spreadsheet_settings = PropertiesService2.getProperty('document', 'spreadsheet_settings', 'json');
-    CacheService2.put('document', 'spreadsheet_settings', 'json', spreadsheet_settings);
-  }
+  const spreadsheet_settings = CachedAccess.get('spreadsheet_settings');
 
   switch (select) {
     case 'decimal_separator':
@@ -38,6 +32,5 @@ function setSpreadsheetSettings_ (select, value) {
       return 1;
   }
 
-  PropertiesService2.setProperty('document', 'spreadsheet_settings', 'json', spreadsheet_settings);
-  CacheService2.put('document', 'spreadsheet_settings', 'json', spreadsheet_settings);
+  CachedAccess.update('spreadsheet_settings', spreadsheet_settings);
 }

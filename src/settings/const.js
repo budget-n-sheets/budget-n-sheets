@@ -1,11 +1,5 @@
 function getConstProperties_ (select) {
-  let const_properties;
-
-  const_properties = CacheService2.get('document', 'const_properties', 'json');
-  if (!const_properties) {
-    const_properties = PropertiesService2.getProperty('document', 'const_properties', 'json');
-    CacheService2.put('document', 'const_properties', 'json', const_properties);
-  }
+  const const_properties = CachedAccess.get('const_properties');
 
   switch (select) {
     case 'financial_year':

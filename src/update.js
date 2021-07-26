@@ -130,17 +130,7 @@ function getClassVersion_ (property) {
     return 1;
   }
 
-  let class_version2 = CacheService2.get('document', 'class_version2', 'json');
-  if (!class_version2) {
-    class_version2 = PropertiesService2.getProperty('document', 'class_version2', 'json');
-    if (!class_version2) {
-      ConsoleLog.warn("getClassVersion_(): Invalid 'class_version2' value.");
-      return 1;
-    }
-
-    CacheService2.put('document', 'class_version2', 'json', class_version2);
-  }
-
+  const class_version2 = CachedAccess.get('class_version2');
   return class_version2[property];
 }
 
@@ -166,8 +156,7 @@ function setClassVersion_ (property, value) {
 
   class_version2[property] = value;
 
-  PropertiesService2.setProperty('document', 'class_version2', 'json', class_version2);
-  CacheService2.put('document', 'class_version2', 'json', class_version2);
+  CachedAccess.update('class_version2', class_version2);
   lock.releaseLock();
   return 0;
 }
