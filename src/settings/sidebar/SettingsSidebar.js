@@ -5,7 +5,7 @@ class SettingsSidebar extends HtmlTemplate2 {
   }
 
   assignFeatureFlag_ () {
-    this._htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
+    this.htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
   }
 
   loadPanels_ () {
@@ -17,22 +17,22 @@ class SettingsSidebar extends HtmlTemplate2 {
   loadPanelSettings_ () {
     const panelSettings = new SettingsSidebarPanelSettings();
 
-    this._htmlTemplate.htmlPanelSettings = panelSettings.getHtmlContent();
-    this._htmlTemplate.jsPanelSettings = panelSettings.getJsContent();
+    this.htmlTemplate.htmlPanelSettings = panelSettings.getHtmlContent();
+    this.htmlTemplate.jsPanelSettings = panelSettings.getJsContent();
   }
 
   loadPanelMaintenance_ () {
     const panelMaintenance = new SettingsSidebarPanelMaintenance();
 
-    this._htmlTemplate.htmlPanelMaintenance = panelMaintenance.getHtmlContent();
-    this._htmlTemplate.jsPanelMaintenance = panelMaintenance.getJsContent();
+    this.htmlTemplate.htmlPanelMaintenance = panelMaintenance.getHtmlContent();
+    this.htmlTemplate.jsPanelMaintenance = panelMaintenance.getJsContent();
   }
 
   loadPanelBackup_ () {
     const panelBackup = new SettingsSidebarPanelBackup();
 
-    this._htmlTemplate.htmlPanelBackup = panelBackup.getHtmlContent();
-    this._htmlTemplate.jsPanelBackup = panelBackup.getJsContent();
+    this.htmlTemplate.htmlPanelBackup = panelBackup.getHtmlContent();
+    this.htmlTemplate.jsPanelBackup = panelBackup.getJsContent();
   }
 
   build () {
