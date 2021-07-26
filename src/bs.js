@@ -1,18 +1,3 @@
-function getFeatureFlagStatus_ (name) {
-  switch (name) {
-    case 'setup/restore':
-    case 'setup/copy':
-    case 'settings/backup':
-      break;
-
-    default:
-      ConsoleLog.warn('getFeatureFlagStatus_(): Switch case is default. ' + name);
-      return false;
-  }
-
-  return PropertiesService.getScriptProperties().getProperty(name) === 'true';
-}
-
 function getDeveloperKey_ () {
   const scriptCache = CacheService.getScriptCache();
   let key = scriptCache.get('developer_key');

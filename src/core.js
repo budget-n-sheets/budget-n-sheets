@@ -132,7 +132,7 @@ function showSidebarSettings () {
   const htmlTemplate = HtmlService2.createTemplateFromFile('settings/sidebar/htmlSidebar')
     .assignReservedHref()
     .htmlTemplate;
-  htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
+  htmlTemplate.settings_backup = FeatureFlag.getStatusOf('settings/backup');
 
   const owner = spreadsheet.getOwner();
   if (owner) {
@@ -207,8 +207,8 @@ function showDialogSetupAddon_ () {
 
   const scriptlet = {
     uuid: uuid,
-    setup_restore: getFeatureFlagStatus_('setup/restore'),
-    setup_copy: getFeatureFlagStatus_('setup/copy')
+    setup_restore: FeatureFlag.getStatusOf('setup/restore'),
+    setup_copy: FeatureFlag.getStatusOf('setup/copy')
   };
 
   const htmlOutput = HtmlService2.createTemplateFromFile('setup/htmlSetupAddon')

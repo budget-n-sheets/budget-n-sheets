@@ -137,7 +137,7 @@ function decryptBackup_ (password, backup) {
 }
 
 function processBackup_ (uuid, file, data) {
-  if (!getFeatureFlagStatus_('setup/restore')) return 1;
+  if (!FeatureFlag.getStatusOf('setup/restore')) return 1;
 
   const settings_candidate = {
     file_id: file.id,
