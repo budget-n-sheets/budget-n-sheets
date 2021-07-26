@@ -29,17 +29,15 @@ function requestValidateBackup (uuid, file_id) {
     return;
   }
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlEnterPassword');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-  htmlTemplate.file_id = file_id;
-  htmlTemplate.uuid = uuid;
-
-  const htmlDialog = htmlTemplate.evaluate()
+  const scriptlet = { file_id: file_id, uuid: uuid };
+  const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlEnterPassword')
+    .assignReservedHref()
+    .setScriptletValues(scriptlet)
+    .evaluate()
     .setWidth(281)
     .setHeight(127);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Enter password');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Enter password');
 }
 
 function processLegacyBackup_ (uuid, file, data) {

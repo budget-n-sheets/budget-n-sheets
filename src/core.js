@@ -64,64 +64,54 @@ function printHrefScriptlets (htmlTemplate) {
 }
 
 function showPanelQuickstart () {
-  let htmlTemplate = HtmlService.createTemplateFromFile('quickstart/htmlQuickstart');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
   const dec_p = getSpreadsheetSettings_('decimal_separator');
   const financial_year = getConstProperties_('financial_year');
 
-  if (dec_p) {
-    htmlTemplate.dec_p = '.';
-    htmlTemplate.dec_n = 'dot';
-  } else {
-    htmlTemplate.dec_p = ',';
-    htmlTemplate.dec_n = 'comma';
-  }
+  const scriptlet = {
+    isCurrent: (DATE_NOW < new Date(financial_year, 11, 1)),
+    dec_p: (dec_p ? '.' : ','),
+    dec_n: (dec_p ? 'dot' : 'comma')
+  };
 
-  htmlTemplate.isCurrent = (DATE_NOW < new Date(financial_year, 11, 1));
+  const htmlOutput = HtmlService2.createTemplateFromFile('quickstart/htmlQuickstart')
+    .assignReservedHref()
+    .setScriptletValues(scriptlet)
+    .evaluate()
+    .setTitle('Quickstart');
 
-  const htmlSidebar = htmlTemplate.evaluate().setTitle('Quickstart');
-  SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
+  SpreadsheetApp2.getUi().showSidebar(htmlOutput);
 }
 
 function showPanelTables (tab) {
   if (onlineUpdate_()) return;
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('tables/htmlSidebarTables');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
   const dec_s = getSpreadsheetSettings_('decimal_separator');
+  const scriptlet = {
+    decimal_places: getSpreadsheetSettings_('decimal_places'),
+    dec_s: (dec_s ? '.' : ','),
+    dec_t: (dec_s ? ',' : '.'),
+    tab_acc: (tab ? '' : 'active'),
+    tab_cards: (tab ? 'active' : '')
+  };
 
-  if (dec_s) {
-    htmlTemplate.dec_s = '.';
-    htmlTemplate.dec_t = ',';
-  } else {
-    htmlTemplate.dec_s = ',';
-    htmlTemplate.dec_t = '.';
-  }
+  const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlSidebarTables')
+    .assignReservedHref()
+    .setScriptletValues(scriptlet)
+    .evaluate()
+    .setTitle('Accounts & Cards');
 
-  htmlTemplate.decimal_places = getSpreadsheetSettings_('decimal_places');
-
-  if (tab) {
-    htmlTemplate.tab_acc = '';
-    htmlTemplate.tab_cards = 'active';
-  } else {
-    htmlTemplate.tab_acc = 'active';
-    htmlTemplate.tab_cards = '';
-  }
-
-  const htmlSidebar = htmlTemplate.evaluate().setTitle('Accounts & Cards');
-  SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
+  SpreadsheetApp2.getUi().showSidebar(htmlOutput);
 }
 
 function showPanelAnalytics () {
   if (onlineUpdate_()) return;
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('cool_gallery/htmlCoolGallery');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
+  const htmlOutput = HtmlService2.createTemplateFromFile('cool_gallery/htmlCoolGallery')
+    .assignReservedHref()
+    .evaluate()
+    .setTitle('BnS Gallery');
 
-  const htmlSidebar = htmlTemplate.evaluate().setTitle('BnS Gallery');
-  SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
+  SpreadsheetApp2.getUi().showSidebar(htmlOutput);
 }
 
 function showSidebarSettings () {
@@ -139,8 +129,9 @@ function showSidebarSettings () {
   const financial_year = getConstProperties_('financial_year');
   const isOperationActive = (financial_year >= DATE_NOW.getFullYear());
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('settings/sidebar/htmlSidebar');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
+  const htmlTemplate = HtmlService2.createTemplateFromFile('settings/sidebar/htmlSidebar')
+    .assignReservedHref()
+    .htmlTemplate;
   htmlTemplate.settings_backup = getFeatureFlagStatus_('settings/backup');
 
   const owner = spreadsheet.getOwner();
@@ -171,103 +162,93 @@ function showSidebarSettings () {
 }
 
 function showDialogAboutAddon () {
-  let htmlTemplate;
   let v0;
 
   if (isInstalled_()) v0 = getClassVersion_('script');
   else v0 = APPS_SCRIPT_GLOBAL.script_version;
 
-  htmlTemplate = HtmlService.createTemplateFromFile('html/htmlAboutAddon');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-  htmlTemplate.version = v0.major + '.' + v0.minor + '.' + v0.patch;
-
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlAboutAddon')
+    .assignReservedHref()
+    .setScriptletValues({ version: v0.major + '.' + v0.minor + '.' + v0.patch })
+    .evaluate()
     .setWidth(281)
     .setHeight(373);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'About the add-on');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'About the add-on');
 }
 
 function showDialogErrorMessage () {
-  let htmlTemplate;
-
-  htmlTemplate = HtmlService.createTemplateFromFile('html/htmlExceptionMessage');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlExceptionMessage')
+    .assignReservedHref()
+    .evaluate()
     .setWidth(373)
     .setHeight(137);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Something went wrong');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Something went wrong');
 }
 
 function showDialogMessage (title, message, timeout) {
-  let htmlTemplate;
-
-  htmlTemplate = HtmlService.createTemplateFromFile('html/htmlMessageScreen');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-  htmlTemplate.message = message;
-  htmlTemplate.hasTimeout = timeout;
-
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlMessageScreen')
+    .assignReservedHref()
+    .setScriptletValues({ message: message, hasTimeout: timeout })
+    .evaluate()
     .setWidth(263)
     .setHeight(113);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, title);
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, title);
 }
 
 function showDialogSetupAddon_ () {
   setUserId_();
   if (conditionalInstallTest_()) return;
 
-  let htmlTemplate = HtmlService.createTemplateFromFile('setup/htmlSetupAddon');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-  htmlTemplate.setup_restore = getFeatureFlagStatus_('setup/restore');
-  htmlTemplate.setup_copy = getFeatureFlagStatus_('setup/copy');
-
   const uuid = Utilities.getUuid();
   CacheService2.put('user', uuid, 'boolean', true);
 
-  htmlTemplate.uuid = uuid;
+  const scriptlet = {
+    uuid: uuid,
+    setup_restore: getFeatureFlagStatus_('setup/restore'),
+    setup_copy: getFeatureFlagStatus_('setup/copy')
+  };
 
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('setup/htmlSetupAddon')
+    .assignReservedHref()
+    .setScriptletValues(scriptlet)
+    .evaluate()
     .setWidth(353)
     .setHeight(359);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Start budget spreadsheet');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Start budget spreadsheet');
 }
 
 function showDialogSetupRestore (uuid, msg) {
-  let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlSetupRestore');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-  htmlTemplate.isValid = msg === '';
-  htmlTemplate.msg = msg || '';
-  htmlTemplate.uuid = uuid;
-
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlSetupRestore')
+    .assignReservedHref()
+    .setScriptletValues({
+      isValid: (msg === ''),
+      msg: (msg || ''),
+      uuid: uuid
+    })
+    .evaluate()
     .setWidth(353)
     .setHeight(359);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Restore from backup');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Restore from backup');
 }
 
 function showDialogSetupCopy (uuid, msg) {
-  let htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlSetupCopy');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-  htmlTemplate.isValid = msg === '';
-  htmlTemplate.msg = msg || '';
-  htmlTemplate.uuid = uuid;
-
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlSetupCopy')
+    .assignReservedHref()
+    .setScriptletValues({
+      isValid: (msg === ''),
+      msg: (msg || ''),
+      uuid: uuid
+    })
+    .evaluate()
     .setWidth(353)
     .setHeight(359);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Copy from spreadsheet');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Copy from spreadsheet');
 }
 
 function showDialogPickerRestore (uuid, topic) {
@@ -282,29 +263,27 @@ function showDialogPickerRestore (uuid, topic) {
   const developer_key = getDeveloperKey_();
   if (developer_key === 1) showDialogErrorMessage();
 
-  const htmlTemplate = HtmlService.createTemplateFromFile('setup/restore/htmlPickerRestore');
-  htmlTemplate.picker_key = developer_key;
-  htmlTemplate.isRestore = isRestore;
-  htmlTemplate.uuid = uuid;
-
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlPickerRestore')
+    .setScriptletValues({
+      picker_key: developer_key,
+      isRestore: isRestore,
+      uuid: uuid
+    })
+    .evaluate()
     .setWidth(617)
     .setHeight(487);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, title);
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, title);
 }
 
 function showDialogSetupEnd () {
-  let htmlTemplate;
-
-  htmlTemplate = HtmlService.createTemplateFromFile('setup/htmlSetupEnd');
-  htmlTemplate = printHrefScriptlets(htmlTemplate);
-
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('setup/htmlSetupEnd')
+    .assignReservedHref()
+    .evaluate()
     .setWidth(353)
     .setHeight(367);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Add-on Budget n Sheets');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Add-on Budget n Sheets');
 }
 
 function showSessionExpired () {
@@ -317,71 +296,75 @@ function showSessionExpired () {
 }
 
 function showDialogEditAccount (acc_id) {
-  const htmlTemplate = HtmlService.createTemplateFromFile('tables/htmlEditAccount');
-
   const decimal_places = getSpreadsheetSettings_('decimal_places');
   const account = tablesService('get', 'account', acc_id);
   if (!account) return 1;
 
+  const scriptlet = {
+    step: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1'),
+    placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0')
+  };
+
   for (const key in account) {
-    htmlTemplate['acc_' + key] = account[key];
+    scriptlet['acc_' + key] = account[key];
   }
 
-  htmlTemplate.step = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1');
-  htmlTemplate.placeholder = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0');
-
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlEditAccount')
+    .setScriptletValues(scriptlet)
+    .evaluate()
     .setWidth(300)
     .setHeight(359);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Edit Account');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Edit Account');
 }
 
 function showDialogAddCard () {
-  const htmlTemplate = HtmlService.createTemplateFromFile('tables/htmlAddEditCard');
-
   const decimal_places = getSpreadsheetSettings_('decimal_places');
 
-  htmlTemplate.is_edit = false;
-  htmlTemplate.step = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1');
-  htmlTemplate.placeholder = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0');
+  const scriptlet = {
+    is_edit: false,
+    step: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1'),
+    placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0'),
 
-  const card = { id: '', name: '', code: '', aliases: '', limit: 0 };
+    card_id: '',
+    card_name: '',
+    card_code: '',
+    card_aliases: '',
+    card_limit: 0
+  };
 
-  for (const key in card) {
-    htmlTemplate['card_' + key] = card[key];
-  }
-
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlAddEditCard')
+    .setScriptletValues(scriptlet)
+    .evaluate()
     .setWidth(300)
     .setHeight(359);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Add Card');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Add Card');
 }
 
 function showDialogEditCard (card_id) {
-  const htmlTemplate = HtmlService.createTemplateFromFile('tables/htmlAddEditCard');
-
   const decimal_places = getSpreadsheetSettings_('decimal_places');
-
-  htmlTemplate.is_edit = true;
-  htmlTemplate.step = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1');
-  htmlTemplate.placeholder = (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0');
-
   const card = tablesService('get', 'card', card_id);
   if (!card) return 1;
 
-  card.aliases = card.aliases.join(', ');
+  const scriptlet = {
+    is_edit: true,
+    step: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1'),
+    placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0')
+  };
 
+  card.aliases = card.aliases.join(', ');
   for (const key in card) {
-    htmlTemplate['card_' + key] = card[key];
+    scriptlet['card_' + key] = card[key];
   }
 
-  const htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlAddEditCard')
+    .setScriptletValues(scriptlet)
+    .evaluate()
     .setWidth(300)
     .setHeight(359);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Edit Card');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Edit Card');
 }
 
 function showDialogDeleteCard (card_id) {

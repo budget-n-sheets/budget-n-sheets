@@ -137,13 +137,13 @@ function askTransferAdminSd () {
     };
   }
 
-  htmlTemplate = HtmlService.createTemplateFromFile('html/htmlSelectEditor');
-  htmlTemplate.editors = editors;
-  htmlDialog = htmlTemplate.evaluate()
+  const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlSelectEditor')
+    .setScriptletValues({ editors: editors })
+    .evaluate()
     .setWidth(281)
     .setHeight(233);
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlDialog, 'Transfer the admin role');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Transfer the admin role');
 }
 
 function continuedTransferAdminSd (editor) {
