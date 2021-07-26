@@ -1,5 +1,5 @@
 class SettingsSidebarUtils {
-  getScriptletValuesByPanel (name) {
+  static getScriptletValuesByPanel (name) {
     switch (name) {
       case 'settings':
         return this.panelSettings_();
@@ -11,7 +11,7 @@ class SettingsSidebarUtils {
     }
   }
 
-  panelSettings_ () {
+  static panelSettings_ () {
     const values = {};
 
     const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
@@ -34,7 +34,7 @@ class SettingsSidebarUtils {
     return values;
   }
 
-  panelMaintenance_ () {
+  static panelMaintenance_ () {
     const values = {};
 
     const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();

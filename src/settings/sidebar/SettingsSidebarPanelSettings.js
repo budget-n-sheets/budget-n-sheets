@@ -8,7 +8,7 @@ class SettingsSidebarPanelSettings extends SettingsSidebarPanel {
   }
 
   loadScriptletValues_ () {
-    const scriptletValues = new SettingsSidebarUtils().getScriptletValuesByPanel('settings');
+    const scriptletValues = SettingsSidebarUtils.getScriptletValuesByPanel('settings');
 
     this._htmlTemplate.setScriptletValues(scriptletValues);
     this._jsTemplate.setScriptletValues(scriptletValues);
