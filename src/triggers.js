@@ -9,7 +9,7 @@ function startTrigger_ (name) {
     let handler, type, parameters;
 
     const hour = 2 + randomInteger(4);
-    const yyyy = getLocaleDate().getFullYear();
+    const yyyy = Utils.getLocaleDate().getFullYear();
     const financial_year = getConstProperties_('financial_year');
 
     if (yyyy < financial_year) {

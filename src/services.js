@@ -130,7 +130,7 @@ function dailyTrigger_ (e) {
   if (!isInstalled_()) return;
   if (seamlessUpdate_()) return;
 
-  const date = getLocaleDate();
+  const date = Utils.getLocaleDate();
   const yyyymmdd = {
     year: date.getFullYear(),
     month: date.getMonth(),
@@ -168,7 +168,7 @@ function weeklyTriggerPos_ (e) {
 
   seamlessUpdate_();
 
-  const date = getLocaleDate();
+  const date = Utils.getLocaleDate();
   const month = date.getMonth();
 
   if (month % 3 !== 0) return;
@@ -189,7 +189,7 @@ function weeklyTriggerPre_ (e) {
   if (seamlessUpdate_()) return;
 
   const financial_year = getConstProperties_('financial_year');
-  const date = getLocaleDate();
+  const date = Utils.getLocaleDate();
   const yyyymm = {
     year: date.getFullYear(),
     month: date.getMonth()

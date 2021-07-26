@@ -188,7 +188,7 @@ function updateHideShowSheets (sheets, financial_year, yyyy, mm) {
       }
     }
   } else {
-    delta = getMonthDelta(mm);
+    delta = Utils.getMonthDelta(mm);
 
     for (i = 0; i < 12; i++) {
       if (i < mm + delta[0] || i > mm + delta[1]) {
@@ -207,7 +207,7 @@ function updateTabsColors (sheets, financial_year, yyyy, mm) {
   const init_month = getUserSettings_('initial_month');
 
   if (!sheets) {
-    date = getLocaleDate();
+    date = Utils.getLocaleDate();
     yyyy = date.getFullYear();
     mm = date.getMonth();
 
@@ -224,7 +224,7 @@ function updateTabsColors (sheets, financial_year, yyyy, mm) {
   }
 
   if (financial_year === yyyy) {
-    delta = getMonthDelta(mm);
+    delta = Utils.getMonthDelta(mm);
 
     for (; i < 12; i++) {
       if (i < mm + delta[0] || i > mm + delta[1]) {

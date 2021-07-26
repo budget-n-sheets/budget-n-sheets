@@ -32,7 +32,7 @@ function resumeActivity_ (mm0, mm1) {
   if (cardsRows < 1) return;
 
   const num_acc = getConstProperties_('number_accounts');
-  const actual_month = getMonthFactored_('actual_month');
+  const actual_month = MonthFactored.getActual();
 
   const db_accounts = getDbTables_('accounts');
   const db_cards = getDbTables_('cards');

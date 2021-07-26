@@ -7,7 +7,7 @@ function setupEast_ (yyyy_mm) {
 
   if (yyyy_mm.yyyy === SETUP_SETTINGS.financial_year) {
     t = true;
-    md = getMonthDelta(yyyy_mm.mm);
+    md = Utils.getMonthDelta(yyyy_mm.mm);
   } else {
     t = false;
   }

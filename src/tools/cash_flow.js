@@ -197,7 +197,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
       first = 0;
     }
     if (first !== 0 && first !== 99) {
-      offset = getLocaleDate(start);
+      offset = Utils.getLocaleDate(start);
       offset = start.getTime() - offset.getTime();
 
       start = new Date(start.getTime() + offset);
@@ -224,7 +224,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
     value = table[i][2 + cc];
 
     if (value === 0 && day >= first && table[i][3 + cc] && hasTags) {
-      translation = getTranslation(table[i][1 + cc]);
+      translation = Utils.getTranslation(table[i][1 + cc]);
 
       if (translation.type) {
         important = table[i][3 + cc].match(/!#\w+/);

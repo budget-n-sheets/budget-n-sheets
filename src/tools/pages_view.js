@@ -41,7 +41,7 @@ function hideSheets_ (a) {
   let mm;
 
   if (a) {
-    mm = getLocaleDate().getMonth();
+    mm = Utils.getLocaleDate().getMonth();
   } else {
     sheet = SpreadsheetApp.getActiveSheet();
     mm = MONTH_NAME.short.indexOf(sheet.getName());
@@ -55,7 +55,7 @@ function hideSheets_ (a) {
   }
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  const delta = getMonthDelta(mm);
+  const delta = Utils.getMonthDelta(mm);
 
   for (let i = 0; i < 12; i++) {
     sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
