@@ -8,7 +8,7 @@
  */
 function onInstall (e) {
   onOpen(e);
-  setUserId_();
+  User2.setId();
 }
 
 /**
@@ -115,7 +115,7 @@ function showPanelAnalytics () {
 }
 
 function showSidebarSettings () {
-  if (!isUserAdmin_()) {
+  if (!User2.isAdmin()) {
     SpreadsheetApp2.getUi().alert(
       'Permission denied',
       "You don't have permission to change the settings.",
@@ -162,6 +162,7 @@ function showSidebarSettings () {
 }
 
 function showDialogAboutAddon () {
+  User2.setId();
   let v0;
 
   if (isInstalled_()) v0 = getClassVersion_('script');
@@ -199,7 +200,7 @@ function showDialogMessage (title, message, timeout) {
 }
 
 function showDialogSetupAddon_ () {
-  setUserId_();
+  User2.setId();
   if (conditionalInstallTest_()) return;
 
   const uuid = Utilities.getUuid();

@@ -1,5 +1,5 @@
 function retrieveUserSettings () {
-  if (!isUserAdmin_()) return;
+  if (!User2.isAdmin()) return;
 
   const user_settings = CachedAccess.get('user_settings');
 
@@ -15,7 +15,7 @@ function retrieveUserSettings () {
 }
 
 function saveUserSettings (settings) {
-  if (!isUserAdmin_()) return 1;
+  if (!User2.isAdmin()) return 1;
 
   const calendar = {
     financial_calendar: '',

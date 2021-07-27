@@ -41,7 +41,7 @@ function onlineUpdate_ () {
     return 1;
   }
 
-  if (!isUserAdmin_()) {
+  if (!User2.isAdmin()) {
     ui.alert(
       'Add-on update',
       'Please, contact the spreadsheet admin to update the add-on.',
@@ -85,7 +85,7 @@ function onlineUpdate_ () {
 
 function seamlessUpdate_ () {
   if (!isTemplateAvailable()) return 1;
-  if (!isUserAdmin_()) return 1;
+  if (!User2.isAdmin()) return 1;
 
   const spreadsheet_locale = getSpreadsheetSettings_('spreadsheet_locale');
   if (spreadsheet_locale !== SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetLocale()) {
@@ -2200,7 +2200,7 @@ function update_v0m31p0_ () {
     let admin;
 
     if (cp.addon_user) admin = cp.addon_user;
-    else admin = setUserId_();
+    else admin = User2.getId();
 
     properties = {
       admin_id: admin,
@@ -2221,7 +2221,7 @@ function update_v0m31p0_ () {
  */
 function update_v0m30p6_ () {
   try {
-    setUserId_();
+    User2.setId();
 
     const handlers = ['onOpenInstallable_', 'onEditInstallable_', 'dailyTrigger_', 'weeklyTriggerPos_', 'weeklyTriggerPre_'];
     const financial_year = getConstProperties_('financial_year');

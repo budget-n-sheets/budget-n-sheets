@@ -1,34 +1,3 @@
-function setUserId_ () {
-  let userId = Session.getEffectiveUser().getEmail();
-  if (!userId) throw new Error("User's identity is null.");
-
-  userId = computeDigest('SHA_256', userId, 'UTF_8');
-  PropertiesService2.setProperty('user', 'user_id', 'string', userId);
-
-  return userId;
-}
-
-function getUserId_ () {
-  let userId = CacheService2.get('user', 'user_id', 'string');
-
-  if (userId == null) {
-    userId = PropertiesService2.getProperty('user', 'user_id', 'string');
-    if (!userId) userId = setUserId_();
-    CacheService2.put('user', 'user_id', 'string', userId);
-  }
-
-  return userId;
-}
-
-function isUserAdmin_ () {
-  return getUserId_() === getAdminSettings_('admin_id');
-}
-
-function saveAdminSettings (key, value) {
-  if (!isUserAdmin_()) return 1;
-  return setAdminSettings_(key, value);
-}
-
 function getAdminSettings_ (select) {
   const admin_settings = CachedAccess.get('admin_settings');
 
@@ -72,7 +41,7 @@ function askTransferAdmin () {
     owner_id = computeDigest('SHA_256', owner, 'UTF_8');
   }
 
-  if (!owner || getUserId_() === owner_id) {
+  if (!owner || User2.getId() === owner_id) {
     ui.alert(
       "Can't transfer admin role",
       'The admin role can only be transferred to the owner of the spreadsheet.\nMake an editor the owner and try again.',
@@ -108,7 +77,7 @@ function askTransferAdminSd () {
   let email, digest;
   const user = Session.getEffectiveUser().getEmail();
 
-  if (spreadsheet.getowner() || !isUserAdmin_()) return 1;
+  if (spreadsheet.getowner() || !User2.isAdmin()) return 1;
 
   const editors = spreadsheet.getEditors();
   if (editors.length === 1) {
@@ -148,7 +117,7 @@ function continuedTransferAdminSd (editor) {
   let email, digest;
   const user = Session.getEffectiveUser().getEmail();
 
-  if (spreadsheet.getowner() || !isUserAdmin_()) return 1;
+  if (spreadsheet.getowner() || !User2.isAdmin()) return 1;
 
   const editors = spreadsheet.getEditors();
   if (editors.length === 1) {
