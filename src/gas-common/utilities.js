@@ -8,26 +8,6 @@ function htmlInclude (fileName) {
   return HtmlService.createHtmlOutputFromFile(fileName).getContent();
 }
 
-/**
- * Converts an array of bytes to string.
- * @param  {Object} b Array of bytes.
- * @return {String} String.
- */
-function byte2string (b) {
-  let r = '';
-  let v, i;
-
-  for (i = 0; i < b.length; i++) {
-    v = b[i];
-    if (v < 0) v += 256;
-    v = v.toString(16);
-    if (v.length === 1) v = '0' + v;
-    r += v;
-  }
-
-  return r;
-}
-
 function getDigestAlgorithm (v) {
   switch (v) {
     case 'MD5':
@@ -128,7 +108,7 @@ function computeDigest (algorithm, value, charset, byte) {
   digest = Utilities.computeDigest(algorithm, value, charset);
 
   if (!byte) {
-    digest = byte2string(digest);
+    digest = Utils.toHexString(digest);
   }
 
   return digest;
@@ -154,7 +134,7 @@ function computeHmacSignature (algorithm, value, key, charset, byte) {
   digest = Utilities.computeHmacSignature(algorithm, value, key, charset);
 
   if (!byte) {
-    digest = byte2string(digest);
+    digest = Utils.toHexString(digest);
   }
 
   return digest;
