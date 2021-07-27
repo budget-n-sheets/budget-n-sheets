@@ -248,8 +248,8 @@ function setupParts_ () {
     mm: DATE_NOW.getMonth()
   };
 
-  setupSettings_(yyyy_mm);
   setupProperties_(yyyy_mm);
+  setupSettings_(yyyy_mm);
   setupTables_();
   setupMonthSheet_();
   setupUnique_();
