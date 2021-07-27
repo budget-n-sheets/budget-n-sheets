@@ -162,6 +162,7 @@ function showSidebarSettings () {
 }
 
 function showDialogAboutAddon () {
+  User2.setId();
   let v0;
 
   if (isInstalled_()) v0 = getClassVersion_('script');
