@@ -8,7 +8,7 @@ function getConstProperties_ (select) {
       return const_properties[select];
 
     default:
-      ConsoleLog.error('getConstProperties_(): Switch case is default.', select);
+      console.error('getConstProperties_(): Switch case is default.', select);
       break;
   }
 }

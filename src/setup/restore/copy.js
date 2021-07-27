@@ -59,7 +59,7 @@ function validateSpreadsheet_ (uuid, file_id) {
       .withKey('bs_sig')
       .find();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     showDialogSetupCopy(uuid, 'Sorry, something went wrong. Try again in a moment.');
     return;
   }

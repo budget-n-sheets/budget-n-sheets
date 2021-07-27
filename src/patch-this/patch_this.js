@@ -24,7 +24,7 @@ function update_ () {
   try {
     lock.waitLock(200);
   } catch (err) {
-    ConsoleLog.warn(err);
+    console.warn(err);
     return 1;
   }
 
@@ -78,7 +78,7 @@ function update_ () {
     }
     if (r.p === -1) r.p = pp;
 
-    if (r.r === 2) ConsoleLog.warn('add-on/update/fail', r);
+    if (r.r === 2) console.warn('add-on/update/fail', r);
     r.r = 2;
   } else {
     if (r.m === -1) r.m = 0;
@@ -103,7 +103,7 @@ function update_ () {
 
   lock.releaseLock();
   if (ss === 1) {
-    ConsoleLog.error('update_(): Update failed to set new script version.');
+    console.error('update_(): Update failed to set new script version.');
     return 2;
   }
 

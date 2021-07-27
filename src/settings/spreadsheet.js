@@ -10,7 +10,7 @@ function getSpreadsheetSettings_ (select) {
       return spreadsheet_settings[select];
 
     default:
-      ConsoleLog.error('getSpreadsheetSettings_(): Switch case is default.', select);
+      console.error('getSpreadsheetSettings_(): Switch case is default.', select);
       break;
   }
 }
@@ -28,7 +28,7 @@ function setSpreadsheetSettings_ (select, value) {
       break;
 
     default:
-      ConsoleLog.error('setSpreadsheetSettings_() : Switch case is default.', select);
+      console.error('setSpreadsheetSettings_() : Switch case is default.', select);
       return 1;
   }
 

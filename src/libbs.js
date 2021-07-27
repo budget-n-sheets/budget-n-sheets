@@ -112,39 +112,3 @@ const FormatNumber = {
     return s + i.substr(0, j) + (dec_p > 0 ? dec_s + Math.abs(n - i).toFixed(dec_p).slice(2) : '');
   }
 };
-
-const ConsoleLog = {
-  digest: function (error, values) {
-    return error;
-    const payload = {};
-
-    if (error instanceof Error) {
-      for (const key in error) {
-        payload[key] = error[key];
-      }
-    } else {
-      payload.error = error;
-    }
-
-    if (values) payload.values = values;
-    return payload;
-  },
-
-  info: function (msg) {
-    console.info(msg);
-  },
-
-  log: function (msg) {
-    console.log(msg);
-  },
-
-  warn: function (error, values) {
-    const payload = this.digest(error, values);
-    console.warn(payload);
-  },
-
-  error: function (error, values) {
-    const payload = this.digest(error, values);
-    console.error(payload);
-  }
-};

@@ -12,7 +12,7 @@ function playSpeedQuickstart (id) {
   try {
     lock.waitLock(200);
   } catch (err) {
-    ConsoleLog.warn(err);
+    console.warn(err);
     SpreadsheetApp2.getActiveSpreadsheet().toast('The add-on is busy. Try again in a moment.', 'Budget n Sheets');
     return;
   }

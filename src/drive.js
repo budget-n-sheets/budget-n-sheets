@@ -19,7 +19,7 @@ function isUserOwner (fileId) {
   try {
     file = DriveApp.getFileById(fileId);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return false;
   }
 

@@ -126,7 +126,7 @@ function isScriptUpToDate_ () {
 
 function getClassVersion_ (property) {
   if (property !== 'script' && property !== 'template') {
-    ConsoleLog.warn("getClassVersion_(): Invalid 'property' value.", { property: property });
+    console.warn("getClassVersion_(): Invalid 'property' value.", { property: property });
     return 1;
   }
 
@@ -136,7 +136,7 @@ function getClassVersion_ (property) {
 
 function setClassVersion_ (property, value) {
   if (property !== 'script' && property !== 'template') {
-    ConsoleLog.warn("setClassVersion_(): Invalid 'property' value.", { property: property });
+    console.warn("setClassVersion_(): Invalid 'property' value.", { property: property });
     return 1;
   }
 
@@ -144,13 +144,13 @@ function setClassVersion_ (property, value) {
   try {
     lock.waitLock(200);
   } catch (err) {
-    ConsoleLog.warn(err);
+    console.warn(err);
     return 1;
   }
 
   const class_version2 = PropertiesService2.getProperty('document', 'class_version2', 'json');
   if (!class_version2) {
-    ConsoleLog.warn("setClassVersion_(): Invalid 'class_version2' value.");
+    console.warn("setClassVersion_(): Invalid 'class_version2' value.");
     return 1;
   }
 
@@ -169,7 +169,7 @@ function setClassVersion_ (property, value) {
 function update_v0m0p0_ () {
   try {
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 } */
@@ -184,7 +184,7 @@ function update_v0m41p3_ () {
     const initial_month = getUserSettings_('initial_month');
     setUserSettings_('initial_month', initial_month);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -222,7 +222,7 @@ function update_v0m40p1_ () {
 
     unique.getRange(1, 2).setFormula(formula);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -245,7 +245,7 @@ function update_v0m40p0_ () {
     rr = update_v0m40p0s2_();
     if (rr) return rr;
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -279,7 +279,7 @@ function update_v0m40p0s2_ () {
 
     unique.getRange(1, 2).setFormula('SORT(UNIQUE({' + range_cards.slice(0, -2) + '}))');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -318,7 +318,7 @@ function update_v0m40p0s1_ () {
 
     unique.getRange(1, 1).setFormula('SORT(UNIQUE({' + range_accounts.slice(0, -2) + '}))');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -343,7 +343,7 @@ function update_v0m40p0s0_ () {
     sheet.protect().setWarningOnly(true);
     sheet.hideSheet();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -418,7 +418,7 @@ function update_v0m39p7_ () {
     sheet.getRange(75, 9, 12, 1).setFormulas(formulas);
     SpreadsheetApp.flush();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -445,7 +445,7 @@ function update_v0m39p6_ () {
       sheet.deleteColumns(max - (max % 5) + 1, max % 5);
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -484,7 +484,7 @@ function update_v0m39p5_ () {
 
     sheet.getRangeList(list).setFormulaR1C1('RC[-1] + R[-1]C[-1]');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -511,7 +511,7 @@ function update_v0m38p0_ () {
     updateHideShowSheets(sheets, financial_year, yyyy, mm);
     updateTabsColors(sheets, financial_year, yyyy, mm);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -534,7 +534,7 @@ function update_v0m37p20_ () {
     sheet.getRange(4, 2).setFormula(FormatNumber.localeSignal(initial_month + 1));
     sheet.getRange(9, 2).setFormula(FormatNumber.localeSignal(decimal_places));
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -596,7 +596,7 @@ function update_v0m37p19_ () {
       }
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -626,7 +626,7 @@ function update_v0m37p16_ () {
     rr = update_v0m37p16s2_();
     if (rr) return rr;
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -645,7 +645,7 @@ function update_v0m37p16s2_ () {
       .setFontStyle('italic')
       .setValue('Stats for Tags');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -665,7 +665,7 @@ function update_v0m37p16s1_ () {
         ['0'], ['0'], ['@']
       ]);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -708,7 +708,7 @@ function update_v0m37p16s0_ () {
       sheetCards.getRange(2, 4 + 6 * i).setFormula(formula);
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -750,7 +750,7 @@ function update_v0m37p14_ () {
       }
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -771,7 +771,7 @@ function update_v0m37p9_ () {
     rr = update_v0m37p9s1_();
     if (rr) return rr;
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -810,7 +810,7 @@ function update_v0m37p9s1_ () {
 
     sheetTags.getRange(1, 6, 1, 12).setFormulas(formulas);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -823,7 +823,7 @@ function update_v0m37p9s0_ () {
     const formula = FormulaBuild.summary().chart3().data(0).replace(/""/g, '0');
     sheet.getRange('I73').setFormula(formula);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -857,7 +857,7 @@ function update_v0m37p8_ () {
       startTrigger_('timeBased');
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -931,7 +931,7 @@ function update_v0m37p8s1_ () {
       .build();
     sheet.insertChart(chart);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -967,7 +967,7 @@ function update_v0m37p8s0_ () {
       }
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1002,7 +1002,7 @@ function update_v0m37p7_ () {
       sheet.getRange(2 + h_ * i, col).setFormula('BSBLANK(TRANSPOSE(Cards!' + rollA1Notation(6, 4 + 6 * i, max, 1) + '))');
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1020,7 +1020,7 @@ function update_v0m37p6_ () {
     const rr = update_v0m37p6s1_();
     if (rr) return rr;
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1053,7 +1053,7 @@ function update_v0m37p6s1_ () {
 
     setupSummary_();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1072,7 +1072,7 @@ function update_v0m37p6s0_ () {
     sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (w_ + w_ * num_acc) + ']');
     SpreadsheetApp.flush();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1125,7 +1125,7 @@ function update_v0m37p3_ () {
       }
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1153,7 +1153,7 @@ function update_v0m36p4_ () {
 
     updateDecimalSeparator_();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1210,7 +1210,7 @@ function update_v0m36p4s2_ () {
       );
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1236,7 +1236,7 @@ function update_v0m36p4s1_ () {
       SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
     );
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1253,7 +1253,7 @@ function update_v0m36p4s0_ () {
       list[i].remove();
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1291,7 +1291,7 @@ function update_v0m36p3_ () {
     PropertiesService2.deleteProperty('document', 'onEditTriggerId');
     PropertiesService2.deleteProperty('document', 'clockTriggerId');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1311,7 +1311,7 @@ function update_v0m36p2_ () {
     };
     PropertiesService2.setProperty('document', 'spreadsheet_triggers', 'json', properties);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1330,7 +1330,7 @@ function update_v0m35p2_ () {
     sheet.getRange(25, 8, 12, 1).setFormula('=$D$10');
     sheet.getRange(25, 9, 12, 1).setFormula('=-$F$10');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1366,7 +1366,7 @@ function update_v0m35p1_ () {
 
     sheet.getRange(25, 4).setFormula('IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + rollA1Notation(11, 4) + dec_c + ' -' + rollA1Notation(11, 6) + dec_c + ' 0' + dec_c + ' 0}; {0' + dec_c + ' 0' + dec_c + ' ' + rollA1Notation(11, 4) + dec_c + ' -' + rollA1Notation(11, 6) + '})');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1384,7 +1384,7 @@ function update_v0m35p0_ () {
     update_v0m35p0s0_();
     update_v0m35p0s1_();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1458,7 +1458,7 @@ function update_v0m35p0s1_ () {
 
     sheet.insertChart(chart.build());
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1494,7 +1494,7 @@ function update_v0m35p0s0_ () {
       }
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1507,7 +1507,7 @@ function update_v0m34p10_ () {
   try {
     SpreadsheetApp2.getActiveSpreadsheet().setRecalculationInterval(SpreadsheetApp.RecalculationInterval.ON_CHANGE);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1521,7 +1521,7 @@ function update_v0m34p7_ () {
     const status = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
     setSpreadsheetSettings_('optimize_load', status);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1534,7 +1534,7 @@ function update_v0m34p0_ () {
   try {
     setUserSettings_('optimize_load', false);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1568,7 +1568,7 @@ function update_v0m33p9_ () {
       sheet.getRange(2 + h_ * account.time_a, col).setFormula('=' + FormatNumber.localeSignal(account.balance));
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1583,7 +1583,7 @@ function update_v0m33p2_ () {
     setSpreadsheetSettings_('view_mode', 'complete');
     viewModeComplete_();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1630,7 +1630,7 @@ function update_v0m33p1_ () {
 
     sheet.setConditionalFormatRules(rules);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1666,7 +1666,7 @@ function update_v0m33p0_ () {
 
     update_v0m33p0s3_(spreadsheet);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1708,7 +1708,7 @@ function update_v0m33p0s3_ (spreadsheet) {
 
     formatTags_();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -1797,7 +1797,7 @@ function update_v0m33p0s2_ (spreadsheet, limits) {
 
     SpreadsheetApp.flush();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1853,7 +1853,7 @@ function update_v0m33p0s1_ (spreadsheet, limits) {
 
     SpreadsheetApp.flush();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1910,7 +1910,7 @@ function update_v0m33p0s0_ (spreadsheet, limits) {
 
     SpreadsheetApp.flush();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -1988,7 +1988,7 @@ function update_v0m32p7_ () {
       backstage.getRangeList(list).setFormulaR1C1('RC[-' + (w_ + w_ * k) + ']');
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -2027,7 +2027,7 @@ function update_v0m32p6_ () {
       saveTriggerId_(trigger, 'document', 'clockTriggerId');
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -2045,7 +2045,7 @@ function update_v0m32p2_ () {
     const rr = update_v0m32p2s1_();
     if (rr) return rr;
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -2085,7 +2085,7 @@ function update_v0m32p2s1_ () {
 
     spreadsheet.deleteSheet(tmp);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -2099,7 +2099,7 @@ function update_v0m32p2s0_ () {
       ['name', 'category', 'description', 'analytics', 'code']
     ]);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -2140,7 +2140,7 @@ function update_v0m31p8_ () {
       sheet.getRangeList(ranges).setValue(limit);
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -2167,7 +2167,7 @@ function update_v0m31p7_ () {
       sheet.getRange(4 + h_ * i, 2).setFormula(formula);
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -2182,7 +2182,7 @@ function update_v0m31p6_ () {
 
     if (documentProperties.getProperty('is_installed') !== 'true') documentProperties.setProperty('is_installed', 'true');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -2208,7 +2208,7 @@ function update_v0m31p0_ () {
     };
     PropertiesService2.setProperty('document', 'admin_settings', 'json', properties);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -2278,7 +2278,7 @@ function update_v0m30p6_ () {
     PropertiesService2.deleteProperty('document', 'dailyMainId');
     PropertiesService2.deleteProperty('document', 'weeklyMainId');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }

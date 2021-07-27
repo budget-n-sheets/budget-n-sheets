@@ -61,7 +61,7 @@ function saveUserSettings (settings) {
       updateDecimalSeparator_();
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 
   try {
@@ -69,13 +69,13 @@ function saveUserSettings (settings) {
       updateDecimalPlaces_();
     }
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 
   try {
     setViewMode_(settings.view_mode);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 
   if (init_month === new_init_month) return;
@@ -89,7 +89,7 @@ function saveUserSettings (settings) {
 
     updateTabsColors();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
