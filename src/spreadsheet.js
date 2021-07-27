@@ -59,7 +59,7 @@ function mergeEventsInTable_ (sheet, data, dest) {
 
   sheet.getRange(_s.row, _s.offset, table.length, _s.width).setValues(table);
 
-  const value = transpose([data.values]);
+  const value = Utils.transpose([data.values]);
   sheet.getRange(_s.row + i, _s.offset + _s.col, value.length, 1).setFormulas(value);
 }
 

@@ -81,8 +81,8 @@ function updateCashFlow_ (mm) {
     cf_transactions.splice(dd - 31, 31 - dd);
   }
 
-  sheet.getRange(4, 2 + 4 * mm, dd, 1).setFormulas(transpose([cf_flow]));
-  sheet.getRange(4, 4 + 4 * mm, dd, 1).setValues(transpose([cf_transactions]));
+  sheet.getRange(4, 2 + 4 * mm, dd, 1).setFormulas(Utils.transpose([cf_flow]));
+  sheet.getRange(4, 4 + 4 * mm, dd, 1).setValues(Utils.transpose([cf_transactions]));
 
   SpreadsheetApp.flush();
   console.timeEnd('tool/update-cash-flow');
