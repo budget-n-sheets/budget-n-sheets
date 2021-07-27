@@ -16,7 +16,7 @@ const PATCH_THIS = Object.freeze({
       [null, null, null, null, null, update_v0m39p5_, update_v0m39p6_, update_v0m39p7_, null],
       [update_v0m40p0_, update_v0m40p1_],
       [null, null, null, update_v0m41p3_, null],
-      [null]
+      [null, null]
     ]
   ],
   beta_list: []
