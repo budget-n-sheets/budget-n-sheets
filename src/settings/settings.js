@@ -1,11 +1,7 @@
 function retrieveUserSettings () {
   if (!isUserAdmin_()) return;
 
-  let user_settings = CacheService2.get('document', 'user_settings', 'json');
-  if (!user_settings) {
-    user_settings = PropertiesService2.getProperty('document', 'user_settings', 'json');
-    CacheService2.put('document', 'user_settings', 'json', user_settings);
-  }
+  const user_settings = CachedAccess.get('user_settings');
 
   if (user_settings.financial_calendar) {
     user_settings.financial_calendar = computeDigest('MD5', user_settings.financial_calendar, 'UTF_8');
@@ -51,8 +47,7 @@ function saveUserSettings (settings) {
     post_day_events: calendar.post_day_events,
     cash_flow_events: calendar.cash_flow_events
   };
-  PropertiesService2.setProperty('document', 'user_settings', 'json', user_settings);
-  CacheService2.put('document', 'user_settings', 'json', user_settings);
+  CachedAccess.update('user_settings', user_settings);
 
   updateSettingsMetadata_(user_settings);
 

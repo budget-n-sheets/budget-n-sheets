@@ -30,11 +30,7 @@ function saveAdminSettings (key, value) {
 }
 
 function getAdminSettings_ (select) {
-  let admin_settings = CacheService2.get('document', 'admin_settings', 'json');
-  if (!admin_settings) {
-    admin_settings = PropertiesService2.getProperty('document', 'admin_settings', 'json');
-    CacheService2.put('document', 'admin_settings', 'json', admin_settings);
-  }
+  const admin_settings = CachedAccess.get('admin_settings');
 
   switch (select) {
     case 'admin_id':
@@ -61,8 +57,7 @@ function setAdminSettings_ (select, value) {
       return 1;
   }
 
-  PropertiesService2.setProperty('document', 'admin_settings', 'json', admin_settings);
-  CacheService2.put('document', 'admin_settings', 'json', admin_settings);
+  CachedAccess.update('admin_settings', admin_settings);
 }
 
 function askTransferAdmin () {

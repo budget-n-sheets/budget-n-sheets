@@ -1,10 +1,5 @@
 function getDbTables_ (select) {
-  let db_tables = CacheService2.get('document', 'DB_TABLES', 'json');
-
-  if (!db_tables) {
-    db_tables = PropertiesService2.getProperty('document', 'DB_TABLES', 'json');
-    CacheService2.put('document', 'DB_TABLES', 'json', db_tables);
-  }
+  const db_tables = CachedAccess.get('DB_TABLES');
 
   if (select) return db_tables[select];
   return db_tables;
@@ -20,8 +15,7 @@ function setDbTables_ (db, select) {
     db_tables = db;
   }
 
-  PropertiesService2.setProperty('document', 'DB_TABLES', 'json', db_tables);
-  CacheService2.put('document', 'DB_TABLES', 'json', db_tables);
+  CachedAccess.update('DB_TABLES', db_tables);
 }
 
 function tablesService (action, select, param) {
