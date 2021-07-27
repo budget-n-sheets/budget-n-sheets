@@ -146,7 +146,9 @@ function showDialogAboutAddon () {
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'About the add-on');
 }
 
-function showDialogErrorMessage () {
+function showDialogErrorMessage (err) {
+  if (err) console.error(err);
+
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlExceptionMessage')
     .assignReservedHref()
     .evaluate()
