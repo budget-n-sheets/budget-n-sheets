@@ -88,144 +88,10 @@
     </div>
 
     <div id="content" style="margin-top: 7px;margin-bottom: 4.3em;">
-      <div class="panel active" id="panel_Settings">
-        <form class="asidebar" accept-charset="UTF-8">
-          <table style="width:100%;">
-            <tr>
-              <th colspan="2"><span style="font-size:1.2em;">Spreadsheet</span></th>
-            </tr>
-            <tr>
-              <td class="name"><label>Name</label></td>
-              <td><?= doc_name ?></td>
-            </tr>
-            <tr>
-              <td class="name"><label>Financial year</label></td>
-              <td><?= financial_year ?></td>
-            </tr>
-            <tr>
-              <td class="name"><label for="initial_month">Initial month</label></td>
-              <td>
-                <select id="initial_month" required>
-                  <option value="0" selected>January</option>
-                  <option value="1">February</option>
-                  <option value="2">March</option>
-                  <option value="3">April</option>
-                  <option value="4">May</option>
-                  <option value="5">June</option>
-                  <option value="6">July</option>
-                  <option value="7">August</option>
-                  <option value="8">September</option>
-                  <option value="9">October</option>
-                  <option value="10">November</option>
-                  <option value="11">December</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td class="name"><label for="decimal_places">Decimal places</label></td>
-              <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
-            </tr>
-            <tr>
-              <td class="name"><label for="view_mode">View mode</label></td>
-              <td>
-                <select id="view_mode" required>
-                  <option value="complete" selected>Complete</option>
-                  <option value="simple">Simple</option>
-                </select>
-              </td>
-            </tr>
-          </table>
-          <? if (isOperationActive) { ?>
-          <table style="width:100%;margin-top:1.3em;">
-            <tr>
-              <th colspan="2"><span style="font-size:1.2em;">Financial calendar</span></th>
-            </tr>
-            <? if (isCalendarEnabled) { ?>
-            <tr>
-              <td class="comment name"><label for="financial_calendar">Calendar</label></td>
-              <td class="comment">
-                <select id="financial_calendar" style="width: 157px" required>
-                  <option value="" selected>Disable</option>
-                  <? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
-                  <option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
-                  <? } ?>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td class="secondary" colspan="2">
-                * Calendar is not owned by you.
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <input class="options-calendar" type="checkbox" id="post_day_events" disabled><label for="post_day_events">Sync calendar to the spreadsheet</label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <input class="options-calendar" type="checkbox" id="cash_flow_events" disabled><label for="cash_flow_events">Sync calendar to cash flow</label>
-              </td>
-            </tr>
-            <? } else { ?>
-            <tr>
-              <td>
-                It seems like Google Calendar is not enable for your account. <a href="<?= home_wiki ?>/Financial-Calendar" target="_blank"><b>Learn more</b></a>
-              </td>
-            </tr>
-            <? } ?>
-          </table>
-          <? } ?>
-        </form>
-      </div>
-
-      <div class="panel" id="panel_Maintenance">
-        <table style="width:100%;">
-          <tr>
-            <th colspan="2"><span style="font-size:1.2em;">Maintenance</span></th>
-          </tr>
-          <tr>
-            <td class="comment name" style="width: 100%;"><label>Reset protected ranges</label></td>
-            <td class="comment"><button id="b-Reset">Reset</button></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <p>This can fix issues related with editable ranges affected by protection.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="comment name" style="width: 100%;"><label>Reinstall triggers</label></td>
-            <td class="comment"><button id="b-Reinstall">Reinstall</button></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <p>This can fix issues related with the add-on's automatic update and maintenance.<br>
-                <a href="<?= home_wiki ?>/Updates-&-Maintenance" target="_blank"><b>Learn more</b></a>
-              </p>
-            </td>
-          </tr>
-        </table>
-        <? if (!isOwner || isSharedDrive) { ?>
-        <table style="width:100%;margin-top:1.3em;">
-          <tr>
-            <th colspan="2"><span style="font-size:1.2em;">Add-on Admin</span></th>
-          </tr>
-          <tr>
-            <td class="comment name" style="width: 100%;">Transfer add-on admin role</td>
-            <td class="comment"><button id="b-Transfer">Transfer</button></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <p>Transfers the role of add-on administrator in this spreadsheet.<br>
-              <a href="<?= home_wiki ?>/Changing-Settings#transfer-add-on-admin-role" target="_blank"><b>Learn more</b></a></p>
-            </td>
-          </tr>
-        </table>
-        <? } ?>
-      </div>
-
+      <?!= htmlPanelSettings ?>
+      <?!= htmlPanelMaintenance ?>
       <? if (settings_backup) { ?>
-        <?!= htmlInclude("settings/sidebar/htmlPanelBackup"); ?>
+        <?!= htmlPanelBackup ?>
       <? } ?>
     </div>
 
@@ -245,21 +111,6 @@
   </div>
   <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    $(document).ready(function() {
-      $("#b-Reinstall").click(reinstallTriggers);
-      <? if (!isOwner || isSharedDrive) { ?>
-      $("#b-Transfer").click(transferAdminRole);
-      <? } ?>
-
-      $("#b-Reset").click(resetProtection);
-
-      google.script.run.withSuccessHandler(loadUserSettings)
-        .withFailureHandler(showError)
-        .retrieveUserSettings();
-    });
-
-    $(document).on('click', '#b-Save', saveSettings);
-
     $(document).on("click", ".header_tab", function() {
       if ($(this).hasClass("active")) return;
 
@@ -290,113 +141,14 @@
       }
     });
 
-    <? if (isCalendarEnabled) { ?>
-    $("#financial_calendar").change(function() {
-      if ($(this).val() === "") {
-        $(".options-calendar").prop("disabled", true);
-        $(".options-calendar").prop("checked", false);
-      } else {
-        $(".options-calendar").prop("disabled", false);
-      }
-      return;
-    });
-
-    <? } ?>
-
-    <? if (!isOwner || isSharedDrive) { ?>
-    function transferAdminRole() {
-      this.disabled = true;
-      $("#footer_response").empty();
-
-      google.script.run.withSuccessHandler(function(r, o) {
-          o.disabled = false;
-          if (!r) google.script.host.close();
-        })
-        .withFailureHandler(showError)
-        .withUserObject(this)
-        <? if (isSharedDrive) { ?>
-        .askTransferAdminSd();
-        <? } else { ?>
-        .askTransferAdmin();
-        <? } ?>
-    }
-
-    <? } ?>
-
-    function reinstallTriggers() {
-      this.disabled = true;
-      $("#footer_response").empty();
-
-      google.script.run.withSuccessHandler(function(r, o) {
-          if (!r) showStatus("Reinstalled triggers");
-          o.disabled = false;
-        })
-        .withFailureHandler(showError)
-        .withUserObject(this)
-        .askReinstallTriggersUi();
-    }
-
-    function resetProtection() {
-      this.disabled = true;
-      $("#footer_response").empty();
-
-      google.script.run.withSuccessHandler(function(r, o) {
-          showStatus("Reseted protection");
-          o.disabled = false;
-        })
-        .withFailureHandler(showError)
-        .withUserObject(this)
-        .askResetProtection();
-    }
-
-    function loadUserSettings(user_settings) {
-      $("#initial_month").val(user_settings.initial_month);
-      $("#decimal_places").val(user_settings.decimal_places);
-      $('#view_mode').val(user_settings.view_mode);
-
-      <? if (isCalendarEnabled) { ?>
-      $("#financial_calendar").val(user_settings.financial_calendar);
-      if (user_settings.financial_calendar) {
-        if (user_settings.post_day_events) $("#post_day_events").prop("checked", true);
-        if (user_settings.cash_flow_events) $("#cash_flow_events").prop("checked", true);
-        $(".options-calendar").prop("disabled", false);
-      }
-      <? } ?>
-
-      $("#b-Save").prop("disabled", false);
-    }
-
-    function saveSettings() {
-      this.disabled = true;
-      $("#footer_response").empty();
-
-      var user_settings = {
-        <? if (isCalendarEnabled) { ?>
-        financial_calendar: $("#financial_calendar").val(),
-        post_day_events: $("#post_day_events").prop("checked"),
-        cash_flow_events: $("#cash_flow_events").prop("checked"),
-        <? } ?>
-        initial_month : $("#initial_month").val(),
-        decimal_places : $("#decimal_places").val(),
-        view_mode: $('#view_mode').val()
-      };
-
-      google.script.run.withSuccessHandler(function(r, o) {
-          if (r) showError()
-          showStatus("Saved settings");
-          o.disabled = false;
-        })
-        .withFailureHandler(showError)
-        .withUserObject(this)
-        .saveUserSettings(user_settings);
-    }
-
     function showStatus(msg) {
       $("#footer_response").empty().append(msg);
     }
   </script>
+  <?!= jsPanelSettings ?>
+  <?!= jsPanelMaintenance ?>
   <? if (settings_backup) { ?>
-    <?!= htmlInclude("settings/sidebar/jsPanelBackup"); ?>
+    <?!= jsPanelBackup ?>
   <? } ?>
 </body>
 

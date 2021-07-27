@@ -1,0 +1,54 @@
+<script>
+  $(document).ready(function() {
+    $("#b-Reset").click(resetProtection);
+    $("#b-Reinstall").click(reinstallTriggers);
+    <? if (!isOwner || isSharedDrive) { ?>
+    $("#b-Transfer").click(transferAdminRole);
+    <? } ?>
+  });
+
+  function resetProtection() {
+    this.disabled = true;
+    $("#footer_response").empty();
+
+    google.script.run.withSuccessHandler(function(r, o) {
+        showStatus("Reseted protection");
+        o.disabled = false;
+      })
+      .withFailureHandler(showError)
+      .withUserObject(this)
+      .askResetProtection();
+  }
+
+  function reinstallTriggers() {
+    this.disabled = true;
+    $("#footer_response").empty();
+
+    google.script.run.withSuccessHandler(function(r, o) {
+        if (!r) showStatus("Reinstalled triggers");
+        o.disabled = false;
+      })
+      .withFailureHandler(showError)
+      .withUserObject(this)
+      .askReinstallTriggersUi();
+  }
+
+  <? if (!isOwner || isSharedDrive) { ?>
+  function transferAdminRole() {
+    this.disabled = true;
+    $("#footer_response").empty();
+
+    google.script.run.withSuccessHandler(function(r, o) {
+        o.disabled = false;
+        if (!r) google.script.host.close();
+      })
+      .withFailureHandler(showError)
+      .withUserObject(this)
+      <? if (isSharedDrive) { ?>
+      .askTransferAdminSd();
+      <? } else { ?>
+      .askTransferAdmin();
+      <? } ?>
+  }
+  <? } ?>
+</script>
