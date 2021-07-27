@@ -1,15 +1,16 @@
-const Goldfish = {
-  services: {
-    cache: {
-      document: null,
-      user: null
-    },
-    properties: {
-      document: null,
-      user: null
-    }
+class RapidAccessServices {
+  constructor (services) {
+    this._services = services;
   }
-};
+
+  cache () {
+    return new RapidAccessServicesCache(this._services.cache);
+  }
+
+  properties () {
+    return new RapidAccessServicesProperties(this._services.properties);
+  }
+}
 
 class RapidAccessServicesCache {
   constructor (cache) {
@@ -40,25 +41,5 @@ class RapidAccessServicesProperties {
   user () {
     return this._properties.user ||
           (this._properties.user = PropertiesService.getUserProperties());
-  }
-}
-
-class RapidAccessServices {
-  constructor (services) {
-    this._services = services;
-  }
-
-  cache () {
-    return new RapidAccessServicesCache(this._services.cache);
-  }
-
-  properties () {
-    return new RapidAccessServicesProperties(this._services.properties);
-  }
-}
-
-class RapidAccess {
-  static services () {
-    return new RapidAccessServices(Goldfish.services);
   }
 }
