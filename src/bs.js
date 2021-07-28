@@ -5,7 +5,7 @@ function getDeveloperKey_ () {
   if (!key) {
     key = PropertiesService.getScriptProperties().getProperty('developer_key');
     if (!key) {
-      ConsoleLog.error("getDeveloperKey_(): Key 'developer_key' was not found!");
+      console.error("getDeveloperKey_(): Key 'developer_key' was not found!");
       return 1;
     }
     scriptCache.put('developer_key', key);
@@ -21,7 +21,7 @@ function getInnerKey_ () {
   if (!key) {
     key = PropertiesService.getScriptProperties().getProperty('inner_lock');
     if (!key) {
-      ConsoleLog.error("getInnerKey_(): Key 'inner_lock' was not found!");
+      console.error("getInnerKey_(): Key 'inner_lock' was not found!");
       return 1;
     }
     scriptCache.put('inner_lock', key);
@@ -38,13 +38,13 @@ function bsSignSetup_ () {
 
   const const_properties = PropertiesService2.getProperty('document', 'const_properties', 'json');
   if (!const_properties) {
-    ConsoleLog.error("bsSignSetup_(): Property 'const_properties' is undefined!");
+    console.error("bsSignSetup_(): Property 'const_properties' is undefined!");
     return 1;
   }
 
   const class_version = PropertiesService2.getProperty('document', 'class_version2', 'json');
   if (!class_version) {
-    ConsoleLog.error("bsSignSetup_(): Property 'class_version' is undefined!");
+    console.error("bsSignSetup_(): Property 'class_version' is undefined!");
     return 1;
   }
 
@@ -101,7 +101,7 @@ function importAboutPage_ () {
   try {
     source = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 1;
   }
 
@@ -121,7 +121,7 @@ function importAboutPage_ () {
     sheet.protect().setWarningOnly(true);
     SpreadsheetApp.flush();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 1;
   }
 

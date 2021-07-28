@@ -139,7 +139,7 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
 
       switch (evento.TranslationType) {
         default:
-          ConsoleLog.warn('cfDigestCalendar_(): Switch case is default.', evento.TranslationType);
+          console.warn('cfDigestCalendar_(): Switch case is default.', evento.TranslationType);
         case '':
         case 'Avg':
           value = tags.average[c];
@@ -250,7 +250,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
         if (c !== -1) {
           switch (translation.type) {
             default:
-              ConsoleLog.warn('cfDigestAccounts_(): Switch case is default.', translation.type);
+              console.warn('cfDigestAccounts_(): Switch case is default.', translation.type);
             case '':
             case 'Avg':
               value = tags.average[c];

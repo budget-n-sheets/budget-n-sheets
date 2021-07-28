@@ -132,7 +132,7 @@ function decryptBackup_ (password, backup) {
     const decrypted = sjcl.decrypt(password, decoded);
     return JSON.parse(decrypted);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 

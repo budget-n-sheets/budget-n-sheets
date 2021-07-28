@@ -4,7 +4,7 @@ function onOpenInstallable_ (e) {
   try {
     loadCache_();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 }
 
@@ -44,7 +44,7 @@ function onEditInstallable_ (e) {
     try {
       quickActions_(e.range, e.value);
     } catch (err) {
-      ConsoleLog.error(err);
+      console.error(err);
     } finally {
       e.range.setValue('');
     }
@@ -54,7 +54,7 @@ function onEditInstallable_ (e) {
       const status = getSpreadsheetSettings_('optimize_load');
       if (status == null || status[mm]) switchActivity_('resume', mm, mm);
     } catch (err) {
-      ConsoleLog.error(err);
+      console.error(err);
     }
   }
 }
@@ -153,7 +153,7 @@ function dailyTrigger_ (e) {
         switchActivity_('suspend', 0, yyyymmdd.month - 3);
       }
     } catch (err) {
-      ConsoleLog.error(err);
+      console.error(err);
     }
   }
 

@@ -117,7 +117,7 @@ function isScriptUpToDate_ () {
 
 function getClassVersion_ (property) {
   if (property !== 'script' && property !== 'template') {
-    ConsoleLog.warn("getClassVersion_(): Invalid 'property' value.", { property: property });
+    console.warn("getClassVersion_(): Invalid 'property' value.", { property: property });
     return 1;
   }
 
@@ -127,7 +127,7 @@ function getClassVersion_ (property) {
 
 function setClassVersion_ (property, value) {
   if (property !== 'script' && property !== 'template') {
-    ConsoleLog.warn("setClassVersion_(): Invalid 'property' value.", { property: property });
+    console.warn("setClassVersion_(): Invalid 'property' value.", { property: property });
     return 1;
   }
 
@@ -135,13 +135,13 @@ function setClassVersion_ (property, value) {
   try {
     lock.waitLock(200);
   } catch (err) {
-    ConsoleLog.warn(err);
+    console.warn(err);
     return 1;
   }
 
   const class_version2 = PropertiesService2.getProperty('document', 'class_version2', 'json');
   if (!class_version2) {
-    ConsoleLog.warn("setClassVersion_(): Invalid 'class_version2' value.");
+    console.warn("setClassVersion_(): Invalid 'class_version2' value.");
     return 1;
   }
 
@@ -160,7 +160,7 @@ function setClassVersion_ (property, value) {
 function update_v0m0p0_ () {
   try {
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 } */
@@ -175,7 +175,7 @@ function update_v0m41p3_ () {
     const initial_month = getUserSettings_('initial_month');
     setUserSettings_('initial_month', initial_month);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -213,7 +213,7 @@ function update_v0m40p1_ () {
 
     unique.getRange(1, 2).setFormula(formula);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -236,7 +236,7 @@ function update_v0m40p0_ () {
     rr = update_v0m40p0s2_();
     if (rr) return rr;
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -270,7 +270,7 @@ function update_v0m40p0s2_ () {
 
     unique.getRange(1, 2).setFormula('SORT(UNIQUE({' + range_cards.slice(0, -2) + '}))');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -309,7 +309,7 @@ function update_v0m40p0s1_ () {
 
     unique.getRange(1, 1).setFormula('SORT(UNIQUE({' + range_accounts.slice(0, -2) + '}))');
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }
@@ -334,7 +334,7 @@ function update_v0m40p0s0_ () {
     sheet.protect().setWarningOnly(true);
     sheet.hideSheet();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 2;
   }
 }

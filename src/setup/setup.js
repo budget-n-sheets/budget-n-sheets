@@ -88,7 +88,7 @@ function setupLock (uuid, select, config) {
       'Add-on setup in progress',
       'A budget spreadsheet setup is already in progress.',
       SpreadsheetApp2.getUi().ButtonSet.OK);
-    ConsoleLog.warn(err);
+    console.warn(err);
     return;
   }
 
@@ -191,7 +191,7 @@ function setupLock (uuid, select, config) {
   try {
     setupTriggers_();
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
   }
 
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));

@@ -7,7 +7,7 @@ function getAdminSettings_ (select) {
       return admin_settings[select];
 
     default:
-      ConsoleLog.error('getAdminSettings_(): Switch case is default.', select);
+      console.error('getAdminSettings_(): Switch case is default.', select);
       break;
   }
 }
@@ -22,7 +22,7 @@ function setAdminSettings_ (select, value) {
       break;
 
     default:
-      ConsoleLog.error('setAdminSettings_() : Switch case is default.', select);
+      console.error('setAdminSettings_() : Switch case is default.', select);
       return 1;
   }
 

@@ -16,7 +16,7 @@ function pagesView_ (select, a) {
       'The add-on is busy. Try again in a moment.',
       SpreadsheetApp2.getUi().ButtonSet.OK);
 
-    ConsoleLog.warn(err);
+    console.warn(err);
     return;
   }
 
@@ -29,7 +29,7 @@ function pagesView_ (select, a) {
       break;
 
     default:
-      ConsoleLog.error('pagesView_(): Switch case is default.', select);
+      console.error('pagesView_(): Switch case is default.', select);
       break;
   }
 

@@ -8,7 +8,7 @@ function toggleViewMode_ () {
       'The add-on is busy. Try again in a moment.',
       SpreadsheetApp2.getUi().ButtonSet.OK);
 
-    ConsoleLog.warn(err);
+    console.warn(err);
     return;
   }
 
@@ -33,7 +33,7 @@ function setViewMode_ (view_mode) {
   try {
     lock.waitLock(200);
   } catch (err) {
-    ConsoleLog.warn(err);
+    console.warn(err);
     return;
   }
 

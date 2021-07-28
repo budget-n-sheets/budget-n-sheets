@@ -156,7 +156,7 @@ function encryptBackup_ (backup, password) {
   try {
     encrypted = sjcl.encrypt(password, stringify, options);
   } catch (err) {
-    ConsoleLog.error(err);
+    console.error(err);
     return 1;
   }
 

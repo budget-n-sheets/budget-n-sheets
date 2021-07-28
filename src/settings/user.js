@@ -11,7 +11,7 @@ function getUserSettings_ (select) {
       return user_settings[select];
 
     default:
-      ConsoleLog.error('getUserSettings_(): Switch case is default.', select);
+      console.error('getUserSettings_(): Switch case is default.', select);
       break;
   }
 }
@@ -30,7 +30,7 @@ function setUserSettings_ (select, value) {
       break;
 
     default:
-      ConsoleLog.error('setUserSettings_() : Switch case is default.', select);
+      console.error('setUserSettings_() : Switch case is default.', select);
       return false;
   }
 
