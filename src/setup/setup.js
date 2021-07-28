@@ -1,15 +1,3 @@
-function isInstalled_ () {
-  let isInstalled = CacheService3.document().get('is_installed');
-
-  if (isInstalled == null) {
-    isInstalled = PropertiesService3.document().getProperty('is_installed');
-    isInstalled = (!!isInstalled);
-    CacheService3.document().put('is_installed', isInstalled);
-  }
-
-  return isInstalled;
-}
-
 function uninstall_ (putLock) {
   deleteAllTriggers_();
 
