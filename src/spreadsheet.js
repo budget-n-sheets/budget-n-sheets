@@ -204,7 +204,7 @@ function updateTabsColors (sheets, financial_year, yyyy, mm) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let date, delta, i;
 
-  const init_month = getUserSettings_('initial_month');
+  const init_month = SettingsUser.getValueOf('initial_month');
 
   if (!sheets) {
     date = Utils.getLocaleDate();

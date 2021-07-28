@@ -35,7 +35,7 @@ function saveUserSettings (settings) {
   }
 
   const new_init_month = Number(settings.initial_month);
-  const init_month = getUserSettings_('initial_month');
+  const init_month = SettingsUser.getValueOf('initial_month');
   const decimal_places = getSpreadsheetSettings_('decimal_places');
 
   const user_settings = {

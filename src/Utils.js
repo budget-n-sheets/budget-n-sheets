@@ -68,7 +68,7 @@ class MonthFactored extends Utils {
     const date = (this.date || this.getLocaleDate());
     const yyyy = date.getFullYear();
     const financial_year = (this.financial_year || SettingsConst.getValueOf('financial_year'));
-    const initial_month = getUserSettings_('initial_month') + 1;
+    const initial_month = SettingsUser.getValueOf('initial_month') + 1;
 
     let mm = 0;
 

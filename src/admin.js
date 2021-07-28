@@ -60,9 +60,9 @@ function askTransferAdmin () {
     SettingsAdmin.setValueOf('admin_id', owner_id);
     bsSignSetup_();
 
-    setUserSettings_('financial_calendar', '');
-    setUserSettings_('post_day_events', false);
-    setUserSettings_('cash_flow_events', false);
+    SettingsUser.setValueOf('financial_calendar', '');
+    SettingsUser.setValueOf('post_day_events', false);
+    SettingsUser.setValueOf('cash_flow_events', false);
 
     return;
   }
@@ -142,9 +142,9 @@ function continuedTransferAdminSd (editor) {
       SettingsAdmin.setValueOf('admin_id', digest);
       bsSignSetup_();
 
-      setUserSettings_('financial_calendar', '');
-      setUserSettings_('post_day_events', false);
-      setUserSettings_('cash_flow_events', false);
+      SettingsUser.setValueOf('financial_calendar', '');
+      SettingsUser.setValueOf('post_day_events', false);
+      SettingsUser.setValueOf('cash_flow_events', false);
 
       return;
     }

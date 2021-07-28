@@ -282,9 +282,9 @@ function copySettings_ (spreadsheet) {
     const digest = computeDigest('SHA_256', calendars.id[i], 'UTF_8');
 
     if (digest === metadata.financial_calendar_sha256) {
-      setUserSettings_('financial_calendar', calendars.id[i]);
-      setUserSettings_('post_day_events', metadata.post_day_events);
-      setUserSettings_('cash_flow_events', metadata.cash_flow_events);
+      SettingsUser.setValueOf('financial_calendar', calendars.id[i]);
+      SettingsUser.setValueOf('post_day_events', metadata.post_day_events);
+      SettingsUser.setValueOf('cash_flow_events', metadata.cash_flow_events);
       break;
     }
   }
