@@ -40,7 +40,7 @@ function onlineUpdate_ () {
     return;
   }
 
-  const spreadsheet_locale = getSpreadsheetSettings_('spreadsheet_locale');
+  const spreadsheet_locale = SettingsSpreadsheet.getValueOf('spreadsheet_locale');
   if (spreadsheet_locale !== SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetLocale()) {
     updateDecimalSeparator_();
   }
@@ -78,7 +78,7 @@ function seamlessUpdate_ () {
   if (!isTemplateAvailable()) return 1;
   if (!User2.isAdmin()) return 1;
 
-  const spreadsheet_locale = getSpreadsheetSettings_('spreadsheet_locale');
+  const spreadsheet_locale = SettingsSpreadsheet.getValueOf('spreadsheet_locale');
   if (spreadsheet_locale !== SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetLocale()) {
     updateDecimalSeparator_();
   }
@@ -172,8 +172,8 @@ function update_v0m0p0_ () {
  */
 function update_v0m41p3_ () {
   try {
-    const initial_month = getUserSettings_('initial_month');
-    setUserSettings_('initial_month', initial_month);
+    const initial_month = SettingsUser.getValueOf('initial_month');
+    SettingsUser.setValueOf('initial_month', initial_month);
   } catch (err) {
     console.error(err);
     return 2;
@@ -281,7 +281,7 @@ function update_v0m40p0s1_ () {
     const unique = spreadsheet.getSheetByName('_Unique');
     if (!unique) return 1;
 
-    const num_acc = getConstProperties_('number_accounts');
+    const num_acc = SettingsConst.getValueOf('number_accounts');
     const rule = SpreadsheetApp.newDataValidation()
       .requireValueInRange(unique.getRange('A:A'), false)
       .setAllowInvalid(true)
