@@ -57,7 +57,7 @@ function askTransferAdmin () {
   if (response === ui.Button.YES) {
     deleteAllTriggers_();
 
-    setAdminSettings_('admin_id', owner_id);
+    SettingsAdmin.setValueOf('admin_id', owner_id);
     bsSignSetup_();
 
     setUserSettings_('financial_calendar', '');
@@ -139,7 +139,7 @@ function continuedTransferAdminSd (editor) {
       deleteAllTriggers_();
 
       digest = computeDigest('SHA_256', email, 'UTF_8');
-      setAdminSettings_('admin_id', digest);
+      SettingsAdmin.setValueOf('admin_id', digest);
       bsSignSetup_();
 
       setUserSettings_('financial_calendar', '');
