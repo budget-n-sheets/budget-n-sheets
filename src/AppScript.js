@@ -25,4 +25,11 @@ class AppsScript {
 
     CacheService3.document().put('load_cache', true);
   }
+
+  static uninstall () {
+    deleteAllTriggers_();
+    CacheService3.document().removeAll(CACHE_KEYS);
+    if (this.isInstalled()) PropertiesService3.document().setProperties({ lock_spreadsheet: true }, true);
+    else PropertiesService3.document().deleteAllProperties();
+  }
 }

@@ -1,15 +1,3 @@
-function uninstall_ (putLock) {
-  deleteAllTriggers_();
-
-  CacheService3.document().removeAll(CACHE_KEYS);
-
-  if (putLock) {
-    PropertiesService.getDocumentProperties().setProperties({ lock_spreadsheet: 'true' }, true);
-  } else {
-    PropertiesService.getDocumentProperties().deleteAllProperties();
-  }
-}
-
 function conditionalInstallTest_ () {
   const ui = SpreadsheetApp2.getUi();
 

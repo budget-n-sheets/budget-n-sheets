@@ -66,7 +66,7 @@ function onlineUpdate_ () {
       'Something went wrong. Please, try again later.',
       ui.ButtonSet.OK);
   } else if (r > 2) {
-    uninstall_();
+    AppsScript.uninstall();
     onOpen();
     showDialogErrorMessage();
   }
@@ -90,7 +90,7 @@ function seamlessUpdate_ () {
   const r = update_();
 
   if (r === 0) return;
-  if (r > 2) uninstall_();
+  if (r > 2) AppsScript.uninstall();
 
   return 1;
 }

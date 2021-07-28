@@ -6,7 +6,7 @@ function rollOperationMode_ () {
 
 function askDeactivation () {
   if (!AppsScript.isInstalled()) {
-    uninstall_();
+    AppsScript.uninstall();
     onOpen();
     return true;
   }
@@ -47,7 +47,7 @@ function askDeactivation () {
     ui.ButtonSet.YES_NO);
   if (response2 !== ui.Button.YES) return;
 
-  uninstall_(true);
+  AppsScript.uninstall();
   onOpen();
 
   ui.alert(
