@@ -132,7 +132,7 @@ function getCardsBalances_ () {
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
 
-  const num_acc = getConstProperties_('number_accounts');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
   const db_cards = getDbTables_('cards');
 
   const col = 2 + w_ + w_ * num_acc;
@@ -187,7 +187,7 @@ function refreshCardName_ (action, index, card) {
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
 
-  const num_acc = getConstProperties_('number_accounts');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
 
   const col = 2 + w_ + w_ * num_acc + w_ + 1;
 
@@ -247,7 +247,7 @@ function refreshCardsRules_ () {
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
 
-  const num_acc = getConstProperties_('number_accounts');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
   const db_cards = getDbTables_('cards');
 
   const list1 = ['All'];

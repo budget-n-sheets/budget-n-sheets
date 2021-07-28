@@ -31,7 +31,7 @@ function resumeActivity_ (mm0, mm1) {
   const cardsRows = sheetCards.getMaxRows() - 5;
   if (cardsRows < 1) return;
 
-  const num_acc = getConstProperties_('number_accounts');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
   const actual_month = MonthFactored.getActual();
 
   const db_accounts = getDbTables_('accounts');
@@ -188,10 +188,10 @@ function resumeActivity_ (mm0, mm1) {
     }
   }
 
-  let optimize_load = getSpreadsheetSettings_('optimize_load');
+  let optimize_load = SettingsSpreadsheet.getValueOf('optimize_load');
   if (optimize_load == null) optimize_load = new Array(12).fill(true);
   for (let mm = mm0; mm <= mm1; mm++) {
     optimize_load[mm] = false;
   }
-  setSpreadsheetSettings_('optimize_load', optimize_load);
+  SettingsSpreadsheet.setValueOf('optimize_load', optimize_load);
 }

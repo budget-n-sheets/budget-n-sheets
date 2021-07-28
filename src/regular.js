@@ -8,7 +8,7 @@ function postEventsForDate_ (date) {
   const list_eventos = calendarDigestListEvents_(eventos_day);
   if (list_eventos.length === 0) return;
 
-  const num_acc = getConstProperties_('number_accounts') + 1;
+  const num_acc = SettingsConst.getValueOf('number_accounts') + 1;
 
   const cards_balances = getTablesService_('cardsbalances');
   const hasCards = (cards_balances && cards_balances !== 1);
@@ -87,7 +87,7 @@ function postEventsForDate_ (date) {
 
 function treatLayout_ (yyyy, mm) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  const financial_year = getConstProperties_('financial_year');
+  const financial_year = SettingsConst.getValueOf('financial_year');
   let month, i;
 
   if (financial_year > yyyy) return; // Too soon to format the spreadsheet.

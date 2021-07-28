@@ -184,7 +184,7 @@ function backupProperties_ (backup) {
   backup.class_version2 = PropertiesService2.getProperty('document', 'class_version2', 'json');
 
   backup.spreadsheet_settings = {
-    decimal_places: getSpreadsheetSettings_('decimal_places')
+    decimal_places: SettingsSpreadsheet.getValueOf('decimal_places')
   };
 
   if (backup.user_settings.financial_calendar) {
@@ -276,7 +276,7 @@ function backupCards_ (backup) {
 
 function backupMonths_ (backup) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  const num_acc = getConstProperties_('number_accounts') + 1;
+  const num_acc = SettingsConst.getValueOf('number_accounts') + 1;
   let sheet, table, max, i, j, k;
 
   i = -1;

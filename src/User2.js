@@ -11,7 +11,7 @@ class User2 {
   }
 
   static isAdmin () {
-    return this.getId() === getAdminSettings_('admin_id');
+    return this.getId() === SettingsAdmin.getValueOf('admin_id');
   }
 
   static setId () {

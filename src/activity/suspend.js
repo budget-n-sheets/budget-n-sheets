@@ -21,6 +21,6 @@ function suspendActivity_ (mm0, mm1) {
     optimize_load[i] = true;
   }
 
-  setSpreadsheetSettings_('optimize_load', optimize_load);
+  SettingsSpreadsheet.setValueOf('optimize_load', optimize_load);
   SpreadsheetApp.flush();
 }

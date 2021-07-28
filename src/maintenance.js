@@ -71,7 +71,7 @@ function askResetProtection () {
   let protections, protection;
   let n, i, j, k;
 
-  number_accounts = getConstProperties_('number_accounts');
+  number_accounts = SettingsConst.getValueOf('number_accounts');
 
   for (i = 0; i < 12; i++) {
     sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);

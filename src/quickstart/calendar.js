@@ -69,12 +69,12 @@ function playQuickCalendar_ (n) {
   if (response === ui.Button.NO) return;
 
   const yyyy = DATE_NOW.getFullYear();
-  const financial_year = getConstProperties_('financial_year');
+  const financial_year = SettingsConst.getValueOf('financial_year');
 
   if (yyyy === financial_year) {
     mm = DATE_NOW.getMonth() + 1;
   } else if (yyyy < financial_year) {
-    mm = getUserSettings_('initial_month');
+    mm = SettingsUser.getValueOf('initial_month');
   } else {
     return;
   }
@@ -154,7 +154,7 @@ function playQuickCalendar_ (n) {
     );
   }
 
-  setUserSettings_('cash_flow_events', true);
+  SettingsUser.setValueOf('cash_flow_events', true);
   updateCashFlow_(mm);
 
   sheet.getRange(1, 2 + 4 * mm, 1, 3).activate();

@@ -117,7 +117,7 @@ const FormulaBuild = Object.freeze({
 
         switch (name) {
           case 'decimal_separator':
-            this._settings.decimal_separator = getSpreadsheetSettings_('decimal_separator');
+            this._settings.decimal_separator = SettingsSpreadsheet.getValueOf('decimal_separator');
             break;
         }
       },
@@ -221,10 +221,10 @@ const FormulaBuild = Object.freeze({
 
         switch (name) {
           case 'decimal_places':
-            this._settings.decimal_places = getSpreadsheetSettings_('decimal_places');
+            this._settings.decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
             break;
           case 'decimal_separator':
-            this._settings.decimal_separator = getSpreadsheetSettings_('decimal_separator');
+            this._settings.decimal_separator = SettingsSpreadsheet.getValueOf('decimal_separator');
             break;
         }
       },
@@ -364,7 +364,7 @@ const FormulaBuild = Object.freeze({
 
         switch (name) {
           case 'decimal_separator':
-            this._settings.decimal_separator = getSpreadsheetSettings_('decimal_separator');
+            this._settings.decimal_separator = SettingsSpreadsheet.getValueOf('decimal_separator');
             break;
         }
       },
@@ -408,7 +408,7 @@ const FormulaBuild = Object.freeze({
 
         switch (name) {
           case 'decimal_separator':
-            this._settings.decimal_separator = getSpreadsheetSettings_('decimal_separator');
+            this._settings.decimal_separator = SettingsSpreadsheet.getValueOf('decimal_separator');
             break;
         }
       },
@@ -471,7 +471,7 @@ const FormulaBuild = Object.freeze({
 
         switch (name) {
           case 'number_accounts':
-            this._settings.number_accounts = getConstProperties_('number_accounts');
+            this._settings.number_accounts = SettingsConst.getValueOf('number_accounts');
             break;
         }
       },
@@ -526,7 +526,7 @@ const FormulaBuild = Object.freeze({
 
         switch (name) {
           case 'decimal_places':
-            this._settings.decimal_places = getSpreadsheetSettings_('decimal_places');
+            this._settings.decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
             break;
         }
       },

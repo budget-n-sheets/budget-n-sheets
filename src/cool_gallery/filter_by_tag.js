@@ -2,8 +2,8 @@ function coolFilterByTag_ (info) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName(info.sheet_name);
 
-  const num_acc = getConstProperties_('number_accounts');
-  const dec_p = getSpreadsheetSettings_('decimal_separator');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
+  const dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
 
   const header = 'D8';
   const dec_c = (dec_p ? ', ' : ' \\ ');

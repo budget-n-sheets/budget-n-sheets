@@ -51,7 +51,7 @@ function onEditInstallable_ (e) {
   } else {
     try {
       const mm = MONTH_NAME.short.indexOf(name);
-      const status = getSpreadsheetSettings_('optimize_load');
+      const status = SettingsSpreadsheet.getValueOf('optimize_load');
       if (status == null || status[mm]) switchActivity_('resume', mm, mm);
     } catch (err) {
       console.error(err);
@@ -137,7 +137,7 @@ function dailyTrigger_ (e) {
     date: date.getDate()
   };
 
-  const financial_year = getConstProperties_('financial_year');
+  const financial_year = SettingsConst.getValueOf('financial_year');
 
   if (financial_year < yyyymmdd.year) {
     treatLayout_(yyyymmdd.year, yyyymmdd.month);
@@ -157,7 +157,7 @@ function dailyTrigger_ (e) {
     }
   }
 
-  if (getUserSettings_('post_day_events')) {
+  if (SettingsUser.getValueOf('post_day_events')) {
     postEventsForDate_(date);
   }
 }
@@ -173,7 +173,7 @@ function weeklyTriggerPos_ (e) {
 
   if (month % 3 !== 0) return;
 
-  const financial_year = getConstProperties_('financial_year');
+  const financial_year = SettingsConst.getValueOf('financial_year');
   const yyyy = date.getFullYear();
 
   if (yyyy > financial_year) {
@@ -188,7 +188,7 @@ function weeklyTriggerPre_ (e) {
   if (!isInstalled_()) return;
   if (seamlessUpdate_()) return;
 
-  const financial_year = getConstProperties_('financial_year');
+  const financial_year = SettingsConst.getValueOf('financial_year');
   const date = Utils.getLocaleDate();
   const yyyymm = {
     year: date.getFullYear(),

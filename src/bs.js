@@ -51,7 +51,7 @@ function bsSignSetup_ () {
   const data = {
     date: DATE_NOW.getTime(),
     spreadsheet_id: spreadsheet.getId(),
-    admin_id: getAdminSettings_('admin_id'),
+    admin_id: SettingsAdmin.getValueOf('admin_id'),
     class_version: class_version
   };
 

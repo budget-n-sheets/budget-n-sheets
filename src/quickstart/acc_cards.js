@@ -46,7 +46,7 @@ function playQuickAccCards_ (n) {
   let name, val, mm;
 
   const code = db_cards.codes[0];
-  const financial_year = getConstProperties_('financial_year');
+  const financial_year = SettingsConst.getValueOf('financial_year');
 
   if (n === 3) {
     name = 'Cards';

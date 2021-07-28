@@ -58,7 +58,7 @@ function formatAccounts_ (mm) {
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
   if (!sheet) return;
 
-  const num_acc = getConstProperties_('number_accounts');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
 
   if (sheet.getMaxColumns() < 5 + 5 * num_acc) return;
 
@@ -83,7 +83,7 @@ function formatAccounts_ (mm) {
   }
 
   const date1 = DATE_NOW.getTime();
-  let date2 = getConstProperties_('financial_year');
+  let date2 = SettingsConst.getValueOf('financial_year');
   date2 = new Date(date2, mm + 1, 0).getTime();
 
   const maxRows = sheet.getMaxRows();

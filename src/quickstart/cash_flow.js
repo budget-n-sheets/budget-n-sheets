@@ -2,7 +2,7 @@ function playQuickCashFlow_ (n) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet;
 
-  const mm = (getConstProperties_('financial_year') === DATE_NOW.getFullYear() ? DATE_NOW.getMonth() : 0);
+  const mm = (SettingsConst.getValueOf('financial_year') === DATE_NOW.getFullYear() ? DATE_NOW.getMonth() : 0);
 
   sheet = spreadsheet.getSheetByName('Cash Flow');
   if (!sheet) {

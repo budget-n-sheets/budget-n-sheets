@@ -12,8 +12,8 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
     cards: 0
   };
 
-  const dec_p = getSpreadsheetSettings_('decimal_places');
-  const dec_s = getSpreadsheetSettings_('decimal_separator');
+  const dec_p = SettingsSpreadsheet.getValueOf('decimal_places');
+  const dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
   const number_format = '-?\\$\\d+' + (dec_p > 0 ? (dec_s ? '\\.' : ',') + '\\d{' + dec_p + '}' : '');
   const valueRegExp = new RegExp(number_format);
 
@@ -177,13 +177,13 @@ function getAllOwnedCalendars () {
 }
 
 function getFinancialCalendar_ () {
-  const financial_calendar = getUserSettings_('financial_calendar');
+  const financial_calendar = SettingsUser.getValueOf('financial_calendar');
   if (!financial_calendar) return 0;
   return CalendarApp.getCalendarById(financial_calendar);
 }
 
 function getCalendarEventsForCashFlow_ (financial_year, mm) {
-  if (!getUserSettings_('cash_flow_events')) return [];
+  if (!SettingsUser.getValueOf('cash_flow_events')) return [];
 
   const calendar = getFinancialCalendar_();
   if (!calendar) return [];

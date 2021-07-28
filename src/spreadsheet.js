@@ -70,10 +70,10 @@ function updateDecimalPlaces_ () {
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
 
-  const num_acc = getConstProperties_('number_accounts');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
   const col = 2 + w_ + w_ * num_acc;
 
-  const dec_p = getSpreadsheetSettings_('decimal_places');
+  const dec_p = SettingsSpreadsheet.getValueOf('decimal_places');
   const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
   const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
 
@@ -145,7 +145,7 @@ function updateDecimalSeparator_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, cell, t;
 
-  const dec_p = getSpreadsheetSettings_('decimal_places');
+  const dec_p = SettingsSpreadsheet.getValueOf('decimal_places');
   const format = '0' + (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '.0');
 
   sheet = spreadsheet.getSheetByName('_Settings');
@@ -167,8 +167,8 @@ function updateDecimalSeparator_ () {
   if (t) spreadsheet.deleteSheet(sheet);
   else sheet.getRange(10, 2).setValue(v);
 
-  setSpreadsheetSettings_('decimal_separator', v);
-  setSpreadsheetSettings_('spreadsheet_locale', spreadsheet.getSpreadsheetLocale());
+  SettingsSpreadsheet.setValueOf('decimal_separator', v);
+  SettingsSpreadsheet.setValueOf('spreadsheet_locale', spreadsheet.getSpreadsheetLocale());
 }
 
 function updateHideShowSheets (sheets, financial_year, yyyy, mm) {
@@ -204,7 +204,7 @@ function updateTabsColors (sheets, financial_year, yyyy, mm) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let date, delta, i;
 
-  const init_month = getUserSettings_('initial_month');
+  const init_month = SettingsUser.getValueOf('initial_month');
 
   if (!sheets) {
     date = Utils.getLocaleDate();
@@ -216,7 +216,7 @@ function updateTabsColors (sheets, financial_year, yyyy, mm) {
       sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     }
 
-    financial_year = getConstProperties_('financial_year');
+    financial_year = SettingsConst.getValueOf('financial_year');
   }
 
   for (i = 0; i < init_month; i++) {

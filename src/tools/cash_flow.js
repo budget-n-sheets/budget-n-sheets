@@ -49,9 +49,9 @@ function updateCashFlow_ (mm) {
   const sheet = spreadsheet.getSheetByName('Cash Flow');
   if (!sheet) return;
 
-  const dec_p = getSpreadsheetSettings_('decimal_separator');
-  const num_acc = getConstProperties_('number_accounts');
-  const financial_year = getConstProperties_('financial_year');
+  const dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
+  const financial_year = SettingsConst.getValueOf('financial_year');
 
   const dd = new Date(financial_year, mm + 1, 0).getDate();
   const tags = getTagData_();

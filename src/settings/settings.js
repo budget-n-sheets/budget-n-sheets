@@ -8,8 +8,8 @@ function retrieveUserSettings () {
     user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
   }
 
-  user_settings.decimal_places = getSpreadsheetSettings_('decimal_places');
-  user_settings.view_mode = getSpreadsheetSettings_('view_mode');
+  user_settings.decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
+  user_settings.view_mode = SettingsSpreadsheet.getValueOf('view_mode');
 
   return user_settings;
 }
@@ -35,8 +35,8 @@ function saveUserSettings (settings) {
   }
 
   const new_init_month = Number(settings.initial_month);
-  const init_month = getUserSettings_('initial_month');
-  const decimal_places = getSpreadsheetSettings_('decimal_places');
+  const init_month = SettingsUser.getValueOf('initial_month');
+  const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
 
   const user_settings = {
     initial_month: new_init_month,
@@ -52,12 +52,12 @@ function saveUserSettings (settings) {
   updateSettingsMetadata_(user_settings);
 
   settings.decimal_places = Number(settings.decimal_places);
-  setSpreadsheetSettings_('decimal_places', settings.decimal_places);
+  SettingsSpreadsheet.setValueOf('decimal_places', settings.decimal_places);
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   try {
-    if (getSpreadsheetSettings_('spreadsheet_locale') !== spreadsheet.getSpreadsheetLocale()) {
+    if (SettingsSpreadsheet.getValueOf('spreadsheet_locale') !== spreadsheet.getSpreadsheetLocale()) {
       updateDecimalSeparator_();
     }
   } catch (err) {
