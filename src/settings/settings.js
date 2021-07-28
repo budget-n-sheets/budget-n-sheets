@@ -48,6 +48,7 @@ function saveUserSettings (settings) {
     cash_flow_events: calendar.cash_flow_events
   };
   CachedAccess.update('user_settings', user_settings);
+  RapidAccess.properties().clear();
 
   updateSettingsMetadata_(user_settings);
 

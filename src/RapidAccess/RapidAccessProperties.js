@@ -8,6 +8,14 @@ class RapidAccessProperties {
           (this._properties.admin = CachedAccess.get('admin_settings'));
   }
 
+  clear () {
+    for (const key in this._properties) {
+      this._properties[key] = null;
+    }
+
+    return this;
+  }
+
   const () {
     return this._properties.const ||
           (this._properties.const = CachedAccess.get('const_properties'));
