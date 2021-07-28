@@ -1,17 +1,17 @@
 function retrieveBackupInfo (uuid) {
-  if (!CacheService2.get('user', uuid, 'boolean')) {
+  if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;
   }
 
   const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
-  const settings_summary = CacheService2.get('document', address, 'json');
-  CacheService2.remove('document', address);
+  const settings_summary = CacheService3.document().get(address);
+  CacheService3.document().remove(address);
   return settings_summary;
 }
 
 function requestValidateBackup (uuid, file_id) {
-  if (!CacheService2.get('user', uuid, 'boolean')) {
+  if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;
   }
@@ -55,12 +55,12 @@ function processLegacyBackup_ (uuid, file, data) {
     return;
   }
 
-  CacheService2.put('user', uuid, 'boolean', true);
+  CacheService3.user().put(uuid, true);
   showDialogSetupRestore(uuid, '');
 }
 
 function requestDevelopBackup (uuid, file_id, password) {
-  if (!CacheService2.get('user', uuid, 'boolean')) {
+  if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;
   }
@@ -85,14 +85,14 @@ function requestDevelopBackup (uuid, file_id, password) {
     'SHA_1',
     uuid + file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
     'UTF_8');
-  CacheService2.put('user', address, 'string', password, 180);
+  CacheService3.user().put(address, password, 180);
 
   if (processBackup_(uuid, { file: file, id: file_id, name: file.getName() }, decrypted) !== 0) {
     showDialogSetupRestore(uuid, 'Sorry, something went wrong. Try again in a moment.');
     return;
   }
 
-  CacheService2.put('user', uuid, 'boolean', true);
+  CacheService3.user().put(uuid, true);
   showDialogSetupRestore(uuid, '');
 }
 
@@ -112,8 +112,8 @@ function unwrapBackup_ (uuid, blob, file_id) {
     'SHA_1',
     uuid + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
     'UTF_8');
-  const password = CacheService2.get('user', address, 'string');
-  CacheService2.remove('user', address, 'string');
+  const password = CacheService3.user().get(address);
+  CacheService3.user().remove(address);
 
   if (password == null) {
     showSessionExpired();
@@ -207,7 +207,7 @@ function processBackup_ (uuid, file, data) {
   }
 
   const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
-  CacheService2.put('document', address, 'json', info);
+  CacheService3.document().put(address, info);
   return 0;
 }
 

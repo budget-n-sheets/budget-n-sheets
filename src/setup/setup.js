@@ -1,10 +1,10 @@
 function isInstalled_ () {
-  let isInstalled = CacheService2.get('document', 'is_installed', 'boolean');
+  let isInstalled = CacheService3.document().get('is_installed');
 
   if (isInstalled == null) {
     isInstalled = PropertiesService3.document().getProperty('is_installed');
     isInstalled = (!!isInstalled);
-    CacheService2.put('document', 'is_installed', 'boolean', isInstalled);
+    CacheService3.document().put('is_installed', isInstalled);
   }
 
   return isInstalled;
@@ -13,7 +13,7 @@ function isInstalled_ () {
 function uninstall_ (putLock) {
   deleteAllTriggers_();
 
-  CacheService2.removeAll('document', CACHE_KEYS);
+  CacheService3.document().removeAll(CACHE_KEYS);
 
   if (putLock) {
     PropertiesService.getDocumentProperties().setProperties({ lock_spreadsheet: 'true' }, true);
@@ -92,11 +92,11 @@ function setupLock (uuid, select, config) {
     return;
   }
 
-  if (!CacheService2.get('user', uuid, 'boolean')) {
+  if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;
   }
-  CacheService2.remove('user', uuid);
+  CacheService3.user().remove(uuid);
 
   console.time('setup/' + select);
   setupValidate_(select);
@@ -227,7 +227,7 @@ function setupPrepare_ () {
 
   PropertiesService3.document().deleteAllProperties();
   deleteAllTriggers_();
-  CacheService2.removeAll('document', CACHE_KEYS);
+  CacheService3.document().removeAll(CACHE_KEYS);
 
   const metadata = spreadsheet.createDeveloperMetadataFinder()
     .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)

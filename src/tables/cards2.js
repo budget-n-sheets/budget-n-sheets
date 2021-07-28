@@ -5,12 +5,12 @@ function getCardById_ (card_id) {
 }
 
 function hasCards_ () {
-  let hasCards = CacheService2.get('document', 'has_cards', 'boolean');
+  let hasCards = CacheService3.document().get('has_cards');
 
   if (hasCards == null) {
     const db_cards = getDbTables_('cards');
     hasCards = (db_cards.count > 0);
-    CacheService2.put('document', 'has_cards', 'boolean', hasCards);
+    CacheService3.document().put('has_cards', hasCards);
   }
 
   return hasCards;
@@ -55,7 +55,7 @@ function addCard_ (card) {
   refreshCardsRules_();
 
   if (hasCards === false) {
-    CacheService2.put('document', 'has_cards', 'boolean', true);
+    CacheService3.document().put('has_cards', true);
     onOpen();
   }
 }
@@ -117,7 +117,7 @@ function deleteCard_ (card_id) {
   refreshCardsRules_();
 
   if (hasOneCard) {
-    CacheService2.put('document', 'has_cards', 'boolean', false);
+    CacheService3.document().put('has_cards', false);
     onOpen();
   }
 }

@@ -9,7 +9,7 @@ function onOpenInstallable_ (e) {
 }
 
 function loadCache_ () {
-  const isLoaded = CacheService2.get('document', 'load_cache', 'boolean');
+  const isLoaded = CacheService3.document().get('load_cache');
   if (isLoaded) return;
 
   const list = ['class_version2', 'user_settings', 'spreadsheet_settings', 'const_properties'];
@@ -17,14 +17,14 @@ function loadCache_ () {
 
   for (let i = 0; i < list.length; i++) {
     cache = PropertiesService3.document().getProperty(list[i]);
-    if (cache) CacheService2.put('document', list[i], 'json', cache);
+    if (cache) CacheService3.document().put(list[i], cache);
   }
 
   cache = PropertiesService3.document().getProperty('is_installed');
   cache = (!!cache);
-  CacheService2.put('document', 'is_installed', 'boolean', cache);
+  CacheService3.document().put('is_installed', cache);
 
-  CacheService2.put('document', 'load_cache', 'boolean', true);
+  CacheService3.document().put('load_cache', true);
 }
 
 function onEditInstallable_ (e) {

@@ -1,17 +1,17 @@
 function restrieveSpreadsheetInfo (uuid) {
-  if (!CacheService2.get('user', uuid, 'boolean')) {
+  if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;
   }
 
   const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
-  const settings_summary = CacheService2.get('document', address, 'json');
-  CacheService2.remove('document', address);
+  const settings_summary = CacheService3.document().get(address);
+  CacheService3.document().remove(address);
   return settings_summary;
 }
 
 function requestValidateSpreadsheet (uuid, file_id) {
-  if (!CacheService2.get('user', uuid, 'boolean')) {
+  if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;
   }
@@ -28,7 +28,7 @@ function requestValidateSpreadsheet (uuid, file_id) {
     return;
   }
 
-  CacheService2.put('user', uuid, 'boolean', true);
+  CacheService3.user().put(uuid, true);
   showDialogSetupCopy(uuid, '');
 }
 
@@ -163,7 +163,7 @@ function processSpreadsheet_ (uuid, file_id) {
   else info.tags = '-';
 
   const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
-  CacheService2.put('document', address, 'json', info);
+  CacheService3.document().put(address, info);
   return 0;
 }
 

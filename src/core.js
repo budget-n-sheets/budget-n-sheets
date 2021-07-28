@@ -174,7 +174,7 @@ function showDialogSetupAddon_ () {
   if (conditionalInstallTest_()) return;
 
   const uuid = Utilities.getUuid();
-  CacheService2.put('user', uuid, 'boolean', true);
+  CacheService3.user().put(uuid, true);
 
   const scriptlet = {
     uuid: uuid,
@@ -223,7 +223,7 @@ function showDialogSetupCopy (uuid, msg) {
 }
 
 function showDialogPickerRestore (uuid, topic) {
-  if (!CacheService2.get('user', uuid, 'boolean')) {
+  if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;
   }
