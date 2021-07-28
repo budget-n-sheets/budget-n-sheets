@@ -1,34 +1,3 @@
-function getAdminSettings_ (select) {
-  const admin_settings = CachedAccess.get('admin_settings');
-
-  switch (select) {
-    case 'admin_id':
-    case 'automatic_backup':
-      return admin_settings[select];
-
-    default:
-      console.error('getAdminSettings_(): Switch case is default.', select);
-      break;
-  }
-}
-
-function setAdminSettings_ (select, value) {
-  const admin_settings = PropertiesService2.getProperty('document', 'admin_settings', 'json');
-
-  switch (select) {
-    case 'admin_id':
-    case 'automatic_backup':
-      admin_settings[select] = value;
-      break;
-
-    default:
-      console.error('setAdminSettings_() : Switch case is default.', select);
-      return 1;
-  }
-
-  CachedAccess.update('admin_settings', admin_settings);
-}
-
 function askTransferAdmin () {
   if (!isInstalled_()) return;
 
