@@ -64,7 +64,7 @@ function printHrefScriptlets (htmlTemplate) {
 }
 
 function showPanelQuickstart () {
-  const dec_p = getSpreadsheetSettings_('decimal_separator');
+  const dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
   const financial_year = SettingsConst.getValueOf('financial_year');
 
   const scriptlet = {
@@ -85,9 +85,9 @@ function showPanelQuickstart () {
 function showPanelTables (tab) {
   if (onlineUpdate_()) return;
 
-  const dec_s = getSpreadsheetSettings_('decimal_separator');
+  const dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
   const scriptlet = {
-    decimal_places: getSpreadsheetSettings_('decimal_places'),
+    decimal_places: SettingsSpreadsheet.getValueOf('decimal_places'),
     dec_s: (dec_s ? '.' : ','),
     dec_t: (dec_s ? ',' : '.'),
     tab_acc: (tab ? '' : 'active'),
@@ -265,7 +265,7 @@ function showSessionExpired () {
 }
 
 function showDialogEditAccount (acc_id) {
-  const decimal_places = getSpreadsheetSettings_('decimal_places');
+  const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
   const account = tablesService('get', 'account', acc_id);
   if (!account) return 1;
 
@@ -288,7 +288,7 @@ function showDialogEditAccount (acc_id) {
 }
 
 function showDialogAddCard () {
-  const decimal_places = getSpreadsheetSettings_('decimal_places');
+  const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
 
   const scriptlet = {
     is_edit: false,
@@ -312,7 +312,7 @@ function showDialogAddCard () {
 }
 
 function showDialogEditCard (card_id) {
-  const decimal_places = getSpreadsheetSettings_('decimal_places');
+  const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
   const card = tablesService('get', 'card', card_id);
   if (!card) return 1;
 

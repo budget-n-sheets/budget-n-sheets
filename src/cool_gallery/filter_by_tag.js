@@ -3,7 +3,7 @@ function coolFilterByTag_ (info) {
   const sheet = spreadsheet.getSheetByName(info.sheet_name);
 
   const num_acc = SettingsConst.getValueOf('number_accounts');
-  const dec_p = getSpreadsheetSettings_('decimal_separator');
+  const dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
 
   const header = 'D8';
   const dec_c = (dec_p ? ', ' : ' \\ ');

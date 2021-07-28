@@ -22,7 +22,7 @@ function setupSettings_ (yyyy_mm) {
   if (dec_p === 0) sheet.getRange(8, 2).setNumberFormat('0');
 
   SETUP_SETTINGS.decimal_separator = dec_p;
-  setSpreadsheetSettings_('decimal_separator', dec_p);
+  SettingsSpreadsheet.setValueOf('decimal_separator', dec_p);
 
   cell = [
     [FormatNumber.localeSignal(SETUP_SETTINGS.financial_year)],

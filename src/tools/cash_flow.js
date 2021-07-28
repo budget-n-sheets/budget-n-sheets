@@ -49,7 +49,7 @@ function updateCashFlow_ (mm) {
   const sheet = spreadsheet.getSheetByName('Cash Flow');
   if (!sheet) return;
 
-  const dec_p = getSpreadsheetSettings_('decimal_separator');
+  const dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
   const num_acc = SettingsConst.getValueOf('number_accounts');
   const financial_year = SettingsConst.getValueOf('financial_year');
 

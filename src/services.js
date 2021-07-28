@@ -51,7 +51,7 @@ function onEditInstallable_ (e) {
   } else {
     try {
       const mm = MONTH_NAME.short.indexOf(name);
-      const status = getSpreadsheetSettings_('optimize_load');
+      const status = SettingsSpreadsheet.getValueOf('optimize_load');
       if (status == null || status[mm]) switchActivity_('resume', mm, mm);
     } catch (err) {
       ConsoleLog.error(err);

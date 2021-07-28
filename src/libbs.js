@@ -16,10 +16,10 @@ const FormatNumber = {
 
     switch (name) {
       case 'decimal_separator':
-        this._settings.decimal_separator = getSpreadsheetSettings_('decimal_separator');
+        this._settings.decimal_separator = SettingsSpreadsheet.getValueOf('decimal_separator');
         break;
       case 'decimal_places':
-        this._settings.decimal_places = getSpreadsheetSettings_('decimal_places');
+        this._settings.decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
         break;
     }
   },

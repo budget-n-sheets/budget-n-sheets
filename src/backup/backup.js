@@ -184,7 +184,7 @@ function backupProperties_ (backup) {
   backup.class_version2 = PropertiesService2.getProperty('document', 'class_version2', 'json');
 
   backup.spreadsheet_settings = {
-    decimal_places: getSpreadsheetSettings_('decimal_places')
+    decimal_places: SettingsSpreadsheet.getValueOf('decimal_places')
   };
 
   if (backup.user_settings.financial_calendar) {

@@ -12,8 +12,8 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
     cards: 0
   };
 
-  const dec_p = getSpreadsheetSettings_('decimal_places');
-  const dec_s = getSpreadsheetSettings_('decimal_separator');
+  const dec_p = SettingsSpreadsheet.getValueOf('decimal_places');
+  const dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
   const number_format = '-?\\$\\d+' + (dec_p > 0 ? (dec_s ? '\\.' : ',') + '\\d{' + dec_p + '}' : '');
   const valueRegExp = new RegExp(number_format);
 

@@ -12,7 +12,7 @@ function toggleViewMode_ () {
     return;
   }
 
-  let view_mode = getSpreadsheetSettings_('view_mode');
+  let view_mode = SettingsSpreadsheet.getValueOf('view_mode');
 
   if (view_mode === 'complete') {
     viewModeSimple_();
@@ -22,12 +22,12 @@ function toggleViewMode_ () {
     view_mode = 'complete';
   }
 
-  setSpreadsheetSettings_('view_mode', view_mode);
+  SettingsSpreadsheet.setValueOf('view_mode', view_mode);
   lock.releaseLock();
 }
 
 function setViewMode_ (view_mode) {
-  if (view_mode === getSpreadsheetSettings_('view_mode')) return;
+  if (view_mode === SettingsSpreadsheet.getValueOf('view_mode')) return;
 
   const lock = LockService.getDocumentLock();
   try {
@@ -41,7 +41,7 @@ function setViewMode_ (view_mode) {
   else if (view_mode === 'simple') viewModeSimple_();
   else return;
 
-  setSpreadsheetSettings_('view_mode', view_mode);
+  SettingsSpreadsheet.setValueOf('view_mode', view_mode);
   lock.releaseLock();
 }
 
