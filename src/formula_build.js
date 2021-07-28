@@ -471,7 +471,7 @@ const FormulaBuild = Object.freeze({
 
         switch (name) {
           case 'number_accounts':
-            this._settings.number_accounts = getConstProperties_('number_accounts');
+            this._settings.number_accounts = SettingsConst.getValueOf('number_accounts');
             break;
         }
       },

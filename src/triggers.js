@@ -10,7 +10,7 @@ function startTrigger_ (name) {
 
     const hour = 2 + randomInteger(4);
     const yyyy = Utils.getLocaleDate().getFullYear();
-    const financial_year = getConstProperties_('financial_year');
+    const financial_year = SettingsConst.getValueOf('financial_year');
 
     if (yyyy < financial_year) {
       const day = new Date(financial_year, 0, 1).getDay();

@@ -207,7 +207,7 @@ function copyTables_ (spreadsheet) {
 }
 
 function copyMonths_ (spreadsheet) {
-  const number_accounts = getConstProperties_('number_accounts');
+  const number_accounts = SettingsConst.getValueOf('number_accounts');
 
   let mm = -1;
   while (++mm < 12) {

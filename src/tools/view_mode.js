@@ -50,7 +50,7 @@ function viewModeSimple_ () {
   let sheet, i, k;
   let expr, head, cell;
 
-  const num_acc = getConstProperties_('number_accounts');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
 
   for (i = 0; i < 12; i++) {
     sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
@@ -119,7 +119,7 @@ function viewModeComplete_ () {
 
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
-  const num_acc = getConstProperties_('number_accounts');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
 
   for (i = 0; i < 12; i++) {
     sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);

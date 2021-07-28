@@ -70,7 +70,7 @@ function updateDecimalPlaces_ () {
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
 
-  const num_acc = getConstProperties_('number_accounts');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
   const col = 2 + w_ + w_ * num_acc;
 
   const dec_p = getSpreadsheetSettings_('decimal_places');
@@ -216,7 +216,7 @@ function updateTabsColors (sheets, financial_year, yyyy, mm) {
       sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     }
 
-    financial_year = getConstProperties_('financial_year');
+    financial_year = SettingsConst.getValueOf('financial_year');
   }
 
   for (i = 0; i < init_month; i++) {

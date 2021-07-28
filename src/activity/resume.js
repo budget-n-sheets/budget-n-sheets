@@ -31,7 +31,7 @@ function resumeActivity_ (mm0, mm1) {
   const cardsRows = sheetCards.getMaxRows() - 5;
   if (cardsRows < 1) return;
 
-  const num_acc = getConstProperties_('number_accounts');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
   const actual_month = MonthFactored.getActual();
 
   const db_accounts = getDbTables_('accounts');

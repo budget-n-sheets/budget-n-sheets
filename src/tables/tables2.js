@@ -212,8 +212,8 @@ function refreshCashFlowReferences_ () {
 
   const ranges = ['G', 'L', 'Q', 'V', 'AA'];
 
-  const num_acc = getConstProperties_('number_accounts');
-  const yyyy = getConstProperties_('financial_year');
+  const num_acc = SettingsConst.getValueOf('number_accounts');
+  const yyyy = SettingsConst.getValueOf('financial_year');
 
   const db_accounts = getDbTables_('accounts');
 

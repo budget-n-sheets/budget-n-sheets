@@ -276,7 +276,7 @@ function backupCards_ (backup) {
 
 function backupMonths_ (backup) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  const num_acc = getConstProperties_('number_accounts') + 1;
+  const num_acc = SettingsConst.getValueOf('number_accounts') + 1;
   let sheet, table, max, i, j, k;
 
   i = -1;

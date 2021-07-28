@@ -57,7 +57,7 @@ class MonthFactored extends Utils {
   static getActual () {
     const date = this.getLocaleDate();
     const yyyy = date.getFullYear();
-    const financial_year = getConstProperties_('financial_year');
+    const financial_year = SettingsConst.getValueOf('financial_year');
 
     if (yyyy === financial_year) return date.getMonth() + 1;
     else if (yyyy < financial_year) return 0;
@@ -67,7 +67,7 @@ class MonthFactored extends Utils {
   static getActive () {
     const date = (this.date || this.getLocaleDate());
     const yyyy = date.getFullYear();
-    const financial_year = (this.financial_year || getConstProperties_('financial_year'));
+    const financial_year = (this.financial_year || SettingsConst.getValueOf('financial_year'));
     const initial_month = getUserSettings_('initial_month') + 1;
 
     let mm = 0;
@@ -82,7 +82,7 @@ class MonthFactored extends Utils {
   static getMFactor () {
     const date = (this.date = this.getLocaleDate());
     const yyyy = date.getFullYear();
-    const financial_year = (this.financial_year = getConstProperties_('financial_year'));
+    const financial_year = (this.financial_year = SettingsConst.getValueOf('financial_year'));
 
     let mm = this.getActive();
 
