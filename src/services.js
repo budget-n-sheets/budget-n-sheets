@@ -2,7 +2,7 @@ function onOpenInstallable_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
   try {
-    loadCache_();
+    AppsScript.loadCache();
   } catch (err) {
     console.error(err);
   }
@@ -127,7 +127,7 @@ function quickActions_ (range, value) {
 
 function dailyTrigger_ (e) {
   if (isAuthorizationRequired_()) return;
-  if (!isInstalled_()) return;
+  if (!AppsScript.isInstalled()) return;
   if (seamlessUpdate_()) return;
 
   const date = Utils.getLocaleDate();
@@ -164,7 +164,7 @@ function dailyTrigger_ (e) {
 
 function weeklyTriggerPos_ (e) {
   if (isAuthorizationRequired_()) return;
-  if (!isInstalled_()) return;
+  if (!AppsScript.isInstalled()) return;
 
   seamlessUpdate_();
 
@@ -185,7 +185,7 @@ function weeklyTriggerPos_ (e) {
 
 function weeklyTriggerPre_ (e) {
   if (isAuthorizationRequired_()) return;
-  if (!isInstalled_()) return;
+  if (!AppsScript.isInstalled()) return;
   if (seamlessUpdate_()) return;
 
   const financial_year = SettingsConst.getValueOf('financial_year');

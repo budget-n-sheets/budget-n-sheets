@@ -31,11 +31,11 @@ function conditionalInstallTest_ () {
       'Please, re-open the spreadsheet to update the add-on.',
       ui.ButtonSet.OK);
     return true;
-  } else if (isInstalled_()) {
+  } else if (AppsScript.isInstalled()) {
     showDialogSetupEnd();
     onOpen();
     return true;
-  } else if (PropertiesService.getDocumentProperties().getProperty('lock_spreadsheet')) {
+  } else if (AppsScript.isLocked()) {
     ui.alert(
       "Can't create budget sheet",
       'The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.',
@@ -206,8 +206,8 @@ function setupLock (uuid, select, config) {
 
 function setupValidate_ (select) {
   if (!isTemplateAvailable()) throw new Error('Template is not available.');
-  if (isInstalled_()) throw new Error('Add-on is already installed.');
-  if (PropertiesService3.document().getProperty('lock_spreadsheet')) throw new Error('Spreadsheet is locked.');
+  if (AppsScript.isInstalled()) throw new Error('Add-on is already installed.');
+  if (AppsScript.isLocked()) throw new Error('Spreadsheet is locked.');
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 

@@ -6,7 +6,7 @@ function alertQuickstartSheetMissing (name) {
 }
 
 function playSpeedQuickstart (id) {
-  if (!isInstalled_()) return;
+  if (!AppsScript.isInstalled()) return;
 
   const lock = LockService.getDocumentLock();
   try {

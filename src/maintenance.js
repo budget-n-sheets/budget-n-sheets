@@ -5,7 +5,7 @@ function rollOperationMode_ () {
 }
 
 function askDeactivation () {
-  if (!isInstalled_()) {
+  if (!AppsScript.isInstalled()) {
     uninstall_();
     onOpen();
     return true;

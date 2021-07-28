@@ -1,5 +1,5 @@
 function toolResumeActivity_ () {
-  if (!isInstalled_()) return;
+  if (!AppsScript.isInstalled()) return;
   if (onlineUpdate_()) return;
 
   const name = SpreadsheetApp.getActiveSheet().getSheetName();

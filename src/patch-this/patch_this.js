@@ -18,7 +18,7 @@
  */
 
 function update_ () {
-  if (!isInstalled_()) return 3;
+  if (!AppsScript.isInstalled()) return 3;
 
   const lock = LockService.getDocumentLock();
   try {

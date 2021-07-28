@@ -1,5 +1,5 @@
 function askTransferAdmin () {
-  if (!isInstalled_()) return;
+  if (!AppsScript.isInstalled()) return;
 
   const ui = SpreadsheetApp2.getUi();
   let owner, owner_id;
@@ -40,7 +40,7 @@ function askTransferAdmin () {
 }
 
 function askTransferAdminSd () {
-  if (!isInstalled_()) return;
+  if (!AppsScript.isInstalled()) return;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let email, digest;
@@ -80,7 +80,7 @@ function askTransferAdminSd () {
 }
 
 function continuedTransferAdminSd (editor) {
-  if (!isInstalled_()) return;
+  if (!AppsScript.isInstalled()) return;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let email, digest;

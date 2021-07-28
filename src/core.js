@@ -25,7 +25,7 @@ function onOpen (e) {
       .addSeparator()
       .addItem('About the add-on', 'showDialogAboutAddon');
   } else {
-    if (isInstalled_()) {
+    if (AppsScript.isInstalled()) {
       menu.addItem('Add blank rows', 'toolAddBlankRows')
         .addItem('Format table', 'toolFormatRegistry')
         .addItem('Update cash flow', 'toolUpdateCashFlow');
@@ -133,7 +133,7 @@ function showDialogAboutAddon () {
   User2.setId();
   let v0;
 
-  if (isInstalled_()) v0 = getClassVersion_('script');
+  if (AppsScript.isInstalled()) v0 = getClassVersion_('script');
   else v0 = APPS_SCRIPT_GLOBAL.script_version;
 
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlAboutAddon')
