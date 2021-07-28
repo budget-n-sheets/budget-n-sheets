@@ -9,7 +9,7 @@ function setDbTables_ (db, select) {
   let db_tables;
 
   if (select) {
-    db_tables = PropertiesService2.getProperty('document', 'DB_TABLES', 'json');
+    db_tables = PropertiesService3.document().getProperty('DB_TABLES');
     db_tables[select] = db;
   } else {
     db_tables = db;

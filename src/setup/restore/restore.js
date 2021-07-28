@@ -153,7 +153,7 @@ function processBackup_ (uuid, file, data) {
     settings_candidate.list_acc.push(data.db_tables.accounts[i].name);
   }
 
-  PropertiesService2.setProperty('document', 'settings_candidate', 'json', settings_candidate);
+  PropertiesService3.document().setProperty('settings_candidate', settings_candidate);
 
   const info = {
     file_id: file.id,

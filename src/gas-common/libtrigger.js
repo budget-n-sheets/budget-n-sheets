@@ -36,7 +36,7 @@ function saveTriggerId_ (trigger) {
       break;
   }
 
-  const spreadsheet_triggers = PropertiesService2.getProperty('document', 'spreadsheet_triggers', 'json');
+  const spreadsheet_triggers = PropertiesService3.document().getProperty('spreadsheet_triggers');
   if (!spreadsheet_triggers) return;
 
   spreadsheet_triggers[key] = {
@@ -44,7 +44,7 @@ function saveTriggerId_ (trigger) {
     time_created: DATE_NOW.getTime()
   };
 
-  PropertiesService2.setProperty('document', 'spreadsheet_triggers', 'json', spreadsheet_triggers);
+  PropertiesService3.document().setProperty('spreadsheet_triggers', spreadsheet_triggers);
 }
 
 /**
@@ -133,7 +133,7 @@ function deleteTrigger_ (category, select, onlyFirst) {
       break;
     case 'KeyId':
       method = 'getUniqueId';
-      watch = PropertiesService2.getProperty('document', select, 'string');
+      watch = PropertiesService3.document().getProperty(select);
       break;
     case 'UniqueId':
     case 'HandlerFunction':
@@ -170,7 +170,7 @@ function deleteAllTriggers_ () {
     onEdit: { id: '', time_created: 0 },
     timeBased: { id: '', time_created: 0 }
   };
-  PropertiesService2.setProperty('document', 'spreadsheet_triggers', 'json', properties);
+  PropertiesService3.document().setProperty('spreadsheet_triggers', properties);
 }
 
 /**

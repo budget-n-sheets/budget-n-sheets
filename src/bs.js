@@ -36,13 +36,13 @@ function bsSignSetup_ () {
   const key = getInnerKey_();
   if (key === 1) return 1;
 
-  const const_properties = PropertiesService2.getProperty('document', 'const_properties', 'json');
+  const const_properties = PropertiesService3.document().getProperty('const_properties');
   if (!const_properties) {
     console.error("bsSignSetup_(): Property 'const_properties' is undefined!");
     return 1;
   }
 
-  const class_version = PropertiesService2.getProperty('document', 'class_version2', 'json');
+  const class_version = PropertiesService3.document().getProperty('class_version2');
   if (!class_version) {
     console.error("bsSignSetup_(): Property 'class_version' is undefined!");
     return 1;

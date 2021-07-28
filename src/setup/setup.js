@@ -2,7 +2,7 @@ function isInstalled_ () {
   let isInstalled = CacheService2.get('document', 'is_installed', 'boolean');
 
   if (isInstalled == null) {
-    isInstalled = PropertiesService2.getProperty('document', 'is_installed', 'string');
+    isInstalled = PropertiesService3.document().getProperty('is_installed');
     isInstalled = (!!isInstalled);
     CacheService2.put('document', 'is_installed', 'boolean', isInstalled);
   }
@@ -117,7 +117,7 @@ function setupLock (uuid, select, config) {
       if (list_accounts[i] === '') throw new Error('Invalid account name.');
     }
   } else if (select === 'restore') {
-    const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
+    const candidate = PropertiesService3.document().getProperty('settings_candidate');
     if (candidate.file_id !== config.file_id) throw new Error('File ID does not match.');
 
     const blob = DriveApp.getFileById(config.file_id).getBlob();
@@ -135,7 +135,7 @@ function setupLock (uuid, select, config) {
       list_accounts[i] = candidate.list_acc[i];
     }
   } else if (select === 'copy') {
-    const candidate = PropertiesService2.getProperty('document', 'settings_candidate', 'json');
+    const candidate = PropertiesService3.document().getProperty('settings_candidate');
     if (candidate.file_id !== config.file_id) throw new Error('File ID does not match.');
 
     for (const key in candidate) {
@@ -184,7 +184,7 @@ function setupLock (uuid, select, config) {
     template: APPS_SCRIPT_GLOBAL.template_version
   };
   class_version2.script.beta = PATCH_THIS.beta_list.length;
-  PropertiesService2.setProperty('document', 'class_version2', 'json', class_version2);
+  PropertiesService3.document().setProperty('class_version2', class_version2);
 
   if (bsSignSetup_()) throw new Error('Failed to sign document.');
 
@@ -195,7 +195,7 @@ function setupLock (uuid, select, config) {
   }
 
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
-  PropertiesService2.setProperty('document', 'is_installed', 'boolean', true);
+  PropertiesService3.document().setProperty('is_installed', true);
 
   showDialogSetupEnd();
   onOpen();
@@ -207,7 +207,7 @@ function setupLock (uuid, select, config) {
 function setupValidate_ (select) {
   if (!isTemplateAvailable()) throw new Error('Template is not available.');
   if (isInstalled_()) throw new Error('Add-on is already installed.');
-  if (PropertiesService2.getProperty('document', 'lock_spreadsheet', 'boolean')) throw new Error('Spreadsheet is locked.');
+  if (PropertiesService3.document().getProperty('lock_spreadsheet')) throw new Error('Spreadsheet is locked.');
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
@@ -225,7 +225,7 @@ function setupPrepare_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   spreadsheet.rename(SETUP_SETTINGS.spreadsheet_name);
 
-  PropertiesService2.deleteAllProperties('document');
+  PropertiesService3.document().deleteAllProperties();
   deleteAllTriggers_();
   CacheService2.removeAll('document', CACHE_KEYS);
 

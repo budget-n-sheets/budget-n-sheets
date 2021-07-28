@@ -149,7 +149,7 @@ function processSpreadsheet_ (uuid, file_id) {
   }
   info.cards = list;
 
-  PropertiesService2.setProperty('document', 'settings_candidate', 'json', info);
+  PropertiesService3.document().setProperty('settings_candidate', info);
 
   info.initial_month = MONTH_NAME.long[info.initial_month];
 

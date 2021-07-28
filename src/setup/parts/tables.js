@@ -67,5 +67,5 @@ function setupTables_ () {
     SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
   );
 
-  PropertiesService2.setProperty('document', 'DB_TABLES', 'json', db_tables);
+  PropertiesService3.document().setProperty('DB_TABLES', db_tables);
 }

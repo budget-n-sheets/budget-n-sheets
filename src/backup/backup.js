@@ -178,10 +178,11 @@ function backupMeta_ (backup) {
 }
 
 function backupProperties_ (backup) {
-  backup.user_settings = PropertiesService2.getProperty('document', 'user_settings', 'json');
-  backup.admin_settings = PropertiesService2.getProperty('document', 'admin_settings', 'json');
-  backup.const_properties = PropertiesService2.getProperty('document', 'const_properties', 'json');
-  backup.class_version2 = PropertiesService2.getProperty('document', 'class_version2', 'json');
+  const documentProperties = PropertiesService3.document();
+  backup.user_settings = documentProperties.getProperty('user_settings');
+  backup.admin_settings = documentProperties.getProperty('admin_settings');
+  backup.const_properties = documentProperties.getProperty('const_properties');
+  backup.class_version2 = documentProperties.getProperty('class_version2');
 
   backup.spreadsheet_settings = {
     decimal_places: SettingsSpreadsheet.getValueOf('decimal_places')

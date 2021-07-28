@@ -54,5 +54,5 @@ function setupProperties_ (yyyy_mm) {
     onEdit: { id: '', time_created: 0 },
     timeBased: { id: '', time_created: 0 }
   };
-  PropertiesService2.setProperty('document', 'spreadsheet_triggers', 'json', properties);
+  PropertiesService3.document().setProperty('spreadsheet_triggers', properties);
 }

@@ -139,7 +139,7 @@ function setClassVersion_ (property, value) {
     return 1;
   }
 
-  const class_version2 = PropertiesService2.getProperty('document', 'class_version2', 'json');
+  const class_version2 = PropertiesService3.document().getProperty('class_version2');
   if (!class_version2) {
     console.warn("setClassVersion_(): Invalid 'class_version2' value.");
     return 1;

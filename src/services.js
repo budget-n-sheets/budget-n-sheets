@@ -16,11 +16,11 @@ function loadCache_ () {
   let cache;
 
   for (let i = 0; i < list.length; i++) {
-    cache = PropertiesService2.getProperty('document', list[i], 'json');
+    cache = PropertiesService3.document().getProperty(list[i]);
     if (cache) CacheService2.put('document', list[i], 'json', cache);
   }
 
-  cache = PropertiesService2.getProperty('document', 'is_installed', 'string');
+  cache = PropertiesService3.document().getProperty('is_installed');
   cache = (!!cache);
   CacheService2.put('document', 'is_installed', 'boolean', cache);
 
