@@ -133,7 +133,7 @@ function deleteTrigger_ (category, select, onlyFirst) {
       break;
     case 'KeyId':
       method = 'getUniqueId';
-      watch = PropertiesService2.getProperty(select.scope, select.key, 'string');
+      watch = PropertiesService2.getProperty('document', select, 'string');
       break;
     case 'UniqueId':
     case 'HandlerFunction':
