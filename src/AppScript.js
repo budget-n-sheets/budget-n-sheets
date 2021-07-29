@@ -10,7 +10,7 @@ class AppsScript {
   }
 
   static isLocked () {
-    const isLocked = !!PropertiesService3.document().getProperty('lock_spreadsheet');
+    return !!PropertiesService3.document().getProperty('lock_spreadsheet');
   }
 
   static loadCache () {
