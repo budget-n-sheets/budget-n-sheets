@@ -28,7 +28,7 @@ function setupSummary_ () {
     formulas[i] = ['', null, '', null];
 
     formulas[i][0] = '=_Backstage!$B' + (3 + h_ * i);
-    formulas[i][2] = buildTable1.expenses_month(i);
+    formulas[i][2] = buildTable1.expensesMonth(i);
   }
   sheet.getRange(11, 4, 12, 4).setFormulas(formulas);
 

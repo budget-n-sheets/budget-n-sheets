@@ -26,11 +26,11 @@ function setupSettings_ (yyyy_mm) {
 
   cell = [
     [FormatNumber.localeSignal(SETUP_SETTINGS.financial_year)],
-    [buildFormulas.actual_month()],
+    [buildFormulas.actualMonth()],
     [FormatNumber.localeSignal(SETUP_SETTINGS.init_month + 1)],
-    [buildFormulas.active_months()],
-    [buildFormulas.m_factor()],
-    [buildFormulas.count_tags()],
+    [buildFormulas.activeMonths()],
+    [buildFormulas.mFactor()],
+    [buildFormulas.countTags()],
     ['RAND()'],
     [FormatNumber.localeSignal(SETUP_SETTINGS.decimal_places)],
     [SETUP_SETTINGS.decimal_separator],

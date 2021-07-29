@@ -41,7 +41,7 @@ function setupCards_ () {
 
     rangeOff.offset(0, 1 + 6 * i).setValue('All');
 
-    formula = formulasCards.avail_credit(i, reference);
+    formula = formulasCards.availCredit(i, reference);
     rangeOff.offset(1, 6 * i).setFormula(formula);
 
     formula = formulasCards.sparkline(index, card, reference);

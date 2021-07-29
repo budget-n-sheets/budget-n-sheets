@@ -82,7 +82,7 @@ function resumeActivity_ (mm0, mm1) {
     formula = formulasWallet.bsblank(mm, values[0] + numRows);
     wallet[h_ * mm - offset][4] = formula;
 
-    formula = formulasWallet.expenses_ign(numRows, mm, bsblank);
+    formula = formulasWallet.expensesIgn(numRows, mm, bsblank);
     wallet[2 + h_ * mm - offset][0] = formula;
 
     let income = '0';
@@ -98,7 +98,7 @@ function resumeActivity_ (mm0, mm1) {
       accounts[h_ * mm - offset][1 + w_ * k] = formulasAcc.bsreport(mm, tags[1 + k] + numRows, combo[1 + k] + numRows, bsblank);
       accounts[h_ * mm - offset][4 + w_ * k] = formulasAcc.bsblank(mm, header_value, values[1 + k] + numRows);
       accounts[1 + h_ * mm - offset][w_ * k] = formulasAcc.balance(mm, values[1 + k] + numRows, balance1[5 * mm + k], bsblank);
-      accounts[2 + h_ * mm - offset][w_ * k] = formulasAcc.expenses_ign(mm, values[1 + k] + numRows, tags[1 + k] + numRows, bsblank);
+      accounts[2 + h_ * mm - offset][w_ * k] = formulasAcc.expensesIgn(mm, values[1 + k] + numRows, tags[1 + k] + numRows, bsblank);
     }
 
     wallet[1 + h_ * mm - offset][0] = income;
@@ -116,7 +116,7 @@ function resumeActivity_ (mm0, mm1) {
 
       cards[0 + h_ * mm - offset][4 + w_ * k] = list_bsblank[mm];
       cards[1 + h_ * mm - offset][w_ * k] = formulasCards.credit(cardsRows, mm, regex[k], bsblank);
-      cards[2 + h_ * mm - offset][w_ * k] = formulasCards.expenses_ign(cardsRows, mm, regex[k], bsblank);
+      cards[2 + h_ * mm - offset][w_ * k] = formulasCards.expensesIgn(cardsRows, mm, regex[k], bsblank);
       cards[3 + h_ * mm - offset][w_ * k] = formulasCards.expenses(cardsRows, mm, regex[k], bsblank);
       cards[3 + h_ * mm - offset][1 + w_ * k] = formulasCards.bscardpart(cardsRows, mm, rollA1Notation(1, col + w_ * k), bsblank);
 
