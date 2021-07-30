@@ -1,6 +1,6 @@
 class AccountsService extends TablesService {
   constructor () {
     const db = RapidAccess.db().accounts();
-    super(db);
+    super('accounts', db);
   }
 }

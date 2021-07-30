@@ -1,5 +1,6 @@
 class TablesService {
-  constructor (db) {
+  constructor (key, db) {
+    this._key = key;
     this._db = db;
   }
 
@@ -14,5 +15,11 @@ class TablesService {
 
   hasId (id) {
     return this._db.ids.indexOf(id) !== -1;
+  }
+
+  save () {
+    const db = PropertiesService3.document().getProperty('DB_TABLES');
+    db[this._key] = this._db;
+    CachedAccess.update('DB_TABLES', db);
   }
 }
