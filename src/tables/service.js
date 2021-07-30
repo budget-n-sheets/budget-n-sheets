@@ -9,9 +9,9 @@ function accountsService (payload) {
 
   switch (payload.job) {
     case 'get':
-      break;
+      return new AccountsService().getById(payload.id);
     case 'list':
-      break;
+      return new AccountsService().getAll();
 
     default:
       console.error('accountsService(): Switch case is default.', payload.job);
@@ -30,9 +30,9 @@ function cardsService (payload) {
 
   switch (payload.job) {
     case 'get':
-      break;
+      return new CardsService().getById(payload.id);
     case 'list':
-      break;
+      return new CardsService().getAll();
 
     default:
       console.error('cardsService(): Switch case is default.', payload.job);
