@@ -1,0 +1,41 @@
+function accountsService (payload) {
+  const lock = LockService.getDocumentLock();
+  try {
+    lock.waitLock(2000);
+  } catch (err) {
+    console.warn(err);
+    return 1;
+  }
+
+  switch (payload.job) {
+    case 'get':
+      break;
+    case 'list':
+      break;
+
+    default:
+      console.error('accountsService(): Switch case is default.', payload.job);
+      return 1;
+  }
+}
+
+function cardsService (payload) {
+  const lock = LockService.getDocumentLock();
+  try {
+    lock.waitLock(2000);
+  } catch (err) {
+    console.warn(err);
+    return 1;
+  }
+
+  switch (payload.job) {
+    case 'get':
+      break;
+    case 'list':
+      break;
+
+    default:
+      console.error('cardsService(): Switch case is default.', payload.job);
+      return 1;
+  }
+}
