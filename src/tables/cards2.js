@@ -37,7 +37,7 @@ function addCard_ (card) {
     c = aliases.indexOf(card.code);
   }
 
-  const random = genUniqueTableId_();
+  const random = TablesUtils.getUtid();
   if (!random) return 1;
 
   card.id = random;
