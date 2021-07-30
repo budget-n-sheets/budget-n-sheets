@@ -4,18 +4,6 @@ function getCardById_ (card_id) {
   if (c !== -1) return db_tables.data[c];
 }
 
-function hasCards_ () {
-  let hasCards = CacheService3.document().get('has_cards');
-
-  if (hasCards == null) {
-    const db_cards = getDbTables_('cards');
-    hasCards = (db_cards.count > 0);
-    CacheService3.document().put('has_cards', hasCards);
-  }
-
-  return hasCards;
-}
-
 function addCard_ (card) {
   let aliases, c;
 
@@ -23,7 +11,7 @@ function addCard_ (card) {
   if (!/^\w+$/.test(card.code)) return 10;
 
   const db_cards = getDbTables_('cards');
-  const hasCards = hasCards_();
+  const hasCards = db_cards.count > 0;
 
   if (db_cards.count >= 10) return 12;
   if (db_cards.codes.indexOf(card.code) !== -1) return 11;
@@ -54,10 +42,7 @@ function addCard_ (card) {
   refreshCardName_('set', c, card);
   refreshCardsRules_();
 
-  if (hasCards === false) {
-    CacheService3.document().put('has_cards', true);
-    onOpen();
-  }
+  if (!hasCards) onOpen();
 }
 
 function setCard_ (card) {
@@ -116,10 +101,7 @@ function deleteCard_ (card_id) {
   refreshCardName_('delete', pos);
   refreshCardsRules_();
 
-  if (hasOneCard) {
-    CacheService3.document().put('has_cards', false);
-    onOpen();
-  }
+  if (hasOneCard) onOpen();
 }
 
 function getCardsBalances_ () {

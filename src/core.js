@@ -30,7 +30,7 @@ function onOpen (e) {
         .addItem('Format table', 'toolFormatRegistry')
         .addItem('Update cash flow', 'toolUpdateCashFlow');
 
-      if (hasCards_()) menu.addItem('Forward installments', 'toolForwardInstallments');
+      if (!CardsService.isEmpty()) menu.addItem('Forward installments', 'toolForwardInstallments');
 
       menu.addSeparator()
         .addSubMenu(ui.createMenu('Open panel')
