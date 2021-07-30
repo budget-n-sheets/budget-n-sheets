@@ -11,4 +11,8 @@ class TablesService {
     const c = this._db.ids.indexOf(id);
     return (c === -1 ? null : this._db.data[c]);
   }
+
+  hasId (id) {
+    return this._db.ids.indexOf(id) !== -1;
+  }
 }
