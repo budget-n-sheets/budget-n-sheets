@@ -12,6 +12,10 @@ function accountsService (payload) {
       return new AccountsService().getById(payload.id);
     case 'list':
       return new AccountsService().getAll();
+    case 'update':
+      const service = new AccountsService();
+      service.update(payload).flush().save();
+      break;
 
     default:
       console.error('accountsService(): Switch case is default.', payload.job);
