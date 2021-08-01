@@ -12,11 +12,12 @@ function accountsService (payload) {
       return new AccountsService().getById(payload.id);
     case 'list':
       return new AccountsService().getAll();
-    case 'update':
+    case 'update': {
       const service = new AccountsService();
       service.update(payload).save();
       service.flush();
       break;
+    }
 
     default:
       console.error('accountsService(): Switch case is default.', payload.job);
@@ -38,11 +39,12 @@ function cardsService (payload) {
       return new CardsService().getById(payload.id);
     case 'list':
       return new CardsService().getAll();
-    case 'update':
+    case 'update': {
       const service = new CardsService();
       service.update(payload).save();
       service.flush();
       break;
+    }
 
     default:
       console.error('cardsService(): Switch case is default.', payload.job);
