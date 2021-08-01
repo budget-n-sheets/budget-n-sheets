@@ -94,7 +94,8 @@
     function submitForm() {
       $("#b-Submit").prop("disabled", true);
 
-      const account = {
+      const payload = {
+        job: 'update',
         id: $("#acc_id").val(),
         name: $("#acc_name").val(),
         time_a: $("#acc_time_a").val(),
@@ -104,7 +105,7 @@
       google.script.run
         .withSuccessHandler(submitAftermath)
         .withFailureHandler(showError)
-        .tablesService("set", "account", account);
+        .accountsService(payload);
     }
 
     function submitAftermath(r) {

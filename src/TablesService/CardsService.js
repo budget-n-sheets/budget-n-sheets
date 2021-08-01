@@ -1,0 +1,181 @@
+class CardsService extends TablesService {
+  constructor () {
+    const db = RapidAccess.db().cards();
+    super('cards', db);
+  }
+
+  static isEmpty () {
+    if (this._db == null) this._db = RapidAccess.db().cards();
+    return this._db.count === 0;
+  }
+
+  updateMetadata_ () {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    if (!sheet) return;
+
+    const metadata = [];
+    for (let k = 0; k < this._db.data.length; k++) {
+      metadata[k] = {};
+      Object.assign(metadata[k], this._db.data[k]);
+      delete metadata[k].id;
+    }
+
+    const list_metadata = sheet.createDeveloperMetadataFinder()
+      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+      .withKey('db_cards')
+      .find();
+
+    if (list_metadata.length > 0) {
+      list_metadata[0].setValue(JSON.stringify(metadata));
+    } else {
+      sheet.addDeveloperMetadata(
+        'db_cards',
+        JSON.stringify(metadata),
+        SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
+      );
+    }
+  }
+
+  updateNames_ () {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    if (!sheet) return;
+
+    const _h = TABLE_DIMENSION.height;
+    const _w = TABLE_DIMENSION.width;
+    const num_acc = SettingsConst.getValueOf('number_accounts');
+
+    let k = 0;
+    let col = 2 + _w + _w * num_acc + _w;
+    while (k < this._db.count) {
+      const card = this._db.data[k];
+
+      const ranges = [];
+      for (let i = 0; i < 12; i++) {
+        ranges[i] = rollA1Notation(2 + _h * i, col + 1);
+      }
+
+      let text = '^' + card.code + '$';
+      for (let i = 0; i < card.aliases.length; i++) {
+        text += '|^' + card.aliases[i] + '$';
+      }
+
+      sheet.getRange(1, col).setValue(text);
+      sheet.getRangeList(ranges).setValue('=' + FormatNumber.localeSignal(card.limit));
+      col += _w;
+      k++;
+    }
+
+    while (k < 10) {
+      sheet.getRange(1, col).setValue('');
+      col += _w;
+      k++;
+    }
+  }
+
+  updateRules_ () {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
+    if (!sheet) return;
+
+    const height = sheet.getMaxRows() - 5;
+    if (height < 1) return;
+
+    const rangeOff1 = sheet.getRange(2, 2);
+    const rangeOff2 = sheet.getRange(6, 3, height, 1);
+
+    if (this._db.count === 0) {
+      for (let i = 0; i < 12; i++) {
+        rangeOff1.offset(0, 6 * i).clearDataValidations();
+        rangeOff2.offset(0, 6 * i).clearDataValidations();
+      }
+
+      SpreadsheetApp.flush();
+      return;
+    }
+
+    const list1 = ['All'];
+    const list2 = [];
+
+    for (let i = 0; i < this._db.count; i++) {
+      const card = this._db.data[i];
+
+      list1.push(card.code);
+      list2.push(card.code);
+
+      for (let j = 0; j < card.aliases.length; j++) {
+        list2.push(card.aliases[j]);
+      }
+    }
+
+    const rule1 = SpreadsheetApp.newDataValidation()
+      .requireValueInList(list1, true)
+      .setAllowInvalid(true)
+      .build();
+
+    const rule2 = SpreadsheetApp.newDataValidation()
+      .requireValueInList(list2, true)
+      .setAllowInvalid(true)
+      .build();
+
+    for (let i = 0; i < 12; i++) {
+      rangeOff1.offset(0, 6 * i)
+        .clearDataValidations()
+        .setDataValidation(rule1);
+
+      rangeOff2.offset(0, 6 * i)
+        .clearDataValidations()
+        .setDataValidation(rule2);
+    }
+
+    SpreadsheetApp.flush();
+  }
+
+  flush () {
+    this.updateMetadata_();
+    this.updateNames_();
+    this.updateRules_();
+
+    onOpen();
+    return this;
+  }
+
+  hasCode (code) {
+    return this._db.codes.indexOf(code) !== -1;
+  }
+
+  hasSlotAvailable () {
+    return this._db.count < 10;
+  }
+
+  update (metadata) {
+    if (!this.hasId(metadata.id)) return 1;
+
+    metadata.code = metadata.code.trim();
+    if (!/^\w+$/.test(metadata.code)) return 10;
+
+    const pos = this._db.ids.indexOf(metadata.id);
+    for (let i = 0; i < this._db.codes.length; i++) {
+      if (i !== pos && this._db.codes[i] === metadata.code) return 11;
+    }
+
+    let aliases = metadata.aliases.match(/\w+/g);
+    if (aliases == null) aliases = [];
+
+    let c = aliases.indexOf(metadata.code);
+    while (c !== -1) {
+      aliases.splice(c, 1);
+      c = aliases.indexOf(metadata.code);
+    }
+
+    this._db.codes[pos] = metadata.code;
+
+    this._db.data[pos] = {
+      id: metadata.id,
+      name: metadata.name,
+      code: metadata.code,
+      aliases: aliases,
+      limit: Number(metadata.limit)
+    };
+
+    return this;
+  }
+}

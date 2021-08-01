@@ -1,4 +1,8 @@
 const Goldfish = {
+  db: {
+    accounts: null,
+    cards: null
+  },
   services: {
     cache: {
       document: null,
@@ -18,6 +22,10 @@ const Goldfish = {
 };
 
 class RapidAccess {
+  static db () {
+    return new RapidAccessDb(Goldfish.db);
+  }
+
   static properties () {
     return new RapidAccessProperties(Goldfish.properties);
   }
