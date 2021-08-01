@@ -100,8 +100,9 @@
       $("#response").empty();
       $("#b-Submit").prop("disabled", true);
 
-      const card = {
+      const payload = {
         <? if (is_edit) { ?>
+        job: 'update',
         id: $("#card_id").val(),
         <? } ?>
         name : $("#card_name").val(),
@@ -114,9 +115,9 @@
         .withSuccessHandler(submitAftermath)
         .withFailureHandler(showError)
         <? if (is_edit) { ?>
-        .tablesService("set", "setcard", card);
+        .cardsService(payload);
         <? } else { ?>
-        .tablesService("set", "addcard", card);
+        .tablesService("set", "addcard", payload);
         <? } ?>
     }
 
