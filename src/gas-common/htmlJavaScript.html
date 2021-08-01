@@ -2,12 +2,13 @@
 <script>
   function showError(err, obj) {
     console.log(err.message);
+
     google.script.run
       .withSuccessHandler(function() {
         google.script.host.close();
       })
       .withFailureHandler(null)
-      .showDialogErrorMessage(err);
+      .showDialogErrorMessage();
   }
 
   $('input[type="text"]').change(function() {
