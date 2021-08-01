@@ -14,7 +14,8 @@ function accountsService (payload) {
       return new AccountsService().getAll();
     case 'update':
       const service = new AccountsService();
-      service.update(payload).flush().save();
+      service.update(payload).save();
+      service.flush();
       break;
 
     default:
@@ -39,7 +40,8 @@ function cardsService (payload) {
       return new CardsService().getAll();
     case 'update':
       const service = new CardsService();
-      service.update(payload).flush().save();
+      service.update(payload).save();
+      service.flush();
       break;
 
     default:
