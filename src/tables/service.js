@@ -33,6 +33,10 @@ function cardsService (payload) {
       return new CardsService().getById(payload.id);
     case 'list':
       return new CardsService().getAll();
+    case 'update':
+      const service = new CardsService();
+      service.update(payload).flush().save();
+      break;
 
     default:
       console.error('cardsService(): Switch case is default.', payload.job);
