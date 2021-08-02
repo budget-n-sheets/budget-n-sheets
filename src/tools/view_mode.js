@@ -94,8 +94,8 @@ function viewModeSimple_ () {
     const rangeOff = sheet.getRange(2, 4, 1, 2);
 
     for (i = 0; i < 12; i++) {
-      head = rollA1Notation(2, 1 + 6 * i);
-      cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
+      head = RangeUtils.rollA1Notation(2, 1 + 6 * i);
+      cell = '_Backstage!' + RangeUtils.rollA1Notation(2 + h_ * i, col);
 
       expr = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
       expr = '"Balance: "; TEXT(' + expr + '; "#,##0.00;(#,##0.00)")';
@@ -137,17 +137,17 @@ function viewModeComplete_ () {
 
     rangeOff = rangeOff.offset(0, 5);
     for (k = 0; k < num_acc; k++) {
-      expr1 = 'TEXT(_Backstage!' + rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-      expr1 = '"Withdrawal: ("; _Backstage!' + rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr1 + '; "\n"; ';
+      expr1 = 'TEXT(_Backstage!' + RangeUtils.rollA1Notation(2 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+      expr1 = '"Withdrawal: ("; _Backstage!' + RangeUtils.rollA1Notation(2 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr1 + '; "\n"; ';
 
-      expr2 = 'TEXT(_Backstage!' + rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-      expr2 = '"Deposit: ("; _Backstage!' + rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr2 + '; "\n"; ';
+      expr2 = 'TEXT(_Backstage!' + RangeUtils.rollA1Notation(3 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+      expr2 = '"Deposit: ("; _Backstage!' + RangeUtils.rollA1Notation(3 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr2 + '; "\n"; ';
 
-      expr3 = 'TEXT(_Backstage!' + rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-      expr3 = '"Trf. in: ("; _Backstage!' + rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr3 + '; "\n"; ';
+      expr3 = 'TEXT(_Backstage!' + RangeUtils.rollA1Notation(4 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+      expr3 = '"Trf. in: ("; _Backstage!' + RangeUtils.rollA1Notation(4 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr3 + '; "\n"; ';
 
-      expr4 = 'TEXT(_Backstage!' + rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
-      expr4 = '"Trf. out: ("; _Backstage!' + rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr4;
+      expr4 = 'TEXT(_Backstage!' + RangeUtils.rollA1Notation(5 + h_ * i, 8 + w_ * k) + '; "#,##0.00;-#,##0.00")';
+      expr4 = '"Trf. out: ("; _Backstage!' + RangeUtils.rollA1Notation(5 + h_ * i, 9 + w_ * k) + '; ") "; ' + expr4;
 
       rangeOff.offset(0, 2 + 5 * k, 3, 2)
         .merge()
@@ -169,8 +169,8 @@ function viewModeComplete_ () {
     const rangeOff = sheet.getRange(2, 4, 3, 2);
 
     for (i = 0; i < 12; i++) {
-      head = rollA1Notation(2, 1 + 6 * i);
-      cell = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
+      head = RangeUtils.rollA1Notation(2, 1 + 6 * i);
+      cell = '_Backstage!' + RangeUtils.rollA1Notation(2 + h_ * i, col);
 
       expr1 = 'OFFSET(' + cell + '; 1; 5*' + head + '; 1; 1)';
       expr1 = '"Credit: "; TEXT(' + expr1 + '; "#,##0.00;(#,##0.00)"); "\n"; ';

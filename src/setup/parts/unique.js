@@ -14,11 +14,11 @@ function setupUnique_ () {
 
   const ranges = [];
   for (let k = 0; k <= num_acc; k++) {
-    ranges[k] = rollA1Notation(5, 2 + 5 * k, 400, 1);
+    ranges[k] = RangeUtils.rollA1Notation(5, 2 + 5 * k, 400, 1);
   }
 
   for (let i = 0; i < 12; i++) {
-    range_cards += 'Cards!' + rollA1Notation(6, 2 + 6 * i, 400, 1) + '; ';
+    range_cards += 'Cards!' + RangeUtils.rollA1Notation(6, 2 + 6 * i, 400, 1) + '; ';
 
     for (let k = 0; k <= num_acc; k++) {
       range_accounts += MONTH_NAME.short[i] + '!' + ranges[k] + '; ';

@@ -47,7 +47,7 @@ class AccountsService extends TablesService {
 
       const list = [];
       for (let i = 1; i < 12; i++) {
-        list[i - 1] = rollA1Notation(2 + _h * i, col);
+        list[i - 1] = RangeUtils.rollA1Notation(2 + _h * i, col);
       }
 
       rangeOff.setValue(account.name);
@@ -73,7 +73,7 @@ class AccountsService extends TablesService {
     const formulas = ['=0 + B4'];
     for (let i = 1; i < 12; i++) {
       const dd = new Date(financial_year, i, 0).getDate();
-      formulas[i] = '=' + rollA1Notation(3 + dd, 4 * i - 1) + ' + ' + rollA1Notation(4, 2 + 4 * i);
+      formulas[i] = '=' + RangeUtils.rollA1Notation(3 + dd, 4 * i - 1) + ' + ' + RangeUtils.rollA1Notation(4, 2 + 4 * i);
     }
 
     for (let k = 0; k < number_accounts; k++) {

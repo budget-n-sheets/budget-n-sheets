@@ -200,7 +200,7 @@ function update_v0m40p1_ () {
     let range_cards = '';
 
     for (let i = 0; i < 12; i++) {
-      range_cards += 'Cards!' + rollA1Notation(6, 2 + 6 * i, max, 1) + '; ';
+      range_cards += 'Cards!' + RangeUtils.rollA1Notation(6, 2 + 6 * i, max, 1) + '; ';
     }
 
     range_cards = '{' + range_cards.slice(0, -2) + '}';
@@ -265,7 +265,7 @@ function update_v0m40p0s2_ () {
         .clearDataValidations()
         .setDataValidation(rule);
 
-      range_cards += 'Cards!' + rollA1Notation(6, 2 + 6 * i, max, 1) + '; ';
+      range_cards += 'Cards!' + RangeUtils.rollA1Notation(6, 2 + 6 * i, max, 1) + '; ';
     }
 
     unique.getRange(1, 2).setFormula('SORT(UNIQUE({' + range_cards.slice(0, -2) + '}))');
@@ -297,7 +297,7 @@ function update_v0m40p0s1_ () {
       if (max < 1) continue;
 
       for (let k = 0; k <= num_acc; k++) {
-        range_accounts += MONTH_NAME.short[i] + '!' + rollA1Notation(5, 2 + 5 * k, max, 1) + '; ';
+        range_accounts += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 2 + 5 * k, max, 1) + '; ';
 
         month.getRange(5, 2 + 5 * k, max, 1)
           .clearDataValidations()

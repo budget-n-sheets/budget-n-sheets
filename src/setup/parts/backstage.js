@@ -57,14 +57,14 @@ function setupBackstage_ () {
 
     wallet[h_ * i][4] = buildWallet.bsblank(i, values[k]);
 
-    const bsblank = rollA1Notation(2 + h_ * i, 6);
+    const bsblank = RangeUtils.rollA1Notation(2 + h_ * i, 6);
     wallet[2 + h_ * i][0] = buildWallet.expensesIgn(numRows, i, bsblank);
 
     for (; k < num_acc; k++) {
-      const bsblank = rollA1Notation(2 + h_ * i, 11 + w_ * k);
-      const header_value = rollA1Notation(4, 8 + 5 * k);
-      income += ' + ' + rollA1Notation(6 + h_ * i, 8 + w_ * k);
-      expenses += ' + ' + rollA1Notation(4 + h_ * i, 7 + w_ * k);
+      const bsblank = RangeUtils.rollA1Notation(2 + h_ * i, 11 + w_ * k);
+      const header_value = RangeUtils.rollA1Notation(4, 8 + 5 * k);
+      income += ' + ' + RangeUtils.rollA1Notation(6 + h_ * i, 8 + w_ * k);
+      expenses += ' + ' + RangeUtils.rollA1Notation(4 + h_ * i, 7 + w_ * k);
 
       accounts[h_ * i][w_ * k] = '=' + balance2[5 * i + k];
       accounts[h_ * i][4 + w_ * k] = buildAccounts.bsblank(i, header_value, values[1 + k]);

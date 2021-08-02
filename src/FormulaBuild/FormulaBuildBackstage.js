@@ -55,8 +55,8 @@ class FormulaBuildBackstageCards {
   }
 
   static credit (numRows, mm, regex, bsblank) {
-    const card = rollA1Notation(6, 3 + 6 * mm, numRows);
-    const value = rollA1Notation(6, 4 + 6 * mm, numRows);
+    const card = RangeUtils.rollA1Notation(6, 3 + 6 * mm, numRows);
+    const value = RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows);
 
     let formula;
 
@@ -72,8 +72,8 @@ class FormulaBuildBackstageCards {
   }
 
   static expenses (numRows, mm, regex, bsblank) {
-    const card = rollA1Notation(6, 3 + 6 * mm, numRows);
-    const value = rollA1Notation(6, 4 + 6 * mm, numRows);
+    const card = RangeUtils.rollA1Notation(6, 3 + 6 * mm, numRows);
+    const value = RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows);
 
     let formula;
 
@@ -89,9 +89,9 @@ class FormulaBuildBackstageCards {
   }
 
   static expensesIgn (numRows, mm, regex, bsblank) {
-    const card = rollA1Notation(6, 3 + 6 * mm, numRows);
-    const value = rollA1Notation(6, 4 + 6 * mm, numRows);
-    const tags = rollA1Notation(6, 5 + 6 * mm, numRows);
+    const card = RangeUtils.rollA1Notation(6, 3 + 6 * mm, numRows);
+    const value = RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows);
+    const tags = RangeUtils.rollA1Notation(6, 5 + 6 * mm, numRows);
 
     let formula;
 
@@ -110,10 +110,10 @@ class FormulaBuildBackstageCards {
   static bscardpart (numRows, mm, regex, bsblank) {
     this.load_();
 
-    const transaction = rollA1Notation(6, 2 + 6 * mm, numRows);
-    const card = rollA1Notation(6, 3 + 6 * mm, numRows);
-    const value = rollA1Notation(6, 4 + 6 * mm, numRows);
-    const tags = rollA1Notation(6, 5 + 6 * mm, numRows);
+    const transaction = RangeUtils.rollA1Notation(6, 2 + 6 * mm, numRows);
+    const card = RangeUtils.rollA1Notation(6, 3 + 6 * mm, numRows);
+    const value = RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows);
+    const tags = RangeUtils.rollA1Notation(6, 5 + 6 * mm, numRows);
 
     const dec_s = this._settings.decimal_separator ? ',' : '\\';
 
@@ -134,20 +134,20 @@ class FormulaBuildBackstageCards {
   }
 
   static bsblank (numRows, mm) {
-    const header = rollA1Notation(5, 4 + 6 * mm);
-    return 'MIN(ARRAYFORMULA(IF(ISBLANK(Cards!' + rollA1Notation(6, 4 + 6 * mm, numRows, 1) + '); ROW(Cards!' + rollA1Notation(6, 4 + 6 * mm, numRows, 1) + ') - ROW(Cards!' + header + '); FALSE)); ROWS(Cards!' + rollA1Notation(6, 4 + 6 * mm, numRows, 1) + '))';
+    const header = RangeUtils.rollA1Notation(5, 4 + 6 * mm);
+    return 'MIN(ARRAYFORMULA(IF(ISBLANK(Cards!' + RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows, 1) + '); ROW(Cards!' + RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows, 1) + ') - ROW(Cards!' + header + '); FALSE)); ROWS(Cards!' + RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows, 1) + '))';
   }
 }
 
 class FormulaBuildBackstageWallet {
   static bsblank (mm, value) {
-    const header = 'C4'; // rollA1Notation(4, 3);
+    const header = 'C4'; // RangeUtils.rollA1Notation(4, 3);
     return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + MONTH_NAME.short[mm] + '!' + value + '); ROW(' + MONTH_NAME.short[mm] + '!' + value + ') - ROW(' + MONTH_NAME.short[mm] + '!' + header + '); FALSE)); ROWS(' + MONTH_NAME.short[mm] + '!' + value + '))';
   }
 
   static expensesIgn (numRows, mm, bsblank) {
-    const value = rollA1Notation(5, 3, numRows, 1);
-    const tags = rollA1Notation(5, 4, numRows, 1);
+    const value = RangeUtils.rollA1Notation(5, 3, numRows, 1);
+    const tags = RangeUtils.rollA1Notation(5, 4, numRows, 1);
 
     let formula;
 

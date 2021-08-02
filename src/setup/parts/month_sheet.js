@@ -17,7 +17,7 @@ function setupMonthSheet_ () {
 
   const headers = [];
   for (k = 0; k < 1 + num_acc; k++) {
-    headers[k] = rollA1Notation(1, 1 + 5 * k);
+    headers[k] = RangeUtils.rollA1Notation(1, 1 + 5 * k);
   }
 
   if (num_acc < 5) {
@@ -27,10 +27,10 @@ function setupMonthSheet_ () {
   if (SETUP_SETTINGS.decimal_places !== 2) {
     const list_format = [];
 
-    list_format[0] = rollA1Notation(5, 3, 400, 1);
+    list_format[0] = RangeUtils.rollA1Notation(5, 3, 400, 1);
 
     for (let k = 1; k <= num_acc; k++) {
-      list_format[k] = rollA1Notation(5, 3 + 5 * k, 400, 1);
+      list_format[k] = RangeUtils.rollA1Notation(5, 3 + 5 * k, 400, 1);
     }
 
     sheetTTT.getRangeList(list_format)

@@ -73,7 +73,7 @@ function fillMonthWithZeros (sheet) {
 
     while (i > -1) {
       if (values[i][2 + 5 * k] === '') {
-        list[n] = rollA1Notation(5 + i, 3 + 5 * k);
+        list[n] = RangeUtils.rollA1Notation(5 + i, 3 + 5 * k);
         n++;
       }
       i--;
@@ -104,7 +104,7 @@ function fillCardWithZeros (sheet, col) {
 
     while (i > -1) {
       if (values[i][3 + 6 * k] === '') {
-        list[n] = rollA1Notation(6 + i, col + 6 * k);
+        list[n] = RangeUtils.rollA1Notation(6 + i, col + 6 * k);
         n++;
       }
       i--;

@@ -22,8 +22,8 @@ class FormulaBuildCardsHeader {
   }
 
   static availCredit (mm, reference) {
-    const index = rollA1Notation(2, 1 + 6 * mm);
-    const select = rollA1Notation(2, 2 + 6 * mm);
+    const index = RangeUtils.rollA1Notation(2, 1 + 6 * mm);
+    const select = RangeUtils.rollA1Notation(2, 2 + 6 * mm);
 
     let formula;
 

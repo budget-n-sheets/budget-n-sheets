@@ -15,7 +15,7 @@ function setupCards_ () {
 
   const col = 2 + w_ + w_ * num_acc;
   const dec_c = (dec_p ? ',' : '\\');
-  const header = rollA1Notation(1, col, 1, w_ * 11);
+  const header = RangeUtils.rollA1Notation(1, col, 1, w_ * 11);
 
   spreadsheet.setActiveSheet(sheet);
   spreadsheet.moveActiveSheet(14);
@@ -35,9 +35,9 @@ function setupCards_ () {
 
   const rangeOff = sheet.getRange(2, 1);
   for (i = 0; i < 12; i++) {
-    const index = rollA1Notation(2, 1 + 6 * i);
-    const card = rollA1Notation(2, 2 + 6 * i);
-    const reference = '_Backstage!' + rollA1Notation(2 + h_ * i, col);
+    const index = RangeUtils.rollA1Notation(2, 1 + 6 * i);
+    const card = RangeUtils.rollA1Notation(2, 2 + 6 * i);
+    const reference = '_Backstage!' + RangeUtils.rollA1Notation(2 + h_ * i, col);
 
     rangeOff.offset(0, 1 + 6 * i).setValue('All');
 
@@ -58,7 +58,7 @@ function setupCards_ () {
     const list_format = [];
 
     for (let i = 0; i < 12; i++) {
-      list_format[i] = rollA1Notation(6, 4 + 6 * i, 400, 1);
+      list_format[i] = RangeUtils.rollA1Notation(6, 4 + 6 * i, 400, 1);
     }
 
     sheet.getRangeList(list_format).setNumberFormat(SETUP_SETTINGS.number_format);

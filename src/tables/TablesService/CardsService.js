@@ -51,7 +51,7 @@ class CardsService extends TablesService {
 
       const ranges = [];
       for (let i = 0; i < 12; i++) {
-        ranges[i] = rollA1Notation(2 + _h * i, col + 1);
+        ranges[i] = RangeUtils.rollA1Notation(2 + _h * i, col + 1);
       }
 
       let text = '^' + card.code + '$';

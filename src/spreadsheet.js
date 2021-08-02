@@ -101,9 +101,9 @@ function updateDecimalPlaces_ () {
 
     const list = [];
     for (let k = 0; k < num_acc; k++) {
-      list[k] = rollA1Notation(5, 8 + 5 * k, max, 1);
+      list[k] = RangeUtils.rollA1Notation(5, 8 + 5 * k, max, 1);
     }
-    list.push(rollA1Notation(5, 3, max, 1));
+    list.push(RangeUtils.rollA1Notation(5, 3, max, 1));
 
     sheet.getRangeList(list).setNumberFormat(number_format);
   }
@@ -113,7 +113,7 @@ function updateDecimalPlaces_ () {
   if (max > 0) {
     const list = [];
     for (let i = 0; i < 12; i++) {
-      list[i] = rollA1Notation(6, 4 + 6 * i, max, 1);
+      list[i] = RangeUtils.rollA1Notation(6, 4 + 6 * i, max, 1);
     }
 
     sheet.getRangeList(list).setNumberFormat(number_format);
@@ -123,7 +123,7 @@ function updateDecimalPlaces_ () {
   if (sheet) {
     const list = [];
     for (let i = 0; i < 12; i++) {
-      list[i] = rollA1Notation(4, 2 + 4 * i, 31, 2);
+      list[i] = RangeUtils.rollA1Notation(4, 2 + 4 * i, 31, 2);
     }
     sheet.getRangeList(list).setNumberFormat(number_format);
   }

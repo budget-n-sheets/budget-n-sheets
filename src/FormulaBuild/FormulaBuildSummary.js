@@ -48,8 +48,8 @@ class FormulaBuildSummaryChart1 {
 
     const dec_s = this._settings.decimal_separator ? ',' : '\\';
 
-    const income = rollA1Notation(11 + mm, 4);
-    const expenses = rollA1Notation(11 + mm, 6);
+    const income = RangeUtils.rollA1Notation(11 + mm, 4);
+    const expenses = RangeUtils.rollA1Notation(11 + mm, 6);
 
     return 'IF(OR(ROW() - 24 < $M$3; ROW() - 24 > $M$3 - 1 + $M$4); {' + income + dec_s + ' -' + expenses + dec_s + ' ""' + dec_s + ' ""}; {""' + dec_s + ' ""' + dec_s + ' ' + income + dec_s + ' -' + expenses + '})';
   }
@@ -86,6 +86,6 @@ class FormulaBuildSummaryChart3 {
 
     const dec_s = this._settings.decimal_separator ? ',' : '\\';
 
-    return 'IF(OR(ROW() - 74 < $M$3; ROW() - 74 > $M$3 - 1 + $M$4); {' + rollA1Notation(75 + mm, 4) + dec_s + ' ""}; {""' + dec_s + ' ' + rollA1Notation(75 + mm, 4) + '})';
+    return 'IF(OR(ROW() - 74 < $M$3; ROW() - 74 > $M$3 - 1 + $M$4); {' + RangeUtils.rollA1Notation(75 + mm, 4) + dec_s + ' ""}; {""' + dec_s + ' ' + RangeUtils.rollA1Notation(75 + mm, 4) + '})';
   }
 }
