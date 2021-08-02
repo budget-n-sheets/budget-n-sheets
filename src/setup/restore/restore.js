@@ -240,14 +240,14 @@ function restoreTables_ (backup) {
   const cardsService = new CardsService();
 
   const db_accounts = accountsService.getAll();
-  for (let i in backup.db_tables.accounts) {
+  for (const i in backup.db_tables.accounts) {
     backup.db_tables.accounts[i].id = db_accounts[i].id;
     accountsService.update(backup.db_tables.accounts[i]);
   }
   accountsService.save();
   accountsService.flush();
 
-  for (let i in backup.db_tables.cards) {
+  for (const i in backup.db_tables.cards) {
     backup.db_tables.cards[i].aliases = backup.db_tables.cards[i].aliases.join(',');
     cardsService.add(backup.db_tables.cards[i]);
   }
