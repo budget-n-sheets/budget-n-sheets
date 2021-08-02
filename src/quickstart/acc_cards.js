@@ -18,8 +18,8 @@ const QUICKSTART_ACC_CARDS = Object.freeze({
 
 function playQuickAccCards_ (n) {
   if (n === 1) {
-    const db_acc = getDbTables_('accounts');
-    showDialogEditAccount(db_acc.ids[0]);
+    const db_acc = new AccountsService().getAll();
+    showDialogEditAccount(db_acc[0].id);
     return;
   }
 
@@ -35,8 +35,8 @@ function playQuickAccCards_ (n) {
       throw new Error('playQuickAccCards_(): Switch case is default. ' + n);
   }
 
-  const db_cards = getDbTables_('cards');
-  if (db_cards.count === 0) {
+  const db_cards = new CardsService().getAll();
+  if (db_cards.length === 0) {
     showDialogAddCard();
     return;
   }
@@ -45,7 +45,7 @@ function playQuickAccCards_ (n) {
   let lastRow, col;
   let name, val, mm;
 
-  const code = db_cards.codes[0];
+  const code = db_cards[0].code;
   const financial_year = SettingsConst.getValueOf('financial_year');
 
   if (n === 3) {

@@ -236,19 +236,23 @@ function restoreFromBackup_ (backup) {
 }
 
 function restoreTables_ (backup) {
-  let i;
+  const accountsService = new AccountsService();
+  const cardsService = new CardsService();
 
-  const db_tables = getDbTables_();
-
-  for (i in backup.db_tables.accounts) {
-    backup.db_tables.accounts[i].id = db_tables.accounts.ids[i];
-    tablesService('set', 'account', backup.db_tables.accounts[i]);
+  const db_accounts = accountsService.getAll();
+  for (let i in backup.db_tables.accounts) {
+    backup.db_tables.accounts[i].id = db_accounts[i].id;
+    accountsService.update(backup.db_tables.accounts[i]);
   }
+  accountsService.save();
+  accountsService.flush();
 
-  for (i in backup.db_tables.cards) {
+  for (let i in backup.db_tables.cards) {
     backup.db_tables.cards[i].aliases = backup.db_tables.cards[i].aliases.join(',');
-    tablesService('set', 'addcard', backup.db_tables.cards[i]);
+    cardsService.add(backup.db_tables.cards[i]);
   }
+  cardsService.save();
+  cardsService.flush();
 }
 
 function restoreCards_ (backup) {
