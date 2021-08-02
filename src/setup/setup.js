@@ -75,7 +75,7 @@ function setupLock (uuid, select, config) {
   CacheService3.user().remove(uuid);
 
   console.time('setup/' + select);
-  setupValidate_(select);
+  if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.');
 
   const settings = {};
   const list_accounts = [];

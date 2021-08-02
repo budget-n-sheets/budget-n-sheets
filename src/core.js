@@ -171,13 +171,52 @@ function showDialogMessage (title, message, timeout) {
 
 function showDialogSetupAddon_ () {
   User2.setId();
-  if (conditionalInstallTest_()) return;
 
-  const uuid = Utilities.getUuid();
-  CacheService3.user().put(uuid, true);
+  const status = SetupService.checkRequirements();
+
+  let title = '';
+  let text = '';
+
+  switch (status) {
+    case 0:
+      break;
+    case 1:
+      title = 'New version available';
+      text = 'Please, re-open the spreadsheet to update the add-on.';
+      break;
+    case 2:
+      showDialogSetupEnd();
+      onOpen();
+      return;
+    case 3:
+      title = "Can't create budget sheet";
+      text = 'The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.';
+      break;
+    case 4:
+      title = 'Permission denied';
+      text = "You don't own the spreadsheet. Please start in a new spreadsheet.";
+      break;
+    case 5:
+      title = 'Linked form';
+      text = 'The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.';
+      break;
+
+    default:
+      console.error('showDialogSetupAddon_(): Switch case is default.');
+      showDialogErrorMessage();
+      return;
+  }
+
+  if (status !== 0) {
+    const ui = SpreadsheetApp2.getUi();
+    ui.alert(title, text, ui.ButtonSet.OK);
+    return;
+  }
+
+  SetupUtils.showSetupNotice();
 
   const scriptlet = {
-    uuid: uuid,
+    uuid: SetupService.getUuid(),
     setup_restore: FeatureFlag.getStatusOf('setup/restore'),
     setup_copy: FeatureFlag.getStatusOf('setup/copy')
   };
