@@ -1,60 +1,3 @@
-function conditionalInstallTest_ () {
-  const ui = SpreadsheetApp2.getUi();
-
-  if (!isTemplateAvailable()) {
-    ui.alert(
-      'New version available',
-      'Please, re-open the spreadsheet to update the add-on.',
-      ui.ButtonSet.OK);
-    return true;
-  } else if (AppsScript.isInstalled()) {
-    showDialogSetupEnd();
-    onOpen();
-    return true;
-  } else if (AppsScript.isLocked()) {
-    ui.alert(
-      "Can't create budget sheet",
-      'The add-on was previously deactivated in this spreadsheet which is now locked.\nPlease start in a new spreadsheet.',
-      ui.ButtonSet.OK);
-    return true;
-  }
-
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  let owner;
-
-  owner = spreadsheet.getOwner();
-  if (owner) owner = owner.getEmail();
-  else owner = '';
-
-  const user = Session.getEffectiveUser().getEmail();
-
-  if (owner && owner !== user) {
-    ui.alert(
-      'Permission denied',
-      "You don't own the spreadsheet. Please start in a new spreadsheet.",
-      ui.ButtonSet.OK);
-    return true;
-  } else if (spreadsheet.getFormUrl()) {
-    ui.alert(
-      'Linked form',
-      'The spreadsheet has a linked form. Please unlink the form first, or create a new spreadsheet.',
-      ui.ButtonSet.OK);
-    return true;
-  }
-
-  ui.alert(
-    'Notice',
-    `Due to a bug with Google Sheets, if you experience
-    any issues with the "Start budget spreadsheet" dialog,
-    please use your browser in incognito/private mode
-    and try again.
-
-    Learn more at budgetnsheets.com/notice-to-x-frame`,
-    ui.ButtonSet.OK);
-
-  return false;
-}
-
 function setupLock (uuid, select, config) {
   const lock = LockService.getDocumentLock();
   try {
@@ -178,23 +121,6 @@ function setupLock (uuid, select, config) {
 
   SETUP_SETTINGS = null;
   console.timeEnd('setup/' + select);
-}
-
-function setupValidate_ (select) {
-  if (!isTemplateAvailable()) throw new Error('Template is not available.');
-  if (AppsScript.isInstalled()) throw new Error('Add-on is already installed.');
-  if (AppsScript.isLocked()) throw new Error('Spreadsheet is locked.');
-
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-
-  let owner = spreadsheet.getOwner();
-  if (owner) owner = owner.getEmail();
-  else owner = '';
-
-  const user = Session.getEffectiveUser().getEmail();
-
-  if (owner && owner !== user) throw new Error('Missing ownership rights.');
-  if (spreadsheet.getFormUrl()) throw new Error('Spreadsheet has a form linked.');
 }
 
 function setupPrepare_ () {

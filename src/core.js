@@ -56,13 +56,6 @@ function onOpen (e) {
   menu.addToUi();
 }
 
-function printHrefScriptlets (htmlTemplate) {
-  for (const key in RESERVED_HREF) {
-    htmlTemplate[key] = RESERVED_HREF[key];
-  }
-  return htmlTemplate;
-}
-
 function showPanelQuickstart () {
   const dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
   const financial_year = SettingsConst.getValueOf('financial_year');
