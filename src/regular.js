@@ -10,7 +10,7 @@ function postEventsForDate_ (date) {
 
   const num_acc = SettingsConst.getValueOf('number_accounts') + 1;
 
-  const cards_balances = getTablesService_('cardsbalances');
+  const cards_balances = new CardsService().getAllBalances();
   const hasCards = (cards_balances && cards_balances !== 1);
 
   const mm = date.getMonth();
