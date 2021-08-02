@@ -225,8 +225,9 @@ function setupParts_ () {
   };
 
   setupProperties_(yyyy_mm);
-  setupSettings_(yyyy_mm);
   setupTables_();
+
+  setupSettings_(yyyy_mm);
   setupMonthSheet_();
   setupUnique_();
   setupBackstage_();
