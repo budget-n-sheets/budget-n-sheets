@@ -35,6 +35,8 @@ function cardsService (payload) {
   }
 
   switch (payload.job) {
+    case 'add':
+      return new CardsService().add(payload);
     case 'get':
       return new CardsService().getById(payload.id);
     case 'list':

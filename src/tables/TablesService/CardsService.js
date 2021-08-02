@@ -129,6 +129,36 @@ class CardsService extends TablesService {
     SpreadsheetApp.flush();
   }
 
+  add (metadata) {
+    if (!this.hasSlotAvailable()) return 12;
+
+    metadata.code = metadata.code.trim();
+    if (!/^\w+$/.test(metadata.code)) return 10;
+    if (this.hasCode(metadata.code)) return 11;
+
+    let aliases = metadata.aliases.match(/\w+/g);
+    if (aliases == null) aliases = [];
+
+    let c = aliases.indexOf(metadata.code);
+    while (c !== -1) {
+      aliases.splice(c, 1);
+      c = aliases.indexOf(metadata.code);
+    }
+
+    const random = TablesUtils.getUtid();
+    if (!random) return 1;
+
+    metadata.id = random;
+    metadata.aliases = aliases;
+    metadata.limit = Number(metadata.limit);
+
+    c = this._db.count++;
+
+    this._db.ids[c] = metadata.id;
+    this._db.codes[c] = metadata.code;
+    this._db.data[c] = metadata;
+  }
+
   delete (id) {
     if (!this.hasId(id)) return 1;
 
