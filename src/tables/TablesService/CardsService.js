@@ -9,59 +9,6 @@ class CardsService extends TablesService {
     return this._db.count === 0;
   }
 
-  getAllBalances () {
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
-    if (!sheet) return;
-
-    const _h = TABLE_DIMENSION.height;
-    const _w = TABLE_DIMENSION.width;
-
-    const num_acc = SettingsConst.getValueOf('number_accounts');
-
-    const col = 2 + _w + _w * num_acc;
-    const num_cards = this._db.count;
-
-    if (num_cards === 0) return;
-
-    const balances = {
-      cards: ['All'],
-      balance: [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      ]
-    };
-
-    let data = sheet.getRange(1, col, 1 + 12 * _h, _w).getValues();
-    for (let i = 0; i < 12; i++) {
-      balances.balance[0][i] = data[5 + _h * i][0];
-    }
-
-    data = sheet.getRange(1, col + _w, 1 + 12 * _h, _w * num_cards).getValues();
-
-    for (let k = 0; k < num_cards; k++) {
-      if (data[0][_w * k] === '') continue;
-
-      const code = data[0][_w * k].match(/\w+/g);
-      if (code == null) continue;
-
-      let i = 0;
-      for (; i < code.length; i++) {
-        if (this._db.codes.indexOf(code[i]) !== -1) break;
-      }
-      if (i === code.length) continue;
-
-      balances.cards.push(code[i]);
-
-      const v = [];
-      for (let i = 0; i < 12; i++) {
-        v[i] = data[5 + _h * i][_w * k];
-      }
-
-      balances.balance.push(v);
-    }
-
-    return balances;
-  }
-
   updateMetadata_ () {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;
@@ -231,6 +178,59 @@ class CardsService extends TablesService {
     SpreadsheetApp.flush();
     onOpen();
     return this;
+  }
+
+  getAllBalances () {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    if (!sheet) return;
+
+    const _h = TABLE_DIMENSION.height;
+    const _w = TABLE_DIMENSION.width;
+
+    const num_acc = SettingsConst.getValueOf('number_accounts');
+
+    const col = 2 + _w + _w * num_acc;
+    const num_cards = this._db.count;
+
+    if (num_cards === 0) return;
+
+    const balances = {
+      cards: ['All'],
+      balance: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      ]
+    };
+
+    let data = sheet.getRange(1, col, 1 + 12 * _h, _w).getValues();
+    for (let i = 0; i < 12; i++) {
+      balances.balance[0][i] = data[5 + _h * i][0];
+    }
+
+    data = sheet.getRange(1, col + _w, 1 + 12 * _h, _w * num_cards).getValues();
+
+    for (let k = 0; k < num_cards; k++) {
+      if (data[0][_w * k] === '') continue;
+
+      const code = data[0][_w * k].match(/\w+/g);
+      if (code == null) continue;
+
+      let i = 0;
+      for (; i < code.length; i++) {
+        if (this._db.codes.indexOf(code[i]) !== -1) break;
+      }
+      if (i === code.length) continue;
+
+      balances.cards.push(code[i]);
+
+      const v = [];
+      for (let i = 0; i < 12; i++) {
+        v[i] = data[5 + _h * i][_w * k];
+      }
+
+      balances.balance.push(v);
+    }
+
+    return balances;
   }
 
   hasCards () {
