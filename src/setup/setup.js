@@ -131,20 +131,20 @@ function setupLock (uuid, select, config) {
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
+  const dec_p = Number(settings.decimal_places);
+  const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
+  const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
+
   SETUP_SETTINGS = {
     spreadsheet_name: settings.spreadsheet_name,
-    decimal_places: Number(settings.decimal_places),
-    number_format: '#,##0.00;(#,##0.00)',
+    decimal_places: dec_p,
+    number_format: number_format,
     financial_year: Number(settings.financial_year),
     init_month: Number(settings.initial_month),
     number_accounts: Number(settings.number_accounts),
     list_acc: list_accounts,
     decimal_separator: true
   };
-
-  const dec_p = SETUP_SETTINGS.decimal_places;
-  const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
-  SETUP_SETTINGS.number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
 
   setupPrepare_();
   setupParts_();
