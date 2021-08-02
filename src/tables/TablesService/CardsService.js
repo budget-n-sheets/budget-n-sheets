@@ -182,7 +182,7 @@ class CardsService extends TablesService {
     SpreadsheetApp.flush();
   }
 
-  add (metadata) {
+  create (metadata) {
     if (!this.hasSlotAvailable()) return 12;
 
     metadata.code = metadata.code.trim();

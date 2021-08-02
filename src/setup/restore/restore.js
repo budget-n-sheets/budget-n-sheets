@@ -249,7 +249,7 @@ function restoreTables_ (backup) {
 
   for (const i in backup.db_tables.cards) {
     backup.db_tables.cards[i].aliases = backup.db_tables.cards[i].aliases.join(',');
-    cardsService.add(backup.db_tables.cards[i]);
+    cardsService.create(backup.db_tables.cards[i]);
   }
   cardsService.save();
   cardsService.flush();

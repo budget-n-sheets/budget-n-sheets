@@ -204,7 +204,7 @@ function copyTables_ (spreadsheet) {
 
   for (let i = 0; i < metadata.length; i++) {
     metadata[i].aliases = metadata[i].aliases.join(',');
-    cardsService.add(metadata);
+    cardsService.create(metadata);
   }
   cardsService.save();
   cardsService.flush();

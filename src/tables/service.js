@@ -35,9 +35,9 @@ function cardsService (payload) {
   }
 
   switch (payload.job) {
-    case 'add': {
+    case 'create': {
       const service = new CardsService();
-      service.add(payload);
+      service.create(payload);
       service.save();
       service.flush();
       break;
