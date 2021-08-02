@@ -129,6 +129,17 @@ class CardsService extends TablesService {
     SpreadsheetApp.flush();
   }
 
+  delete (id) {
+    if (!this.hasId(id)) return 1;
+
+    const pos = this._db.ids.indexOf(id);
+
+    this._db.count--;
+    this._db.ids.splice(pos, 1);
+    this._db.codes.splice(pos, 1);
+    this._db.data.splice(pos, 1);
+  }
+
   flush () {
     this.updateMetadata_();
     this.updateNames_();

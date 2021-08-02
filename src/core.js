@@ -349,7 +349,7 @@ function showDialogDeleteCard (card_id) {
     ui.ButtonSet.YES_NO);
 
   if (response === ui.Button.YES) {
-    tablesService('set', 'deletecard', card_id);
+    new CardsService().delete(payload.id);
     return 1;
   }
 }
