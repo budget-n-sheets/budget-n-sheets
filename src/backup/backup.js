@@ -201,12 +201,12 @@ function backupProperties_ (backup) {
 }
 
 function backupTables_ (backup) {
-  const db_tables = getDbTables_();
   let account, card, i;
 
+  const db_accounts = new AccountsService().getAll();
   i = -1;
-  while (++i < db_tables.accounts.data.length) {
-    account = db_tables.accounts.data[i];
+  while (++i < db_accounts.length) {
+    account = db_accounts[i];
     backup.db_tables.accounts[i] = {
       name: account.name,
       balance: account.balance,
@@ -215,9 +215,10 @@ function backupTables_ (backup) {
     };
   }
 
+  const db_cards = new CardsService().getAll();
   i = -1;
-  while (++i < db_tables.cards.data.length) {
-    card = db_tables.cards.data[i];
+  while (++i < db_cards.length) {
+    card = db_cards[i];
     backup.db_tables.cards[i] = {
       name: card.name,
       code: card.code,

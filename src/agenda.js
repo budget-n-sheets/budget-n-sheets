@@ -17,10 +17,13 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
   const number_format = '-?\\$\\d+' + (dec_p > 0 ? (dec_s ? '\\.' : ',') + '\\d{' + dec_p + '}' : '');
   const valueRegExp = new RegExp(number_format);
 
-  const db_tables = getDbTables_();
+  const db_accounts = new AccountsService().getAll();
+  const db_cards = new CardsService().getAll();
 
-  const list_acc = db_tables.accounts.names;
-  list_acc.splice(0, 0, 'Wallet');
+  const list_acc = ['Wallet'];
+  for (let i = 0; i < db_accounts.length; i++) {
+    list_acc.push(db_accounts[i].name);
+  }
 
   list = list_acc.slice();
   list.sort(function (a, b) {
@@ -32,8 +35,11 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
 
   regexp.accounts = new RegExp(s, 'g');
 
-  if (db_tables.cards.count > 0) {
-    list = db_tables.cards.codes.slice();
+  if (db_cards.length > 0) {
+    list = [];
+    for (let k = 0; k < db_cards.length; k++) {
+      list[k] = db_cards[k].code;
+    }
 
     list.sort(function (a, b) {
       return b.length - a.length;
@@ -71,7 +77,7 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
     match = cell.Description.match(regexp.accounts);
     if (match) cell.Table = list_acc.indexOf(match[0]);
 
-    if (db_tables.cards.count > 0) {
+    if (db_cards.length > 0) {
       const match = cell.Description.match(regexp.cards);
       if (match) cell.Card = match[0];
     }

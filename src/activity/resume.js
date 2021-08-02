@@ -34,8 +34,8 @@ function resumeActivity_ (mm0, mm1) {
   const num_acc = SettingsConst.getValueOf('number_accounts');
   const actual_month = MonthFactored.getActual();
 
-  const db_accounts = getDbTables_('accounts');
-  const db_cards = getDbTables_('cards');
+  const db_accounts = new AccountsService().getAll();
+  const db_cards = new CardsService().getAll();
 
   const height = h_ * (mm1 - mm0 + 1);
   const offset = h_ * mm0;
@@ -170,7 +170,7 @@ function resumeActivity_ (mm0, mm1) {
   }
 
   for (let k = 0; k < num_acc; k++) {
-    const account = db_accounts.data[k];
+    const account = db_accounts[k];
     if (account.time_a < mm0) continue;
 
     formula = '=' + FormatNumber.localeSignal(account.balance);
@@ -180,8 +180,8 @@ function resumeActivity_ (mm0, mm1) {
   {
     const rangeOff = sheetBackstage.getRange(2 + h_ * mm, 1 + col);
 
-    for (let k = 0; k < db_cards.count; k++) {
-      const formula = '=' + FormatNumber.localeSignal(db_cards.data[k].limit);
+    for (let k = 0; k < db_cards.length; k++) {
+      const formula = '=' + FormatNumber.localeSignal(db_cards[k].limit);
       for (let mm = mm0; mm <= mm1; mm++) {
         rangeOff.offset(0, w_ * k).setFormula(formula);
       }

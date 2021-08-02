@@ -1,5 +1,5 @@
 class TablesUtils {
-  static getUtid() {
+  static getUtid () {
     const accounts = new AccountsService();
     const cards = new CardsService();
 

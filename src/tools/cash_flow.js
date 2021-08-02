@@ -95,7 +95,7 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
   const mm = more.mm;
   const dec_p = more.dec_p;
 
-  const cards = getTablesService_('cardsbalances');
+  const cards = new CardsService().getAllBalances();
 
   const hasTags = (tags && tags.tags.length > 0);
   const hasCards = (cards && cards !== 1);

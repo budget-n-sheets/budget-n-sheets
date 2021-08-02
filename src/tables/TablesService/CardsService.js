@@ -9,6 +9,59 @@ class CardsService extends TablesService {
     return this._db.count === 0;
   }
 
+  getAllBalances () {
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    if (!sheet) return;
+
+    const _h = TABLE_DIMENSION.height;
+    const _w = TABLE_DIMENSION.width;
+
+    const num_acc = SettingsConst.getValueOf('number_accounts');
+
+    const col = 2 + _w + _w * num_acc;
+    const num_cards = this._db.count;
+
+    if (num_cards === 0) return;
+
+    const balances = {
+      cards: ['All'],
+      balance: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      ]
+    };
+
+    let data = sheet.getRange(1, col, 1 + 12 * _h, _w).getValues();
+    for (let i = 0; i < 12; i++) {
+      balances.balance[0][i] = data[5 + _h * i][0];
+    }
+
+    data = sheet.getRange(1, col + _w, 1 + 12 * _h, _w * num_cards).getValues();
+
+    for (let k = 0; k < num_cards; k++) {
+      if (data[0][_w * k] === '') continue;
+
+      const code = data[0][_w * k].match(/\w+/g);
+      if (code == null) continue;
+
+      let i = 0;
+      for (; i < code.length; i++) {
+        if (this._db.codes.indexOf(code[i]) !== -1) break;
+      }
+      if (i === code.length) continue;
+
+      balances.cards.push(code[i]);
+
+      const v = [];
+      for (let i = 0; i < 12; i++) {
+        v[i] = data[5 + _h * i][_w * k];
+      }
+
+      balances.balance.push(v);
+    }
+
+    return balances;
+  }
+
   updateMetadata_ () {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;
@@ -129,13 +182,59 @@ class CardsService extends TablesService {
     SpreadsheetApp.flush();
   }
 
+  add (metadata) {
+    if (!this.hasSlotAvailable()) return 12;
+
+    metadata.code = metadata.code.trim();
+    if (!/^\w+$/.test(metadata.code)) return 10;
+    if (this.hasCode(metadata.code)) return 11;
+
+    let aliases = metadata.aliases.match(/\w+/g);
+    if (aliases == null) aliases = [];
+
+    let c = aliases.indexOf(metadata.code);
+    while (c !== -1) {
+      aliases.splice(c, 1);
+      c = aliases.indexOf(metadata.code);
+    }
+
+    const random = TablesUtils.getUtid();
+    if (!random) return 1;
+
+    metadata.id = random;
+    metadata.aliases = aliases;
+    metadata.limit = Number(metadata.limit);
+
+    c = this._db.count++;
+
+    this._db.ids[c] = metadata.id;
+    this._db.codes[c] = metadata.code;
+    this._db.data[c] = metadata;
+  }
+
+  delete (id) {
+    if (!this.hasId(id)) return 1;
+
+    const pos = this._db.ids.indexOf(id);
+
+    this._db.count--;
+    this._db.ids.splice(pos, 1);
+    this._db.codes.splice(pos, 1);
+    this._db.data.splice(pos, 1);
+  }
+
   flush () {
     this.updateMetadata_();
     this.updateNames_();
     this.updateRules_();
 
+    SpreadsheetApp.flush();
     onOpen();
     return this;
+  }
+
+  hasCards () {
+    return this._db.count > 0;
   }
 
   hasCode (code) {

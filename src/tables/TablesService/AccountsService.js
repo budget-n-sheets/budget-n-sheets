@@ -92,6 +92,7 @@ class AccountsService extends TablesService {
     this.updateNames_();
     this.updateReferences_();
 
+    SpreadsheetApp.flush();
     return this;
   }
 

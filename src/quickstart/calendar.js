@@ -89,9 +89,11 @@ function playQuickCalendar_ (n) {
 
   spreadsheet.setActiveSheet(sheet);
 
-  const db_tables = getDbTables_();
-  const acc_name = db_tables.accounts.names[0];
-  const card_code = (db_tables.cards.count > 0 ? db_tables.cards.codes[0] : '');
+  const db_accounts = new AccountsService().getAll();
+  const db_cards = new CardsService().getAll();
+
+  const acc_name = db_accounts[0].name;
+  const card_code = (db_cards.length > 0 ? db_cards[0].code : '');
 
   data = QUICKSTART_DATA_CALENDAR[1];
   if (!data) throw new Error("Values for quickstart example couldn't be found. calendar:" + n);

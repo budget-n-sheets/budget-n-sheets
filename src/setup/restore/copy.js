@@ -178,19 +178,21 @@ function restoreFromSpreadsheet_ (file_id) {
 }
 
 function copyTables_ (spreadsheet) {
-  const db_tables = getDbTables_();
-  let metadata;
-
-  metadata = spreadsheet.createDeveloperMetadataFinder()
+  let metadata = spreadsheet.createDeveloperMetadataFinder()
     .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
     .withKey('db_accounts')
     .find();
   metadata = JSON.parse(metadata[0].getValue());
 
+  const accountsService = new AccountsService();
+  const db_accounts = accountsService.getAll();
+
   for (let i = 0; i < metadata.length; i++) {
-    metadata[i].id = db_tables.accounts.ids[i];
-    tablesService('set', 'account', metadata[i]);
+    metadata[i].id = db_accounts[i].id;
+    accountsService.update(metadata);
   }
+  accountsService.save();
+  accountsService.flush();
 
   metadata = spreadsheet.createDeveloperMetadataFinder()
     .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
@@ -198,10 +200,14 @@ function copyTables_ (spreadsheet) {
     .find();
   metadata = JSON.parse(metadata[0].getValue());
 
+  const cardsService = new CardsService();
+
   for (let i = 0; i < metadata.length; i++) {
     metadata[i].aliases = metadata[i].aliases.join(',');
-    tablesService('set', 'addcard', metadata[i]);
+    cardsService.add(metadata);
   }
+  cardsService.save();
+  cardsService.flush();
 
   SpreadsheetApp.flush();
 }

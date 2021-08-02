@@ -104,6 +104,8 @@
         <? if (is_edit) { ?>
         job: 'update',
         id: $("#card_id").val(),
+        <? } else { ?>
+        job: 'add',
         <? } ?>
         name : $("#card_name").val(),
         code : $("#card_code").val(),
@@ -114,11 +116,7 @@
       google.script.run
         .withSuccessHandler(submitAftermath)
         .withFailureHandler(showError)
-        <? if (is_edit) { ?>
         .cardsService(payload);
-        <? } else { ?>
-        .tablesService("set", "addcard", payload);
-        <? } ?>
     }
 
     function submitAftermath(r) {
