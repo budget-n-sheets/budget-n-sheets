@@ -11,7 +11,7 @@ function setupTables_ () {
   j = 0;
   const ids = [];
   while (j < 1 + num_acc && i < 99) {
-    r = randomString(7, 'lonum');
+    r = Noise.randomString(7, 'lonum');
     if (ids.indexOf(r) === -1) {
       ids[j] = r;
       j++;

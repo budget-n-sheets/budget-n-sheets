@@ -78,7 +78,7 @@ function playQuickAccCards_ (n) {
     }
 
     col = 1 + 6 * mm - 6;
-    val = randomValueNegative(2, 2);
+    val = Noise.randomValueNegative(2, 2);
 
     data[0][2] = code;
     data[0][3] = val;
@@ -88,14 +88,14 @@ function playQuickAccCards_ (n) {
     data[0][15] = val;
     data[1][8] = code;
     data[2][8] = code;
-    data[2][9] = randomValueNegative(3, 2);
+    data[2][9] = Noise.randomValueNegative(3, 2);
     data[3][8] = code;
   } else {
     if (lastRow < 4) lastRow = 4;
 
     col = 6;
     data[0][1] = code + ' bill payment';
-    data[0][2] = randomValueNegative(3, 2);
+    data[0][2] = Noise.randomValueNegative(3, 2);
   }
 
   if (sheet.getMaxRows() < lastRow + data.length) {

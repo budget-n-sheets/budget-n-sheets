@@ -76,11 +76,11 @@ function createNewTrigger_ (name, type, param) {
     trigger[type](param);
   } else {
     if (param.hour == null) hour = 0;
-    else if (param.hour === -1) hour = randomInteger(24);
+    else if (param.hour === -1) hour = Noise.randomInteger(24);
     else hour = param.hour;
 
     if (param.minute == null) minute = 0;
-    else if (param.minute === -1) minute = randomInteger(60);
+    else if (param.minute === -1) minute = Noise.randomInteger(60);
     else minute = param.minute;
 
     switch (type) {
@@ -93,7 +93,7 @@ function createNewTrigger_ (name, type, param) {
         else weeks = param.weeks;
 
         if (param.week == null) week = 0;
-        else if (param.week === -1) week = randomInteger(7);
+        else if (param.week === -1) week = Noise.randomInteger(7);
         else week = param.week;
 
         trigger.atHour(hour).nearMinute(minute).everyWeeks(weeks).onWeekDay(weekday[week]);

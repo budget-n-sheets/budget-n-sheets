@@ -35,21 +35,21 @@ function playQuickStatements_ (n) {
   switch (n) {
     case 1:
       col = 1;
-      data[0][2] = randomValueNegative(2, 2);
+      data[0][2] = Noise.randomValueNegative(2, 2);
       break;
     case 2:
       col = 6;
-      data[0][2] = randomValueNegative(2, 2);
+      data[0][2] = Noise.randomValueNegative(2, 2);
       break;
     case 3:
       col = 1;
-      data[0][2] = randomValue(3, 2);
-      data[0][7] = randomValue(3, 2);
-      data[1][7] = randomValue(3, 2);
+      data[0][2] = Noise.randomValue(3, 2);
+      data[0][7] = Noise.randomValue(3, 2);
+      data[1][7] = Noise.randomValue(3, 2);
       break;
     case 4:
-      val = -randomInteger(20);
-      col = 1 + 5 * randomInteger(2);
+      val = -Noise.randomInteger(20);
+      col = 1 + 5 * Noise.randomInteger(2);
       data[0][2] = val;
       data[1][2] = 3 * val;
       break;

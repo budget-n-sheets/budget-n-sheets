@@ -8,7 +8,7 @@ function startTrigger_ (name) {
   } else if (name === 'timeBased') {
     let handler, type, parameters;
 
-    const hour = 2 + randomInteger(4);
+    const hour = 2 + Noise.randomInteger(4);
     const yyyy = Utils.getLocaleDate().getFullYear();
     const financial_year = SettingsConst.getValueOf('financial_year');
 
@@ -23,7 +23,7 @@ function startTrigger_ (name) {
       type = 'everyDays';
       parameters = { days: 1, hour: hour, minute: -1 };
     } else {
-      const day = 1 + randomInteger(28);
+      const day = 1 + Noise.randomInteger(28);
 
       handler = 'weeklyTriggerPos_';
       type = 'onMonthDay';

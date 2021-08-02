@@ -11,16 +11,16 @@ function playQuickTransactions_ (n) {
 
   switch (n) {
     case 1:
-      data[0][2] = randomValue(3, 2);
+      data[0][2] = Noise.randomValue(3, 2);
       break;
     case 2:
-      data[0][2] = randomValue(3, 2);
+      data[0][2] = Noise.randomValue(3, 2);
       break;
     case 3:
-      data[0][2] = randomValueNegative(3, 2);
+      data[0][2] = Noise.randomValueNegative(3, 2);
       break;
     case 4:
-      data[0][2] = randomValueNegative(3, 2);
+      data[0][2] = Noise.randomValueNegative(3, 2);
       break;
 
     default:

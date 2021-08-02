@@ -41,23 +41,23 @@ function playQuickBlankValue_ (n) {
   switch (n) {
     case 1:
       col = 1;
-      data[0][2] = randomValueNegative(1, 2);
-      data[0][7] = randomValueNegative(2, 2);
+      data[0][2] = Noise.randomValueNegative(1, 2);
+      data[0][7] = Noise.randomValueNegative(2, 2);
 
-      data[2][2] = randomValueNegative(2, 2);
+      data[2][2] = Noise.randomValueNegative(2, 2);
 
-      data[3][2] = randomValueNegative(3, 2);
-      data[3][7] = randomValue(4, 2);
+      data[3][2] = Noise.randomValueNegative(3, 2);
+      data[3][7] = Noise.randomValue(4, 2);
 
-      data[4][2] = randomValueNegative(2, 2);
-      data[4][7] = randomValueNegative(3, 2);
+      data[4][2] = Noise.randomValueNegative(2, 2);
+      data[4][7] = Noise.randomValueNegative(3, 2);
       break;
     case 2:
       col = 6;
-      data[0][2] = randomValue(4, 2);
-      data[1][2] = randomValueNegative(2, 2);
-      data[2][2] = randomValueNegative(2, 2);
-      data[3][2] = randomValueNegative(2, 2);
+      data[0][2] = Noise.randomValue(4, 2);
+      data[1][2] = Noise.randomValueNegative(2, 2);
+      data[2][2] = Noise.randomValueNegative(2, 2);
+      data[3][2] = Noise.randomValueNegative(2, 2);
       break;
 
     default:

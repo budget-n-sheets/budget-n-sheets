@@ -58,7 +58,7 @@ function playQuickTags02_ (n) {
   if (!data) throw new Error("playQuickTags2_(): Values for quickstart example couldn't be found. tags:" + n);
 
   for (let i = 0; i < 5; i++) {
-    data[i][2] = randomValueNegative(2, 2);
+    data[i][2] = Noise.randomValueNegative(2, 2);
   }
 
   const name = (SettingsConst.getValueOf('financial_year') === DATE_NOW.getFullYear() ? MONTH_NAME.short[DATE_NOW.getMonth()] : MONTH_NAME.short[0]);

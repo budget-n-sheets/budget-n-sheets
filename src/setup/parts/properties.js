@@ -3,7 +3,7 @@ function setupProperties_ (yyyy_mm) {
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const adminId = User2.getId();
-  const hour = 2 + randomInteger(4);
+  const hour = 2 + Noise.randomInteger(4);
 
   properties = {
     initial_month: SETUP_SETTINGS.init_month,
