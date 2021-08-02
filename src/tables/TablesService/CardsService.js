@@ -233,6 +233,10 @@ class CardsService extends TablesService {
     return this;
   }
 
+  hasCards () {
+    return this._db.count > 0;
+  }
+
   hasCode (code) {
     return this._db.codes.indexOf(code) !== -1;
   }
