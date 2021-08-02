@@ -228,6 +228,7 @@ class CardsService extends TablesService {
     this.updateNames_();
     this.updateRules_();
 
+    SpreadsheetApp.flush();
     onOpen();
     return this;
   }
