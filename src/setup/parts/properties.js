@@ -1,4 +1,4 @@
-function setupProperties_ (yyyy_mm) {
+function setupProperties_ () {
   let properties;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
@@ -21,7 +21,7 @@ function setupProperties_ (yyyy_mm) {
   CachedAccess.update('admin_settings', properties);
 
   properties = {
-    date_created: yyyy_mm.time,
+    date_created: SETUP_SETTINGS.date.time,
     number_accounts: SETUP_SETTINGS.number_accounts,
     financial_year: SETUP_SETTINGS.financial_year
   };

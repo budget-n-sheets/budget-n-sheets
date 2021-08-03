@@ -1,4 +1,4 @@
-function setupSettings_ (yyyy_mm) {
+function setupSettings_ () {
   const buildFormulas = FormulaBuild.settings().formulas();
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('_Settings');

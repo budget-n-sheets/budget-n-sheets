@@ -79,6 +79,11 @@ function setupLock (uuid, select, config) {
   const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
 
   SETUP_SETTINGS = {
+    date: {
+      time: DATE_NOW.getTime(),
+      yyyy: DATE_NOW.getFullYear(),
+      mm: DATE_NOW.getMonth()
+    },
     spreadsheet_name: settings.spreadsheet_name,
     decimal_places: dec_p,
     number_format: number_format,
@@ -144,16 +149,10 @@ function setupPrepare_ () {
 }
 
 function setupParts_ () {
-  const yyyy_mm = {
-    time: DATE_NOW.getTime(),
-    yyyy: DATE_NOW.getFullYear(),
-    mm: DATE_NOW.getMonth()
-  };
-
-  setupProperties_(yyyy_mm);
+  setupProperties_();
   setupTables_();
 
-  setupSettings_(yyyy_mm);
+  setupSettings_();
   setupMonthSheet_();
   setupUnique_();
   setupBackstage_();
@@ -162,5 +161,5 @@ function setupParts_ () {
   setupCards_();
   setupCashFlow_();
   setupWest_();
-  setupEast_(yyyy_mm);
+  setupEast_();
 }

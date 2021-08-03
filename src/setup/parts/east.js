@@ -1,5 +1,6 @@
-function setupEast_ (yyyy_mm) {
+function setupEast_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  const yyyy_mm = SETUP_SETTINGS.date;
   let sheet;
   let md, t, i;
 
