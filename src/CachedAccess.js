@@ -8,6 +8,11 @@ class CachedAccess {
     return properties;
   }
 
+  static remove (key) {
+    PropertiesService3.document().deleteProperty(key);
+    CacheService3.document().remove(key);
+  }
+
   static update (key, properties) {
     PropertiesService3.document().setProperty(key, properties);
     CacheService3.document().put(key, properties);
