@@ -1,4 +1,5 @@
 function setupCashFlow_ () {
+  const setup_settings = CachedAccess.get('setup_settings');
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cash Flow');
   let ranges, formula;
   let d, s;
@@ -6,10 +7,10 @@ function setupCashFlow_ () {
 
   const h_ = TABLE_DIMENSION.height;
 
-  const init_month = SETUP_SETTINGS.init_month;
-  const dec_p = SETUP_SETTINGS.decimal_separator;
-  const num_acc = SETUP_SETTINGS.number_accounts;
-  const financial_year = SETUP_SETTINGS.financial_year;
+  const init_month = setup_settings.init_month;
+  const dec_p = setup_settings.decimal_separator;
+  const num_acc = setup_settings.number_accounts;
+  const financial_year = setup_settings.financial_year;
 
   const dec_c = (dec_p ? ',' : '\\');
   const options = '{"charttype"' + dec_c + '"column"; "color"' + dec_c + '"#93c47d"; "negcolor"' + dec_c + '"#e06666"; "empty"' + dec_c + '"zero"; "nan"' + dec_c + '"convert"}';
@@ -132,14 +133,14 @@ function setupCashFlow_ () {
   }
   sheet.getRange(4, 3 + 4 * init_month).setFormula(formula);
 
-  if (SETUP_SETTINGS.decimal_places !== 2) {
+  if (setup_settings.decimal_places !== 2) {
     const list_format = [];
 
     for (let i = 0; i < 12; i++) {
       list_format[i] = RangeUtils.rollA1Notation(4, 2 + 4 * i, 31, 2);
     }
 
-    sheet.getRangeList(list_format).setNumberFormat(SETUP_SETTINGS.number_format);
+    sheet.getRangeList(list_format).setNumberFormat(setup_settings.number_format);
   }
 
   SpreadsheetApp.flush();

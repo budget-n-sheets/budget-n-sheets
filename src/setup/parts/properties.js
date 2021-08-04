@@ -1,11 +1,12 @@
 function setupProperties_ () {
-  let properties;
-
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const adminId = User2.getId();
 
+  const setup_settings = CachedAccess.get('setup_settings');
+  let properties;
+
   properties = {
-    initial_month: SETUP_SETTINGS.init_month,
+    initial_month: setup_settings.init_month,
     financial_calendar: '',
     post_day_events: false,
     cash_flow_events: false,
@@ -21,15 +22,15 @@ function setupProperties_ () {
   CachedAccess.update('admin_settings', properties);
 
   properties = {
-    date_created: SETUP_SETTINGS.date.time,
-    number_accounts: SETUP_SETTINGS.number_accounts,
-    financial_year: SETUP_SETTINGS.financial_year
+    date_created: setup_settings.date.time,
+    number_accounts: setup_settings.number_accounts,
+    financial_year: setup_settings.financial_year
   };
   CachedAccess.update('const_properties', properties);
 
   const metadata = {
-    number_accounts: SETUP_SETTINGS.number_accounts,
-    financial_year: SETUP_SETTINGS.financial_year
+    number_accounts: setup_settings.number_accounts,
+    financial_year: setup_settings.financial_year
   };
 
   spreadsheet.addDeveloperMetadata(
@@ -40,8 +41,8 @@ function setupProperties_ () {
 
   properties = {
     view_mode: 'complete',
-    decimal_places: SETUP_SETTINGS.decimal_places,
-    decimal_separator: SETUP_SETTINGS.decimal_separator,
+    decimal_places: setup_settings.decimal_places,
+    decimal_separator: setup_settings.decimal_separator,
     spreadsheet_locale: spreadsheet.getSpreadsheetLocale(),
     optimize_load: [false, false, false, false, false, false, false, false, false, false, false, false]
   };

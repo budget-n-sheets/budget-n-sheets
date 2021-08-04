@@ -1,4 +1,5 @@
 function setupBackstage_ () {
+  const setup_settings = CachedAccess.get('setup_settings');
   const formulasBackstage = FormulaBuild.backstage();
   const numRows = SPREADSHEET_SPECS.initial_height;
 
@@ -11,9 +12,9 @@ function setupBackstage_ () {
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
 
-  const list_acc = SETUP_SETTINGS.list_acc;
-  const num_acc = SETUP_SETTINGS.number_accounts;
-  const dec_p = SETUP_SETTINGS.decimal_separator;
+  const list_acc = setup_settings.list_acc;
+  const num_acc = setup_settings.number_accounts;
+  const dec_p = setup_settings.decimal_separator;
 
   const values = ['C5:C404', 'H5:H404', 'M5:M404', 'R5:R404', 'W5:W404', 'AB5:AB404'];
   const tags = ['D5:D404', 'I5:I404', 'N5:N404', 'S5:S404', 'X5:X404', 'AC5:AC404'];
@@ -83,7 +84,7 @@ function setupBackstage_ () {
   SpreadsheetApp.flush();
   sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (col - w_ - 2) + ']');
 
-  if (SETUP_SETTINGS.decimal_places !== 2) {
-    sheet.getRange(2, 2, sheet.getMaxRows() - 1, sheet.getMaxColumns() - 1).setNumberFormat(SETUP_SETTINGS.number_format);
+  if (setup_settings.decimal_places !== 2) {
+    sheet.getRange(2, 2, sheet.getMaxRows() - 1, sheet.getMaxColumns() - 1).setNumberFormat(setup_settings.number_format);
   }
 }

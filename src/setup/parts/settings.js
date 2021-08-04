@@ -1,4 +1,5 @@
 function setupSettings_ () {
+  const setup_settings = CachedAccess.get('setup_settings');
   const buildFormulas = FormulaBuild.settings().formulas();
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('_Settings');
@@ -9,7 +10,7 @@ function setupSettings_ () {
 
   sheet.protect().setWarningOnly(true);
 
-  dec_p = SETUP_SETTINGS.decimal_places;
+  dec_p = setup_settings.decimal_places;
   const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '.0');
 
   cell = sheet.getRange(8, 2);
@@ -21,25 +22,25 @@ function setupSettings_ () {
   dec_p = /\./.test(cell);
   if (dec_p === 0) sheet.getRange(8, 2).setNumberFormat('0');
 
-  SETUP_SETTINGS.decimal_separator = dec_p;
+  setup_settings.decimal_separator = dec_p;
   SettingsSpreadsheet.setValueOf('decimal_separator', dec_p);
 
   cell = [
-    [FormatNumber.localeSignal(SETUP_SETTINGS.financial_year)],
+    [FormatNumber.localeSignal(setup_settings.financial_year)],
     [buildFormulas.actualMonth()],
-    [FormatNumber.localeSignal(SETUP_SETTINGS.init_month + 1)],
+    [FormatNumber.localeSignal(setup_settings.init_month + 1)],
     [buildFormulas.activeMonths()],
     [buildFormulas.mFactor()],
     [buildFormulas.countTags()],
     ['RAND()'],
-    [FormatNumber.localeSignal(SETUP_SETTINGS.decimal_places)],
-    [SETUP_SETTINGS.decimal_separator],
+    [FormatNumber.localeSignal(setup_settings.decimal_places)],
+    [setup_settings.decimal_separator],
     ['CONCATENATE("#,##0."; REPT("0"; B9); ";(#,##0."; REPT("0"; B9); ")")']
   ];
   sheet.getRange(2, 2, 10, 1).setFormulas(cell);
 
   const metadata = {
-    initial_month: SETUP_SETTINGS.init_month,
+    initial_month: setup_settings.init_month,
     financial_calendar_sha256: '',
     post_day_events: false,
     cash_flow_events: false

@@ -1,12 +1,13 @@
 function setupEast_ () {
+  const setup_settings = CachedAccess.get('setup_settings');
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  const yyyy_mm = SETUP_SETTINGS.date;
+  const yyyy_mm = setup_settings.date;
   let sheet;
   let md, t, i;
 
-  const init_month = SETUP_SETTINGS.init_month;
+  const init_month = setup_settings.init_month;
 
-  if (yyyy_mm.yyyy === SETUP_SETTINGS.financial_year) {
+  if (yyyy_mm.yyyy === setup_settings.financial_year) {
     t = true;
     md = Utils.getMonthDelta(yyyy_mm.mm);
   } else {

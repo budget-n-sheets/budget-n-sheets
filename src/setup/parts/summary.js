@@ -1,4 +1,5 @@
 function setupSummary_ () {
+  const setup_settings = CachedAccess.get('setup_settings');
   const formulaBuild = FormulaBuild.summary();
 
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
@@ -20,7 +21,7 @@ function setupSummary_ () {
       sheet.getRange(52, 2, 1, 3), sheet.getRange(72, 2, 1, 3)
     ])
     .setWarningOnly(true);
-  sheet.getRange('B2').setValue(SETUP_SETTINGS.financial_year + ' | Year Summary');
+  sheet.getRange('B2').setValue(setup_settings.financial_year + ' | Year Summary');
 
   formulas = [];
   const buildTable1 = formulaBuild.table1();
@@ -45,8 +46,8 @@ function setupSummary_ () {
 
   sheet.insertChart(chart.build());
 
-  if (SETUP_SETTINGS.decimal_places !== 2) {
-    sheet.getRangeList(['D9:I22', 'D25:G36']).setNumberFormat(SETUP_SETTINGS.number_format);
+  if (setup_settings.decimal_places !== 2) {
+    sheet.getRangeList(['D9:I22', 'D25:G36']).setNumberFormat(setup_settings.number_format);
   }
 
   formula = formulaBuild.table2().data();

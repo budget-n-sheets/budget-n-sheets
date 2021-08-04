@@ -78,7 +78,7 @@ function setupLock (uuid, select, config) {
   const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
   const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
 
-  SETUP_SETTINGS = {
+  CachedAccess.update('setup_settings', {
     date: {
       time: DATE_NOW.getTime(),
       yyyy: DATE_NOW.getFullYear(),
@@ -92,10 +92,12 @@ function setupLock (uuid, select, config) {
     number_accounts: Number(settings.number_accounts),
     list_acc: list_accounts,
     decimal_separator: true
-  };
+  });
 
-  setupPrepare_();
+  setupPrepare_(settings.spreadsheet_name);
   setupParts_();
+
+  CachedAccess.remove('setup_settings');
 
   if (select === 'restore') {
     restoreFromBackup_(settings.backup);
@@ -124,13 +126,12 @@ function setupLock (uuid, select, config) {
   showDialogSetupEnd();
   onOpen();
 
-  SETUP_SETTINGS = null;
   console.timeEnd('setup/' + select);
 }
 
-function setupPrepare_ () {
+function setupPrepare_ (spreadseetName) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  spreadsheet.rename(SETUP_SETTINGS.spreadsheet_name);
+  spreadsheet.rename(spreadseetName);
 
   PropertiesService3.document().deleteAllProperties();
   deleteAllTriggers_();

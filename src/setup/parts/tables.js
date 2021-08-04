@@ -1,11 +1,12 @@
 function setupTables_ () {
+  const setup_settings = CachedAccess.get('setup_settings');
   let acc, r, i, j, k;
 
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
 
-  const init_month = SETUP_SETTINGS.init_month;
-  const list_acc = SETUP_SETTINGS.list_acc;
-  const num_acc = SETUP_SETTINGS.number_accounts;
+  const init_month = setup_settings.init_month;
+  const list_acc = setup_settings.list_acc;
+  const num_acc = setup_settings.number_accounts;
 
   i = 0;
   j = 0;

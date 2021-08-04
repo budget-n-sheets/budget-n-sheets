@@ -1,4 +1,5 @@
 function setupMonthSheet_ () {
+  const setup_settings = CachedAccess.get('setup_settings');
   const formulaBuild = FormulaBuild.ttt().header();
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
@@ -10,8 +11,8 @@ function setupMonthSheet_ () {
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
 
-  const list_acc = SETUP_SETTINGS.list_acc;
-  const num_acc = SETUP_SETTINGS.number_accounts;
+  const list_acc = setup_settings.list_acc;
+  const num_acc = setup_settings.number_accounts;
 
   const sheets = new Array(12);
 
@@ -24,7 +25,7 @@ function setupMonthSheet_ () {
     sheetTTT.deleteColumns(6 + 5 * num_acc, 5 * (5 - num_acc));
   }
 
-  if (SETUP_SETTINGS.decimal_places !== 2) {
+  if (setup_settings.decimal_places !== 2) {
     const list_format = [];
 
     list_format[0] = RangeUtils.rollA1Notation(5, 3, 400, 1);
@@ -34,7 +35,7 @@ function setupMonthSheet_ () {
     }
 
     sheetTTT.getRangeList(list_format)
-      .setNumberFormat(SETUP_SETTINGS.number_format);
+      .setNumberFormat(setup_settings.number_format);
   }
 
   SpreadsheetApp.flush();

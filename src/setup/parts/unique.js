@@ -1,8 +1,9 @@
 function setupUnique_ () {
+  const setup_settings = CachedAccess.get('setup_settings');
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName('_Unique');
 
-  const num_acc = SETUP_SETTINGS.number_accounts;
+  const num_acc = setup_settings.number_accounts;
 
   spreadsheet.setActiveSheet(sheet);
   spreadsheet.moveActiveSheet(20);

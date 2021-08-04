@@ -1,4 +1,5 @@
 function setupCards_ () {
+  const setup_settings = CachedAccess.get('setup_settings');
   const formulasCards = FormulaBuild.cards().header();
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
@@ -10,8 +11,8 @@ function setupCards_ () {
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
 
-  const dec_p = SETUP_SETTINGS.decimal_separator;
-  const num_acc = SETUP_SETTINGS.number_accounts;
+  const dec_p = setup_settings.decimal_separator;
+  const num_acc = setup_settings.number_accounts;
 
   const col = 2 + w_ + w_ * num_acc;
   const dec_c = (dec_p ? ',' : '\\');
@@ -54,14 +55,14 @@ function setupCards_ () {
     rangeOff.offset(0, 3 + 6 * i).setFormula(formula);
   }
 
-  if (SETUP_SETTINGS.decimal_places !== 2) {
+  if (setup_settings.decimal_places !== 2) {
     const list_format = [];
 
     for (let i = 0; i < 12; i++) {
       list_format[i] = RangeUtils.rollA1Notation(6, 4 + 6 * i, 400, 1);
     }
 
-    sheet.getRangeList(list_format).setNumberFormat(SETUP_SETTINGS.number_format);
+    sheet.getRangeList(list_format).setNumberFormat(setup_settings.number_format);
   }
 
   SpreadsheetApp.flush();

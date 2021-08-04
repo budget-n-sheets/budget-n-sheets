@@ -5,7 +5,6 @@ const MONTH_NAME = Object.freeze({
 
 const DATE_NOW = new Date();
 
-let SETUP_SETTINGS;
 const CACHE_KEYS = ['class_version2', 'admin_settings', 'user_settings', 'spreadsheet_settings', 'const_properties', 'DB_TABLES', 'DB_CALENDARS', 'is_installed', 'load_cache'];
 
 const TABLE_DIMENSION = Object.freeze({ height: 10, width: 5 });
