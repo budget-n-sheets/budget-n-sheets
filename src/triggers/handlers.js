@@ -40,31 +40,6 @@ function onEditInstallable_ (e) {
   }
 }
 
-function tagsCheckbox_ (sheet, range) {
-  const column = range.getColumn();
-  if (column > 5) return;
-  if (range.getLastColumn() < 5) return;
-
-  const pos = 4 - column + 1;
-  const values = range.getValues();
-  const row = range.getRow();
-
-  const list1 = [];
-  const list2 = [];
-
-  let i = -1;
-  let n1 = 0;
-  let n2 = 0;
-  while (++i < values.length) {
-    if (values[i][pos] === '') list2[n2++] = 'D' + (row + i);
-    else list1[n1++] = 'D' + (row + i);
-  }
-
-  if (list1.length > 0) sheet.getRangeList(list1).insertCheckboxes();
-  if (list2.length > 0) sheet.getRangeList(list2).removeCheckboxes();
-  SpreadsheetApp.flush();
-}
-
 function quickActions_ (range, value) {
   if (value === '') return;
 
