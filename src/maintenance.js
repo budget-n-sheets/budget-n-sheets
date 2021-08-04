@@ -1,9 +1,3 @@
-function rollOperationMode_ () {
-  stopTrigger_('timeBased');
-  Utilities.sleep(1000);
-  startTrigger_('timeBased');
-}
-
 function askDeactivation () {
   if (!AppsScript.isInstalled()) {
     AppsScript.uninstall();
@@ -151,7 +145,7 @@ function askResetProtection () {
 
 function askReinstallTriggersUi () {
   if (!User2.isAdmin()) {
-    deleteAllTriggers_();
+    Triggers.deleteAllUserTriggers();
 
     SpreadsheetApp2.getUi().alert(
       'Permission denied',
@@ -161,14 +155,5 @@ function askReinstallTriggersUi () {
     return 1;
   }
 
-  reinstallTriggers_();
-}
-
-function reinstallTriggers_ () {
-  deleteAllTriggers_();
-  Utilities.sleep(1000);
-
-  startTrigger_('onOpen');
-  startTrigger_('onEdit');
-  startTrigger_('timeBased');
+  TriggersService.restart();
 }

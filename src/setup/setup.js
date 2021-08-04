@@ -115,7 +115,7 @@ function setupLock (uuid, select, config) {
   if (bsSignSetup_()) throw new Error('Failed to sign document.');
 
   try {
-    setupTriggers_();
+    TriggersService.start();
   } catch (err) {
     console.error(err);
   }
@@ -134,8 +134,9 @@ function setupPrepare_ (spreadseetName) {
   spreadsheet.rename(spreadseetName);
 
   PropertiesService3.document().deleteAllProperties();
-  deleteAllTriggers_();
   CacheService3.document().removeAll(CACHE_KEYS);
+
+  Triggers.deleteAllUserTriggers();
 
   const metadata = spreadsheet.createDeveloperMetadataFinder()
     .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)

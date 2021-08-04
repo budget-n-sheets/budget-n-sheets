@@ -122,7 +122,7 @@ function dailyTrigger_ (e) {
 
   if (financial_year < yyyymmdd.year) {
     treatLayout_(yyyymmdd.year, yyyymmdd.month);
-    rollOperationMode_('passive');
+    TriggersService.restart();
     return;
   }
 
@@ -179,5 +179,5 @@ function weeklyTriggerPre_ (e) {
   if (yyyymm.year > financial_year) return;
 
   treatLayout_(yyyymm.year, yyyymm.month);
-  rollOperationMode_();
+  TriggersService.restart();
 }

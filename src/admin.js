@@ -24,7 +24,7 @@ function askTransferAdmin () {
     ui.ButtonSet.YES_NO);
 
   if (response === ui.Button.YES) {
-    deleteAllTriggers_();
+    Triggers.deleteAllUserTriggers();
 
     SettingsAdmin.setValueOf('admin_id', owner_id);
     bsSignSetup_();
@@ -105,7 +105,7 @@ function continuedTransferAdminSd (editor) {
     digest = digest.substring(0, 12);
 
     if (digest === editor) {
-      deleteAllTriggers_();
+      Triggers.deleteAllUserTriggers();
 
       digest = computeDigest('SHA_256', email, 'UTF_8');
       SettingsAdmin.setValueOf('admin_id', digest);

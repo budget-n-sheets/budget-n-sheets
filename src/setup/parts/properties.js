@@ -47,12 +47,4 @@ function setupProperties_ () {
     optimize_load: [false, false, false, false, false, false, false, false, false, false, false, false]
   };
   CachedAccess.update('spreadsheet_settings', properties);
-
-  properties = {
-    owner: adminId,
-    onOpen: { id: '', time_created: 0 },
-    onEdit: { id: '', time_created: 0 },
-    timeBased: { id: '', time_created: 0 }
-  };
-  PropertiesService3.document().setProperty('spreadsheet_triggers', properties);
 }
