@@ -1,9 +1,3 @@
-function rollOperationMode_ () {
-  stopTrigger_('timeBased');
-  Utilities.sleep(1000);
-  startTrigger_('timeBased');
-}
-
 function askDeactivation () {
   if (!AppsScript.isInstalled()) {
     AppsScript.uninstall();
@@ -162,13 +156,4 @@ function askReinstallTriggersUi () {
   }
 
   TriggersService.restart();
-}
-
-function reinstallTriggers_ () {
-  deleteAllTriggers_();
-  Utilities.sleep(1000);
-
-  startTrigger_('onOpen');
-  startTrigger_('onEdit');
-  startTrigger_('timeBased');
 }
