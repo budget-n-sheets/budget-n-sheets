@@ -161,7 +161,7 @@ function askReinstallTriggersUi () {
     return 1;
   }
 
-  reinstallTriggers_();
+  TriggersService.restart();
 }
 
 function reinstallTriggers_ () {

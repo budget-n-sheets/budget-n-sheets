@@ -115,7 +115,7 @@ function setupLock (uuid, select, config) {
   if (bsSignSetup_()) throw new Error('Failed to sign document.');
 
   try {
-    setupTriggers_();
+    TriggersService.start();
   } catch (err) {
     console.error(err);
   }
