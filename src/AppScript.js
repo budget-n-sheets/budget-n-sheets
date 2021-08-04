@@ -27,7 +27,7 @@ class AppsScript {
   }
 
   static uninstall () {
-    deleteAllTriggers_();
+    Triggers.deleteAllUserTriggers();
     if (this.isInstalled() || this.isLocked()) PropertiesService3.document().setProperties({ lock_spreadsheet: true }, true);
     else PropertiesService3.document().deleteAllProperties();
     CacheService3.document().removeAll(CACHE_KEYS);

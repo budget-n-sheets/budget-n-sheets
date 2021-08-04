@@ -145,7 +145,7 @@ function askResetProtection () {
 
 function askReinstallTriggersUi () {
   if (!User2.isAdmin()) {
-    deleteAllTriggers_();
+    Triggers.deleteAllUserTriggers();
 
     SpreadsheetApp2.getUi().alert(
       'Permission denied',
