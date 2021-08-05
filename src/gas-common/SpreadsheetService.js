@@ -24,6 +24,16 @@ class SpreadsheetService {
     sheets.forEach(sheet => spreadsheet.deleteSheet(sheet));
   }
 
+  static isSpreadsheetAvailable (spreadsheetId) {
+    try {
+      SpreadsheetApp.openById(spreadsheetId);
+    } catch (err) {
+      return false;
+    }
+
+    return true;
+  }
+
   static removeAllMetadata () {
     SpreadsheetApp2.getActiveSpreadsheet()
       .createDeveloperMetadataFinder()
