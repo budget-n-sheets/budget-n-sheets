@@ -21,10 +21,8 @@ class SpreadsheetService {
     sheets[0].showSheet();
     spreadsheet.setActiveSheet(sheets[0]);
 
-    sheets.forEach(sheet => spreadsheet.deleteSheet(sheet));
-
     spreadsheet.insertSheet();
-    spreadsheet.deleteSheet(sheets[0]);
+    sheets.forEach(sheet => spreadsheet.deleteSheet(sheet));
   }
 
   static removeAllMetadata () {
