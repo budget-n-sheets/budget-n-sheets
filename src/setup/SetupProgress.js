@@ -1,5 +1,6 @@
-class SetupProgress {
+class SetupProgress extends SetupService {
   constructor () {
+    super();
   }
 
   copyTemplate () {

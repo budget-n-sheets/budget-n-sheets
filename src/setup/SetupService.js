@@ -1,4 +1,7 @@
 class SetupService {
+  contructor () {
+  }
+
   static checkRequirements () {
     if (!AppsScript.isTemplateAvailable()) return 1;
     if (AppsScript.isInstalled()) return 2;
