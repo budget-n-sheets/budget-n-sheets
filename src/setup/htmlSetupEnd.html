@@ -4,7 +4,7 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
 </head>
 
 <body>
@@ -25,7 +25,7 @@
 
   <button class="action" id="b-Quickstart">Show quickstart</button> <button onClick="google.script.host.close()">Close</button>
 
-  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     $(document).ready(function() {
       $("#b-Quickstart").click(function() {

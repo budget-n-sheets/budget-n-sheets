@@ -4,7 +4,7 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
   <style>
     #header {
       height: 3.7em;
@@ -121,7 +121,7 @@
       </div>
     </div>
   </div>
-  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     function formatCurrency(number) {
       const dec_s = "<?= dec_s ?>";

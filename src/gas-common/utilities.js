@@ -4,10 +4,6 @@
  * <https://github.com/guimspace/gas-common>
  */
 
-function htmlInclude (fileName) {
-  return HtmlService.createHtmlOutputFromFile(fileName).getContent();
-}
-
 function getDigestAlgorithm (v) {
   switch (v) {
     case 'MD5':

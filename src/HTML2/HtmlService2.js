@@ -3,4 +3,8 @@ class HtmlService2 {
     const htmlTemplate = HtmlService.createTemplateFromFile(path);
     return new HtmlTemplate2(htmlTemplate);
   }
+
+  static htmlInclude (fileName) {
+    return HtmlService.createHtmlOutputFromFile(fileName).getContent();
+  }
 }

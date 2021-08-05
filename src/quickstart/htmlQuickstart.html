@@ -4,7 +4,7 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
   <style>
     p {
       text-indent: 0;
@@ -114,7 +114,7 @@
   <a href="https://docs.google.com/forms/d/e/1FAIpQLSeAkAgJYuABKsdz1S8fFT8wdZ1tJkw3V_xbQtbJ27tq5mnx-w/viewform?usp=pp_url&entry.1588138887=Yes" target="_blank"><button>Yes</button></a>
   <a href="https://docs.google.com/forms/d/e/1FAIpQLSeAkAgJYuABKsdz1S8fFT8wdZ1tJkw3V_xbQtbJ27tq5mnx-w/viewform?usp=pp_url&entry.1588138887=No" target="_blank"><button>No</button></a>
 
-  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     $(document).on("click", ".md-speed", function() {
       if ($('.md-speed').hasClass('lock')) return;

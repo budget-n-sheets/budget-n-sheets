@@ -4,7 +4,7 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
   <style>
     p {
       text-indent: 0;
@@ -158,7 +158,7 @@
   </div>
 
   <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
-  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     const uuid = <?= uuid ?>;
     let TIMEOUT_ID, FILE_ID;

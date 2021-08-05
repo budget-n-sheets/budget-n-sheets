@@ -4,7 +4,7 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
   <style>
     #footer {
       display: table;
@@ -84,7 +84,7 @@
       </div>
     </div>
   </div>
-  <?!= htmlInclude("gas-common/htmlJavaScript"); ?>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     $(document).ready(function() {
       $("#acc_time_a").val(Number(<?= acc_time_a ?>));
