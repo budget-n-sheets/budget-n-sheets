@@ -1,39 +1,7 @@
-function getDeveloperKey_ () {
-  const scriptCache = CacheService.getScriptCache();
-  let key = scriptCache.get('developer_key');
-
-  if (!key) {
-    key = PropertiesService.getScriptProperties().getProperty('developer_key');
-    if (!key) {
-      console.error("getDeveloperKey_(): Key 'developer_key' was not found!");
-      return 1;
-    }
-    scriptCache.put('developer_key', key);
-  }
-
-  return key;
-}
-
-function getInnerKey_ () {
-  const scriptCache = CacheService.getScriptCache();
-  let key = scriptCache.get('inner_lock');
-
-  if (!key) {
-    key = PropertiesService.getScriptProperties().getProperty('inner_lock');
-    if (!key) {
-      console.error("getInnerKey_(): Key 'inner_lock' was not found!");
-      return 1;
-    }
-    scriptCache.put('inner_lock', key);
-  }
-
-  return key;
-}
-
 function bsSignSetup_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
-  const key = getInnerKey_();
+  const key = Bs.getInnerKey();
   if (key === 1) return 1;
 
   const const_properties = PropertiesService3.document().getProperty('const_properties');

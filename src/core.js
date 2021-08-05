@@ -263,7 +263,7 @@ function showDialogPickerRestore (uuid, topic) {
   const isRestore = (topic === 'restore');
   const title = (isRestore ? 'Select backup' : 'Select spreadsheet');
 
-  const developer_key = getDeveloperKey_();
+  const developer_key = Bs.getDeveloperKey();
   if (developer_key === 1) showDialogErrorMessage();
 
   const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlPickerRestore')

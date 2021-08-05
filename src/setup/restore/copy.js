@@ -44,7 +44,7 @@ function validateSpreadsheet_ (uuid, file_id) {
     return;
   }
 
-  const inner_key = getInnerKey_();
+  const inner_key = Bs.getInnerKey();
   if (inner_key === 1) {
     showDialogSetupCopy(uuid, 'Sorry, something went wrong. Try again in a moment.');
     return;
