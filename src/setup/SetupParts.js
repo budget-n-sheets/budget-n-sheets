@@ -597,9 +597,9 @@ class SetupParts {
       .setWarningOnly(true);
     sheet.getRange('B2').setValue(setup_settings.financial_year + ' | Year Summary');
 
-    formulas = [];
+    const formulas = [];
     const buildTable1 = formulaBuild.table1();
-    for (i = 0; i < 12; i++) {
+    for (let i = 0; i < 12; i++) {
       formulas[i] = ['', null, '', null];
 
       formulas[i][0] = '=_Backstage!$B' + (3 + _h * i);
@@ -691,7 +691,7 @@ class SetupParts {
     }
     if (ids.length < 1 + num_acc) throw new Error('Could not generate unique IDs.');
 
-    db_tables = {
+    const db_tables = {
       accounts: {
         ids: [],
         names: [],
