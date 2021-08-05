@@ -76,10 +76,8 @@ function setupLock (uuid, select, config) {
   spreadsheet.rename(settings.spreadsheet_name);
 
   const setupProgress = new SetupProgress();
-  setupProgress.makeClean();
-  setupProgress.makeConfig(settings)
-    .copyTemplate()
-    .makeInstall();
+  setupProgress.makeClean().copyTemplate();
+  setupProgress.makeInstall(settings);
 
   CachedAccess.remove('setup_settings');
 
