@@ -78,7 +78,7 @@ function setupLock (uuid, select, config) {
   const setupProgress = new SetupProgress(settings);
   setupProgress.makeClean();
   setupProgress.copyTemplate();
-  setupParts_();
+  setupProgress.makeInstall();
 
   CachedAccess.remove('setup_settings');
 
@@ -131,20 +131,4 @@ function setupPrepare_ (spreadseetName) {
 
   deleteAllSheets_();
   copySheetsFromSource_();
-}
-
-function setupParts_ () {
-  setupProperties_();
-  setupTables_();
-
-  setupSettings_();
-  setupMonthSheet_();
-  setupUnique_();
-  setupBackstage_();
-  setupSummary_();
-  setupTags_();
-  setupCards_();
-  setupCashFlow_();
-  setupWest_();
-  setupEast_();
 }

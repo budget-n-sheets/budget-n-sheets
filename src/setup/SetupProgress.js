@@ -41,4 +41,20 @@ class SetupProgress {
     SpreadsheetService.deleteAllSheets();
     SpreadsheetService.removeAllMetadata();
   }
+
+  makeInstall () {
+    setupProperties_();
+    setupTables_();
+
+    setupSettings_();
+    setupMonthSheet_();
+    setupUnique_();
+    setupBackstage_();
+    setupSummary_();
+    setupTags_();
+    setupCards_();
+    setupCashFlow_();
+    setupWest_();
+    setupEast_();
+  }
 }
