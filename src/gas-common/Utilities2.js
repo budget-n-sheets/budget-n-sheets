@@ -66,7 +66,7 @@ class Utilities2 {
    */
   static base64DecodeWebSafe (base64data, charset, byte) {
     const c = this.getCharset(charset);
-    const d = Utilities.base64DecodeWebSafe(base64data, charset);
+    const d = Utilities.base64DecodeWebSafe(base64data, c);
     return byte ? d : Utilities.newBlob(d).getDataAsString();
   }
 
