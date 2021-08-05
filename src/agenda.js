@@ -168,7 +168,7 @@ function getAllOwnedCalendars () {
   for (let i = 0; i < calendars.length; i++) {
     const id = calendars[i].getId();
 
-    let digest = computeDigest('MD5', id, 'UTF_8');
+    let digest = Utilities2.computeDigest('MD5', id, 'UTF_8');
     digest = digest.substring(0, 12);
 
     let name = calendars[i].getName();

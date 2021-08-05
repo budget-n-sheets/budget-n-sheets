@@ -189,7 +189,7 @@ function backupProperties_ (backup) {
   };
 
   if (backup.user_settings.financial_calendar) {
-    const digest = computeDigest('SHA_256', backup.user_settings.financial_calendar, 'UTF_8');
+    const digest = Utilities2.computeDigest('SHA_256', backup.user_settings.financial_calendar, 'UTF_8');
     backup.user_settings.sha256_financial_calendar = digest;
   } else {
     backup.user_settings.sha256_financial_calendar = '';

@@ -7,7 +7,7 @@ function askTransferAdmin () {
   owner = SpreadsheetApp2.getActiveSpreadsheet().getOwner();
   if (owner) {
     owner = owner.getEmail();
-    owner_id = computeDigest('SHA_256', owner, 'UTF_8');
+    owner_id = Utilities2.computeDigest('SHA_256', owner, 'UTF_8');
   }
 
   if (!owner || User2.getId() === owner_id) {
@@ -61,7 +61,7 @@ function askTransferAdminSd () {
     email = editors[i].getEmail();
     if (user === email) continue;
 
-    digest = computeDigest('MD5', email, 'UTF_8');
+    digest = Utilities2.computeDigest('MD5', email, 'UTF_8');
     digest = digest.substring(0, 12);
 
     editors[i] = {
@@ -101,13 +101,13 @@ function continuedTransferAdminSd (editor) {
     email = editors[i].getEmail();
     if (user === email) continue;
 
-    digest = computeDigest('MD5', email, 'UTF_8');
+    digest = Utilities2.computeDigest('MD5', email, 'UTF_8');
     digest = digest.substring(0, 12);
 
     if (digest === editor) {
       Triggers.deleteAllUserTriggers();
 
-      digest = computeDigest('SHA_256', email, 'UTF_8');
+      digest = Utilities2.computeDigest('SHA_256', email, 'UTF_8');
       SettingsAdmin.setValueOf('admin_id', digest);
       bsSignSetup_();
 

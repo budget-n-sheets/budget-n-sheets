@@ -4,7 +4,7 @@ function retrieveBackupInfo (uuid) {
     return;
   }
 
-  const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
+  const address = Utilities2.computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
   const settings_summary = CacheService3.document().get(address);
   CacheService3.document().remove(address);
   return settings_summary;
@@ -42,14 +42,14 @@ function requestValidateBackup (uuid, file_id) {
 
 function processLegacyBackup_ (uuid, file, data) {
   const parts = data.split(':');
-  const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+  const sha = Utilities2.computeDigest('SHA_1', parts[0], 'UTF_8');
 
   if (sha !== parts[1]) {
     showDialogSetupRestore(uuid, 'The file is either not a supported file type or the file is corrupted.');
     return;
   }
 
-  const string = base64DecodeWebSafe(parts[0], 'UTF_8');
+  const string = Utilities2.base64DecodeWebSafe(parts[0], 'UTF_8');
   if (processBackup_(uuid, file, JSON.parse(string)) !== 0) {
     showDialogSetupRestore(uuid, 'Sorry, something went wrong. Try again in a moment.');
     return;
@@ -81,7 +81,7 @@ function requestDevelopBackup (uuid, file_id, password) {
     return;
   }
 
-  const address = computeDigest(
+  const address = Utilities2.computeDigest(
     'SHA_1',
     uuid + file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
     'UTF_8');
@@ -102,13 +102,13 @@ function unwrapBackup_ (uuid, blob, file_id) {
   if (/:[0-9a-fA-F]+$/.test(data)) {
     const parts = data.split(':');
 
-    const sha = computeDigest('SHA_1', parts[0], 'UTF_8');
+    const sha = Utilities2.computeDigest('SHA_1', parts[0], 'UTF_8');
     if (sha !== parts[1]) throw new Error("Hashes don't match.");
 
     return parts[0];
   }
 
-  const address = computeDigest(
+  const address = Utilities2.computeDigest(
     'SHA_1',
     uuid + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
     'UTF_8');
@@ -128,7 +128,7 @@ function unwrapBackup_ (uuid, blob, file_id) {
 
 function decryptBackup_ (password, backup) {
   try {
-    const decoded = base64DecodeWebSafe(backup, 'UTF_8');
+    const decoded = Utilities2.base64DecodeWebSafe(backup, 'UTF_8');
     const decrypted = sjcl.decrypt(password, decoded);
     return JSON.parse(decrypted);
   } catch (err) {
@@ -178,7 +178,7 @@ function processBackup_ (uuid, file, data) {
   if (data.user_settings.sha256_financial_calendar) {
     const calendars = getAllOwnedCalendars();
     for (i = 0; i < calendars.id.length; i++) {
-      digest = computeDigest('SHA_256', calendars.id[i], 'UTF_8');
+      digest = Utilities2.computeDigest('SHA_256', calendars.id[i], 'UTF_8');
       if (digest === data.sha256_financial_calendar) {
         info.financial_calendar = calendars.name[i];
         break;
@@ -206,7 +206,7 @@ function processBackup_ (uuid, file, data) {
     info.cards = 'No cards found.';
   }
 
-  const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
+  const address = Utilities2.computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
   CacheService3.document().put(address, info);
   return 0;
 }
@@ -217,7 +217,7 @@ function restoreFromBackup_ (backup) {
   if (backup.user_settings.sha256_financial_calendar) {
     const calendars = getAllOwnedCalendars();
     for (i = 0; i < calendars.id.length; i++) {
-      digest = computeDigest('SHA_256', calendars.id[i], 'UTF_8');
+      digest = Utilities2.computeDigest('SHA_256', calendars.id[i], 'UTF_8');
       if (digest === backup.user_settings.sha256_financial_calendar) {
         SettingsUser.setValueOf('financial_calendar', calendars.id[i]);
         SettingsUser.setValueOf('post_day_events', backup.user_settings.post_day_events);

@@ -18,7 +18,7 @@ class User2 {
     const email = Session.getEffectiveUser().getEmail();
     if (!email) throw new Error('User email is undefined.');
 
-    this._userId = computeDigest('SHA_256', email, 'UTF_8');
+    this._userId = Utilities2.computeDigest('SHA_256', email, 'UTF_8');
     PropertiesService.getUserProperties().setProperty('user_id', this._userId);
   }
 }

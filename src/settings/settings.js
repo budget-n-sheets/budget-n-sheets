@@ -4,7 +4,7 @@ function retrieveUserSettings () {
   const user_settings = CachedAccess.get('user_settings');
 
   if (user_settings.financial_calendar) {
-    user_settings.financial_calendar = computeDigest('MD5', user_settings.financial_calendar, 'UTF_8');
+    user_settings.financial_calendar = Utilities2.computeDigest('MD5', user_settings.financial_calendar, 'UTF_8');
     user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
   }
 
@@ -105,7 +105,7 @@ function updateSettingsMetadata_ (user_settings) {
   };
 
   if (user_settings.financial_calendar !== '') {
-    metadata.financial_calendar_sha256 = computeDigest(
+    metadata.financial_calendar_sha256 = Utilities2.computeDigest(
       'SHA_256',
       user_settings.financial_calendar,
       'UTF_8'

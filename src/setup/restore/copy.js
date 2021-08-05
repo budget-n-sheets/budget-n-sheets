@@ -4,7 +4,7 @@ function restrieveSpreadsheetInfo (uuid) {
     return;
   }
 
-  const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
+  const address = Utilities2.computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
   const settings_summary = CacheService3.document().get(address);
   CacheService3.document().remove(address);
   return settings_summary;
@@ -71,14 +71,14 @@ function validateSpreadsheet_ (uuid, file_id) {
 
   const metadata = JSON.parse(list[0].getValue());
 
-  const hmac = computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
+  const hmac = Utilities2.computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
   if (hmac !== metadata.hmac) {
     showDialogSetupCopy(uuid, 'Sorry, it was not possible to verify the spreadsheet.');
     return;
   }
 
   const webSafeCode = metadata.encoded;
-  const string = base64DecodeWebSafe(webSafeCode, 'UTF_8');
+  const string = Utilities2.base64DecodeWebSafe(webSafeCode, 'UTF_8');
   const data = JSON.parse(string);
 
   if (data.admin_id !== User2.getId()) {
@@ -162,7 +162,7 @@ function processSpreadsheet_ (uuid, file_id) {
   if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tag(s) found.';
   else info.tags = '-';
 
-  const address = computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
+  const address = Utilities2.computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
   CacheService3.document().put(address, info);
   return 0;
 }
@@ -285,7 +285,7 @@ function copySettings_ (spreadsheet) {
 
   const calendars = getAllOwnedCalendars();
   for (let i = 0; i < calendars.id.length; i++) {
-    const digest = computeDigest('SHA_256', calendars.id[i], 'UTF_8');
+    const digest = Utilities2.computeDigest('SHA_256', calendars.id[i], 'UTF_8');
 
     if (digest === metadata.financial_calendar_sha256) {
       SettingsUser.setValueOf('financial_calendar', calendars.id[i]);

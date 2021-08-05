@@ -57,7 +57,7 @@ function bsSignSetup_ () {
 
   const stringed = JSON.stringify(data);
   const encoded = Utilities.base64EncodeWebSafe(stringed, Utilities.Charset.UTF_8);
-  const sig = computeHmacSignature('SHA_256', encoded, key, 'UTF_8');
+  const sig = Utilities2.computeHmacSignature('SHA_256', encoded, key, 'UTF_8');
   const pack = JSON.stringify({
     encoded: encoded,
     hmac: sig
