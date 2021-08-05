@@ -97,14 +97,14 @@ function setupLock (uuid, select, config) {
 
   if (bsSignSetup_()) throw new Error('Failed to sign document.');
 
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
+  PropertiesService3.document().setProperty('is_installed', true);
+
   try {
     TriggersService.start();
   } catch (err) {
     console.error(err);
   }
-
-  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
-  PropertiesService3.document().setProperty('is_installed', true);
 
   showDialogSetupEnd();
   onOpen();
