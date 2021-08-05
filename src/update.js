@@ -24,7 +24,7 @@ function onlineUpdate_ () {
 
   const ui = SpreadsheetApp2.getUi();
 
-  if (!isTemplateAvailable()) {
+  if (!AppsScript.isTemplateAvailable()) {
     ui.alert(
       'New version available',
       'Please, re-open the spreadsheet to update the add-on.',
@@ -75,7 +75,7 @@ function onlineUpdate_ () {
 }
 
 function seamlessUpdate_ () {
-  if (!isTemplateAvailable()) return 1;
+  if (!AppsScript.isTemplateAvailable()) return 1;
   if (!User2.isAdmin()) return 1;
 
   const spreadsheet_locale = SettingsSpreadsheet.getValueOf('spreadsheet_locale');

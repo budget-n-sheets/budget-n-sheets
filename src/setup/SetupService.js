@@ -1,6 +1,6 @@
 class SetupService {
   static checkRequirements () {
-    if (!isTemplateAvailable()) return 1;
+    if (!AppsScript.isTemplateAvailable()) return 1;
     if (AppsScript.isInstalled()) return 2;
     if (AppsScript.isLocked()) return 3;
 

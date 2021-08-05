@@ -13,6 +13,12 @@ class AppsScript {
     return !!PropertiesService3.document().getProperty('lock_spreadsheet');
   }
 
+  static isTemplateAvailable () {
+    const b = SpreadsheetService.isSpreadsheetAvailable(APPS_SCRIPT_GLOBAL.template_id);
+    if (!b) throw new Error('Spreadsheet template is not available!');
+    return b;
+  }
+
   static loadCache () {
     const isLoaded = CacheService3.document().get('load_cache');
     if (isLoaded) return;
