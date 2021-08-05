@@ -1,11 +1,10 @@
 class SpreadsheetService {
-  static copySheetsFromSource () {
-    const source = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
+  static copySheetsFromSource (sourceId, sheetNames) {
+    const source = SpreadsheetApp.openById(sourceId);
     const destination = SpreadsheetApp2.getActiveSpreadsheet();
     const sheets = destination.getSheets();
 
-    const list = APPS_SCRIPT_GLOBAL.template_sheets;
-    list.forEach(name => {
+    sheetNames.forEach(name => {
       source.getSheetByName(name)
         .copyTo(destination)
         .setName(name);
