@@ -75,8 +75,9 @@ function setupLock (uuid, select, config) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   spreadsheet.rename(settings.spreadsheet_name);
 
-  const setupProgress = new SetupProgress(settings);
+  const setupProgress = new SetupProgress();
   setupProgress.makeClean();
+  setupProgress.makeConfig(settings);
   setupProgress.copyTemplate();
   setupProgress.makeInstall();
 

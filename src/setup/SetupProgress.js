@@ -1,5 +1,27 @@
 class SetupProgress {
-  constructor (config) {
+  constructor () {
+  }
+
+  copyTemplate () {
+    SpreadsheetService.copySheetsFromSource(
+      APPS_SCRIPT_GLOBAL.template_id,
+      APPS_SCRIPT_GLOBAL.template_sheets
+    );
+
+    SpreadsheetApp.flush();
+  }
+
+  makeClean () {
+    CacheService3.document().removeAll(CACHE_KEYS);
+    PropertiesService3.document().deleteAllProperties();
+
+    Triggers.deleteAllUserTriggers();
+
+    SpreadsheetService.deleteAllSheets();
+    SpreadsheetService.removeAllMetadata();
+  }
+
+  makeConfig (config) {
     const dec_p = Number(config.decimal_places);
     const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
     const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
@@ -21,25 +43,6 @@ class SetupProgress {
       decimal_separator: true,
       number_format: number_format
     });
-  }
-
-  copyTemplate () {
-    SpreadsheetService.copySheetsFromSource(
-      APPS_SCRIPT_GLOBAL.template_id,
-      APPS_SCRIPT_GLOBAL.template_sheets
-    );
-
-    SpreadsheetApp.flush();
-  }
-
-  makeClean () {
-    CacheService3.document().removeAll(CACHE_KEYS);
-    PropertiesService3.document().deleteAllProperties();
-
-    Triggers.deleteAllUserTriggers();
-
-    SpreadsheetService.deleteAllSheets();
-    SpreadsheetService.removeAllMetadata();
   }
 
   makeInstall () {
