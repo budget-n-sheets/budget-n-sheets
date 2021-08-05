@@ -50,17 +50,9 @@ class Utilities2 {
    * @return {byte[]/string}     A byte[]/string representing the output signature.
    */
   static base64Decode (base64data, charset, byte) {
-    let decoded;
-
-    charset = this.getCharset(charset);
-
-    decoded = Utilities.base64Decode(base64data, charset);
-
-    if (!byte) {
-      decoded = Utilities.newBlob(decoded).getDataAsString();
-    }
-
-    return decoded;
+    const c = this.getCharset(charset);
+    const d = Utilities.base64Decode(base64data, c);
+    return byte ? d : Utilities.newBlob(d).getDataAsString();
   }
 
   /**
@@ -73,17 +65,9 @@ class Utilities2 {
    * @return {byte[]/string}     A byte[]/string representing the output signature.
    */
   static base64DecodeWebSafe (base64data, charset, byte) {
-    let decoded;
-
-    charset = this.getCharset(charset);
-
-    decoded = Utilities.base64DecodeWebSafe(base64data, charset);
-
-    if (!byte) {
-      decoded = Utilities.newBlob(decoded).getDataAsString();
-    }
-
-    return decoded;
+    const c = this.getCharset(charset);
+    const d = Utilities.base64DecodeWebSafe(base64data, charset);
+    return byte ? d : Utilities.newBlob(d).getDataAsString();
   }
 
   /**
@@ -97,18 +81,10 @@ class Utilities2 {
    * @return {byte[]/string}    A byte[]/string representing the output signature.
    */
   static computeDigest (algorithm, value, charset, byte) {
-    let digest;
-
-    algorithm = this.getDigestAlgorithm(algorithm);
-    charset = this.getCharset(charset);
-
-    digest = Utilities.computeDigest(algorithm, value, charset);
-
-    if (!byte) {
-      digest = Utils.toHexString(digest);
-    }
-
-    return digest;
+    const c = this.getCharset(charset);
+    const a = this.getDigestAlgorithm(algorithm);
+    const d = Utilities.computeDigest(a, value, c);
+    return byte ? d : Utils.toHexString(d);
   }
 
   /**
@@ -123,17 +99,9 @@ class Utilities2 {
    * @return {byte[]/string}    A byte[]/string representing the output signature.
    */
   static computeHmacSignature (algorithm, value, key, charset, byte) {
-    let digest;
-
-    algorithm = this.getMacAlgorithm(algorithm);
-    charset = this.getCharset(charset);
-
-    digest = Utilities.computeHmacSignature(algorithm, value, key, charset);
-
-    if (!byte) {
-      digest = Utils.toHexString(digest);
-    }
-
-    return digest;
+    const c = this.getCharset(charset);
+    const a = this.getMacAlgorithm(algorithm);
+    const d = Utilities.computeHmacSignature(a, value, key, c);
+    return byte ? d : Utils.toHexString(d);
   }
 }
