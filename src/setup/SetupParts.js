@@ -1,5 +1,9 @@
 class SetupParts {
   constructor () {
+    this._h = TABLE_DIMENSION.height;
+    this._w = TABLE_DIMENSION.width;
+
+    this._spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   }
 
   setupBackstage_ () {
@@ -7,14 +11,11 @@ class SetupParts {
     const formulasBackstage = FormulaBuild.backstage();
     const numRows = SPREADSHEET_SPECS.initial_height;
 
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = this._spreadsheet.getSheetByName('_Backstage');
 
     let formula;
     let income, expenses;
     let n, i, k;
-
-    const _h = TABLE_DIMENSION.height;
-    const _w = TABLE_DIMENSION.width;
 
     const list_acc = setup_settings.list_acc;
     const num_acc = setup_settings.number_accounts;
@@ -27,9 +28,9 @@ class SetupParts {
     const balance2 = ['0', '0', '0', '0', '0', 'G3', 'L3', 'Q3', 'V3', 'AA3', 'G13', 'L13', 'Q13', 'V13', 'AA13', 'G23', 'L23', 'Q23', 'V23', 'AA23', 'G33', 'L33', 'Q33', 'V33', 'AA33', 'G43', 'L43', 'Q43', 'V43', 'AA43', 'G53', 'L53', 'Q53', 'V53', 'AA53', 'G63', 'L63', 'Q63', 'V63', 'AA63', 'G73', 'L73', 'Q73', 'V73', 'AA73', 'G83', 'L83', 'Q83', 'V83', 'AA83', 'G93', 'L93', 'Q93', 'V93', 'AA93', 'G103', 'L103', 'Q103', 'V103', 'AA103'];
     const card_total = ['B6', 'B7', 'B16', 'B17', 'B26', 'B27', 'B36', 'B37', 'B46', 'B47', 'B56', 'B57', 'B66', 'B67', 'B76', 'B77', 'B86', 'B87', 'B96', 'B97', 'B106', 'B107', 'B116', 'B117'];
 
-    const width = _w * num_acc;
+    const width = this._w * num_acc;
     const height = 120;
-    const col = 2 + _w + _w * num_acc + _w;
+    const col = 2 + this._w + this._w * num_acc + this._w;
 
     const wallet = new Array(height);
     const accounts = new Array(height);
@@ -43,12 +44,12 @@ class SetupParts {
     sheet.protect().setWarningOnly(true);
 
     if (num_acc < 5) {
-      sheet.deleteColumns(7 + _w * num_acc, _w * (5 - num_acc));
+      sheet.deleteColumns(7 + this._w * num_acc, this._w * (5 - num_acc));
     }
     SpreadsheetApp.flush();
 
     for (k = 0; k < num_acc; k++) {
-      sheet.getRange(1, 7 + _w * k).setValue(list_acc[k]);
+      sheet.getRange(1, 7 + this._w * k).setValue(list_acc[k]);
     }
 
     const buildWallet = formulasBackstage.wallet();
@@ -60,33 +61,33 @@ class SetupParts {
       income = '0';
       expenses = '0';
 
-      wallet[_h * i][4] = buildWallet.bsblank(i, values[k]);
+      wallet[this._h * i][4] = buildWallet.bsblank(i, values[k]);
 
-      const bsblank = RangeUtils.rollA1Notation(2 + _h * i, 6);
-      wallet[2 + _h * i][0] = buildWallet.expensesIgn(numRows, i, bsblank);
+      const bsblank = RangeUtils.rollA1Notation(2 + this._h * i, 6);
+      wallet[2 + this._h * i][0] = buildWallet.expensesIgn(numRows, i, bsblank);
 
       for (; k < num_acc; k++) {
-        const bsblank = RangeUtils.rollA1Notation(2 + _h * i, 11 + _w * k);
+        const bsblank = RangeUtils.rollA1Notation(2 + this._h * i, 11 + this._w * k);
         const header_value = RangeUtils.rollA1Notation(4, 8 + 5 * k);
-        income += ' + ' + RangeUtils.rollA1Notation(6 + _h * i, 8 + _w * k);
-        expenses += ' + ' + RangeUtils.rollA1Notation(4 + _h * i, 7 + _w * k);
+        income += ' + ' + RangeUtils.rollA1Notation(6 + this._h * i, 8 + this._w * k);
+        expenses += ' + ' + RangeUtils.rollA1Notation(4 + this._h * i, 7 + this._w * k);
 
-        accounts[_h * i][_w * k] = '=' + balance2[5 * i + k];
-        accounts[_h * i][4 + _w * k] = buildAccounts.bsblank(i, header_value, values[1 + k]);
-        accounts[1 + _h * i][_w * k] = buildAccounts.balance(i, values[1 + k], balance1[5 * i + k], bsblank);
-        accounts[2 + _h * i][_w * k] = buildAccounts.expensesIgn(i, values[1 + k], tags[1 + k], bsblank);
-        accounts[_h * i][1 + _w * k] = buildAccounts.bsreport(i, tags[1 + k], combo[1 + k], bsblank);
+        accounts[this._h * i][this._w * k] = '=' + balance2[5 * i + k];
+        accounts[this._h * i][4 + this._w * k] = buildAccounts.bsblank(i, header_value, values[1 + k]);
+        accounts[1 + this._h * i][this._w * k] = buildAccounts.balance(i, values[1 + k], balance1[5 * i + k], bsblank);
+        accounts[2 + this._h * i][this._w * k] = buildAccounts.expensesIgn(i, values[1 + k], tags[1 + k], bsblank);
+        accounts[this._h * i][1 + this._w * k] = buildAccounts.bsreport(i, tags[1 + k], combo[1 + k], bsblank);
       }
 
-      wallet[1 + _h * i][0] = income;
-      wallet[3 + _h * i][0] = expenses;
+      wallet[1 + this._h * i][0] = income;
+      wallet[3 + this._h * i][0] = expenses;
     }
 
     sheet.getRange(2, 2, height, 5).setFormulas(wallet);
     sheet.getRange(2, 7, height, width).setFormulas(accounts);
 
     SpreadsheetApp.flush();
-    sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (col - _w - 2) + ']');
+    sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (col - this._w - 2) + ']');
 
     if (setup_settings.decimal_places !== 2) {
       sheet.getRange(2, 2, sheet.getMaxRows() - 1, sheet.getMaxColumns() - 1).setNumberFormat(setup_settings.number_format);
@@ -97,24 +98,20 @@ class SetupParts {
     const setup_settings = CachedAccess.get('setup_settings');
     const formulasCards = FormulaBuild.cards().header();
 
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-    const sheet = spreadsheet.getSheetByName('Cards');
+    const sheet = this._spreadsheet.getSheetByName('Cards');
     let formula;
     let expr1, expr2, expr3;
     let i, k;
 
-    const _h = TABLE_DIMENSION.height;
-    const _w = TABLE_DIMENSION.width;
-
     const dec_p = setup_settings.decimal_separator;
     const num_acc = setup_settings.number_accounts;
 
-    const col = 2 + _w + _w * num_acc;
+    const col = 2 + this._w + this._w * num_acc;
     const dec_c = (dec_p ? ',' : '\\');
-    const header = RangeUtils.rollA1Notation(1, col, 1, _w * 11);
+    const header = RangeUtils.rollA1Notation(1, col, 1, this._w * 11);
 
-    spreadsheet.setActiveSheet(sheet);
-    spreadsheet.moveActiveSheet(14);
+    this._spreadsheet.setActiveSheet(sheet);
+    this._spreadsheet.moveActiveSheet(14);
 
     const ranges = [
       sheet.getRange(6, 1, 400, 5),
@@ -133,7 +130,7 @@ class SetupParts {
     for (i = 0; i < 12; i++) {
       const index = RangeUtils.rollA1Notation(2, 1 + 6 * i);
       const card = RangeUtils.rollA1Notation(2, 2 + 6 * i);
-      const reference = '_Backstage!' + RangeUtils.rollA1Notation(2 + _h * i, col);
+      const reference = '_Backstage!' + RangeUtils.rollA1Notation(2 + this._h * i, col);
 
       rangeOff.offset(0, 1 + 6 * i).setValue('All');
 
@@ -165,12 +162,10 @@ class SetupParts {
 
   setupCashFlow_ () {
     const setup_settings = CachedAccess.get('setup_settings');
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cash Flow');
+    const sheet = this._spreadsheet.getSheetByName('Cash Flow');
     let ranges, formula;
     let d, s;
     let i, j, k;
-
-    const _h = TABLE_DIMENSION.height;
 
     const init_month = setup_settings.init_month;
     const dec_p = setup_settings.decimal_separator;
@@ -279,7 +274,7 @@ class SetupParts {
     }
 
     for (k = 0; k < num_acc; k++) {
-      formula += ' + _Backstage!' + ranges[k] + (2 + _h * init_month);
+      formula += ' + _Backstage!' + ranges[k] + (2 + this._h * init_month);
     }
     sheet.getRange(4, 3 + 4 * init_month).setFormula(formula);
 
@@ -298,7 +293,6 @@ class SetupParts {
 
   setupEast_ () {
     const setup_settings = CachedAccess.get('setup_settings');
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const yyyy_mm = setup_settings.date;
     let sheet;
     let md, t, i;
@@ -314,11 +308,11 @@ class SetupParts {
 
     const sheets = [];
     for (i = 0; i < 12; i++) {
-      sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+      sheets[i] = this._spreadsheet.getSheetByName(MONTH_NAME.short[i]);
     }
 
-    sheet = spreadsheet.getSheetByName('Summary');
-    spreadsheet.setActiveSheet(sheet);
+    sheet = this._spreadsheet.getSheetByName('Summary');
+    this._spreadsheet.setActiveSheet(sheet);
     sheet.setTabColor('#e69138');
 
     for (i = 0; i < 12; i++) {
@@ -345,14 +339,14 @@ class SetupParts {
       sheets[yyyy_mm.mm].setTabColor('#6aa84f');
     }
 
-    spreadsheet.getSheetByName('Cards').setTabColor('#e69138');
-    spreadsheet.getSheetByName('Cash Flow').setTabColor('#e69138');
-    spreadsheet.getSheetByName('Tags').setTabColor('#e69138');
-    spreadsheet.getSheetByName('_Backstage').setTabColor('#cc0000');
-    spreadsheet.getSheetByName('_Unique').setTabColor('#cc0000');
-    spreadsheet.getSheetByName('_Settings').setTabColor('#cc0000');
-    spreadsheet.getSheetByName('Quick Actions').setTabColor('#6aa84f');
-    spreadsheet.getSheetByName('_About BnS').setTabColor('#6aa84f');
+    this._spreadsheet.getSheetByName('Cards').setTabColor('#e69138');
+    this._spreadsheet.getSheetByName('Cash Flow').setTabColor('#e69138');
+    this._spreadsheet.getSheetByName('Tags').setTabColor('#e69138');
+    this._spreadsheet.getSheetByName('_Backstage').setTabColor('#cc0000');
+    this._spreadsheet.getSheetByName('_Unique').setTabColor('#cc0000');
+    this._spreadsheet.getSheetByName('_Settings').setTabColor('#cc0000');
+    this._spreadsheet.getSheetByName('Quick Actions').setTabColor('#6aa84f');
+    this._spreadsheet.getSheetByName('_About BnS').setTabColor('#6aa84f');
 
     if (t) {
       for (i = 0; i < 12; i++) {
@@ -370,10 +364,10 @@ class SetupParts {
       }
     }
 
-    spreadsheet.getSheetByName('_Backstage').hideSheet();
-    spreadsheet.getSheetByName('_Unique').hideSheet();
-    spreadsheet.getSheetByName('_Settings').hideSheet();
-    spreadsheet.getSheetByName('_About BnS').hideSheet();
+    this._spreadsheet.getSheetByName('_Backstage').hideSheet();
+    this._spreadsheet.getSheetByName('_Unique').hideSheet();
+    this._spreadsheet.getSheetByName('_Settings').hideSheet();
+    this._spreadsheet.getSheetByName('_About BnS').hideSheet();
 
     SpreadsheetApp.flush();
   }
@@ -382,14 +376,10 @@ class SetupParts {
     const setup_settings = CachedAccess.get('setup_settings');
     const formulaBuild = FormulaBuild.ttt().header();
 
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-    const sheetTTT = spreadsheet.getSheetByName('TTT');
+    const sheetTTT = this._spreadsheet.getSheetByName('TTT');
     let sheet, formula;
     let expr1, expr2, expr3, expr4;
     let i, k;
-
-    const _h = TABLE_DIMENSION.height;
-    const _w = TABLE_DIMENSION.width;
 
     const list_acc = setup_settings.list_acc;
     const num_acc = setup_settings.number_accounts;
@@ -421,10 +411,10 @@ class SetupParts {
     SpreadsheetApp.flush();
 
     for (i = 0; i < 12; i++) {
-      sheet = spreadsheet.insertSheet(MONTH_NAME.short[i], 3 + i, { template: sheetTTT });
+      sheet = this._spreadsheet.insertSheet(MONTH_NAME.short[i], 3 + i, { template: sheetTTT });
       sheets[i] = sheet;
 
-      sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(_Backstage!$B' + (4 + _h * i) + '))');
+      sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(_Backstage!$B' + (4 + this._h * i) + '))');
 
       const ranges = [];
       const rangeOff1 = sheet.getRange(2, 6);
@@ -461,11 +451,10 @@ class SetupParts {
       }
     }
 
-    spreadsheet.deleteSheet(sheetTTT);
+    this._spreadsheet.deleteSheet(sheetTTT);
   }
 
   setupProperties_ () {
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const adminId = User2.getId();
 
     const setup_settings = CachedAccess.get('setup_settings');
@@ -499,7 +488,7 @@ class SetupParts {
       financial_year: setup_settings.financial_year
     };
 
-    spreadsheet.addDeveloperMetadata(
+    this._spreadsheet.addDeveloperMetadata(
       'const_properties',
       JSON.stringify(metadata),
       SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
@@ -509,7 +498,7 @@ class SetupParts {
       view_mode: 'complete',
       decimal_places: setup_settings.decimal_places,
       decimal_separator: setup_settings.decimal_separator,
-      spreadsheet_locale: spreadsheet.getSpreadsheetLocale(),
+      spreadsheet_locale: this._spreadsheet.getSpreadsheetLocale(),
       optimize_load: [false, false, false, false, false, false, false, false, false, false, false, false]
     };
     CachedAccess.update('spreadsheet_settings', properties);
@@ -518,12 +507,11 @@ class SetupParts {
   setupSettings_ () {
     const setup_settings = CachedAccess.get('setup_settings');
     const buildFormulas = FormulaBuild.settings().formulas();
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-    const sheet = spreadsheet.getSheetByName('_Settings');
+    const sheet = this._spreadsheet.getSheetByName('_Settings');
     let cell, dec_p;
 
-    spreadsheet.setActiveSheet(sheet);
-    spreadsheet.moveActiveSheet(8);
+    this._spreadsheet.setActiveSheet(sheet);
+    this._spreadsheet.moveActiveSheet(8);
 
     sheet.protect().setWarningOnly(true);
 
@@ -576,10 +564,8 @@ class SetupParts {
     const setup_settings = CachedAccess.get('setup_settings');
     const formulaBuild = FormulaBuild.summary();
 
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
+    const sheet = this._spreadsheet.getSheetByName('Summary');
     let formula, chart, options;
-
-    const _h = TABLE_DIMENSION.height;
 
     options = {
       0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Income' },
@@ -602,7 +588,7 @@ class SetupParts {
     for (let i = 0; i < 12; i++) {
       formulas[i] = ['', null, '', null];
 
-      formulas[i][0] = '=_Backstage!$B' + (3 + _h * i);
+      formulas[i][0] = '=_Backstage!$B' + (3 + this._h * i);
       formulas[i][2] = buildTable1.expensesMonth(i);
     }
     sheet.getRange(11, 4, 12, 4).setFormulas(formulas);
@@ -671,7 +657,7 @@ class SetupParts {
     const setup_settings = CachedAccess.get('setup_settings');
     let acc, r, i, j, k;
 
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = this._spreadsheet.getSheetByName('_Backstage');
 
     const init_month = setup_settings.init_month;
     const list_acc = setup_settings.list_acc;
@@ -744,12 +730,9 @@ class SetupParts {
     const setup_settings = CachedAccess.get('setup_settings');
     const formulaBuild = FormulaBuild.tags();
 
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
+    const sheet = this._spreadsheet.getSheetByName('Tags');
     let formula, rg, cd;
     let i, k;
-
-    const _h = TABLE_DIMENSION.height;
-    const _w = TABLE_DIMENSION.width;
 
     const tags = ['D5:D404', 'I5:I404', 'N5:N404', 'S5:S404', 'X5:X404', 'AC5:AC404'];
     const combo = ['C5:D404', 'H5:I404', 'M5:N404', 'R5:S404', 'W5:X404', 'AB5:AC404'];
@@ -757,7 +740,7 @@ class SetupParts {
     const num_acc = setup_settings.number_accounts;
 
     const formulas = [[]];
-    const col = 11 + _w * num_acc;
+    const col = 11 + this._w * num_acc;
 
     const ranges = sheet.getRange(2, 1, 40, 5);
     sheet.protect()
@@ -790,13 +773,12 @@ class SetupParts {
 
   setupUnique_ () {
     const setup_settings = CachedAccess.get('setup_settings');
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-    const sheet = spreadsheet.getSheetByName('_Unique');
+    const sheet = this._spreadsheet.getSheetByName('_Unique');
 
     const num_acc = setup_settings.number_accounts;
 
-    spreadsheet.setActiveSheet(sheet);
-    spreadsheet.moveActiveSheet(20);
+    this._spreadsheet.setActiveSheet(sheet);
+    this._spreadsheet.moveActiveSheet(20);
 
     sheet.protect().setWarningOnly(true);
 
@@ -833,12 +815,11 @@ class SetupParts {
   }
 
   setupWest_ () {
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-    spreadsheet.getSheetByName('_About BnS')
+    this._spreadsheet.getSheetByName('_About BnS')
       .protect()
       .setWarningOnly(true);
 
-    const sheet = spreadsheet.getSheetByName('Quick Actions');
+    const sheet = this._spreadsheet.getSheetByName('Quick Actions');
 
     const ranges = [];
     ranges[0] = sheet.getRange(3, 3, 3, 1);
