@@ -3,6 +3,12 @@ class SetupParts {
     this._h = TABLE_DIMENSION.height;
     this._w = TABLE_DIMENSION.width;
 
+    this._date = Object.freeze({
+      time: DATE_NOW.getTime(),
+      yyyy: DATE_NOW.getFullYear(),
+      mm: DATE_NOW.getMonth()
+    });
+
     this._spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   }
 
@@ -293,15 +299,14 @@ class SetupParts {
 
   setupEast_ () {
     const setup_settings = CachedAccess.get('setup_settings');
-    const yyyy_mm = setup_settings.date;
     let sheet;
     let md, t, i;
 
     const init_month = setup_settings.init_month;
 
-    if (yyyy_mm.yyyy === setup_settings.financial_year) {
+    if (this._date.yyyy === setup_settings.financial_year) {
       t = true;
-      md = Utils.getMonthDelta(yyyy_mm.mm);
+      md = Utils.getMonthDelta(this._date.mm);
     } else {
       t = false;
     }
@@ -319,13 +324,13 @@ class SetupParts {
       sheet = sheets[i];
 
       if (i < init_month) {
-        if (t && (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1])) {
+        if (t && (i < this._date.mm + md[0] || i > this._date.mm + md[1])) {
           sheet.setTabColor('#b7b7b7');
         } else {
           sheet.setTabColor('#b7b7b7');
         }
       } else if (t) {
-        if (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1]) {
+        if (i < this._date.mm + md[0] || i > this._date.mm + md[1]) {
           sheet.setTabColor('#a4c2f4');
         } else {
           sheet.setTabColor('#3c78d8');
@@ -336,7 +341,7 @@ class SetupParts {
     }
 
     if (t) {
-      sheets[yyyy_mm.mm].setTabColor('#6aa84f');
+      sheets[this._date.mm].setTabColor('#6aa84f');
     }
 
     this._spreadsheet.getSheetByName('Cards').setTabColor('#e69138');
@@ -352,14 +357,14 @@ class SetupParts {
       for (i = 0; i < 12; i++) {
         sheet = sheets[i];
 
-        if (i < init_month && (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1])) {
+        if (i < init_month && (i < this._date.mm + md[0] || i > this._date.mm + md[1])) {
           sheet.hideSheet();
-        } else if (i < yyyy_mm.mm + md[0] || i > yyyy_mm.mm + md[1]) {
+        } else if (i < this._date.mm + md[0] || i > this._date.mm + md[1]) {
           sheet.hideSheet();
         }
       }
 
-      if (yyyy_mm.mm === 11) {
+      if (this._date.mm === 11) {
         sheets[8].showSheet();
       }
     }
@@ -839,12 +844,6 @@ class SetupParts {
     const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
 
     CachedAccess.update('setup_settings', {
-      date: {
-        time: DATE_NOW.getTime(),
-        yyyy: DATE_NOW.getFullYear(),
-        mm: DATE_NOW.getMonth()
-      },
-
       list_acc: config.name_accounts,
       number_accounts: Number(config.number_accounts),
 
