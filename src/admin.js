@@ -4,7 +4,8 @@ function askTransferAdmin () {
   const ui = SpreadsheetApp2.getUi();
   let owner, owner_id;
 
-  owner = SpreadsheetApp2.getActiveSpreadsheet().getOwner();
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  owner = spreadsheet.getOwner();
   if (owner) {
     owner = owner.getEmail();
     owner_id = Utilities2.computeDigest('SHA_256', owner, 'UTF_8');
@@ -27,7 +28,7 @@ function askTransferAdmin () {
     Triggers.deleteAllUserTriggers();
 
     SettingsAdmin.setValueOf('admin_id', owner_id);
-    bsSignSetup_();
+    new BsAuth(spreadsheet).update();
 
     SettingsUser.setValueOf('financial_calendar', '');
     SettingsUser.setValueOf('post_day_events', false);
@@ -109,7 +110,7 @@ function continuedTransferAdminSd (editor) {
 
       digest = Utilities2.computeDigest('SHA_256', email, 'UTF_8');
       SettingsAdmin.setValueOf('admin_id', digest);
-      bsSignSetup_();
+      new BsAuth(spreadsheet).update();
 
       SettingsUser.setValueOf('financial_calendar', '');
       SettingsUser.setValueOf('post_day_events', false);

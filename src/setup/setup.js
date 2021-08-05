@@ -94,7 +94,7 @@ function setupLock (uuid, select, config) {
   class_version2.script.beta = PATCH_THIS.beta_list.length;
   PropertiesService3.document().setProperty('class_version2', class_version2);
 
-  if (bsSignSetup_()) throw new Error('Failed to sign document.');
+  new BsAuth(spreadsheet).update();
 
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService3.document().setProperty('is_installed', true);

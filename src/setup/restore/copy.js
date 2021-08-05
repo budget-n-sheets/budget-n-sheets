@@ -44,44 +44,15 @@ function validateSpreadsheet_ (uuid, file_id) {
     return;
   }
 
-  const inner_key = Bs.getInnerKey();
-  if (inner_key === 1) {
-    showDialogSetupCopy(uuid, 'Sorry, something went wrong. Try again in a moment.');
-    return;
-  }
-
   const spreadsheet = SpreadsheetApp.openById(file_id);
-  let list;
+  const bs = new BsAuth(spreadsheet);
 
-  try {
-    list = spreadsheet.createDeveloperMetadataFinder()
-      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
-      .withKey('bs_sig')
-      .find();
-  } catch (err) {
-    console.error(err);
-    showDialogSetupCopy(uuid, 'Sorry, something went wrong. Try again in a moment.');
-    return;
-  }
-
-  if (list.length === 0) {
+  if (!bs.verify()) {
     showDialogSetupCopy(uuid, 'Sorry, it was not possible to verify the spreadsheet.');
     return;
   }
 
-  const metadata = JSON.parse(list[0].getValue());
-
-  const hmac = Utilities2.computeHmacSignature('SHA_256', metadata.encoded, inner_key, 'UTF_8');
-  if (hmac !== metadata.hmac) {
-    showDialogSetupCopy(uuid, 'Sorry, it was not possible to verify the spreadsheet.');
-    return;
-  }
-
-  const webSafeCode = metadata.encoded;
-  const string = Utilities2.base64DecodeWebSafe(webSafeCode, 'UTF_8');
-  const data = JSON.parse(string);
-
-  if (data.admin_id !== User2.getId()) {
+  if (bs.getValueOf('admin_id') !== User2.getId()) {
     showDialogSetupCopy(uuid, 'No spreadsheet with the given ID could be found, or you do not have permission to access it.');
     return;
   }

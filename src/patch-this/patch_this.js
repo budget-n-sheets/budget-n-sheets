@@ -107,6 +107,5 @@ function update_ () {
     return 2;
   }
 
-  bsSignSetup_();
   return r.r;
 }
