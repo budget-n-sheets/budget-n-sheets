@@ -73,28 +73,11 @@ function setupLock (uuid, select, config) {
   }
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  spreadsheet.rename(settings.spreadsheet_name);
 
-  const dec_p = Number(settings.decimal_places);
-  const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
-  const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
-
-  CachedAccess.update('setup_settings', {
-    date: {
-      time: DATE_NOW.getTime(),
-      yyyy: DATE_NOW.getFullYear(),
-      mm: DATE_NOW.getMonth()
-    },
-    spreadsheet_name: settings.spreadsheet_name,
-    decimal_places: dec_p,
-    number_format: number_format,
-    financial_year: Number(settings.financial_year),
-    init_month: Number(settings.initial_month),
-    number_accounts: Number(settings.number_accounts),
-    list_acc: list_accounts,
-    decimal_separator: true
-  });
-
-  setupPrepare_(settings.spreadsheet_name);
+  const setupProgress = new SetupProgress(settings);
+  setupProgress.makeClean();
+  setupProgress.copyTemplate();
   setupParts_();
 
   CachedAccess.remove('setup_settings');
