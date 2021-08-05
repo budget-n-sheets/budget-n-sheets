@@ -23,6 +23,15 @@ class SetupProgress {
     });
   }
 
+  copyTemplate () {
+    SpreadsheetService.copySheetsFromSource(
+      APPS_SCRIPT_GLOBAL.template_id,
+      APPS_SCRIPT_GLOBAL.template_sheets
+    );
+
+    SpreadsheetApp.flush();
+  }
+
   makeClean () {
     CacheService3.document().removeAll(CACHE_KEYS);
     PropertiesService3.document().deleteAllProperties();
