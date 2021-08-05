@@ -9,6 +9,7 @@ class SetupProgress {
     );
 
     SpreadsheetApp.flush();
+    return this;
   }
 
   makeClean () {
@@ -43,6 +44,8 @@ class SetupProgress {
       decimal_separator: true,
       number_format: number_format
     });
+
+    return this;
   }
 
   makeInstall () {
@@ -59,5 +62,7 @@ class SetupProgress {
     setupCashFlow_();
     setupWest_();
     setupEast_();
+
+    return this;
   }
 }

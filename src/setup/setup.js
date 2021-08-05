@@ -77,9 +77,9 @@ function setupLock (uuid, select, config) {
 
   const setupProgress = new SetupProgress();
   setupProgress.makeClean();
-  setupProgress.makeConfig(settings);
-  setupProgress.copyTemplate();
-  setupProgress.makeInstall();
+  setupProgress.makeConfig(settings)
+    .copyTemplate()
+    .makeInstall();
 
   CachedAccess.remove('setup_settings');
 
