@@ -7,7 +7,7 @@ const PATCH_THIS = Object.freeze({
       [], [], [], [], [], [], [], [], [], [],
       [update_v0m40p0_, update_v0m40p1_],
       [null, null, null, update_v0m41p3_, null],
-      [null, null, null, null, null, null, null, null, update_v0m42p8_, null]
+      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_]
     ]
   ],
   beta_list: []
@@ -168,11 +168,11 @@ function update_v0m0p0_ () {
 /**
  * Delete property 'spreadsheet_triggers'.
  *
- * 0.42.8
+ * 0.42.10
  */
-function update_v0m42p8_ () {
+function update_v0m42p10_ () {
   try {
-    Properties3.document().deleteProperty('spreadsheet_triggers');
+    PropertiesService3.document().deleteProperty('spreadsheet_triggers');
   } catch (err) {
     console.error(err);
     return 2;
