@@ -13,8 +13,8 @@ class SetupParts {
     let income, expenses;
     let n, i, k;
 
-    const h_ = TABLE_DIMENSION.height;
-    const w_ = TABLE_DIMENSION.width;
+    const _h = TABLE_DIMENSION.height;
+    const _w = TABLE_DIMENSION.width;
 
     const list_acc = setup_settings.list_acc;
     const num_acc = setup_settings.number_accounts;
@@ -27,9 +27,9 @@ class SetupParts {
     const balance2 = ['0', '0', '0', '0', '0', 'G3', 'L3', 'Q3', 'V3', 'AA3', 'G13', 'L13', 'Q13', 'V13', 'AA13', 'G23', 'L23', 'Q23', 'V23', 'AA23', 'G33', 'L33', 'Q33', 'V33', 'AA33', 'G43', 'L43', 'Q43', 'V43', 'AA43', 'G53', 'L53', 'Q53', 'V53', 'AA53', 'G63', 'L63', 'Q63', 'V63', 'AA63', 'G73', 'L73', 'Q73', 'V73', 'AA73', 'G83', 'L83', 'Q83', 'V83', 'AA83', 'G93', 'L93', 'Q93', 'V93', 'AA93', 'G103', 'L103', 'Q103', 'V103', 'AA103'];
     const card_total = ['B6', 'B7', 'B16', 'B17', 'B26', 'B27', 'B36', 'B37', 'B46', 'B47', 'B56', 'B57', 'B66', 'B67', 'B76', 'B77', 'B86', 'B87', 'B96', 'B97', 'B106', 'B107', 'B116', 'B117'];
 
-    const width = w_ * num_acc;
+    const width = _w * num_acc;
     const height = 120;
-    const col = 2 + w_ + w_ * num_acc + w_;
+    const col = 2 + _w + _w * num_acc + _w;
 
     const wallet = new Array(height);
     const accounts = new Array(height);
@@ -43,12 +43,12 @@ class SetupParts {
     sheet.protect().setWarningOnly(true);
 
     if (num_acc < 5) {
-      sheet.deleteColumns(7 + w_ * num_acc, w_ * (5 - num_acc));
+      sheet.deleteColumns(7 + _w * num_acc, _w * (5 - num_acc));
     }
     SpreadsheetApp.flush();
 
     for (k = 0; k < num_acc; k++) {
-      sheet.getRange(1, 7 + w_ * k).setValue(list_acc[k]);
+      sheet.getRange(1, 7 + _w * k).setValue(list_acc[k]);
     }
 
     const buildWallet = formulasBackstage.wallet();
@@ -60,33 +60,33 @@ class SetupParts {
       income = '0';
       expenses = '0';
 
-      wallet[h_ * i][4] = buildWallet.bsblank(i, values[k]);
+      wallet[_h * i][4] = buildWallet.bsblank(i, values[k]);
 
-      const bsblank = RangeUtils.rollA1Notation(2 + h_ * i, 6);
-      wallet[2 + h_ * i][0] = buildWallet.expensesIgn(numRows, i, bsblank);
+      const bsblank = RangeUtils.rollA1Notation(2 + _h * i, 6);
+      wallet[2 + _h * i][0] = buildWallet.expensesIgn(numRows, i, bsblank);
 
       for (; k < num_acc; k++) {
-        const bsblank = RangeUtils.rollA1Notation(2 + h_ * i, 11 + w_ * k);
+        const bsblank = RangeUtils.rollA1Notation(2 + _h * i, 11 + _w * k);
         const header_value = RangeUtils.rollA1Notation(4, 8 + 5 * k);
-        income += ' + ' + RangeUtils.rollA1Notation(6 + h_ * i, 8 + w_ * k);
-        expenses += ' + ' + RangeUtils.rollA1Notation(4 + h_ * i, 7 + w_ * k);
+        income += ' + ' + RangeUtils.rollA1Notation(6 + _h * i, 8 + _w * k);
+        expenses += ' + ' + RangeUtils.rollA1Notation(4 + _h * i, 7 + _w * k);
 
-        accounts[h_ * i][w_ * k] = '=' + balance2[5 * i + k];
-        accounts[h_ * i][4 + w_ * k] = buildAccounts.bsblank(i, header_value, values[1 + k]);
-        accounts[1 + h_ * i][w_ * k] = buildAccounts.balance(i, values[1 + k], balance1[5 * i + k], bsblank);
-        accounts[2 + h_ * i][w_ * k] = buildAccounts.expensesIgn(i, values[1 + k], tags[1 + k], bsblank);
-        accounts[h_ * i][1 + w_ * k] = buildAccounts.bsreport(i, tags[1 + k], combo[1 + k], bsblank);
+        accounts[_h * i][_w * k] = '=' + balance2[5 * i + k];
+        accounts[_h * i][4 + _w * k] = buildAccounts.bsblank(i, header_value, values[1 + k]);
+        accounts[1 + _h * i][_w * k] = buildAccounts.balance(i, values[1 + k], balance1[5 * i + k], bsblank);
+        accounts[2 + _h * i][_w * k] = buildAccounts.expensesIgn(i, values[1 + k], tags[1 + k], bsblank);
+        accounts[_h * i][1 + _w * k] = buildAccounts.bsreport(i, tags[1 + k], combo[1 + k], bsblank);
       }
 
-      wallet[1 + h_ * i][0] = income;
-      wallet[3 + h_ * i][0] = expenses;
+      wallet[1 + _h * i][0] = income;
+      wallet[3 + _h * i][0] = expenses;
     }
 
     sheet.getRange(2, 2, height, 5).setFormulas(wallet);
     sheet.getRange(2, 7, height, width).setFormulas(accounts);
 
     SpreadsheetApp.flush();
-    sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (col - w_ - 2) + ']');
+    sheet.getRangeList(card_total).setFormulaR1C1('R[-2]C[' + (col - _w - 2) + ']');
 
     if (setup_settings.decimal_places !== 2) {
       sheet.getRange(2, 2, sheet.getMaxRows() - 1, sheet.getMaxColumns() - 1).setNumberFormat(setup_settings.number_format);
@@ -103,15 +103,15 @@ class SetupParts {
     let expr1, expr2, expr3;
     let i, k;
 
-    const h_ = TABLE_DIMENSION.height;
-    const w_ = TABLE_DIMENSION.width;
+    const _h = TABLE_DIMENSION.height;
+    const _w = TABLE_DIMENSION.width;
 
     const dec_p = setup_settings.decimal_separator;
     const num_acc = setup_settings.number_accounts;
 
-    const col = 2 + w_ + w_ * num_acc;
+    const col = 2 + _w + _w * num_acc;
     const dec_c = (dec_p ? ',' : '\\');
-    const header = RangeUtils.rollA1Notation(1, col, 1, w_ * 11);
+    const header = RangeUtils.rollA1Notation(1, col, 1, _w * 11);
 
     spreadsheet.setActiveSheet(sheet);
     spreadsheet.moveActiveSheet(14);
@@ -133,7 +133,7 @@ class SetupParts {
     for (i = 0; i < 12; i++) {
       const index = RangeUtils.rollA1Notation(2, 1 + 6 * i);
       const card = RangeUtils.rollA1Notation(2, 2 + 6 * i);
-      const reference = '_Backstage!' + RangeUtils.rollA1Notation(2 + h_ * i, col);
+      const reference = '_Backstage!' + RangeUtils.rollA1Notation(2 + _h * i, col);
 
       rangeOff.offset(0, 1 + 6 * i).setValue('All');
 
@@ -170,7 +170,7 @@ class SetupParts {
     let d, s;
     let i, j, k;
 
-    const h_ = TABLE_DIMENSION.height;
+    const _h = TABLE_DIMENSION.height;
 
     const init_month = setup_settings.init_month;
     const dec_p = setup_settings.decimal_separator;
@@ -279,7 +279,7 @@ class SetupParts {
     }
 
     for (k = 0; k < num_acc; k++) {
-      formula += ' + _Backstage!' + ranges[k] + (2 + h_ * init_month);
+      formula += ' + _Backstage!' + ranges[k] + (2 + _h * init_month);
     }
     sheet.getRange(4, 3 + 4 * init_month).setFormula(formula);
 
@@ -388,8 +388,8 @@ class SetupParts {
     let expr1, expr2, expr3, expr4;
     let i, k;
 
-    const h_ = TABLE_DIMENSION.height;
-    const w_ = TABLE_DIMENSION.width;
+    const _h = TABLE_DIMENSION.height;
+    const _w = TABLE_DIMENSION.width;
 
     const list_acc = setup_settings.list_acc;
     const num_acc = setup_settings.number_accounts;
@@ -424,7 +424,7 @@ class SetupParts {
       sheet = spreadsheet.insertSheet(MONTH_NAME.short[i], 3 + i, { template: sheetTTT });
       sheets[i] = sheet;
 
-      sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(_Backstage!$B' + (4 + h_ * i) + '))');
+      sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(_Backstage!$B' + (4 + _h * i) + '))');
 
       const ranges = [];
       const rangeOff1 = sheet.getRange(2, 6);
@@ -579,7 +579,7 @@ class SetupParts {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Summary');
     let formula, chart, options;
 
-    const h_ = TABLE_DIMENSION.height;
+    const _h = TABLE_DIMENSION.height;
 
     options = {
       0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Income' },
@@ -602,7 +602,7 @@ class SetupParts {
     for (i = 0; i < 12; i++) {
       formulas[i] = ['', null, '', null];
 
-      formulas[i][0] = '=_Backstage!$B' + (3 + h_ * i);
+      formulas[i][0] = '=_Backstage!$B' + (3 + _h * i);
       formulas[i][2] = buildTable1.expensesMonth(i);
     }
     sheet.getRange(11, 4, 12, 4).setFormulas(formulas);
@@ -748,8 +748,8 @@ class SetupParts {
     let formula, rg, cd;
     let i, k;
 
-    const h_ = TABLE_DIMENSION.height;
-    const w_ = TABLE_DIMENSION.width;
+    const _h = TABLE_DIMENSION.height;
+    const _w = TABLE_DIMENSION.width;
 
     const tags = ['D5:D404', 'I5:I404', 'N5:N404', 'S5:S404', 'X5:X404', 'AC5:AC404'];
     const combo = ['C5:D404', 'H5:I404', 'M5:N404', 'R5:S404', 'W5:X404', 'AB5:AC404'];
@@ -757,7 +757,7 @@ class SetupParts {
     const num_acc = setup_settings.number_accounts;
 
     const formulas = [[]];
-    const col = 11 + w_ * num_acc;
+    const col = 11 + _w * num_acc;
 
     const ranges = sheet.getRange(2, 1, 40, 5);
     sheet.protect()
