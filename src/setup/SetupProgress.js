@@ -27,7 +27,7 @@ class SetupProgress {
     CacheService3.document().removeAll(CACHE_KEYS);
     PropertiesService3.document().deleteAllProperties();
 
-    TriggersService.deleteAllUserTriggers();
+    Triggers.deleteAllUserTriggers();
 
     SpreadsheetService.deleteAllSheets();
     SpreadsheetService.removeAllMetadata();

@@ -1,7 +1,7 @@
 class SpreadsheetService {
   static copySheetsFromSource () {
     const source = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
-    const destination = Spreadsheet2.getActiveSpreadsheet();
+    const destination = SpreadsheetApp2.getActiveSpreadsheet();
     const sheets = destination.getSheets();
 
     const list = APPS_SCRIPT_GLOBAL.template_sheets;
@@ -15,7 +15,7 @@ class SpreadsheetService {
   }
 
   static deleteAllSheets () {
-    const spreadsheet = Spreadsheet2.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     const sheets = spreadsheet.getSheets();
 
     sheets[0].showSheet();
@@ -28,7 +28,7 @@ class SpreadsheetService {
   }
 
   static removeAllMetadata () {
-    Spreadsheet2.getActiveSpreadsheet()
+    SpreadsheetApp2.getActiveSpreadsheet()
       .createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .find()
