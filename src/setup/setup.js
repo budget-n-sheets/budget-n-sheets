@@ -75,9 +75,10 @@ function setupLock (uuid, select, config) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   spreadsheet.rename(settings.spreadsheet_name);
 
-  const setupProgress = new SetupProgress();
-  setupProgress.makeClean().copyTemplate();
-  setupProgress.makeInstall(settings);
+  new SetupProgress().makeClean()
+    .makeConfig(settings)
+    .copyTemplate()
+    .makeInstall();
 
   CachedAccess.remove('setup_settings');
 

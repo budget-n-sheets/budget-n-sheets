@@ -1,5 +1,5 @@
 class SetupParts {
-  constructor () {
+  constructor (config) {
     this._h = TABLE_DIMENSION.height;
     this._w = TABLE_DIMENSION.width;
 
@@ -9,6 +9,7 @@ class SetupParts {
       mm: DATE_NOW.getMonth()
     });
 
+    this._config = config;
     this._spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   }
 
@@ -827,27 +828,7 @@ class SetupParts {
     SpreadsheetApp.flush();
   }
 
-  makeConfig (config) {
-    const dec_p = Number(config.decimal_places);
-    const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
-    const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
-
-    this._config = {
-      name_accounts: config.name_accounts,
-      number_accounts: Number(config.number_accounts),
-
-      financial_year: Number(config.financial_year),
-      initial_month: Number(config.initial_month),
-
-      decimal_places: dec_p,
-      decimal_separator: true,
-      number_format: number_format
-    };
-
-    return this;
-  }
-
-  install () {
+  run () {
     this.setupProperties_();
     this.setupTables_();
 
