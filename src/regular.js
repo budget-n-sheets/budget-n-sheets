@@ -16,12 +16,8 @@ function postEventsForDate_ (date) {
   const mm = date.getMonth();
   const dd = date.getDate();
 
-  const accounts = {};
-  for (let k = 0; k < num_acc; k++) {
-    accounts[k] = { table: [], values: [] };
-  }
-
-  const cards = { table: [], values: [] };
+  const cards = [];
+  const accounts = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [] };
 
   for (let i = 0; i < list_eventos.length; i++) {
     const evento = list_eventos[i];
@@ -61,28 +57,26 @@ function postEventsForDate_ (date) {
     if (evento.Tags.length > 0) tags = '#' + evento.Tags.join(' #');
 
     if (evento.Table !== -1) {
-      accounts[evento.Table].table.push([dd, evento.Title, '', tags]);
-      accounts[evento.Table].values.push(value);
+      accounts[evento.Table].push([dd, evento.Title, value, tags]);
     } else if (evento.Card !== -1) {
-      cards.table.push([dd, evento.Title, evento.Card, '', tags]);
-      cards.values.push(value);
+      cards.push([dd, evento.Title, evento.Card, value, tags]);
     }
   }
 
-  if (cards.table.length > 0) {
+  if (cards.length > 0) {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
-    if (sheet) {
-      mergeEventsInTable_(sheet, cards, { name: 'cards', k: mm });
-    }
+    if (sheet) new LedgerCards(sheet).mergeTransactions(mm, cards);
   }
 
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
   if (!sheet) return;
 
-  for (let k = 0; k < num_acc; k++) {
-    if (accounts[k].table.length === 0) continue;
-    mergeEventsInTable_(sheet, accounts[k], { name: 'accs', k: k });
-  }
+  const ledger = new LedgerAccounts(sheet);
+
+  accounts.forEach(account => {
+    if (account.length === 0) return;
+    ledger.mergeTransactions(k, accounts[k]);
+  });
 }
 
 function treatLayout_ (yyyy, mm) {

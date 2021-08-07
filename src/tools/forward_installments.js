@@ -107,22 +107,23 @@ function fastForwardInstallments_ (range) {
   if (list.length === 0) return;
 
   const sheet = range.getSheet();
+  const ledger = new LedgerCards(sheet);
 
   const _w = 6;
   const col = range.getColumn() - 1;
 
   let mm = (col - (col % _w)) / _w + 1;
   while (list.length > 0 && mm < 12) {
-    const merge = { table: [], values: [] };
+    const merge = [];
 
     for (let i = 0; i < list.length; i++) {
       list[i].p1++;
 
       const line = list[i].line.slice();
       line[1] = line[1].replace(list[i].reg, list[i].p1 + '/' + list[i].p2);
+      line[3] = FormatNumber.localeSignal(line[3]);
 
-      merge.table.push(line);
-      merge.values.push(list.value);
+      merge.push(line);
 
       if (list[i].p1 === list[i].p2) {
         list.splice(i, 1);
@@ -130,16 +131,16 @@ function fastForwardInstallments_ (range) {
       }
     }
 
-    mergeEventsInTable_(sheet, merge, { name: 'cards', k: mm });
+    ledger.mergeTransactions(mm, merge);
     SpreadsheetApp.flush();
     mm++;
   }
 }
 
 function forwardInstallments_ (range) {
-  const merge = { table: [], values: [] };
   const snapshot = range.getValues();
 
+  const merge = [];
   for (let i = 0; i < snapshot.length; i++) {
     if (snapshot[i][1] === '') continue;
 
@@ -155,20 +156,20 @@ function forwardInstallments_ (range) {
     if (snapshot[i][0] > 0) snapshot[i][0] *= -1;
 
     snapshot[i][1] = snapshot[i][1].replace(match[1], p1 + '/' + p2);
+    snapshot[i][3] = FormatNumber.localeSignal(snapshot[i][3]);
 
-    const value = FormatNumber.localeSignal(snapshot[i][3]);
-    snapshot[i][3] = '';
-
-    merge.table.push(snapshot[i]);
-    merge.values.push(value);
+    merge.push(snapshot[i]);
   }
-
-  const sheet = range.getSheet();
 
   const _w = 6;
   const col = range.getColumn() - 1;
-  const mm = (col - (col % _w)) / _w;
+  const mm = (col - (col % _w)) / _w + 1;
 
-  mergeEventsInTable_(sheet, merge, { name: 'cards', k: (mm + 1) });
-  if (merge.table.length > 0) SpreadsheetApp.flush();
+  if (mm < 12 && merge.length > 0) {
+    const sheet = range.getSheet();
+    if (sheet) {
+      new LedgerCards(sheet).mergeTransactions(mm, sheet);
+      SpreadsheetApp.flush();
+    }
+  }
 }
