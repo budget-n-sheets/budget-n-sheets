@@ -39,8 +39,7 @@ function playQuickTransactions_ (n) {
   let lastRow = sheet.getLastRow();
   if (lastRow < 4) lastRow = 4;
 
-  if (sheet.getMaxRows() < lastRow + data.length) toolPicker_('AddBlankRows', sheet.getName());
-
+  new ToolInsertRowsMonth(sheet).insertRowsTo(data.length);
   sheet.getRange(lastRow + 1, 6, data.length, data[0].length)
     .setValues(data)
     .activate();

@@ -185,6 +185,7 @@ function copyTables_ (spreadsheet) {
 
 function copyMonths_ (spreadsheet) {
   const number_accounts = SettingsConst.getValueOf('number_accounts');
+  const insertRows = new ToolInsertRowsMonth();
 
   let mm = -1;
   while (++mm < 12) {
@@ -195,12 +196,7 @@ function copyMonths_ (spreadsheet) {
     if (last < 5) continue;
 
     const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
-
-    let max = destination.getMaxRows();
-    while (max < last) {
-      blankRows_(MONTH_NAME.short[mm]);
-      max += 400;
-    }
+    insertRows.setSheet(destination).insertRowsTo(destination.getMaxRows());
 
     const values = source.getRange(5, 1, last - 4, 5 + 5 * number_accounts).getValues();
     destination.getRange(5, 1, last - 4, 5 + 5 * number_accounts).setValues(values);
@@ -215,12 +211,7 @@ function copyCards_ (spreadsheet) {
   if (last < 6) return;
 
   const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
-
-  let max = destination.getMaxRows();
-  while (max < last) {
-    blankRows_('Cards');
-    max += 400;
-  }
+  new ToolInsertRowsCards(destination).insertRowsTo(destination.getMaxRows());
 
   const values = source.getRange(6, 1, last - 5, 6 * 12).getValues();
   destination.getRange(6, 1, last - 5, 6 * 12).setValues(values);
@@ -234,11 +225,7 @@ function copyTags_ (spreadsheet) {
   const last = source.getLastRow();
   if (last < 2) return;
 
-  let max = destination.getMaxRows();
-  while (max < last) {
-    blankRows_('Tags');
-    max += 400;
-  }
+  new ToolInsertRowsTags(destination).insertRowsTo(destination.getMaxRows());
 
   const values = source.getRange(2, 1, last - 1, 5).getValues();
   destination.getRange(2, 1, last - 1, 5).setValues(values);

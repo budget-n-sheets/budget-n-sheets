@@ -98,10 +98,7 @@ function playQuickAccCards_ (n) {
     data[0][2] = Noise.randomValueNegative(3, 2);
   }
 
-  if (sheet.getMaxRows() < lastRow + data.length) {
-    toolPicker_('AddBlankRows', sheet.getName());
-  }
-
+  new ToolInsertRowsCards(sheet).insertRowsTo(data.length);
   sheet.getRange(lastRow + 1, col, data.length, data[0].length)
     .setValues(data)
     .activate();

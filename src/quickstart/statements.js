@@ -58,10 +58,7 @@ function playQuickStatements_ (n) {
       throw new Error('playQuickStatements_(): Switch case is default. ' + n);
   }
 
-  if (sheet.getMaxRows() < lastRow + data.length) {
-    toolPicker_('AddBlankRows', name);
-  }
-
+  new ToolInsertRowsMonth(sheet).insertRowsTo(data.length);
   sheet.getRange(lastRow + 1, col, data.length, data[0].length)
     .setValues(data)
     .activate();

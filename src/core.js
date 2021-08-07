@@ -26,8 +26,8 @@ function onOpen (e) {
       .addItem('About the add-on', 'showDialogAboutAddon');
   } else {
     if (AppsScript.isInstalled()) {
-      menu.addItem('Add blank rows', 'toolAddBlankRows')
-        .addItem('Format table', 'toolFormatRegistry')
+      menu.addItem('Format table', 'toolFormatRegistry')
+        .addItem('Insert rows', 'toolInsertRows')
         .addItem('Update cash flow', 'toolUpdateCashFlow');
 
       if (!CardsService.isEmpty()) menu.addItem('Forward installments', 'toolForwardInstallments');

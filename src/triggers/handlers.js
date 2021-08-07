@@ -47,7 +47,7 @@ function quickActions_ (range, value) {
 
   switch (row) {
     case 8:
-      toolPicker_('AddBlankRows', 'Cards');
+      toolInsertRows(range.getSheet());
       break;
     case 12:
       if (value === 'Collapse') pagesView_('hide', 1);
@@ -63,7 +63,7 @@ function quickActions_ (range, value) {
 
   switch (row) {
     case 3:
-      toolPicker_('AddBlankRows', MONTH_NAME.short[mm]);
+      toolInsertRows(range.getSheet());
       break;
     case 4:
       toolPicker_('FormatAccount', mm);

@@ -2,6 +2,8 @@ class Ledger {
   constructor (sheet) {
     this._sheet = sheet;
     this._sheetName = sheet.getName();
+
+    this._insertRows = ToolInsertRows.pick(sheet);
   }
 
   mergeTransactions (index, values) {
@@ -10,9 +12,7 @@ class Ledger {
     const lastRow = this._sheet.getLastRow();
     const height = (lastRow < this._specs.row ? this._specs.row - 1 : lastRow) + data.length;
 
-    while (this._sheet.getMaxRows() < height) {
-      blankRows_(this._sheetName);
-    }
+    this._insertRows.insertRowsTo(height);
 
     const offset = 1 + this._specs.width * index;
 

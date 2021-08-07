@@ -2,6 +2,7 @@ class LedgerCards extends Ledger {
   constructor (sheet) {
     super(sheet);
     this._category = 'cards';
+    this._insertRows = new ToolInsertRowsCards(sheet);
 
     this._specs = Object.freeze({
       col: {

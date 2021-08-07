@@ -256,45 +256,36 @@ function restoreTables_ (backup) {
 }
 
 function restoreCards_ (backup) {
-  let max, mm;
-
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
-  max = sheet.getMaxRows() - 5;
+  const insertRows = new ToolInsertRowsCards(destination);
 
-  mm = -1;
+  let mm = -1;
   while (++mm < 12) {
     if (backup.cards[mm].length === 0) continue;
 
-    while (max < backup.cards[mm].length) {
-      blankRows_('Cards');
-      max += 400;
-    }
-
+    insertRows.insertRowsTo(backup.cards[mm].length);
     sheet.getRange(6, 1 + 6 * mm, backup.cards[mm].length, 5).setValues(backup.cards[mm]);
   }
 }
 
 function restoreMonths_ (backup) {
-  let sheet, max, mm, k;
+  let sheet, mm, k;
 
   const num_acc = backup.const_properties.number_accounts;
+  const insertRows = new ToolInsertRowsMonth();
 
   mm = -1;
   while (++mm < 12) {
     if (backup.ttt[mm] == null) continue;
 
     sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
-    max = sheet.getMaxRows() - 4;
+    insertRows.setSheet(sheet);
 
     for (k = 0; k < num_acc + 1; k++) {
       if (backup.ttt[mm][k] == null) continue;
       if (backup.ttt[mm][k].length === 0) continue;
 
-      while (max < backup.ttt[mm][k].length) {
-        blankRows_(MONTH_NAME.short[mm]);
-        max += 400;
-      }
-
+      insertRows.insertRowsTo(backup.ttt[mm][k].length);
       sheet.getRange(5, 1 + 5 * k, backup.ttt[mm][k].length, 4).setValues(backup.ttt[mm][k]);
     }
   }
@@ -302,12 +293,9 @@ function restoreMonths_ (backup) {
 
 function restoreTags_ (backup) {
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
+  const insertRows = new ToolInsertRowsTags(sheet);
 
-  let max = sheet.getMaxRows();
-  while (max < backup.tags.length) {
-    blankRows_('Tags');
-    max += 400;
-  }
+  insertRows.insertRowsTo(backup.tags.length);
 
   if (backup.tags.length > 0) {
     sheet.getRange(2, 1, backup.tags.length, 5).setValues(backup.tags);
