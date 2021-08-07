@@ -18,12 +18,12 @@ class ToolInsertRows {
         break;
     }
 
-    if (MONTH_NAME.short.indexOf(name) === -1) return;
+    if (MONTH_NAME.short.indexOf(name) === -1) return 1;
     return new ToolInsertRowsMonth(sheet);
   }
 
   insertNumRows_ (numRows) {
-    if (this._maxRows < this._headerRow + 3) return;
+    if (this._maxRows < this._headerRow + 3) return 1;
     this._sheet.insertRowsBefore(this._maxRows, numRows);
     this._maxRows += numRows;
 
@@ -46,7 +46,7 @@ class ToolInsertRows {
 
   insertRowsTo (height) {
     const diff = this._maxRows - this._sheet.getLastRow();
-    if (diff > height) return;
+    if (diff > height) return 1;
     this.insertNumRows_(height - diff + 100);
   }
 
