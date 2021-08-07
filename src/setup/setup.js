@@ -1,4 +1,4 @@
-function setupLock (uuid, select, config) {
+function setupService (uuid, select, config) {
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);

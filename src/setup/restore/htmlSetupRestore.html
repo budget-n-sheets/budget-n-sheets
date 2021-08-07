@@ -198,7 +198,7 @@
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupLock(uuid, 'restore', config);
+        .setupService(uuid, 'restore', config);
     }
 
     function refreshInfo(info) {
