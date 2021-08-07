@@ -4,6 +4,15 @@ class BsAuth {
     this.load_();
   }
 
+  static isSigned (spreadsheet) {
+    spreadsheet.createDeveloperMetadataFinder()
+      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+      .withKey('bs_sig')
+      .find();
+
+    return list.length > 0;
+  }
+
   load_ () {
     const list = this._spreadsheet.createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
