@@ -80,8 +80,6 @@ function setupLock (uuid, select, config) {
     .copyTemplate()
     .makeInstall();
 
-  CachedAccess.remove('setup_settings');
-
   if (select === 'restore') {
     restoreFromBackup_(settings.backup);
   } else if (select === 'copy') {
