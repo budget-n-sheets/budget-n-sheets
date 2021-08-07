@@ -20,16 +20,16 @@ function setupService (uuid, payload) {
   console.time('setup/' + payload.protocol);
   if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.');
 
-  const settings = {};
+  const config = {};
   const list_accounts = [];
 
   if (payload.protocol === 'new') {
     for (const key in payload.config) {
-      settings[key] = payload.config[key];
+      config[key] = payload.config[key];
     }
 
-    settings.spreadsheet_name = settings.spreadsheet_name.trim();
-    if (settings.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.');
+    config.spreadsheet_name = config.spreadsheet_name.trim();
+    if (config.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.');
 
     for (let i = 0; i < payload.config.name_accounts.length; i++) {
       list_accounts[i] = payload.config.name_accounts[i].trim();
@@ -40,15 +40,15 @@ function setupService (uuid, payload) {
     if (candidate.file_id !== payload.config.file_id) throw new Error('File ID does not match.');
 
     const blob = DriveApp.getFileById(payload.config.file_id).getBlob();
-    settings.backup = unwrapBackup_(uuid, blob, payload.config.file_id);
-    if (settings.backup == null) return;
+    config.backup = unwrapBackup_(uuid, blob, payload.config.file_id);
+    if (config.backup == null) return;
 
     for (const key in candidate) {
-      settings[key] = candidate[key];
+      config[key] = candidate[key];
     }
 
-    settings.spreadsheet_name = candidate.spreadsheet_title;
-    settings.financial_year = payload.config.financial_year;
+    config.spreadsheet_name = candidate.spreadsheet_title;
+    config.financial_year = payload.config.financial_year;
 
     for (let i = 0; i < candidate.list_acc.length; i++) {
       list_accounts[i] = candidate.list_acc[i];
@@ -58,14 +58,14 @@ function setupService (uuid, payload) {
     if (candidate.file_id !== payload.config.file_id) throw new Error('File ID does not match.');
 
     for (const key in candidate) {
-      settings[key] = candidate[key];
+      config[key] = candidate[key];
     }
 
-    settings.spreadsheet_name = candidate.spreadsheet_title;
-    settings.financial_year = payload.config.financial_year;
-    settings.decimal_places = 2;
-    settings.number_accounts = candidate.accounts.length;
-    settings.file_id = candidate.file_id;
+    config.spreadsheet_name = candidate.spreadsheet_title;
+    config.financial_year = payload.config.financial_year;
+    config.decimal_places = 2;
+    config.number_accounts = candidate.accounts.length;
+    config.file_id = candidate.file_id;
 
     for (let i = 0; i < candidate.accounts.length; i++) {
       list_accounts[i] = candidate.accounts[i];
@@ -73,17 +73,17 @@ function setupService (uuid, payload) {
   }
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  spreadsheet.rename(settings.spreadsheet_name);
+  spreadsheet.rename(config.spreadsheet_name);
 
   new SetupProgress().makeClean()
-    .makeConfig(settings)
+    .makeConfig(config)
     .copyTemplate()
     .makeInstall();
 
   if (payload.protocol === 'restore') {
-    restoreFromBackup_(settings.backup);
+    restoreFromBackup_(config.backup);
   } else if (payload.protocol === 'copy') {
-    restoreFromSpreadsheet_(settings.file_id);
+    restoreFromSpreadsheet_(config.file_id);
   }
 
   const class_version2 = {
