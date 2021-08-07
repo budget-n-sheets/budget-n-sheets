@@ -16,10 +16,16 @@ class BsAuth {
     }
 
     const metadata = JSON.parse(list[0].getValue());
-    metadata.data = JSON.parse(Utilities2.base64DecodeWebSafe(metadata.data, 'UTF_8'));
+    metadata.data = JSON.parse(
+      Utilities2.base64DecodeWebSafe(
+        Object.prototype.hasOwnProperty.call(metadata, 'encoded') ?
+          metadata.encoded : metadata.data,
+        'UTF_8'
+      )
+    );
 
     this._data = metadata.data;
-    this._sig = metadata.sig;
+    this._sig = Object.prototype.hasOwnProperty.call(metadata, 'hmac') ? metadata.hmac : metadata.sig;
   }
 
   init_ () {
