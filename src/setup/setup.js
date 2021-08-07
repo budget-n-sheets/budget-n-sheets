@@ -20,58 +20,8 @@ function setupService (uuid, payload) {
   console.time('setup/' + payload.protocol);
   if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.');
 
-  const config = {};
-  const list_accounts = [];
-
-  if (payload.protocol === 'new') {
-    for (const key in payload.config) {
-      config[key] = payload.config[key];
-    }
-
-    config.spreadsheet_name = config.spreadsheet_name.trim();
-    if (config.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.');
-
-    for (let i = 0; i < payload.config.name_accounts.length; i++) {
-      list_accounts[i] = payload.config.name_accounts[i].trim();
-      if (list_accounts[i] === '') throw new Error('Invalid account name.');
-    }
-  } else if (payload.protocol === 'restore') {
-    const candidate = PropertiesService3.document().getProperty('settings_candidate');
-    if (candidate.file_id !== payload.config.file_id) throw new Error('File ID does not match.');
-
-    const blob = DriveApp.getFileById(payload.config.file_id).getBlob();
-    config.backup = unwrapBackup_(uuid, blob, payload.config.file_id);
-    if (config.backup == null) return;
-
-    for (const key in candidate) {
-      config[key] = candidate[key];
-    }
-
-    config.spreadsheet_name = candidate.spreadsheet_title;
-    config.financial_year = payload.config.financial_year;
-
-    for (let i = 0; i < candidate.list_acc.length; i++) {
-      list_accounts[i] = candidate.list_acc[i];
-    }
-  } else if (payload.protocol === 'copy') {
-    const candidate = PropertiesService3.document().getProperty('settings_candidate');
-    if (candidate.file_id !== payload.config.file_id) throw new Error('File ID does not match.');
-
-    for (const key in candidate) {
-      config[key] = candidate[key];
-    }
-
-    config.spreadsheet_name = candidate.spreadsheet_title;
-    config.financial_year = payload.config.financial_year;
-    config.decimal_places = 2;
-    config.number_accounts = candidate.accounts.length;
-    config.file_id = candidate.file_id;
-
-    for (let i = 0; i < candidate.accounts.length; i++) {
-      list_accounts[i] = candidate.accounts[i];
-    }
-  }
-
+  payload.uuid = uuid;
+  const config = SetupConfig.digestConfig(payload);
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   spreadsheet.rename(config.spreadsheet_name);
 
