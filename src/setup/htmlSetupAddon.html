@@ -345,18 +345,23 @@
       $("#setup-panel").fadeIn("fast").addClass("active");
       google.script.host.setHeight(233);
 
-      const list_names = [];
+      const name_accounts = [];
       $("input[required][name=account_name]").each(function(i) {
-        list_names[i] = $(this).val();
+        name_accounts[i] = $(this).val();
       });
 
-      const config = {
-        spreadsheet_name: $("#spreadsheet_name").val(),
-        financial_year: $("#financial_year").val(),
-        initial_month: $("#initial_month").val(),
-        decimal_places: $("#decimal_places").val(),
-        number_accounts: $("#number_accounts").val(),
-        name_accounts: list_names
+      const payload = {
+        protocol: 'new',
+        config: {
+          number_accounts: $("#number_accounts").val(),
+          name_accounts: name_accounts,
+
+          spreadsheet_name: $("#spreadsheet_name").val(),
+          decimal_places: $("#decimal_places").val(),
+
+          financial_year: $("#financial_year").val(),
+          initial_month: $("#initial_month").val()
+        }
       };
 
       TIMEOUT_ID = setTimeout(function() {
@@ -368,7 +373,7 @@
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupService(uuid, 'new', config);
+        .setupService(uuid, payload);
     }
 
     function panelError(err) {

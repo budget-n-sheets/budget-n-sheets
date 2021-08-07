@@ -190,15 +190,18 @@
         $("#timeout").fadeIn();
       }, 240000);
 
-      const config = {
-        file_id: FILE_ID,
-        financial_year: $('#financial_year').val()
+      const payload = {
+        protocol: 'restore',
+        config: {
+          file_id: FILE_ID,
+          financial_year: $('#financial_year').val()
+        }
       };
 
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupService(uuid, 'restore', config);
+        .setupService(uuid, payload);
     }
 
     function refreshInfo(info) {

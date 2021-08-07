@@ -1,4 +1,4 @@
-function setupService (uuid, select, config) {
+function setupService (uuid, payload) {
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
@@ -17,30 +17,30 @@ function setupService (uuid, select, config) {
   }
   CacheService3.user().remove(uuid);
 
-  console.time('setup/' + select);
+  console.time('setup/' + payload.protocol);
   if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.');
 
   const settings = {};
   const list_accounts = [];
 
-  if (select === 'new') {
-    for (const key in config) {
-      settings[key] = config[key];
+  if (payload.protocol === 'new') {
+    for (const key in payload.config) {
+      settings[key] = payload.config[key];
     }
 
     settings.spreadsheet_name = settings.spreadsheet_name.trim();
     if (settings.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.');
 
-    for (let i = 0; i < config.name_accounts.length; i++) {
-      list_accounts[i] = config.name_accounts[i].trim();
+    for (let i = 0; i < payload.config.name_accounts.length; i++) {
+      list_accounts[i] = payload.config.name_accounts[i].trim();
       if (list_accounts[i] === '') throw new Error('Invalid account name.');
     }
-  } else if (select === 'restore') {
+  } else if (payload.protocol === 'restore') {
     const candidate = PropertiesService3.document().getProperty('settings_candidate');
-    if (candidate.file_id !== config.file_id) throw new Error('File ID does not match.');
+    if (candidate.file_id !== payload.config.file_id) throw new Error('File ID does not match.');
 
-    const blob = DriveApp.getFileById(config.file_id).getBlob();
-    settings.backup = unwrapBackup_(uuid, blob, config.file_id);
+    const blob = DriveApp.getFileById(payload.config.file_id).getBlob();
+    settings.backup = unwrapBackup_(uuid, blob, payload.config.file_id);
     if (settings.backup == null) return;
 
     for (const key in candidate) {
@@ -48,21 +48,21 @@ function setupService (uuid, select, config) {
     }
 
     settings.spreadsheet_name = candidate.spreadsheet_title;
-    settings.financial_year = config.financial_year;
+    settings.financial_year = payload.config.financial_year;
 
     for (let i = 0; i < candidate.list_acc.length; i++) {
       list_accounts[i] = candidate.list_acc[i];
     }
-  } else if (select === 'copy') {
+  } else if (payload.protocol === 'copy') {
     const candidate = PropertiesService3.document().getProperty('settings_candidate');
-    if (candidate.file_id !== config.file_id) throw new Error('File ID does not match.');
+    if (candidate.file_id !== payload.config.file_id) throw new Error('File ID does not match.');
 
     for (const key in candidate) {
       settings[key] = candidate[key];
     }
 
     settings.spreadsheet_name = candidate.spreadsheet_title;
-    settings.financial_year = config.financial_year;
+    settings.financial_year = payload.config.financial_year;
     settings.decimal_places = 2;
     settings.number_accounts = candidate.accounts.length;
     settings.file_id = candidate.file_id;
@@ -80,9 +80,9 @@ function setupService (uuid, select, config) {
     .copyTemplate()
     .makeInstall();
 
-  if (select === 'restore') {
+  if (payload.protocol === 'restore') {
     restoreFromBackup_(settings.backup);
-  } else if (select === 'copy') {
+  } else if (payload.protocol === 'copy') {
     restoreFromSpreadsheet_(settings.file_id);
   }
 
@@ -107,7 +107,7 @@ function setupService (uuid, select, config) {
   showDialogSetupEnd();
   onOpen();
 
-  console.timeEnd('setup/' + select);
+  console.timeEnd('setup/' + payload.protocol);
 }
 
 function setupPrepare_ (spreadseetName) {

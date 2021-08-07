@@ -176,15 +176,18 @@
         $("#timeout").fadeIn();
       }, 240000);
 
-      const config = {
-        file_id: FILE_ID,
-        financial_year: $('#financial_year').val()
+      const payload = {
+        protocol: 'copy',
+        config: {
+          file_id: FILE_ID,
+          financial_year: $('#financial_year').val()
+        }
       };
 
       google.script.run
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
-        .setupService(uuid, 'copy', config);
+        .setupService(uuid, payload);
     }
     <? } ?>
 
