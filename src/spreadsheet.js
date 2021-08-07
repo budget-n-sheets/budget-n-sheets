@@ -11,58 +11,6 @@ const SpreadsheetApp2 = {
   }
 };
 
-function mergeEventsInTable_ (sheet, data, dest) {
-  if (data.table.length === 0) return;
-
-  const _s = {};
-  if (dest.name === 'accs') {
-    if (dest.k > 5) return;
-
-    _s.row = 5;
-    _s.offset = 1 + 5 * dest.k;
-    _s.width = 4;
-    _s.col = 2;
-  } else if (dest.name === 'cards') {
-    if (dest.k > 11) return;
-
-    _s.row = 6;
-    _s.offset = 1 + 6 * dest.k;
-    _s.width = 5;
-    _s.col = 3;
-  }
-
-  const lastRow = sheet.getLastRow();
-  let table, i;
-
-  {
-    const num = (lastRow < _s.row ? _s.row - 1 : lastRow) + data.table.length;
-    while (sheet.getMaxRows() < num) {
-      blankRows_(sheet.getName());
-    }
-  }
-
-  if (lastRow < _s.row) {
-    i = 0;
-    table = data.table;
-  } else {
-    table = sheet.getRange(_s.row, _s.offset, lastRow - _s.row + 1, _s.width).getValues();
-
-    i = 0;
-    while (i < table.length && table[i][_s.col] !== '') { i++; }
-
-    if (i < table.length) {
-      table.splice.apply(table, [i, 0].concat(data.table));
-    } else {
-      table = table.concat(data.table);
-    }
-  }
-
-  sheet.getRange(_s.row, _s.offset, table.length, _s.width).setValues(table);
-
-  const value = Utils.transpose([data.values]);
-  sheet.getRange(_s.row + i, _s.offset + _s.col, value.length, 1).setFormulas(value);
-}
-
 function updateDecimalPlaces_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, max;
