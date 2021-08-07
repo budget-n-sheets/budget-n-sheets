@@ -7,7 +7,7 @@ const PATCH_THIS = Object.freeze({
       [], [], [], [], [], [], [], [], [], [],
       [update_v0m40p0_, update_v0m40p1_],
       [null, null, null, update_v0m41p3_, null],
-      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_]
+      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_, patchV0m42p11_]
     ]
   ],
   beta_list: []
@@ -157,13 +157,27 @@ function setClassVersion_ (property, value) {
  *
  * 0.0.0
  *
-function update_v0m0p0_ () {
+function patchV0m0p0_ () {
   try {
   } catch (err) {
     console.error(err);
     return 2;
   }
 } */
+
+/**
+ * Refresh Bs signature.
+ *
+ * 0.42.11
+ */
+function patchV0m42p11_ () {
+  try {
+    new BsAuth(SpreadsheetApp2.getActiveSpreadsheet()).update();
+  } catch (err) {
+    console.error(err);
+    return 2;
+  }
+}
 
 /**
  * Delete property 'spreadsheet_triggers'.
