@@ -1,7 +1,3 @@
-function toolAddBlankRows () {
-  toolPickerUi_('AddBlankRows');
-}
-
 function toolUpdateCashFlow () {
   toolPickerUi_('UpdateCashFlow');
 }
@@ -16,7 +12,6 @@ function toolForwardInstallments () {
 
 function toolPickerUi_ (select) {
   switch (select) {
-    case 'AddBlankRows':
     case 'UpdateCashFlow':
     case 'FormatRegistry':
     case 'ForwardInstallments':
@@ -43,9 +38,6 @@ function toolPicker_ (select, value) {
   }
 
   switch (select) {
-    case 'AddBlankRows':
-      blankRows_(value);
-      break;
     case 'UpdateCashFlow':
       validateUpdateCashFlow_();
       break;
