@@ -72,11 +72,10 @@ function postEventsForDate_ (date) {
   if (!sheet) return;
 
   const ledger = new LedgerAccounts(sheet);
-
-  accounts.forEach(account => {
-    if (account.length === 0) return;
+  for (let k = 0; k < num_acc; k++) {
+    if (accounts[k].length === 0) continue;
     ledger.mergeTransactions(k, accounts[k]);
-  });
+  }
 }
 
 function treatLayout_ (yyyy, mm) {
