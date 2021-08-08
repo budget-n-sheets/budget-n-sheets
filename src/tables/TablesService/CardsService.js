@@ -5,8 +5,7 @@ class CardsService extends TablesService {
   }
 
   static isEmpty () {
-    if (this._db == null) this._db = RapidAccess.db().cards();
-    return this._db.count === 0;
+    return RapidAccess.db().cards().count === 0;
   }
 
   updateMetadata_ () {
