@@ -28,12 +28,12 @@ class SetupConfig {
     config.backup = unwrapBackup_(uuid, blob, config.file_id);
     if (config.backup == null) return;
 
+    candidate.financial_year = config.financial_year;
     for (const key in candidate) {
       config[key] = candidate[key];
     }
 
     config.spreadsheet_name = candidate.spreadsheet_title;
-    config.financial_year = payload.config.financial_year;
     config.name_accounts = candidate.list_acc;
 
     return config;

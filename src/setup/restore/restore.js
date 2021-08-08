@@ -257,7 +257,7 @@ function restoreTables_ (backup) {
 
 function restoreCards_ (backup) {
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
-  const insertRows = new ToolInsertRowsCards(destination);
+  const insertRows = new ToolInsertRowsCards(sheet);
 
   let mm = -1;
   while (++mm < 12) {
