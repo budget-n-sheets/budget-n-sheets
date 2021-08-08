@@ -106,7 +106,14 @@ class Backup {
     if (numRows < 1) return;
 
     const table = sheet.getRange(2, 1, numRows, 5).getValues();
-    this._backup.tags = this.filterTable_(table);
+
+    let n = numRows;
+    while (--n > -1) {
+      if (table[n][0] !== '' || table[n][2] !== '' || table[n][4] !== '') break;
+    }
+
+    n++;
+    this._backup.tags = n > 0 ? table.slice(0, n) : [];
   }
 
   filterTable_ (table) {
