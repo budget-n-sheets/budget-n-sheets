@@ -27,16 +27,21 @@ function backupService (password) {
   if (!AppsScript.isInstalled()) return 2;
   if (!User2.isAdmin()) return 2;
   if (isScriptUpToDate_() !== 1) return 2;
-  if (testPasswordPolicy(password)) return 1;
-
-  const ui = SpreadsheetApp2.getUi();
+  if (BackupUtils.checkPasswordPolicy(password)) return 1;
 
   showDialogMessage('Add-on backup', 'Backing up...', 1);
-  backupRequest_(password);
 
-  ui.alert(
+  const blob = SjclService.encrypt(
+    password,
+    'budget-n-sheets-' + Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss') + '.backup',
+    JSON.stringify(new Backup().makeBackup())
+  );
+
+  BackupUtils.sendEmail(blob);
+
+  SpreadsheetApp2.getUi().alert(
     'Add-on backup',
     'The backup was completed successfully.',
-    ui.ButtonSet.OK);
+    SpreadsheetApp2.getUi().ButtonSet.OK);
   return 0;
 }
