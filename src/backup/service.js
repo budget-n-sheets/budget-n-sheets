@@ -1,4 +1,4 @@
-function requestBackupSession () {
+function showDialogBackupSession () {
   if (!AppsScript.isInstalled()) return 2;
   if (!User2.isAdmin()) return 2;
   if (isScriptUpToDate_() !== 1) return 2;
@@ -22,7 +22,7 @@ function requestBackupSession () {
   ui.showModalDialog(htmlOutput, 'Enter password');
 }
 
-function backupRequestUi (password) {
+function backupService (password) {
   if (!FeatureFlag.getStatusOf('settings/backup')) return 2;
   if (!AppsScript.isInstalled()) return 2;
   if (!User2.isAdmin()) return 2;
