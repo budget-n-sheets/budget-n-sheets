@@ -61,8 +61,7 @@ class Backup {
   collectMonths_ () {
     const numTables = 1 + SettingsConst.getValueOf('number_accounts');
 
-    let mm = 0;
-    while (mm < 12) {
+    for (let mm = 0; mm < 12; mm++) {
       const sheet = this._spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
       if (!sheet) continue;
 
@@ -73,8 +72,6 @@ class Backup {
       for (let k = 0; k < numTables; k++) {
         this._backup.ttt[mm][k] = this.filterTable_(table.map(row => row.slice(5 * k, 5 * k + 4)));
       }
-
-      mm++;
     }
   }
 
