@@ -63,7 +63,7 @@ class Backup {
 
     let mm = 0;
     while (mm < 12) {
-      const sheet = this._spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+      const sheet = this._spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
       if (!sheet) continue;
 
       const numRows = sheet.getLastRow() - 4;
@@ -93,9 +93,9 @@ class Backup {
       ? Utilities2.computeDigest('SHA_256', this._backup.user_settings.financial_calendar, 'UTF_8')
       : '';
 
-    delete backup.user_settings.financial_calendar;
-    delete backup.admin_settings.admin_id;
-    delete backup.const_properties.date_created;
+    delete this._backup.user_settings.financial_calendar;
+    delete this._backup.admin_settings.admin_id;
+    delete this._backup.const_properties.date_created;
   }
 
   collectTags_ () {
