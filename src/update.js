@@ -7,7 +7,7 @@ const PATCH_THIS = Object.freeze({
       [], [], [], [], [], [], [], [], [], [],
       [update_v0m40p0_, update_v0m40p1_],
       [null, null, null, update_v0m41p3_, null],
-      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_, patchV0m42p11_]
+      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_, patchV0m42p11_, null]
     ]
   ],
   beta_list: []
