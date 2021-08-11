@@ -13,7 +13,10 @@ function toolService_ (name, param) {
   switch (name) {
     case 'insertRows': {
       if (!param) param = SpreadsheetApp.getActiveSheet();
-      ToolInsertRows.pick(param).insertRows();
+      const tool = ToolInsertRows.pick(param);
+
+      if (tool !== 1) tool.insertRows();
+      else ToolInsertRows.showWarning();
       break;
     }
 

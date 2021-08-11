@@ -22,6 +22,13 @@ class ToolInsertRows {
     return new ToolInsertRowsMonth(sheet);
   }
 
+  static showWarning () {
+    SpreadsheetApp2.getUi().alert(
+      "Can't insert rows",
+      'Select a month, Cards or Tags to insert rows.',
+      SpreadsheetApp2.getUi().ButtonSet.OK);
+  }
+
   insertNumRows_ (numRows) {
     if (this._maxRows < this._headerRow + 3) return 1;
     this._sheet.insertRowsBefore(this._maxRows, numRows);
