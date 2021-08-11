@@ -25,7 +25,7 @@ class Ledger {
       ).getValues();
     }
 
-    n = table.findIndex(row => row[this._specs.col.value] === '');
+    let n = table.findIndex(row => row[this._specs.col.value] === '');
     if (n === -1) n = table.length;
 
     table.splice.apply(table, [n, 0].concat(values));
