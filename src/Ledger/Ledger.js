@@ -17,7 +17,7 @@ class Ledger {
     const offset = 1 + this._specs.width * index;
 
     let table = [];
-    if (lastRow < this._specs.row) {
+    if (lastRow >= this._specs.row) {
       table = this._sheet.getRange(
         this._specs.row, offset,
         lastRow - this._specs.row + 1,
