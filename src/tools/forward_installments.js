@@ -168,7 +168,7 @@ function forwardInstallments_ (range) {
   if (mm < 12 && merge.length > 0) {
     const sheet = range.getSheet();
     if (sheet) {
-      new LedgerCards(sheet).mergeTransactions(mm, sheet);
+      new LedgerCards(sheet).mergeTransactions(mm, merge);
       SpreadsheetApp.flush();
     }
   }

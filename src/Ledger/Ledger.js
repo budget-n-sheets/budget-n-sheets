@@ -10,7 +10,7 @@ class Ledger {
     if (values.length === 0) return;
 
     const lastRow = this._sheet.getLastRow();
-    const height = (lastRow < this._specs.row ? this._specs.row - 1 : lastRow) + data.length;
+    const height = (lastRow < this._specs.row ? this._specs.row - 1 : lastRow) + values.length;
 
     this._insertRows.insertRowsTo(height);
 
