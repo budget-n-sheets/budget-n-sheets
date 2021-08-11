@@ -51,7 +51,7 @@ function postEventsForDate_ (date) {
       continue;
     }
 
-    value = FormatNumber.localeSignal(value);
+    value = '=' + FormatNumber.localeSignal(value);
 
     let tags = '';
     if (evento.Tags.length > 0) tags = '#' + evento.Tags.join(' #');

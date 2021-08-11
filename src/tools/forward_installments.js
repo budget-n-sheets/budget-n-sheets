@@ -121,7 +121,7 @@ function fastForwardInstallments_ (range) {
 
       const line = list[i].line.slice();
       line[1] = line[1].replace(list[i].reg, list[i].p1 + '/' + list[i].p2);
-      line[3] = FormatNumber.localeSignal(line[3]);
+      line[3] = '=' + FormatNumber.localeSignal(line[3]);
 
       merge.push(line);
 
@@ -156,7 +156,7 @@ function forwardInstallments_ (range) {
     if (snapshot[i][0] > 0) snapshot[i][0] *= -1;
 
     snapshot[i][1] = snapshot[i][1].replace(match[1], p1 + '/' + p2);
-    snapshot[i][3] = FormatNumber.localeSignal(snapshot[i][3]);
+    snapshot[i][3] = '=' + FormatNumber.localeSignal(snapshot[i][3]);
 
     merge.push(snapshot[i]);
   }
