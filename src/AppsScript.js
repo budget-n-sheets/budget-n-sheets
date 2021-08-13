@@ -34,8 +34,8 @@ class AppsScript {
 
   static uninstall () {
     TriggersService.stop();
-    if (this.isInstalled() || this.isLocked()) PropertiesService3.document().setProperties({ lock_spreadsheet: true }, true);
-    else PropertiesService3.document().deleteAllProperties();
+    const lock = !!(this.isInstalled() || this.isLocked());
+    PropertiesService3.document().setProperties({ lock_spreadsheet: lock }, true);
     CacheService3.document().removeAll(CACHE_KEYS);
   }
 }
