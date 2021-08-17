@@ -652,75 +652,54 @@ class SetupParts {
   }
 
   setupTables_ () {
-    let acc, r, i, j, k;
-
-    const sheet = this._spreadsheet.getSheetByName('_Backstage');
-
     const initial_month = this._config.initial_month;
     const name_acc = this._config.name_accounts;
     const num_acc = this._config.number_accounts;
 
-    i = 0;
-    j = 0;
-    const ids = [];
-    while (j < 1 + num_acc && i < 99) {
-      r = Noise.randomString(7, 'lonum');
-      if (ids.indexOf(r) === -1) {
-        ids[j] = r;
-        j++;
-      }
-      Utilities.sleep(40);
-      i++;
-    }
-    if (ids.length < 1 + num_acc) throw new Error('Could not generate unique IDs.');
+    const db_accounts = {};
+    const meta_accounts = {};
 
-    const db_tables = {
-      accounts: {
-        ids: [],
-        names: [],
-        data: []
-      },
-      cards: {
-        count: 0,
-        ids: [],
-        codes: [],
-        data: []
-      }
-    };
+    const list_ids = [];
+    for (let k = 0; k < num_acc; k++) {
+      let i = 0;
+      let id = '';
 
-    const metadata = [];
-    for (k = 0; k < num_acc; k++) {
-      db_tables.accounts.ids[k] = ids[1 + k];
+      do {
+        id = Noise.randomString(7, 'lonum');
+      } while (list_ids.indexOf(id) !== -1 && ++i < 99);
+      if (i >= 99) throw new Error('Could not generate account IDs.');
+      list_ids.push(id);
 
-      acc = {
-        id: ids[1 + k],
+      const account = {
+        index: k,
         name: name_acc[k],
         balance: 0,
-        time_a: initial_month,
-        time_z: 11
+        time_start: initial_month
       };
 
-      db_tables.accounts.names[k] = name_acc[k];
-      db_tables.accounts.data[k] = acc;
+      db_accounts[id] = {};
+      Object.assign(db_accounts[id], account);
 
-      metadata[k] = {};
-      Object.assign(metadata[k], acc);
-      delete metadata[k].id;
+      delete account.index;
+      meta_accounts[k] = {};
+      Object.assign(meta_accounts[k], account);
     }
+
+    const sheet = this._spreadsheet.getSheetByName('_Backstage');
 
     sheet.addDeveloperMetadata(
       'db_accounts',
-      JSON.stringify(metadata),
+      JSON.stringify(meta_accounts),
       SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
     );
+    CachedAccess.update('db_accounts', db_accounts);
 
     sheet.addDeveloperMetadata(
       'db_cards',
-      JSON.stringify([]),
+      JSON.stringify({}),
       SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
     );
-
-    PropertiesService3.document().setProperty('DB_TABLES', db_tables);
+    CachedAccess.update('db_cards', {});
   }
 
   setupTags_ () {
