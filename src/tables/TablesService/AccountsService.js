@@ -11,7 +11,7 @@ class AccountsService extends TablesService {
   }
 
   updateMetadata_ () {
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Jan');
+    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;
 
     const metadata = [];
