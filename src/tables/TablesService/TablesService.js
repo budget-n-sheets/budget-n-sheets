@@ -2,6 +2,8 @@ class TablesService {
   constructor (key, db) {
     this._key = key;
     this._db = db;
+
+    this._ids = Object.keys(db);
   }
 
   getAll () {
