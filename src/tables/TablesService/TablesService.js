@@ -7,16 +7,15 @@ class TablesService {
   }
 
   getAll () {
-    return this._db.data;
+    return this._db;
   }
 
   getById (id) {
-    const c = this._db.ids.indexOf(id);
-    return (c === -1 ? null : this._db.data[c]);
+    return this._db[id];
   }
 
   hasId (id) {
-    return this._db.ids.indexOf(id) !== -1;
+    return this._ids.indexOf(id) !== -1;
   }
 
   save () {
