@@ -8,7 +8,7 @@ class TablesUtils {
 
     do {
       id = Noise.randomString(7, 'lonum');
-    } while (accounts.hasId(id) && cards.hasId(id) && i++ < 99);
+    } while (accounts.hasId(id) && cards.hasId(id) && ++i < 99);
 
     return (i < 99 ? id : '');
   }
