@@ -1,7 +1,7 @@
 class CardsService extends TablesService {
   constructor () {
     const db = RapidAccess.db().cards();
-    super('cards', db);
+    super('db_cards', db);
   }
 
   static isEmpty () {

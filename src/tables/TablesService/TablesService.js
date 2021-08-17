@@ -18,8 +18,6 @@ class TablesService {
   }
 
   save () {
-    const db = PropertiesService3.document().getProperty('DB_TABLES');
-    db[this._key] = this._db;
-    CachedAccess.update('DB_TABLES', db);
+    CachedAccess.update(this._key, this._db);
   }
 }

@@ -1,7 +1,7 @@
 class AccountsService extends TablesService {
   constructor () {
     const db = RapidAccess.db().accounts();
-    super('accounts', db);
+    super('db_accounts', db);
   }
 
   formatValues_ (account) {
