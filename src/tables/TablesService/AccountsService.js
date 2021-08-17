@@ -6,7 +6,7 @@ class AccountsService extends TablesService {
 
   formatValues_ (account) {
     account.name = account.name.trim();
-    account.time_a = Number(account.time_a);
+    account.time_start = Number(account.time_start);
     account.balance = Number(account.balance);
   }
 
@@ -14,11 +14,13 @@ class AccountsService extends TablesService {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;
 
-    const metadata = [];
-    for (let k = 0; k < this._db.data.length; k++) {
+    const metadata = {};
+
+    let k = 0;
+    for (const id in this._db) {
       metadata[k] = {};
-      Object.assign(metadata[k], this._db.data[k]);
-      delete metadata[k].id;
+      Object.assign(metadata[k], this._db[id]);
+      k++;
     }
 
     const list_metadata = sheet.createDeveloperMetadataFinder()
@@ -45,10 +47,10 @@ class AccountsService extends TablesService {
     const _h = TABLE_DIMENSION.height;
     const _w = TABLE_DIMENSION.width;
 
-    let k = 0;
-    while (k < this._db.ids.length) {
-      const account = this._db.data[k];
-      const col = 2 + _w + _w * k;
+    for (const id in this._db) {
+      const acc = this._db[id];
+
+      const col = 2 + _w + _w * acc.index;
       const rangeOff = backstage.getRange(1, col);
 
       const list = [];
@@ -56,13 +58,12 @@ class AccountsService extends TablesService {
         list[i - 1] = RangeUtils.rollA1Notation(2 + _h * i, col);
       }
 
-      rangeOff.setValue(account.name);
+      rangeOff.setValue(acc.name);
       rangeOff.offset(1, 0).setFormula('0');
       backstage.getRangeList(list).setFormulaR1C1('R[-' + (_h - 1) + ']C');
-      rangeOff.offset(1 + _h * account.time_a, 0).setFormula('=' + FormatNumber.localeSignal(account.balance));
+      rangeOff.offset(1 + _h * acc.time_start, 0).setFormula('=' + FormatNumber.localeSignal(acc.balance));
 
-      if (jan) jan.getRange(1, 6 + 5 * k).setValue(account.name);
-      k++;
+      if (jan) jan.getRange(1, 6 + 5 * acc.index).setValue(acc.name);
     }
   }
 
@@ -82,9 +83,11 @@ class AccountsService extends TablesService {
       formulas[i] = '=' + RangeUtils.rollA1Notation(3 + dd, 4 * i - 1) + ' + ' + RangeUtils.rollA1Notation(4, 2 + 4 * i);
     }
 
-    for (let k = 0; k < number_accounts; k++) {
-      const mm = this._db.data[k].time_a;
-      formulas[mm] += ' + _Backstage!' + ranges[k] + (2 + _h * mm);
+    for (const id in this._db) {
+      const acc = this._db[id];
+      const mm = acc.time_start;
+
+      formulas[mm] += ' + _Backstage!' + ranges[acc.index] + (2 + _h * mm);
     }
 
     const rangeOff = sheet.getRange(4, 3);
@@ -108,13 +111,12 @@ class AccountsService extends TablesService {
     this.formatValues_(metadata);
     if (metadata.name === '') return 1;
 
-    const c = this._db.ids.indexOf(metadata.id);
+    const account = this._db[metadata.id];
+    metadata.index = account.index;
 
-    this._db.names[c] = metadata.name;
-
-    this._db.data[c].name = metadata.name;
-    this._db.data[c].time_a = metadata.time_a;
-    this._db.data[c].balance = metadata.balance;
+    for (const key in account) {
+      account[key] = metadata[key];
+    }
 
     return this;
   }
