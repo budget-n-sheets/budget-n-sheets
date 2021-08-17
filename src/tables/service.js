@@ -1,4 +1,4 @@
-function accountsService (payload) {
+function accountsClientService (payload) {
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(2000);
@@ -20,12 +20,12 @@ function accountsService (payload) {
     }
 
     default:
-      console.error('accountsService(): Switch case is default.', payload.job);
+      console.error('accountsClientService(): Switch case is default.', payload.job);
       return 1;
   }
 }
 
-function cardsService (payload) {
+function cardsClientService (payload) {
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(2000);
@@ -54,7 +54,7 @@ function cardsService (payload) {
     }
 
     default:
-      console.error('cardsService(): Switch case is default.', payload.job);
+      console.error('cardsClientService(): Switch case is default.', payload.job);
       return 1;
   }
 }

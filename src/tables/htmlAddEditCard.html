@@ -116,7 +116,7 @@
       google.script.run
         .withSuccessHandler(submitAftermath)
         .withFailureHandler(showError)
-        .cardsService(payload);
+        .cardsClientService(payload);
     }
 
     function submitAftermath(r) {

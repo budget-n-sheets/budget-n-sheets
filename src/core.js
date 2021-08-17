@@ -300,7 +300,7 @@ function showSessionExpired () {
 
 function showDialogEditAccount (acc_id) {
   const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
-  const account = accountsService({ job: 'get', id: acc_id });
+  const account = accountsClientService({ job: 'get', id: acc_id });
   if (!account) return 1;
 
   const scriptlet = {
@@ -347,7 +347,7 @@ function showDialogAddCard () {
 
 function showDialogEditCard (card_id) {
   const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
-  const card = cardsService({ job: 'get', id: card_id });
+  const card = cardsClientService({ job: 'get', id: card_id });
   if (!card) return 1;
 
   const scriptlet = {
@@ -371,7 +371,7 @@ function showDialogEditCard (card_id) {
 }
 
 function showDialogDeleteCard (card_id) {
-  const card = cardsService({ job: 'get', id: card_id });
+  const card = cardsClientService({ job: 'get', id: card_id });
   if (!card) return 1;
 
   const ui = SpreadsheetApp2.getUi();

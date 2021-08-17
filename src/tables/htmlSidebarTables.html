@@ -156,12 +156,12 @@
       google.script.run
         .withSuccessHandler(listAccounts)
         .withFailureHandler(showError)
-        .accountsService({ job: 'list' });
+        .accountsClientService({ job: 'list' });
 
       google.script.run
         .withSuccessHandler(listCards)
         .withFailureHandler(showError)
-        .cardsService({ job: 'list' });
+        .cardsClientService({ job: 'list' });
     });
 
     $(document).on("click", ".header_tab", function() {
@@ -214,7 +214,7 @@
       google.script.run
         .withSuccessHandler(listCards)
         .withFailureHandler(showError)
-        .cardsService({ job: 'list' });
+        .cardsClientService({ job: 'list' });
     }
 
     function listAccounts(db_accounts) {
