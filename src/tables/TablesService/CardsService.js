@@ -8,6 +8,16 @@ class CardsService extends TablesService {
     return RapidAccess.db().cards().count === 0;
   }
 
+  formatValues_ (card) {
+    card.name = card.name.trim();
+    card.code = card.code.trim();
+
+    if (!Array.isArray(card.aliases)) card.aliases = card.aliases.match(/\w+/g) || [];
+    card.aliases = card.aliases.filter(alias => alias !== card.code);
+
+    card.limit = Number(card.limit);
+  }
+
   updateMetadata_ () {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;
@@ -131,25 +141,15 @@ class CardsService extends TablesService {
   create (metadata) {
     if (!this.hasSlotAvailable()) return 12;
 
-    metadata.code = metadata.code.trim();
+    this.formatValues_(metadata);
+
     if (!/^\w+$/.test(metadata.code)) return 10;
     if (this.hasCode(metadata.code)) return 11;
-
-    let aliases = metadata.aliases.match(/\w+/g);
-    if (aliases == null) aliases = [];
-
-    let c = aliases.indexOf(metadata.code);
-    while (c !== -1) {
-      aliases.splice(c, 1);
-      c = aliases.indexOf(metadata.code);
-    }
 
     const random = TablesUtils.getUtid();
     if (!random) return 1;
 
     metadata.id = random;
-    metadata.aliases = aliases;
-    metadata.limit = Number(metadata.limit);
 
     c = this._db.count++;
 
@@ -247,21 +247,13 @@ class CardsService extends TablesService {
   update (metadata) {
     if (!this.hasId(metadata.id)) return 1;
 
-    metadata.code = metadata.code.trim();
+    this.formatValues_(metadata);
+
     if (!/^\w+$/.test(metadata.code)) return 10;
 
     const pos = this._db.ids.indexOf(metadata.id);
     for (let i = 0; i < this._db.codes.length; i++) {
       if (i !== pos && this._db.codes[i] === metadata.code) return 11;
-    }
-
-    let aliases = metadata.aliases.match(/\w+/g);
-    if (aliases == null) aliases = [];
-
-    let c = aliases.indexOf(metadata.code);
-    while (c !== -1) {
-      aliases.splice(c, 1);
-      c = aliases.indexOf(metadata.code);
     }
 
     this._db.codes[pos] = metadata.code;
@@ -270,8 +262,8 @@ class CardsService extends TablesService {
       id: metadata.id,
       name: metadata.name,
       code: metadata.code,
-      aliases: aliases,
-      limit: Number(metadata.limit)
+      aliases: metadata.aliases,
+      limit: metadata.limit
     };
 
     return this;

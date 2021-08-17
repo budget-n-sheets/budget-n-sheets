@@ -4,6 +4,12 @@ class AccountsService extends TablesService {
     super('accounts', db);
   }
 
+  formatValues_ (account) {
+    account.name = account.name.trim();
+    account.time_a = Number(account.time_a);
+    account.balance = Number(account.balance);
+  }
+
   updateMetadata_ () {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Jan');
     if (!sheet) return;
@@ -99,13 +105,10 @@ class AccountsService extends TablesService {
   update (metadata) {
     if (!this.hasId(metadata.id)) return 1;
 
-    metadata.name = metadata.name.trim();
+    this.formatValues_(metadata);
     if (metadata.name === '') return 1;
 
     const c = this._db.ids.indexOf(metadata.id);
-
-    metadata.time_a = Number(metadata.time_a);
-    metadata.balance = Number(metadata.balance);
 
     this._db.names[c] = metadata.name;
 
