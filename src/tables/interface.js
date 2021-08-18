@@ -30,12 +30,6 @@ function showDialogAddCard () {
     is_edit: false,
     step: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1'),
     placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0'),
-
-    card_id: '',
-    card_name: '',
-    card_code: '',
-    card_aliases: '',
-    card_limit: 0
   };
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlAddEditCard')
@@ -47,21 +41,15 @@ function showDialogAddCard () {
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Add Card');
 }
 
-function showDialogEditCard (card_id) {
+function showDialogEditCard (id) {
   const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
-  const card = cardsClientService({ job: 'get', id: card_id });
-  if (!card) return 1;
 
   const scriptlet = {
     is_edit: true,
+    card_id: id,
     step: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1'),
     placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0')
   };
-
-  card.aliases = card.aliases.join(', ');
-  for (const key in card) {
-    scriptlet['card_' + key] = card[key];
-  }
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlAddEditCard')
     .setScriptletValues(scriptlet)

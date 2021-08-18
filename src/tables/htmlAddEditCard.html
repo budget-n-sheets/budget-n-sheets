@@ -38,7 +38,7 @@
               <label for="card_name">Name</label>
             </td>
             <td>
-              <input id="card_name" type="text" maxlength="43" value="<?= card_name ?>" required>
+              <input id="card_name" type="text" maxlength="43" required>
             </td>
           </tr>
           <tr>
@@ -46,7 +46,7 @@
               <label for="card_code">Code</label>
             </td>
             <td>
-              <input id="card_code" type="text" maxlength="17" pattern="^\w+$" value="<?= card_code ?>" required>
+              <input id="card_code" type="text" maxlength="17" pattern="^\w+$" required>
               <br>
               <span class="gray">Charset: 0-9, a-z, A-Z, _</span>
             </td>
@@ -56,7 +56,7 @@
               <label for="card_aliases">Code aliases</label>
             </td>
             <td>
-              <input id="card_aliases" type="text" maxlength="191" pattern="^\w+(\s*,\s*\w+)*$" value="<?= card_aliases ?>">
+              <input id="card_aliases" type="text" maxlength="191" pattern="^\w+(\s*,\s*\w+)*$">
               <br>
               <span class="gray">Separate aliases with commas.<br>Charset: 0-9, a-z, A-Z, _</span>
             </td>
@@ -92,9 +92,24 @@
   </div>
   <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    $(document).ready(function() {
-      $("#card_limit").val(Number(<?= card_limit ?>));
-    });
+    <? if (is_edit) { ?>
+      $(document).ready(function() {
+        google.script.run
+          .withSuccessHandler(card => {
+            if (!card) showError();
+
+            $("#card_name").val(card.name);
+            $("#card_code").val(card.code);
+            $("#card_aliases").val(card.aliases.join(', '));
+            $("#card_limit").val(card.limit);
+          })
+          .withFailureHandler(showError)
+          .cardsClientService({
+            job: 'get',
+            id: $('#card_id').val()
+          });
+      });
+    <? } ?>
 
     function submitForm() {
       $("#response").empty();
