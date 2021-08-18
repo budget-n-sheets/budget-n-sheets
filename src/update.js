@@ -7,7 +7,7 @@ const PATCH_THIS = Object.freeze({
       [], [], [], [], [], [], [], [], [], [],
       [update_v0m40p0_, update_v0m40p1_],
       [null, null, null, update_v0m41p3_, null],
-      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_, patchV0m42p11_, null, null, null]
+      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_, patchV0m42p11_, null, null, null, patchV0m42p15_]
     ]
   ],
   beta_list: []
@@ -164,6 +164,30 @@ function patchV0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Test existence of property 'DB_TABLES'.
+ * Refresh 'db_accounts' metadata.
+ *
+ * 0.42.15
+ */
+function patchV0m42p15_ () {
+  try {
+    if (PropertiesService.getDocumentProperties().getProperty('DB_TABLES') == null) return 3;
+
+    SpreadsheetApp2.getActiveSpreadsheet()
+      .createDeveloperMetadataFinder()
+      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+      .withKey('db_accounts')
+      .find()
+      .forEach(m => m.remove());
+
+    new AccountsService().flush();
+  } catch (err) {
+    console.error(err);
+    return 2;
+  }
+}
 
 /**
  * Refresh Bs signature.
