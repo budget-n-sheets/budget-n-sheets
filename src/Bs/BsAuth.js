@@ -27,8 +27,7 @@ class BsAuth {
     const metadata = JSON.parse(list[0].getValue());
     metadata.data = JSON.parse(
       Utilities2.base64DecodeWebSafe(
-        Object.prototype.hasOwnProperty.call(metadata, 'encoded') ?
-          metadata.encoded : metadata.data,
+        Object.prototype.hasOwnProperty.call(metadata, 'encoded') ? metadata.encoded : metadata.data,
         'UTF_8'
       )
     );

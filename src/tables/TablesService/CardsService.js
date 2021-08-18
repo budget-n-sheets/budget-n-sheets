@@ -151,7 +151,7 @@ class CardsService extends TablesService {
 
     metadata.id = random;
 
-    let c = this._db.count++;
+    const c = this._db.count++;
 
     this._db.ids[c] = metadata.id;
     this._db.codes[c] = metadata.code;

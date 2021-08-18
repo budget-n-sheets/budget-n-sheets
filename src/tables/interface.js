@@ -29,7 +29,7 @@ function showDialogAddCard () {
   const scriptlet = {
     is_edit: false,
     step: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1'),
-    placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0'),
+    placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0')
   };
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlAddEditCard')
@@ -72,7 +72,7 @@ function showDialogDeleteCard (id) {
     ui.ButtonSet.YES_NO);
 
   if (response === ui.Button.YES) {
-    cardsService.delete(id)
+    cardsService.delete(id);
     cardsService.save();
     cardsService.flush();
     return 1;
