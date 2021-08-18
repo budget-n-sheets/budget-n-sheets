@@ -1,4 +1,4 @@
-class SettingsSidebarPanelSettings extends SettingsSidebarPanel {
+class SettingsSidebarPanelSettings extends HtmlPanel {
   constructor () {
     const htmlTemplate = HtmlService2.createTemplateFromFile('settings/sidebar/htmlPanelSettings');
     const jsTemplate = HtmlService2.createTemplateFromFile('settings/sidebar/jsPanelSettings');

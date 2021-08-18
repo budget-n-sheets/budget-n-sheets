@@ -1,4 +1,4 @@
-class TablesSidebarPanel {
+class HtmlPanel {
   constructor (htmlTemplate, jsTemplate) {
     this._htmlTemplate = htmlTemplate;
     this._jsTemplate = jsTemplate;
