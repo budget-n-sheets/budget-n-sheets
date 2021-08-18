@@ -381,7 +381,7 @@ function showDialogDeleteCard (card_id) {
     ui.ButtonSet.YES_NO);
 
   if (response === ui.Button.YES) {
-    new CardsService().delete(payload.id);
+    new CardsService().delete(card_id);
     return 1;
   }
 }
