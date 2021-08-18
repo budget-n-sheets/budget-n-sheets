@@ -58,7 +58,7 @@ const APPS_SCRIPT_GLOBAL = Object.freeze({
   script_version: {
     major: 0,
     minor: 42,
-    patch: 14
+    patch: 15
   },
 
   template_version: {
