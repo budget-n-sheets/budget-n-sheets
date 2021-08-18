@@ -5,19 +5,14 @@ function showPanelTables () {
   SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
 }
 
-function showDialogEditAccount (acc_id) {
+function showDialogEditAccount (id) {
   const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
-  const account = accountsClientService({ job: 'get', id: acc_id });
-  if (!account) return 1;
 
   const scriptlet = {
+    account_id: id,
     step: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1'),
     placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0')
   };
-
-  for (const key in account) {
-    scriptlet['acc_' + key] = account[key];
-  }
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlEditAccount')
     .setScriptletValues(scriptlet)
