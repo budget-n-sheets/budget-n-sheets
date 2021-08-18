@@ -72,7 +72,9 @@ function showDialogDeleteCard (id) {
     ui.ButtonSet.YES_NO);
 
   if (response === ui.Button.YES) {
-    cardsService.delete(id);
+    cardsService.delete(id)
+    cardsService.save();
+    cardsService.flush();
     return 1;
   }
 }
