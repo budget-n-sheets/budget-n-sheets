@@ -72,8 +72,9 @@ function showDialogEditCard (card_id) {
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Edit Card');
 }
 
-function showDialogDeleteCard (card_id) {
-  const card = cardsClientService({ job: 'get', id: card_id });
+function showDialogDeleteCard (id) {
+  const cardsService = new CardsService();
+  const card = cardsService.getById(id);
   if (!card) return 1;
 
   const ui = SpreadsheetApp2.getUi();
@@ -83,7 +84,7 @@ function showDialogDeleteCard (card_id) {
     ui.ButtonSet.YES_NO);
 
   if (response === ui.Button.YES) {
-    new CardsService().delete(card_id);
+    cardsService.delete(id);
     return 1;
   }
 }
