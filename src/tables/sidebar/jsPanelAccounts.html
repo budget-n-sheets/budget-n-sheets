@@ -6,13 +6,6 @@
       .accountsClientService({ job: 'list' });
   });
 
-  $("#b-AddCard").click(function(e) {
-    $("#response").empty();
-    google.script.run
-      .withFailureHandler(showError)
-      .showDialogAddCard();
-  });
-
   $(document).on("click", ".a-edit", function(e) {
     $("#response").empty();
     google.script.run
