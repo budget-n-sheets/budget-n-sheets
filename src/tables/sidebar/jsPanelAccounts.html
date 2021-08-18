@@ -1,0 +1,50 @@
+<script>
+  $(document).ready(function() {
+    google.script.run
+      .withSuccessHandler(listAccounts)
+      .withFailureHandler(showError)
+      .accountsClientService({ job: 'list' });
+  });
+
+  $("#b-AddCard").click(function(e) {
+    $("#response").empty();
+    google.script.run
+      .withFailureHandler(showError)
+      .showDialogAddCard();
+  });
+
+  $(document).on("click", ".a-edit", function(e) {
+    $("#response").empty();
+    google.script.run
+      .withSuccessHandler(responseHandler)
+      .withFailureHandler(showError)
+      .showDialogEditAccount($(this).attr("id"));
+  });
+
+  function listAccounts(db_accounts) {
+    const MN_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var item, k;
+
+    for (k = 0; k < db_accounts.length; k++) {
+      item = "<div class=\"table_row\">";
+      item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_accounts[k].name + "</div>";
+      item += "</div>"
+
+      item += "<div class=\"table_row\">";
+      item += "<div class=\"item_cell\" style=\"font-size: 14px;line-height: 1.3;\">";
+      item += "Initial month: " + MN_FULL[db_accounts[k].time_a] + "<br>";
+      item += "Initial balance: " + FormatNumber.financial(db_accounts[k].balance);
+      item += "</div>";
+      item += "</div>";
+
+      item += "<div class=\"table_row\">";
+      item += "<div class=\"item_cell item_menu\">";
+      item += "<a class=\"a-edit\" id=\"" + db_accounts[k].id + "\">Edit</a>";
+      item += "</div>";
+      item += "</div>";
+
+      item = "<div class=\"item_table\">" + item + "</div>"
+      $("#box_Accounts").append(item);
+    }
+  }
+</script>

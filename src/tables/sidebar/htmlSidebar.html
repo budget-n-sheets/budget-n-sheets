@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
+  <style>
+    #header {
+      height: 3.7em;
+      margin-bottom: 0.5em;
+      width: 100%;
+      border-bottom: 1px solid #dadbe0;
+    }
+
+    .header_table {
+      display: table;
+      width: inherit;
+      height: inherit;
+      text-align: center;
+      border-collapse: separate;
+      border-spacing: 13px 7px;
+    }
+
+    .header_tab {
+      cursor: pointer;
+      display: table-cell;
+      vertical-align: middle;
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    .header_tab.active {
+      border-bottom: solid 2px;
+    }
+
+    .footer_table {
+      width: 100%;
+      display: table;
+      border-collapse: separate;
+      border-spacing: 7px;
+      border-top: 1px solid #dadbe0;
+    }
+
+    .footer_cell {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .item_table {
+      width: 100%;
+      margin-bottom: 17px;
+      display: table;
+      background: #f3f3f3;
+      border-radius: 7px;
+      border: 2px solid #d9d9d9;
+    }
+
+    .item_cell {
+      width: 100%;
+      padding: 11px;
+      display: table-cell;
+    }
+
+    .item_menu {
+      font-weight: bold;
+      word-spacing: 11px;
+    }
+
+    .table_row {
+      display: table-row;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="header">
+      <div class="header_table">
+        <div class="table_row">
+          <div class="header_tab active" id="tab_accounts">
+            <i class="material-icons-outlined md-24" title="Accounts">account_balance</i>
+          </div>
+          <div class="header_tab" id="tab_cards">
+            <i class="material-icons-outlined md-24" title="Cards">credit_card</i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="content" style="margin-bottom:4.7em;">
+      <?!= htmlPanelAccounts ?>
+      <?!= htmlPanelCards ?>
+    </div>
+
+    <div id="footer">
+      <div class="current" id="response" style="padding:0 7px;"></div>
+      <div class="footer_table">
+        <div class="table_row">
+          <div class="footer_cell" style="width:100%;">
+          </div>
+          <div class="footer_cell">
+            <div class="md-footer"><a href="<?= home_wiki ?>" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
+  <script>
+    class FormatNumber {
+      static financial (number) {
+        /** x,xx0.00;(x,xx0.00) */
+
+        const dec_s = <?= dec_s ?>;
+        const dec_t = <?= dec_t ?>;
+        const dec_p = <?!= decimal_places ?>;
+
+        let n = number;
+
+        const s = n < 0;
+
+        n = Math.abs(+n || 0).toFixed(dec_p);
+        const i = parseInt(n) + '';
+
+        let j = i.length;
+        j = j > 3 ? j % 3 : 0;
+
+        let a = (j ? i.substr(0, j) + dec_t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + dec_t) + (dec_p > 0 ? dec_s + Math.abs(n - i).toFixed(dec_p).slice(2) : '');
+
+        if (s) a = '(' + a + ')';
+
+        return a;
+      }
+    }
+
+    $(document).on("click", ".header_tab", function() {
+      if ($(this).hasClass("active")) return;
+
+      var id = $(this).attr("id");
+      var panel;
+
+      window.scrollTo(0, 0);
+      $(this).addClass("active")
+        .siblings()
+        .removeClass("active");
+
+      if (id === "tab_accounts") panel = "#panel_Accounts";
+      else if (id === "tab_cards") panel = "#panel_Cards";
+
+      $(panel).show()
+        .siblings()
+        .hide();
+    });
+
+    function responseHandler(r) {
+      if (r) $("#response").empty().append("Sorry, something went wrong. Please, try again.");
+    }
+  </script>
+  <?!= jsPanelAccounts ?>
+  <?!= jsPanelCards ?>
+</body>
+
+</html>

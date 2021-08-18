@@ -1,0 +1,69 @@
+<script>
+  $(document).ready(function() {
+    google.script.run
+      .withSuccessHandler(listCards)
+      .withFailureHandler(showError)
+      .cardsClientService({ job: 'list' });
+  });
+
+  $(document).on("click", ".c-edit", function(e) {
+    $("#response").empty();
+    google.script.run
+      .withSuccessHandler(responseHandler)
+      .withFailureHandler(showError)
+      .showDialogEditCard($(this).parent().attr("id"));
+  });
+
+  $(document).on("click", ".c-remove", function(e) {
+    $("#response").empty();
+    google.script.run
+      .withSuccessHandler(reloadListCards)
+      .withFailureHandler(showError)
+      .showDialogDeleteCard($(this).parent().attr("id"));
+  });
+
+  function reloadListCards(r) {
+    if (!r) return;
+    $("#item-AddCard").hide();
+    $("#box_Cards").empty();
+    google.script.run
+      .withSuccessHandler(listCards)
+      .withFailureHandler(showError)
+      .cardsClientService({ job: 'list' });
+  }
+
+  function listCards(db_cards) {
+    var item, k, n;
+
+    n = 0;
+    for (k = 0; k < db_cards.length; k++) {
+      item = "<div class=\"table_row\">";
+      item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + db_cards[k].name + "</div>";
+      item += "</div>";
+
+      item += "<div class=\"table_row\">";
+      item += "<div class=\"item_cell\" style=\"font-size: 14px;line-height: 1.3;\">";
+      item += "Code: " + db_cards[k].code + "<br>";
+      item += "Credit limit: " + FormatNumber.financial(db_cards[k].limit);
+      if (db_cards[k].aliases.length > 0) {
+        item += "<br>";
+        item += "Code aliases: " + db_cards[k].aliases.join(", ");
+      }
+      item += "</div>";
+      item += "</div>";
+
+      item += "<div class=\"table_row\">";
+      item += "<div class=\"item_cell item_menu\" id=\"" + db_cards[k].id + "\">";
+      item += "<a class=\"c-edit\">Edit</a> ";
+      item += "<a class=\"c-remove\">Remove</a>";
+      item += "</div>";
+      item += "</div>";
+
+      item = "<div class=\"item_table\">" + item + "</div>"
+      $("#box_Cards").append(item);
+      n++;
+    }
+
+    if (n < 10) $("#item-AddCard").show();
+  }
+</script>

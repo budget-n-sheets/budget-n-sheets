@@ -75,25 +75,11 @@ function showPanelQuickstart () {
   SpreadsheetApp2.getUi().showSidebar(htmlOutput);
 }
 
-function showPanelTables (tab) {
+function showPanelTables () {
   if (onlineUpdate_()) return;
 
-  const dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
-  const scriptlet = {
-    decimal_places: SettingsSpreadsheet.getValueOf('decimal_places'),
-    dec_s: (dec_s ? '.' : ','),
-    dec_t: (dec_s ? ',' : '.'),
-    tab_acc: (tab ? '' : 'active'),
-    tab_cards: (tab ? 'active' : '')
-  };
-
-  const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlSidebarTables')
-    .assignReservedHref()
-    .setScriptletValues(scriptlet)
-    .evaluate()
-    .setTitle('Accounts & Cards');
-
-  SpreadsheetApp2.getUi().showSidebar(htmlOutput);
+  const htmlSidebar = new TablesSidebar().build();
+  SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
 }
 
 function showPanelAnalytics () {
