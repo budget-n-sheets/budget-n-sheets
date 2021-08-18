@@ -18,15 +18,29 @@ class CardsService extends TablesService {
     card.limit = Number(card.limit);
   }
 
+  getNextIndex_ () {
+    const indexes = [];
+    for (const id in this._db) {
+      indexes.push(this._db[id].index);
+    }
+
+    let i = 0;
+    while (indexes.indexOf(i) !== -1) { i++; }
+
+    return i;
+  }
+
   updateMetadata_ () {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;
 
-    const metadata = [];
-    for (let k = 0; k < this._db.data.length; k++) {
+    const metadata = {};
+
+    let k = 0;
+    for (const id in this._db) {
       metadata[k] = {};
-      Object.assign(metadata[k], this._db.data[k]);
-      delete metadata[k].id;
+      Object.assign(metadata[k], this._db[id]);
+      k++;
     }
 
     const list_metadata = sheet.createDeveloperMetadataFinder()
@@ -53,14 +67,17 @@ class CardsService extends TablesService {
     const _w = TABLE_DIMENSION.width;
     const num_acc = SettingsConst.getValueOf('number_accounts');
 
-    let k = 0;
-    let col = 2 + _w + _w * num_acc + _w;
-    while (k < this._db.count) {
-      const card = this._db.data[k];
+    sheet.getRange(1, 2 + _w + _w * num_acc + _w, 1, 10 * _w).setValue('');
+
+    for (const id in this._db) {
+      const card = this._db[id];
+      const index = card.index;
+
+      const col = 2 + _w + _w * num_acc + _w + 1 + _w * index;
 
       const ranges = [];
       for (let i = 0; i < 12; i++) {
-        ranges[i] = RangeUtils.rollA1Notation(2 + _h * i, col + 1);
+        ranges[i] = RangeUtils.rollA1Notation(2 + _h * i, col);
       }
 
       let text = '^' + card.code + '$';
@@ -70,14 +87,6 @@ class CardsService extends TablesService {
 
       sheet.getRange(1, col).setValue(text);
       sheet.getRangeList(ranges).setValue('=' + FormatNumber.localeSignal(card.limit));
-      col += _w;
-      k++;
-    }
-
-    while (k < 10) {
-      sheet.getRange(1, col).setValue('');
-      col += _w;
-      k++;
     }
   }
 
@@ -91,7 +100,7 @@ class CardsService extends TablesService {
     const rangeOff1 = sheet.getRange(2, 2);
     const rangeOff2 = sheet.getRange(6, 3, height, 1);
 
-    if (this._db.count === 0) {
+    if (this._ids.length === 0) {
       for (let i = 0; i < 12; i++) {
         rangeOff1.offset(0, 6 * i).clearDataValidations();
         rangeOff2.offset(0, 6 * i).clearDataValidations();
@@ -102,17 +111,15 @@ class CardsService extends TablesService {
     }
 
     const list1 = ['All'];
-    const list2 = [];
+    let list2 = [];
 
-    for (let i = 0; i < this._db.count; i++) {
-      const card = this._db.data[i];
+    for (const id in this._db) {
+      const card = this._db[id];
 
       list1.push(card.code);
       list2.push(card.code);
 
-      for (let j = 0; j < card.aliases.length; j++) {
-        list2.push(card.aliases[j]);
-      }
+      list2 = list.concat(card.aliases);
     }
 
     const rule1 = SpreadsheetApp.newDataValidation()
@@ -146,27 +153,37 @@ class CardsService extends TablesService {
     if (!/^\w+$/.test(metadata.code)) return 10;
     if (this.hasCode(metadata.code)) return 11;
 
-    const random = TablesUtils.getUtid();
-    if (!random) return 1;
+    const id = TablesUtils.getUtid();
+    if (!id) return 1;
 
-    metadata.id = random;
+    const card = {
+      index: 0,
+      name: '',
+      code: '',
+      aliases: [],
+      limit: 0
+    };
 
-    const c = this._db.count++;
+    for (const key in card) {
+      card[key] = metadata[key];
+    }
+    card.index = this.getNextIndex_();
 
-    this._db.ids[c] = metadata.id;
-    this._db.codes[c] = metadata.code;
-    this._db.data[c] = metadata;
+    this._db[id] = {};
+    Object.assign(this._db[id], card);
+
+    return this;
   }
 
   delete (id) {
     if (!this.hasId(id)) return 1;
 
-    const pos = this._db.ids.indexOf(id);
+    const c = this._ids.indexOf(id);
+    this._ids.splice(c, 1);
 
-    this._db.count--;
-    this._db.ids.splice(pos, 1);
-    this._db.codes.splice(pos, 1);
-    this._db.data.splice(pos, 1);
+    delete this._db[id];
+
+    return this;
   }
 
   flush () {
@@ -176,6 +193,7 @@ class CardsService extends TablesService {
 
     SpreadsheetApp.flush();
     onOpen();
+
     return this;
   }
 
@@ -189,7 +207,7 @@ class CardsService extends TablesService {
     const num_acc = SettingsConst.getValueOf('number_accounts');
 
     const col = 2 + _w + _w * num_acc;
-    const num_cards = this._db.count;
+    const num_cards = this._ids.length;
 
     if (num_cards === 0) return;
 
@@ -207,25 +225,16 @@ class CardsService extends TablesService {
 
     data = sheet.getRange(1, col + _w, 1 + 12 * _h, _w * num_cards).getValues();
 
-    for (let k = 0; k < num_cards; k++) {
-      if (data[0][_w * k] === '') continue;
-
-      const code = data[0][_w * k].match(/\w+/g);
-      if (code == null) continue;
-
-      let i = 0;
-      for (; i < code.length; i++) {
-        if (this._db.codes.indexOf(code[i]) !== -1) break;
-      }
-      if (i === code.length) continue;
-
-      balances.cards.push(code[i]);
+    for (const id in this._db) {
+      const card = this._db[id];
+      const index = card.index;
 
       const v = [];
       for (let i = 0; i < 12; i++) {
-        v[i] = data[5 + _h * i][_w * k];
+        v[i] = data[5 + _h * i][_w * index];
       }
 
+      balances.cards.push(card.code);
       balances.balance.push(v);
     }
 
@@ -233,15 +242,19 @@ class CardsService extends TablesService {
   }
 
   hasCards () {
-    return this._db.count > 0;
+    return this._ids.length > 0;
   }
 
   hasCode (code) {
-    return this._db.codes.indexOf(code) !== -1;
+    for (const id in this._db) {
+      if (this._db[id].code === code) return true;
+    }
+
+    return false;
   }
 
   hasSlotAvailable () {
-    return this._db.count < 10;
+    return this._ids.length < 10;
   }
 
   update (metadata) {
@@ -251,20 +264,12 @@ class CardsService extends TablesService {
 
     if (!/^\w+$/.test(metadata.code)) return 10;
 
-    const pos = this._db.ids.indexOf(metadata.id);
-    for (let i = 0; i < this._db.codes.length; i++) {
-      if (i !== pos && this._db.codes[i] === metadata.code) return 11;
+    const card = this._db[metadata.id];
+    metadata.index = card.index;
+
+    for (const key in card) {
+      card[key] = metadata[key];
     }
-
-    this._db.codes[pos] = metadata.code;
-
-    this._db.data[pos] = {
-      id: metadata.id,
-      name: metadata.name,
-      code: metadata.code,
-      aliases: metadata.aliases,
-      limit: metadata.limit
-    };
 
     return this;
   }
