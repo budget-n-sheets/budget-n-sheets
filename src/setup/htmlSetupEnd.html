@@ -23,16 +23,14 @@
   <br>
   <br>
 
-  <button class="action" id="b-Quickstart">Show quickstart</button> <button onClick="google.script.host.close()">Close</button>
+  <button class="action" id="b-Quickstart">Show quickstart</button> <button onClick="closeHost()">Close</button>
 
   <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     $(document).ready(function() {
       $("#b-Quickstart").click(function() {
         google.script.run
-          .withSuccessHandler(function() {
-            google.script.host.close();
-          })
+          .withSuccessHandler(closeHost)
           .showPanelQuickstart();
       });
     });

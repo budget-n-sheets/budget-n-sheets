@@ -25,13 +25,11 @@
     </select>
   </form>
 
-  <button class="action" type="submit" form="the_form">Select</button> <button onclick="google.script.host.close();">Cancel</button>
+  <button class="action" type="submit" form="the_form">Select</button> <button onclick="closeHost();">Cancel</button>
   <script>
     function submitForm() {
       google.script.run
-        .withSuccessHandler(function(e) {
-          google.script.host.close();
-        })
+        .withSuccessHandler(closeHost)
         .continuedTransferAdminSd($("#editor").val());
     }
   </script>

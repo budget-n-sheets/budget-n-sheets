@@ -79,7 +79,7 @@
       <div class="current" id="response" style="padding:0 7px;"></div>
       <div id="footer2">
         <div id="footer3">
-          <button class="action" id="b-Submit" type="submit" form="the_form">Save</button> <button onclick="google.script.host.close();">Cancel</button>
+          <button class="action" id="b-Submit" type="submit" form="the_form">Save</button> <button onclick="closeHost();">Cancel</button>
         </div>
       </div>
     </div>
@@ -127,9 +127,7 @@
       }
 
       google.script.run
-        .withSuccessHandler(function(e) {
-          google.script.host.close();
-        })
+        .withSuccessHandler(closeHost)
         .showPanelTables();
     }
   </script>

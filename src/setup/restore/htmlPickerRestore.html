@@ -103,9 +103,7 @@
       const doc = data[google.picker.Response.DOCUMENTS][0];
       google.script.run
         .withFailureHandler(showError)
-        .withSuccessHandler(function() {
-          google.script.host.close();
-        })
+        .withSuccessHandler(closeHost)
         <? if (isRestore) { ?>
         .requestValidateBackup(uuid, doc[google.picker.Document.ID]);
         <? } else { ?>

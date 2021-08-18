@@ -288,9 +288,7 @@
       $("#restore-panel").fadeOut();
       google.script.run
         .withFailureHandler(panelError)
-        .withSuccessHandler(function() {
-          google.script.host.close();
-        })
+        .withSuccessHandler(closeHost)
         .showDialogSetupRestore(uuid);
     }
     <? } ?>
@@ -300,9 +298,7 @@
       $("#restore-panel").fadeOut();
       google.script.run
         .withFailureHandler(panelError)
-        .withSuccessHandler(function() {
-          google.script.host.close();
-        })
+        .withSuccessHandler(closeHost)
         .showDialogSetupCopy(uuid);
     }
     <? } ?>
@@ -367,7 +363,7 @@
       TIMEOUT_ID = setTimeout(function() {
         google.script.host.setHeight(293);
         $("#timeout").fadeIn();
-        $("#footer-buttons").append("<button onclick=\"google.script.host.close()\">Close</button>");
+        $("#footer-buttons").append("<button onclick=\"closeHost()\">Close</button>");
       }, 120000);
 
       google.script.run
@@ -382,7 +378,7 @@
       $("#footer-buttons button").remove();
       $("#error-panel").siblings().remove();
       $("#error-panel").fadeIn("fast").addClass("active");
-      $("#footer-buttons").append("<button onclick=\"google.script.host.close();\">OK</button>");
+      $("#footer-buttons").append("<button onclick=\"closeHost();\">OK</button>");
     }
   </script>
 </body>

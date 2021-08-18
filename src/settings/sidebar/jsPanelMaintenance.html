@@ -40,7 +40,7 @@
 
     google.script.run.withSuccessHandler(function(r, o) {
         o.disabled = false;
-        if (!r) google.script.host.close();
+        if (!r) closeHost();
       })
       .withFailureHandler(showError)
       .withUserObject(this)

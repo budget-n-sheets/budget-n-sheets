@@ -85,7 +85,7 @@
           <? } else { ?>
           <button class="create" id="b-Submit" type="submit" form="the_form">Add</button>
           <? } ?>
-          <button onclick="google.script.host.close();">Cancel</button>
+          <button onclick="closeHost();">Cancel</button>
         </div>
       </div>
     </div>
@@ -145,9 +145,7 @@
       }
 
       google.script.run
-        .withSuccessHandler(function(e) {
-          google.script.host.close();
-        })
+        .withSuccessHandler(closeHost)
         .showPanelTables();
     }
   </script>
