@@ -73,7 +73,7 @@ class CardsService extends TablesService {
         text += '|^' + card.aliases[i] + '$';
       }
 
-      sheet.getRange(1, col).setValue(text);
+      sheet.getRange(1, col - 1).setValue(text);
       sheet.getRangeList(ranges).setValue('=' + FormatNumber.localeSignal(card.limit));
     }
   }
