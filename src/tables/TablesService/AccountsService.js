@@ -96,6 +96,31 @@ class AccountsService extends TablesService {
     }
   }
 
+  create (metadata) {
+    this.formatValues_(metadata);
+    if (metadata.name === '') return 1;
+
+    const id = TablesUtils.getUtid();
+    if (!id) return 1;
+
+    const account = {
+      index: 0,
+      name: '',
+      balance: 0,
+      time_start: 0
+    };
+
+    for (const key in account) {
+      account[key] = metadata[key];
+    }
+    account.index = this.getNextIndex_();
+
+    this._db[id] = {};
+    Object.assign(this._db[id], account);
+
+    return this;
+  }
+
   flush () {
     this.updateMetadata_();
     this.updateNames_();
