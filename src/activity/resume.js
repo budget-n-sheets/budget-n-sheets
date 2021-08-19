@@ -171,7 +171,7 @@ function resumeActivity_ (mm0, mm1) {
 
   for (let k = 0; k < num_acc; k++) {
     const account = db_accounts[k];
-    if (account.time_a < mm0) continue;
+    if (account.time_start < mm0) continue;
 
     formula = '=' + FormatNumber.localeSignal(account.balance);
     sheetBackstage.getRange(3 + h_ * mm, 2 + w_ + w_ * k).setFormula(formula);

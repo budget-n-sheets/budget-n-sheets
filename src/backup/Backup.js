@@ -39,8 +39,8 @@ class Backup {
       this._backup.db_tables.accounts[i] = {
         name: account.name,
         balance: account.balance,
-        time_a: account.time_a,
-        time_z: account.time_z
+        time_a: account.time_start,
+        time_z: 11
       };
     }
   }

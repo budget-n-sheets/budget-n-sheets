@@ -43,10 +43,10 @@
           </tr>
           <tr>
             <td class="name">
-              <label for="acc_time_a">Initial month</label>
+              <label for="acc_time_start">Initial month</label>
             </td>
             <td>
-              <select id="acc_time_a" style="width:83px;">
+              <select id="acc_time_start" style="width:83px;">
                 <option value="0" selected>January</option>
                 <option value="1">February</option>
                 <option value="2">March</option>
@@ -92,7 +92,7 @@
           if (!account) showError();
 
           $("#acc_name").val(account.name);
-          $("#acc_time_a").val(account.time_a);
+          $("#acc_time_start").val(account.time_start);
           $("#acc_balance").val(account.balance);
         })
         .withFailureHandler(showError)
@@ -109,7 +109,7 @@
         job: 'update',
         id: $("#account_id").val(),
         name: $("#acc_name").val(),
-        time_a: $("#acc_time_a").val(),
+        time_start: $("#acc_time_start").val(),
         balance: $("#acc_balance").val()
       };
 
