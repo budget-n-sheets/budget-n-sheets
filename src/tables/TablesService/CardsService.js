@@ -18,18 +18,6 @@ class CardsService extends TablesService {
     card.limit = Number(card.limit);
   }
 
-  getNextIndex_ () {
-    const indexes = [];
-    for (const id in this._db) {
-      indexes.push(this._db[id].index);
-    }
-
-    let i = 0;
-    while (indexes.indexOf(i) !== -1) { i++; }
-
-    return i;
-  }
-
   updateMetadata_ () {
     const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
     if (!sheet) return;

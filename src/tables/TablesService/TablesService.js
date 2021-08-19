@@ -6,6 +6,18 @@ class TablesService {
     this._ids = Object.keys(db);
   }
 
+  getNextIndex_ () {
+    const indexes = [];
+    for (const id in this._db) {
+      indexes.push(this._db[id].index);
+    }
+
+    let index = 0;
+    while (indexes.indexOf(index) !== -1) { index++; }
+
+    return index;
+  }
+
   getAll () {
     return this._db;
   }
