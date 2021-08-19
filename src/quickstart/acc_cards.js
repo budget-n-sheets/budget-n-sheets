@@ -19,7 +19,8 @@ const QUICKSTART_ACC_CARDS = Object.freeze({
 function playQuickAccCards_ (n) {
   if (n === 1) {
     const db_acc = new AccountsService().getAll();
-    showDialogEditAccount(db_acc[0].id);
+    const id = Object.keys(db_acc)[0];
+    showDialogEditAccount(db_acc[id]);
     return;
   }
 
@@ -36,7 +37,7 @@ function playQuickAccCards_ (n) {
   }
 
   const db_cards = new CardsService().getAll();
-  if (db_cards.length === 0) {
+  if (!db_cards.hasCards()) {
     showDialogAddCard();
     return;
   }
@@ -45,7 +46,8 @@ function playQuickAccCards_ (n) {
   let lastRow, col;
   let name, val, mm;
 
-  const code = db_cards[0].code;
+  const first = Object.keys(db_cards)[0];
+  const code = db_cards[first].code;
   const financial_year = SettingsConst.getValueOf('financial_year');
 
   if (n === 3) {

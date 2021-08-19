@@ -34,27 +34,31 @@ class Backup {
 
   collectDbAccounts_ () {
     const db_accounts = new AccountsService().getAll();
-    for (let i = 0; i < db_accounts.length; i++) {
-      const account = db_accounts[i];
-      this._backup.db_tables.accounts[i] = {
+    let k = 0;
+    for (const id in db_accounts) {
+      const account = db_accounts[id];
+      this._backup.db_tables.accounts[k] = {
         name: account.name,
         balance: account.balance,
         time_a: account.time_start,
         time_z: 11
       };
+      k++;
     }
   }
 
   collectDbCards_ () {
     const db_cards = new CardsService().getAll();
-    for (let i = 0; i < db_cards.length; i++) {
-      const card = db_cards[i];
-      this._backup.db_tables.cards[i] = {
+    let k = 0;
+    for (const id in db_cards) {
+      const card = db_cards[id];
+      this._backup.db_tables.cards[k] = {
         name: card.name,
         code: card.code,
         limit: card.limit,
         aliases: card.aliases
       };
+      k++;
     }
   }
 

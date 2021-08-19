@@ -169,21 +169,21 @@ function resumeActivity_ (mm0, mm1) {
     sheetBackstage.getRangeList(rangeList).setFormulaR1C1('R[-' + (h_ - 1) + ']C');
   }
 
-  for (let k = 0; k < num_acc; k++) {
-    const account = db_accounts[k];
+  for (const id in db_accounts) {
+    const account = db_accounts[id];
     if (account.time_start < mm0) continue;
 
     formula = '=' + FormatNumber.localeSignal(account.balance);
-    sheetBackstage.getRange(3 + h_ * mm, 2 + w_ + w_ * k).setFormula(formula);
+    sheetBackstage.getRange(3 + h_ * mm, 2 + w_ + w_ * account.index).setFormula(formula);
   }
 
   {
     const rangeOff = sheetBackstage.getRange(2 + h_ * mm, 1 + col);
 
-    for (let k = 0; k < db_cards.length; k++) {
-      const formula = '=' + FormatNumber.localeSignal(db_cards[k].limit);
+    for (const id in db_cards) {
+      const formula = '=' + FormatNumber.localeSignal(db_cards[id].limit);
       for (let mm = mm0; mm <= mm1; mm++) {
-        rangeOff.offset(0, w_ * k).setFormula(formula);
+        rangeOff.offset(0, w_ * db_cards[id].index).setFormula(formula);
       }
     }
   }

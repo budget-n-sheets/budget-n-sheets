@@ -92,8 +92,11 @@ function playQuickCalendar_ (n) {
   const db_accounts = new AccountsService().getAll();
   const db_cards = new CardsService().getAll();
 
-  const acc_name = db_accounts[0].name;
-  const card_code = (db_cards.length > 0 ? db_cards[0].code : '');
+  let first = Object.keys(db_accounts)[0];
+  const acc_name = db_accounts[first].name;
+
+  first = Object.keys(db_cards)[0];
+  const card_code = (db_cards.hasCards() ? db_cards[first].code : '');
 
   data = QUICKSTART_DATA_CALENDAR[1];
   if (!data) throw new Error("Values for quickstart example couldn't be found. calendar:" + n);
