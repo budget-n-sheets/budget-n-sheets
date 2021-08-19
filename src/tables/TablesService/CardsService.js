@@ -5,7 +5,7 @@ class CardsService extends TablesService {
   }
 
   static isEmpty () {
-    return RapidAccess.db().cards().count === 0;
+    return Object.keys(RapidAccess.db().cards()).length === 0;
   }
 
   formatValues_ (card) {
