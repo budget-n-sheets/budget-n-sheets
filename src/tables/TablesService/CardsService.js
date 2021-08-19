@@ -107,7 +107,7 @@ class CardsService extends TablesService {
       list1.push(card.code);
       list2.push(card.code);
 
-      list2 = list.concat(card.aliases);
+      list2 = list2.concat(card.aliases);
     }
 
     const rule1 = SpreadsheetApp.newDataValidation()
