@@ -7,7 +7,7 @@ const PATCH_THIS = Object.freeze({
       [], [], [], [], [], [], [], [], [], [],
       [update_v0m40p0_, update_v0m40p1_],
       [null, null, null, update_v0m41p3_, null],
-      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_, patchV0m42p11_, null, null, null, patchV0m42p15_, null]
+      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_, patchV0m42p11_, null, null, null, patchV0m42p15_, null, patchV0m42p17_]
     ]
   ],
   beta_list: []
@@ -164,6 +164,51 @@ function patchV0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Migrate tables db structure.
+ *
+ * 0.42.17
+ */
+function patchV0m42p17_ () {
+  try {
+    const db_tables = PropertiesService3.document().getProperty('DB_TABLES');
+    let db;
+
+    const db_accounts = {};
+    db = db_tables.accounts.data;
+    for (let i = 0; i < db.length; i++) {
+      const id = db[i].id;
+
+      db_accounts[id] = Utils.deepCopy(db[i]);
+
+      db_accounts[id].index = i;
+      db_accounts[id].time_start = db_accounts[id].time_a;
+
+      delete db_accounts[id].id;
+      delete db_accounts[id].time_a;
+      delete db_accounts[id].time_z;
+    }
+    CachedAccess.update('db_accounts', db_accounts);
+
+    const db_cards = {};
+    db = db_tables.cards.data;
+    for (let i = 0; i < db.length; i++) {
+      const id = db[i].id;
+
+      db_cards[id] = Utils.deepCopy(db[i]);
+
+      db_cards[id].index = i;
+      delete db_cards[id].id;
+    }
+    CachedAccess.update('db_cards', db_cards);
+
+    PropertiesService3.document().deleteProperty('DB_TABLES');
+   } catch (err) {
+    console.error(err);
+    return 2;
+  }
+}
 
 /**
  * Test existence of property 'DB_TABLES'.
