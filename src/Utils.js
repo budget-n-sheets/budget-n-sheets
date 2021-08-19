@@ -42,6 +42,10 @@ class Utils {
     return translation;
   }
 
+  static deepCopy (obj) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
   static toHexString (byteArray) {
     return Array.from(byteArray, function (byte) {
       return ('0' + (byte & 0xFF).toString(16)).slice(-2);
