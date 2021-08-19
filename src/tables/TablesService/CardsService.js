@@ -180,8 +180,6 @@ class CardsService extends TablesService {
     this.updateRules_();
 
     SpreadsheetApp.flush();
-    onOpen();
-
     return this;
   }
 
