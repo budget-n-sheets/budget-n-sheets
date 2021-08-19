@@ -7,7 +7,7 @@ const PATCH_THIS = Object.freeze({
       [], [], [], [], [], [], [], [], [], [],
       [update_v0m40p0_, update_v0m40p1_],
       [null, null, null, update_v0m41p3_, null],
-      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_, patchV0m42p11_, null, null, null, patchV0m42p15_, null, patchV0m42p17_, null]
+      [null, null, null, null, null, null, null, null, null, null, update_v0m42p10_, patchV0m42p11_, null, null, null, patchV0m42p15_, null, patchV0m42p17_, null, patchV0m42p19_]
     ]
   ],
   beta_list: []
@@ -164,6 +164,21 @@ function patchV0m0p0_ () {
     return 2;
   }
 } */
+
+/**
+ * Flush changes.
+ *
+ * 0.42.19
+ */
+function patchV0m42p19_ () {
+  try {
+    new AccountsService().flush();
+    new CardsService().flush();
+  } catch (err) {
+    console.error(err);
+    return 2;
+  }
+}
 
 /**
  * Migrate tables db structure.
