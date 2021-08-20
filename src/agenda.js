@@ -18,7 +18,7 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
   const valueRegExp = new RegExp(number_format);
 
   const db_accounts = new AccountsService().getAll();
-  const db_cards = new CardsService().getAll();
+  const cardsService = new CardsService();
 
   const list_acc = ['Wallet'];
   for (const id in db_accounts) {
@@ -35,7 +35,9 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
 
   regexp.accounts = new RegExp(s, 'g');
 
-  if (db_cards.hasCards()) {
+  if (cardsService.hasCards()) {
+    const db_cards = cardsService.getAll();
+
     list = [];
     for (const id in db_cards) {
       list.push(db_cards[id].code);
@@ -77,7 +79,7 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
     match = cell.Description.match(regexp.accounts);
     if (match) cell.Table = list_acc.indexOf(match[0]);
 
-    if (db_cards.hasCards()) {
+    if (cardsService.hasCards()) {
       const match = cell.Description.match(regexp.cards);
       if (match) cell.Card = match[0];
     }

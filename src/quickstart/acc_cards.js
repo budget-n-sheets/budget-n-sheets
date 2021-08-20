@@ -36,11 +36,13 @@ function playQuickAccCards_ (n) {
       throw new Error('playQuickAccCards_(): Switch case is default. ' + n);
   }
 
-  const db_cards = new CardsService().getAll();
-  if (!db_cards.hasCards()) {
+  const cardsService = new CardsService();
+  if (!cardsService.hasCards()) {
     showDialogAddCard();
     return;
   }
+
+  const db_cards = cardsService.getAll();
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let lastRow, col;
