@@ -116,17 +116,13 @@
 
   <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    $(document).on("click", ".md-speed", function() {
-      if ($('.md-speed').hasClass('lock')) return;
-      $('.md-speed').addClass('lock');
+    $(".md-speed").click(function() {
       $('#content').css('opacity', 0.6);
+
       google.script.run
         .withFailureHandler(showError)
-        .withSuccessHandler(function() {
-          $('.md-speed').removeClass('lock');
-          $('#content').css('opacity', 1);
-        })
-        .playSpeedQuickstart($(this).attr("id"));
+        .withSuccessHandler(e => $('#content').css('opacity', 1))
+        .playSpeedQuickstart(this.id);
     });
   </script>
 </body>
