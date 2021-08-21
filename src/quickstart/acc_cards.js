@@ -19,8 +19,7 @@ const QUICKSTART_ACC_CARDS = Object.freeze({
 function playQuickAccCards_ (n) {
   if (n === 1) {
     const db_acc = new AccountsService().getAll();
-    const id = Object.keys(db_acc)[0];
-    showDialogEditAccount(db_acc[id]);
+    showDialogEditAccount(Object.keys(db_acc)[0]);
     return;
   }
 
