@@ -119,7 +119,7 @@ function showDialogAboutAddon () {
 }
 
 function showDialogErrorMessage (err) {
-  if (err) console.error(err);
+  if (err) LogLog.error(err);
 
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlExceptionMessage')
     .assignReservedHref()

@@ -4,7 +4,7 @@ function onOpenInstallable_ (e) {
   try {
     AppsScript.loadCache();
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
   }
 }
 
@@ -17,6 +17,7 @@ function onEditInstallable_ (e) {
     const sheet = e.range.getSheet();
     name = sheet.getName();
   } catch (err) {
+    LogLog.error(err);
   }
 
   if (name !== 'Quick Actions' && MONTH_NAME.short.indexOf(name) === -1) return;
@@ -25,7 +26,7 @@ function onEditInstallable_ (e) {
     try {
       quickActions_(e.range, e.value);
     } catch (err) {
-      console.error(err);
+      LogLog.error(err);
     } finally {
       e.range.setValue('');
     }
@@ -35,7 +36,7 @@ function onEditInstallable_ (e) {
       const status = SettingsSpreadsheet.getValueOf('optimize_load');
       if (status == null || status[mm]) switchActivity_('resume', mm, mm);
     } catch (err) {
-      console.error(err);
+      LogLog.error(err);
     }
   }
 }
@@ -109,7 +110,7 @@ function dailyTrigger_ (e) {
         switchActivity_('suspend', 0, yyyymmdd.month - 3);
       }
     } catch (err) {
-      console.error(err);
+      LogLog.error(err);
     }
   }
 

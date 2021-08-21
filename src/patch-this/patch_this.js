@@ -24,7 +24,7 @@ function update_ () {
   try {
     lock.waitLock(200);
   } catch (err) {
-    console.warn(err);
+    LogLog.warn(err);
     return 1;
   }
 

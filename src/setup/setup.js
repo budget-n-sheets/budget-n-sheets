@@ -51,7 +51,7 @@ function setupService (uuid, payload) {
   try {
     TriggersService.start();
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
   }
 
   showDialogSetupEnd();

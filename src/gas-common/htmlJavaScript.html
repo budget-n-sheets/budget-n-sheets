@@ -6,11 +6,15 @@
 
   function showError(err, obj) {
     console.log(err.message);
+    console.log(err.stack);
 
     google.script.run
       .withSuccessHandler(closeHost)
       .withFailureHandler(null)
-      .showDialogErrorMessage();
+      .showDialogErrorMessage({
+        message: err.message,
+        stack: err.stack
+      });
   }
 
   $('input[type="text"]').change(function() {

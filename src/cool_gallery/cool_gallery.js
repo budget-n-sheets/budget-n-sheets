@@ -64,7 +64,7 @@ function importGalleryTemplate_ (id, name) {
   try {
     template = SpreadsheetApp.openById(id);
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 1;
   }
 

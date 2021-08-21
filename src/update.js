@@ -160,7 +160,7 @@ function setClassVersion_ (property, value) {
 function patchV0m0p0_ () {
   try {
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 } */
@@ -175,7 +175,7 @@ function patchV0m42p21_ () {
     new AccountsService().flush();
     new CardsService().flush();
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
@@ -220,7 +220,7 @@ function patchV0m42p17_ () {
 
     PropertiesService3.document().deleteProperty('DB_TABLES');
    } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
@@ -244,7 +244,7 @@ function patchV0m42p15_ () {
 
     new AccountsService().flush();
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
@@ -258,7 +258,7 @@ function patchV0m42p11_ () {
   try {
     new BsAuth(SpreadsheetApp2.getActiveSpreadsheet()).update();
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
@@ -272,7 +272,7 @@ function update_v0m42p10_ () {
   try {
     PropertiesService3.document().deleteProperty('spreadsheet_triggers');
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
@@ -287,7 +287,7 @@ function update_v0m41p3_ () {
     const initial_month = SettingsUser.getValueOf('initial_month');
     SettingsUser.setValueOf('initial_month', initial_month);
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
@@ -325,7 +325,7 @@ function update_v0m40p1_ () {
 
     unique.getRange(1, 2).setFormula(formula);
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
@@ -348,7 +348,7 @@ function update_v0m40p0_ () {
     rr = update_v0m40p0s2_();
     if (rr) return rr;
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
@@ -382,7 +382,7 @@ function update_v0m40p0s2_ () {
 
     unique.getRange(1, 2).setFormula('SORT(UNIQUE({' + range_cards.slice(0, -2) + '}))');
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
@@ -421,7 +421,7 @@ function update_v0m40p0s1_ () {
 
     unique.getRange(1, 1).setFormula('SORT(UNIQUE({' + range_accounts.slice(0, -2) + '}))');
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
@@ -446,7 +446,7 @@ function update_v0m40p0s0_ () {
     sheet.protect().setWarningOnly(true);
     sheet.hideSheet();
   } catch (err) {
-    console.error(err);
+    LogLog.error(err);
     return 2;
   }
 }
