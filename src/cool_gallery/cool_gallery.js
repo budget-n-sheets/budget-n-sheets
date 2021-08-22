@@ -6,8 +6,18 @@ function coolGallery (option) {
     return;
   }
 
-  const info = APPS_SCRIPT_GLOBAL.cool_gallery[option];
-  if (!info) throw new Error('Details of page not found.');
+  let info;
+  switch (option) {
+    case 'filter_by_tag':
+      info = CoolGalleryMetadata.getFilterByTag();
+      break;
+    case 'stats_for_tags':
+      info = CoolGalleryMetadata.getStatsForTags();
+      break;
+
+    default:
+      throw new Error('Details of page not found.');
+  }
 
   const ui = SpreadsheetApp2.getUi();
 
