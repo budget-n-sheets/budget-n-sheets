@@ -1,24 +1,25 @@
 class CoolGalleryMetadata {
   static getFilterByTag () {
     return {
-      id: '',
+      template_id: '',
+      preview_id: null,
       version_name: 'v0.3.0',
       version_date: '2020-05-07',
       name: 'Filter by Tag',
       description: 'Filter and sort all trasactions by a selected tag.',
-      sheet_name: 'Filter by Tag'
+      sheets: ['Filter by Tag']
     };
   }
 
   static getStatsForTags () {
     return {
-      id: '',
+      template_id: '',
       preview_id: '',
       version_name: 'v1.0.1',
       version_date: '2020-02-25',
       name: 'Stats for Tags',
       description: 'View stats for your tags by month, category, and tags.',
-      sheet_name: 'Stats for Tags'
+      sheets: ['Stats for Tags']
     };
   }
 

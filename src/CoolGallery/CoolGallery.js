@@ -18,18 +18,17 @@ class CoolGallery {
   }
 
   copyTemplate () {
-    SpreadsheetService.copySheetsFromSource(
-      this._metadata.id,
-      [this._metadata.sheet_name]
-    );
-
+    const metadata = this._metadata;
+    SpreadsheetService.copySheetsFromSource(metadata.template_id, metadata.sheets);
     SpreadsheetApp.flush();
     return this;
   }
 
   deleteTemplate () {
-    const sheet = this._spreadsheet.getSheetByName(this._metadata.sheet_name);
-    if (sheet) this._spreadsheet.deleteSheet(sheet);
+    for (const name of this._metadata.sheets) {
+      const sheet = this._spreadsheet.getSheetByName(name);
+      if (sheet) this._spreadsheet.deleteSheet(sheet);
+    }
 
     SpreadsheetApp.flush();
     return this;
@@ -47,16 +46,22 @@ class CoolGallery {
   }
 
   isAvailable () {
-    return SpreadsheetService.isSpreadsheetAvailable(this._metadata.id);
+    return SpreadsheetService.isSpreadsheetAvailable(this._metadata.template_id);
   }
 
   isInstalled () {
-    return !!this._spreadsheet.getSheetByName(this._metadata.sheet_name);
+    for (const name of this._metadata.sheets) {
+      if (this._spreadsheet.getSheetByName(name)) return true;
+    }
+
+    return false;
   }
 
   makeConfig () {
     this._sheets = [];
-    this._sheets.push(this._spreadsheet.getSheetByName(this._metadata.sheet_name));
+    for (const name of this._metadata.sheets) {
+      this._sheets.push(this._spreadsheet.getSheetByName(name));
+    }
 
     this._sheet = this._sheets[0];
 
