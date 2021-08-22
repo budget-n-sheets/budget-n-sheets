@@ -3,11 +3,15 @@ class SetupProgress {
   }
 
   copyTemplate () {
+    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const sheets = spreadsheet.getSheets();
+
     SpreadsheetService.copySheetsFromSource(
       APPS_SCRIPT_GLOBAL.template_id,
       APPS_SCRIPT_GLOBAL.template_sheets
     );
 
+    sheets.forEach(sheet => spreadsheet.deleteSheet(sheet));
     SpreadsheetApp.flush();
     return this;
   }

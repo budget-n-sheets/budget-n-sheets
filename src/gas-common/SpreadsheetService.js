@@ -1,16 +1,13 @@
 class SpreadsheetService {
-  static copySheetsFromSource (sourceId, sheetNames) {
-    const source = SpreadsheetApp.openById(sourceId);
+  static copySheetsFromSource (id, names) {
+    const source = SpreadsheetApp.openById(id);
     const destination = SpreadsheetApp2.getActiveSpreadsheet();
-    const sheets = destination.getSheets();
 
-    sheetNames.forEach(name => {
+    names.forEach(name => {
       source.getSheetByName(name)
         .copyTo(destination)
         .setName(name);
     });
-
-    sheets.forEach(sheet => destination.deleteSheet(sheet));
   }
 
   static deleteAllSheets () {
