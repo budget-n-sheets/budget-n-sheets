@@ -83,7 +83,7 @@
       google.script.run
         .withSuccessHandler(listTemplates)
         .withFailureHandler(showError)
-        .getGalleryTemplates();
+        .coolGalleryService({ job: 'list' });
     });
 
     function listTemplates(list) {
