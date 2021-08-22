@@ -50,6 +50,8 @@
 
     <div id="content" style="margin-bottom:4.7em;">
       <div class="panel" id="panel_List">
+        <div id="box_Templates">
+        </div>
       </div>
 
 
@@ -96,11 +98,11 @@
         item += '<span class="gray">' + template.version_date + '</span><br>';
         item += '<span class="gray">' + template.version_name + '</span>';
         item += '</div></div><div class="table_row"><div class="item_cell item_menu">';
-        if (template.preview_id) item += '<a href="https://docs.google.com/spreadsheets/d/e/' + template.preview_id + '/pubhtml" target="_blank">Preview</a>';
+        if (template.preview_id) item += '<a href="https://docs.google.com/spreadsheets/d/e/' + template.preview_id + '/pubhtml" target="_blank">Preview</a> ';
         item += '<a class="m-la" id="' + key + '">Import</a>';
         item += '</div></div></div>';
 
-        $('#panel_List').append(item);
+        $('#box_Templates').append(item);
       }
 
       $('#panel_List').fadeIn('fast')
@@ -108,19 +110,13 @@
         .hide();
     }
 
-    $(document).on('click', '.m-la', function() {
-      if ($('.m-la').hasClass('lock')) return;
-      $('.m-la').addClass('lock');
-
+    $('.m-la').click(function() {
       $('#content').css('opacity', 0.6);
 
       google.script.run
-        .withSuccessHandler(function() {
-          $('.m-la').removeClass('lock');
-          $('#content').css('opacity', 1);
-        })
+        .withSuccessHandler(e => $('#content').css('opacity', 1))
         .withFailureHandler(showError)
-        .coolGallery($(this).attr('id'));
+        .coolGallery(this.id);
     });
   </script>
 </body>

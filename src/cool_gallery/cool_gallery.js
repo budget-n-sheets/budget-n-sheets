@@ -18,21 +18,17 @@ function getGalleryTemplates () {
 }
 
 function coolGallery (option) {
-  const ui = SpreadsheetApp2.getUi();
-
-  const info = APPS_SCRIPT_GLOBAL.cool_gallery[option];
-  if (!info) throw new Error('Details of page not found.');
-
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(200);
   } catch (err) {
-    ui.alert(
-      "Can't import analytics page",
-      'Add-on is busy. Try again in a moment.',
-      ui.ButtonSet.OK);
     return;
   }
+
+  const info = APPS_SCRIPT_GLOBAL.cool_gallery[option];
+  if (!info) throw new Error('Details of page not found.');
+
+  const ui = SpreadsheetApp2.getUi();
 
   const status = importGalleryTemplate_(info.id, info.sheet_name);
   lock.releaseLock();
