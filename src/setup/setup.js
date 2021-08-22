@@ -59,24 +59,3 @@ function setupService (uuid, payload) {
 
   console.timeEnd('setup/' + payload.protocol);
 }
-
-function setupPrepare_ (spreadseetName) {
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  spreadsheet.rename(spreadseetName);
-
-  PropertiesService3.document().deleteAllProperties();
-  CacheService3.document().removeAll(CACHE_KEYS);
-
-  Triggers.deleteAllUserTriggers();
-
-  const metadata = spreadsheet.createDeveloperMetadataFinder()
-    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
-    .find();
-
-  for (let i = 0; i < metadata.length; i++) {
-    metadata[i].remove();
-  }
-
-  deleteAllSheets_();
-  copySheetsFromSource_();
-}
