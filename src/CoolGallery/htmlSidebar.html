@@ -110,7 +110,7 @@
         .hide();
     }
 
-    $('.m-la').click(function() {
+    $(document).on('click', '.m-la', function() {
       $('#content').css('opacity', 0.6);
 
       google.script.run
