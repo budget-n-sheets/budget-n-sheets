@@ -116,7 +116,7 @@
       google.script.run
         .withSuccessHandler(e => $('#content').css('opacity', 1))
         .withFailureHandler(showError)
-        .coolGallery(this.id);
+        .coolGalleryService({ job: 'get', id: this.id });
     });
   </script>
 </body>

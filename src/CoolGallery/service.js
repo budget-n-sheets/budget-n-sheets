@@ -7,6 +7,9 @@ function coolGalleryService (payload) {
   }
 
   switch (payload.job) {
+    case 'get':
+      CoolGalleryService.getCoolTemplate(payload.id);
+      break;
     case 'list':
       return CoolGalleryMetadata.getAll();
 
