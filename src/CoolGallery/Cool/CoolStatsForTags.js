@@ -4,7 +4,7 @@ class CoolStatsForTags extends CoolGallery {
     super(metadata);
   }
 
-  build () {
+  buildPart1_ () {
     const sheet = this._sheets[0];
     let chart, options;
 
@@ -77,19 +77,6 @@ class CoolStatsForTags extends CoolGallery {
       .setOption('width', 783);
     sheet.insertChart(chart.build());
 
-    const sheetTags = this._spreadsheet.getSheetByName('Tags');
-    const n = sheetTags.getMaxRows();
-    if (n > 1) {
-      const range = sheetTags.getRange(2, 5, n - 1, 1);
-
-      const rule = SpreadsheetApp.newDataValidation()
-        .requireValueInRange(range, true)
-        .setAllowInvalid(false)
-        .build();
-
-      sheet.getRange(92, 2, 1, 2).setDataValidation(rule);
-    }
-
     sheet.getRange(92, 4).setFormula('IFERROR(MATCH(B92; Tags!E1:E; 0); 0)');
     sheet.getRange(95, 4).setFormula('IF(D92 > 0; ARRAYFORMULA(ABS(TRANSPOSE(OFFSET(Tags!E1; D92 - 1; 1; 1; 12)))); )');
     sheet.getRange(107, 4).setFormula('IF(D92 > 0; ARRAYFORMULA(ABS(TRANSPOSE(OFFSET(Tags!S1; D92 - 1; 0; 1; 2)))); )');
@@ -116,5 +103,32 @@ class CoolStatsForTags extends CoolGallery {
     sheet.insertChart(chart.build());
 
     sheet.setTabColor('#e69138');
+  }
+
+  buildTags_ () {
+    const sheet = this._spreadsheet.getSheetByName('Tags');
+    if (!sheet) return;
+
+    const numRows = sheet.getMaxRows() - 1;
+    if (numRows < 1) return;
+
+    const range = sheetTags.getRange(2, 5, numRows, 1);
+    const rule = SpreadsheetApp.newDataValidation()
+      .requireValueInRange(range, true)
+      .setAllowInvalid(false)
+      .build();
+
+    this._sheets[0].getRange(92, 2, 1, 2).setDataValidation(rule);
+  }
+
+  build () {
+    this.buildPart1_();
+    this.buildTags_();
+  }
+
+  makeConfig () {
+    this.config_();
+
+    return this;
   }
 }

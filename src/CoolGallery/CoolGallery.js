@@ -17,6 +17,17 @@ class CoolGallery {
     }
   }
 
+  config_ () {
+    this._sheets = [];
+    for (const name of this._metadata.sheets) {
+      this._sheets.push(this._spreadsheet.getSheetByName(name));
+    }
+
+    this._sheet = this._sheets[0];
+
+    return this;
+  }
+
   copyTemplate () {
     const metadata = this._metadata;
     SpreadsheetService.copySheetsFromSource(metadata.template_id, metadata.sheets);
@@ -55,16 +66,5 @@ class CoolGallery {
     }
 
     return false;
-  }
-
-  makeConfig () {
-    this._sheets = [];
-    for (const name of this._metadata.sheets) {
-      this._sheets.push(this._spreadsheet.getSheetByName(name));
-    }
-
-    this._sheet = this._sheets[0];
-
-    return this;
   }
 }

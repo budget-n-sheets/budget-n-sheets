@@ -4,48 +4,43 @@ class CoolFilterByTag extends CoolGallery {
     super(metadata);
   }
 
-  build () {
+  buildPart1_ () {
     const sheet = this._sheets[0];
 
-    const num_acc = SettingsConst.getValueOf('number_accounts');
-    const dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
-
-    const header = 'D8';
-    const dec_c = (dec_p ? ', ' : ' \\ ');
+    let formula = '';
 
     let i = 0;
-    let formula = '';
     while (i < 12) {
-      let aux1 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MONTH_NAME.short[i] + '-"; ' + MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 1, -1, 1) + '); "-"))' + dec_c;
-      aux1 += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 2, -1, 1) + dec_c;
-      aux1 += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 5, -1, 1) + dec_c;
+      let aux1 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MONTH_NAME.short[i] + '-"; ' + MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 1, -1, 1) + '); "-"))' + this.dec_p;
+      aux1 += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 2, -1, 1) + this.dec_p;
+      aux1 += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 5, -1, 1) + this.dec_p;
       aux1 += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 3, -1, 2);
 
-      aux1 = '{' + aux1 + '}; REGEXMATCH(' + MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 4, -1, 1) + '; ' + header + ')';
+      aux1 = '{' + aux1 + '}; REGEXMATCH(' + MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 4, -1, 1) + '; ' + this.header + ')';
       aux1 = 'FILTER(' + aux1 + ')';
-      aux1 = 'IFNA(' + aux1 + '; {""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""})';
+      aux1 = 'IFNA(' + aux1 + '; {""' + this.dec_p + '""' + this.dec_p + '""' + this.dec_p + '""' + this.dec_p + '""' + this.dec_p + '""})';
       aux1 = 'SORT(' + aux1 + '; 2; TRUE; 4; TRUE; 5; TRUE); \n';
       formula += aux1;
 
       for (let k = 0; k < num_acc; k++) {
-        let aux2 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MONTH_NAME.short[i] + '-"; ' + MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 6 + 5 * k, -1, 1) + '); "-"))' + dec_c;
-        aux2 += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 7 + 5 * k, -1, 1) + dec_c;
-        aux2 += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 10 + 5 * k, -1, 1) + dec_c;
+        let aux2 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MONTH_NAME.short[i] + '-"; ' + MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 6 + 5 * k, -1, 1) + '); "-"))' + this.dec_p;
+        aux2 += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 7 + 5 * k, -1, 1) + this.dec_p;
+        aux2 += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 10 + 5 * k, -1, 1) + this.dec_p;
         aux2 += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 8 + 5 * k, -1, 2);
 
-        aux2 = '{' + aux2 + '}; REGEXMATCH(' + MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 9 + 5 * k, -1, 1) + '; ' + header + ')';
+        aux2 = '{' + aux2 + '}; REGEXMATCH(' + MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 9 + 5 * k, -1, 1) + '; ' + this.header + ')';
         aux2 = 'FILTER(' + aux2 + ')';
-        aux2 = 'IFNA(' + aux2 + '; {""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""})';
+        aux2 = 'IFNA(' + aux2 + '; {""' + this.dec_p + '""' + this.dec_p + '""' + this.dec_p + '""' + this.dec_p + '""' + this.dec_p + '""})';
         aux2 = 'SORT(' + aux2 + '; 2; TRUE; 4; TRUE; 5; TRUE); \n';
         formula += aux2;
       }
 
-      let aux3 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MONTH_NAME.short[i] + '-"; Cards!' + RangeUtils.rollA1Notation(6, 1 + 6 * i, -1, 1) + '); "-"))' + dec_c;
+      let aux3 = 'ARRAYFORMULA(SPLIT(CONCAT("' + MONTH_NAME.short[i] + '-"; Cards!' + RangeUtils.rollA1Notation(6, 1 + 6 * i, -1, 1) + '); "-"))' + this.dec_p;
       aux3 += 'Cards!' + RangeUtils.rollA1Notation(6, 2 + 6 * i, -1, 4);
 
-      aux3 = '{' + aux3 + '}; REGEXMATCH(Cards!' + RangeUtils.rollA1Notation(6, 5 + 6 * i, -1, 1) + '; ' + header + ')';
+      aux3 = '{' + aux3 + '}; REGEXMATCH(Cards!' + RangeUtils.rollA1Notation(6, 5 + 6 * i, -1, 1) + '; ' + this.header + ')';
       aux3 = 'FILTER(' + aux3 + ')';
-      aux3 = 'IFNA(' + aux3 + '; {""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""' + dec_c + '""})';
+      aux3 = 'IFNA(' + aux3 + '; {""' + this.dec_p + '""' + this.dec_p + '""' + this.dec_p + '""' + this.dec_p + '""' + this.dec_p + '""})';
       aux3 = 'SORT(' + aux3 + '; 2; TRUE; 4; TRUE; 5; TRUE); \n';
       formula += aux3;
 
@@ -55,25 +50,39 @@ class CoolFilterByTag extends CoolGallery {
     formula = formula.slice(0, -3);
     formula = 'IF(D8 = ""; ""; QUERY({\n' + formula + '\n}; "select * where Col6 is not null"))';
 
-    sheet.getRange('B12').setFormula(formula);
+    sheet.setTabColor('#e69138').getRange('B12').setFormula(formula);
+  }
 
-    const sheetTags = this._spreadsheet.getSheetByName('Tags');
-    let n;
+  buildTags_ () {
+    const sheet = this._spreadsheet.getSheetByName('Tags');
+    if (!sheet) return;
 
-    if (sheetTags) n = sheetTags.getMaxRows();
-    else n = 0;
+    const numRows = sheet.getMaxRows() - 1;
+    if (numRows < 1) return;
 
-    if (n > 1) {
-      const range = sheetTags.getRange(2, 5, n - 1, 1);
+    const range = sheet.getRange(2, 5, numRows, 1);
+    const rule = SpreadsheetApp.newDataValidation()
+      .requireValueInRange(range, true)
+      .setAllowInvalid(true)
+      .build();
 
-      const rule = SpreadsheetApp.newDataValidation()
-        .requireValueInRange(range, true)
-        .setAllowInvalid(true)
-        .build();
+    this._sheets[0].getRange(this.header).setDataValidation(rule);
+  }
 
-      sheet.getRange('D8').setDataValidation(rule);
-    }
+  build () {
+    this.buildPart1_();
+    this.buildTags_();
+  }
 
-    sheet.setTabColor('#e69138');
+  makeConfig () {
+    this.config_();
+
+    this.num_acc = SettingsConst.getValueOf('number_accounts');
+    this.dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
+
+    this.header = 'D8';
+    this.dec_p = (this.dec_s ? ', ' : ' \\ ');
+
+    return this;
   }
 }
