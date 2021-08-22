@@ -1,22 +1,3 @@
-function getGalleryTemplates () {
-  const gallery = APPS_SCRIPT_GLOBAL.cool_gallery;
-  const list = {};
-
-  for (const key in gallery) {
-    const template = gallery[key];
-
-    list[key] = {
-      name: template.name,
-      description: template.description,
-      preview_id: template.preview_id,
-      version_name: template.version_name,
-      version_date: template.version_date
-    };
-  }
-
-  return list;
-}
-
 function coolGallery (option) {
   const lock = LockService.getDocumentLock();
   try {
