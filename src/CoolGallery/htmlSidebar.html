@@ -83,7 +83,7 @@
       google.script.run
         .withSuccessHandler(listTemplates)
         .withFailureHandler(showError)
-        .getGalleryTemplates();
+        .coolGalleryService({ job: 'list' });
     });
 
     function listTemplates(list) {
@@ -110,13 +110,13 @@
         .hide();
     }
 
-    $('.m-la').click(function() {
+    $(document).on('click', '.m-la', function() {
       $('#content').css('opacity', 0.6);
 
       google.script.run
         .withSuccessHandler(e => $('#content').css('opacity', 1))
         .withFailureHandler(showError)
-        .coolGallery(this.id);
+        .coolGalleryService({ job: 'get', id: this.id });
     });
   </script>
 </body>

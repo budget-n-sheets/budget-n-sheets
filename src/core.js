@@ -78,7 +78,7 @@ function showPanelQuickstart () {
 function showPanelAnalytics () {
   if (onlineUpdate_()) return;
 
-  const htmlOutput = HtmlService2.createTemplateFromFile('cool_gallery/htmlCoolGallery')
+  const htmlOutput = HtmlService2.createTemplateFromFile('CoolGallery/htmlSidebar')
     .assignReservedHref()
     .evaluate()
     .setTitle('BnS Gallery');
