@@ -68,7 +68,7 @@ function postEventsForDate_ (date) {
     if (sheet) new LedgerCards(sheet).mergeTransactions(mm, cards);
   }
 
-  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(Consts.month_name.short[mm]);
   if (!sheet) return;
 
   const ledger = new LedgerAccounts(sheet);
@@ -88,7 +88,7 @@ function treatLayout_ (yyyy, mm) {
 
   const sheets = [];
   for (i = 0; i < 12; i++) {
-    sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+    sheets[i] = spreadsheet.getSheetByName(Consts.month_name.short[i]);
   }
 
   if (mm === 0) {

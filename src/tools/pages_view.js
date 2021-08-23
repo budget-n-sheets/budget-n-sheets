@@ -44,7 +44,7 @@ function hideSheets_ (a) {
     mm = Utils.getLocaleDate().getMonth();
   } else {
     sheet = SpreadsheetApp.getActiveSheet();
-    mm = MONTH_NAME.short.indexOf(sheet.getName());
+    mm = Consts.month_name.short.indexOf(sheet.getName());
     if (mm === -1) {
       SpreadsheetApp2.getUi().alert(
         "Can't collapse pages view",
@@ -58,7 +58,7 @@ function hideSheets_ (a) {
   const delta = Utils.getMonthDelta(mm);
 
   for (let i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+    sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);
     if (sheet) {
       if (i < mm + delta[0] || i > mm + delta[1]) sheet.hideSheet();
       else sheet.showSheet();
@@ -70,7 +70,7 @@ function showSheets_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   for (let i = 0; i < 12; i++) {
-    const sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+    const sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);
     if (sheet) sheet.showSheet();
   }
 }

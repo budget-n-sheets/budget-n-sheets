@@ -68,11 +68,11 @@ function playQuickCalendar_ (n) {
     ui.ButtonSet.YES_NO);
   if (response === ui.Button.NO) return;
 
-  const yyyy = DATE_NOW.getFullYear();
+  const yyyy = Consts.date.getFullYear();
   const financial_year = SettingsConst.getValueOf('financial_year');
 
   if (yyyy === financial_year) {
-    mm = DATE_NOW.getMonth() + 1;
+    mm = Consts.date.getMonth() + 1;
   } else if (yyyy < financial_year) {
     mm = SettingsUser.getValueOf('initial_month');
   } else {

@@ -3,7 +3,7 @@ function toolResumeActivity_ () {
   if (onlineUpdate_()) return;
 
   const name = SpreadsheetApp.getActiveSheet().getSheetName();
-  const mm = MONTH_NAME.short.indexOf(name);
+  const mm = Consts.month_name.short.indexOf(name);
 
   let mm0 = mm;
   let mm1 = mm;

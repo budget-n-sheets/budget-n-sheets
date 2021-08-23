@@ -16,7 +16,7 @@ const QUICKSTART_DATA_STATEMENTS = Object.freeze({
 function playQuickStatements_ (n) {
   let lastRow, col, val;
 
-  const name = (SettingsConst.getValueOf('financial_year') === DATE_NOW.getFullYear() ? MONTH_NAME.short[DATE_NOW.getMonth()] : MONTH_NAME.short[0]);
+  const name = (SettingsConst.getValueOf('financial_year') === Consts.date.getFullYear() ? Consts.month_name.short[Consts.date.getMonth()] : Consts.month_name.short[0]);
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   const sheet = spreadsheet.getSheetByName(name);

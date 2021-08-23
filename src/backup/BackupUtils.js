@@ -16,7 +16,7 @@ class BackupUtils {
     const scriptlet = {
       spreadsheet_url: spreadsheet.getUrl(),
       spreadsheet_name: spreadsheet.getName(),
-      time: DATE_NOW
+      time: Consts.date
     };
 
     const htmlMessage = HtmlService2.createTemplateFromFile('backup/htmlBackupEmail')

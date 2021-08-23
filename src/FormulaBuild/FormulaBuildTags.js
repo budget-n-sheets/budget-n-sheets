@@ -55,14 +55,14 @@ class FormulaBuildTagsTable {
 
     bsblank = RangeUtils.rollA1Notation(2 + _h * mm, 6);
 
-    concat_tags = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + RangeUtils.rollA1Notation(5, 4, numRowsMonth, 1) + '; _Backstage!' + bsblank + '; 1)';
-    concat_value_tags = '{ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + RangeUtils.rollA1Notation(5, 3, numRowsMonth, 2) + '; _Backstage!' + bsblank + '; 2)';
+    concat_tags = '{ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + RangeUtils.rollA1Notation(5, 4, numRowsMonth, 1) + '; _Backstage!' + bsblank + '; 1)';
+    concat_value_tags = '{ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + RangeUtils.rollA1Notation(5, 3, numRowsMonth, 2) + '; _Backstage!' + bsblank + '; 2)';
 
     for (let k = 0; k < number_accounts; k++) {
       const bsblank = RangeUtils.rollA1Notation(2 + _h * mm, 11 + _w * k);
 
-      concat_tags += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + RangeUtils.rollA1Notation(5, 9 + 5 * k, numRowsMonth, 1) + '; _Backstage!' + bsblank + '; 1)';
-      concat_value_tags += '; ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + RangeUtils.rollA1Notation(5, 8 + 5 * k, numRowsMonth, 2) + '; _Backstage!' + bsblank + '; 2)';
+      concat_tags += '; ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + RangeUtils.rollA1Notation(5, 9 + 5 * k, numRowsMonth, 1) + '; _Backstage!' + bsblank + '; 1)';
+      concat_value_tags += '; ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + RangeUtils.rollA1Notation(5, 8 + 5 * k, numRowsMonth, 2) + '; _Backstage!' + bsblank + '; 2)';
     }
 
     bsblank = RangeUtils.rollA1Notation(2 + _h * mm, 6 + _w + _w * number_accounts);
@@ -72,7 +72,7 @@ class FormulaBuildTagsTable {
 
     formula = 'IFERROR(FILTER(' + concat_value_tags + '; NOT(ISBLANK(' + concat_tags + '))); "")';
     formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';
-    formula = '{"' + MONTH_NAME.long[mm] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
+    formula = '{"' + Consts.month_name.long[mm] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
 
     return formula;
   }

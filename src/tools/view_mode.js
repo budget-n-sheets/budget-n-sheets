@@ -53,7 +53,7 @@ function viewModeSimple_ () {
   const num_acc = SettingsConst.getValueOf('number_accounts');
 
   for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+    sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);
     if (!sheet) continue;
     if (sheet.getMaxRows() < 3) continue;
 
@@ -122,7 +122,7 @@ function viewModeComplete_ () {
   const num_acc = SettingsConst.getValueOf('number_accounts');
 
   for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+    sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);
     if (!sheet) continue;
     if (sheet.getMaxRows() < 3) continue;
 

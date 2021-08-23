@@ -16,8 +16,8 @@ class FormulaBuildBackstageAccounts {
   static balance (mm, value, balance, bsblank) {
     let formula;
 
-    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + value + '; ' + bsblank + '; 1)))';
-    formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + value + '; ' + bsblank + '; 1); ' + formula + ')';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1)))';
+    formula = 'FILTER(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1); ' + formula + ')';
     formula = balance + ' + IFERROR(SUM(' + formula + '); 0)';
 
     return formula;
@@ -26,9 +26,9 @@ class FormulaBuildBackstageAccounts {
   static expensesIgn (mm, value, tags, bsblank) {
     let formula;
 
-    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + tags + '; ' + bsblank + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
-    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + value + '; ' + bsblank + '; 1))); ' + formula;
-    formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + value + '; ' + bsblank + '; 1); ' + formula + ')';
+    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + tags + '; ' + bsblank + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1))); ' + formula;
+    formula = 'FILTER(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1); ' + formula + ')';
     formula = 'IFERROR(SUM(' + formula + '); 0)';
 
     return formula;
@@ -37,15 +37,15 @@ class FormulaBuildBackstageAccounts {
   static bsreport (mm, tags, value_tags, bsblank) {
     let formula;
 
-    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + tags + '; ' + bsblank + '; 1)))';
-    formula = 'IFERROR(FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + value_tags + '; ' + bsblank + '; 2); ' + formula + '); "")';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + tags + '; ' + bsblank + '; 1)))';
+    formula = 'IFERROR(FILTER(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value_tags + '; ' + bsblank + '; 2); ' + formula + '); "")';
     formula = 'BSREPORT(TRANSPOSE(' + formula + '))';
 
     return formula;
   }
 
   static bsblank (mm, header, value) {
-    return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + MONTH_NAME.short[mm] + '!' + value + '); ROW(' + MONTH_NAME.short[mm] + '!' + value + ') - ROW(' + MONTH_NAME.short[mm] + '!' + header + '); FALSE)); ROWS(' + MONTH_NAME.short[mm] + '!' + value + '))';
+    return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + Consts.month_name.short[mm] + '!' + value + '); ROW(' + Consts.month_name.short[mm] + '!' + value + ') - ROW(' + Consts.month_name.short[mm] + '!' + header + '); FALSE)); ROWS(' + Consts.month_name.short[mm] + '!' + value + '))';
   }
 }
 
@@ -142,7 +142,7 @@ class FormulaBuildBackstageCards {
 class FormulaBuildBackstageWallet {
   static bsblank (mm, value) {
     const header = 'C4'; // RangeUtils.rollA1Notation(4, 3);
-    return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + MONTH_NAME.short[mm] + '!' + value + '); ROW(' + MONTH_NAME.short[mm] + '!' + value + ') - ROW(' + MONTH_NAME.short[mm] + '!' + header + '); FALSE)); ROWS(' + MONTH_NAME.short[mm] + '!' + value + '))';
+    return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + Consts.month_name.short[mm] + '!' + value + '); ROW(' + Consts.month_name.short[mm] + '!' + value + ') - ROW(' + Consts.month_name.short[mm] + '!' + header + '); FALSE)); ROWS(' + Consts.month_name.short[mm] + '!' + value + '))';
   }
 
   static expensesIgn (numRows, mm, bsblank) {
@@ -151,9 +151,9 @@ class FormulaBuildBackstageWallet {
 
     let formula;
 
-    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + tags + '; ' + bsblank + '; 1); "#ign"))';
-    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + value + '; ' + bsblank + '; 1))); ' + formula;
-    formula = 'FILTER(ARRAY_CONSTRAIN(' + MONTH_NAME.short[mm] + '!' + value + '; ' + bsblank + '; 1); ' + formula + ')';
+    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + tags + '; ' + bsblank + '; 1); "#ign"))';
+    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1))); ' + formula;
+    formula = 'FILTER(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1); ' + formula + ')';
     formula = 'SUM(IFERROR(' + formula + '; 0))';
 
     return formula;

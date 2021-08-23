@@ -402,14 +402,14 @@ function update_v0m40p0s1_ () {
     let range_accounts = '';
 
     for (let i = 0; i < 12; i++) {
-      const month = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+      const month = spreadsheet.getSheetByName(Consts.month_name.short[i]);
       if (!month) continue;
 
       const max = month.getMaxRows() - 4;
       if (max < 1) continue;
 
       for (let k = 0; k <= num_acc; k++) {
-        range_accounts += MONTH_NAME.short[i] + '!' + RangeUtils.rollA1Notation(5, 2 + 5 * k, max, 1) + '; ';
+        range_accounts += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 2 + 5 * k, max, 1) + '; ';
 
         month.getRange(5, 2 + 5 * k, max, 1)
           .clearDataValidations()

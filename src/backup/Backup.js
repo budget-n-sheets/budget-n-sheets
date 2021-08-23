@@ -66,7 +66,7 @@ class Backup {
     const numTables = 1 + SettingsConst.getValueOf('number_accounts');
 
     for (let mm = 0; mm < 12; mm++) {
-      const sheet = this._spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
+      const sheet = this._spreadsheet.getSheetByName(Consts.month_name.short[mm]);
       if (!sheet) continue;
 
       const numRows = sheet.getLastRow() - 4;
@@ -131,7 +131,7 @@ class Backup {
   setMeta_ () {
     this._backup.backup = {
       version: APPS_SCRIPT_GLOBAL.backup_version,
-      date_request: DATE_NOW.getTime(),
+      date_request: Consts.date.getTime(),
       spreadsheet_id: this._spreadsheet.getId(),
       spreadsheet_title: this._spreadsheet.getName()
     };

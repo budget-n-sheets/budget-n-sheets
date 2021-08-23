@@ -197,11 +197,11 @@ function getCalendarEventsForCashFlow_ (financial_year, mm) {
   if (!calendar) return [];
 
   const end = new Date(financial_year, mm + 1, 1);
-  if (DATE_NOW >= end) return [];
+  if (Consts.date >= end) return [];
 
   let start = new Date(financial_year, mm, 1);
-  if (start <= DATE_NOW) {
-    start = new Date(financial_year, mm, DATE_NOW.getDate() + 1);
+  if (start <= Consts.date) {
+    start = new Date(financial_year, mm, Consts.date.getDate() + 1);
     if (start > end) return [];
   }
 

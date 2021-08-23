@@ -61,7 +61,7 @@ function showPanelQuickstart () {
   const financial_year = SettingsConst.getValueOf('financial_year');
 
   const scriptlet = {
-    isCurrent: (DATE_NOW < new Date(financial_year, 11, 1)),
+    isCurrent: (Consts.date < new Date(financial_year, 11, 1)),
     dec_p: (dec_p ? '.' : ','),
     dec_n: (dec_p ? 'dot' : 'comma')
   };

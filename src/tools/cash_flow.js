@@ -30,7 +30,7 @@ function validateUpdateCashFlow_ () {
     return;
   }
 
-  const mm = MONTH_NAME.short.indexOf(name);
+  const mm = Consts.month_name.short.indexOf(name);
 
   if (mm === -1) {
     SpreadsheetApp2.getUi().alert(
@@ -173,7 +173,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
   let start, offset, first;
   let cc, c, i, j, k;
 
-  const sheet = spreadsheet.getSheetByName(MONTH_NAME.short[more.mm]);
+  const sheet = spreadsheet.getSheetByName(Consts.month_name.short[more.mm]);
   if (!sheet) return;
 
   const maxRows = sheet.getLastRow() - 4;
@@ -187,11 +187,11 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
   const table = sheet.getRange(5, 6, maxRows, 5 * num_acc).getValues();
 
   const end = new Date(more.yyyy, more.mm + 1, 1);
-  if (DATE_NOW >= end) first = 99;
+  if (Consts.date >= end) first = 99;
   else {
     start = new Date(more.yyyy, more.mm, 1);
-    if (start <= DATE_NOW) {
-      start = new Date(more.yyyy, more.mm, DATE_NOW.getDate() + 1);
+    if (start <= Consts.date) {
+      start = new Date(more.yyyy, more.mm, Consts.date.getDate() + 1);
       if (start > end) first = 99;
     } else {
       first = 0;

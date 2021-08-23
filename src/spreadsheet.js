@@ -41,7 +41,7 @@ function updateDecimalPlaces_ () {
   }
 
   for (let i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+    sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);
     if (!sheet) continue;
 
     max = sheet.getMaxRows() - 4;
@@ -161,7 +161,7 @@ function updateTabsColors (sheets, financial_year, yyyy, mm) {
 
     sheets = [];
     for (i = 0; i < 12; i++) {
-      sheets[i] = spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+      sheets[i] = spreadsheet.getSheetByName(Consts.month_name.short[i]);
     }
 
     financial_year = SettingsConst.getValueOf('financial_year');

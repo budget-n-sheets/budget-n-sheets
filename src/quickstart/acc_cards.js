@@ -54,8 +54,8 @@ function playQuickAccCards_ (n) {
   if (n === 3) {
     name = 'Cards';
   } else {
-    if (financial_year === DATE_NOW.getFullYear()) name = MONTH_NAME.short[DATE_NOW.getMonth()];
-    else name = MONTH_NAME.short[0];
+    if (financial_year === Consts.date.getFullYear()) name = Consts.month_name.short[Consts.date.getMonth()];
+    else name = Consts.month_name.short[0];
   }
 
   const sheet = spreadsheet.getSheetByName(name);
@@ -72,8 +72,8 @@ function playQuickAccCards_ (n) {
 
   if (n === 3) {
     if (lastRow < 5) lastRow = 5;
-    if (financial_year === DATE_NOW.getFullYear()) {
-      mm = DATE_NOW.getMonth();
+    if (financial_year === Consts.date.getFullYear()) {
+      mm = Consts.date.getMonth();
       if (mm === 0) mm = 1;
       else if (mm === 11) mm = 10;
     } else {

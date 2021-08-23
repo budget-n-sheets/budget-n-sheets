@@ -162,7 +162,7 @@ function processBackup_ (uuid, file, data) {
 
     spreadsheet_title: data.backup.spreadsheet_title,
     financial_year: data.const_properties.financial_year,
-    initial_month: MONTH_NAME.long[data.user_settings.initial_month],
+    initial_month: Consts.month_name.long[data.user_settings.initial_month],
     decimal_places: data.spreadsheet_settings.decimal_places,
     number_accounts: data.const_properties.number_accounts,
 
@@ -279,7 +279,7 @@ function restoreMonths_ (backup) {
   while (++mm < 12) {
     if (backup.ttt[mm] == null) continue;
 
-    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
+    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(Consts.month_name.short[mm]);
     insertRows.setSheet(sheet);
 
     for (k = 0; k < num_acc + 1; k++) {

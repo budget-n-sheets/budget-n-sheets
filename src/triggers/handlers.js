@@ -20,7 +20,7 @@ function onEditInstallable_ (e) {
     LogLog.error(err);
   }
 
-  if (name !== 'Quick Actions' && MONTH_NAME.short.indexOf(name) === -1) return;
+  if (name !== 'Quick Actions' && Consts.month_name.short.indexOf(name) === -1) return;
 
   if (name === 'Quick Actions') {
     try {
@@ -32,7 +32,7 @@ function onEditInstallable_ (e) {
     }
   } else {
     try {
-      const mm = MONTH_NAME.short.indexOf(name);
+      const mm = Consts.month_name.short.indexOf(name);
       const status = SettingsSpreadsheet.getValueOf('optimize_load');
       if (status == null || status[mm]) switchActivity_('resume', mm, mm);
     } catch (err) {
@@ -59,7 +59,7 @@ function quickActions_ (range, value) {
       break;
   }
 
-  const mm = MONTH_NAME.long.indexOf(value);
+  const mm = Consts.month_name.long.indexOf(value);
   if (mm === -1) return;
 
   switch (row) {

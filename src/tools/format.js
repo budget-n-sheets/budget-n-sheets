@@ -16,7 +16,7 @@ function validateFormatRegistry_ () {
       }
     }
   } else {
-    const mm = MONTH_NAME.short.indexOf(name);
+    const mm = Consts.month_name.short.indexOf(name);
 
     if (mm === -1) {
       SpreadsheetApp2.getUi().alert(
@@ -55,7 +55,7 @@ function formatTags_ () {
 }
 
 function formatAccounts_ (mm) {
-  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
+  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(Consts.month_name.short[mm]);
   if (!sheet) return;
 
   const num_acc = SettingsConst.getValueOf('number_accounts');
@@ -82,7 +82,7 @@ function formatAccounts_ (mm) {
     sortAccountsRange_(rangeOffset);
   }
 
-  const date1 = DATE_NOW.getTime();
+  const date1 = Consts.date.getTime();
   let date2 = SettingsConst.getValueOf('financial_year');
   date2 = new Date(date2, mm + 1, 0).getTime();
 

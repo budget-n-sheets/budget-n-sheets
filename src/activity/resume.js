@@ -71,7 +71,7 @@ function resumeActivity_ (mm0, mm1) {
 
   let mm = mm0 - 1;
   while (++mm <= mm1) {
-    const month = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
+    const month = spreadsheet.getSheetByName(Consts.month_name.short[mm]);
     if (!month) continue;
 
     const numRows = month.getMaxRows();
@@ -148,7 +148,7 @@ function resumeActivity_ (mm0, mm1) {
 
     let mm = mm0;
     while (++mm < actual_month) {
-      const month = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
+      const month = spreadsheet.getSheetByName(Consts.month_name.short[mm]);
       if (!month) continue;
 
       const numRows = month.getMaxRows();

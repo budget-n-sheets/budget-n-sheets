@@ -2,7 +2,7 @@ function playQuickCashFlow_ (n) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet;
 
-  const mm = (SettingsConst.getValueOf('financial_year') === DATE_NOW.getFullYear() ? DATE_NOW.getMonth() : 0);
+  const mm = (SettingsConst.getValueOf('financial_year') === Consts.date.getFullYear() ? Consts.date.getMonth() : 0);
 
   sheet = spreadsheet.getSheetByName('Cash Flow');
   if (!sheet) {
@@ -11,9 +11,9 @@ function playQuickCashFlow_ (n) {
   }
   sheet.getRange(1, 2 + 4 * mm, 1, 3).activate();
 
-  sheet = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
+  sheet = spreadsheet.getSheetByName(Consts.month_name.short[mm]);
   if (!sheet) {
-    alertQuickstartSheetMissing(MONTH_NAME.short[mm]);
+    alertQuickstartSheetMissing(Consts.month_name.short[mm]);
     return;
   }
 

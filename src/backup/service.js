@@ -33,7 +33,7 @@ function backupService (password) {
 
   const blob = SjclService.encrypt(
     password,
-    'budget-n-sheets-' + Utilities.formatDate(DATE_NOW, 'GMT', 'yyyy-MM-dd-HH-mm-ss') + '.backup',
+    'budget-n-sheets-' + Utilities.formatDate(Consts.date, 'GMT', 'yyyy-MM-dd-HH-mm-ss') + '.backup',
     JSON.stringify(new Backup().makeBackup())
   );
 

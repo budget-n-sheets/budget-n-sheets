@@ -18,7 +18,7 @@ class ToolInsertRows {
         break;
     }
 
-    if (MONTH_NAME.short.indexOf(name) === -1) return 1;
+    if (Consts.month_name.short.indexOf(name) === -1) return 1;
     return new ToolInsertRowsMonth(sheet);
   }
 

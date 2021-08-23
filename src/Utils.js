@@ -3,7 +3,7 @@ class Utils {
     let timezone = SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetTimeZone();
     if (typeof timezone !== 'string' || timezone === '') timezone = 'GMT';
 
-    const formatDate = Utilities.formatDate(date || DATE_NOW, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+    const formatDate = Utilities.formatDate(date || Consts.date, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     return new Date(formatDate);
   }

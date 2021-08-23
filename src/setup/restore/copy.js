@@ -77,8 +77,8 @@ function processSpreadsheet_ (uuid, file_id) {
     last_updated: DriveApp.getFileById(file_id).getLastUpdated().toString(),
     spreadsheet_title: spreadsheet.getName(),
 
-    financial_year: DATE_NOW.getFullYear(),
-    initial_month: DATE_NOW.getMonth(),
+    financial_year: Consts.date.getFullYear(),
+    initial_month: Consts.date.getMonth(),
 
     accounts: [],
     cards: [],
@@ -122,7 +122,7 @@ function processSpreadsheet_ (uuid, file_id) {
 
   PropertiesService3.document().setProperty('settings_candidate', info);
 
-  info.initial_month = MONTH_NAME.long[info.initial_month];
+  info.initial_month = Consts.month_name.long[info.initial_month];
 
   info.accounts = info.accounts.join(', ');
   for (let i = 0; i < info.cards.length; i++) {
@@ -191,13 +191,13 @@ function copyMonths_ (spreadsheet) {
 
   let mm = -1;
   while (++mm < 12) {
-    const source = spreadsheet.getSheetByName(MONTH_NAME.short[mm]);
+    const source = spreadsheet.getSheetByName(Consts.month_name.short[mm]);
     if (!source) continue;
 
     const last = source.getLastRow();
     if (last < 5) continue;
 
-    const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(MONTH_NAME.short[mm]);
+    const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(Consts.month_name.short[mm]);
     insertRows.setSheet(destination).insertRowsTo(destination.getMaxRows());
 
     const values = source.getRange(5, 1, last - 4, 5 + 5 * number_accounts).getValues();

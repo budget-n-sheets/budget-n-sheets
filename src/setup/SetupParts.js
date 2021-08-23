@@ -4,9 +4,9 @@ class SetupParts {
     this._w = TABLE_DIMENSION.width;
 
     this._date = Object.freeze({
-      time: DATE_NOW.getTime(),
-      yyyy: DATE_NOW.getFullYear(),
-      mm: DATE_NOW.getMonth()
+      time: Consts.date.getTime(),
+      yyyy: Consts.date.getFullYear(),
+      mm: Consts.date.getMonth()
     });
 
     this._config = config;
@@ -310,7 +310,7 @@ class SetupParts {
 
     const sheets = [];
     for (i = 0; i < 12; i++) {
-      sheets[i] = this._spreadsheet.getSheetByName(MONTH_NAME.short[i]);
+      sheets[i] = this._spreadsheet.getSheetByName(Consts.month_name.short[i]);
     }
 
     sheet = this._spreadsheet.getSheetByName('Summary');
@@ -412,7 +412,7 @@ class SetupParts {
     SpreadsheetApp.flush();
 
     for (i = 0; i < 12; i++) {
-      sheet = this._spreadsheet.insertSheet(MONTH_NAME.short[i], 3 + i, { template: sheetTTT });
+      sheet = this._spreadsheet.insertSheet(Consts.month_name.short[i], 3 + i, { template: sheetTTT });
       sheets[i] = sheet;
 
       sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(_Backstage!$B' + (4 + this._h * i) + '))');
@@ -448,7 +448,7 @@ class SetupParts {
       const rangeOff = sheets[i].getRange(1, 1);
 
       for (k = 0; k < 1 + num_acc; k++) {
-        rangeOff.offset(0, 5 * k).setFormula('=' + MONTH_NAME.short[i - 1] + '!' + headers[k]);
+        rangeOff.offset(0, 5 * k).setFormula('=' + Consts.month_name.short[i - 1] + '!' + headers[k]);
       }
     }
 
@@ -768,7 +768,7 @@ class SetupParts {
       range_cards += 'Cards!' + RangeUtils.rollA1Notation(6, 2 + 6 * i, 400, 1) + '; ';
 
       for (let k = 0; k <= num_acc; k++) {
-        range_accounts += MONTH_NAME.short[i] + '!' + ranges[k] + '; ';
+        range_accounts += Consts.month_name.short[i] + '!' + ranges[k] + '; ';
       }
     }
 

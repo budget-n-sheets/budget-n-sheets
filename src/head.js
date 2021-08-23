@@ -1,10 +1,3 @@
-const MONTH_NAME = Object.freeze({
-  short: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-  long: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-});
-
-const DATE_NOW = new Date();
-
 const CACHE_KEYS = ['class_version2', 'admin_settings', 'user_settings', 'spreadsheet_settings', 'const_properties', 'db_accounts', 'db_cards', 'DB_CALENDARS', 'is_installed', 'load_cache'];
 
 const TABLE_DIMENSION = Object.freeze({ height: 10, width: 5 });
