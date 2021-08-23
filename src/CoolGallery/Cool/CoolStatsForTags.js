@@ -6,7 +6,7 @@ class CoolStatsForTags extends CoolGallery {
 
   buildPart1_ () {
     const sheet = this._sheets[0];
-    let chart, options;
+    let chart;
 
     sheet.getRange('E2').setFormula('_Settings!B4');
     sheet.getRange('E3').setFormula('_Settings!B6');
@@ -42,14 +42,17 @@ class CoolStatsForTags extends CoolGallery {
       .setOption('height', 399)
       .setOption('width', 696);
     sheet.insertChart(chart.build());
+  }
 
-    options = {
+  buildPart2_ () {
+    const sheet = this._sheets[0];
+    const options = {
       0: { color: '#cccccc', type: 'bars' },
       1: { color: '#4285f4', type: 'bars' },
       2: { color: '#ea4335', type: 'line' }
     };
 
-    chart = sheet.newChart()
+    const chart = sheet.newChart()
       .addRange(sheet.getRange('B55:B67'))
       .addRange(sheet.getRange('I55:K67'))
       .setNumHeaders(1)
@@ -63,8 +66,12 @@ class CoolStatsForTags extends CoolGallery {
       .setOption('height', 402)
       .setOption('width', 783);
     sheet.insertChart(chart.build());
+  }
 
-    chart = sheet.newChart()
+  buildPart3_ () {
+    const sheet = this._sheets[0];
+
+    const chart = sheet.newChart()
       .addRange(sheet.getRange('B74:B84'))
       .addRange(sheet.getRange('D74:D84'))
       .setNumHeaders(1)
@@ -76,18 +83,22 @@ class CoolStatsForTags extends CoolGallery {
       .setOption('height', 402)
       .setOption('width', 783);
     sheet.insertChart(chart.build());
+  }
+
+  buildPart4_ () {
+    const sheet = this._sheets[0];
 
     sheet.getRange(92, 4).setFormula('IFERROR(MATCH(B92; Tags!E1:E; 0); 0)');
     sheet.getRange(95, 4).setFormula('IF(D92 > 0; ARRAYFORMULA(ABS(TRANSPOSE(OFFSET(Tags!E1; D92 - 1; 1; 1; 12)))); )');
     sheet.getRange(107, 4).setFormula('IF(D92 > 0; ARRAYFORMULA(ABS(TRANSPOSE(OFFSET(Tags!S1; D92 - 1; 0; 1; 2)))); )');
 
-    options = {
+    const options = {
       0: { color: '#cccccc', type: 'bars' },
       1: { color: '#4285f4', type: 'bars' },
       2: { color: '#ea4335', type: 'line' }
     };
 
-    chart = sheet.newChart()
+    const chart = sheet.newChart()
       .addRange(sheet.getRange('B94:B106'))
       .addRange(sheet.getRange('I94:K106'))
       .setNumHeaders(1)
@@ -101,8 +112,6 @@ class CoolStatsForTags extends CoolGallery {
       .setOption('height', 402)
       .setOption('width', 783);
     sheet.insertChart(chart.build());
-
-    sheet.setTabColor('#e69138');
   }
 
   buildTags_ () {
@@ -123,7 +132,12 @@ class CoolStatsForTags extends CoolGallery {
 
   build () {
     this.buildPart1_();
+    this.buildPart2_();
+    this.buildPart3_();
+    this.buildPart4_();
     this.buildTags_();
+
+    this._sheets[0].setTabColor('#e69138');
   }
 
   makeConfig () {

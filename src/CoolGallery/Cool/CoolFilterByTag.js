@@ -50,7 +50,7 @@ class CoolFilterByTag extends CoolGallery {
     formula = formula.slice(0, -3);
     formula = 'IF(D8 = ""; ""; QUERY({\n' + formula + '\n}; "select * where Col6 is not null"))';
 
-    sheet.setTabColor('#e69138').getRange('B12').setFormula(formula);
+    sheet.getRange('B12').setFormula(formula);
   }
 
   buildTags_ () {
@@ -72,6 +72,8 @@ class CoolFilterByTag extends CoolGallery {
   build () {
     this.buildPart1_();
     this.buildTags_();
+
+    this._sheets[0].setTabColor('#e69138');
   }
 
   makeConfig () {
