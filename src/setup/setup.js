@@ -41,7 +41,7 @@ function setupService (uuid, payload) {
     template: Info.template.version
   };
   class_version2.script.beta = PATCH_THIS.beta_list.length;
-  PropertiesService3.document().setProperty('class_version2', class_version2);
+  CachedAccess.update('class_version2', class_version2);
 
   new BsAuth(spreadsheet).update();
 

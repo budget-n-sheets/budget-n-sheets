@@ -96,7 +96,7 @@ function seamlessUpdate_ () {
 }
 
 function isScriptUpToDate_ () {
-  const v0 = getClassVersion_('script');
+  const v0 = ClassVersion.getValueOf('script');
   const v1 = Info.apps_script.version;
 
   if (v0 === 1) return 2;
@@ -112,43 +112,6 @@ function isScriptUpToDate_ () {
     }
   }
 
-  return 0;
-}
-
-function getClassVersion_ (property) {
-  if (property !== 'script' && property !== 'template') {
-    console.warn("getClassVersion_(): Invalid 'property' value.", { property: property });
-    return 1;
-  }
-
-  const class_version2 = CachedAccess.get('class_version2');
-  return class_version2[property];
-}
-
-function setClassVersion_ (property, value) {
-  if (property !== 'script' && property !== 'template') {
-    console.warn("setClassVersion_(): Invalid 'property' value.", { property: property });
-    return 1;
-  }
-
-  const lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch (err) {
-    console.warn(err);
-    return 1;
-  }
-
-  const class_version2 = PropertiesService3.document().getProperty('class_version2');
-  if (!class_version2) {
-    console.warn("setClassVersion_(): Invalid 'class_version2' value.");
-    return 1;
-  }
-
-  class_version2[property] = value;
-
-  CachedAccess.update('class_version2', class_version2);
-  lock.releaseLock();
   return 0;
 }
 

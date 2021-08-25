@@ -28,13 +28,8 @@ function update_ () {
     return 1;
   }
 
-  const v0 = getClassVersion_('script');
+  const v0 = ClassVersion.getValueOf('script');
   const v1 = Info.apps_script.version;
-
-  if (v0 === 1) {
-    lock.releaseLock();
-    return 2;
-  }
 
   let ver, major, minor, patch;
   let mm, pp, r, t;
@@ -92,20 +87,8 @@ function update_ () {
     beta: r.b
   };
 
-  let ss, i;
-
-  i = 0;
-  ss = setClassVersion_('script', cell);
-  while (ss && ++i < 3) {
-    Utilities.sleep(Math.pow(3, i) * 1000);
-    ss = setClassVersion_('script', cell);
-  }
+  ClassVersion.setValueOf('script', cell);
 
   lock.releaseLock();
-  if (ss === 1) {
-    console.error('update_(): Update failed to set new script version.');
-    return 2;
-  }
-
   return r.r;
 }
