@@ -97,7 +97,7 @@ function seamlessUpdate_ () {
 
 function isScriptUpToDate_ () {
   const v0 = getClassVersion_('script');
-  const v1 = APPS_SCRIPT_GLOBAL.script_version;
+  const v1 = Info.apps_script.version;
 
   if (v0 === 1) return 2;
 
@@ -433,7 +433,7 @@ function update_v0m40p0s0_ () {
     let sheet = spreadsheet.getSheetByName('_Unique');
     if (sheet) spreadsheet.deleteSheet(sheet);
 
-    const template = SpreadsheetApp.openById(APPS_SCRIPT_GLOBAL.template_id);
+    const template = SpreadsheetApp.openById(Info.template.version);
 
     sheet = template.getSheetByName('_Unique')
       .copyTo(spreadsheet)

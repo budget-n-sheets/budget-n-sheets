@@ -34,20 +34,3 @@ const SPREADSHEET_SPECS = Object.freeze({
     }
   }
 });
-
-const APPS_SCRIPT_GLOBAL = Object.freeze({
-  script_version: {
-    major: 0,
-    minor: 42,
-    patch: 24
-  },
-
-  template_version: {
-    major: 0,
-    minor: 12,
-    patch: 0
-  },
-
-  template_id: '',
-  template_sheets: ['_Settings', '_Unique', 'Cards', 'Summary', 'TTT', 'Cash Flow', 'Tags', 'Quick Actions', '_Backstage', '_About BnS']
-});

@@ -14,7 +14,7 @@ class AppsScript {
   }
 
   static isTemplateAvailable () {
-    const b = SpreadsheetService.isSpreadsheetAvailable(APPS_SCRIPT_GLOBAL.template_id);
+    const b = SpreadsheetService.isSpreadsheetAvailable(Info.template.id);
     if (!b) throw new Error('Spreadsheet template is not available!');
     return b;
   }

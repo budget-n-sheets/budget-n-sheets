@@ -106,7 +106,7 @@ function showDialogAboutAddon () {
   let v0;
 
   if (AppsScript.isInstalled()) v0 = getClassVersion_('script');
-  else v0 = APPS_SCRIPT_GLOBAL.script_version;
+  else v0 = Info.apps_script.version;
 
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlAboutAddon')
     .assignReservedHref()

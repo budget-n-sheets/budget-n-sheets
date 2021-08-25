@@ -7,8 +7,8 @@ class SetupProgress {
     const sheets = spreadsheet.getSheets();
 
     SpreadsheetService.copySheetsFromSource(
-      APPS_SCRIPT_GLOBAL.template_id,
-      APPS_SCRIPT_GLOBAL.template_sheets
+      Info.template.id,
+      Info.template.sheets
     );
 
     sheets.forEach(sheet => spreadsheet.deleteSheet(sheet));

@@ -37,8 +37,8 @@ function setupService (uuid, payload) {
   }
 
   const class_version2 = {
-    script: APPS_SCRIPT_GLOBAL.script_version,
-    template: APPS_SCRIPT_GLOBAL.template_version
+    script: Info.apps_script.version,
+    template: Info.template.version
   };
   class_version2.script.beta = PATCH_THIS.beta_list.length;
   PropertiesService3.document().setProperty('class_version2', class_version2);

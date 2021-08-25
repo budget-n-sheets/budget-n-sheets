@@ -29,7 +29,7 @@ function update_ () {
   }
 
   const v0 = getClassVersion_('script');
-  const v1 = APPS_SCRIPT_GLOBAL.script_version;
+  const v1 = Info.apps_script.version;
 
   if (v0 === 1) {
     lock.releaseLock();
