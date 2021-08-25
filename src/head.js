@@ -48,12 +48,6 @@ const APPS_SCRIPT_GLOBAL = Object.freeze({
     patch: 0
   },
 
-  backup_version: {
-    major: 0,
-    minor: 1,
-    patch: 0
-  },
-
   template_id: '',
   template_sheets: ['_Settings', '_Unique', 'Cards', 'Summary', 'TTT', 'Cash Flow', 'Tags', 'Quick Actions', '_Backstage', '_About BnS']
 });
