@@ -19,6 +19,12 @@ class AppsScript {
     return b;
   }
 
+  static isUpToDate () {
+    const v0 = ClassVersion.getValueOf('script');
+    const vA = Info.script.version;
+    return SemVerUtils.hasMinimumVersion(v0, vA);
+  }
+
   static loadCache () {
     const isLoaded = CacheService3.document().get('load_cache');
     if (isLoaded) return;
