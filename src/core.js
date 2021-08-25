@@ -105,7 +105,7 @@ function showDialogAboutAddon () {
   User2.setId();
   let v0;
 
-  if (AppsScript.isInstalled()) v0 = getClassVersion_('script');
+  if (AppsScript.isInstalled()) v0 = ClassVersion.getValueOf('script');
   else v0 = Info.apps_script.version;
 
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlAboutAddon')
