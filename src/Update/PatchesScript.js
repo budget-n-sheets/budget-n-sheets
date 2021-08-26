@@ -280,7 +280,7 @@ function update_v0m40p0s0_ () {
     let sheet = spreadsheet.getSheetByName('_Unique');
     if (sheet) spreadsheet.deleteSheet(sheet);
 
-    const template = SpreadsheetApp.openById(Info.template.version);
+    const template = SpreadsheetApp.openById(Info.template.id);
 
     sheet = template.getSheetByName('_Unique')
       .copyTo(spreadsheet)
