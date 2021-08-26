@@ -85,7 +85,7 @@ function quickActions_ (range, value) {
 function dailyTrigger_ (e) {
   if (isAuthorizationRequired_()) return;
   if (!AppsScript.isInstalled()) return;
-  if (seamlessUpdate_()) return;
+  if (UpdateService.checkAndUpdate()) return;
 
   const date = Utils.getLocaleDate();
   const yyyymmdd = {
@@ -123,7 +123,7 @@ function weeklyTriggerPos_ (e) {
   if (isAuthorizationRequired_()) return;
   if (!AppsScript.isInstalled()) return;
 
-  seamlessUpdate_();
+  UpdateService.checkAndUpdate();
 
   const date = Utils.getLocaleDate();
   const month = date.getMonth();
@@ -143,7 +143,7 @@ function weeklyTriggerPos_ (e) {
 function weeklyTriggerPre_ (e) {
   if (isAuthorizationRequired_()) return;
   if (!AppsScript.isInstalled()) return;
-  if (seamlessUpdate_()) return;
+  if (UpdateService.checkAndUpdate()) return;
 
   const financial_year = SettingsConst.getValueOf('financial_year');
   const date = Utils.getLocaleDate();

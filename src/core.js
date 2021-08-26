@@ -76,7 +76,7 @@ function showPanelQuickstart () {
 }
 
 function showPanelAnalytics () {
-  if (onlineUpdate_()) return;
+  if (UpdateService.checkAndUpdate(true)) return;
 
   const htmlOutput = HtmlService2.createTemplateFromFile('CoolGallery/htmlSidebar')
     .assignReservedHref()
@@ -95,7 +95,7 @@ function showSidebarSettings () {
     return;
   }
 
-  if (onlineUpdate_()) return;
+  if (UpdateService.checkAndUpdate(true)) return;
 
   const htmlSidebar = new SettingsSidebar().build();
   SpreadsheetApp2.getUi().showSidebar(htmlSidebar);

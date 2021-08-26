@@ -1,6 +1,6 @@
 function toolResumeActivity_ () {
   if (!AppsScript.isInstalled()) return;
-  if (onlineUpdate_()) return;
+  if (UpdateService.checkAndUpdate(true)) return;
 
   const name = SpreadsheetApp.getActiveSheet().getSheetName();
   const mm = Consts.month_name.short.indexOf(name);

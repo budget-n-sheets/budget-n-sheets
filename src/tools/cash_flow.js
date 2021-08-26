@@ -1,5 +1,5 @@
 function validateUpdateCashFlow_ () {
-  if (onlineUpdate_()) return;
+  if (UpdateService.checkAndUpdate(true)) return;
 
   if (getFinancialCalendar_() == null) {
     SpreadsheetApp2.getUi().alert(

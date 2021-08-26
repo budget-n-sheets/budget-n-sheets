@@ -1,5 +1,5 @@
 function showPanelTables () {
-  if (onlineUpdate_()) return;
+  if (UpdateService.checkAndUpdate(true)) return;
 
   const htmlSidebar = new TablesSidebar().build();
   SpreadsheetApp2.getUi().showSidebar(htmlSidebar);

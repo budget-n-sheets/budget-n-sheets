@@ -42,7 +42,7 @@ function toolPicker_ (select, value) {
       validateUpdateCashFlow_();
       break;
     case 'UpdateCashFlowMm':
-      if (seamlessUpdate_()) break;
+      if (UpdateService.checkAndUpdate()) break;
       updateCashFlow_(value);
       break;
     case 'FormatRegistry':
