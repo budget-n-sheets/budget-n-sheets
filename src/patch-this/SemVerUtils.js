@@ -23,10 +23,7 @@ class SemVerUtils {
     if (source.major === reference.major) {
       if (source.minor > reference.minor) return true;
       if (source.minor === reference.minor) {
-        if (source.patch > reference.patch) return true;
-        if (source.patch === reference.patch) {
-          if (source.beta >= reference.beta) return true;
-        }
+        if (source.patch >= reference.patch) return true;
       }
     }
 
@@ -42,9 +39,6 @@ class SemVerUtils {
 
     if (!Object.prototype.hasOwnProperty.call(v, 'patch')) return false;
     if (typeof v.patch !== 'number') return false;
-
-    if (!Object.prototype.hasOwnProperty.call(v, 'beta')) return false;
-    if (typeof v.beta !== 'number') return false;
 
     return true;
   }

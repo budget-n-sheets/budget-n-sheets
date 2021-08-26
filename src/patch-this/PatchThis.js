@@ -22,24 +22,11 @@ class PatchThis {
     this._control = {
       major: { pos: 0 },
       minor: { pos: 0, list: [], ref: -1 },
-      patch: { pos: 0, list: [], ref: -1 },
-      beta: { pos: 0 }
+      patch: { pos: 0, list: [], ref: -1 }
     };
 
-    this.names = ['major', 'minor', 'patch', 'beta'];
+    this.names = ['major', 'minor', 'patch'];
     this.response = 1;
-  }
-
-  beta_ () {
-    const control = this._control.beta;
-
-    while (control.pos < this._beta.length) {
-      if (this._beta[control.pos] != null) {
-        this._beta[control.pos]();
-      }
-
-      control.pos++;
-    }
   }
 
   minor_ () {
@@ -48,8 +35,6 @@ class PatchThis {
       this.response = 1;
       return;
     }
-
-    if (control.pos !== control.ref) this._control.beta.pos = 0;
 
     do {
       control.pos++;
@@ -62,10 +47,6 @@ class PatchThis {
     } while (this.response === 0 && control.pos !== control.ref);
 
     if (this.response !== 0) control.pos--;
-
-    if (control.pos === control.ref) {
-      this.beta_();
-    }
   }
 
   major_ () {
@@ -115,8 +96,7 @@ class PatchThis {
     return {
       major: this._control.major.pos,
       minor: this._control.minor.pos,
-      patch: this._control.patch.pos,
-      beta: this._control.beta.pos
+      patch: this._control.patch.pos
     };
   }
 
@@ -134,9 +114,8 @@ class PatchThis {
     return this;
   }
 
-  setPatches (list) {
-    this._patches = list.patches;
-    this._beta = list.beta;
+  setPatches (patches) {
+    this._patches = patches;
     return this;
   }
 
