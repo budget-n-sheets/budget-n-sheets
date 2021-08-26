@@ -101,13 +101,9 @@ class UpdateService {
     }
 
     const rTemplate = this.updateTemplate_();
-    if (rTemplate !== 0) {
-      if (isOnline) this.showMessage_(rTemplate);
-      lock.releaseLock();
-      return 1;
-    }
-
     lock.releaseLock();
-    return 0;
+    if (isOnline) this.showMessage_(rTemplate);
+
+    return rTemplate !== 0 ? 1 : 0;
   }
 }
