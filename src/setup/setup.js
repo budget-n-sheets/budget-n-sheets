@@ -36,12 +36,10 @@ function setupService (uuid, payload) {
     restoreFromSpreadsheet_(config.file_id);
   }
 
-  const class_version2 = {
+  CachedAccess.update('class_version2', {
     script: Info.apps_script.version,
     template: Info.template.version
-  };
-  class_version2.script.beta = PATCH_THIS.beta_list.length;
-  CachedAccess.update('class_version2', class_version2);
+  });
 
   new BsAuth(spreadsheet).update();
 
