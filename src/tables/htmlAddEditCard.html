@@ -122,10 +122,12 @@
         <? } else { ?>
         job: 'create',
         <? } ?>
-        name : $("#card_name").val(),
-        code : $("#card_code").val(),
-        aliases: $("#card_aliases").val(),
-        limit: $("#card_limit").val()
+        metadata: {
+          name : $("#card_name").val(),
+          code : $("#card_code").val(),
+          aliases: $("#card_aliases").val(),
+          limit: $("#card_limit").val()
+        }
       };
 
       google.script.run

@@ -14,7 +14,7 @@ function accountsClientService (payload) {
       return new AccountsService().getAll();
     case 'update': {
       const service = new AccountsService();
-      service.update(payload).save();
+      service.update(payload.id, payload.metadata).save();
       service.flush();
       break;
     }
@@ -37,7 +37,7 @@ function cardsClientService (payload) {
   switch (payload.job) {
     case 'create': {
       const service = new CardsService();
-      service.create(payload);
+      service.create(payload.metadata);
       service.save();
       service.flush();
       break;
@@ -48,7 +48,7 @@ function cardsClientService (payload) {
       return new CardsService().getAll();
     case 'update': {
       const service = new CardsService();
-      service.update(payload).save();
+      service.update(payload.id, payload.metadata).save();
       service.flush();
       break;
     }

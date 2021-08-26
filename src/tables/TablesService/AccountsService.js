@@ -130,13 +130,13 @@ class AccountsService extends TablesService {
     return this;
   }
 
-  update (metadata) {
-    if (!this.hasId(metadata.id)) return 1;
+  update (id, metadata) {
+    if (!this.hasId(id)) return 1;
 
     this.formatValues_(metadata);
     if (metadata.name === '') return 1;
 
-    const account = this._db[metadata.id];
+    const account = this._db[id];
     metadata.index = account.index;
 
     for (const key in account) {

@@ -243,14 +243,14 @@ class CardsService extends TablesService {
     return this._ids.length < 10;
   }
 
-  update (metadata) {
-    if (!this.hasId(metadata.id)) return 1;
+  update (id, metadata) {
+    if (!this.hasId(id)) return 1;
 
     this.formatValues_(metadata);
 
     if (!/^\w+$/.test(metadata.code)) return 10;
 
-    const card = this._db[metadata.id];
+    const card = this._db[id];
     metadata.index = card.index;
 
     for (const key in card) {

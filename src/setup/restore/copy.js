@@ -160,8 +160,7 @@ function copyTables_ (spreadsheet) {
 
   for (const id in db_accounts) {
     const k = db_accounts[id].index;
-    metadata[k].id = id;
-    accountsService.update(metadata);
+    accountsService.update(id, metadata[k]);
   }
 
   accountsService.save();

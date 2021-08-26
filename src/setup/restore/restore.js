@@ -242,8 +242,7 @@ function restoreTables_ (backup) {
   const db_accounts = accountsService.getAll();
   for (const id in db_accounts) {
     const k = db_accounts[id].index;
-    backup.db_tables.accounts[k].id = id;
-    accountsService.update(backup.db_tables.accounts[k]);
+    accountsService.update(id, backup.db_tables.accounts[k]);
   }
   accountsService.save();
   accountsService.flush();

@@ -108,9 +108,11 @@
       const payload = {
         job: 'update',
         id: $("#account_id").val(),
-        name: $("#acc_name").val(),
-        time_start: $("#acc_time_start").val(),
-        balance: $("#acc_balance").val()
+        metadata: {
+          name: $("#acc_name").val(),
+          time_start: $("#acc_time_start").val(),
+          balance: $("#acc_balance").val()
+        }
       };
 
       google.script.run
