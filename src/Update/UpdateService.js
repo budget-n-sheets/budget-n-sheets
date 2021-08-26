@@ -27,18 +27,14 @@ class UpdateService {
   static updateScript_ () {
     const update = new UpdateScript().run();
 
-    if (update.status === 1) {
-      if (update.response === 0) {
-        return 0;
-      }
-    } else {
-      if (update.response === 0) {
-        return 0;
-      } else if (update.response === 2) {
-        console.warn('Update: script: Failed at ', update.position);
-      } else if (update.response > 2) {
-        AppsScript.uninstall();
-      }
+    if (update.response === 0) {
+      return 0;
+    }
+
+    if (update.response === 2) {
+      console.warn('Update: script: Failed at ', update.position);
+    } else if (update.response > 2) {
+      AppsScript.uninstall();
     }
 
     return update.response;
