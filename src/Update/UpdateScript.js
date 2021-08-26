@@ -1,7 +1,7 @@
 class UpdateScript extends Update {
   constructor () {
     const v0 = ClassVersion.getValueOf('script');
-    const vA = Info.script.version;
+    const vA = Info.apps_script.version;
     const list = [
       [
         null, [], [], [], [], [], [], [], [], [],
