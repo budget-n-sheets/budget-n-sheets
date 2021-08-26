@@ -4,13 +4,11 @@ class UpdateTemplate extends Update {
     const vA = Info.template.version;
     const list = [
       [
-        null, [], [], [], [], [], [], [], [], [],
-        [], [],
-        [
-          [null]
-        ]
+        null, [null], [null], [null], [null], [null], [null], [null], [null], [null],
+        [null], [null],
+        [null]
       ]
-    ]
+    ];
 
     super(v0, vA, list);
 
