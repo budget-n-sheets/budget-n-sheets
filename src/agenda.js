@@ -193,7 +193,7 @@ function getFinancialCalendar_ () {
 function getCalendarEventsForCashFlow_ (financial_year, mm) {
   if (!SettingsUser.getValueOf('cash_flow_events')) return [];
 
-  const calendar = getFinancialCalendar_();
+  const calendar = Calendar.getFinancialCalendar();
   if (!calendar) return [];
 
   const end = new Date(financial_year, mm + 1, 1);

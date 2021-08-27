@@ -45,7 +45,7 @@ const QUICKSTART_DATA_CALENDAR = Object.freeze({
 
 function playQuickCalendar_ (n) {
   const ui = SpreadsheetApp2.getUi();
-  const calendar = getFinancialCalendar_();
+  const calendar = Calendar.getFinancialCalendar();
   let data, value, description, mm, i;
 
   if (!calendar) {

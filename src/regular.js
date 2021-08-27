@@ -1,5 +1,5 @@
 function postEventsForDate_ (date) {
-  const calendar = getFinancialCalendar_();
+  const calendar = Calendar.getFinancialCalendar();
   if (!calendar) return;
 
   const eventos_day = calendar.getEventsForDay(date);
