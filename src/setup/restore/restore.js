@@ -173,14 +173,15 @@ function processBackup_ (uuid, file, data) {
     cards: ''
   };
 
-  let digest, list, i;
+  let list, i;
 
   if (data.user_settings.sha256_financial_calendar) {
-    const calendars = getAllOwnedCalendars();
-    for (i = 0; i < calendars.id.length; i++) {
-      digest = Utilities2.computeDigest('SHA_256', calendars.id[i], 'UTF_8');
+    const calendars = Calendar.listAllCalendars();
+    for (const sha1 in calendars) {
+      const digest = Utilities2.computeDigest('SHA_256', calendars[sha1].id, 'UTF_8');
+
       if (digest === data.sha256_financial_calendar) {
-        info.financial_calendar = calendars.name[i];
+        info.financial_calendar = calendars[sha1].name;
         break;
       }
     }
@@ -212,14 +213,13 @@ function processBackup_ (uuid, file, data) {
 }
 
 function restoreFromBackup_ (backup) {
-  let digest, i;
-
   if (backup.user_settings.sha256_financial_calendar) {
-    const calendars = getAllOwnedCalendars();
-    for (i = 0; i < calendars.id.length; i++) {
-      digest = Utilities2.computeDigest('SHA_256', calendars.id[i], 'UTF_8');
+    const calendars = Calendar.listAllCalendars();
+    for (const sha1 in calendars) {
+      const digest = Utilities2.computeDigest('SHA_256', calendars[sha1].id, 'UTF_8');
+
       if (digest === backup.user_settings.sha256_financial_calendar) {
-        SettingsUser.setValueOf('financial_calendar', calendars.id[i]);
+        SettingsUser.setValueOf('financial_calendar', calendars[sha1].id);
         SettingsUser.setValueOf('post_day_events', backup.user_settings.post_day_events);
         SettingsUser.setValueOf('cash_flow_events', backup.user_settings.cash_flow_events);
         break;

@@ -21,9 +21,8 @@ class SettingsSidebarUtils {
     values.isOperationActive = isOperationActive;
 
     if (isOperationActive) {
-      const calendars = getAllOwnedCalendars();
-      values.isCalendarEnabled = (calendars.md5.length > 0);
-      values.calendars_data = calendars;
+      values.isCalendarEnabled = Calendar.isEnabled();
+      values.calendars = Calendar.listAllCalendars();
     } else {
       values.isCalendarEnabled = false;
     }

@@ -242,12 +242,12 @@ function copySettings_ (spreadsheet) {
   const metadata = JSON.parse(list[0].getValue());
   if (metadata.financial_calendar_sha256 === '') return;
 
-  const calendars = getAllOwnedCalendars();
-  for (let i = 0; i < calendars.id.length; i++) {
-    const digest = Utilities2.computeDigest('SHA_256', calendars.id[i], 'UTF_8');
+  const calendars = Calendar.listAllCalendars();
+  for (const sha1 in calendars) {
+    const digest = Utilities2.computeDigest('SHA_256', calendars[sha1].id, 'UTF_8');
 
     if (digest === metadata.financial_calendar_sha256) {
-      SettingsUser.setValueOf('financial_calendar', calendars.id[i]);
+      SettingsUser.setValueOf('financial_calendar', calendars[sha1].id);
       SettingsUser.setValueOf('post_day_events', metadata.post_day_events);
       SettingsUser.setValueOf('cash_flow_events', metadata.cash_flow_events);
       break;

@@ -56,8 +56,8 @@
         <td class="comment">
           <select id="financial_calendar" style="width: 157px" required>
             <option value="" selected>Disable</option>
-            <? for (var i = 0; i < calendars_data.md5.length; i++) { ?>
-            <option value=<?= calendars_data.md5[i] ?>><?= calendars_data.name[i] ?></option>
+            <? for (const sha1 in calendars) { ?>
+            <option value=<?= sha1 ?>><?= calendars[sha1].name + (calendars[sha1].isOwner ? '' : ' *') ?></option>
             <? } ?>
           </select>
         </td>
