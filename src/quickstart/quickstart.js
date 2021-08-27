@@ -5,14 +5,17 @@ function alertQuickstartSheetMissing (name) {
     SpreadsheetApp2.getUi().ButtonSet.OK);
 }
 
-function playSpeedQuickstart (id) {
+function playQuickstart (id) {
   if (!AppsScript.isInstalled()) return;
 
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(100)) return;
 
-  const channel = id.match(/([a-z_]+)(\d)/);
-  if (!channel) throw new Error('playSpeedQuickstart(): No match found. ' + id);
+  const channel = id.match(/([a-z_]+)(\d+)/);
+  if (!channel) {
+    console.warn('playQuickstart(): Now match found.', id);
+    return;
+  }
 
   const job = channel[1];
   const n = Number(channel[2]);
@@ -41,11 +44,12 @@ function playSpeedQuickstart (id) {
       break;
 
     default:
-      throw new Error('playSpeedQuickstart(): Switch case is default. ' + job);
+      console.warn('playQuickstart(): Switch case is default.', job);
+      return;
   }
 
-  SpreadsheetApp2.getActiveSpreadsheet().toast('Done.', 'Quickstart');
   lock.releaseLock();
+  SpreadsheetApp2.getActiveSpreadsheet().toast('Done.', 'Quickstart');
 }
 
 function fillMonthWithZeros (sheet) {
