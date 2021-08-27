@@ -19,11 +19,11 @@ class TablesService {
   }
 
   getAll () {
-    return Utils.deepClone(this._db);
+    return Utils.deepCopy(this._db);
   }
 
   getById (id) {
-    return Utils.deepClone(this._db[id]);
+    return Utils.deepCopy(this._db[id]);
   }
 
   hasId (id) {
