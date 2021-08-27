@@ -32,11 +32,7 @@ function toolResumeActivity_ () {
 
 function switchActivity_ (select, param1, param2) {
   const lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch (err) {
-    return 1;
-  }
+  if (!lock.tryLock(200)) return 1;
 
   switch (select) {
     case 'resume':

@@ -8,15 +8,11 @@ function toolHideSheets_ () {
 
 function pagesView_ (select, a) {
   const lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch (err) {
+  if (!lock.tryLock(200)) {
     SpreadsheetApp2.getUi().alert(
       'Add-on is busy',
       'The add-on is busy. Try again in a moment.',
       SpreadsheetApp2.getUi().ButtonSet.OK);
-
-    console.warn(err);
     return;
   }
 

@@ -54,11 +54,7 @@ function askDeactivation () {
 
 function askResetProtection () {
   const lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch (err) {
-    return;
-  }
+  if (!lock.tryLock(100)) return;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, ranges, range;

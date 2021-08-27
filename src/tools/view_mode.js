@@ -1,14 +1,10 @@
 function toggleViewMode_ () {
   const lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch (err) {
+  if (!lock.tryLock(200)) {
     SpreadsheetApp2.getUi().alert(
       'Add-on is busy',
       'The add-on is busy. Try again in a moment.',
       SpreadsheetApp2.getUi().ButtonSet.OK);
-
-    console.warn(err);
     return;
   }
 
@@ -30,12 +26,7 @@ function setViewMode_ (view_mode) {
   if (view_mode === SettingsSpreadsheet.getValueOf('view_mode')) return;
 
   const lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch (err) {
-    console.warn(err);
-    return;
-  }
+  if (!lock.tryLock(200)) return;
 
   if (view_mode === 'complete') viewModeComplete_();
   else if (view_mode === 'simple') viewModeSimple_();

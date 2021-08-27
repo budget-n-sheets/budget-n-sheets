@@ -31,11 +31,7 @@ function toolPickerUi_ (select) {
 
 function toolPicker_ (select, value) {
   const lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch (err) {
-    return 1;
-  }
+  if (!lock.tryLock(200)) return 1;
 
   switch (select) {
     case 'UpdateCashFlow':

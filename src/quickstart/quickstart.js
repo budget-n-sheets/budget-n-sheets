@@ -9,11 +9,7 @@ function playSpeedQuickstart (id) {
   if (!AppsScript.isInstalled()) return;
 
   const lock = LockService.getDocumentLock();
-  try {
-    lock.waitLock(200);
-  } catch (err) {
-    return;
-  }
+  if (!lock.tryLock(100)) return;
 
   const channel = id.match(/([a-z_]+)(\d)/);
   if (!channel) throw new Error('playSpeedQuickstart(): No match found. ' + id);
