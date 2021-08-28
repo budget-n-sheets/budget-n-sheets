@@ -22,6 +22,15 @@ class TablesService {
     return Utils.deepCopy(this._db);
   }
 
+  getAny () {
+    const n = this._ids.length;
+    if (n < 1) return null;
+
+    const i = Noise.randomInteger(n);
+    const id = this._ids[i];
+    return { id: id, metadata: Utils.deepCopy(this._db[id]) };
+  }
+
   getById (id) {
     return Utils.deepCopy(this._db[id]);
   }
