@@ -1,7 +1,7 @@
 function showDialogBackupSession () {
   if (!AppsScript.isInstalled()) return 2;
   if (!User2.isAdmin()) return 2;
-  if (isScriptUpToDate_() !== 1) return 2;
+  if (!Addon.isUpToDate()) return 2;
 
   const ui = SpreadsheetApp2.getUi();
 
@@ -26,7 +26,7 @@ function backupService (password) {
   if (!FeatureFlag.getStatusOf('settings/backup')) return 2;
   if (!AppsScript.isInstalled()) return 2;
   if (!User2.isAdmin()) return 2;
-  if (isScriptUpToDate_() !== 1) return 2;
+  if (!Addon.isUpToDate()) return 2;
   if (!BackupUtils.checkPasswordPolicy(password)) return 1;
 
   showDialogMessage('Add-on backup', 'Backing up...', 1);
