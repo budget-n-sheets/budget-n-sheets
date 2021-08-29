@@ -27,7 +27,7 @@ function playQuickstart (id) {
     case 'statements':
       playQuickStatements_(n);
       break;
-    case 'cashflow':
+    case 'cash_flow':
       playQuickCashFlow_(n);
       break;
     case 'calendar':
