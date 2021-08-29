@@ -2,8 +2,6 @@ class Ledger {
   constructor (sheet) {
     this._sheet = sheet;
     this._sheetName = sheet.getName();
-
-    this._insertRows = ToolInsertRows.pick(sheet);
   }
 
   mergeTransactions (index, values) {
