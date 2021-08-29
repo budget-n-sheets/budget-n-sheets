@@ -4,6 +4,34 @@ class Ledger {
     this._sheetName = sheet.getName();
   }
 
+  fillInWithZeros (index) {
+    const numRows = this._sheet.getLastRow() - this._specs.row + 1;
+    if (numRows < 1) return;
+
+    const col = 3 + this._specs.width * index;
+    const table = this._sheet.getRange(this._specs.row, col, numRows, 1).getValues();
+
+    const top = table.findIndex(row => row[0] === '') - 1;
+    if (top === -2) return;
+
+    let n = numRows - 1;
+    while (n > top && table[n][0] === '') { n--; }
+
+    const listRanges = [];
+    while (n > top) {
+      if (table[n][0] === '') {
+        listRanges.push(RangeUtils.rollA1Notation(this._specs.row + n, col));
+      }
+
+      n--;
+    }
+
+    if (listRanges.length > 0) {
+      this._sheet.getRangeList(listRanges).setValue(0);
+      SpreadsheetApp.flush();
+    }
+  }
+
   mergeTransactions (index, values) {
     if (values.length === 0) return;
 
