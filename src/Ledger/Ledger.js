@@ -2,6 +2,14 @@ class Ledger {
   constructor (sheet) {
     this._sheet = sheet;
     this._sheetName = sheet.getName();
+
+    this._insertRows = null;
+  }
+
+  initInsertRows_ () {
+    this._insertRows = ToolInsertRows.pick(this._sheet);
+
+    return this;
   }
 
   fillInWithZeros (index) {
@@ -34,6 +42,7 @@ class Ledger {
 
   mergeTransactions (index, values) {
     if (values.length === 0) return;
+    if (this._insertRows == null) this.initInsertRows_();
 
     const lastRow = this._sheet.getLastRow();
     const height = (lastRow < this._specs.row ? this._specs.row - 1 : lastRow) + values.length;
