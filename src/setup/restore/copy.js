@@ -197,7 +197,7 @@ function copyMonths_ (spreadsheet) {
     if (last < 5) continue;
 
     const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(Consts.month_name.short[mm]);
-    insertRows.setSheet(destination).insertRowsTo(destination.getMaxRows());
+    insertRows.setSheet(destination).insertRowsTo(destination.getMaxRows(), true);
 
     const values = source.getRange(5, 1, last - 4, 5 + 5 * number_accounts).getValues();
     destination.getRange(5, 1, last - 4, 5 + 5 * number_accounts).setValues(values);
@@ -212,7 +212,7 @@ function copyCards_ (spreadsheet) {
   if (last < 6) return;
 
   const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
-  new ToolInsertRowsCards(destination).insertRowsTo(destination.getMaxRows());
+  new ToolInsertRowsCards(destination).insertRowsTo(destination.getMaxRows(), true);
 
   const values = source.getRange(6, 1, last - 5, 6 * 12).getValues();
   destination.getRange(6, 1, last - 5, 6 * 12).setValues(values);
@@ -226,7 +226,7 @@ function copyTags_ (spreadsheet) {
   const last = source.getLastRow();
   if (last < 2) return;
 
-  new ToolInsertRowsTags(destination).insertRowsTo(destination.getMaxRows());
+  new ToolInsertRowsTags(destination).insertRowsTo(destination.getMaxRows(), true);
 
   const values = source.getRange(2, 1, last - 1, 5).getValues();
   destination.getRange(2, 1, last - 1, 5).setValues(values);

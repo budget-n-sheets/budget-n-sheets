@@ -263,7 +263,7 @@ function restoreCards_ (backup) {
   while (++mm < 12) {
     if (backup.cards[mm].length === 0) continue;
 
-    insertRows.insertRowsTo(backup.cards[mm].length);
+    insertRows.insertRowsTo(backup.cards[mm].length, true);
     sheet.getRange(6, 1 + 6 * mm, backup.cards[mm].length, 5).setValues(backup.cards[mm]);
   }
 }
@@ -285,7 +285,7 @@ function restoreMonths_ (backup) {
       if (backup.ttt[mm][k] == null) continue;
       if (backup.ttt[mm][k].length === 0) continue;
 
-      insertRows.insertRowsTo(backup.ttt[mm][k].length);
+      insertRows.insertRowsTo(backup.ttt[mm][k].length, true);
       sheet.getRange(5, 1 + 5 * k, backup.ttt[mm][k].length, 4).setValues(backup.ttt[mm][k]);
     }
   }
@@ -295,7 +295,7 @@ function restoreTags_ (backup) {
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
   const insertRows = new ToolInsertRowsTags(sheet);
 
-  insertRows.insertRowsTo(backup.tags.length);
+  insertRows.insertRowsTo(backup.tags.length, true);
 
   if (backup.tags.length > 0) {
     sheet.getRange(2, 1, backup.tags.length, 5).setValues(backup.tags);
