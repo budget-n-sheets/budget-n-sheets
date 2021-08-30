@@ -4,9 +4,7 @@ class LedgerAccounts extends Ledger {
     this._category = 'accounts';
 
     this._specs = Object.freeze({
-      col: {
-        value: 2
-      },
+      nullSearch: 3,
       row: 5,
       width: 5
     });

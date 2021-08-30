@@ -93,7 +93,8 @@ class Ledger {
       ).getValues();
     }
 
-    let n = table.findIndex(row => row[this._specs.col.value] === '');
+    const nullSearch = this._specs.nullSearch - 1;
+    let n = table.findIndex(row => row[nullSearch] === '');
     if (n === -1) n = table.length;
 
     table.splice.apply(table, [n, 0].concat(values));

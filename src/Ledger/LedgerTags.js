@@ -4,6 +4,7 @@ class LedgerTags extends Ledger {
     this._category = 'tags';
 
     this._specs = Object.freeze({
+      nullSearch: 5,
       row: 2,
       width: 5
     });
