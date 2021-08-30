@@ -8,8 +8,6 @@ class Ledger {
 
   initInsertRows_ () {
     this._insertRows = ToolInsertRows.pick(this._sheet);
-
-    return this;
   }
 
   appendTransactions (index, values, activate) {
@@ -43,6 +41,7 @@ class Ledger {
     }
 
     SpreadsheetApp.flush();
+    return this;
   }
 
   fillInWithZeros (index) {
@@ -71,6 +70,7 @@ class Ledger {
       this._sheet.getRangeList(listRanges).setValue(0);
       SpreadsheetApp.flush();
     }
+    return this;
   }
 
   mergeTransactions (index, values) {
@@ -100,5 +100,6 @@ class Ledger {
     this._sheet.getRange(this._specs.row, offset, table.length, this._specs.width - 1).setValues(table);
 
     SpreadsheetApp.flush();
+    return this;
   }
 }
