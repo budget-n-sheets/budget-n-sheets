@@ -12,6 +12,39 @@ class Ledger {
     return this;
   }
 
+  appendTransactions (index, values, activate) {
+    if (values.length === 0) return;
+    if (this._insertRows == null) this.initInsertRows_();
+
+    const lastRow = this._sheet.getLastRow();
+    let row = this._specs.row;
+
+    if (lastRow >= this._specs.row) {
+      const snapshot = this._sheet.getRange(
+          this._specs.row, 1 + this._specs.width * index,
+          lastRow - this._specs.row + 1, this._specs.width - 1)
+        .getValues();
+
+      row = snapshot.length - 1;
+      do {
+        if (snapshot[row].findIndex(e => e !== '') > -1) break;
+      } while (--row > -1);
+      row++;
+    }
+
+    const range = this._sheet.getRange(
+      this._specs.row + row, 1 + this._specs.width * index,
+      values.length, this._specs.width - 1);
+
+    range.setValues(values);
+    if (activate) {
+      SpreadsheetApp2.getActiveSpreadsheet().setActiveSheet(this._sheet);
+      range.activate();
+    }
+
+    SpreadsheetApp.flush();
+  }
+
   fillInWithZeros (index) {
     const numRows = this._sheet.getLastRow() - this._specs.row + 1;
     if (numRows < 1) return;
