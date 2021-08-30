@@ -2,6 +2,7 @@ class Ledger {
   constructor (sheet) {
     this._sheet = sheet;
     this._sheetName = sheet.getName();
+    this._lastRange = null;
 
     this._insertRows = null;
   }
@@ -10,7 +11,12 @@ class Ledger {
     this._insertRows = ToolInsertRows.pick(this._sheet);
   }
 
-  appendTransactions (index, values, activate) {
+  activate () {
+    SpreadsheetApp2.getActiveSpreadsheet().setActiveSheet(this._sheet);
+    this._lastRange.activate();
+  }
+
+  appendTransactions (index, values) {
     if (values.length === 0) return;
     if (this._insertRows == null) this.initInsertRows_();
 
@@ -33,15 +39,11 @@ class Ledger {
       row++;
     }
 
-    const range = this._sheet.getRange(
-      this._specs.row + row, 1 + (this._specs.width + 1) * index,
-      values.length, this._specs.width);
-
-    range.setValues(values);
-    if (activate) {
-      SpreadsheetApp2.getActiveSpreadsheet().setActiveSheet(this._sheet);
-      range.activate();
-    }
+    this._lastRange = this._sheet.getRange(
+      this._specs.row + row,
+      1 + (this._specs.width + 1) * index,
+      values.length,
+      this._specs.width).setValues(values);
 
     SpreadsheetApp.flush();
     return this;
@@ -100,7 +102,7 @@ class Ledger {
     if (n === -1) n = table.length;
 
     table.splice.apply(table, [n, 0].concat(values));
-    this._sheet.getRange(this._specs.row, offset, table.length, this._specs.width).setValues(table);
+    this._lastRange = this._sheet.getRange(this._specs.row, offset, table.length, this._specs.width).setValues(table);
 
     SpreadsheetApp.flush();
     return this;
