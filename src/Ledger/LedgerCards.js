@@ -6,7 +6,7 @@ class LedgerCards extends Ledger {
     this._specs = Object.freeze({
       nullSearch: 4,
       row: 6,
-      width: 6
+      width: 5
     });
   }
 }

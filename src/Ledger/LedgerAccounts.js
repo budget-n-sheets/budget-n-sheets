@@ -6,7 +6,7 @@ class LedgerAccounts extends Ledger {
     this._specs = Object.freeze({
       nullSearch: 3,
       row: 5,
-      width: 5
+      width: 4
     });
   }
 }

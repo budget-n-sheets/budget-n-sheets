@@ -19,8 +19,8 @@ class Ledger {
 
     if (lastRow >= this._specs.row) {
       const snapshot = this._sheet.getRange(
-          this._specs.row, 1 + this._specs.width * index,
-          lastRow - this._specs.row + 1, this._specs.width - 1)
+          this._specs.row, 1 + (this._specs.width + 1) * index,
+          lastRow - this._specs.row + 1, this._specs.width)
         .getValues();
 
       row = snapshot.length - 1;
@@ -31,8 +31,8 @@ class Ledger {
     }
 
     const range = this._sheet.getRange(
-      this._specs.row + row, 1 + this._specs.width * index,
-      values.length, this._specs.width - 1);
+      this._specs.row + row, 1 + (this._specs.width + 1) * index,
+      values.length, this._specs.width);
 
     range.setValues(values);
     if (activate) {
@@ -48,7 +48,7 @@ class Ledger {
     const numRows = this._sheet.getLastRow() - this._specs.row + 1;
     if (numRows < 1) return;
 
-    const col = 3 + this._specs.width * index;
+    const col = 3 + (this._specs.width + 1) * index;
     const table = this._sheet.getRange(this._specs.row, col, numRows, 1).getValues();
 
     const top = table.findIndex(row => row[0] === '') - 1;
@@ -82,15 +82,14 @@ class Ledger {
 
     this._insertRows.insertRowsTo(height);
 
-    const offset = 1 + this._specs.width * index;
+    const offset = 1 + (this._specs.width + 1) * index;
 
     let table = [];
     if (lastRow >= this._specs.row) {
       table = this._sheet.getRange(
         this._specs.row, offset,
         lastRow - this._specs.row + 1,
-        this._specs.width - 1
-      ).getValues();
+        this._specs.width).getValues();
     }
 
     const nullSearch = this._specs.nullSearch - 1;
@@ -98,7 +97,7 @@ class Ledger {
     if (n === -1) n = table.length;
 
     table.splice.apply(table, [n, 0].concat(values));
-    this._sheet.getRange(this._specs.row, offset, table.length, this._specs.width - 1).setValues(table);
+    this._sheet.getRange(this._specs.row, offset, table.length, this._specs.width).setValues(table);
 
     SpreadsheetApp.flush();
     return this;
