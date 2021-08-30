@@ -17,6 +17,9 @@ class Ledger {
     const lastRow = this._sheet.getLastRow();
     let row = this._specs.row;
 
+    const height = (lastRow < this._specs.row ? this._specs.row - 1 : lastRow) + values.length;
+    this._insertRows.insertRowsTo(height);
+
     if (lastRow >= this._specs.row) {
       const snapshot = this._sheet.getRange(
           this._specs.row, 1 + (this._specs.width + 1) * index,
