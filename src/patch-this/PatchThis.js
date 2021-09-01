@@ -42,7 +42,12 @@ class PatchThis {
         control.pos--;
         break;
       } else if (control.list[control.pos] != null) {
-        this.response = control.list[control.pos]();
+        try {
+          this.response = control.list[control.pos]();
+        } catch (err) {
+          LogLog.error(err);
+          this.response = 2;
+        }
       }
     } while (this.response === 0 && control.pos !== control.ref);
 
