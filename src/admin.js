@@ -44,7 +44,6 @@ function askTransferAdminSd () {
   if (!AppsScript.isInstalled()) return;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  let email, digest;
   const user = Session.getEffectiveUser().getEmail();
 
   if (spreadsheet.getowner() || !User2.isAdmin()) return 1;
@@ -59,11 +58,10 @@ function askTransferAdminSd () {
   }
 
   for (let i = 0; i < editors.length; i++) {
-    email = editors[i].getEmail();
+    const email = editors[i].getEmail();
     if (user === email) continue;
 
-    digest = Utilities2.computeDigest('MD5', email, 'UTF_8');
-    digest = digest.substring(0, 12);
+    const digest = Utilities2.computeDigest('SHA_1', email, 'UTF_8').substring(0, 12);
 
     editors[i] = {
       digest: digest,
@@ -84,7 +82,6 @@ function continuedTransferAdminSd (editor) {
   if (!AppsScript.isInstalled()) return;
 
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-  let email, digest;
   const user = Session.getEffectiveUser().getEmail();
 
   if (spreadsheet.getowner() || !User2.isAdmin()) return 1;
@@ -99,11 +96,10 @@ function continuedTransferAdminSd (editor) {
   }
 
   for (let i = 0; i < editors.length; i++) {
-    email = editors[i].getEmail();
+    const email = editors[i].getEmail();
     if (user === email) continue;
 
-    digest = Utilities2.computeDigest('MD5', email, 'UTF_8');
-    digest = digest.substring(0, 12);
+    let digest = Utilities2.computeDigest('SHA_1', email, 'UTF_8').substring(0, 12);
 
     if (digest === editor) {
       Triggers.deleteAllUserTriggers();
