@@ -174,16 +174,16 @@ function resumeActivity_ (mm0, mm1) {
     if (account.time_start < mm0) continue;
 
     formula = '=' + FormatNumber.localeSignal(account.balance);
-    sheetBackstage.getRange(3 + h_ * mm, 2 + w_ + w_ * account.index).setFormula(formula);
+    sheetBackstage.getRange(2 + h_ * account.time_start, 2 + w_ + w_ * account.index).setFormula(formula);
   }
 
   {
-    const rangeOff = sheetBackstage.getRange(2 + h_ * mm, 1 + col);
+    const rangeOff = sheetBackstage.getRange(2, 1 + col);
 
     for (const id in db_cards) {
       const formula = '=' + FormatNumber.localeSignal(db_cards[id].limit);
       for (let mm = mm0; mm <= mm1; mm++) {
-        rangeOff.offset(0, w_ * db_cards[id].index).setFormula(formula);
+        rangeOff.offset(h_ * mm, w_ * db_cards[id].index).setFormula(formula);
       }
     }
   }
