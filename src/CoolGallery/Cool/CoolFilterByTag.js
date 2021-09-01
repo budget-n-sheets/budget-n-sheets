@@ -22,7 +22,7 @@ class CoolFilterByTag extends CoolGallery {
       aux1 = 'SORT(' + aux1 + '; 2; TRUE; 4; TRUE; 5; TRUE); \n';
       formula += aux1;
 
-      for (let k = 0; k < num_acc; k++) {
+      for (let k = 0; k < this.num_acc; k++) {
         let aux2 = 'ARRAYFORMULA(SPLIT(CONCAT("' + Consts.month_name.short[i] + '-"; ' + Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 6 + 5 * k, -1, 1) + '); "-"))' + this.dec_p;
         aux2 += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 7 + 5 * k, -1, 1) + this.dec_p;
         aux2 += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 10 + 5 * k, -1, 1) + this.dec_p;
