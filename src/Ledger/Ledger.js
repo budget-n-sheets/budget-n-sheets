@@ -17,7 +17,7 @@ class Ledger {
   }
 
   appendTransactions (index, values) {
-    if (values.length === 0) return;
+    if (values.length === 0) return this;
     if (this._insertRows == null) this.initInsertRows_();
 
     const lastRow = this._sheet.getLastRow();
@@ -51,13 +51,13 @@ class Ledger {
 
   fillInWithZeros (index) {
     const numRows = this._sheet.getLastRow() - this._specs.row + 1;
-    if (numRows < 1) return;
+    if (numRows < 1) return this;
 
     const col = 3 + (this._specs.width + 1) * index;
     const table = this._sheet.getRange(this._specs.row, col, numRows, 1).getValues();
 
     const top = table.findIndex(row => row[0] === '') - 1;
-    if (top === -2) return;
+    if (top === -2) return this;
 
     let n = numRows - 1;
     while (n > top && table[n][0] === '') { n--; }
@@ -79,7 +79,7 @@ class Ledger {
   }
 
   mergeTransactions (index, values) {
-    if (values.length === 0) return;
+    if (values.length === 0) return this;
     if (this._insertRows == null) this.initInsertRows_();
 
     const lastRow = this._sheet.getLastRow();
