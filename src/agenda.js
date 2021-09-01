@@ -142,54 +142,6 @@ function calendarDigestListEvents_ (eventos, start, end, offset) {
   return output;
 }
 
-function getAllOwnedCalendars () {
-  let calendars;
-
-  try {
-    calendars = CalendarApp.getAllCalendars();
-  } catch (err) {
-    LogLog.error(err);
-    calendars = [];
-  }
-
-  try {
-    if (calendars.length === 0) {
-      calendars = CalendarApp.getAllOwnedCalendars();
-    }
-  } catch (err) {
-    LogLog.error(err);
-    calendars = [];
-  }
-
-  const db_calendars = {
-    name: [],
-    id: [],
-    md5: []
-  };
-
-  for (let i = 0; i < calendars.length; i++) {
-    const id = calendars[i].getId();
-
-    let digest = Utilities2.computeDigest('MD5', id, 'UTF_8');
-    digest = digest.substring(0, 12);
-
-    let name = calendars[i].getName();
-    if (!calendars[i].isOwnedByMe()) name += ' *';
-
-    db_calendars.name[i] = name;
-    db_calendars.id[i] = id;
-    db_calendars.md5[i] = digest;
-  }
-
-  return db_calendars;
-}
-
-function getFinancialCalendar_ () {
-  const financial_calendar = SettingsUser.getValueOf('financial_calendar');
-  if (!financial_calendar) return 0;
-  return CalendarApp.getCalendarById(financial_calendar);
-}
-
 function getCalendarEventsForCashFlow_ (financial_year, mm) {
   if (!SettingsUser.getValueOf('cash_flow_events')) return [];
 
