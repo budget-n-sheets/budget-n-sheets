@@ -114,7 +114,7 @@ function resumeActivity_ (mm0, mm1) {
     for (let k = 0; k < 10; k++) {
       const bsblank = RangeUtils.rollA1Notation(2 + h_ * mm, 4 + col + w_ * k);
 
-      cards[0 + h_ * mm - offset][4 + w_ * k] = list_bsblank[mm];
+      cards[0 + h_ * mm - offset][4 + w_ * k] = list_bsblank[mm - mm0];
       cards[1 + h_ * mm - offset][w_ * k] = formulasCards.credit(cardsRows, mm, regex[k], bsblank);
       cards[2 + h_ * mm - offset][w_ * k] = formulasCards.expensesIgn(cardsRows, mm, regex[k], bsblank);
       cards[3 + h_ * mm - offset][w_ * k] = formulasCards.expenses(cardsRows, mm, regex[k], bsblank);
