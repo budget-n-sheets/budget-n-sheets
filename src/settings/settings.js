@@ -4,8 +4,11 @@ function retrieveUserSettings () {
   const user_settings = CachedAccess.get('user_settings');
 
   if (user_settings.financial_calendar) {
-    user_settings.financial_calendar = Utilities2.computeDigest('MD5', user_settings.financial_calendar, 'UTF_8');
-    user_settings.financial_calendar = user_settings.financial_calendar.substring(0, 12);
+    user_settings.financial_calendar = Utilities2.computeDigest(
+        'SHA_1',
+        user_settings.financial_calendar,
+        'UTF_8')
+      .substring(0, 12);
   }
 
   user_settings.decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
