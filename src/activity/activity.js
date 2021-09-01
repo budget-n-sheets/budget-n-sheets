@@ -47,4 +47,5 @@ function switchActivity_ (select, param1, param2) {
   }
 
   lock.releaseLock();
+  return 0;
 }
