@@ -13,6 +13,20 @@ function patchV0m0p0_ () {
 } */
 
 /**
+ * Resume activity to fix bad functions.
+ *
+ * 0.42.28
+ */
+function patchV0m42p28_ () {
+  try {
+    return switchActivity_('resume', 0, 11);
+  } catch (err) {
+    LogLog.error(err);
+    return 2;
+  }
+}
+
+/**
  * Flush changes.
  *
  * 0.42.19 > 0.42.21
