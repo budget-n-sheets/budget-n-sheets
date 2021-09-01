@@ -2,7 +2,7 @@ class Ledger {
   constructor (sheet) {
     this._sheet = sheet;
     this._sheetName = sheet.getName();
-    this._lastRange = null;
+    this.lastRange = null;
 
     this._insertRows = null;
   }
@@ -13,7 +13,7 @@ class Ledger {
 
   activate () {
     SpreadsheetApp2.getActiveSpreadsheet().setActiveSheet(this._sheet);
-    this._lastRange.activate();
+    this.lastRange.activate();
   }
 
   appendTransactions (index, values) {
@@ -39,7 +39,7 @@ class Ledger {
       row++;
     }
 
-    this._lastRange = this._sheet.getRange(
+    this.lastRange = this._sheet.getRange(
       this._specs.row + row,
       1 + (this._specs.width + 1) * index,
       values.length,
@@ -102,7 +102,7 @@ class Ledger {
     if (n === -1) n = table.length;
 
     table.splice.apply(table, [n, 0].concat(values));
-    this._lastRange = this._sheet.getRange(this._specs.row, offset, table.length, this._specs.width).setValues(table);
+    this.lastRange = this._sheet.getRange(this._specs.row, offset, table.length, this._specs.width).setValues(table);
 
     SpreadsheetApp.flush();
     return this;
