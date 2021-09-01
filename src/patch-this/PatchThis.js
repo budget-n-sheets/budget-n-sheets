@@ -44,9 +44,9 @@ class PatchThis {
       } else if (control.list[control.pos] != null) {
         this.response = control.list[control.pos]();
       }
-    } while (this.response === 0 && control.pos !== control.ref);
+    } while (!this.response && control.pos !== control.ref);
 
-    if (this.response !== 0) control.pos--;
+    if (this.response) control.pos--;
   }
 
   major_ () {
@@ -69,7 +69,7 @@ class PatchThis {
         this.minor_();
       }
 
-      if (this.response !== 0 || (control.ref !== -1 && control.pos === control.ref)) {
+      if (this.response || (control.ref !== -1 && control.pos === control.ref)) {
         t = false;
       } else {
         control.pos++;
@@ -79,7 +79,7 @@ class PatchThis {
       }
     } while (t);
 
-    if (this.response !== 0 && this._control.patch.pos === -1) {
+    if (this.response && this._control.patch.pos === -1) {
       control.pos--;
       this._control.patch.pos = lastPatch;
     } else if (this._control.patch.pos === -1) {
@@ -137,7 +137,7 @@ class PatchThis {
         this.major_();
       }
 
-      if (this.response !== 0 || control.pos === this._reference.major) {
+      if (this.response || control.pos === this._reference.major) {
         t = false;
       } else {
         control.pos++;
@@ -149,7 +149,7 @@ class PatchThis {
       }
     } while (t);
 
-    if (this.response !== 0) {
+    if (this.response) {
       if (this._control.minor.pos === -1) {
         control.pos--;
         this._control.minor.pos = lastMinor;
