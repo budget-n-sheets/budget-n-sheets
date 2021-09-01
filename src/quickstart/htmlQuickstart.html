@@ -119,7 +119,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(e => $('#content').css('opacity', 1))
-        .playSpeedQuickstart(this.id);
+        .playQuickstart(this.id);
     });
   </script>
 </body>
