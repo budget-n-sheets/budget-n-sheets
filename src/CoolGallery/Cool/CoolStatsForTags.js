@@ -121,7 +121,7 @@ class CoolStatsForTags extends CoolGallery {
     const numRows = sheet.getMaxRows() - 1;
     if (numRows < 1) return;
 
-    const range = sheetTags.getRange(2, 5, numRows, 1);
+    const range = sheet.getRange(2, 5, numRows, 1);
     const rule = SpreadsheetApp.newDataValidation()
       .requireValueInRange(range, true)
       .setAllowInvalid(false)
