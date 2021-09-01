@@ -12,8 +12,6 @@ class SetupConfig {
     config.spreadsheet_name = candidate.spreadsheet_title;
     config.decimal_places = 2;
 
-    config.financial_year = payload.config.financial_year;
-
     config.number_accounts = candidate.accounts.length;
     config.name_accounts = candidate.accounts;
 
