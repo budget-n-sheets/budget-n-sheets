@@ -1,6 +1,6 @@
 function coolGalleryService (payload) {
   const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(100)) return;
+  if (!lock.tryLock(200)) return;
 
   switch (payload.job) {
     case 'get':

@@ -4,7 +4,7 @@ function toolInsertRows (sheet) {
 
 function toolService_ (name, param) {
   const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(100)) return;
+  if (!lock.tryLock(200)) return;
 
   switch (name) {
     case 'insertRows': {

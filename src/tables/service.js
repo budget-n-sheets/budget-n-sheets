@@ -1,6 +1,6 @@
 function accountsClientService (payload) {
   const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(100)) return 1;
+  if (!lock.tryLock(1000)) return 1;
 
   switch (payload.job) {
     case 'get':
@@ -22,7 +22,7 @@ function accountsClientService (payload) {
 
 function cardsClientService (payload) {
   const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(100)) return 1;
+  if (!lock.tryLock(1000)) return 1;
 
   switch (payload.job) {
     case 'create': {

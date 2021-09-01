@@ -1,6 +1,6 @@
 function setupService (uuid, payload) {
   const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(100)) {
+  if (!lock.tryLock(200)) {
     SpreadsheetApp2.getUi().alert(
       'Add-on setup in progress',
       'A budget spreadsheet setup is already in progress.',

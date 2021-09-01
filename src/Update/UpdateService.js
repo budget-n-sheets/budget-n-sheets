@@ -73,7 +73,7 @@ class UpdateService {
     }
 
     const lock = LockService.getDocumentLock();
-    if (!lock.tryLock(100)) {
+    if (!lock.tryLock(200)) {
       if (isOnline) {
         ui.alert(
           "Can't update",
