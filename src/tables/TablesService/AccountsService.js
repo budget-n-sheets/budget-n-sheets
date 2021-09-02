@@ -11,7 +11,7 @@ class AccountsService extends TablesService {
   }
 
   updateMetadata_ () {
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = this.spreadsheet.getSheetByName('_Backstage');
     if (!sheet) return;
 
     const metadata = {};
@@ -40,8 +40,8 @@ class AccountsService extends TablesService {
   }
 
   updateNames_ () {
-    const jan = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Jan');
-    const backstage = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const jan = this.spreadsheet.getSheetByName('Jan');
+    const backstage = this.spreadsheet.getSheetByName('_Backstage');
     if (!backstage) return;
 
     const _h = TABLE_DIMENSION.height;
@@ -68,7 +68,7 @@ class AccountsService extends TablesService {
   }
 
   updateReferences_ () {
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cash Flow');
+    const sheet = this.spreadsheet.getSheetByName('Cash Flow');
     if (!sheet) return;
 
     const _h = TABLE_DIMENSION.height;
@@ -122,6 +122,8 @@ class AccountsService extends TablesService {
   }
 
   flush () {
+    this.initSpreadsheet_();
+
     this.updateMetadata_();
     this.updateNames_();
     this.updateReferences_();

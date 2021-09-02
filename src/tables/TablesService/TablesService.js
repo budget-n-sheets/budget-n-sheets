@@ -1,5 +1,7 @@
 class TablesService {
   constructor (key, db) {
+    this.spreadsheet = null;
+
     this._key = key;
     this._db = db;
 
@@ -16,6 +18,10 @@ class TablesService {
     while (indexes.indexOf(index) !== -1) { index++; }
 
     return index;
+  }
+
+  initSpreadsheet_ () {
+    if (this.spreadsheet == null) this.spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   }
 
   getAll () {

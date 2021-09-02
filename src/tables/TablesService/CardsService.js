@@ -19,7 +19,7 @@ class CardsService extends TablesService {
   }
 
   updateMetadata_ () {
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = this.spreadsheet.getSheetByName('_Backstage');
     if (!sheet) return;
 
     const metadata = {};
@@ -48,7 +48,7 @@ class CardsService extends TablesService {
   }
 
   updateNames_ () {
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
+    const sheet = this.spreadsheet.getSheetByName('_Backstage');
     if (!sheet) return;
 
     const _h = TABLE_DIMENSION.height;
@@ -79,7 +79,7 @@ class CardsService extends TablesService {
   }
 
   updateRules_ () {
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
+    const sheet = this.spreadsheet.getSheetByName('Cards');
     if (!sheet) return;
 
     const height = sheet.getMaxRows() - 5;
@@ -175,6 +175,8 @@ class CardsService extends TablesService {
   }
 
   flush () {
+    this.initSpreadsheet_();
+
     this.updateMetadata_();
     this.updateNames_();
     this.updateRules_();
