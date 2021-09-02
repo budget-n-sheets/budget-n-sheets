@@ -41,5 +41,6 @@ class TablesService {
 
   save () {
     CachedAccess.update(this._key, this._db);
+    this._ids = Object.keys(this._db);
   }
 }
