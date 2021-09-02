@@ -24,7 +24,7 @@ function askDeactivation () {
     SpreadsheetApp2.getActiveSpreadsheet().getName() + '\n\n' +
 
     'By deactivating the add-on:\n' +
-    '- The spreadshet is locked.\n' +
+    '- The spreadsheet is locked.\n' +
     '- Add-on features are disabled.\n' +
     '- Updates and maintenance cease.\n' +
     '- Data and functions are unaffected.\n' +
