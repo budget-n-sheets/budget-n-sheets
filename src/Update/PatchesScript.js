@@ -9,6 +9,25 @@ function patchV0m0p0_ () {
 } */
 
 /**
+ * Move metadata location to spreadsheet.
+ * Flush accounts and cards changes.
+ *
+ * 0.42.30
+ */
+function patchV0m42p30_ () {
+  SpreadsheetApp2.getActiveSpreadsheet()
+    .createDeveloperMetadataFinder()
+    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
+    .find()
+    .forEach(item => item.moveToSpreadsheet());
+
+  new AccountsService().flush();
+  new CardsService().flush();
+
+  return 0;
+}
+
+/**
  * Resume activity to fix bad functions.
  *
  * 0.42.28
