@@ -43,14 +43,39 @@ function formatTags_ () {
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
   if (!sheet) return;
 
-  const maxRows = sheet.getMaxRows() - 1;
-  if (maxRows < 1) return;
+  const numRows = sheet.getMaxRows() - 1;
+  if (numRows < 1) return;
 
-  sheet.getRange(2, 1, maxRows, 5).sort([
-    { column: 2, ascending: true },
-    { column: 1, ascending: true }
-  ]);
-  sheet.getRange(2, 4, maxRows, 1).insertCheckboxes();
+  const range = sheet.getRange(2, 4, numRows, 1);
+
+  range.offset(0, -3, numRows, 5)
+    .sort([
+      { column: 2, ascending: true },
+      { column: 1, ascending: true }
+    ]);
+
+  const values = range.offset(0, 0, sheet.getLastRow() - 1).getValues();
+  values.forEach((b, i, a) => {
+    a[i] = [(b[0] === true)];
+  });
+
+  range.clearDataValidations()
+    .removeCheckboxes()
+    .clearContent();
+
+  const num = sheet.getLastRow() - 1;
+  if (num < 1) return;
+
+  const rule = SpreadsheetApp.newDataValidation()
+    .requireCheckbox()
+    .setAllowInvalid(false)
+    .build();
+
+  range.insertCheckboxes()
+    .setDataValidation(rule)
+    .offset(0, 0, num, 1)
+    .setValues(values.slice(0, num));
+
   SpreadsheetApp.flush();
 }
 
