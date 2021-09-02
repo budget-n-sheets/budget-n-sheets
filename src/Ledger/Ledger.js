@@ -102,7 +102,9 @@ class Ledger {
     if (n === -1) n = table.length;
 
     table.splice.apply(table, [n, 0].concat(values));
-    this.lastRange = this._sheet.getRange(this._specs.row, offset, table.length, this._specs.width).setValues(table);
+    this._sheet.getRange(this._specs.row, offset, table.length, this._specs.width).setValues(table);
+
+    this.lastRange = this._sheet.getRange(this._specs.row + n, offset, values.length, this._specs.width);
 
     SpreadsheetApp.flush();
     return this;
