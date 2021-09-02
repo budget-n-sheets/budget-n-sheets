@@ -149,11 +149,9 @@ function restoreFromSpreadsheet_ (file_id) {
 }
 
 function copyTables_ (spreadsheet) {
-  let metadata = spreadsheet.createDeveloperMetadataFinder()
-    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
-    .withKey('db_accounts')
-    .find();
-  metadata = JSON.parse(metadata[0].getValue());
+  const devMetadata = new Metadata(spreadsheet);
+
+  let metadata = devMetadata.getValueOf('db_accounts');
 
   const accountsService = new AccountsService();
   const db_accounts = accountsService.getAll();
@@ -166,11 +164,7 @@ function copyTables_ (spreadsheet) {
   accountsService.save();
   accountsService.flush();
 
-  metadata = spreadsheet.createDeveloperMetadataFinder()
-    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
-    .withKey('db_cards')
-    .find();
-  metadata = JSON.parse(metadata[0].getValue());
+  metadata = devMetadata.getValueOf('db_cards');
 
   const cardsService = new CardsService();
 
@@ -233,13 +227,7 @@ function copyTags_ (spreadsheet) {
 }
 
 function copySettings_ (spreadsheet) {
-  const list = spreadsheet.createDeveloperMetadataFinder()
-    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
-    .withKey('user_settings')
-    .find();
-  if (list.length === 0) return;
-
-  const metadata = JSON.parse(list[0].getValue());
+  const metadata = new Metadata(spreadsheet).getValueOf('user_settings');
   if (metadata.financial_calendar_sha256 === '') return;
 
   const calendars = Calendar.listAllCalendars();

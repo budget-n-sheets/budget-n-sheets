@@ -28,20 +28,7 @@ class CardsService extends TablesService {
       k++;
     }
 
-    const list_metadata = this.spreadsheet.createDeveloperMetadataFinder()
-      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
-      .withKey('db_cards')
-      .find();
-
-    if (list_metadata.length > 0) {
-      list_metadata[0].setValue(JSON.stringify(metadata));
-    } else {
-      this.spreadsheet.addDeveloperMetadata(
-        'db_cards',
-        JSON.stringify(metadata),
-        SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
-      );
-    }
+    new Metadata().update('db_cards', metadata);
   }
 
   updateNames_ () {

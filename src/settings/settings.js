@@ -113,18 +113,5 @@ function updateSettingsMetadata_ (user_settings) {
     );
   }
 
-  const elements = spreadsheet.createDeveloperMetadataFinder()
-    .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
-    .withKey('user_settings')
-    .find();
-
-  if (elements.length > 0) {
-    elements[0].setValue(JSON.stringify(metadata));
-  } else {
-    spreadsheet.addDeveloperMetadata(
-      'user_settings',
-      JSON.stringify(metadata),
-      SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
-    );
-  }
+  new Metadata().update('user_settings', metadata);
 }

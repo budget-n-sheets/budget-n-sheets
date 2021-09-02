@@ -20,20 +20,7 @@ class AccountsService extends TablesService {
       k++;
     }
 
-    const list_metadata = this.spreadsheet.createDeveloperMetadataFinder()
-      .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
-      .withKey('db_accounts')
-      .find();
-
-    if (list_metadata.length > 0) {
-      list_metadata[0].setValue(JSON.stringify(metadata));
-    } else {
-      this.spreadsheet.addDeveloperMetadata(
-        'db_accounts',
-        JSON.stringify(metadata),
-        SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
-      );
-    }
+    new Metadata().update('db_accounts', metadata);
   }
 
   updateNames_ () {

@@ -1,6 +1,6 @@
 class Metadata {
-  constructor () {
-    this.spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  constructor (spreadsheet) {
+    this.spreadsheet = spreadsheet || SpreadsheetApp2.getActiveSpreadsheet();
   }
 
   getValueOf (key) {

@@ -11,6 +11,7 @@ class SetupParts {
 
     this._config = config;
     this._spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    this._metadata = new Metadata();
   }
 
   setupBackstage_ () {
@@ -488,11 +489,7 @@ class SetupParts {
       financial_year: this._config.financial_year
     };
 
-    this._spreadsheet.addDeveloperMetadata(
-      'const_properties',
-      JSON.stringify(metadata),
-      SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
-    );
+    this._metadata.update('const_properties', metadata);
 
     properties = {
       view_mode: 'complete',
@@ -550,11 +547,7 @@ class SetupParts {
       cash_flow_events: false
     };
 
-    this._spreadsheet.addDeveloperMetadata(
-      'user_settings',
-      JSON.stringify(metadata),
-      SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
-    );
+    this._metadata.update('user_settings', metadata);
 
     SpreadsheetApp.flush();
   }
@@ -685,18 +678,10 @@ class SetupParts {
       Object.assign(meta_accounts[k], account);
     }
 
-    this._spreadsheet.addDeveloperMetadata(
-      'db_accounts',
-      JSON.stringify(meta_accounts),
-      SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
-    );
+    this._metadata.update('db_accounts', meta_accounts);
     CachedAccess.update('db_accounts', db_accounts);
 
-    this._spreadsheet.addDeveloperMetadata(
-      'db_cards',
-      JSON.stringify({}),
-      SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
-    );
+    this._metadata.update('db_cards', {});
     CachedAccess.update('db_cards', {});
   }
 
