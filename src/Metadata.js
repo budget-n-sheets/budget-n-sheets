@@ -45,10 +45,6 @@ class Metadata {
       });
   }
 
-  getAll () {
-    return this.metadata;
-  }
-
   getValueOf (key) {
     if (!this.hasKey(key)) return null;
 
