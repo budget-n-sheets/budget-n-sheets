@@ -49,17 +49,20 @@ class ToolInsertRows {
 
   insertRows () {
     this.insertNumRows_(400);
+    return this;
   }
 
   insertRowsTo (height, extras) {
     const diff = this._maxRows - this._sheet.getLastRow();
     if (diff > height) return 1;
     this.insertNumRows_(height - diff + (extras ? 100 : 0));
+    return this;
   }
 
   setSheet (sheet) {
     this._sheet = sheet;
     this._maxRows = sheet.getMaxRows();
+    return this;
   }
 }
 
