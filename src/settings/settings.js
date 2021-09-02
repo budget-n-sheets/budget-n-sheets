@@ -96,7 +96,7 @@ function saveUserSettings (settings) {
 }
 
 function updateSettingsMetadata_ (user_settings) {
-  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Settings');
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   const metadata = {
     initial_month: user_settings.initial_month,
@@ -113,7 +113,7 @@ function updateSettingsMetadata_ (user_settings) {
     );
   }
 
-  const elements = sheet.createDeveloperMetadataFinder()
+  const elements = spreadsheet.createDeveloperMetadataFinder()
     .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
     .withKey('user_settings')
     .find();
@@ -121,7 +121,7 @@ function updateSettingsMetadata_ (user_settings) {
   if (elements.length > 0) {
     elements[0].setValue(JSON.stringify(metadata));
   } else {
-    sheet.addDeveloperMetadata(
+    spreadsheet.addDeveloperMetadata(
       'user_settings',
       JSON.stringify(metadata),
       SpreadsheetApp.DeveloperMetadataVisibility.PROJECT

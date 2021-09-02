@@ -550,7 +550,7 @@ class SetupParts {
       cash_flow_events: false
     };
 
-    sheet.addDeveloperMetadata(
+    this._spreadsheet.addDeveloperMetadata(
       'user_settings',
       JSON.stringify(metadata),
       SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
@@ -685,16 +685,14 @@ class SetupParts {
       Object.assign(meta_accounts[k], account);
     }
 
-    const sheet = this._spreadsheet.getSheetByName('_Backstage');
-
-    sheet.addDeveloperMetadata(
+    this._spreadsheet.addDeveloperMetadata(
       'db_accounts',
       JSON.stringify(meta_accounts),
       SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
     );
     CachedAccess.update('db_accounts', db_accounts);
 
-    sheet.addDeveloperMetadata(
+    this._spreadsheet.addDeveloperMetadata(
       'db_cards',
       JSON.stringify({}),
       SpreadsheetApp.DeveloperMetadataVisibility.PROJECT

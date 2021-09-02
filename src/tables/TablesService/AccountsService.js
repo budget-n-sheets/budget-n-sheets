@@ -11,9 +11,6 @@ class AccountsService extends TablesService {
   }
 
   updateMetadata_ () {
-    const sheet = this.spreadsheet.getSheetByName('_Backstage');
-    if (!sheet) return;
-
     const metadata = {};
 
     let k = 0;
@@ -23,7 +20,7 @@ class AccountsService extends TablesService {
       k++;
     }
 
-    const list_metadata = sheet.createDeveloperMetadataFinder()
+    const list_metadata = this.spreadsheet.createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .withKey('db_accounts')
       .find();
@@ -31,7 +28,7 @@ class AccountsService extends TablesService {
     if (list_metadata.length > 0) {
       list_metadata[0].setValue(JSON.stringify(metadata));
     } else {
-      sheet.addDeveloperMetadata(
+      this.spreadsheet.addDeveloperMetadata(
         'db_accounts',
         JSON.stringify(metadata),
         SpreadsheetApp.DeveloperMetadataVisibility.PROJECT

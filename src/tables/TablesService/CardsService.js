@@ -19,9 +19,6 @@ class CardsService extends TablesService {
   }
 
   updateMetadata_ () {
-    const sheet = this.spreadsheet.getSheetByName('_Backstage');
-    if (!sheet) return;
-
     const metadata = {};
 
     let k = 0;
@@ -31,7 +28,7 @@ class CardsService extends TablesService {
       k++;
     }
 
-    const list_metadata = sheet.createDeveloperMetadataFinder()
+    const list_metadata = this.spreadsheet.createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .withKey('db_cards')
       .find();
@@ -39,7 +36,7 @@ class CardsService extends TablesService {
     if (list_metadata.length > 0) {
       list_metadata[0].setValue(JSON.stringify(metadata));
     } else {
-      sheet.addDeveloperMetadata(
+      this.spreadsheet.addDeveloperMetadata(
         'db_cards',
         JSON.stringify(metadata),
         SpreadsheetApp.DeveloperMetadataVisibility.PROJECT
