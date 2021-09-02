@@ -168,9 +168,9 @@ function copyTables_ (spreadsheet) {
 
   const cardsService = new CardsService();
 
-  for (let i = 0; i < metadata.length; i++) {
-    metadata[i].aliases = metadata[i].aliases.join(',');
-    cardsService.create(metadata);
+  for (const k in metadata) {
+    metadata[k].aliases = metadata[k].aliases.join(',');
+    cardsService.create(metadata[k]);
   }
   cardsService.save();
   cardsService.flush();
