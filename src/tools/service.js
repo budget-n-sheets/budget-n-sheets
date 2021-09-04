@@ -17,6 +17,7 @@ function toolService_ (name, param) {
     }
 
     default:
+      console.warn('toolService_(): Switch case is default.', name);
       break;
   }
 
