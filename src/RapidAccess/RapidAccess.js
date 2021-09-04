@@ -18,6 +18,9 @@ const Goldfish = {
       document: null,
       user: null
     }
+  },
+  spreadsheet: {
+    sheets: {}
   }
 };
 
@@ -32,5 +35,9 @@ class RapidAccess {
 
   static services () {
     return new RapidAccessServices(Goldfish.services);
+  }
+
+  static spreadsheet () {
+    return new RapidAccessSpreadsheet(Goldfish.spreadsheet);
   }
 }
