@@ -3,6 +3,12 @@ const Goldfish = {
     accounts: null,
     cards: null
   },
+  properties: {
+    admin: null,
+    const: null,
+    spreadsheet: null,
+    user: null
+  },
   services: {
     cache: {
       document: null,
@@ -12,12 +18,6 @@ const Goldfish = {
       document: null,
       user: null
     }
-  },
-  properties: {
-    admin: null,
-    const: null,
-    spreadsheet: null,
-    user: null
   }
 };
 
