@@ -181,6 +181,7 @@ function copyTables_ (spreadsheet) {
 function copyMonths_ (spreadsheet) {
   const number_accounts = SettingsConst.getValueOf('number_accounts');
   const insertRows = new ToolInsertRowsMonth();
+  const destination = SpreadsheetApp2.getActiveSpreadsheet();
 
   let mm = -1;
   while (++mm < 12) {
@@ -190,8 +191,8 @@ function copyMonths_ (spreadsheet) {
     const last = source.getLastRow();
     if (last < 5) continue;
 
-    const destination = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(Consts.month_name.short[mm]);
-    insertRows.setSheet(destination).insertRowsTo(destination.getMaxRows(), true);
+    const sheet = destination.getSheetByName(Consts.month_name.short[mm]);
+    insertRows.setSheet(sheet).insertRowsTo(sheet.getMaxRows(), true);
 
     const values = source.getRange(5, 1, last - 4, 5 + 5 * number_accounts).getValues();
     destination.getRange(5, 1, last - 4, 5 + 5 * number_accounts).setValues(values);

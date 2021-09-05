@@ -269,19 +269,19 @@ function restoreCards_ (backup) {
 }
 
 function restoreMonths_ (backup) {
-  let sheet, mm, k;
+  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   const num_acc = backup.const_properties.number_accounts;
   const insertRows = new ToolInsertRowsMonth();
 
-  mm = -1;
+  let mm = -1;
   while (++mm < 12) {
     if (backup.ttt[mm] == null) continue;
 
-    sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(Consts.month_name.short[mm]);
+    const sheet = spreadsheet.getSheetByName(Consts.month_name.short[mm]);
     insertRows.setSheet(sheet);
 
-    for (k = 0; k < num_acc + 1; k++) {
+    for (let k = 0; k < num_acc + 1; k++) {
       if (backup.ttt[mm][k] == null) continue;
       if (backup.ttt[mm][k].length === 0) continue;
 
