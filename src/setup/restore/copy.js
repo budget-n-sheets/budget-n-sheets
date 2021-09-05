@@ -192,7 +192,7 @@ function copyMonths_ (spreadsheet) {
     if (last < 5) continue;
 
     const sheet = destination.getSheetByName(Consts.month_name.short[mm]);
-    insertRows.setSheet(sheet).insertRowsTo(sheet.getMaxRows(), true);
+    insertRows.setSheet(sheet).insertRowsTo(last, true);
 
     const values = source.getRange(5, 1, last - 4, 5 + 5 * number_accounts).getValues();
     destination.getRange(5, 1, last - 4, 5 + 5 * number_accounts).setValues(values);
