@@ -1,9 +1,7 @@
 class ToolInsertRows {
   constructor (sheet) {
-    if (sheet) {
-      this._sheet = sheet;
-      this._maxRows = sheet.getMaxRows();
-    }
+    this._sheet = sheet;
+    this._maxRows = sheet.getMaxRows();
   }
 
   static pick (sheet) {
@@ -56,12 +54,6 @@ class ToolInsertRows {
     const diff = this._maxRows - this._sheet.getLastRow();
     if (diff > height) return 1;
     this.insertNumRows_(height - diff + (extras ? 100 : 0));
-    return this;
-  }
-
-  setSheet (sheet) {
-    this._sheet = sheet;
-    this._maxRows = sheet.getMaxRows();
     return this;
   }
 }

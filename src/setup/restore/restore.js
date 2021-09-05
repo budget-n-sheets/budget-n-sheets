@@ -272,14 +272,13 @@ function restoreMonths_ (backup) {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
   const num_acc = backup.const_properties.number_accounts;
-  const insertRows = new ToolInsertRowsMonth();
 
   let mm = -1;
   while (++mm < 12) {
     if (backup.ttt[mm] == null) continue;
 
     const sheet = spreadsheet.getSheetByName(Consts.month_name.short[mm]);
-    insertRows.setSheet(sheet);
+    const insertRows = new ToolInsertRowsMonth(sheet);
 
     for (let k = 0; k < num_acc + 1; k++) {
       if (backup.ttt[mm][k] == null) continue;
