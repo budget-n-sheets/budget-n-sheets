@@ -23,11 +23,11 @@ class FormatTableTags extends FormatTable {
   formatRange_ (range) {
     range.trimWhitespace().sort(this.sortSpec);
 
-    const values = range.offset(0, 3, this.numRows, 1)
-      .getValues()
-      .forEach((b, i, a) => {
-        a[i][0] = (b[0] === true);
-      });
+    const values = range.offset(0, 3, this.numRows, 1).getValues();
+
+    values.forEach((b, i, a) => {
+      a[i][0] = (b[0] === true);
+    });
 
     range.offset(0, 3, this.numRows, 1)
       .clearDataValidations()
@@ -43,11 +43,11 @@ class FormatTableTags extends FormatTable {
       .trimWhitespace()
       .sort(this.sortSpec);
 
-    const values = this.sheet.getRange(2, 4, this.sheet.getLastRow() - 1, 1)
-      .getValues()
-      .forEach((b, i, a) => {
-        a[i][0] = (b[0] === true);
-      });
+    const values = this.sheet.getRange(2, 4, this.sheet.getLastRow() - 1, 1).getValues();
+
+    values.forEach((b, i, a) => {
+      a[i][0] = (b[0] === true);
+    });
 
     this.sheet.getRange(2, 4, this.numRows, 1)
       .clearDataValidations()
