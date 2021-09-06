@@ -18,24 +18,26 @@ class FormatTableTags {
     const numRows = this.sheet.getMaxRows() - 1;
     if (numRows < 1) return;
 
-    const range = this.sheet.getRange(2, 4, numRows, 1);
+    this.sheet.getRange(2, 1, numRows, 5)
+      .trimWhitespace()
+      .sort(this.sortSpec);
 
-    range.offset(0, -3, numRows, 5).sort(this.sortSpec);
-
-    const values = range.offset(0, 0, this.sheet.getLastRow() - 1)
+    const values = this.sheet.getRange(2, 4, this.sheet.getLastRow() - 1, 1)
       .getValues()
       .forEach((b, i, a) => {
-        a[i] = [(b[0] === true)];
+        a[i][0] = (b[0] === true);
       });
 
-    range.clearDataValidations()
+    this.sheet.getRange(2, 4, numRows, 1)
+      .clearDataValidations()
       .removeCheckboxes()
       .clearContent();
 
     const num = this.sheet.getLastRow() - 1;
     if (num < 1) return;
 
-    range.insertCheckboxes()
+    this.sheet.getRange(2, 4, numRows, 1)
+      .insertCheckboxes()
       .setDataValidation(this.rule)
       .offset(0, 0, num, 1)
       .setValues(values.slice(0, num));
