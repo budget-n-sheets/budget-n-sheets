@@ -1,5 +1,6 @@
 class FormatTableCards extends FormatTable {
   constructor (sheet) {
+    super();
     this.sheet = sheet || SpreadsheetApp2.getActive().getSheetByName('Tags');
     this.numRows = 0;
 
