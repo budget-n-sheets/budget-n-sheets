@@ -26,7 +26,7 @@ function onOpen (e) {
       .addItem('About the add-on', 'showDialogAboutAddon');
   } else {
     if (AppsScript.isInstalled()) {
-      menu.addItem('Format table', 'toolFormatRegistry')
+      menu.addItem('Format table', 'toolFormatTable')
         .addItem('Insert rows', 'toolInsertRows')
         .addItem('Update cash flow', 'toolUpdateCashFlow');
 
