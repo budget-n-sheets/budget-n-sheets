@@ -1,3 +1,7 @@
+function toolFormatTable (sheet) {
+  return toolService_('formatTable', sheet);
+}
+
 function toolInsertRows (sheet) {
   return toolService_('insertRows', sheet);
 }
@@ -6,9 +10,17 @@ function toolService_ (name, param) {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(200)) return;
 
+  const sheet = param || SpreadsheetApp.getActiveSheet();
+
   switch (name) {
+    case 'formatTable': {
+      const tool = FormatTable.pick(sheet);
+
+      if (tool !== 1) tool.formatTable();
+      else FormatTable.showWarning();
+      break;
+    }
     case 'insertRows': {
-      const sheet = param || SpreadsheetApp.getActiveSheet();
       const tool = ToolInsertRows.pick(sheet);
 
       if (tool !== 1) tool.insertRows();
