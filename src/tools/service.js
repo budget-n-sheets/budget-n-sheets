@@ -17,7 +17,7 @@ function toolService_ (name, param) {
     case 'formatTable': {
       const tool = FormatTable.pick(sheet);
 
-      if (tool !== 1) tool.formatTable();
+      if (tool !== 1) tool.setRanges(ranges).format();
       else FormatTable.showWarning();
       break;
     }
