@@ -12,7 +12,7 @@ class SheetBackstage {
   }
 
   getMonthRange (start, end) {
-    const columns = this.sheet.getLastColumn() - 1;
+    const columns = this.sheet.getLastColumn() - this.specs.init.column + 1;
     if (columns < 1) return null;
 
     return this.sheet.getRange(
