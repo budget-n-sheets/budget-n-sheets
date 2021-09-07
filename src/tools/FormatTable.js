@@ -12,8 +12,11 @@ class FormatTable {
         return new FormatTableTags(sheet);
 
       default:
-        return 1;
+        break;
     }
+
+    if (Consts.month_name.short.indexOf(name) === -1) return 1;
+    return new FormatTableAccounts(sheet);
   }
 
   static showWarning () {
