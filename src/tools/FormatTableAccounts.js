@@ -1,7 +1,10 @@
 class FormatTableAccounts extends FormatTable {
-  constructor (sheet) {
+  constructor (sheet, mm) {
     super();
     this.sheet = sheet;
+
+    const financial_year = SettingsConst.getValueOf('financial_year');
+    this.hasHideRows = (new Date(financial_year, mm + 1, 0) < Consts.date);
 
     this._specs = Object.freeze({
       nullSearch: 3,
@@ -27,6 +30,17 @@ class FormatTableAccounts extends FormatTable {
     range.offset(0, 0, i, 4).sort({ column: column, ascending: false });
   }
 
+  hideRows_ () {
+    let lastRow = this.sheet.getLastRow();
+    const maxRows = this.sheet.getMaxRows();
+
+    if (lastRow === maxRows) return;
+    if (maxRows <= this._specs.row) return;
+    if (lastRow < this._specs.row) lastRow = this._specs.row;
+
+    this.sheet.hideRows(lastRow + 1, maxRows - lastRow);
+  }
+
   format () {
     if (!this.sheet) return;
 
@@ -41,5 +55,7 @@ class FormatTableAccounts extends FormatTable {
       const range = this.sheet.getRange(this._specs.row, 1 + (this._specs.width + 1) * index, numRows, this._specs.width);
       this.formatRange_(range);
     });
+
+    if (this.hasHideRows && this.rangeList.index.length > 0) this.hideRows_();
   }
 }

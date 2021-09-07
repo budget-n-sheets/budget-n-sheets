@@ -15,8 +15,9 @@ class FormatTable {
         break;
     }
 
-    if (Consts.month_name.short.indexOf(name) === -1) return 1;
-    return new FormatTableAccounts(sheet);
+    const mm = Consts.month_name.short.indexOf(name);
+    if (mm === -1) return 1;
+    return new FormatTableAccounts(sheet, mm);
   }
 
   static showWarning () {
