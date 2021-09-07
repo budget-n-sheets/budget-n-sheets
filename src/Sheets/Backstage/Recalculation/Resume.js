@@ -51,7 +51,7 @@ class ResumeRecalculation extends BackstageRecalculation {
       table[5 + offset][0] = RangeUtils.rollA1Notation(5 + rowOffset, 7 + this._w * this.num_acc);
     }
 
-    this.clearContent().getGroupRange(this.start, 0, this.end - this.start, 1).setFormulas(table);
+    this.getGroupRange(this.start, 0, this.end - this.start, 1).clearContent().setFormulas(table);
   }
 
   resumeAccounts_ () {
@@ -97,7 +97,7 @@ class ResumeRecalculation extends BackstageRecalculation {
       }
     }
 
-    this.clearContent().getGroupRange(this.start, 1, this.end - this.start, this.num_acc).setFormulas(table);
+    this.getGroupRange(this.start, 1, this.end - this.start, this.num_acc).clearContent().setFormulas(table);
   }
 
   resume (start, end) {
