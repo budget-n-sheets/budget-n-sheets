@@ -48,7 +48,7 @@ class ResumeRecalculation extends BackstageRecalculation {
       table[3 + offset][0] = expenses;
     }
 
-    this.getGroupRange(this.start, 0, this.end - this.start, 1).setFormulas(table);
+    this.clearContent().getGroupRange(this.start, 0, this.end - this.start, 1).setFormulas(table);
   }
 
   resumeAccounts_ () {
@@ -94,7 +94,7 @@ class ResumeRecalculation extends BackstageRecalculation {
       }
     }
 
-    this.getGroupRange(this.start, 1, this.end - this.start, this.num_acc).setFormulas(table);
+    this.clearContent().getGroupRange(this.start, 1, this.end - this.start, this.num_acc).setFormulas(table);
   }
 
   resume (start, end) {
