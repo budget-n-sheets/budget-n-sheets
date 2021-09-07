@@ -10,4 +10,15 @@ class SheetBackstage {
       }
     });
   }
+
+  getMonthRange (start, end) {
+    const columns = this.sheet.getLastColumn() - 1;
+    if (columns < 1) return null;
+
+    return this.sheet.getRange(
+      this.specs.init.row + this.specs.table.height * start,
+      this.specs.init.column,
+      this.specs.table.height * (end - start),
+      columns);
+  }
 }
