@@ -1,7 +1,6 @@
-class SuspendRecalculation extends SheetBackstage {
+class SuspendRecalculation extends BackstageRecalculation {
   constructor () {
     super();
-    this.load = SettingsSpreadsheet.getValueOf('optimize_load');
   }
 
   suspend (start, end) {
