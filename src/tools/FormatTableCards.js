@@ -26,11 +26,11 @@ class FormatTableCards extends FormatTable {
     while (p !== -1) {
       const code = snapshot[p][2];
 
-      let i = snapshop.slice(p).findIndex(line => line[2] !== code || line[0] >= 0);
-      if (i === -1) i = snapshop.length;
+      let i = snapshot.slice(p).findIndex(line => line[2] !== code || line[0] >= 0);
+      if (i === -1) i = snapshot.length;
 
       range.offset(p, 0, i - p, 5).sort({ column: column, ascending: false });
-      p = snapshop.slice(i).findIndex(line => line[2] !== code);
+      p = snapshot.slice(i).findIndex(line => line[2] !== code);
     }
   }
 
