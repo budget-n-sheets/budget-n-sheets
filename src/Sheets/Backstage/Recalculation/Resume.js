@@ -100,6 +100,76 @@ class ResumeRecalculation extends BackstageRecalculation {
     this.getGroupRange(this.start, 1, this.end - this.start, this.num_acc).clearContent().setFormulas(table);
   }
 
+  resumeCards_ () {
+    const formulas = this.formulas.cards();
+    const col = 2 + this._w + this._w * this.num_acc + this._w;
+
+    const sheet = this.spreadsheet.getSheetByName('Cards');
+    if (!sheet) return;
+
+    const numRows = sheet.getMaxRows() - 5;
+    if (numRows < 1) return;
+
+    const listRange1 = [];
+    const listRange2 = [];
+    const listRange3 = [];
+    const listRange5 = [];
+
+    const table = new Array(this.height);
+    for (let i = 0; i < this.height; i++) {
+      table[i] = new Array(10 * this._w).fill(null);
+    }
+
+    const allBsblank = [];
+    for (let i = this.start; i < this.end; i++) {
+      allBsblank.push(RangeUtils.rollA1Notation(2 + this._h * i, col - 1));
+    }
+
+    const regex = [RangeUtils.rollA1Notation(1, col)];
+    for (let k = 1; k < 10; k++) {
+      regex[k] = RangeUtils.rollA1Notation(1, col + this._w * k);
+    }
+
+    let mm = this.start - 1;
+    while (++mm < this.end) {
+      const rowOffset = this._h * mm;
+      const offset = rowOffset - this.rowOffset;
+
+      this.sheet.getRange(2 + rowOffset, 4 + col - this._w).setFormula(formulas.bsblank(numRows, mm));
+      this.sheet.getRange(3 + rowOffset, col - this._w, 4)
+        .setFormulaR1C1('RC[5] + RC[10] + RC[15] + RC[20] + RC[25] + RC[30] + RC[35] + RC[40] + RC[45] + RC[50]');
+      this.sheet.getRange(4 + rowOffset, col - this._w)
+        .setFormulaR1C1('RC[6] + RC[11] + RC[16] + RC[21] + RC[26] + RC[31] + RC[36] + RC[41] + RC[46] + RC[51]');
+
+      const listRange4 = [];
+      for (let k = 0; k < 10; k++) {
+        const columnOffset = this._w * k;
+        const bsblank = RangeUtils.rollA1Notation(2 + rowOffset, 4 + col + columnOffset);
+
+        table[0 + offset][4 + columnOffset] = allBsblank[mm - this.start];
+        table[1 + offset][0 + columnOffset] = formulas.credit(numRows, mm, regex[k], bsblank);
+        table[2 + offset][0 + columnOffset] = formulas.expensesIgn(numRows, mm, regex[k], bsblank);
+        table[3 + offset][0 + columnOffset] = formulas.expenses(numRows, mm, regex[k], bsblank);
+        table[3 + offset][1 + columnOffset] = formulas.bscardpart(numRows, mm, RangeUtils.rollA1Notation(1, col + columnOffset), bsblank);
+
+        listRange1.push(RangeUtils.rollA1Notation(6 + rowOffset, 0 + col + columnOffset));
+        listRange2.push(RangeUtils.rollA1Notation(6 + rowOffset, 1 + col + columnOffset));
+        listRange3.push(RangeUtils.rollA1Notation(3 + rowOffset, 1 + col + columnOffset));
+        listRange4[k] = RangeUtils.rollA1Notation(2 + rowOffset, 4 + col + columnOffset);
+        listRange5.push(RangeUtils.rollA1Notation(4 + rowOffset, 1 + col + columnOffset));
+      }
+
+      this.sheet.getRangeList(listRange4).setFormula(RangeUtils.rollA1Notation(2 + rowOffset, 4 + col - this._w));
+    }
+
+    this.getGroupRange(this.start, 2 + this.num_acc, this.end - this.start, 10).clearContent().setFormulas(table);
+
+    this.sheet.getRangeList(listRange1).setFormulaR1C1('R[-1]C + R[-3]C');
+    this.sheet.getRangeList(listRange2).setFormulaR1C1('R[-1]C + R[-4]C + RC[-1]');
+    this.sheet.getRangeList(listRange3).setFormulaR1C1('MIN(R[-1]C; R[-1]C - R[3]C)');
+    this.sheet.getRangeList(listRange5).setFormulaR1C1('RC[-1] + R[-1]C[-1]');
+  }
+
   resume (start, end) {
     if (end == null) end = 12;
     if (start >= end) return;
@@ -112,5 +182,6 @@ class ResumeRecalculation extends BackstageRecalculation {
 
     this.resumeWallet_();
     this.resumeAccounts_();
+    this.resumeCards_();
   }
 }
