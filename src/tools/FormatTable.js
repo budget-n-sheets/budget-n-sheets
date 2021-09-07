@@ -6,6 +6,8 @@ class FormatTable {
   static pick (sheet) {
     const name = sheet.getName();
     switch (name) {
+      case 'Cards':
+        return new FormatTableCards(sheet);
       case 'Tags':
         return new FormatTableTags(sheet);
 
