@@ -27,15 +27,15 @@ class ResumeRecalculation extends BackstageRecalculation {
       const month = this.spreadsheet.getSheetByName(Consts.month_name.short[mm]);
       if (!month) continue;
 
-      const maxRows = month.getMaxRows();
-      if (maxRows < 5) continue;
+      const numRows = month.getMaxRows() - 4;
+      if (numRows < 1) continue;
 
       const rowOffset = this._h * mm;
       const offset = rowOffset - this.rowOffset;
       const bsblank = RangeUtils.rollA1Notation(this.specs.init.row + rowOffset, 6);
 
-      table[0 + offset][4] = formulas.bsblank(mm, this.fastA1.values[0] + maxRows);
-      table[2 + offset][0] = formulas.expensesIgn(maxRows, mm, bsblank);
+      table[0 + offset][4] = formulas.bsblank(mm, this.fastA1.values[0] + numRows);
+      table[2 + offset][0] = formulas.expensesIgn(numRows, mm, bsblank);
 
       let income = '0';
       let expenses = '0';
@@ -46,6 +46,9 @@ class ResumeRecalculation extends BackstageRecalculation {
 
       table[1 + offset][0] = income;
       table[3 + offset][0] = expenses;
+
+      table[4 + offset][0] = RangeUtils.rollA1Notation(4 + rowOffset, 7 + this._w * this.num_acc);
+      table[5 + offset][0] = RangeUtils.rollA1Notation(5 + rowOffset, 7 + this._w * this.num_acc);
     }
 
     this.clearContent().getGroupRange(this.start, 0, this.end - this.start, 1).setFormulas(table);
@@ -65,8 +68,8 @@ class ResumeRecalculation extends BackstageRecalculation {
       const month = this.spreadsheet.getSheetByName(Consts.month_name.short[mm]);
       if (!month) continue;
 
-      const maxRows = month.getMaxRows();
-      if (maxRows < 5) continue;
+      const numRows = month.getMaxRows() - 4;
+      if (numRows < 1) continue;
 
       const rowOffset = this._h * mm;
       const offset = rowOffset - this.rowOffset;
@@ -80,16 +83,16 @@ class ResumeRecalculation extends BackstageRecalculation {
 
         table[0 + offset][0 + columnOffset] = '=' + fastA1.balance2[5 * mm + k];
 
-        formula = formulas.bsreport(mm, fastA1.tags[1 + k] + maxRows, fastA1.combo[1 + k] + maxRows, bsblank);
+        formula = formulas.bsreport(mm, fastA1.tags[1 + k] + numRows, fastA1.combo[1 + k] + numRows, bsblank);
         table[0 + offset][1 + columnOffset] = formula;
 
-        formula = formulas.bsblank(mm, header, fastA1.values[1 + k] + maxRows);
+        formula = formulas.bsblank(mm, header, fastA1.values[1 + k] + numRows);
         table[0 + offset][4 + columnOffset] = formula;
 
-        formula = formulas.balance(mm, fastA1.values[1 + k] + maxRows, fastA1.balance1[5 * mm + k], bsblank);
+        formula = formulas.balance(mm, fastA1.values[1 + k] + numRows, fastA1.balance1[5 * mm + k], bsblank);
         table[1 + offset][0 + columnOffset] = formula;
 
-        formula = formulas.expensesIgn(mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        formula = formulas.expensesIgn(mm, fastA1.values[1 + k] + numRows, fastA1.tags[1 + k] + numRows, bsblank);
         table[2 + offset][0 + columnOffset] = formula;
       }
     }
