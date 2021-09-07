@@ -26,13 +26,16 @@ class FormatTable {
     const w = this._specs.width + 1;
 
     ranges.forEach(range => {
-      let index = range.getColumn() - 1;
+      const column = range.getColumn() - 1;
 
-      if (index % w === 0 && range.getNumColumns() === this._specs.width) {
+      if (column % w === 0 && range.getNumColumns() === this._specs.width) {
         if (range.getNumRows() > 1) this.rangeList.range.push(range);
       } else {
-        index = (index - (index % w)) / w;
-        this.rangeList.index.push(index);
+        const last = range.getLastColumn();
+        for (let i = column; i < last; i += w) {
+          const index = (i - (i % w)) / w;
+          this.rangeList.index.push(index);
+        }
       }
     });
 
