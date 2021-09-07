@@ -51,6 +51,52 @@ class ResumeRecalculation extends BackstageRecalculation {
     this.getGroupRange(0, 0, 12, 1).setFormulas(table);
   }
 
+  resumeAccounts_ () {
+    const formulas = this.formulas.accounts();
+    const fastA1 = this.fastA1;
+
+    const table = new Array(this.height);
+    for (let i = 0; i < this.height; i++) {
+      table[i] = new Array(this._w * this.num_acc).fill(null);
+    }
+
+    let mm = this.start - 1;
+    while (++mm < this.end) {
+      const month = this.spreadsheet.getSheetByName(Consts.month_name.short[mm]);
+      if (!month) continue;
+
+      const maxRows = month.getMaxRows();
+      if (maxRows < 5) continue;
+
+      const rowOffset = this._h * mm;
+      const offset = rowOffset - this.rowOffset;
+
+      for (let k = 0; k < this.num_acc; k++) {
+        const columnOffset = this._w * k;
+        let formula = '';
+
+        const header = RangeUtils.rollA1Notation(4, 8 + 5 * k);
+        const bsblank = RangeUtils.rollA1Notation(2 + this._h * mm, 11 + columnOffset);
+
+        table[0 + offset][0 + columnOffset] = '=' + fastA1.balance2[5 * mm + k];
+
+        formula = formulas.bsreport(mm, fastA1.tags[1 + k] + maxRows, fastA1.combo[1 + k] + maxRows, bsblank);
+        table[0 + offset][1 + columnOffset] = formula;
+
+        formula = formulas.bsblank(mm, header, fastA1.values[1 + k] + maxRows);
+        table[0 + offset][4 + columnOffset] = formula;
+
+        formula = formulas.balance(mm, fastA1.values[1 + k] + maxRows, fastA1.balance1[5 * mm + k], bsblank);
+        table[1 + offset][0 + columnOffset] = formula;
+
+        formula = formulas.expensesIgn(mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        table[2 + offset][0 + columnOffset] = formula;
+      }
+    }
+
+    this.getGroupRange(0, 1, 12, this.num_acc).setFormulas(table);
+  }
+
   resume (start, end) {
     if (end == null) end = 12;
     if (start >= end) return;
@@ -62,5 +108,6 @@ class ResumeRecalculation extends BackstageRecalculation {
     this.height = this._h * (end - start);
 
     this.resumeWallet_();
+    this.resumeAccounts_();
   }
 }
