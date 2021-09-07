@@ -1,5 +1,5 @@
 class SheetBackstage {
-  contructor () {
+  constructor () {
     this.sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
 
     this.num_acc = SettingsConst.getValueOf('number_accounts');
