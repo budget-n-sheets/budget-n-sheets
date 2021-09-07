@@ -22,22 +22,26 @@ class FormatTableCards extends FormatTable {
 
     const snapshot = range.getValues();
 
+    let t = 0;
     let p = 0;
-    while (p !== -1) {
+    while (t !== -1) {
+      p += t;
       const code = snapshot[p][2];
 
       let i = snapshot.slice(p).findIndex(line => line[2] !== code || line[0] >= 0);
-      if (i === -1) i = snapshot.length;
+      if (i === -1) i = snapshot.length - p;
 
-      range.offset(p, 0, i - p, 5).sort({ column: column, ascending: false });
-      p = snapshot.slice(i).findIndex(line => line[2] !== code);
+      if (i - p > 1) range.offset(p, 0, i - p, 5).sort({ column: column, ascending: false });
+
+      p += i;
+      t = snapshot.slice(p).findIndex(line => line[2] !== code);
     }
   }
 
   format () {
     if (!this.sheet) return;
 
-    const numRows = this.sheet.getLastRow() - 5;
+    const numRows = this.sheet.getLastRow() - this._specs.row + 1;
     if (numRows < 2) return;
 
     this.rangeList.range.forEach(range => {
