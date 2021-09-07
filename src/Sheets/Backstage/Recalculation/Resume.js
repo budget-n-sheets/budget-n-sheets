@@ -48,7 +48,7 @@ class ResumeRecalculation extends BackstageRecalculation {
       table[3 + offset][0] = expenses;
     }
 
-    this.getIndexRange(0).setFormulas(table);
+    this.getGroupRange(0, 0, 12, 1).setFormulas(table);
   }
 
   resume (start, end) {

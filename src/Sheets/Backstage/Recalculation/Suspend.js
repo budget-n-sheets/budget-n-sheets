@@ -12,7 +12,7 @@ class SuspendRecalculation extends BackstageRecalculation {
     const columns = this.sheet.getLastColumn() - 1;
     if (columns < 1) return;
 
-    const range = this.getMonthRange(start, end);
+    const range = this.getGroupRange(start, 0, end - start);
     range.setValues(range.getValues());
 
     for (let i = start; i < end; i++) {

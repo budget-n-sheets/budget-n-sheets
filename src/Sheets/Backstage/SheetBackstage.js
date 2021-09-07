@@ -13,22 +13,17 @@ class SheetBackstage {
     });
   }
 
-  getIndexRange (index) {
-    return this.sheet.getRange(
-      this.specs.init.row,
-      this.specs.init.column + this.specs.table.width * index,
-      this.specs.table.height * 12,
-      this.specs.table.width);
-  }
-
-  getMonthRange (start, end) {
-    const columns = this.sheet.getLastColumn() - this.specs.init.column + 1;
-    if (columns < 1) return null;
+  getGroupRange (monthOffset, tableOffset, numMonths, numTables) {
+    if (!monthOffset) monthOffset = 0;
+    if (!tableOffset) tableOffset = 0;
+    if (!numMonths) numMonths = 12 - monthOffset;
+    if (!numTables) numTables = 12 + this.num_acc - tableOffset;
 
     return this.sheet.getRange(
-      this.specs.init.row + this.specs.table.height * start,
-      this.specs.init.column,
-      this.specs.table.height * (end - start),
-      columns);
+      this.specs.init.row + this.specs.table.height * monthOffset,
+      this.specs.init.column + this.specs.table.width * tableOffset,
+      this.specs.table.height * numMonths,
+      this.specs.table.width * numTables
+    );
   }
 }
