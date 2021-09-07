@@ -1,8 +1,6 @@
-class SuspendRecalculation {
+class SuspendRecalculation extends SheetBackstage {
   constructor () {
-    this.sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
-    this._h = TABLE_DIMENSION.height;
-
+    super();
     this.load = SettingsSpreadsheet.getValueOf('optimize_load');
   }
 
@@ -15,7 +13,11 @@ class SuspendRecalculation {
     const columns = this.sheet.getLastColumn() - 1;
     if (columns < 1) return;
 
-    const range = this.sheet.getRange(2 + this._h * start, 2, this._h * (end - start), columns);
+    const range = this.sheet.getRange(
+      this.specs.init.row + this.specs.table.height * start,
+      this.specs.init.column,
+      this.specs.table.height * (end - start),
+      columns);
     range.setValues(range.getValues());
 
     for (let i = start; i < end; i++) {
