@@ -2,6 +2,8 @@ class SheetBackstage {
   contructor () {
     this.sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
 
+    this.num_acc = SettingsConst.getValueOf('number_accounts');
+
     this.specs = Object.freeze({
       init: { row: 2, column: 2 },
       table: {
@@ -9,6 +11,14 @@ class SheetBackstage {
         width: TABLE_DIMENSION.width
       }
     });
+  }
+
+  getIndexRange (index) {
+    return this.sheet.getRange(
+      this.specs.init.row,
+      this.specs.init.column + this.specs.table.width * index,
+      this.specs.table.height * 12,
+      this.specs.table.width);
   }
 
   getMonthRange (start, end) {
