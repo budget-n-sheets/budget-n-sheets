@@ -1,5 +1,5 @@
-function toolFormatTable (sheet) {
-  return toolService_('formatTable', sheet);
+function toolFormatTable () {
+  return toolService_('formatTable');
 }
 
 function toolInsertRows (sheet) {
