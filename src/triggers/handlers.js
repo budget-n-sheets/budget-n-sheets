@@ -66,20 +66,22 @@ function quickActions_ (range, value) {
     case 3:
       toolInsertRows(range.getSheet());
       break;
-    case 4:
+    case 4: {
       const format = new FormatTableAccounts(mm);
       format.index = [0, 1, 2, 3, 4, 5];
       format.format();
       break;
+    }
     case 5:
       toolPicker_('UpdateCashFlowMm', mm);
       break;
 
-    case 9:
+    case 9: {
       const format = new FormatTableCards();
       format.index = [mm];
       format.format();
       break;
+    }
 
     default:
       break;
