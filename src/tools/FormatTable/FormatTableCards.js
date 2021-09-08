@@ -22,9 +22,8 @@ class FormatTableCards extends FormatTable {
 
     const snapshot = range.getValues();
 
-    let t = 0;
     let p = 0;
-    while (t !== -1) {
+    while (p < snapshot.length) {
       p += t;
       const code = snapshot[p][2];
 
@@ -34,7 +33,8 @@ class FormatTableCards extends FormatTable {
       if (i - p > 1) range.offset(p, 0, i - p, 5).sort({ column: column, ascending: false });
 
       p += i;
-      t = snapshot.slice(p).findIndex(line => line[2] !== code);
+      i = snapshot.slice(p).findIndex(line => line[2] !== code);
+      p += (i === -1 ? snapshot.length - p : i);
     }
   }
 
