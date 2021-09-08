@@ -130,6 +130,8 @@ class ResumeRecalculation extends BackstageRecalculation {
       regex[k] = RangeUtils.rollA1Notation(1, col + this._w * k);
     }
 
+    this.getGroupRange(this.start, 1 + this.num_acc, this.end - this.start, 1).clearContent();
+
     let mm = this.start - 1;
     while (++mm < this.end) {
       const rowOffset = this._h * mm;
