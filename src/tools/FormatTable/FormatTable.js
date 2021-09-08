@@ -31,7 +31,7 @@ class FormatTable {
     this.rangeList = { index: [], range: [] };
     const w = this._specs.width + 1;
 
-    ranges.forEach(range => {
+    for (const range of ranges) {
       const column = range.getColumn() - 1;
 
       if (column % w === 0 && range.getNumColumns() === this._specs.width) {
@@ -43,7 +43,7 @@ class FormatTable {
           this.rangeList.index.push(index);
         }
       }
-    });
+    }
 
     return this;
   }
