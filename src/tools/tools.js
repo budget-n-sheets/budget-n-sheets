@@ -2,10 +2,6 @@ function toolUpdateCashFlow () {
   toolPickerUi_('UpdateCashFlow');
 }
 
-function toolFormatRegistry () {
-  toolPickerUi_('FormatRegistry');
-}
-
 function toolForwardInstallments () {
   toolPickerUi_('ForwardInstallments');
 }
@@ -13,7 +9,6 @@ function toolForwardInstallments () {
 function toolPickerUi_ (select) {
   switch (select) {
     case 'UpdateCashFlow':
-    case 'FormatRegistry':
     case 'ForwardInstallments':
       break;
 
@@ -40,15 +35,6 @@ function toolPicker_ (select, value) {
     case 'UpdateCashFlowMm':
       if (UpdateService.checkAndUpdate()) break;
       updateCashFlow_(value);
-      break;
-    case 'FormatRegistry':
-      validateFormatRegistry_();
-      break;
-    case 'FormatAccount':
-      formatAccounts_(value);
-      break;
-    case 'FormatCards':
-      formatCards_(value);
       break;
     case 'ForwardInstallments':
       validateForwardInstallments_();
