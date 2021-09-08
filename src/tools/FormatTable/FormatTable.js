@@ -34,24 +34,4 @@ class FormatTable {
   set ranges (ranges) {
     this.rangeList.range = this.rangeList.index.concat(ranges);
   }
-
-  filterRanges (ranges) {
-    const w = this._specs.width + 1;
-
-    for (const range of ranges) {
-      const column = range.getColumn() - 1;
-
-      if (column % w === 0 && range.getNumColumns() === this._specs.width) {
-        if (range.getNumRows() > 1) this.rangeList.range.push(range);
-      } else {
-        const last = range.getLastColumn();
-        for (let i = column; i < last; i += w) {
-          const index = (i - (i % w)) / w;
-          this.rangeList.index.push(index);
-        }
-      }
-    }
-
-    return this;
-  }
 }
