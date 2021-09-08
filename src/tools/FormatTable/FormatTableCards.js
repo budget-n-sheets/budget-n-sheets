@@ -1,7 +1,7 @@
 class FormatTableCards extends FormatTable {
-  constructor (sheet) {
+  constructor () {
     super();
-    this.sheet = sheet || SpreadsheetApp2.getActive().getSheetByName('Cards');
+    this.sheet = SpreadsheetApp2.getActive().getSheetByName('Cards');
 
     this.specs = Object.freeze({
       nullSearch: 4,

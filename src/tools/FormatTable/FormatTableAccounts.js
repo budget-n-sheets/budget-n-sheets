@@ -1,9 +1,9 @@
 class FormatTableAccounts extends FormatTable {
-  constructor (sheet) {
+  constructor (mm) {
     super();
-    this.sheet = sheet;
+    const name = Consts.month_name.short.indexOf(mm);
+    this.sheet = SpreadsheetApp2.getActive().getSheetByName(name);
 
-    const mm = Consts.month_name.short.indexOf(sheet.getName());
     const financial_year = SettingsConst.getValueOf('financial_year');
     this.hasHideRows = (new Date(financial_year, mm + 1, 0) < Consts.date);
 

@@ -7,9 +7,9 @@ class FormatTable {
     const name = sheet.getName();
     switch (name) {
       case 'Cards':
-        return new FormatTableCards(sheet);
+        return new FormatTableCards();
       case 'Tags':
-        return new FormatTableTags(sheet);
+        return new FormatTableTags();
 
       default:
         break;
@@ -17,7 +17,7 @@ class FormatTable {
 
     const mm = Consts.month_name.short.indexOf(name);
     if (mm === -1) return 1;
-    return new FormatTableAccounts(sheet);
+    return new FormatTableAccounts(mm);
   }
 
   static showWarning () {
