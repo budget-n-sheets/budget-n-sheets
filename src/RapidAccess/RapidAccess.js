@@ -20,6 +20,7 @@ const Goldfish = {
     }
   },
   spreadsheet: {
+    _self: {},
     sheets: {}
   }
 };
