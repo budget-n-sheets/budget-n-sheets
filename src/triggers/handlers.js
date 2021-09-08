@@ -34,7 +34,7 @@ function onEditInstallable_ (e) {
     try {
       const mm = Consts.month_name.short.indexOf(name);
       const status = SettingsSpreadsheet.getValueOf('optimize_load');
-      if (status == null || status[mm]) switchActivity_('resume', mm, mm);
+      if (status == null || status[mm]) RecalculationService.resume(mm, mm + 1);
     } catch (err) {
       LogLog.error(err);
     }
@@ -107,7 +107,7 @@ function dailyTrigger_ (e) {
 
     try {
       if (yyyymmdd.month > 2) {
-        switchActivity_('suspend', 0, yyyymmdd.month - 3);
+        RecalculationService.suspend(0, yyyymmdd.month);
       }
     } catch (err) {
       LogLog.error(err);
@@ -134,9 +134,9 @@ function weeklyTriggerPos_ (e) {
   const yyyy = date.getFullYear();
 
   if (yyyy > financial_year) {
-    switchActivity_('suspend', 0, 11);
+    RecalculationService.suspend(0, 12);
   } else if (yyyy === financial_year && month >= 3) {
-    switchActivity_('suspend', 0, mm - 3);
+    RecalculationService.suspend(0, yyyymmdd.month);
   }
 }
 
