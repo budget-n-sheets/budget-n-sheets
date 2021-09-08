@@ -9,6 +9,22 @@ function patchV0m0p0_ () {
 } */
 
 /**
+ * Resume activity to fix bad functions.
+ *
+ * 0.42.31
+ */
+function patchV0m42p31_ () {
+  try {
+    RecalculationService.resume(0, 12);
+  } catch (err) {
+    LogLog.error(err);
+    return 1;
+  }
+
+  return 0;
+}
+
+/**
  * Move metadata location to spreadsheet.
  * Flush accounts and cards changes.
  *
