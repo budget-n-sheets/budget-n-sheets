@@ -27,8 +27,15 @@ class FormatTable {
       SpreadsheetApp2.getUi().ButtonSet.OK);
   }
 
-  setRanges (ranges) {
-    this.rangeList = { index: [], range: [] };
+  set indexes (indexes) {
+    this.rangeList.index = this.rangeList.index.concat(indexes);
+  }
+
+  set ranges (ranges) {
+    this.rangeList.range = this.rangeList.index.concat(ranges);
+  }
+
+  filterRanges (ranges) {
     const w = this._specs.width + 1;
 
     for (const range of ranges) {

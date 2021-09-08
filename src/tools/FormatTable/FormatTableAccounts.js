@@ -64,5 +64,8 @@ class FormatTableAccounts extends FormatTable {
     }
 
     if (this.hasHideRows && this.rangeList.index.length > 0) this.hideRows_();
+
+    this.rangeList = { index: [], range: [] };
+    return this;
   }
 }
