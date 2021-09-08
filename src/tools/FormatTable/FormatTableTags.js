@@ -10,10 +10,20 @@ class FormatTableTags extends FormatTable {
       width: 5
     });
 
-    this.sortSpec = [
-      { column: 2, ascending: true },
-      { column: 1, ascending: true }
-    ];
+    this.sortSpec = {
+      blank: [
+        { column: 1, ascending: true },
+        { column: 2, ascending: true },
+        { column: 3, ascending: true },
+        { column: 4, ascending: false },
+        { column: 5, ascending: true }
+      ],
+      fancy: [
+        { column: 2, ascending: true },
+        { column: 1, ascending: true }
+      ]
+    };
+
     this.rule = SpreadsheetApp.newDataValidation()
       .requireCheckbox()
       .setAllowInvalid(false)
@@ -21,16 +31,24 @@ class FormatTableTags extends FormatTable {
   }
 
   formatRange_ (range) {
-    range.trimWhitespace().sort(this.sortSpec);
+    const last = range.trimWhitespace()
+      .sort(this.sortSpec.blank)
+      .sort(5)
+      .getValues()
+      .findIndex(line => line[4] === '');
+    if (last === 0) return;
 
-    const values = range.offset(0, 3, this.numRows, 1).getValues();
+    const numRows = (last === -1 ? range.getNumRows() : last);
+    const analytics = range.offset(0, 0, numRows, 5)
+      .sort(this.sortSpec.fancy)
+      .offset(0, 3, range.getNumRows(), 1);
 
+    const values = analytics.getValues();
     values.forEach((b, i, a) => {
       a[i][0] = (b[0] === true);
     });
 
-    range.offset(0, 3, this.numRows, 1)
-      .clearDataValidations()
+    analytics.clearDataValidations()
       .removeCheckboxes()
       .clearContent()
       .insertCheckboxes()
@@ -38,46 +56,20 @@ class FormatTableTags extends FormatTable {
       .setValues(values);
   }
 
-  formatTable_ () {
-    this.sheet.getRange(2, 1, this.numRows, 5)
-      .trimWhitespace()
-      .sort(this.sortSpec);
-
-    const values = this.sheet.getRange(2, 4, this.sheet.getLastRow() - 1, 1).getValues();
-
-    values.forEach((b, i, a) => {
-      a[i][0] = (b[0] === true);
-    });
-
-    this.sheet.getRange(2, 4, this.numRows, 1)
-      .clearDataValidations()
-      .removeCheckboxes()
-      .clearContent();
-
-    const num = this.sheet.getLastRow() - 1;
-    if (num < 1) return;
-
-    this.sheet.getRange(2, 4, this.numRows, 1)
-      .insertCheckboxes()
-      .setDataValidation(this.rule)
-      .offset(0, 0, num, 1)
-      .setValues(values.slice(0, num));
-  }
-
   format () {
     if (!this.sheet) return;
 
-    this.numRows = this.sheet.getMaxRows() - 1;
+    if (this.rangeList.index.length > 0) {
+      const maxRows = this.sheet.getMaxRows() - 1;
+      if (maxRows < 1) return;
 
-    if (this.numRows < 1) {
-      return;
-    } else if (this.rangeList.index.length > 0) {
-      this.formatTable_();
+      const range = this.sheet.getRange(2, 1, maxRows, 5);
+      this.formatRange_(range);
+
       return;
     }
 
     this.rangeList.range.forEach(range => {
-      this.numRows = range.getNumRows();
       this.formatRange_(range);
     });
   }
