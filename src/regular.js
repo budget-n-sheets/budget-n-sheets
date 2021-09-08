@@ -100,6 +100,12 @@ function treatLayout_ (yyyy, mm) {
 
   updateHideShowSheets(sheets, financial_year, yyyy, mm);
   updateTabsColors(sheets, financial_year, yyyy, mm);
-  formatAccounts_(month);
-  formatCards_(month);
+
+  const formatAccs = new FormatTableAccounts(month);
+  formatAccs.indexes = [0, 1, 2, 3, 4, 5];
+  formatAccs.fomat();
+
+  const formatCards = new FormatTableCards();
+  formatCards.indexes = [month];
+  formatCards.fomat();
 }
