@@ -170,6 +170,62 @@ class ResumeRecalculation extends BackstageRecalculation {
     this.sheet.getRangeList(listRange5).setFormulaR1C1('RC[-1] + R[-1]C[-1]');
   }
 
+  resumeBalances_ () {
+    const actual = MonthFactored.getActual();
+    if (this.end >= actual) return;
+
+    const rangeList = [];
+    const formulas = this.formulas.accounts();
+
+    let mm = this.start;
+    while (++mm < actual) {
+      const month = this.spreadsheet.getSheetByName(Consts.month_name.short[mm]);
+      if (!month) continue;
+
+      const maxRows = month.getMaxRows();
+      if (maxRows < 5) continue;
+
+      const rowOffset = this._h * mm;
+      const range = this.sheet.getRange(3 + rowOffset, 2 + this._w);
+
+      for (let k = 0; k < this.num_acc; k++) {
+        rangeList.push(RangeUtils.rollA1Notation(2 + rowOffset, 2 + this._w + this._w * k));
+
+        const bsblank = RangeUtils.rollA1Notation(2 + rowOffset, 11 + this._w * k);
+        const formula = formulas.balance(mm, this.fastA1.values[1 + k] + maxRows, this.fastA1.balance1[5 * mm + k], bsblank);
+        range.offset(0, this._w * k).setFormula(formula);
+      }
+    }
+
+    this.sheet.getRangeList(rangeList).setFormulaR1C1('R[-' + (this._h - 1) + ']C');
+  }
+
+  resumeMisc_ () {
+    const db_accounts = new AccountsService().getAll();
+    for (const id in db_accounts) {
+      const account = db_accounts[id];
+      if (account.time_start < this.start) continue;
+
+      this.sheet.getRange(
+          2 + this._h * account.time_start,
+          2 + this._w + this._w * account.index)
+        .setFormula(FormatNumber.localeSignal(account.balance));
+    }
+
+    const col = 3 + this._w * (2 + this.num_acc);
+    const db_cards = new CardsService().getAll();
+    for (const id in db_cards) {
+      const rangeList = [];
+      const formula = '=' + FormatNumber.localeSignal(db_cards[id].limit);
+
+      for (let mm = this.start; mm < this.end; mm++) {
+        rangeList.push(RangeUtils.rollA1Notation(2 + this._h * mm, col + this._w * db_cards[id].index));
+      }
+
+      this.sheet.getRangeList(rangeList).setFormula(formula);
+    }
+  }
+
   resume (start, end) {
     if (end == null) end = 12;
     if (start >= end) return;
@@ -183,5 +239,16 @@ class ResumeRecalculation extends BackstageRecalculation {
     this.resumeWallet_();
     this.resumeAccounts_();
     this.resumeCards_();
+
+    this.resumeBalances_();
+    this.resumeMisc_();
+
+    for (let i = start; i < end; i++) {
+      this.load[i] = false;
+    }
+    SettingsSpreadsheet.setValueOf('optimize_load', this.load);
+
+    SpreadsheetApp.flush();
+    return this;
   }
 }
