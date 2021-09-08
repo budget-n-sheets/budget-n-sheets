@@ -4,7 +4,7 @@ class FormatTableCards extends FormatTable {
     this.sheet = sheet || SpreadsheetApp2.getActive().getSheetByName('Cards');
     this.numRows = 0;
 
-    this._specs = Object.freeze({
+    this.specs = Object.freeze({
       nullSearch: 4,
       row: 6,
       width: 5

@@ -7,7 +7,7 @@ class FormatTableAccounts extends FormatTable {
     const financial_year = SettingsConst.getValueOf('financial_year');
     this.hasHideRows = (new Date(financial_year, mm + 1, 0) < Consts.date);
 
-    this._specs = Object.freeze({
+    this.specs = Object.freeze({
       nullSearch: 3,
       row: 5,
       width: 4

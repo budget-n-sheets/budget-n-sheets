@@ -4,7 +4,7 @@ class FormatTableTags extends FormatTable {
     this.sheet = sheet || SpreadsheetApp2.getActive().getSheetByName('Tags');
     this.numRows = 0;
 
-    this._specs = Object.freeze({
+    this.specs = Object.freeze({
       nullSearch: 5,
       row: 2,
       width: 5
