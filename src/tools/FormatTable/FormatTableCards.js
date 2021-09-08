@@ -46,6 +46,8 @@ class FormatTableCards extends FormatTable {
 
     const nill = this._specs.nullSearch - 1;
     for (const index of this.rangeList.index) {
+      if (index < 0 || index > 11) continue;
+
       const range = this.sheet.getRange(
         this._specs.row,
         1 + (this._specs.width + 1) * index,

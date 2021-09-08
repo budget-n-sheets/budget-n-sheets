@@ -5,6 +5,8 @@ class FormatTableAccounts extends FormatTable {
     this.sheet = SpreadsheetApp2.getActive().getSheetByName(name);
 
     const financial_year = SettingsConst.getValueOf('financial_year');
+
+    this.num_acc = SettingsConst.getValueOf('number_accounts');
     this.hasHideRows = (new Date(financial_year, mm + 1, 0) < Consts.date);
 
     this.specs = Object.freeze({
@@ -52,6 +54,8 @@ class FormatTableAccounts extends FormatTable {
 
     const nill = this._specs.nullSearch - 1;
     for (const index of this.rangeList.index) {
+      if (index < 0 || index > this.num_acc) continue;
+
       const range = this.sheet.getRange(
         this._specs.row,
         1 + (this._specs.width + 1) * index,
