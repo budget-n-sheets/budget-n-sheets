@@ -53,7 +53,8 @@ class FormatTableCards extends FormatTable {
         numRows,
         this._specs.width);
 
-      const row = range.getValues().findIndex(line => line[nill] === '');
+      let row = range.getValues().findIndex(line => line[nill] === '');
+      if (row === -1) row = numRows;
       if (row > 1) this.formatRange_(range.offset(0, 0, row, this._specs.width));
     }
   }
