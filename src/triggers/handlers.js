@@ -107,7 +107,7 @@ function dailyTrigger_ (e) {
 
     try {
       if (yyyymmdd.month > 2) {
-        RecalculationService.suspend(0, yyyymmdd.month);
+        RecalculationService.suspend(0, yyyymmdd.month - 2);
       }
     } catch (err) {
       LogLog.error(err);
@@ -135,8 +135,8 @@ function weeklyTriggerPos_ (e) {
 
   if (yyyy > financial_year) {
     RecalculationService.suspend(0, 12);
-  } else if (yyyy === financial_year && month >= 3) {
-    RecalculationService.suspend(0, yyyymmdd.month);
+  } else if (yyyy === financial_year && month > 2) {
+    RecalculationService.suspend(0, yyyymmdd.month - 2);
   }
 }
 
