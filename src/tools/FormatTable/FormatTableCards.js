@@ -44,13 +44,18 @@ class FormatTableCards extends FormatTable {
     const numRows = this.sheet.getLastRow() - this._specs.row + 1;
     if (numRows < 2) return;
 
-    this.rangeList.range.forEach(range => {
-      this.formatRange_(range);
-    });
+    this.rangeList.range.forEach(range => this.formatRange_(range));
 
-    this.rangeList.index.forEach(index => {
-      const range = this.sheet.getRange(this._specs.row, 1 + (this._specs.width + 1) * index, numRows, this._specs.width);
-      this.formatRange_(range);
-    });
+    const nill = this._specs.nullSearch - 1;
+    for (const index of this.rangeList.index) {
+      const range = this.sheet.getRange(
+        this._specs.row,
+        1 + (this._specs.width + 1) * index,
+        numRows,
+        this._specs.width);
+
+      const row = range.getValues().findIndex(line => line[nill] === '');
+      if (row > 1) this.formatRange_(range.offset(0, 0, row, this._specs.width));
+    }
   }
 }
