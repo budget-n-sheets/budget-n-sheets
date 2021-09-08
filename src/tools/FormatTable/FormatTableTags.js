@@ -59,18 +59,15 @@ class FormatTableTags extends FormatTable {
   format () {
     if (!this.sheet) return;
 
-    if (this.rangeList.index.length > 0) {
-      const maxRows = this.sheet.getMaxRows() - 1;
-      if (maxRows < 1) return;
-
-      const range = this.sheet.getRange(2, 1, maxRows, 5);
-      this.formatRange_(range);
-
+    if (this.rangeList.index.length === 0) {
+      this.rangeList.range.forEach(range => this.formatRange_(range));
       return;
     }
 
-    this.rangeList.range.forEach(range => {
-      this.formatRange_(range);
-    });
+    const maxRows = this.sheet.getMaxRows() - 1;
+    if (maxRows < 1) return;
+
+    const range = this.sheet.getRange(2, 1, maxRows, 5);
+    this.formatRange_(range);
   }
 }
