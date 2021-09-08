@@ -1,4 +1,25 @@
 class RangeUtils {
+  static filterTableRanges (ranges, specs) {
+    const output = { index: [], range: [] };
+    const w = specs.width + 1;
+
+    for (const range of ranges) {
+      const column = range.getColumn() - 1;
+
+      if (column % w === 0 && range.getNumColumns() === specs.width) {
+        if (range.getNumRows() > 1) output.range.push(range);
+      } else {
+        const last = range.getLastColumn();
+        for (let i = column; i < last; i += w) {
+          const index = (i - (i % w)) / w;
+          output.index.push(index);
+        }
+      }
+    }
+
+    return output;
+  }
+
   static rollA1Notation (posRow, posCol, height, width, mode1, mode2) {
     if (!posRow || !posCol) return;
     if (!height) height = 1;
