@@ -24,7 +24,6 @@ class FormatTableCards extends FormatTable {
 
     let p = 0;
     while (p < snapshot.length) {
-      p += t;
       const code = snapshot[p][2];
 
       let i = snapshot.slice(p).findIndex(line => line[2] !== code || line[0] >= 0);
