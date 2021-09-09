@@ -27,8 +27,16 @@ class FormatTable {
       SpreadsheetApp2.getUi().ButtonSet.OK);
   }
 
+  get indexes () {
+    return this.rangeList.indexes;
+  }
+
   set indexes (indexes) {
     this.rangeList.indexes = this.rangeList.indexes.concat(indexes);
+  }
+
+  get ranges () {
+    return this.rangeList.ranges;
   }
 
   set ranges (ranges) {
