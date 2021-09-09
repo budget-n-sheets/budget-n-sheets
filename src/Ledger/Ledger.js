@@ -27,8 +27,8 @@ class Ledger {
 
     if (lastRow >= this._specs.row) {
       const snapshot = this._sheet.getRange(
-          this._specs.row, 1 + (this._specs.width + 1) * index,
-          lastRow - this._specs.row + 1, this._specs.width)
+        this._specs.row, 1 + (this._specs.width + 1) * index,
+        lastRow - this._specs.row + 1, this._specs.width)
         .getValues();
 
       row = snapshot.length - 1;

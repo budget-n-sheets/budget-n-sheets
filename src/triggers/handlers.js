@@ -17,7 +17,7 @@ function onEditInstallable_ (e) {
 
   try {
     const load = SettingsSpreadsheet.getValueOf('optimize_load');
-    if (!!load[mm]) RecalculationService.resume(mm, mm + 1);
+    if (load[mm]) RecalculationService.resume(mm, mm + 1);
   } catch (err) {
     LogLog.error(err);
   }

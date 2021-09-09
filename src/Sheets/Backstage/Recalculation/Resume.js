@@ -208,8 +208,8 @@ class ResumeRecalculation extends BackstageRecalculation {
       if (account.time_start < this.start) continue;
 
       this.sheet.getRange(
-          2 + this._h * account.time_start,
-          2 + this._w + this._w * account.index)
+        2 + this._h * account.time_start,
+        2 + this._w + this._w * account.index)
         .setFormula(FormatNumber.localeSignal(account.balance));
     }
 

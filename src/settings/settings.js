@@ -5,9 +5,9 @@ function retrieveUserSettings () {
 
   if (user_settings.financial_calendar) {
     user_settings.financial_calendar = Utilities2.computeDigest(
-        'SHA_1',
-        user_settings.financial_calendar,
-        'UTF_8')
+      'SHA_1',
+      user_settings.financial_calendar,
+      'UTF_8')
       .substring(0, 12);
   }
 
