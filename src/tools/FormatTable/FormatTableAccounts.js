@@ -50,10 +50,10 @@ class FormatTableAccounts extends FormatTable {
     const numRows = this.sheet.getLastRow() - this._specs.row + 1;
     if (numRows < 2) return;
 
-    this.rangeList.range.forEach(range => this.formatRange_(range));
+    this.rangeList.ranges.forEach(range => this.formatRange_(range));
 
     const nill = this._specs.nullSearch - 1;
-    for (const index of this.rangeList.index) {
+    for (const index of this.rangeList.indexes) {
       if (index < 0 || index > this.num_acc) continue;
 
       const range = this.sheet.getRange(
@@ -67,9 +67,9 @@ class FormatTableAccounts extends FormatTable {
       if (row > 1) this.formatRange_(range.offset(0, 0, row, this._specs.width));
     }
 
-    if (this.hasHideRows && this.rangeList.index.length > 0) this.hideRows_();
+    if (this.hasHideRows && this.rangeList.indexes.length > 0) this.hideRows_();
 
-    this.rangeList = { index: [], range: [] };
+    this.rangeList = { indexes: [], ranges: [] };
     return this;
   }
 }

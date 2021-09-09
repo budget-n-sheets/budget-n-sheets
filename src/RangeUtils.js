@@ -1,23 +1,23 @@
 class RangeUtils {
   static filterTableRanges (ranges, specs) {
-    const output = { index: [], range: [] };
+    const selected = { indexes: [], ranges: [] };
     const w = specs.width + 1;
 
     for (const range of ranges) {
       const column = range.getColumn() - 1;
 
       if (column % w === 0 && range.getNumColumns() === specs.width) {
-        if (range.getNumRows() > 1) output.range.push(range);
+        if (range.getNumRows() > 1) selected.ranges.push(range);
       } else {
         const last = range.getLastColumn();
         for (let i = column; i < last; i += w) {
           const index = (i - (i % w)) / w;
-          output.index.push(index);
+          selected.indexes.push(index);
         }
       }
     }
 
-    return output;
+    return selected;
   }
 
   static rollA1Notation (posRow, posCol, height, width, mode1, mode2) {

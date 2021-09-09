@@ -58,8 +58,8 @@ class FormatTableTags extends FormatTable {
   format () {
     if (!this.sheet) return;
 
-    if (this.rangeList.index.length === 0) {
-      this.rangeList.range.forEach(range => this.formatRange_(range));
+    if (this.rangeList.indexes.length === 0) {
+      this.rangeList.ranges.forEach(range => this.formatRange_(range));
       return;
     }
 

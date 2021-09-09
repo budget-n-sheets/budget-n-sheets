@@ -28,10 +28,10 @@ class FormatTable {
   }
 
   set indexes (indexes) {
-    this.rangeList.index = this.rangeList.index.concat(indexes);
+    this.rangeList.indexes = this.rangeList.indexes.concat(indexes);
   }
 
   set ranges (ranges) {
-    this.rangeList.range = this.rangeList.range.concat(ranges);
+    this.rangeList.ranges = this.rangeList.ranges.concat(ranges);
   }
 }
