@@ -2,6 +2,10 @@ function toolFormatTable () {
   return toolService_('formatTable');
 }
 
+function toolForwardInstallments () {
+  toolService_('forwardInstallments');
+}
+
 function toolInsertRows (sheet) {
   return toolService_('insertRows', sheet);
 }
@@ -26,6 +30,20 @@ function toolService_ (name, param) {
       tool.ranges = selected.ranges;
 
       tool.format();
+      break;
+    }
+    case 'forwardInstallments': {
+      const tool = new ForwardInstallments();
+      if (!tool.sheet) {
+        ForwardInstallments.showWarning();
+        break;
+      }
+
+      const filtered = RangeUtils.filterTableRanges(ranges, tool.specs);
+      tool.indexes = filtered.indexes;
+      tool.ranges = filtered.ranges;
+
+      tool.forward();
       break;
     }
     case 'insertRows': {
