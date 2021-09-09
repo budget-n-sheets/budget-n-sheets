@@ -18,7 +18,7 @@ class SetupParts {
     const formulasBackstage = FormulaBuild.backstage();
     const numRows = SPREADSHEET_SPECS.initial_height;
 
-    const sheet = this._spreadsheet.getSheetByName('_Backstage');
+    const sheet = Spreadsheet2.getSheetByName('_Backstage');
 
     let formula;
     let income, expenses;
@@ -104,7 +104,7 @@ class SetupParts {
   setupCards_ () {
     const formulasCards = FormulaBuild.cards().header();
 
-    const sheet = this._spreadsheet.getSheetByName('Cards');
+    const sheet = Spreadsheet2.getSheetByName('Cards');
     let formula;
     let expr1, expr2, expr3;
     let i, k;
@@ -167,7 +167,7 @@ class SetupParts {
   }
 
   setupCashFlow_ () {
-    const sheet = this._spreadsheet.getSheetByName('Cash Flow');
+    const sheet = Spreadsheet2.getSheetByName('Cash Flow');
     let ranges, formula;
     let d, s;
     let i, j, k;
@@ -311,10 +311,10 @@ class SetupParts {
 
     const sheets = [];
     for (i = 0; i < 12; i++) {
-      sheets[i] = this._spreadsheet.getSheetByName(Consts.month_name.short[i]);
+      sheets[i] = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);
     }
 
-    sheet = this._spreadsheet.getSheetByName('Summary');
+    sheet = Spreadsheet2.getSheetByName('Summary');
     this._spreadsheet.setActiveSheet(sheet);
     sheet.setTabColor('#e69138');
 
@@ -342,14 +342,14 @@ class SetupParts {
       sheets[this._date.mm].setTabColor('#6aa84f');
     }
 
-    this._spreadsheet.getSheetByName('Cards').setTabColor('#e69138');
-    this._spreadsheet.getSheetByName('Cash Flow').setTabColor('#e69138');
-    this._spreadsheet.getSheetByName('Tags').setTabColor('#e69138');
-    this._spreadsheet.getSheetByName('_Backstage').setTabColor('#cc0000');
-    this._spreadsheet.getSheetByName('_Unique').setTabColor('#cc0000');
-    this._spreadsheet.getSheetByName('_Settings').setTabColor('#cc0000');
-    this._spreadsheet.getSheetByName('Quick Actions').setTabColor('#b7b7b7');
-    this._spreadsheet.getSheetByName('_About BnS').setTabColor('#6aa84f');
+    Spreadsheet2.getSheetByName('Cards').setTabColor('#e69138');
+    Spreadsheet2.getSheetByName('Cash Flow').setTabColor('#e69138');
+    Spreadsheet2.getSheetByName('Tags').setTabColor('#e69138');
+    Spreadsheet2.getSheetByName('_Backstage').setTabColor('#cc0000');
+    Spreadsheet2.getSheetByName('_Unique').setTabColor('#cc0000');
+    Spreadsheet2.getSheetByName('_Settings').setTabColor('#cc0000');
+    Spreadsheet2.getSheetByName('Quick Actions').setTabColor('#b7b7b7');
+    Spreadsheet2.getSheetByName('_About BnS').setTabColor('#6aa84f');
 
     if (t) {
       for (i = 0; i < 12; i++) {
@@ -367,11 +367,11 @@ class SetupParts {
       }
     }
 
-    this._spreadsheet.getSheetByName('_Backstage').hideSheet();
-    this._spreadsheet.getSheetByName('_Unique').hideSheet();
-    this._spreadsheet.getSheetByName('_Settings').hideSheet();
-    this._spreadsheet.getSheetByName('_About BnS').hideSheet();
-    this._spreadsheet.getSheetByName('Quick Actions').hideSheet();
+    Spreadsheet2.getSheetByName('_Backstage').hideSheet();
+    Spreadsheet2.getSheetByName('_Unique').hideSheet();
+    Spreadsheet2.getSheetByName('_Settings').hideSheet();
+    Spreadsheet2.getSheetByName('_About BnS').hideSheet();
+    Spreadsheet2.getSheetByName('Quick Actions').hideSheet();
 
     SpreadsheetApp.flush();
   }
@@ -379,7 +379,7 @@ class SetupParts {
   setupMonthSheet_ () {
     const formulaBuild = FormulaBuild.ttt().header();
 
-    const sheetTTT = this._spreadsheet.getSheetByName('TTT');
+    const sheetTTT = Spreadsheet2.getSheetByName('TTT');
     let sheet, formula;
     let expr1, expr2, expr3, expr4;
     let i, k;
@@ -504,7 +504,7 @@ class SetupParts {
 
   setupSettings_ () {
     const buildFormulas = FormulaBuild.settings().formulas();
-    const sheet = this._spreadsheet.getSheetByName('_Settings');
+    const sheet = Spreadsheet2.getSheetByName('_Settings');
     let cell, dec_p;
 
     this._spreadsheet.setActiveSheet(sheet);
@@ -556,7 +556,7 @@ class SetupParts {
   setupSummary_ () {
     const formulaBuild = FormulaBuild.summary();
 
-    const sheet = this._spreadsheet.getSheetByName('Summary');
+    const sheet = Spreadsheet2.getSheetByName('Summary');
     let formula, chart, options;
 
     options = {
@@ -689,7 +689,7 @@ class SetupParts {
   setupTags_ () {
     const formulaBuild = FormulaBuild.tags();
 
-    const sheet = this._spreadsheet.getSheetByName('Tags');
+    const sheet = Spreadsheet2.getSheetByName('Tags');
     let formula, rg, cd;
     let i, k;
 
@@ -731,7 +731,7 @@ class SetupParts {
   }
 
   setupUnique_ () {
-    const sheet = this._spreadsheet.getSheetByName('_Unique');
+    const sheet = Spreadsheet2.getSheetByName('_Unique');
 
     const num_acc = this._config.number_accounts;
 
@@ -773,11 +773,11 @@ class SetupParts {
   }
 
   setupWest_ () {
-    this._spreadsheet.getSheetByName('_About BnS')
+    Spreadsheet2.getSheetByName('_About BnS')
       .protect()
       .setWarningOnly(true);
 
-    const sheet = this._spreadsheet.getSheetByName('Quick Actions');
+    const sheet = Spreadsheet2.getSheetByName('Quick Actions');
 
     const ranges = [];
     ranges[0] = sheet.getRange(3, 3, 3, 1);
