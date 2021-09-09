@@ -42,7 +42,9 @@ class FormatTableCards extends FormatTable {
     const numRows = this.sheet.getLastRow() - this._specs.row + 1;
     if (numRows < 2) return;
 
-    this.rangeList.ranges.forEach(range => this.formatRange_(range));
+    for (const range in this.rangeList.ranges) {
+      if (range.getNumRows() > 1) this.formatRange_(range);
+    }
 
     const nill = this._specs.nullSearch - 1;
     for (const index of this.rangeList.indexes) {

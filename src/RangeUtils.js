@@ -7,7 +7,7 @@ class RangeUtils {
       const column = range.getColumn() - 1;
 
       if (column % w === 0 && range.getNumColumns() === specs.width) {
-        if (range.getNumRows() > 1) selected.ranges.push(range);
+        selected.ranges.push(range);
       } else {
         const last = range.getLastColumn();
         for (let i = column; i < last; i += w) {
