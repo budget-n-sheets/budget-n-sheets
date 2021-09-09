@@ -9,6 +9,17 @@ function patchV0m0p0_ () {
 } */
 
 /**
+ * Disable sheet 'Quick Actions'.
+ *
+ * 0.42.33
+ */
+function patchV0m42p33_ () {
+  const sheet = Spreadsheet2.getSheetByName('Quick Actions');
+  if (sheet) sheet.setTabColor('#b7b7b7');
+  return 0;
+}
+
+/**
  * Resume activity to fix bad functions.
  *
  * 0.42.31
