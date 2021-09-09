@@ -58,5 +58,8 @@ class FormatTableCards extends FormatTable {
       if (row === -1) row = numRows;
       if (row > 1) this.formatRange_(range.offset(0, 0, row, this._specs.width));
     }
+
+    this.rangeList = { indexes: [], ranges: [] };
+    return this;
   }
 }

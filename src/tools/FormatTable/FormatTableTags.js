@@ -68,5 +68,8 @@ class FormatTableTags extends FormatTable {
 
     const range = this.sheet.getRange(2, 1, maxRows, 5);
     this.formatRange_(range);
+
+    this.rangeList = { indexes: [], ranges: [] };
+    return this;
   }
 }
