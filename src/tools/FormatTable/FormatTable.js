@@ -1,6 +1,6 @@
 class FormatTable {
   constructor () {
-    this.rangeList = { index: [], range: [] };
+    this.rangeList = { indexes: [], ranges: [] };
   }
 
   static pick (sheet) {
