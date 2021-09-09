@@ -26,13 +26,13 @@ function onOpen (e) {
       .addItem('About the add-on', 'showDialogAboutAddon');
   } else {
     if (AppsScript.isInstalled()) {
-      menu.addItem('Format table', 'toolFormatTable')
-        .addItem('Insert rows', 'toolInsertRows')
-        .addItem('Update cash flow', 'toolUpdateCashFlow');
+      menu.addItem('Format table', 'toolFormatTable');
 
       if (!CardsService.isEmpty()) menu.addItem('Forward installments', 'toolForwardInstallments');
 
-      menu.addSeparator()
+      menu.addItem('Insert rows', 'toolInsertRows')
+        .addItem('Update cash flow', 'toolUpdateCashFlow')
+        .addSeparator()
         .addSubMenu(ui.createMenu('Open panel')
           .addItem('Accounts & Cards', 'showPanelTables')
           .addItem('BnS Gallery', 'showPanelAnalytics'))
