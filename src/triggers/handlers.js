@@ -11,33 +11,15 @@ function onOpenInstallable_ (e) {
 function onEditInstallable_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
-  let name = '';
+  const name = e.range.getSheet().getName();
+  const mm = Consts.month_name.short.indexOf(name);
+  if (mm === -1) return;
 
   try {
-    const sheet = e.range.getSheet();
-    name = sheet.getName();
+    const load = SettingsSpreadsheet.getValueOf('optimize_load');
+    if (!!load[mm]) RecalculationService.resume(mm, mm + 1);
   } catch (err) {
     LogLog.error(err);
-  }
-
-  if (name !== 'Quick Actions' && Consts.month_name.short.indexOf(name) === -1) return;
-
-  if (name === 'Quick Actions') {
-    try {
-      quickActions_(e.range, e.value);
-    } catch (err) {
-      LogLog.error(err);
-    } finally {
-      e.range.setValue('');
-    }
-  } else {
-    try {
-      const mm = Consts.month_name.short.indexOf(name);
-      const status = SettingsSpreadsheet.getValueOf('optimize_load');
-      if (status == null || status[mm]) RecalculationService.resume(mm, mm + 1);
-    } catch (err) {
-      LogLog.error(err);
-    }
   }
 }
 

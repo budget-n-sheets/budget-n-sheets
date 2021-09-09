@@ -348,7 +348,7 @@ class SetupParts {
     this._spreadsheet.getSheetByName('_Backstage').setTabColor('#cc0000');
     this._spreadsheet.getSheetByName('_Unique').setTabColor('#cc0000');
     this._spreadsheet.getSheetByName('_Settings').setTabColor('#cc0000');
-    this._spreadsheet.getSheetByName('Quick Actions').setTabColor('#6aa84f');
+    this._spreadsheet.getSheetByName('Quick Actions').setTabColor('#b7b7b7');
     this._spreadsheet.getSheetByName('_About BnS').setTabColor('#6aa84f');
 
     if (t) {
@@ -371,6 +371,7 @@ class SetupParts {
     this._spreadsheet.getSheetByName('_Unique').hideSheet();
     this._spreadsheet.getSheetByName('_Settings').hideSheet();
     this._spreadsheet.getSheetByName('_About BnS').hideSheet();
+    this._spreadsheet.getSheetByName('Quick Actions').hideSheet();
 
     SpreadsheetApp.flush();
   }
