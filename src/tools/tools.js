@@ -2,14 +2,9 @@ function toolUpdateCashFlow () {
   toolPickerUi_('UpdateCashFlow');
 }
 
-function toolForwardInstallments () {
-  toolPickerUi_('ForwardInstallments');
-}
-
 function toolPickerUi_ (select) {
   switch (select) {
     case 'UpdateCashFlow':
-    case 'ForwardInstallments':
       break;
 
     default:
@@ -35,9 +30,6 @@ function toolPicker_ (select, value) {
     case 'UpdateCashFlowMm':
       if (UpdateService.checkAndUpdate()) break;
       updateCashFlow_(value);
-      break;
-    case 'ForwardInstallments':
-      validateForwardInstallments_();
       break;
 
     default:

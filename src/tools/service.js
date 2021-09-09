@@ -2,6 +2,10 @@ function toolFormatTable () {
   return toolService_('formatTable');
 }
 
+function toolForwardInstallments () {
+  toolService_('forwardInstallments');
+}
+
 function toolInsertRows (sheet) {
   return toolService_('insertRows', sheet);
 }
@@ -26,6 +30,9 @@ function toolService_ (name, param) {
       tool.ranges = selected.ranges;
 
       tool.format();
+      break;
+    }
+    case 'forwardInstallments': {
       break;
     }
     case 'insertRows': {
