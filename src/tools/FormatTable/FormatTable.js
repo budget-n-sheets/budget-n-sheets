@@ -32,6 +32,6 @@ class FormatTable {
   }
 
   set ranges (ranges) {
-    this.rangeList.range = this.rangeList.index.concat(ranges);
+    this.rangeList.range = this.rangeList.range.concat(ranges);
   }
 }
