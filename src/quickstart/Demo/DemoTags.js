@@ -1,10 +1,10 @@
 class DemoTags extends QuickstartDemo {
   demo1_ () {
-    new LedgerTags(this.sheet).mergeTransactions(0, this.data).activate();
+    new LedgerTags().mergeTransactions(0, this.data).activate();
   }
 
   demo2_ () {
-    new LedgerAccounts(this.sheet).appendTransactions(1, this.data).fillInWithZeros(1).activate();
+    new LedgerAccounts(this.mm).appendTransactions(1, this.data).fillInWithZeros(1).activate();
   }
 
   makeConfig (num) {

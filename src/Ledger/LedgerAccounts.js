@@ -1,6 +1,7 @@
 class LedgerAccounts extends Ledger {
-  constructor (sheet) {
-    super(sheet);
+  constructor (mm) {
+    const name = (typeof mm === 'number' ? Consts.month_name.short[mm] : mm);
+    super(name);
     this._category = 'accounts';
 
     this._specs = Object.freeze({

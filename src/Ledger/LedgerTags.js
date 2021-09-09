@@ -1,6 +1,6 @@
 class LedgerTags extends Ledger {
-  constructor (sheet) {
-    super(sheet);
+  constructor () {
+    super('Tags');
     this._category = 'tags';
 
     this._specs = Object.freeze({

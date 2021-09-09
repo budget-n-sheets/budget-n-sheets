@@ -45,7 +45,7 @@ class DemoStatements extends QuickstartDemo {
   }
 
   play () {
-    const ledger = new LedgerAccounts(this.sheet);
+    const ledger = new LedgerAccounts(this.mm);
     const rangeList = [];
 
     this.list.forEach((values, index) => {

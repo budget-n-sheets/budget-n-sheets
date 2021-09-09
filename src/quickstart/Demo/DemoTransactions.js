@@ -29,6 +29,6 @@ class DemoTransactions extends QuickstartDemo {
   }
 
   play () {
-    new LedgerAccounts(this.sheet).appendTransactions(1, this.data).fillInWithZeros(1).activate();
+    new LedgerAccounts(this.mm).appendTransactions(1, this.data).fillInWithZeros(1).activate();
   }
 }

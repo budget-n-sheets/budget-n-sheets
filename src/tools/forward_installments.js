@@ -106,8 +106,7 @@ function fastForwardInstallments_ (range) {
 
   if (list.length === 0) return;
 
-  const sheet = range.getSheet();
-  const ledger = new LedgerCards(sheet);
+  const ledger = new LedgerCards();
 
   const _w = 6;
   const col = range.getColumn() - 1;
@@ -166,10 +165,7 @@ function forwardInstallments_ (range) {
   const mm = (col - (col % _w)) / _w + 1;
 
   if (mm < 12 && merge.length > 0) {
-    const sheet = range.getSheet();
-    if (sheet) {
-      new LedgerCards(sheet).mergeTransactions(mm, merge);
-      SpreadsheetApp.flush();
-    }
+    new LedgerCards().mergeTransactions(mm, merge);
+    SpreadsheetApp.flush();
   }
 }

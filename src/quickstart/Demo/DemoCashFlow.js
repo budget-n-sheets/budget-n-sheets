@@ -4,10 +4,9 @@ class DemoCashFlow extends QuickstartDemo {
   }
 
   demo_ () {
-    const month = Consts.month_name.short[this.mm];
     const num_acc = 1 + SettingsConst.getValueOf('number_accounts');
 
-    const ledger = new LedgerAccounts(this.sheets[month]);
+    const ledger = new LedgerAccounts(this.mm);
 
     for (let k = 1; k < num_acc; k++) {
       ledger.fillInWithZeros(k);

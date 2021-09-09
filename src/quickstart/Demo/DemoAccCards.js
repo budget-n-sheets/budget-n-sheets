@@ -60,10 +60,10 @@ class DemoAccCards extends QuickstartDemo {
 
     switch (num) {
       case 3:
-        this._ledger = new LedgerCards(this.sheet);
+        this._ledger = new LedgerCards();
         break;
       case 4:
-        this._ledger = new LedgerAccounts(this.sheet);
+        this._ledger = new LedgerAccounts(this.mm);
         break;
     }
 

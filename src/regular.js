@@ -64,14 +64,11 @@ function postEventsForDate_ (date) {
   }
 
   if (cards.length > 0) {
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
-    if (sheet) new LedgerCards(sheet).mergeTransactions(mm, cards);
+    const sheet = Spreadsheet2.getSheetByName('Cards');
+    if (sheet) new LedgerCards().mergeTransactions(mm, cards);
   }
 
-  const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName(Consts.month_name.short[mm]);
-  if (!sheet) return;
-
-  const ledger = new LedgerAccounts(sheet);
+  const ledger = new LedgerAccounts(mm);
   for (let k = 0; k < num_acc; k++) {
     if (accounts[k].length === 0) continue;
     ledger.mergeTransactions(k, accounts[k]);

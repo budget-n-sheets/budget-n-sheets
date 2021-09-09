@@ -1,7 +1,6 @@
 class Ledger {
-  constructor (sheet) {
-    this._sheet = sheet;
-    this._sheetName = sheet.getName();
+  constructor (name) {
+    this._sheet = Spreadsheet2.getSheetByName(name);
     this.lastRange = null;
 
     this._insertRows = null;

@@ -1,6 +1,6 @@
 class LedgerCards extends Ledger {
-  constructor (sheet) {
-    super(sheet);
+  constructor () {
+    super('Cards');
     this._category = 'cards';
 
     this._specs = Object.freeze({
