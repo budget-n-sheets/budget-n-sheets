@@ -30,6 +30,7 @@ function cardsClientService (payload) {
       service.create(payload.metadata);
       service.save();
       service.flush();
+      onOpen();
       break;
     }
     case 'get':

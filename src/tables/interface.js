@@ -75,6 +75,7 @@ function showDialogDeleteCard (id) {
     cardsService.delete(id);
     cardsService.save();
     cardsService.flush();
+    onOpen();
     return 1;
   }
 }
