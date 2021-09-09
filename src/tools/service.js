@@ -16,20 +16,26 @@ function toolService_ (name, param) {
   switch (name) {
     case 'formatTable': {
       const tool = FormatTable.pick(sheet);
+      if (tool === 1) {
+        FormatTable.showWarning();
+        break;
+      }
 
       const selected = RangeUtils.filterTableRanges(ranges, tool.specs);
       tool.indexes = selected.indexes;
       tool.ranges = selected.ranges;
 
-      if (tool !== 1) tool.format();
-      else FormatTable.showWarning();
+      tool.format();
       break;
     }
     case 'insertRows': {
       const tool = ToolInsertRows.pick(sheet);
+      if (tool === 1) {
+        ToolInsertRows.showWarning();
+        break;
+      }
 
-      if (tool !== 1) tool.insertRows();
-      else ToolInsertRows.showWarning();
+      tool.insertRows();
       break;
     }
 
