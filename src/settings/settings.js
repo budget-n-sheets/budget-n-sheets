@@ -75,7 +75,9 @@ function saveUserSettings (settings) {
   }
 
   try {
-    setViewMode_(settings.view_mode);
+    if (SettingsSpreadsheet.getValueOf('view_mode') !== settings.view_mode) {
+      setViewMode_(settings.view_mode !== 'simple');
+    }
   } catch (err) {
     LogLog.error(err);
   }
