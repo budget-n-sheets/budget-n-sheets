@@ -1,7 +1,7 @@
 class FormatTableAccounts extends FormatTable {
   constructor (mm) {
     super();
-    const name = Consts.month_name.short.indexOf(mm);
+    const name = Consts.month_name.short[mm];
     this.sheet = SpreadsheetApp2.getActive().getSheetByName(name);
 
     const financial_year = SettingsConst.getValueOf('financial_year');
