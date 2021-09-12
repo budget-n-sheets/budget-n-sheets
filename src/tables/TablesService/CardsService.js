@@ -170,47 +170,27 @@ class CardsService extends TablesService {
   }
 
   getAllBalances () {
-    const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
-    if (!sheet) return;
+    if (!this.hasCards()) return null;
 
     const _h = TABLE_DIMENSION.height;
     const _w = TABLE_DIMENSION.width;
 
+    const cards = this.getAll();
+
     const num_acc = SettingsConst.getValueOf('number_accounts');
+    const snapshot = new SheetBackstage().getGroupRange(0, 2 + num_acc, 12, 10).getValues();
 
-    const col = 2 + _w + _w * num_acc;
-    const num_cards = this._ids.length;
-
-    if (num_cards === 0) return;
-
-    const balances = {
-      cards: ['All'],
-      balance: [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      ]
-    };
-
-    let data = sheet.getRange(1, col, 1 + 12 * _h, _w).getValues();
-    for (let i = 0; i < 12; i++) {
-      balances.balance[0][i] = data[5 + _h * i][0];
-    }
-
-    data = sheet.getRange(1, col + _w, 1 + 12 * _h, _w * num_cards).getValues();
-
-    for (const id in this._db) {
-      const card = this._db[id];
+    for (const id in cards) {
+      const card = cards[id];
       const index = card.index;
 
-      const v = [];
+      card.balances = new Array(12).fill(0);
       for (let i = 0; i < 12; i++) {
-        v[i] = data[5 + _h * i][_w * index];
+        card.balances[i] = +snapshot[4 + _h * i][_w * index];
       }
-
-      balances.cards.push(card.code);
-      balances.balance.push(v);
     }
 
-    return balances;
+    return cards;
   }
 
   getByCode (code, withAliases) {
