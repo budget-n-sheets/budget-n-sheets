@@ -116,6 +116,14 @@ class AccountsService extends TablesService {
     return this;
   }
 
+  getByName (name) {
+    for (const id in this._db) {
+      if (name === this._db[id].name) return { id: id, metadata: Utils.deepCopy(this._db[id]) };
+    }
+
+    return null;
+  }
+
   getNamesRegExp () {
     const names = [];
     for (const id in this._db) {

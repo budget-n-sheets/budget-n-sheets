@@ -213,6 +213,15 @@ class CardsService extends TablesService {
     return balances;
   }
 
+  getByCode (code, withAliases) {
+    for (const id in this._db) {
+      if (code === this._db[id].code
+      || (withAliases && this._db[id].aliases.indexOf(code) > -1)) return { id: id, metadata: Utils.deepCopy(this._db[id]) };
+    }
+
+    return null;
+  }
+
   getCodesRegExp (withAliases) {
     if (!this.hasCards()) return null;
 
