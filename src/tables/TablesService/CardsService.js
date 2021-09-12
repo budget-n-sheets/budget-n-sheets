@@ -213,6 +213,19 @@ class CardsService extends TablesService {
     return balances;
   }
 
+  getCodesRegExp (withAliases) {
+    if (!this.hasCards()) return null;
+
+    const codes = [];
+    for (const id in this._db) {
+      codes.push(this._db[id].code);
+      if (withAliases) codes.push(this._db[id].aliases);
+    }
+
+    const regExp = codes.flat().sort((a, b) => b.length - a.length).join('|');
+    return new RegExp('(' + regExp + ')', 'g');
+  }
+
   hasCards () {
     return this._ids.length > 0;
   }

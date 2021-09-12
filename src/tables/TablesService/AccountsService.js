@@ -116,6 +116,16 @@ class AccountsService extends TablesService {
     return this;
   }
 
+  getNamesRegExp () {
+    const names = [];
+    for (const id in this._db) {
+      names.push(this._db[id].name);
+    }
+
+    const regExp = names.sort((a, b) => b.length - a.length).join('|');
+    return new RegExp('(' + regExp + ')', 'g');
+  }
+
   update (id, metadata) {
     if (!this.hasId(id)) return 1;
 
