@@ -1,4 +1,8 @@
 class Utils {
+  static getDateOffset () {
+    return Consts.date - Utils.getLocaleDate();
+  }
+
   static getLocaleDate (date) {
     let timezone = SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetTimeZone();
     if (typeof timezone !== 'string' || timezone === '') timezone = 'GMT';

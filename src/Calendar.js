@@ -35,7 +35,7 @@ class Calendar {
       if (start > end) return [];
     }
 
-    const offset = start - Utils.getLocaleDate(start);
+    const offset = Utils.getDateOffset();
     const a = new Date(start + offset);
     const b = new Date(end + offset);
 
