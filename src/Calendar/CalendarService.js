@@ -40,7 +40,7 @@ class CalendarService {
         }
       }
 
-      value = '=' + FormatNumber.localeSignal(evento.value);
+      value = '=' + FormatNumber.localeSignal(value);
 
       if (evento.hasWallet) {
         tableTtt[0].push([dd, evento.title, value, tags]);
