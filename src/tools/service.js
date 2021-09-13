@@ -34,6 +34,7 @@ function toolService_ (job, param) {
         break;
       }
 
+      tool.filterRanges(ranges).refresh();
       break;
     }
     case 'formatTable': {
