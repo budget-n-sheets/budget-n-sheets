@@ -30,6 +30,14 @@ class RefreshCashFlow {
     return Consts.month_name.short.indexOf(name) > -1;
   }
 
+  get indexes () {
+    return this.indexes;
+  }
+
+  set indexes (indexes) {
+    this.indexes = indexes;
+  }
+
   static showWarning () {
     SpreadsheetApp2.getUi().alert(
       "Can't refresh cash flow",
