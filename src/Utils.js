@@ -32,7 +32,7 @@ class Utils {
     const translation = { type: '', number: 0, signal: 1 };
 
     const match = description.match(/(-?)@(M(\+|-)(\d+)|Avg|Total)/);
-    if (!match) return translation;
+    if (!match) return null;
 
     translation.signal = (match[1] === '-' ? -1 : 1);
 
