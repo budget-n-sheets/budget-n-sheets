@@ -84,7 +84,7 @@ class DemoCalendar extends QuickstartDemo {
         day: 7,
         length: 1,
         title: 'Card bill payment',
-        description: 'card_code\n\n#qcc\n---\nThis event has the "#qcc" built-in tag and no number formatted. The add-on gets the card\'s balance of the previous month and puts it in the cash flow.'
+        description: 'acc_name\ncard_code\n\n#qcc\n---\nThis event has the "#qcc" built-in tag and no number formatted. The add-on gets the card\'s balance of the previous month and puts it in the cash flow.'
       }
     ];
 
