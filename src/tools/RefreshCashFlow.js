@@ -11,7 +11,7 @@ class RefreshCashFlow {
     this.tags = getTagData_();
     this.values = {};
 
-    this.indexes = new Array(12).fill(false);
+    this.arrayMm = new Array(12).fill(false);
     this.specs = Object.freeze({
       cash_flow: {
         row: 4,
@@ -33,11 +33,11 @@ class RefreshCashFlow {
   }
 
   get indexes () {
-    return this.indexes;
+    return this.arrayMm;
   }
 
   set indexes (indexes) {
-    this.indexes = indexes;
+    this.arrayMm = indexes;
   }
 
   static showWarning () {
@@ -133,21 +133,21 @@ class RefreshCashFlow {
 
         for (let i = column; i < last; i += w) {
           const index = (i - (i % w)) / w;
-          this.indexes[index] = true;
+          this.arrayMm[index] = true;
         }
       }
     } else {
       const mm = Consts.month_name.short.indexOf(name);
       if (mm === -1) return;
-      this.indexes[mm] = true;
+      this.arrayMm[mm] = true;
     }
 
     return this;
   }
 
   refresh () {
-    for (let mm = 0; mm < this.indexes.length; mm++) {
-      if (!this.indexes[mm]) continue;
+    for (let mm = 0; mm < this.arrayMm.length; mm++) {
+      if (!this.arrayMm[mm]) continue;
 
       this.dd = new Date(this.financial_year, mm + 1, 0).getDate();
       this.mm = mm;
@@ -165,7 +165,7 @@ class RefreshCashFlow {
     }
 
     SpreadsheetApp.flush();
-    this.indexes = new Array(12).fill(false);
+    this.arrayMm = new Array(12).fill(false);
 
     return this;
   }
