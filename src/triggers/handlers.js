@@ -23,53 +23,6 @@ function onEditInstallable_ (e) {
   }
 }
 
-function quickActions_ (range, value) {
-  if (value === '') return;
-
-  const row = range.getRow();
-
-  switch (row) {
-    case 8:
-      toolInsertRows(range.getSheet());
-      break;
-    case 12:
-      if (value === 'Collapse') pagesView_('hide', 1);
-      else if (value === 'Expand') pagesView_('show');
-      break;
-
-    default:
-      break;
-  }
-
-  const mm = Consts.month_name.long.indexOf(value);
-  if (mm === -1) return;
-
-  switch (row) {
-    case 3:
-      toolInsertRows(range.getSheet());
-      break;
-    case 4: {
-      const format = new FormatTableAccounts(mm);
-      format.index = [0, 1, 2, 3, 4, 5];
-      format.format();
-      break;
-    }
-    case 5:
-      toolPicker_('UpdateCashFlowMm', mm);
-      break;
-
-    case 9: {
-      const format = new FormatTableCards();
-      format.index = [mm];
-      format.format();
-      break;
-    }
-
-    default:
-      break;
-  }
-}
-
 function dailyTrigger_ (e) {
   if (isAuthorizationRequired_()) return;
   if (!AppsScript.isInstalled()) return;
