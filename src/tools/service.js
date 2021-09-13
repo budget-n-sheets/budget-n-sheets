@@ -1,5 +1,5 @@
 function toolFormatTable () {
-  return toolService_('formatTable');
+  toolService_('formatTable');
 }
 
 function toolForwardInstallments () {
@@ -7,7 +7,7 @@ function toolForwardInstallments () {
 }
 
 function toolInsertRows (sheet) {
-  return toolService_('insertRows', sheet);
+  toolService_('insertRows', sheet);
 }
 
 function toolService_ (name, param) {
