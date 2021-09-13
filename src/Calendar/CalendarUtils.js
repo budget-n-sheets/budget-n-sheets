@@ -48,9 +48,9 @@ class CalendarUtils {
         hasQcc: false
       };
 
-      metadata.hasWallet = metadata.description.indexOf('Wallet') !== -1;
+      metadata.hasWallet = description.indexOf('Wallet') !== -1;
 
-      matches = metadata.description.match(regExp.accounts) || [];
+      matches = description.match(regExp.accounts) || [];
       for (const name of matches) {
         const acc = accountsService.getByName(name);
         if (acc) {
@@ -60,7 +60,7 @@ class CalendarUtils {
       }
 
       if (hasCards) {
-        matches = metadata.description.match(regExp.cards) || [];
+        matches = description.match(regExp.cards) || [];
         for (const code of matches) {
           const card = cardsService.getByCode(code);
           if (card) {
@@ -72,11 +72,11 @@ class CalendarUtils {
 
       if (!metadata.hasWallet && !metadata.account && !metadata.card) continue;
 
-      metadata.hasAtMute = /@mute/.test(metadata.description);
-      metadata.hasQcc = /#qcc/.test(metadata.description);
-      metadata.translation = Utils.getTranslation(metadata.description);
+      metadata.hasAtMute = /@mute/.test(description);
+      metadata.hasQcc = /#qcc/.test(description);
+      metadata.translation = Utils.getTranslation(description);
 
-      matches = metadata.description.match(valueRegExp);
+      matches = description.match(valueRegExp);
       if (matches) {
         matches = matches[0];
         if (!dec_s) matches = matches.replace(',', '.');
@@ -85,10 +85,10 @@ class CalendarUtils {
         metadata.value = NaN;
       }
 
-      matches = metadata.description.match(/!#\w+/);
+      matches = description.match(/!#\w+/);
       if (matches) metadata.tagImportant = match[0].slice(2);
 
-      metadata.tags = metadata.description.match(/#\w+/g) || [];
+      metadata.tags = description.match(/#\w+/g) || [];
       metadata.tags.forEach((t, i, a) => { a[i] = t.slice(1); });
 
       if (evento.isAllDayEvent()) {
