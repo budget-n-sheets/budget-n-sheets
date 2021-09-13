@@ -78,7 +78,7 @@ class RefreshCashFlow {
       value = this.formater.localeSignal(value);
       const title = '@' + ev.title + ' ';
 
-      const first = ev.startDate < startDate ? 0 : ev.startDate.getDate();
+      const first = ev.startDate < startDate ? 0 : ev.startDate.getDate() - 1;
       const last = ev.endDate >= endDate ? this.dd : ev.endDate.getDate();
 
       for (let day = first; day < last; day++) {
