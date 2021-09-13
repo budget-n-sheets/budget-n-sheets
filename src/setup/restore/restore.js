@@ -257,7 +257,7 @@ function restoreTables_ (backup) {
 
 function restoreCards_ (backup) {
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Cards');
-  const insertRows = new ToolInsertRowsCards(sheet);
+  const insertRows = new ToolInsertRowsCards();
 
   let mm = -1;
   while (++mm < 12) {
@@ -278,7 +278,7 @@ function restoreMonths_ (backup) {
     if (backup.ttt[mm] == null) continue;
 
     const sheet = spreadsheet.getSheetByName(Consts.month_name.short[mm]);
-    const insertRows = new ToolInsertRowsMonth(sheet);
+    const insertRows = new ToolInsertRowsMonth();
 
     for (let k = 0; k < num_acc + 1; k++) {
       if (backup.ttt[mm][k] == null) continue;
@@ -292,7 +292,7 @@ function restoreMonths_ (backup) {
 
 function restoreTags_ (backup) {
   const sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('Tags');
-  const insertRows = new ToolInsertRowsTags(sheet);
+  const insertRows = new ToolInsertRowsTags();
 
   insertRows.insertRowsTo(backup.tags.length, true);
 

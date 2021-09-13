@@ -8,16 +8,17 @@ class ToolInsertRows {
     const name = sheet.getName();
     switch (name) {
       case 'Cards':
-        return new ToolInsertRowsCards(sheet);
+        return new ToolInsertRowsCards();
       case 'Tags':
-        return new ToolInsertRowsTags(sheet);
+        return new ToolInsertRowsTags();
 
       default:
         break;
     }
 
-    if (Consts.month_name.short.indexOf(name) === -1) return 1;
-    return new ToolInsertRowsMonth(sheet);
+    const mm = Consts.month_name.short.indexOf(name);
+    if (mm === -1) return 1;
+    return new ToolInsertRowsMonth(mm);
   }
 
   static showWarning () {
@@ -59,22 +60,29 @@ class ToolInsertRows {
 }
 
 class ToolInsertRowsMonth extends ToolInsertRows {
-  constructor (sheet) {
+  constructor (mm) {
+    const name = Consts.month_name.short[mm];
+    const sheet = Spreadsheet2.getSheetByName(name);
     super(sheet);
+
     this._headerRow = 4;
   }
 }
 
 class ToolInsertRowsCards extends ToolInsertRows {
-  constructor (sheet) {
+  constructor () {
+    const sheet = Spreadsheet2.getSheetByName('Cards');
     super(sheet);
+
     this._headerRow = 5;
   }
 }
 
 class ToolInsertRowsTags extends ToolInsertRows {
-  constructor (sheet) {
+  constructor () {
+    const sheet = Spreadsheet2.getSheetByName('Tags');
     super(sheet);
+
     this._headerRow = 1;
   }
 }
