@@ -1,80 +1,62 @@
 class FormatNumber {
-  static load_ () {
-    this._settings = RapidAccess.properties().spreadsheet();
+  constructor () {
+    const settings = RapidAccess.properties().spreadsheet();
+
+    this.dec_p = settings.decimal_places;
+    this.dec_s = settings.decimal_separator ? '.' : ',';
+    this.dec_t = (this.dec_s === '.' ? ',' : '.');
   }
 
-  static currency (number) {
+  currency (number) {
     /** $ x,xx0.00;-$ x,xx0.00 */
-    this.load_();
-
-    const dec_p = this._settings.decimal_places;
-    const dec_s = this._settings.decimal_separator ? '.' : ',';
-    const dec_t = (dec_s === '.' ? ',' : '.');
-
     let n = number;
 
     const s = n < 0 ? '-$ ' : '$ ';
 
-    n = Math.abs(+n || 0).toFixed(dec_p);
+    n = Math.abs(+n || 0).toFixed(this.dec_p);
     const i = parseInt(n) + '';
 
     let j = i.length;
     j = j > 3 ? j % 3 : 0;
 
-    return s + (j ? i.substr(0, j) + dec_t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + dec_t) + (dec_p > 0 ? dec_s + Math.abs(n - i).toFixed(dec_p).slice(2) : '');
+    return s + (j ? i.substr(0, j) + this.dec_t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + this.dec_t) + (this.dec_p > 0 ? this.dec_s + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
   }
 
-  static financial (number) {
+  financial (number) {
     /** x,xx0.00;(x,xx0.00) */
-    this.load_();
-
-    const dec_p = this._settings.decimal_places;
-    const dec_s = this._settings.decimal_separator ? '.' : ',';
-    const dec_t = (dec_s === '.' ? ',' : '.');
-
     let n = number;
 
     const s = n < 0;
 
-    n = Math.abs(+n || 0).toFixed(dec_p);
+    n = Math.abs(+n || 0).toFixed(this.dec_p);
     const i = parseInt(n) + '';
 
     let j = i.length;
     j = j > 3 ? j % 3 : 0;
 
-    let a = (j ? i.substr(0, j) + dec_t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + dec_t) + (dec_p > 0 ? dec_s + Math.abs(n - i).toFixed(dec_p).slice(2) : '');
+    let a = (j ? i.substr(0, j) + this.dec_t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + this.dec_t) + (this.dec_p > 0 ? this.dec_s + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
 
     if (s) a = '(' + a + ')';
 
     return a;
   }
 
-  static localeSignal (number) {
+  localeSignal (number) {
     /** +0.00;-0.00 */
-    this.load_();
-
-    const dec_p = this._settings.decimal_places;
-    const dec_s = this._settings.decimal_separator ? '.' : ',';
-
     let n = number;
 
     const s = n < 0 ? '-' : '+';
 
-    n = Math.abs(n).toFixed(dec_p);
+    n = Math.abs(n).toFixed(this.dec_p);
     const i = parseInt(n) + '';
 
     const j = i.length;
 
-    return s + i.substr(0, j) + (dec_p > 0 ? dec_s + Math.abs(n - i).toFixed(dec_p).slice(2) : '');
+    return s + i.substr(0, j) + (this.dec_p > 0 ? this.dec_s + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
   }
 
-  static calendarSignal (number) {
+  calendarSignal (number) {
     /** $0.00;-$0.00 */
-    this.load_();
-
-    const dec_p = this._settings.decimal_places;
-    const dec_s = this._settings.decimal_separator ? '.' : ',';
-
     let n = number;
 
     const s = n < 0 ? '-$' : '$';
@@ -84,6 +66,6 @@ class FormatNumber {
 
     const j = i.length;
 
-    return s + i.substr(0, j) + (dec_p > 0 ? dec_s + Math.abs(n - i).toFixed(dec_p).slice(2) : '');
+    return s + i.substr(0, j) + (this.dec_p > 0 ? this.dec_s + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
   }
 }
