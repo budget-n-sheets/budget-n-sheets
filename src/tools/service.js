@@ -1,3 +1,7 @@
+function toolRefreshCashFlow () {
+  toolService_('cashFlow');
+}
+
 function toolFormatTable () {
   toolService_('formatTable');
 }
@@ -18,6 +22,20 @@ function toolService_ (job, param) {
   const sheet = ranges[0].getSheet();
 
   switch (job) {
+    case 'cashFlow': {
+      if (!RefreshCashFlow.isCompatible(sheet)) {
+        RefreshCashFlow.showWarning();
+        break;
+      }
+
+      const tool = new RefreshCashFlow();
+      if (!tool.sheet) {
+        RefreshCashFlow.showWarning();
+        break;
+      }
+
+      break;
+    }
     case 'formatTable': {
       const tool = FormatTable.pick(sheet);
       if (tool === 1) {

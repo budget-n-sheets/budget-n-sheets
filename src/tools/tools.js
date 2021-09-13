@@ -1,7 +1,3 @@
-function toolUpdateCashFlow () {
-  toolPickerUi_('UpdateCashFlow');
-}
-
 function toolPickerUi_ (select) {
   switch (select) {
     case 'UpdateCashFlow':

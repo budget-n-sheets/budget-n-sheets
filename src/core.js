@@ -31,7 +31,7 @@ function onOpen (e) {
       if (!CardsService.isEmpty()) menu.addItem('Forward installments', 'toolForwardInstallments');
 
       menu.addItem('Insert rows', 'toolInsertRows')
-        .addItem('Update cash flow', 'toolUpdateCashFlow')
+        .addItem('Refresh cash flow', 'toolRefreshCashFlow')
         .addSeparator()
         .addSubMenu(ui.createMenu('Open panel')
           .addItem('Accounts & Cards', 'showPanelTables')
