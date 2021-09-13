@@ -2,6 +2,8 @@ class ForwardInstallments {
   constructor () {
     this.sheet = Spreadsheet2.getSheetByName('Cards');
 
+    this.formater = new FormatNumber();
+
     this.rangeList = { indexes: [], ranges: [] };
     this.specs = Object.freeze({
       nullSearch: 4,
@@ -103,7 +105,7 @@ class ForwardInstallments {
 
       if (line[0] > 0) line[0] *= -1;
       line[1] = line[1].trim();
-      line[3] = '=' + FormatNumber.localeSignal(line[3]);
+      line[3] = '=' + this.formater.localeSignal(line[3]);
 
       installments.push({
         line: line,

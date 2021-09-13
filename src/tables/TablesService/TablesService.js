@@ -1,6 +1,7 @@
 class TablesService {
   constructor (key, db) {
     this.spreadsheet = null;
+    this.formater = new FormatNumber();
 
     this._key = key;
     this._db = db;

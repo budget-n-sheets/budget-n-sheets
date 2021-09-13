@@ -2,6 +2,8 @@ class RefreshCashFlow {
   constructor () {
     this.sheet = Spreadsheet2.getSheetByName('Cash Flow');
 
+    this.formater = new FormatNumber();
+
     this.dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
     this.num_ttt = 1 + SettingsConst.getValueOf('number_accounts');
     this.financial_year = SettingsConst.getValueOf('financial_year');
@@ -71,7 +73,7 @@ class RefreshCashFlow {
         continue;
       }
 
-      value = FormatNumber.localeSignal(value);
+      value = this.formater.localeSignal(value);
       const title = '@' + ev.title + ' ';
 
       const first = ev.startDate < startDate ? 0 : ev.startDate.getDate();
@@ -114,7 +116,7 @@ class RefreshCashFlow {
       const value = line[2 + c];
 
       day--;
-      this.values.flow[day] += FormatNumber.localeSignal(value);
+      this.values.flow[day] += this.formater.localeSignal(value);
       this.values.transactions[day] += '@' + line[1 + c] + ' ';
     }
   }

@@ -45,7 +45,7 @@ class AccountsService extends TablesService {
       rangeOff.setValue(acc.name);
       rangeOff.offset(1, 0).setFormula('0');
       backstage.getRangeList(list).setFormulaR1C1('R[-' + (_h - 1) + ']C');
-      rangeOff.offset(1 + _h * acc.time_start, 0).setFormula('=' + FormatNumber.localeSignal(acc.balance));
+      rangeOff.offset(1 + _h * acc.time_start, 0).setFormula('=' + this.formater.localeSignal(acc.balance));
 
       if (jan) jan.getRange(1, 6 + 5 * acc.index).setValue(acc.name);
     }

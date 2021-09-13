@@ -58,7 +58,7 @@ class CardsService extends TablesService {
       }
 
       sheet.getRange(1, col - 1).setValue(text);
-      sheet.getRangeList(ranges).setValue('=' + FormatNumber.localeSignal(card.limit));
+      sheet.getRangeList(ranges).setValue('=' + this.formater.localeSignal(card.limit));
     }
   }
 

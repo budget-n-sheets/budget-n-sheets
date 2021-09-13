@@ -22,13 +22,15 @@ class DemoCalendar extends QuickstartDemo {
   }
 
   createEvents_ () {
+    const formater = new FormatNumber();
+
     this.eves.forEach(eve => {
       let description = eve.description;
 
       description = description.replace('acc_name', this.acc_name);
       description = description.replace('card_code', this.card_code);
 
-      const value = FormatNumber.calendarSignal(eve.value);
+      const value = formater.calendarSignal(eve.value);
       description = description.replace('value', value);
 
       this.calendar.createAllDayEvent(

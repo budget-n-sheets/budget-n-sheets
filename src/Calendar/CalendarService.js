@@ -15,6 +15,8 @@ class CalendarService {
     const mm = date.getMonth();
     const dd = date.getDate();
 
+    const formater = new FormatNumber();
+
     const db_accounts = new AccountsService().getAll();
 
     const cardsService = new CardsService();
@@ -40,7 +42,7 @@ class CalendarService {
         }
       }
 
-      value = '=' + FormatNumber.localeSignal(value);
+      value = '=' + formater.localeSignal(value);
 
       if (evento.hasWallet) {
         tableTtt[0].push([dd, evento.title, value, tags]);

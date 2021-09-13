@@ -87,7 +87,7 @@ function saveUserSettings (settings) {
   try {
     const sheet = spreadsheet.getSheetByName('_Settings');
     if (sheet) {
-      sheet.getRange('B4').setFormula('=' + FormatNumber.localeSignal(new_init_month + 1));
+      sheet.getRange('B4').setFormula('=' + new FormatNumber().localeSignal(new_init_month + 1));
       SpreadsheetApp.flush();
     }
 

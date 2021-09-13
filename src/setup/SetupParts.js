@@ -527,15 +527,16 @@ class SetupParts {
     this._config.decimal_separator = dec_p;
     SettingsSpreadsheet.setValueOf('decimal_separator', dec_p);
 
+    const formater = new FormatNumber();
     cell = [
-      [FormatNumber.localeSignal(this._config.financial_year)],
+      [formater.localeSignal(this._config.financial_year)],
       [buildFormulas.actualMonth()],
-      [FormatNumber.localeSignal(this._config.initial_month + 1)],
+      [formater.localeSignal(this._config.initial_month + 1)],
       [buildFormulas.activeMonths()],
       [buildFormulas.mFactor()],
       [buildFormulas.countTags()],
       ['RAND()'],
-      [FormatNumber.localeSignal(this._config.decimal_places)],
+      [formater.localeSignal(this._config.decimal_places)],
       [this._config.decimal_separator],
       ['CONCATENATE("#,##0."; REPT("0"; B9); ";(#,##0."; REPT("0"; B9); ")")']
     ];
