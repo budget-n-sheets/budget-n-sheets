@@ -155,7 +155,12 @@ class DemoCalendar extends QuickstartDemo {
     this.demo2_();
     this.demo3_();
 
-    updateCashFlow_(this.date.mm);
+    const indexes = new Array(12).fill(false);
+    indexes[this.date.mm] = true;
+
+    const tool = new RefreshCashFlow();
+    tool.indexes = indexes;
+    tool.refresh();
 
     SpreadsheetApp2.getActiveSpreadsheet().setActiveSheet(this.sheet);
     this.sheet.getRange(1, 2 + 4 * this.date.mm, 1, 3).activate();

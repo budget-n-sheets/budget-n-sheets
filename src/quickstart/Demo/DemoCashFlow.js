@@ -12,7 +12,12 @@ class DemoCashFlow extends QuickstartDemo {
       ledger.fillInWithZeros(k);
     }
 
-    updateCashFlow_(this.mm);
+    const indexes = new Array(12).fill(false);
+    indexes[this.mm] = true;
+
+    const tool = new RefreshCashFlow();
+    tool.indexes = indexes;
+    tool.refresh();
 
     this.sheets['Cash Flow'].getRange(1, 2 + 4 * this.mm, 1, 3).activate();
   }
