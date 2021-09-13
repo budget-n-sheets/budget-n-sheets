@@ -9,10 +9,13 @@ class RangeUtils {
       if (column % w === 0 && range.getNumColumns() === specs.width) {
         selected.ranges.push(range);
       } else {
-        const last = range.getLastColumn();
-        for (let i = column; i < last; i += w) {
-          const index = (i - (i % w)) / w;
-          selected.indexes.push(index);
+        const last = range.getLastColumn() - 1;
+
+        const start = (column - (column % w)) / w;
+        const end = (last - (last % w)) / w;
+
+        for (let i = start; i <= end; i++) {
+          selected.indexes.push(i);
         }
       }
     }

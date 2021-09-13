@@ -130,12 +130,14 @@ class RefreshCashFlow {
       const w = this.specs.cash_flow.width + 1;
 
       for (const range of ranges) {
-        const column = range.getColumn() - 1;
-        const last = range.getLastColumn();
+        const column = range.getColumn() - 2;
+        const last = range.getLastColumn() - 2;
 
-        for (let i = column; i < last; i += w) {
-          const index = (i - (i % w)) / w;
-          this.arrayMm[index] = true;
+        const start = (column - (column % w)) / w;
+        const end = (last - (last % w)) / w;
+
+        for (let i = start; i <= end; i++) {
+          this.arrayMm[i] = true;
         }
       }
     } else {
