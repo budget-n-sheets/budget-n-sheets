@@ -1,6 +1,6 @@
 class ToolInsertRows {
   constructor (sheet) {
-    this._sheet = sheet;
+    this.sheet = sheet;
     this._maxRows = sheet.getMaxRows();
   }
 
@@ -30,12 +30,12 @@ class ToolInsertRows {
 
   insertNumRows_ (numRows) {
     if (this._maxRows < this._headerRow + 3) return 1;
-    this._sheet.insertRowsBefore(this._maxRows, numRows);
+    this.sheet.insertRowsBefore(this._maxRows, numRows);
     this._maxRows += numRows;
 
-    if (this._sheet.getLastRow() === this._maxRows) {
-      const maxCols = this._sheet.getMaxColumns();
-      const range = this._sheet.getRange(this._maxRows, 1, 1, maxCols);
+    if (this.sheet.getLastRow() === this._maxRows) {
+      const maxCols = this.sheet.getMaxColumns();
+      const range = this.sheet.getRange(this._maxRows, 1, 1, maxCols);
       const values = range.getValues();
 
       range.clearContent()
@@ -52,7 +52,7 @@ class ToolInsertRows {
   }
 
   insertRowsTo (height, extras) {
-    const diff = this._maxRows - this._sheet.getLastRow();
+    const diff = this._maxRows - this.sheet.getLastRow();
     if (diff > height) return 1;
     this.insertNumRows_(height - diff + (extras ? 100 : 0));
     return this;
