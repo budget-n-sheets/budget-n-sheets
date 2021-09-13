@@ -12,7 +12,7 @@ function toolInsertRows (sheet) {
 
 function toolService_ (name, param) {
   const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(200)) return;
+  if (!lock.tryLock(800)) return;
 
   const ranges = (param ? param.getActiveRangeList() : SpreadsheetApp.getActiveRangeList()).getRanges();
   const sheet = ranges[0].getSheet();
