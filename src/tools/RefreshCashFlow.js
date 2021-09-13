@@ -8,6 +8,8 @@ class RefreshCashFlow {
     this.num_ttt = 1 + SettingsConst.getValueOf('number_accounts');
     this.financial_year = SettingsConst.getValueOf('financial_year');
 
+    this.db_cards = new CardsService().getAllBalances() || {};
+
     this.tags = getTagData_();
     this.values = {};
 
@@ -66,7 +68,7 @@ class RefreshCashFlow {
         if (!ev.hasWallet && !ev.account) continue;
 
         if (this.mm > 0) {
-          const card = db_cards[ev.card.id];
+          const card = this.db_cards[ev.card.id];
           value = card.balances[this.mm - 1];
         }
       } else if (!ev.account) {
