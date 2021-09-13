@@ -10,18 +10,21 @@ function toolInsertRows (sheet) {
   toolService_('insertRows', sheet);
 }
 
-function toolService_ (name, param) {
+function toolService_ (job, param) {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(800)) return;
 
   const ranges = (param ? param.getActiveRangeList() : SpreadsheetApp.getActiveRangeList()).getRanges();
   const sheet = ranges[0].getSheet();
 
-  switch (name) {
+  switch (job) {
     case 'formatTable': {
       const tool = FormatTable.pick(sheet);
       if (tool === 1) {
         FormatTable.showWarning();
+        break;
+      } else if (!tool.sheet) {
+        showDialogErrorMessage();
         break;
       }
 
@@ -33,9 +36,14 @@ function toolService_ (name, param) {
       break;
     }
     case 'forwardInstallments': {
+      if (!ForwardInstallments.isCompatible(sheet)) {
+        ForwardInstallments.showWarning();
+        break;
+      }
+
       const tool = new ForwardInstallments();
       if (!tool.sheet) {
-        ForwardInstallments.showWarning();
+        showDialogErrorMessage();
         break;
       }
 
@@ -51,6 +59,9 @@ function toolService_ (name, param) {
       if (tool === 1) {
         ToolInsertRows.showWarning();
         break;
+      } else if (!tool.sheet) {
+        showDialogErrorMessage();
+        break;
       }
 
       tool.insertRows();
@@ -58,7 +69,7 @@ function toolService_ (name, param) {
     }
 
     default:
-      console.warn('toolService_(): Switch case is default.', name);
+      console.warn('toolService_(): Switch case is default.', job);
       break;
   }
 

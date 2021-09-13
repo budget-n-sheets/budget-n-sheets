@@ -10,6 +10,10 @@ class ForwardInstallments {
     });
   }
 
+  static isCompatible (sheet) {
+    return sheet.getName() === 'Cards';
+  }
+
   static showWarning () {
     SpreadsheetApp2.getUi().alert(
       "Can't forward installments",
