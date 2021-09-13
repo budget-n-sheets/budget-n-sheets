@@ -56,7 +56,7 @@ function dailyTrigger_ (e) {
   }
 
   if (SettingsUser.getValueOf('post_day_events')) {
-    postEventsForDate_(date);
+    CalendarService.syncDayWithSpreadsheet(date);
   }
 }
 
