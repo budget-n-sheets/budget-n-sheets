@@ -96,6 +96,7 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
   const dec_p = more.dec_p;
 
   const cards = new CardsService().getAllBalances();
+  const formater = new FormatNumber();
 
   const hasTags = (tags && tags.tags.length > 0);
   const hasCards = (cards && cards !== 1);
@@ -158,7 +159,7 @@ function cfDigestCalendar_ (eventos, tags, more, cf_flow, cf_transactions) {
       continue;
     }
 
-    value = FormatNumber.localeSignal(value);
+    value = formater.localeSignal(value);
     title = '@' + evento.Title + ' ';
     for (j = 0; j < evento.Day.length; j++) {
       day = evento.Day[j] - 1;
@@ -178,6 +179,8 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
 
   const maxRows = sheet.getLastRow() - 4;
   if (maxRows <= 0) return;
+
+  const formater = new FormatNumber();
 
   const dd = more.dd;
   const dec_p = more.dec_p;
@@ -273,7 +276,7 @@ function cfDigestAccounts_ (spreadsheet, tags, more, cf_flow, cf_transactions) {
     if (typeof value !== 'number') continue;
 
     day--;
-    cf_flow[day] += FormatNumber.localeSignal(value);
+    cf_flow[day] += formater.localeSignal(value);
     cf_transactions[day] += '@' + table[i][1 + cc] + ' ';
   }
 }

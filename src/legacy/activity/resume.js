@@ -6,6 +6,8 @@ function resumeActivity_ (mm0, mm1) {
   const formulasAcc = formulasBuild.accounts();
   const formulasCards = formulasBuild.cards();
 
+  const formater = new FormatNumber();
+
   const h_ = TABLE_DIMENSION.height;
   const w_ = TABLE_DIMENSION.width;
 
@@ -173,7 +175,7 @@ function resumeActivity_ (mm0, mm1) {
     const account = db_accounts[id];
     if (account.time_start < mm0) continue;
 
-    formula = '=' + FormatNumber.localeSignal(account.balance);
+    formula = '=' + formater.localeSignal(account.balance);
     sheetBackstage.getRange(2 + h_ * account.time_start, 2 + w_ + w_ * account.index).setFormula(formula);
   }
 
@@ -181,7 +183,7 @@ function resumeActivity_ (mm0, mm1) {
     const rangeOff = sheetBackstage.getRange(2, 1 + col);
 
     for (const id in db_cards) {
-      const formula = '=' + FormatNumber.localeSignal(db_cards[id].limit);
+      const formula = '=' + formater.localeSignal(db_cards[id].limit);
       for (let mm = mm0; mm <= mm1; mm++) {
         rangeOff.offset(h_ * mm, w_ * db_cards[id].index).setFormula(formula);
       }

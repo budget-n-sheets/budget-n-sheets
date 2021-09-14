@@ -78,6 +78,7 @@ function validateForwardInstallments_ () {
 function fastForwardInstallments_ (range) {
   const snapshot = range.getValues();
   const list = [];
+  const formater = new FormatNumber();
 
   for (let i = 0; i < snapshot.length; i++) {
     if (snapshot[i][1] === '') continue;
@@ -91,7 +92,7 @@ function fastForwardInstallments_ (range) {
 
     if (snapshot[i][0] > 0) snapshot[i][0] *= -1;
 
-    const value = FormatNumber.localeSignal(snapshot[i][3]);
+    const value = formater.localeSignal(snapshot[i][3]);
     snapshot[i][3] = '';
 
     list.push({
@@ -120,7 +121,7 @@ function fastForwardInstallments_ (range) {
 
       const line = list[i].line.slice();
       line[1] = line[1].replace(list[i].reg, list[i].p1 + '/' + list[i].p2);
-      line[3] = '=' + FormatNumber.localeSignal(line[3]);
+      line[3] = '=' + formater.localeSignal(line[3]);
 
       merge.push(line);
 
@@ -138,6 +139,7 @@ function fastForwardInstallments_ (range) {
 
 function forwardInstallments_ (range) {
   const snapshot = range.getValues();
+  const formater = new FormatNumber();
 
   const merge = [];
   for (let i = 0; i < snapshot.length; i++) {
@@ -155,7 +157,7 @@ function forwardInstallments_ (range) {
     if (snapshot[i][0] > 0) snapshot[i][0] *= -1;
 
     snapshot[i][1] = snapshot[i][1].replace(match[1], p1 + '/' + p2);
-    snapshot[i][3] = '=' + FormatNumber.localeSignal(snapshot[i][3]);
+    snapshot[i][3] = '=' + formater.localeSignal(snapshot[i][3]);
 
     merge.push(snapshot[i]);
   }
