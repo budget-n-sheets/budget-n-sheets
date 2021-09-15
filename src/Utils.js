@@ -1,6 +1,6 @@
 class Utils {
   static getDateOffset () {
-    return Consts.date - Utils.getLocaleDate();
+    return Utils.getLocaleDate() - Consts.date;
   }
 
   static getLocaleDate (date) {
