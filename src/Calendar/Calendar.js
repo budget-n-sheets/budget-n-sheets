@@ -15,33 +15,6 @@ class Calendar {
     return [];
   }
 
-  static getFinancialCalendar () {
-    const id = SettingsUser.getValueOf('financial_calendar');
-    return id ? CalendarApp.getCalendarById(id) : null;
-  }
-
-  static getUpcomingMonthEvents (mm) {
-    const calendar = Calendar.getFinancialCalendar();
-    if (!calendar) return [];
-
-    const financial_year = SettingsConst.getValueOf('financial_year');
-
-    const end = new Date(financial_year, mm + 1, 1);
-    if (end <= Consts.date) return [];
-
-    let start = new Date(financial_year, mm, 1);
-    if (start <= Consts.date) {
-      start = new Date(financial_year, mm, Consts.date.getDate() + 1);
-      if (start > end) return [];
-    }
-
-    const offset = Utils.getDateOffset();
-    const a = new Date(start + offset);
-    const b = new Date(end + offset);
-
-    return calendar.getEvents(a, b);
-  }
-
   static isEnabled () {
     return this.getAllCalendars().length !== 0;
   }
