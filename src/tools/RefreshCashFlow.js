@@ -49,7 +49,8 @@ class RefreshCashFlow {
   }
 
   readCalendarTransactions_ () {
-    const upcoming = Calendar.getUpcomingMonthEvents(this.mm);
+    const finCal = new FinCal();
+    const upcoming = finCal.getUpcomingMonthEvents(this.mm);
     const events = CalendarUtils.digestEvents(upcoming);
 
     const startDate = new Date(this.financial_year, this.mm, 1);
@@ -78,7 +79,7 @@ class RefreshCashFlow {
       const title = '@' + ev.title + ' ';
 
       const first = ev.startDate < startDate ? 0 : ev.startDate.getDate() - 1;
-      const last = ev.endDate >= endDate ? this.dd : ev.endDate.getDate();
+      const last = ev.endDate >= endDate ? this.dd : ev.endDate.getDate() - 1;
 
       for (let day = first; day < last; day++) {
         this.values.flow[day] += value;
