@@ -1,12 +1,7 @@
 class CalendarService {
   static syncDayWithSpreadsheet (date) {
-    const calendar = Calendar.getFinancialCalendar();
-    if (!calendar) return;
-
-    const calendarEvents = calendar.getEventsForDay(date);
-    if (calendarEvents.length === 0) return;
-
-    const events = CalendarUtils.digestEvents(calendarEvents);
+    const finCalEvents = new FinCal().getEventsForDay(date);
+    const events = CalendarUtils.digestEvents(finCalEvents);
     if (events.length === 0) return;
 
     const tableCards = [];

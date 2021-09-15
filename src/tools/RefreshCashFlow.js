@@ -49,7 +49,8 @@ class RefreshCashFlow {
   }
 
   readCalendarTransactions_ () {
-    const upcoming = Calendar.getUpcomingMonthEvents(this.mm);
+    const finCal = new FinCal();
+    const upcoming = finCal.getUpcomingMonthEvents(this.mm);
     const events = CalendarUtils.digestEvents(upcoming);
 
     const startDate = new Date(this.financial_year, this.mm, 1);

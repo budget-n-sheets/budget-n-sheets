@@ -4,7 +4,7 @@ class DemoCalendar extends QuickstartDemo {
 
     this.isReady = 0;
 
-    this.calendar = Calendar.getFinancialCalendar();
+    this.finCal = new FinCal();
     this.eves = [];
 
     this.date = {
@@ -33,7 +33,7 @@ class DemoCalendar extends QuickstartDemo {
       const value = formater.calendarSignal(eve.value);
       description = description.replace('value', value);
 
-      this.calendar.createAllDayEvent(
+      this.finCal.calendar.createAllDayEvent(
         eve.title,
         new Date(this._settings.financial_year, this.date.mm, eve.day),
         new Date(this._settings.financial_year, this.date.mm, eve.day + eve.length),
@@ -110,13 +110,13 @@ class DemoCalendar extends QuickstartDemo {
   evalPermission_ () {
     const ui = SpreadsheetApp2.getUi();
 
-    if (!this.calendar) {
+    if (!this.finCal.calendar) {
       ui.alert(
         "Can't create events",
         'Select a calendar first in the settings.',
         ui.ButtonSet.OK);
       return false;
-    } else if (!this.calendar.isOwnedByMe()) {
+    } else if (!this.finCal.isOwner) {
       ui.alert(
         'Permission denied',
         'You are not the owner of the selected calendar.',
