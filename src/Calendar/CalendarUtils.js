@@ -96,7 +96,8 @@ class CalendarUtils {
         metadata.endDate = evento.getAllDayEndDate();
       } else {
         metadata.startDate = new Date(evento.getStartTime().getTime() - dateOffset);
-        metadata.endDate = new Date(evento.getEndTime().getTime() - dateOffset) + 1;
+        metadata.endDate = new Date(evento.getEndTime().getTime() - dateOffset);
+        metadata.endDate.setDate(metadata.endDate.getDate() + 1);
       }
 
       output.push(metadata);
