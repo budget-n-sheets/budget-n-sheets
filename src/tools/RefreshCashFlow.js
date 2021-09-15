@@ -5,7 +5,7 @@ class RefreshCashFlow {
     this.formater = new FormatNumber();
 
     this.dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
-    this.num_ttt = 1 + SettingsConst.getValueOf('number_accounts');
+    this.num_acc = SettingsConst.getValueOf('number_accounts');
     this.financial_year = SettingsConst.getValueOf('financial_year');
 
     this.db_cards = new CardsService().getAllBalances() || {};
@@ -95,13 +95,18 @@ class RefreshCashFlow {
     const numRows = sheet.getLastRow() - this.specs.ttt.row + 1;
     if (numRows < 1) return;
 
-    const snapshot = sheet.getRange(this.specs.ttt.row, 1, numRows, (this.specs.ttt.width + 1) * this.num_ttt).getValues();
+    const snapshot = sheet.getRange(
+        this.specs.ttt.row,
+        1 + this.specs.ttt.width + 1,
+        numRows,
+        (this.specs.ttt.width + 1) * this.num_acc
+      ).getValues();
 
     let k = 0;
     let i = -1;
     let c = 0;
 
-    while (k < this.num_ttt) {
+    while (k < this.num_acc) {
       i++;
       const line = snapshot[i];
 
