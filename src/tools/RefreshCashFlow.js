@@ -10,7 +10,6 @@ class RefreshCashFlow {
 
     this.db_cards = new CardsService().getAllBalances() || {};
 
-    this.tags = getTagData_();
     this.values = {};
 
     this.arrayMm = new Array(12).fill(false);
