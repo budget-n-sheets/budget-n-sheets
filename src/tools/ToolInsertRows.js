@@ -52,9 +52,8 @@ class ToolInsertRows {
   }
 
   insertRowsTo (height, extras) {
-    const diff = this._maxRows - this.sheet.getLastRow();
-    if (diff > height) return 1;
-    this.insertNumRows_(height - diff + (extras ? 100 : 0));
+    if (this._maxRows >= height) return this;
+    this.insertNumRows_(height - this._maxRows + (extras ? 100 : 0));
     return this;
   }
 }
