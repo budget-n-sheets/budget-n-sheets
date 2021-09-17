@@ -3,8 +3,6 @@ class SettingsSidebarUtils {
     switch (name) {
       case 'settings':
         return this.panelSettings_();
-      case 'maintenance':
-        return this.panelMaintenance_();
 
       default:
         break;
@@ -29,23 +27,6 @@ class SettingsSidebarUtils {
 
     values.doc_name = spreadsheet.getName();
     values.financial_year = financial_year;
-
-    return values;
-  }
-
-  static panelMaintenance_ () {
-    const values = {};
-
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-    const owner = spreadsheet.getOwner();
-
-    if (owner) {
-      values.isOwner = (Session.getEffectiveUser().getEmail() === owner.getEmail());
-      values.isSharedDrive = false;
-    } else {
-      values.isOwner = false;
-      values.isSharedDrive = true;
-    }
 
     return values;
   }

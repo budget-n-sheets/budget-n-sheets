@@ -2,9 +2,6 @@
   $(document).ready(function() {
     $("#b-Reset").click(resetProtection);
     $("#b-Reinstall").click(reinstallTriggers);
-    <? if (!isOwner || isSharedDrive) { ?>
-    $("#b-Transfer").click(transferAdminRole);
-    <? } ?>
   });
 
   function resetProtection() {
@@ -32,23 +29,4 @@
       .withUserObject(this)
       .askReinstallTriggersUi();
   }
-
-  <? if (!isOwner || isSharedDrive) { ?>
-  function transferAdminRole() {
-    this.disabled = true;
-    $("#footer_response").empty();
-
-    google.script.run.withSuccessHandler(function(r, o) {
-        o.disabled = false;
-        if (!r) closeHost();
-      })
-      .withFailureHandler(showError)
-      .withUserObject(this)
-      <? if (isSharedDrive) { ?>
-      .askTransferAdminSd();
-      <? } else { ?>
-      .askTransferAdmin();
-      <? } ?>
-  }
-  <? } ?>
 </script>
