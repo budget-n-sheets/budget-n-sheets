@@ -194,7 +194,7 @@ function copyMonths_ (spreadsheet) {
     new ToolInsertRowsMonth().insertRowsTo(last, true);
 
     const values = source.getRange(5, 1, last - 4, 5 + 5 * number_accounts).getValues();
-    destination.getRange(5, 1, last - 4, 5 + 5 * number_accounts).setValues(values);
+    sheet.getRange(5, 1, last - 4, 5 + 5 * number_accounts).setValues(values);
   }
 }
 
