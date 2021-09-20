@@ -28,9 +28,17 @@ function setupService (uuid, payload) {
     .makeInstall();
 
   if (payload.protocol === 'restore') {
-    restoreFromBackup_(config.backup);
+    try {
+      new RestoreBackup(config.backup).restore();
+    } catch (err) {
+      LogLog.error(err);
+    }
   } else if (payload.protocol === 'copy') {
-    restoreFromSpreadsheet_(config.file_id);
+    try {
+      new RestoreCopy(config.file_id).copy();
+    } catch (err) {
+      LogLog.error(err);
+    }
   }
 
   CachedAccess.update('class_version2', {
