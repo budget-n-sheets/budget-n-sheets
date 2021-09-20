@@ -278,7 +278,7 @@ function restoreMonths_ (backup) {
     if (backup.ttt[mm] == null) continue;
 
     const sheet = spreadsheet.getSheetByName(Consts.month_name.short[mm]);
-    const insertRows = new ToolInsertRowsMonth();
+    const insertRows = new ToolInsertRowsMonth(mm);
 
     for (let k = 0; k < num_acc + 1; k++) {
       if (backup.ttt[mm][k] == null) continue;
