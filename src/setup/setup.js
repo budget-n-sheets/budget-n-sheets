@@ -28,7 +28,11 @@ function setupService (uuid, payload) {
     .makeInstall();
 
   if (payload.protocol === 'restore') {
-    restoreFromBackup_(config.backup);
+    try {
+      new RestoreBackup(config.backup).restore();
+    } catch (err) {
+      LogLog.error(err);
+    }
   } else if (payload.protocol === 'copy') {
     try {
       new RestoreCopy(config.file_id).copy();
