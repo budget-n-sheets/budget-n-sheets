@@ -74,9 +74,9 @@ function toolService_ (job, param) {
       break;
     }
     case 'insertRows': {
-      const tool = ToolInsertRows.pick(sheet);
+      const tool = InsertRows.pick(sheet);
       if (tool === 1) {
-        ToolInsertRows.showWarning();
+        InsertRows.showWarning();
         break;
       } else if (!tool.sheet) {
         showDialogErrorMessage();

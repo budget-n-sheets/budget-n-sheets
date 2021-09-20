@@ -7,7 +7,7 @@ class Ledger {
   }
 
   initInsertRows_ () {
-    this._insertRows = ToolInsertRows.pick(this._sheet);
+    this._insertRows = InsertRows.pick(this._sheet);
   }
 
   activate () {

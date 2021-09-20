@@ -1,4 +1,4 @@
-class ToolInsertRows {
+class InsertRows {
   constructor (sheet) {
     this.sheet = sheet;
     this._maxRows = sheet.getMaxRows();
@@ -58,7 +58,7 @@ class ToolInsertRows {
   }
 }
 
-class ToolInsertRowsMonth extends ToolInsertRows {
+class ToolInsertRowsMonth extends InsertRows {
   constructor (mm) {
     const name = Consts.month_name.short[mm];
     const sheet = Spreadsheet2.getSheetByName(name);
@@ -68,7 +68,7 @@ class ToolInsertRowsMonth extends ToolInsertRows {
   }
 }
 
-class ToolInsertRowsCards extends ToolInsertRows {
+class ToolInsertRowsCards extends InsertRows {
   constructor () {
     const sheet = Spreadsheet2.getSheetByName('Cards');
     super(sheet);
@@ -77,7 +77,7 @@ class ToolInsertRowsCards extends ToolInsertRows {
   }
 }
 
-class ToolInsertRowsTags extends ToolInsertRows {
+class ToolInsertRowsTags extends InsertRows {
   constructor () {
     const sheet = Spreadsheet2.getSheetByName('Tags');
     super(sheet);
