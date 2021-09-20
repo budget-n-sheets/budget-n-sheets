@@ -348,7 +348,6 @@ class SetupParts {
     Spreadsheet2.getSheetByName('_Backstage').setTabColor('#cc0000');
     Spreadsheet2.getSheetByName('_Unique').setTabColor('#cc0000');
     Spreadsheet2.getSheetByName('_Settings').setTabColor('#cc0000');
-    Spreadsheet2.getSheetByName('Quick Actions').setTabColor('#b7b7b7');
     Spreadsheet2.getSheetByName('_About BnS').setTabColor('#6aa84f');
 
     if (t) {
@@ -371,7 +370,6 @@ class SetupParts {
     Spreadsheet2.getSheetByName('_Unique').hideSheet();
     Spreadsheet2.getSheetByName('_Settings').hideSheet();
     Spreadsheet2.getSheetByName('_About BnS').hideSheet();
-    Spreadsheet2.getSheetByName('Quick Actions').hideSheet();
 
     SpreadsheetApp.flush();
   }
@@ -776,17 +774,6 @@ class SetupParts {
   setupWest_ () {
     Spreadsheet2.getSheetByName('_About BnS')
       .protect()
-      .setWarningOnly(true);
-
-    const sheet = Spreadsheet2.getSheetByName('Quick Actions');
-
-    const ranges = [];
-    ranges[0] = sheet.getRange(3, 3, 3, 1);
-    ranges[1] = sheet.getRange(8, 3, 2, 1);
-    ranges[2] = sheet.getRange(12, 2, 1, 2);
-
-    sheet.protect()
-      .setUnprotectedRanges(ranges)
       .setWarningOnly(true);
 
     SpreadsheetApp.flush();
