@@ -30,7 +30,11 @@ function setupService (uuid, payload) {
   if (payload.protocol === 'restore') {
     restoreFromBackup_(config.backup);
   } else if (payload.protocol === 'copy') {
-    restoreFromSpreadsheet_(config.file_id);
+    try {
+      new RestoreCopy(config.file_id).copy();
+    } catch (err) {
+      LogLog.error(err);
+    }
   }
 
   CachedAccess.update('class_version2', {
