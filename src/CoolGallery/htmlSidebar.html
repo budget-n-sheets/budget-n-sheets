@@ -5,6 +5,7 @@
   <base target="_top">
   <meta charset="UTF-8">
   <?!= HtmlService2.htmlInclude('gas-common/htmlStyles'); ?>
+  <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
   <style>
     .table_row {
       display: table-row;
@@ -70,7 +71,7 @@
           <div class="footer_cell left" style="width: 100%;">
           </div>
           <div class="footer_cell right">
-            <div class="md-footer"><a href="<?= send_feedback ?>" target="_blank"><i class="material-icons-outlined md-24 md-click" title="Send feedback">feedback</i></a></div>
+            <a href="<?= send_feedback ?>" target="_blank"><i class="material-icons-outlined md-24 md-click" title="Send feedback">feedback</i></a>
           </div>
         </div>
       </div>
@@ -94,7 +95,7 @@
 
         item += '<div class="item_table"><div class="table_row"><div class="item_cell">';
         item += '<span style="font-size: 23px;">' + template.name + '</span><br>';
-        item += '<p style="text-indent: 0;font-size: 17px;">' + template.description + '</p>';
+        item += '<p style="font-size: 17px;">' + template.description + '</p>';
         item += '<span class="gray">' + template.version_date + '</span><br>';
         item += '<span class="gray">' + template.version_name + '</span>';
         item += '</div></div><div class="table_row"><div class="item_cell item_menu">';

@@ -5,21 +5,12 @@
   <base target="_top">
   <meta charset="UTF-8">
   <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
   <style>
     td p {
       margin-top: 0;
       margin-bottom: 0;
-      text-indent: 0;
       text-align: justify;
-    }
-
-    td.comment {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    #panel_Backup p {
-      text-indent: 0;
     }
 
     .table_row {
@@ -103,7 +94,7 @@
             <button class="action" id="b-Save" disabled>Save</button>
           </div>
           <div class="footer_cell right">
-            <div class="md-footer"><a href="<?= home_wiki ?>/Changing-Settings" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a></div>
+            <a href="<?= home_wiki ?>/Changing-Settings" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a>
           </div>
         </div>
       </div>

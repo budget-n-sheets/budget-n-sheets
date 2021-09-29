@@ -5,11 +5,8 @@
   <base target="_top">
   <meta charset="UTF-8">
   <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
   <style>
-    p {
-      text-indent: 0;
-    }
-
     table {
       width: 100%;
     }
@@ -30,7 +27,7 @@
       <div class="panel active" id="restore-panel">
         <table>
           <tr>
-            <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">description</i> Spreadsheet</span></th>
+            <th colspan="2"><i class="material-icons-outlined">description</i> Spreadsheet</th>
           </tr>
           <tr>
             <td class="name" style="width: 127px;">Spreadsheet name</td>
@@ -58,7 +55,7 @@
 
           <table style="margin-top: 1.3em;">
             <tr>
-              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
+              <th colspan="2"><i class="material-icons-outlined">table_chart</i> Spreadsheet</th>
             </tr>
             <tr>
               <td class="name" style="width: 127px;">Spreadsheet title</td>
@@ -76,7 +73,7 @@
 
           <table style="margin-top: 1.3em;">
             <tr>
-              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">assignment</i> Accounts, cards, and tags</span></th>
+              <th colspan="2"><i class="material-icons-outlined">assignment</i> Accounts, cards, and tags</th>
             </tr>
             <tr>
               <td class="name" style="width: 127px;">Accounts</td>
@@ -116,8 +113,8 @@
       </div>
 
       <div class="panel" id="error-panel">
-        <p style="text-indent: 0;font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
-        <p style="text-indent: 0;">An error report was sent anonymously.</p>
+        <p style="font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
+        <p>An error report was sent anonymously.</p>
         <a href="<?= send_feedback ?>" target="_blank"><b>Send feedback</b></a>
       </div>
     </div>
