@@ -6,10 +6,6 @@
   <meta charset="UTF-8">
   <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
   <style>
-    p {
-      text-indent: 0;
-    }
-
     table {
       width: 100%;
     }
@@ -150,8 +146,8 @@
       </div>
 
       <div class="panel" id="error-panel">
-        <p style="text-indent: 0;font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
-        <p style="text-indent: 0;">An error report was sent anonymously.</p>
+        <p style="font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
+        <p>An error report was sent anonymously.</p>
         <a href="<?= send_feedback ?>" target="_blank"><b>Send feedback</b></a>
       </div>
     </div>
