@@ -23,9 +23,9 @@ function treatLayout_ (yyyy, mm) {
 
   const formatAccs = new FormatTableAccounts(month);
   formatAccs.indexes = [0, 1, 2, 3, 4, 5];
-  formatAccs.fomat();
+  formatAccs.format();
 
   const formatCards = new FormatTableCards();
   formatCards.indexes = [month];
-  formatCards.fomat();
+  formatCards.format();
 }
