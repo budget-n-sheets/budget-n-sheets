@@ -72,9 +72,7 @@ function processSpreadsheet_ (uuid, file_id) {
 
   const info = {
     file_id: file_id,
-    file_name: spreadsheet.getName(),
     file_url: spreadsheet.getUrl(),
-    last_updated: DriveApp.getFileById(file_id).getLastUpdated().toString(),
     spreadsheet_title: spreadsheet.getName(),
 
     financial_year: Consts.date.getFullYear(),

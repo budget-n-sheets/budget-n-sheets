@@ -25,41 +25,26 @@
   <div id="wrapper">
     <div id="content">
       <div class="panel active" id="restore-panel">
-        <table>
-          <tr>
-            <th colspan="2"><i class="material-icons-outlined">description</i> Spreadsheet</th>
-          </tr>
-          <tr>
-            <td class="name" style="width: 127px;">Spreadsheet name</td>
-            <td id="file_name">
-            </td>
-          </tr>
-          <tr>
-            <td class="border name">Last modified</td>
-            <td class="border" id="last_updated">
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <span class="error" id="response"><?= msg ?></span>
-              <div>
-                <button class="action" id="b-Select">Select spreadsheet</button>
-                <button onclick="closeHost()">Cancel</button>
-              </div>
-            </td>
-          </tr>
-        </table>
+        <div>
+          <ol style="padding-left: 16px;">
+            <li>Select a spreadsheet to copy data from.</li>
+            <li>Review the settings and make your changes.</li>
+            <li>Click <strong>COPY</strong>.</li>
+          </ol>
+
+          <p class="error" id="reponse"><?= msg ?></p>
+          <button class="action" id="b-Select">Select spreadsheet</button>
+          <button onclick="closeHost()">Cancel</button>
+        </div>
 
         <div class="panel" id="details">
-          <p>Review the spreadsheet specs and settings.</p>
-
           <table style="margin-top: 1.3em;">
             <tr>
               <th colspan="2"><i class="material-icons-outlined">table_chart</i> Spreadsheet</th>
             </tr>
             <tr>
-              <td class="name" style="width: 127px;">Spreadsheet title</td>
-              <td id="spreadsheet_title"></td>
+              <td class="name" style="width: 127px;">Spreadsheet name</td>
+              <td id="spreadsheet_name"></td>
             </tr>
             <tr>
               <td class="name" style="width: 127px;">Financial year</td>
@@ -153,7 +138,7 @@
         $("#" + key).append(info[key]);
       }
 
-      $("#file_name").empty().append('<a href="' + info.file_url + '" target="_blank">' + info.file_name + '</a>');
+      $("#spreadsheet_name").empty().append(info.spreadsheet_title + '<br><a href="' + info.file_url + '" target="_blank" style="font-weight: bold;">View <span class="material-icons md-18">open_in_new</span></a>');
 
       $('#details').fadeIn('fast');
       $('#b-Copy').prop('disabled', false);

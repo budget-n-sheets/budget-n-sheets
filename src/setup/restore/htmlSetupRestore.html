@@ -45,33 +45,34 @@
   <div id="wrapper">
     <div id="content">
       <div class="panel active" id="restore-panel">
-        <table>
-          <tr>
-            <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">restore</i> Backup file</span></th>
-          </tr>
-          <tr>
-            <td class="name" style="width: 127px;">File name</td>
-            <td id="file_name">
-            </td>
-          </tr>
-          <tr>
-            <td class="border name">Date created</td>
-            <td class="border" id="date_created">
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <span class="error"><?= msg ?></span>
-              <div>
-                <button class="action" id="b-Select">Select backup</button>
-                <button onclick="closeHost()">Cancel</button>
-              </div>
-            </td>
-          </tr>
-        </table>
+        <div>
+          <ol style="padding-left: 16px;">
+            <li>Select a backup to restore data from.</li>
+            <li>Enter the password to descrypt the backup.</li>
+            <li>Review the settings and make your changes.</li>
+            <li>Click <strong>RESTORE</strong>.</li>
+          </ol>
+
+          <p class="error" id="reponse"><?= msg ?></p>
+          <button class="action" id="b-Select">Select backup</button>
+          <button onclick="closeHost()">Cancel</button>
+        </div>
 
         <div class="panel" id="details">
-          <p>Review the spreadsheet specs and settings.</p>
+          <table style="margin-top: 1.3em;">
+            <tr>
+              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">restore</i> Backup file</span></th>
+            </tr>
+            <tr>
+              <td class="name" style="width: 127px;">File name</td>
+              <td id="file_name"></td>
+            </tr>
+            <tr>
+              <td class="border name">Date created</td>
+              <td class="border" id="date_created">
+              </td>
+            </tr>
+          </table>
 
           <table style="margin-top: 1.3em;">
             <tr>
