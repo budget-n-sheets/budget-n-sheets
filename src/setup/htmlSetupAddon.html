@@ -116,7 +116,7 @@
           </div>
         </div>
 
-        <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
+        <form accept-charset="UTF-8" id="the_form" onsubmit="return submitForm();">
           <table style="width: 100%;">
             <tr>
               <td class="name" style="width:50%;"><label for="spreadsheet_name">Spreadsheet title</label></td>
@@ -158,18 +158,6 @@
           <table style="width: 100%; margin-top: 2em;">
             <tr>
               <th colspan="2"><i class="material-icons-outlined">account_balance</i> Accounts</th>
-            </tr>
-            <tr>
-              <td class="name" style="width:50%;"><label for="number_accounts">Accounts</label></td>
-              <td>
-                <select id="number_accounts" style="width:83px;">
-                  <option value="1" selected>One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                  <option value="4">Four</option>
-                  <option value="5">Five</option>
-                </select>
-              </td>
             </tr>
             <tr class="num_acc">
               <td>
@@ -270,18 +258,7 @@
         $("#initial_month").val(date.getMonth() - 1);
       }
 
-      $(".num_acc").slice(1).hide();
       $("#main-panel").fadeIn().addClass("active");
-    });
-
-    $("#number_accounts").change(function() {
-      var num_acc = Number($(this).val());
-
-      $(".num_acc").show();
-      $(".num_acc").slice(num_acc).hide();
-
-      $("input[name=account_name]").attr("required", true);
-      $("input[name=account_name]").slice(num_acc).attr("required", false).val("");
     });
 
     <? if (setup_restore) { ?>
@@ -332,25 +309,17 @@
     }
 
     function submitForm() {
-      window.scrollTo(0, 0);
-
-      var p = $(".active").attr("id");
-      $("#" + p).removeClass("active");
-
-      $(".panel").hide();
-      $("#footer-buttons button").remove();
-      $("#setup-panel").fadeIn("fast").addClass("active");
-      google.script.host.setHeight(233);
-
       const name_accounts = [];
-      $("input[required][name=account_name]").each(function(i) {
-        name_accounts[i] = $(this).val();
+      $("input[name=account_name]").each(function(i) {
+        const name = $(this).val();
+        if (name) name_accounts.push(name);
       });
+      if (name_accounts.length === 0) return false;
 
       const payload = {
         protocol: 'new',
         config: {
-          number_accounts: $("#number_accounts").val(),
+          number_accounts: name_accounts.length,
           name_accounts: name_accounts,
 
           spreadsheet_name: $("#spreadsheet_name").val(),
@@ -371,6 +340,16 @@
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
         .setupService(uuid, payload);
+
+      window.scrollTo(0, 0);
+
+      var p = $(".active").attr("id");
+      $("#" + p).removeClass("active");
+
+      $(".panel").hide();
+      $("#footer-buttons button").remove();
+      $("#setup-panel").fadeIn("fast").addClass("active");
+      google.script.host.setHeight(233);
     }
 
     function panelError(err) {
