@@ -168,7 +168,7 @@
                 <input type="text" name="account_name" style="width: 100%;" required>
               </td>
             </tr>
-            <tr class="num_acc">
+            <tr class="num_acc" style="display: none;">
               <td>
                 <label style="font-weight: bold;">Account 2</label><br />
                 <span class="gray">Name</span>
@@ -177,7 +177,7 @@
                 <input type="text" name="account_name" style="width: 100%;">
               </td>
             </tr>
-            <tr class="num_acc">
+            <tr class="num_acc" style="display: none;">
               <td>
                 <label style="font-weight: bold;">Account 3</label><br />
                 <span class="gray">Name</span>
@@ -186,7 +186,7 @@
                 <input type="text" name="account_name" style="width: 100%;">
               </td>
             </tr>
-            <tr class="num_acc">
+            <tr class="num_acc" style="display: none;">
               <td>
                 <label style="font-weight: bold;">Account 4</label><br />
                 <span class="gray">Name</span>
@@ -195,13 +195,19 @@
                 <input type="text" name="account_name" style="width: 100%;">
               </td>
             </tr>
-            <tr class="num_acc">
+            <tr class="num_acc" style="display: none;">
               <td>
                 <label style="font-weight: bold;">Account 5</label><br />
                 <span class="gray">Name</span>
               </td>
               <td>
                 <input type="text" name="account_name" style="width: 100%;">
+              </td>
+            </tr>
+            <tr id="add">
+              <td></td>
+              <td>
+                <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
               </td>
             </tr>
           </table>
@@ -251,6 +257,7 @@
       <? if (setup_copy) { ?>
       $("#b-Copy").click(showCopy);
       <? } ?>
+      $('#i-AddAcc').click(addAcc);
 
       var date = new Date();
       $("#financial_year").val(date.getFullYear());
@@ -260,6 +267,35 @@
 
       $("#main-panel").fadeIn().addClass("active");
     });
+
+    $('input[name=account_name]').change(function() {
+      if ($(this).val() !== '') return;
+
+      let $tr = $(this).closest('tr');
+      if ($tr.attr('id') === 'first') return;
+      if ($tr.next('.num_acc:visible').length > 0) return;
+
+      do {
+        const $in = $tr.find('input');
+        if ($in.val() !== '') break;
+
+        $in.prop('required', false);
+        $tr = $tr.hide().prev();
+      } while ($tr.prev().length);
+
+      if ($(".num_acc:visible").length < 5) $('#add').show();
+    });
+
+    function addAcc() {
+      const num = $(".num_acc:visible").length;
+
+      $(".num_acc:hidden:first").show()
+        .find('input:first')
+        .prop('required', true)
+        .val('Acc ' + (num + 1))
+        .focus();
+      if (num === 4) $('#add').hide();
+    }
 
     <? if (setup_restore) { ?>
     function showRestore() {
@@ -310,7 +346,7 @@
 
     function submitForm() {
       const name_accounts = [];
-      $("input[name=account_name]").each(function(i) {
+      $("input[required][name=account_name]").each(function() {
         const name = $(this).val();
         if (name) name_accounts.push(name);
       });
