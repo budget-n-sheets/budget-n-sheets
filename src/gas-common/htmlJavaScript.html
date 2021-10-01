@@ -1,6 +1,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
-  function closeHost (e, o) {
+  function closeHost(e, o) {
     google.script.host.close();
   }
 
@@ -17,7 +17,7 @@
       });
   }
 
-  $('input[type="text"]').change(function() {
+  $(document).on('change', 'input[type="text"]', function() {
     this.value = $.trim(this.value);
   });
 </script>
