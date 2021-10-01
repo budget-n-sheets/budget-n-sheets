@@ -161,47 +161,11 @@
             </tr>
             <tr class="num_acc">
               <td>
-                <label style="font-weight: bold;">Account 1</label><br />
+                <label style="font-weight: bold;">Account 1</label><br>
                 <span class="gray">Name</span>
               </td>
               <td>
-                <input type="text" name="account_name" style="width: 100%;" required>
-              </td>
-            </tr>
-            <tr class="num_acc" style="display: none;">
-              <td>
-                <label style="font-weight: bold;">Account 2</label><br />
-                <span class="gray">Name</span>
-              </td>
-              <td>
-                <input type="text" name="account_name" style="width: 100%;">
-              </td>
-            </tr>
-            <tr class="num_acc" style="display: none;">
-              <td>
-                <label style="font-weight: bold;">Account 3</label><br />
-                <span class="gray">Name</span>
-              </td>
-              <td>
-                <input type="text" name="account_name" style="width: 100%;">
-              </td>
-            </tr>
-            <tr class="num_acc" style="display: none;">
-              <td>
-                <label style="font-weight: bold;">Account 4</label><br />
-                <span class="gray">Name</span>
-              </td>
-              <td>
-                <input type="text" name="account_name" style="width: 100%;">
-              </td>
-            </tr>
-            <tr class="num_acc" style="display: none;">
-              <td>
-                <label style="font-weight: bold;">Account 5</label><br />
-                <span class="gray">Name</span>
-              </td>
-              <td>
-                <input type="text" name="account_name" style="width: 100%;">
+                <input type="text" name="account_name" style="width: 100%;" value="Acc 1" required>
               </td>
             </tr>
             <tr id="add">
@@ -268,33 +232,60 @@
       $("#main-panel").fadeIn().addClass("active");
     });
 
-    $('input[name=account_name]').change(function() {
+    $(document).on('change', 'input[name=account_name]', function() {
       if ($(this).val() !== '') return;
 
       let $tr = $(this).closest('tr');
-      if ($tr.attr('id') === 'first') return;
-      if ($tr.next('.num_acc:visible').length > 0) return;
+      if ($tr.next('.num_acc').length > 0) return;
 
-      do {
-        const $in = $tr.find('input');
-        if ($in.val() !== '') break;
+      while ($tr.prevAll('.num_acc').length) {
+        const $prev = $tr.prev();
+        $tr.remove();
+        $tr = $prev;
 
-        $in.prop('required', false);
-        $tr = $tr.hide().prev();
-      } while ($tr.prev().length);
+        if ($tr.find('input').val() !== '') break;
+      }
 
-      if ($(".num_acc:visible").length < 5) $('#add').show();
+      if ($(".num_acc").length < 5) $('#add').show();
     });
 
     function addAcc() {
-      const num = $(".num_acc:visible").length;
+      let num = $(".num_acc").length;
+      if (num > 4) {
+        $('#add').hide();
+        return;
+      }
 
-      $(".num_acc:hidden:first").show()
-        .find('input:first')
-        .prop('required', true)
-        .val('Acc ' + (num + 1))
-        .focus();
-      if (num === 4) $('#add').hide();
+      num++;
+      appendAccInput(num);
+
+      if (num > 4) $('#add').hide();
+    }
+
+    function appendAccInput(index) {
+      const $tr = $('<tr>').attr({ class: 'num_acc' });
+
+      const $td1 = $('<td>').append([
+        $('<label>').css({ 'font-weight': 'bold' }).text('Account ' + index),
+        '<br>',
+        $('<span>').attr({ class: 'gray' }).text('Name')
+      ]);
+
+      const $td2 = $('<td>').append([
+        $('<input>').attr({
+            type: 'text',
+            name: 'account_name',
+            value: 'Acc ' + index,
+            required: true
+          })
+          .css({ width: '100%' })
+      ]);
+
+      $td1.appendTo($tr);
+      $td2.appendTo($tr);
+
+      $('#add').before($tr);
+      $tr.find('input').focus();
     }
 
     <? if (setup_restore) { ?>
@@ -346,7 +337,7 @@
 
     function submitForm() {
       const name_accounts = [];
-      $("input[required][name=account_name]").each(function() {
+      $("input[name=account_name]").each(function() {
         const name = $(this).val();
         if (name) name_accounts.push(name);
       });
