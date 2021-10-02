@@ -185,7 +185,8 @@ function processBackup_ (uuid, file, data) {
         break;
       }
     }
-    if (i === Object.keys(calendars).length) info.financial_calendar = '<i>Google Calendar not found or you do not have permission to access it.</i>';
+
+    if (!info.financial_calendar) info.financial_calendar = '<i>Google Calendar not found or you do not have permission to access it.</i>';
   }
 
   info.tags = data.tags.length;
