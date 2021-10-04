@@ -140,75 +140,34 @@ function processBackup_ (uuid, file, data) {
   if (!FeatureFlag.getStatusOf('setup/restore')) return 1;
 
   const settings_candidate = {
-    file_id: file.id,
-    list_acc: [],
-    spreadsheet_title: data.backup.spreadsheet_title,
-    decimal_places: data.spreadsheet_settings.decimal_places,
-    financial_year: data.const_properties.financial_year,
-    initial_month: data.user_settings.initial_month,
-    number_accounts: data.const_properties.number_accounts
+    uuid: uuid,
+    protocol: 'restore',
+    source: {
+      file_id: file.id,
+      file_url: '',
+      type: 'JSON'
+    },
+    settings: {
+      spreadsheet_title: data.backup.spreadsheet_title,
+      financial_year: data.const_properties.financial_year,
+      initial_month: data.user_settings.initial_month,
+      decimal_places: data.spreadsheet_settings.decimal_places,
+      accounts: []
+    },
+    misc: {
+      cards: [],
+      tags: 0
+    }
   };
 
-  for (const i in data.db_tables.accounts) {
-    settings_candidate.list_acc.push(data.db_tables.accounts[i].name);
+  for (const k in data.db_tables.accounts) {
+    settings_candidate.settings.accounts.push(data.db_tables.accounts[k].name);
+  }
+
+  for (const k in data.db_tables.cards) {
+    settings_candidate.misc.cards.push(data.db_tables.cards[k].name);
   }
 
   PropertiesService3.document().setProperty('settings_candidate', settings_candidate);
-
-  const info = {
-    file_id: file.id,
-    file_name: file.name,
-    date_created: new Date(data.backup.date_request).toString(),
-
-    spreadsheet_title: data.backup.spreadsheet_title,
-    financial_year: data.const_properties.financial_year,
-    initial_month: Consts.month_name.long[data.user_settings.initial_month],
-    decimal_places: data.spreadsheet_settings.decimal_places,
-    number_accounts: data.const_properties.number_accounts,
-
-    financial_calendar: '',
-
-    tags: 0,
-    accounts: '',
-    cards: ''
-  };
-
-  let list, i;
-
-  if (data.user_settings.sha256_financial_calendar) {
-    const calendars = Calendar.listAllCalendars();
-    for (const sha1 in calendars) {
-      const digest = Utilities2.computeDigest('SHA_256', calendars[sha1].id, 'UTF_8');
-
-      if (digest === data.sha256_financial_calendar) {
-        info.financial_calendar = calendars[sha1].name;
-        break;
-      }
-    }
-
-    if (!info.financial_calendar) info.financial_calendar = '<i>Google Calendar not found or you do not have permission to access it.</i>';
-  }
-
-  info.tags = data.tags.length;
-  if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tags found.';
-
-  list = [];
-  for (i in data.db_tables.accounts) {
-    list.push(data.db_tables.accounts[i].name);
-  }
-  info.accounts = list.join(', ');
-
-  list = [];
-  for (i in data.db_tables.cards) {
-    list.push(data.db_tables.cards[i].name);
-  }
-  if (list.length > 0) {
-    info.cards = list.join(', ');
-  } else {
-    info.cards = 'No cards found.';
-  }
-
-  const address = Utilities2.computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
-  CacheService3.document().put(address, info);
   return 0;
 }

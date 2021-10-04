@@ -67,53 +67,50 @@ function processSpreadsheet_ (uuid, file_id) {
   const metadata = new Metadata(spreadsheet);
   let property;
 
-  const info = {
-    file_id: file_id,
-    file_url: spreadsheet.getUrl(),
-    spreadsheet_title: spreadsheet.getName(),
-
-    financial_year: Consts.date.getFullYear(),
-    initial_month: Consts.date.getMonth(),
-
-    accounts: [],
-    cards: [],
-    tags: 0
+  const settings_candidate = {
+    uuid: uuid,
+    protocol: 'copy',
+    source: {
+      file_id: file_id,
+      file_url: spreadsheet.getUrl(),
+      type: 'GOOGLE_SHEETS'
+    },
+    settings: {
+      spreadsheet_title: spreadsheet.getName(),
+      financial_year: Consts.date.getFullYear(),
+      initial_month: Consts.date.getMonth(),
+      decimal_places: 0,
+      accounts: []
+    },
+    misc: {
+      cards: [],
+      tags: 0
+    }
   };
 
   property = metadata.getValueOf('const_properties');
-  if (property) info.financial_year = property.financial_year;
+  if (property) settings_candidate.settings.financial_year = property.financial_year;
 
   property = metadata.getValueOf('user_settings');
-  if (property) info.financial_year = property.initial_month;
+  if (property) settings_candidate.settings.financial_year = property.initial_month;
 
   property = metadata.getValueOf('db_accounts');
   if (property) {
     for (const k in property) {
-      info.accounts.push(property[k].name);
+      settings_candidate.settings.accounts.push(property[k].name);
     }
   }
 
   property = metadata.getValueOf('db_cards');
   if (property) {
     for (const k in property) {
-      info.cards.push(property[k].name);
+      settings_candidate.misc.cards.push(property[k].name);
     }
   }
 
   const sheet = spreadsheet.getSheetByName('Tags');
-  if (sheet) info.tags = sheet.getLastRow() - 1;
+  if (sheet) settings_candidate.misc.tags = sheet.getLastRow() - 1;
 
-  PropertiesService3.document().setProperty('settings_candidate', info);
-
-  info.initial_month = Consts.month_name.long[info.initial_month];
-
-  info.accounts = info.accounts.join(', ');
-  info.cards = info.cards.join(', ');
-
-  if (info.tags > 0) info.tags = 'Up to ' + info.tags + ' tag(s) found.';
-  else info.tags = '-';
-
-  const address = Utilities2.computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
-  CacheService3.document().put(address, info);
+  PropertiesService3.document().setProperty('settings_candidate', settings_candidate);
   return 0;
 }
