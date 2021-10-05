@@ -11,6 +11,18 @@
       width: 100%;
     }
 
+    table {
+      counter-reset: tr-count;
+    }
+
+    tr.num_acc {
+      counter-increment: tr-count;
+    }
+
+    .acc_counter:after {
+      content: ' ' counter(tr-count);
+    }
+
     #restore-panel table {
       font-size: 14px;
       border-collapse: collapse;
@@ -160,15 +172,12 @@
               <th colspan="2"><i class="material-icons-outlined">account_balance</i> Accounts</th>
             </tr>
             <tr class="num_acc">
+              <td><label class="acc_counter" style="font-weight: bold;">Account</label></td>
               <td>
-                <label style="font-weight: bold;">Account 1</label><br>
-                <span class="gray">Name</span>
-              </td>
-              <td>
-                <input type="text" name="account_name" style="width: 100%;" value="Acc 1" required>
+                <input type="text" name="account_name" style="width: 100%;" placeholder="Name" required>
               </td>
             </tr>
-            <tr id="add">
+            <tr id="addAcc">
               <td></td>
               <td>
                 <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
@@ -210,6 +219,7 @@
   </div>
   <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
+    const Glob = { num_acc: 1 };
     const uuid = <?= uuid ?>;
     var TIMEOUT_ID;
 
@@ -233,49 +243,42 @@
     });
 
     $(document).on('change', 'input[name=account_name]', function() {
-      if ($(this).val() !== '') return;
-
-      let $tr = $(this).closest('tr');
-      if ($tr.next('.num_acc').length > 0) return;
-
-      while ($tr.prevAll('.num_acc').length) {
-        const $prev = $tr.prev();
-        $tr.remove();
-        $tr = $prev;
-
-        if ($tr.find('input').val() !== '') break;
-      }
-
-      if ($(".num_acc").length < 5) $('#add').show();
+      if ($(this).val() !== '' || Glob.num_acc < 2) return;
+      removeEmptyInput();
+      if (Glob.num_acc < 1) appendAccInput();
     });
 
     function addAcc() {
-      let num = $(".num_acc").length;
-      if (num > 4) {
-        $('#add').hide();
-        return;
-      }
-
-      num++;
-      appendAccInput(num);
-
-      if (num > 4) $('#add').hide();
+      removeEmptyInput();
+      if (Glob.num_acc > 4) return;
+      appendAccInput();
     }
 
-    function appendAccInput(index) {
+    function removeEmptyInput() {
+      $('.num_acc').each(function() {
+        if ($(this).find('input').val() === '') {
+          $(this).remove();
+          Glob.num_acc--;
+        }
+      });
+
+      if (Glob.num_acc < 5) $('#addAcc').show();
+    }
+
+    function appendAccInput() {
       const $tr = $('<tr>').attr({ class: 'num_acc' });
 
       const $td1 = $('<td>').append([
-        $('<label>').css({ 'font-weight': 'bold' }).text('Account ' + index),
-        '<br>',
-        $('<span>').attr({ class: 'gray' }).text('Name')
+        $('<label>').attr({ class: 'acc_counter' })
+          .css({ 'font-weight': 'bold' })
+          .text('Account')
       ]);
 
       const $td2 = $('<td>').append([
         $('<input>').attr({
             type: 'text',
             name: 'account_name',
-            value: 'Acc ' + index,
+            placeholder: 'Name',
             required: true
           })
           .css({ width: '100%' })
@@ -284,8 +287,11 @@
       $td1.appendTo($tr);
       $td2.appendTo($tr);
 
-      $('#add').before($tr);
+      $('#addAcc').before($tr);
       $tr.find('input').focus();
+
+      Glob.num_acc++;
+      if (Glob.num_acc > 4) $('#addAcc').hide();
     }
 
     <? if (setup_restore) { ?>
