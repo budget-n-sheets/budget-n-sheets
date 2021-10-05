@@ -169,19 +169,21 @@
           </table>
           <table style="width: 100%; margin-top: 2em;">
             <tr>
-              <th colspan="2"><i class="material-icons-outlined">account_balance</i> Accounts</th>
+              <th colspan="3"><i class="material-icons-outlined">account_balance</i> Accounts</th>
             </tr>
             <tr class="num_acc">
               <td><label class="acc_counter" style="font-weight: bold;">Account</label></td>
               <td>
                 <input type="text" name="account_name" style="width: 100%;" placeholder="Name" required>
               </td>
+              <td><span class="material-icons remove-acc" style="padding-left: 3px;visibility: hidden;cursor: pointer;">remove_circle_outline</span></td>
             </tr>
             <tr id="addAcc">
               <td></td>
               <td>
                 <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
               </td>
+              <td></td>
             </tr>
           </table>
         </form>
@@ -231,7 +233,7 @@
       <? if (setup_copy) { ?>
       $("#b-Copy").click(showCopy);
       <? } ?>
-      $('#i-AddAcc').click(addAcc);
+      $('#i-AddAcc').click(addAccInput);
 
       var date = new Date();
       $("#financial_year").val(date.getFullYear());
@@ -242,30 +244,19 @@
       $("#main-panel").fadeIn().addClass("active");
     });
 
-    $(document).on('change', 'input[name=account_name]', function() {
-      if ($(this).val() !== '' || Glob.num_acc < 2) return;
-      removeEmptyInput();
-      if (Glob.num_acc < 1) appendAccInput();
-    });
+    $(document).on('click', '.remove-acc', function() {
+      if (Glob.num_acc === 1) return;
 
-    function addAcc() {
-      removeEmptyInput();
-      if (Glob.num_acc > 4) return;
-      appendAccInput();
-    }
-
-    function removeEmptyInput() {
-      $('.num_acc').each(function() {
-        if ($(this).find('input').val() === '') {
-          $(this).remove();
-          Glob.num_acc--;
-        }
-      });
+      $(this).closest('tr').remove();
+      Glob.num_acc--;
 
       if (Glob.num_acc < 5) $('#addAcc').show();
-    }
+      if (Glob.num_acc === 1) $('.remove-acc').css({ visibility: 'hidden' });
+    });
 
-    function appendAccInput() {
+    function addAccInput() {
+      if (Glob.num_acc > 4) return;
+
       const $tr = $('<tr>').attr({ class: 'num_acc' });
 
       const $td1 = $('<td>').append([
@@ -284,14 +275,27 @@
           .css({ width: '100%' })
       ]);
 
+      const $td3 = $('<td>');
+      $('<span>').attr({ class: 'material-icons remove-acc' })
+        .css({
+          'padding-left': '3px',
+          cursor: 'pointer',
+          visibility: 'hidden'
+        })
+        .text('remove_circle')
+        .appendTo($td3);
+
       $td1.appendTo($tr);
       $td2.appendTo($tr);
+      $td3.appendTo($tr);
 
       $('#addAcc').before($tr);
-      $tr.find('input').focus();
-
       Glob.num_acc++;
+
       if (Glob.num_acc > 4) $('#addAcc').hide();
+      if (Glob.num_acc > 1) $('.remove-acc').css({ visibility: 'visible' });
+
+      $tr.find('input').focus();
     }
 
     <? if (setup_restore) { ?>
