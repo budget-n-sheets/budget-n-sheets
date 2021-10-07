@@ -1,15 +1,3 @@
-function restrieveSpreadsheetInfo (uuid) {
-  if (!CacheService3.user().get(uuid)) {
-    showSessionExpired();
-    return;
-  }
-
-  const address = Utilities2.computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
-  const settings_summary = CacheService3.document().get(address);
-  CacheService3.document().remove(address);
-  return settings_summary;
-}
-
 function requestValidateSpreadsheet (uuid, file_id) {
   if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
@@ -116,5 +104,6 @@ function processSpreadsheet_ (uuid, file_id) {
   if (sheet) settings_candidate.misc.tags = sheet.getLastRow() - 1;
 
   PropertiesService3.document().setProperty('settings_candidate', settings_candidate);
+  cacheSettingsSummary_(settings_candidate);
   return 0;
 }

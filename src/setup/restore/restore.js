@@ -1,15 +1,3 @@
-function retrieveBackupInfo (uuid) {
-  if (!CacheService3.user().get(uuid)) {
-    showSessionExpired();
-    return;
-  }
-
-  const address = Utilities2.computeDigest('SHA_1', 'settings_summary:' + uuid, 'UTF_8');
-  const settings_summary = CacheService3.document().get(address);
-  CacheService3.document().remove(address);
-  return settings_summary;
-}
-
 function requestValidateBackup (uuid, file_id) {
   if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
@@ -170,5 +158,6 @@ function processBackup_ (uuid, file, data) {
   }
 
   PropertiesService3.document().setProperty('settings_candidate', settings_candidate);
+  cacheSettingsSummary_(settings_candidate);
   return 0;
 }

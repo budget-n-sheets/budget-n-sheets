@@ -170,7 +170,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
-        .retrieveBackupInfo(uuid);
+        .restrieveSettingsSummary(uuid, 'restore');
       <? } ?>
     });
 
@@ -205,12 +205,15 @@
       if (!info) return;
       $('#b-Select').prop('disabled', false);
 
-      $('#financial_year').val(info.financial_year);
-      delete info.financial_year;
+      $("#spreadsheet_title").append(info.settings.spreadsheet_title);
+      $('#financial_year').val(info.settings.financial_year);
+      $('#initial_month').append(info.settings.initial_month);
+      $('#decimal_places').append(info.settings.decimal_places);
+      $('#financial_calendar').append(info.settings.financial_calendar);
 
-      for (const key in info) {
-        $("#" + key).append(info[key]);
-      }
+      $('#accounts').append(info.settings.accounts.join(', '));
+      $('#cards').append(info.misc.cards);
+      $('#tags').append(info.misc.tags);
 
       $('#details').fadeIn('fast');
       $('#b-Restore').prop('disabled', false);
