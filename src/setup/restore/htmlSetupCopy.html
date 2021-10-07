@@ -165,7 +165,7 @@
       if (!info) return;
       $('#b-Select').prop('disabled', false);
 
-      $("#spreadsheet_name").append(info.settings.spreadsheet_title + '<br><a href="' + info.source.file_url + '" target="_blank" style="font-weight: bold;">View <span class="material-icons md-18">open_in_new</span></a>');
+      $("#spreadsheet_name").append(info.settings.spreadsheet_title);
       $('#financial_year').val(info.settings.financial_year);
       $('#initial_month').append(info.settings.initial_month);
 
