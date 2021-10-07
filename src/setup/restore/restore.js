@@ -133,7 +133,9 @@ function processBackup_ (uuid, file, data) {
     source: {
       file_id: file.id,
       file_url: '',
-      type: 'JSON'
+      file_name: file.name,
+      type: 'JSON',
+      date_created: new Date(data.backup.date_request).toString()
     },
     settings: {
       spreadsheet_title: data.backup.spreadsheet_title,
