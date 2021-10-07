@@ -80,6 +80,7 @@ function processSpreadsheet_ (uuid, file_id) {
       financial_year: Consts.date.getFullYear(),
       initial_month: Consts.date.getMonth(),
       decimal_places: 0,
+      financial_calendar: '',
       accounts: []
     },
     misc: {
@@ -92,7 +93,10 @@ function processSpreadsheet_ (uuid, file_id) {
   if (property) settings_candidate.settings.financial_year = property.financial_year;
 
   property = metadata.getValueOf('user_settings');
-  if (property) settings_candidate.settings.financial_year = property.initial_month;
+  if (property) {
+    settings_candidate.settings.financial_year = property.initial_month;
+    settings_candidate.settings.financial_calendar = property.financial_calendar_sha256;
+  }
 
   property = metadata.getValueOf('db_accounts');
   if (property) {
