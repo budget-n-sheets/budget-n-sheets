@@ -1,7 +1,8 @@
 class SetupConfig {
-  static configCopy_ (config) {
+  static configCopy_ (uuid, config) {
     const candidate = PropertiesService3.document().getProperty('settings_candidate');
-    if (candidate.file_id !== config.file_id) throw new Error('File ID does not match.');
+    if (candidate.uuid !== uuid) throw new Error('UUID does not match.');
+    if (candidate.protocol !== 'copy') throw new Error('Protocol does not match.');
 
     for (const key in candidate) {
       config[key] = candidate[key];
@@ -20,7 +21,8 @@ class SetupConfig {
 
   static configRestore_ (uuid, config) {
     const candidate = PropertiesService3.document().getProperty('settings_candidate');
-    if (candidate.file_id !== config.file_id) throw new Error('File ID does not match.');
+    if (candidate.uuid !== uuid) throw new Error('UUID does not match.');
+    if (candidate.protocol !== 'restore') throw new Error('Protocol does not match.');
 
     const blob = DriveApp.getFileById(config.file_id).getBlob();
     config.backup = unwrapBackup_(uuid, blob, config.file_id);
@@ -37,17 +39,17 @@ class SetupConfig {
     return config;
   }
 
-  static digestConfig (payload) {
-    let config = payload.config;
+  static digestConfig (uuid, payload) {
+    let config = {};
 
     switch (payload.protocol) {
       case 'copy':
-        config = this.configCopy_(config);
+        config = this.configCopy_(uuid, payload.config);
         break;
       case 'new':
         break;
       case 'restore':
-        config = this.configRestore_(payload.uuid, config);
+        config = this.configRestore_(uuid, payload.config);
         break;
 
       default:

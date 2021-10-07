@@ -17,8 +17,7 @@ function setupService (uuid, payload) {
   console.time('setup/' + payload.protocol);
   if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.');
 
-  payload.uuid = uuid;
-  const config = SetupConfig.digestConfig(payload);
+  const config = SetupConfig.digestConfig(uuid, payload);
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   spreadsheet.rename(config.spreadsheet_name);
 

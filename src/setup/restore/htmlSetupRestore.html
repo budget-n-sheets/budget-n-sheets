@@ -159,7 +159,7 @@
   <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
     const uuid = <?= uuid ?>;
-    let TIMEOUT_ID, FILE_ID;
+    let TIMEOUT_ID;
 
     $(document).ready(function() {
       $('#b-Select').click(pickFile);
@@ -191,7 +191,6 @@
       const payload = {
         protocol: 'restore',
         config: {
-          file_id: FILE_ID,
           financial_year: $('#financial_year').val()
         }
       };
@@ -205,8 +204,6 @@
     function refreshInfo(info) {
       if (!info) return;
       $('#b-Select').prop('disabled', false);
-
-      FILE_ID = info.file_id;
 
       $('#financial_year').val(info.financial_year);
       delete info.financial_year;
