@@ -7,14 +7,6 @@
   <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
   <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
   <style>
-    table {
-      width: 100%;
-    }
-
-    td.border {
-      border-bottom: none;
-    }
-
     .wait_load-wrapper {
       width: 190px;
     }
@@ -33,10 +25,6 @@
       to {
         left: 257px;
       }
-    }
-
-    #content {
-      padding: 7px 5px;
     }
   </style>
 </head>
@@ -68,8 +56,8 @@
               <td id="file_name"></td>
             </tr>
             <tr>
-              <td class="border name">Date created</td>
-              <td class="border" id="date_created">
+              <td class="name">Date created</td>
+              <td id="date_created">
               </td>
             </tr>
           </table>
@@ -179,7 +167,6 @@
     </div>
   </div>
 
-  <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script>
