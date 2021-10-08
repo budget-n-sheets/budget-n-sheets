@@ -138,7 +138,7 @@ function processBackup_ (uuid, file, data) {
       date_created: new Date(data.backup.date_request).toString()
     },
     settings: {
-      spreadsheet_title: data.backup.spreadsheet_title,
+      spreadsheet_name: data.backup.spreadsheet_title,
       financial_year: data.const_properties.financial_year,
       initial_month: data.user_settings.initial_month,
       decimal_places: data.spreadsheet_settings.decimal_places,
