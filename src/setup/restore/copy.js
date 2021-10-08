@@ -67,7 +67,7 @@ function processSpreadsheet_ (uuid, file_id) {
       spreadsheet_name: spreadsheet.getName(),
       financial_year: Consts.date.getFullYear(),
       initial_month: Consts.date.getMonth(),
-      decimal_places: 0,
+      decimal_places: 2,
       financial_calendar: '',
       accounts: []
     },

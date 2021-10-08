@@ -49,6 +49,7 @@ function setupService (uuid, payload) {
 
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService3.document().setProperty('is_installed', true);
+  PropertiesService3.document().deleteProperty('settings_candidate');
 
   try {
     TriggersService.start();

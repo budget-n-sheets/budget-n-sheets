@@ -4,17 +4,17 @@ class SetupConfig {
     if (candidate.uuid !== uuid) throw new Error('UUID does not match.');
     if (candidate.protocol !== 'copy') throw new Error('Protocol does not match.');
 
-    for (const key in candidate) {
-      config[key] = candidate[key];
-    }
+    config.file_id = candidate.source.file_id;
 
-    config.file_id = candidate.file_id;
+    config.name_accounts.forEach((e, i, a) => a[i] = e.name);
 
-    config.spreadsheet_name = candidate.spreadsheet_title;
-    config.decimal_places = 2;
+    config.spreadsheet_name = candidate.settings.spreadsheet_name;
+    config.decimal_places = candidate.settings.decimal_places;
 
-    config.number_accounts = candidate.accounts.length;
-    config.name_accounts = candidate.accounts;
+    config.initial_month = candidate.settings.initial_month;
+
+    candidate.settings.financial_year = config.financial_year;
+    PropertiesService3.document().setProperty('settings_candidate', candidate);
 
     return config;
   }
@@ -24,17 +24,19 @@ class SetupConfig {
     if (candidate.uuid !== uuid) throw new Error('UUID does not match.');
     if (candidate.protocol !== 'restore') throw new Error('Protocol does not match.');
 
-    const blob = DriveApp.getFileById(config.file_id).getBlob();
-    config.backup = unwrapBackup_(uuid, blob, config.file_id);
+    const blob = DriveApp.getFileById(candidate.source.file_id).getBlob();
+    config.backup = unwrapBackup_(uuid, blob, candidate.source.file_id);
     if (config.backup == null) return;
 
-    candidate.financial_year = config.financial_year;
-    for (const key in candidate) {
-      config[key] = candidate[key];
-    }
+    config.name_accounts.forEach((e, i, a) => a[i] = e.name);
 
-    config.spreadsheet_name = candidate.spreadsheet_title;
-    config.name_accounts = candidate.list_acc;
+    config.spreadsheet_name = candidate.settings.spreadsheet_name;
+    config.decimal_places = candidate.settings.decimal_places;
+
+    config.initial_month = candidate.settings.initial_month;
+
+    candidate.settings.financial_year = config.financial_year;
+    PropertiesService3.document().setProperty('settings_candidate', candidate);
 
     return config;
   }
@@ -63,6 +65,8 @@ class SetupConfig {
       config.name_accounts[i] = config.name_accounts[i].trim();
       if (config.name_accounts[i] === '') throw new Error('Invalid account name.');
     }
+
+    config.number_accounts = config.name_accounts.length;
 
     return config;
   }
