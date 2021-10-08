@@ -155,7 +155,10 @@ function processBackup_ (uuid, file, data) {
     settings_candidate.settings.accounts.push({
       index: k,
       id: 'acc' + k,
-      name: data.db_tables.accounts[k].name
+      name: data.db_tables.accounts[k].name,
+
+      newIndex: -1,
+      selected: false
     });
   }
 

@@ -93,7 +93,10 @@ function processSpreadsheet_ (uuid, file_id) {
     settings_candidate.settings.accounts.push({
       index: k,
       id: 'acc' + k,
-      name: property[k].name
+      name: property[k].name,
+
+      newIndex: -1,
+      selected: false
     });
   }
 

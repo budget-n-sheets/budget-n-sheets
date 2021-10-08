@@ -6,7 +6,15 @@ class SetupConfig {
 
     config.file_id = candidate.source.file_id;
 
-    config.name_accounts.forEach((e, i, a) => a[i] = e.name);
+    config.name_accounts.forEach((e, i, a) => {
+      if (e.id) {
+        candidate.settings.accounts[e.id].newIndex = i;
+        candidate.settings.accounts[e.id].selected = true;
+        a[i] = candidate.settings.accounts[e.id].name;
+      } else {
+        a[i] = e.name;
+      }
+    });
 
     config.spreadsheet_name = candidate.settings.spreadsheet_name;
     config.decimal_places = candidate.settings.decimal_places;
@@ -28,7 +36,15 @@ class SetupConfig {
     config.backup = unwrapBackup_(uuid, blob, candidate.source.file_id);
     if (config.backup == null) return;
 
-    config.name_accounts.forEach((e, i, a) => a[i] = e.name);
+    config.name_accounts.forEach((e, i, a) => {
+      if (e.id) {
+        candidate.settings.accounts[e.id].newIndex = i;
+        candidate.settings.accounts[e.id].selected = true;
+        a[i] = candidate.settings.accounts[e.id].name;
+      } else {
+        a[i] = e.name;
+      }
+    });
 
     config.spreadsheet_name = candidate.settings.spreadsheet_name;
     config.decimal_places = candidate.settings.decimal_places;

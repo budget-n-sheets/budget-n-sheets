@@ -296,10 +296,8 @@
 
       const name_accounts = [];
       $("input[name=account_name]").each(function() {
-        const name = $(this).val();
         const key = $(this).closest('tr').attr('id');
-
-        name_accounts.push({ id: key, name: name });
+        name_accounts.push({key ? { id: key } : { name: $(this).val() });
       });
 
       const payload = {
