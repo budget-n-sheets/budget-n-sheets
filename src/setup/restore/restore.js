@@ -152,7 +152,10 @@ function processBackup_ (uuid, file, data) {
   };
 
   for (const k in data.db_tables.accounts) {
-    settings_candidate.settings.accounts.push(data.db_tables.accounts[k].name);
+    settings_candidate.settings.accounts.push({
+      index: k,
+      name: data.db_tables.accounts[k].name
+    });
   }
 
   for (const k in data.db_tables.cards) {

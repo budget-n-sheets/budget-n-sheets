@@ -161,9 +161,9 @@
       $('#cards').append(info.misc.cards);
       $('#tags').append(info.misc.tags);
 
-      info.settings.accounts.forEach((name, i) => {
-        const key = 'acc' + i;
-        Glob.accounts[key] = name;
+      info.settings.accounts.forEach(o => {
+        const key = 'acc' + o.index;
+        Glob.accounts[key] = o.name;
         addAccInput(key);
       });
 
@@ -228,6 +228,7 @@
         .css({ width: '100%' });
       if (key) {
         $el.attr({
+          class: key,
           value: Glob.accounts[key],
           disabled: true,
           readonly: true
@@ -296,7 +297,10 @@
       const name_accounts = [];
       $("input[name=account_name]").each(function() {
         const name = $(this).val();
-        if (name) name_accounts.push(name);
+        if (name) name_accounts.push({
+            id: $(this).attr('class'),
+            name: name
+          });
       });
 
       const payload = {

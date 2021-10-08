@@ -89,7 +89,10 @@ function processSpreadsheet_ (uuid, file_id) {
   property = metadata.getValueOf('db_accounts');
   if (property) {
     for (const k in property) {
-      settings_candidate.settings.accounts.push(property[k].name);
+      settings_candidate.settings.accounts.push({
+        index: k,
+        name: property[k].name
+      });
     }
   }
 
