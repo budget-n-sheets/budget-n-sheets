@@ -26,71 +26,73 @@
           <button onclick="closeHost()">Cancel</button>
         </div>
 
-        <div class="panel" id="details">
-          <table style="margin-top: 1.3em;">
-            <tr>
-              <th colspan="2"><i class="material-icons-outlined">table_chart</i> Spreadsheet</th>
-            </tr>
-            <tr>
-              <td class="name" style="width: 127px;">Spreadsheet name</td>
-              <td id="spreadsheet_name"></td>
-            </tr>
-            <tr>
-              <td class="name" style="width: 127px;">Financial year</td>
-              <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
-            </tr>
-            <tr>
-              <td class="name">Initial month</td>
-              <td id="initial_month"></td>
-            </tr>
-          </table>
+        <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
+          <div class="panel" id="details">
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2"><i class="material-icons-outlined">table_chart</i> Spreadsheet</th>
+              </tr>
+              <tr>
+                <td class="name" style="width: 127px;">Spreadsheet name</td>
+                <td id="spreadsheet_name"></td>
+              </tr>
+              <tr>
+                <td class="name" style="width: 127px;">Financial year</td>
+                <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
+              </tr>
+              <tr>
+                <td class="name">Initial month</td>
+                <td id="initial_month"></td>
+              </tr>
+            </table>
 
-          <table style="margin-top: 1.3em;">
-            <tr>
-              <th><span class="material-icons-outlined">account_balance</span></th>
-              <th colspan="2" style="width: 100%;">Accounts</th>
-            </tr>
-            <tbody id="accSortable">
-            </tbody>
-            <tr id="addAcc">
-              <td></td>
-              <td>
-                <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
-              </td>
-              <td></td>
-            </tr>
-          </table>
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th><span class="material-icons-outlined">account_balance</span></th>
+                <th colspan="2" style="width: 100%;">Accounts</th>
+              </tr>
+              <tbody id="accSortable">
+              </tbody>
+              <tr id="addAcc">
+                <td></td>
+                <td>
+                  <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
+                </td>
+                <td></td>
+              </tr>
+            </table>
 
-          <table style="width: 100%;margin-top: 2em;">
-            <tr>
-              <th></th>
-              <th>
-                From spreadsheet<br>
-                <span class="error" id="accError"></span>
-              </th>
-            </tr>
-            <tbody id="accRemoved">
-            </tbody>
-          </table>
+            <table style="width: 100%;margin-top: 2em;">
+              <tr>
+                <th></th>
+                <th>
+                  From spreadsheet<br>
+                  <span class="error" id="accError"></span>
+                </th>
+              </tr>
+              <tbody id="accRemoved">
+              </tbody>
+            </table>
 
-          <table style="margin-top: 2em;">
-            <tr>
-              <th colspan="2"><i class="material-icons-outlined">assignment</i> Cards and tags</th>
-            </tr>
-            <tr>
-              <td class="name">Cards</td>
-              <td id="cards"></td>
-            </tr>
-            <tr>
-              <td class="name">Tags</td>
-              <td id="tags"></td>
-            </tr>
-          </table>
+            <table style="margin-top: 2em;">
+              <tr>
+                <th colspan="2"><i class="material-icons-outlined">assignment</i> Cards and tags</th>
+              </tr>
+              <tr>
+                <td class="name">Cards</td>
+                <td id="cards"></td>
+              </tr>
+              <tr>
+                <td class="name">Tags</td>
+                <td id="tags"></td>
+              </tr>
+            </table>
 
-          <div style="margin-top: 1.3em;">
-            <button class="create" id="b-Copy" disabled>Copy</button>
+            <div style="margin-top: 1.3em;">
+              <button class="create" id="b-Copy" type="submit" form="the_form" disabled>Copy</button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
 
       <div class="panel" id="setup-panel">
@@ -131,7 +133,6 @@
     $(document).ready(function() {
       $('#b-Select').click(pickFile);
       <? if (isValid) { ?>
-      $('#b-Copy').click(copyNow);
       $('#b-Select').prop('disabled', true);
 
       $("#i-AddAcc").click(() => addAccInput());
@@ -278,10 +279,10 @@
       $('#accRemoved').append($tr);
     }
 
-    function copyNow() {
-      this.disabled = true;
+    function submitForm() {
+      $('#b-Copy').prop('disabled', true);
       window.scrollTo(0, 0);
-      $("#response").empty();
+      $('#accError').empty();
 
       $(".panel").hide();
       $("#setup-panel").fadeIn("fast").addClass("active");
@@ -292,10 +293,17 @@
         $("#timeout").fadeIn();
       }, 240000);
 
+      const name_accounts = [];
+      $("input[name=account_name]").each(function() {
+        const name = $(this).val();
+        if (name) name_accounts.push(name);
+      });
+
       const payload = {
         protocol: 'copy',
         config: {
-          financial_year: $('#financial_year').val()
+          financial_year: $('#financial_year').val(),
+          name_accounts: name_accounts
         }
       };
 

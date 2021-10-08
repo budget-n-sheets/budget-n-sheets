@@ -46,100 +46,102 @@
           <button onclick="closeHost()">Cancel</button>
         </div>
 
-        <div class="panel" id="details">
-          <table style="margin-top: 1.3em;">
-            <tr>
-              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">restore</i> Backup file</span></th>
-            </tr>
-            <tr>
-              <td class="name" style="width: 127px;">File name</td>
-              <td id="file_name"></td>
-            </tr>
-            <tr>
-              <td class="name">Date created</td>
-              <td id="date_created">
-              </td>
-            </tr>
-          </table>
+        <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
+          <div class="panel" id="details">
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">restore</i> Backup file</span></th>
+              </tr>
+              <tr>
+                <td class="name" style="width: 127px;">File name</td>
+                <td id="file_name"></td>
+              </tr>
+              <tr>
+                <td class="name">Date created</td>
+                <td id="date_created">
+                </td>
+              </tr>
+            </table>
 
-          <table style="margin-top: 1.3em;">
-            <tr>
-              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
-            </tr>
-            <tr>
-              <td class="name" style="width: 127px;">Spreadsheet title</td>
-              <td id="spreadsheet_title"></td>
-            </tr>
-            <tr>
-              <td class="name">Financial year</td>
-              <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
-            </tr>
-            <tr>
-              <td class="name">Initial month</td>
-              <td id="initial_month"></td>
-            </tr>
-            <tr>
-              <td class="name">Decimal places</td>
-              <td id="decimal_places"></td>
-            </tr>
-          </table>
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
+              </tr>
+              <tr>
+                <td class="name" style="width: 127px;">Spreadsheet title</td>
+                <td id="spreadsheet_title"></td>
+              </tr>
+              <tr>
+                <td class="name">Financial year</td>
+                <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
+              </tr>
+              <tr>
+                <td class="name">Initial month</td>
+                <td id="initial_month"></td>
+              </tr>
+              <tr>
+                <td class="name">Decimal places</td>
+                <td id="decimal_places"></td>
+              </tr>
+            </table>
 
-          <table style="margin-top: 1.3em;">
-            <tr>
-              <th colspan="2" style="font-size:1.2em;"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
-            </tr>
-            <tr>
-              <td class="name">Financial calendar</td>
-              <td id="financial_calendar"></td>
-            </tr>
-          </table>
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2" style="font-size:1.2em;"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
+              </tr>
+              <tr>
+                <td class="name">Financial calendar</td>
+                <td id="financial_calendar"></td>
+              </tr>
+            </table>
 
-          <table style="margin-top: 1.3em;">
-            <tr>
-              <th><span class="material-icons-outlined">account_balance</span></th>
-              <th colspan="2" style="width: 100%;">Accounts</th>
-            </tr>
-            <tbody id="accSortable">
-            </tbody>
-            <tr id="addAcc">
-              <td></td>
-              <td>
-                <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
-              </td>
-              <td></td>
-            </tr>
-          </table>
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th><span class="material-icons-outlined">account_balance</span></th>
+                <th colspan="2" style="width: 100%;">Accounts</th>
+              </tr>
+              <tbody id="accSortable">
+              </tbody>
+              <tr id="addAcc">
+                <td></td>
+                <td>
+                  <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
+                </td>
+                <td></td>
+              </tr>
+            </table>
 
-          <table style="width: 100%;margin-top: 2em;">
-            <tr>
-              <th></th>
-              <th>
-                From spreadsheet<br>
-                <span class="error" id="accError"></span>
-              </th>
-            </tr>
-            <tbody id="accRemoved">
-            </tbody>
-          </table>
+            <table style="width: 100%;margin-top: 2em;">
+              <tr>
+                <th></th>
+                <th>
+                  From spreadsheet<br>
+                  <span class="error" id="accError"></span>
+                </th>
+              </tr>
+              <tbody id="accRemoved">
+              </tbody>
+            </table>
 
-          <table style="margin-top: 1.3em;">
-            <tr>
-              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">assignment</i> Cards and tags</span></th>
-            </tr>
-            <tr>
-              <td class="name">Cards</td>
-              <td id="cards"></td>
-            </tr>
-            <tr>
-              <td class="name">Tags</td>
-              <td id="tags"></td>
-            </tr>
-          </table>
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">assignment</i> Cards and tags</span></th>
+              </tr>
+              <tr>
+                <td class="name">Cards</td>
+                <td id="cards"></td>
+              </tr>
+              <tr>
+                <td class="name">Tags</td>
+                <td id="tags"></td>
+              </tr>
+            </table>
 
-          <div style="margin-top: 1.3em;">
-            <button class="create" id="b-Restore" disabled>Restore</button>
+            <div style="margin-top: 1.3em;">
+              <button class="create" id="b-Restore" type="submit" form="the_form" disabled>Restore</button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
 
       <div class="panel" id="setup-panel">
@@ -180,7 +182,6 @@
     $(document).ready(function() {
       $('#b-Select').click(pickFile);
       <? if (isValid) { ?>
-      $('#b-Restore').click(restoreNow);
       $('#b-Select').prop('disabled', true);
 
       $("#i-AddAcc").click(() => addAccInput());
@@ -198,9 +199,10 @@
     });
 
     <? if (isValid) { ?>
-    function restoreNow() {
-      this.disabled = true;
+    function submitForm() {
+      $('#b-Copy').prop('disabled', true);
       window.scrollTo(0, 0);
+      $('#accError').empty();
 
       $(".panel").hide();
       $("#setup-panel").fadeIn("fast").addClass("active");
@@ -211,10 +213,17 @@
         $("#timeout").fadeIn();
       }, 240000);
 
+      const name_accounts = [];
+      $("input[name=account_name]").each(function() {
+        const name = $(this).val();
+        if (name) name_accounts.push(name);
+      });
+
       const payload = {
         protocol: 'restore',
         config: {
-          financial_year: $('#financial_year').val()
+          financial_year: $('#financial_year').val(),
+          name_accounts: name_accounts
         }
       };
 
