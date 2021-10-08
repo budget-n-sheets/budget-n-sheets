@@ -92,6 +92,7 @@ function processSpreadsheet_ (uuid, file_id) {
   for (const k in property) {
     settings_candidate.settings.accounts.push({
       index: k,
+      id: 'acc' + k,
       name: property[k].name
     });
   }

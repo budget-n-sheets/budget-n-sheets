@@ -216,10 +216,9 @@
       const name_accounts = [];
       $("input[name=account_name]").each(function() {
         const name = $(this).val();
-        if (name) name_accounts.push({
-            id: $(this).attr('class'),
-            name: name
-          });
+        const key = $(this).closest('tr').attr('id');
+
+        name_accounts.push({ id: key, name: name });
       });
 
       const payload = {
@@ -250,9 +249,8 @@
       $('#financial_calendar').append(info.settings.financial_calendar);
 
       info.settings.accounts.forEach(o => {
-        const key = 'acc' + o.index;
-        Glob.accounts[key] = o.name;
-        addAccInput(key);
+        Glob.accounts[o.id] = o.name;
+        addAccInput(o.id);
       });
 
       $('#cards').append(info.misc.cards);
@@ -279,10 +277,11 @@
       $('#accError').empty();
       if (Glob.num_acc === 1) return;
 
-      const key = $(this).attr('id');
+      const $tr = $(this).closest('tr');
+      const key = $tr.attr('id');
       if (key) deselectAcc(key);
 
-      $(this).closest('tr').remove();
+      $tr.remove();
       Glob.num_acc--;
 
       if (Glob.num_acc < 5) $('#addAcc').show();
@@ -294,6 +293,8 @@
       if (Glob.num_acc > 4) return;
 
       const $tr = $('<tr>').attr({ class: 'num_acc' });
+      if (key) $tr.attr(id, key);
+
       let $el = null;
 
       const $td1 = $('<td>');
@@ -305,7 +306,6 @@
         })
         .text('remove_circle')
         .appendTo($td1);
-      if (key) $el.attr('id', key);
       $td1.append($el);
 
 
@@ -319,7 +319,6 @@
         .css({ width: '100%' });
       if (key) {
         $el.attr({
-          class: key,
           value: Glob.accounts[key],
           disabled: true,
           readonly: true
