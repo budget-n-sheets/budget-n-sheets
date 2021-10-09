@@ -5,19 +5,8 @@ class SetupConfig {
     if (candidate.protocol !== 'copy') throw new Error('Protocol does not match.');
 
     config.file_id = candidate.source.file_id;
+    config.name_accounts.forEach((e, i) => e.newIndex = i);
 
-    config.name_accounts.forEach((e, i, a) => {
-      if (e.id) {
-        const index = e.index;
-        candidate.settings.accounts[index].newIndex = i;
-        candidate.settings.accounts[index].selected = true;
-        a[i] = candidate.settings.accounts[index].name;
-      } else {
-        a[i] = e.name;
-      }
-    });
-
-    PropertiesService3.document().setProperty('settings_candidate', candidate);
     return config;
   }
 
@@ -30,18 +19,8 @@ class SetupConfig {
     config.backup = unwrapBackup_(uuid, blob, candidate.source.file_id);
     if (config.backup == null) return;
 
-    config.name_accounts.forEach((e, i, a) => {
-      if (e.id) {
-        const index = e.index;
-        candidate.settings.accounts[index].newIndex = i;
-        candidate.settings.accounts[index].selected = true;
-        a[i] = candidate.settings.accounts[index].name;
-      } else {
-        a[i] = e.name;
-      }
-    });
+    config.name_accounts.forEach((e, i) => e.newIndex = i);
 
-    PropertiesService3.document().setProperty('settings_candidate', candidate);
     return config;
   }
 
@@ -67,8 +46,8 @@ class SetupConfig {
     if (config.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.');
 
     for (let i = 0; i < config.name_accounts.length; i++) {
-      config.name_accounts[i] = config.name_accounts[i].trim();
-      if (config.name_accounts[i] === '') throw new Error('Invalid account name.');
+      config.name_accounts[i].name = config.name_accounts[i].name.trim();
+      if (config.name_accounts[i].name === '') throw new Error('Invalid account name.');
     }
 
     config.number_accounts = config.name_accounts.length;

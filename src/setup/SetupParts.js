@@ -56,7 +56,7 @@ class SetupParts {
     SpreadsheetApp.flush();
 
     for (k = 0; k < num_acc; k++) {
-      sheet.getRange(1, 7 + this._w * k).setValue(name_acc[k]);
+      sheet.getRange(1, 7 + this._w * k).setValue(name_acc[k].name);
     }
 
     const buildWallet = formulasBackstage.wallet();
@@ -441,7 +441,7 @@ class SetupParts {
 
     sheets[0].getRange(1, 1).setValue('Wallet');
     for (k = 0; k < num_acc; k++) {
-      sheets[0].getRange(1, 6 + k * 5).setValue(name_acc[k]);
+      sheets[0].getRange(1, 6 + k * 5).setValue(name_acc[k].name);
     }
 
     for (i = 1; i < 12; i++) {
@@ -665,7 +665,7 @@ class SetupParts {
 
       const account = {
         index: k,
-        name: name_acc[k],
+        name: name_acc[k].name,
         balance: 0,
         time_start: initial_month
       };

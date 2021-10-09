@@ -194,7 +194,7 @@
       $('#tags').append(info.misc.tags);
 
       info.settings.accounts.forEach(o => {
-        Glob.accounts[o.id] = { index: o.index, name: o.name };
+        Glob.accounts[o.id] = o;
         addAccInput(o.id);
       });
 

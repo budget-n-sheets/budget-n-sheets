@@ -154,11 +154,9 @@ function processBackup_ (uuid, file, data) {
   for (const k in data.db_tables.accounts) {
     settings_candidate.settings.accounts.push({
       index: k,
+      newIndex: -1,
       id: 'acc' + k,
       name: data.db_tables.accounts[k].name,
-
-      newIndex: -1,
-      selected: false
     });
   }
 

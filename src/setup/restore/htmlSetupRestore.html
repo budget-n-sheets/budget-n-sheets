@@ -268,7 +268,7 @@
       $('#financial_calendar').append(info.settings.financial_calendar);
 
       info.settings.accounts.forEach(o => {
-        Glob.accounts[o.id] = { index: o.index, name: o.name };
+        Glob.accounts[o.id] = o;
         addAccInput(o.id);
       });
 
