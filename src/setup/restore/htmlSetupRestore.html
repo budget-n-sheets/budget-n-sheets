@@ -231,7 +231,7 @@
       const name_accounts = [];
       $("input[name=account_name]").each(function() {
         const key = $(this).closest('tr').attr('id');
-        name_accounts.push(key ? { id: key } : { name: $(this).val() });
+        name_accounts.push(key ? Glob.accounts[key] : { name: $(this).val() });
       });
 
       const payload = {
@@ -268,7 +268,7 @@
       $('#financial_calendar').append(info.settings.financial_calendar);
 
       info.settings.accounts.forEach(o => {
-        Glob.accounts[o.id] = o.name;
+        Glob.accounts[o.id] = { index: o.index, name: o.name };
         addAccInput(o.id);
       });
 
@@ -338,7 +338,7 @@
         .css({ width: '100%' });
       if (key) {
         $el.attr({
-          value: Glob.accounts[key],
+          value: Glob.accounts[key].name,
           disabled: true,
           readonly: true
         });
@@ -376,7 +376,7 @@
       const $td2 = $('<td>').css({ width: '100%' });
       $('<input>').attr({
           type: 'text',
-          value: Glob.accounts[key],
+          value: Glob.accounts[key].name,
           disabled: true,
           readonly: true
         })

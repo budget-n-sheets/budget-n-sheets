@@ -8,9 +8,10 @@ class SetupConfig {
 
     config.name_accounts.forEach((e, i, a) => {
       if (e.id) {
-        candidate.settings.accounts[e.id].newIndex = i;
-        candidate.settings.accounts[e.id].selected = true;
-        a[i] = candidate.settings.accounts[e.id].name;
+        const index = e.index;
+        candidate.settings.accounts[index].newIndex = i;
+        candidate.settings.accounts[index].selected = true;
+        a[i] = candidate.settings.accounts[index].name;
       } else {
         a[i] = e.name;
       }
@@ -31,9 +32,10 @@ class SetupConfig {
 
     config.name_accounts.forEach((e, i, a) => {
       if (e.id) {
-        candidate.settings.accounts[e.id].newIndex = i;
-        candidate.settings.accounts[e.id].selected = true;
-        a[i] = candidate.settings.accounts[e.id].name;
+        const index = e.index;
+        candidate.settings.accounts[index].newIndex = i;
+        candidate.settings.accounts[index].selected = true;
+        a[i] = candidate.settings.accounts[index].name;
       } else {
         a[i] = e.name;
       }
