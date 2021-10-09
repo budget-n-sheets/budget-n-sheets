@@ -348,15 +348,12 @@
     function submitForm() {
       const name_accounts = [];
       $("input[name=account_name]").each(function() {
-        const name = $(this).val();
-        if (name) name_accounts.push(name);
+        name_accounts.push($(this).val());
       });
-      if (name_accounts.length === 0) return false;
 
       const payload = {
         protocol: 'new',
         config: {
-          number_accounts: name_accounts.length,
           name_accounts: name_accounts,
 
           spreadsheet_name: $("#spreadsheet_name").val(),
