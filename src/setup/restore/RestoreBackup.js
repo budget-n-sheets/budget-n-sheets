@@ -1,9 +1,10 @@
 class RestoreBackup {
-  constructor (backup) {
-    this.backup = backup;
+  constructor (config) {
+    this.backup = config.backup;
     this.spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
-    this.num_acc = this.backup.const_properties.number_accounts;
+    this.name_accounts = config.name_accounts.filter(e => !!e.id);
+    this.num_acc = SettingsConst.getValueOf('number_accounts');
   }
 
   restoreCards_ () {
@@ -41,14 +42,16 @@ class RestoreBackup {
   restoreTables_ () {
     const db_tables = this.backup.db_tables;
 
-    const accountsService = new AccountsService();
-    const db_accounts = accountsService.getAll();
-    for (const id in db_accounts) {
-      const k = db_accounts[id].index;
-      accountsService.update(id, db_tables.accounts[k]);
+    if (this.name_accounts.length > 0) {
+      const accountsService = new AccountsService();
+
+      this.name_accounts.forEach(e => {
+        const acc = accountsService.getByName(e.name);
+        if (acc) accountsService.update(acc.id, db_tables.accounts[e.index]);
+      });
+      accountsService.save();
+      accountsService.flush();
     }
-    accountsService.save();
-    accountsService.flush();
 
     const cardsService = new CardsService();
     for (const i in this.backup.db_tables.cards) {
@@ -69,6 +72,8 @@ class RestoreBackup {
   }
 
   restoreTtt_ () {
+    if (this.name_accounts.length === 0) return;
+
     const ttt = this.backup.ttt;
 
     let mm = -1;
@@ -78,13 +83,15 @@ class RestoreBackup {
       const sheet = Spreadsheet2.getSheetByName(Consts.month_name.short[mm]);
       const insertRows = new ToolInsertRowsMonth(mm);
 
-      for (let k = 0; k < 1 + this.num_acc; k++) {
-        if (ttt[mm][k] == null) continue;
-        if (ttt[mm][k].length === 0) continue;
-
-        insertRows.insertRowsTo(4 + ttt[mm][k].length, true);
-        sheet.getRange(5, 1 + 5 * k, ttt[mm][k].length, 4).setValues(ttt[mm][k]);
+      if (ttt[mm][0] && ttt[mm][0].length > 0) {
+        insertRows.insertRowsTo(4 + ttt[mm][0].length, true);
+        sheet.getRange(5, 1, ttt[mm][0].length, 4).setValues(ttt[mm][0]);
       }
+
+      this.name_accounts.forEach(e => {
+        insertRows.insertRowsTo(4 + ttt[mm][e.index].length, true);
+        sheet.getRange(5, 1 + 5 * (1 + e.newIndex), numRows, 4).setValues(ttt[mm][1 + e.index]);
+      });
     }
   }
 

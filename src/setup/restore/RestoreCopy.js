@@ -1,12 +1,13 @@
 class RestoreCopy {
-  constructor (file_id) {
+  constructor (config) {
     this.destination = SpreadsheetApp2.getActiveSpreadsheet();
 
-    this.source_id = file_id;
-    this.source = SpreadsheetApp.openById(file_id);
+    this.source_id = config.file_id;
+    this.source = SpreadsheetApp.openById(config.file_id);
 
     this.metadata = new Metadata(this.source);
 
+    this.name_accounts = config.name_accounts.filter(e => !!e.id);
     this.num_acc = SettingsConst.getValueOf('number_accounts');
   }
 
@@ -41,20 +42,19 @@ class RestoreCopy {
   }
 
   copyTables_ () {
-    let metadata = this.metadata.getValueOf('db_accounts');
+    if (this.name_accounts.length > 0) {
+      const metadata = this.metadata.getValueOf('db_accounts');
+      const accountsService = new AccountsService();
 
-    const accountsService = new AccountsService();
-    const db_accounts = accountsService.getAll();
-
-    for (const id in db_accounts) {
-      const k = db_accounts[id].index;
-      accountsService.update(id, metadata[k]);
+      this.name_accounts.forEach(e => {
+        const acc = accountsService.getByName(e.name);
+        if (acc) accountsService.update(acc.id, metadata[e.index]);
+      });
+      accountsService.save();
+      accountsService.flush();
     }
-    accountsService.save();
-    accountsService.flush();
 
-    metadata = this.metadata.getValueOf('db_cards');
-
+    const metadata = this.metadata.getValueOf('db_cards');
     const cardsService = new CardsService();
 
     for (const k in metadata) {
@@ -79,6 +79,8 @@ class RestoreCopy {
   }
 
   copyTtt_ () {
+    if (this.name_accounts.length === 0) return;
+
     let mm = -1;
     while (++mm < 12) {
       const source = this.source.getSheetByName(Consts.month_name.short[mm]);
@@ -89,8 +91,13 @@ class RestoreCopy {
       const sheet = this.destination.getSheetByName(Consts.month_name.short[mm]);
       new ToolInsertRowsMonth(mm).insertRowsTo(4 + numRows, true);
 
-      const values = source.getRange(5, 1, numRows, 5 + 5 * this.num_acc).getValues();
-      sheet.getRange(5, 1, numRows, 5 + 5 * this.num_acc).setValues(values);
+      const values = source.getRange(5, 1, numRows, 4).getValues();
+      sheet.getRange(5, 1, numRows, 4).setValues(values);
+
+      this.name_accounts.forEach(e => {
+        const values = source.getRange(5, 1 + 5 * (1 + e.index), numRows, 4).getValues();
+        sheet.getRange(5, 1 + 5 * (1 + e.newIndex), numRows, 4).setValues(values);
+      });
     }
   }
 

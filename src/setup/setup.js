@@ -26,18 +26,11 @@ function setupService (uuid, payload) {
     .copyTemplate()
     .makeInstall();
 
-  if (payload.protocol === 'restore') {
-    try {
-      new RestoreBackup(config.backup).restore();
-    } catch (err) {
-      LogLog.error(err);
-    }
-  } else if (payload.protocol === 'copy') {
-    try {
-      new RestoreCopy(config.file_id).copy();
-    } catch (err) {
-      LogLog.error(err);
-    }
+  try {
+    if (payload.protocol === 'restore') new RestoreBackup(config).restore();
+    else if (payload.protocol === 'copy') new RestoreCopy(config).copy();
+  } catch (err) {
+    LogLog.error(err);
   }
 
   CachedAccess.update('class_version2', {
