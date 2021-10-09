@@ -53,6 +53,7 @@ class SetupConfig {
         config = this.configCopy_(uuid, payload.config);
         break;
       case 'new':
+        config = Utils.deepCopy(payload.config);
         break;
       case 'restore':
         config = this.configRestore_(uuid, payload.config);
