@@ -33,16 +33,45 @@
                 <th colspan="2"><i class="material-icons-outlined">table_chart</i> Spreadsheet</th>
               </tr>
               <tr>
-                <td class="name" style="width: 127px;">Spreadsheet name</td>
-                <td id="spreadsheet_name"></td>
+                <td class="name" style="width: 127px;"><label for="spreadsheet_name">Spreadsheet name</label></td>
+                <td><input type="text" id="spreadsheet_name" maxlength="53" required></td>
+              </tr>
+              <tr>
+                <td class="name"><label for="decimal_places">Decimal places</label></td>
+                <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+              </tr>
+            </table>
+
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2" style="font-size:1.2em;"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
               </tr>
               <tr>
                 <td class="name" style="width: 127px;">Financial year</td>
                 <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
               </tr>
               <tr>
-                <td class="name">Initial month</td>
-                <td id="initial_month"></td>
+                <td class="name"><label for="initial_month">Initial month</label></td>
+                <td>
+                  <select id="initial_month" style="width:89px;">
+                    <option value="0" selected>January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="name">Financial calendar</td>
+                <td id="financial_calendar"></td>
               </tr>
             </table>
 
@@ -154,9 +183,12 @@
       if (!info) return;
       $('#b-Select').prop('disabled', false);
 
-      $("#spreadsheet_name").append(info.settings.spreadsheet_name);
+      $("#spreadsheet_name").val(info.settings.spreadsheet_name);
+      $('#decimal_places').val(info.settings.decimal_places);
+
       $('#financial_year').val(info.settings.financial_year);
-      $('#initial_month').append(info.settings.initial_month);
+      $('#initial_month').val(info.settings.initial_month);
+      $('#financial_calendar').append(info.settings.financial_calendar);
 
       $('#cards').append(info.misc.cards);
       $('#tags').append(info.misc.tags);
@@ -203,7 +235,7 @@
       if (Glob.num_acc > 4) return;
 
       const $tr = $('<tr>').attr({ class: 'num_acc' });
-      if (key) $tr.attr(id, key);
+      if (key) $tr.attr('id', key);
 
       let $el = null;
 
@@ -297,14 +329,19 @@
       const name_accounts = [];
       $("input[name=account_name]").each(function() {
         const key = $(this).closest('tr').attr('id');
-        name_accounts.push({key ? { id: key } : { name: $(this).val() });
+        name_accounts.push(key ? { id: key } : { name: $(this).val() });
       });
 
       const payload = {
         protocol: 'copy',
         config: {
-          financial_year: $('#financial_year').val(),
-          name_accounts: name_accounts
+          name_accounts: name_accounts,
+
+          spreadsheet_name: $("#spreadsheet_name").val(),
+          decimal_places: $("#decimal_places").val(),
+
+          financial_year: $("#financial_year").val(),
+          initial_month: $("#initial_month").val()
         }
       };
 

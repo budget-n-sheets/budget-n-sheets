@@ -16,14 +16,7 @@ class SetupConfig {
       }
     });
 
-    config.spreadsheet_name = candidate.settings.spreadsheet_name;
-    config.decimal_places = candidate.settings.decimal_places;
-
-    config.initial_month = candidate.settings.initial_month;
-
-    candidate.settings.financial_year = config.financial_year;
     PropertiesService3.document().setProperty('settings_candidate', candidate);
-
     return config;
   }
 
@@ -46,14 +39,7 @@ class SetupConfig {
       }
     });
 
-    config.spreadsheet_name = candidate.settings.spreadsheet_name;
-    config.decimal_places = candidate.settings.decimal_places;
-
-    config.initial_month = candidate.settings.initial_month;
-
-    candidate.settings.financial_year = config.financial_year;
     PropertiesService3.document().setProperty('settings_candidate', candidate);
-
     return config;
   }
 

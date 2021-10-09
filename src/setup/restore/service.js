@@ -24,8 +24,6 @@ function restrieveSettingsSummary (uuid, protocol) {
   CacheService3.document().remove(address);
   lock.releaseLock();
 
-  settings.settings.initial_month = Consts.month_name.long[settings.settings.initial_month];
-
   if (settings.settings.financial_calendar) {
     const calendars = Calendar.listAllCalendars();
     let found = false;
