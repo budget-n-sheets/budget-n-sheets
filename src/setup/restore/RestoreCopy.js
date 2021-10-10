@@ -7,8 +7,7 @@ class RestoreCopy {
 
     this.metadata = new Metadata(this.source);
 
-    this.name_accounts = config.name_accounts.filter(e => !!e.id);
-    this.num_acc = SettingsConst.getValueOf('number_accounts');
+    this.name_accounts = config.name_accounts.filter(e => e.require === 'copy');
   }
 
   copyCards_ () {
@@ -48,7 +47,7 @@ class RestoreCopy {
 
       this.name_accounts.forEach(e => {
         const acc = accountsService.getByName(e.name);
-        if (acc) accountsService.update(acc.id, metadata[e.index]);
+        if (acc) accountsService.update(acc.id, metadata[e.prevIndex]);
       });
       accountsService.save();
       accountsService.flush();
@@ -79,8 +78,6 @@ class RestoreCopy {
   }
 
   copyTtt_ () {
-    if (this.name_accounts.length === 0) return;
-
     let mm = -1;
     while (++mm < 12) {
       const source = this.source.getSheetByName(Consts.month_name.short[mm]);
@@ -95,8 +92,8 @@ class RestoreCopy {
       sheet.getRange(5, 1, numRows, 4).setValues(values);
 
       this.name_accounts.forEach(e => {
-        const values = source.getRange(5, 1 + 5 * (1 + e.index), numRows, 4).getValues();
-        sheet.getRange(5, 1 + 5 * (1 + e.newIndex), numRows, 4).setValues(values);
+        const values = source.getRange(5, 1 + 5 * (1 + e.prevIndex), numRows, 4).getValues();
+        sheet.getRange(5, 1 + 5 * (1 + e.index), numRows, 4).setValues(values);
       });
     }
   }

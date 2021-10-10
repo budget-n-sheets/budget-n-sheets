@@ -5,7 +5,6 @@ class SetupConfig {
     if (candidate.protocol !== 'copy') throw new Error('Protocol does not match.');
 
     config.file_id = candidate.source.file_id;
-    config.name_accounts.forEach((e, i) => e.newIndex = i);
 
     return config;
   }
@@ -19,8 +18,6 @@ class SetupConfig {
     config.backup = unwrapBackup_(uuid, blob, candidate.source.file_id);
     if (config.backup == null) return;
 
-    config.name_accounts.forEach((e, i) => e.newIndex = i);
-
     return config;
   }
 
@@ -33,6 +30,7 @@ class SetupConfig {
         break;
       case 'new':
         config = Utils.deepCopy(payload.config);
+        config.name_accounts = config.name_accounts.filter(e => e.require === 'new');
         break;
       case 'restore':
         config = this.configRestore_(uuid, payload.config);
@@ -45,12 +43,14 @@ class SetupConfig {
     config.spreadsheet_name = config.spreadsheet_name.trim();
     if (config.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.');
 
-    for (let i = 0; i < config.name_accounts.length; i++) {
-      config.name_accounts[i].name = config.name_accounts[i].name.trim();
-      if (config.name_accounts[i].name === '') throw new Error('Invalid account name.');
-    }
+    config.name_accounts.forEach((e, i, a) => {
+      a[i].name = e.name.trim();
+      if (a[i].name === '') throw new Error('Invalid account name.');
+    });
+    config.name_accounts.sort((a, b) => a.index - b.index);
 
     config.number_accounts = config.name_accounts.length;
+    if (config.number_accounts < 1) throw new Error('Invalid number of accounts.');
 
     return config;
   }

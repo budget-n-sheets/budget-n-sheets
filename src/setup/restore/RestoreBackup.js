@@ -3,8 +3,7 @@ class RestoreBackup {
     this.backup = config.backup;
     this.spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
-    this.name_accounts = config.name_accounts.filter(e => !!e.id);
-    this.num_acc = SettingsConst.getValueOf('number_accounts');
+    this.name_accounts = config.name_accounts.filter(e => e.require === 'restore');
   }
 
   restoreCards_ () {
@@ -47,7 +46,10 @@ class RestoreBackup {
 
       this.name_accounts.forEach(e => {
         const acc = accountsService.getByName(e.name);
-        if (acc) accountsService.update(acc.id, db_tables.accounts[e.index]);
+        if (acc) {
+          db_tables.accounts[e.prevIndex].time_start = db_tables.accounts[e.prevIndex].time_a;
+          accountsService.update(acc.id, db_tables.accounts[e.prevIndex]);
+        }
       });
       accountsService.save();
       accountsService.flush();
@@ -72,8 +74,6 @@ class RestoreBackup {
   }
 
   restoreTtt_ () {
-    if (this.name_accounts.length === 0) return;
-
     const ttt = this.backup.ttt;
 
     let mm = -1;
@@ -89,8 +89,10 @@ class RestoreBackup {
       }
 
       this.name_accounts.forEach(e => {
-        insertRows.insertRowsTo(4 + ttt[mm][e.index].length, true);
-        sheet.getRange(5, 1 + 5 * (1 + e.newIndex), numRows, 4).setValues(ttt[mm][1 + e.index]);
+        if (ttt[mm][1 + e.prevIndex].length > 0) {
+          insertRows.insertRowsTo(4 + ttt[mm][1 + e.prevIndex].length, true);
+          sheet.getRange(5, 1 + 5 * (1 + e.index), numRows, 4).setValues(ttt[mm][1 + e.prevIndex]);
+        }
       });
     }
   }

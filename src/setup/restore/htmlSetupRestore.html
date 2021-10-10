@@ -229,9 +229,18 @@
       }, 240000);
 
       const name_accounts = [];
-      $("input[name=account_name]").each(function() {
+      $('input[name=account_name]').each(function(index) {
         const key = $(this).closest('tr').attr('id');
-        name_accounts.push(key ? Glob.accounts[key] : { name: $(this).val() });
+        if (key) {
+          Glob.accounts[key].index = index;
+          name_accounts.push(Glob.accounts[key]);
+        } else {
+          name_accounts.push({
+            require: 'new',
+            index: index,
+            name: $(this).val()
+          });
+        }
       });
 
       const payload = {

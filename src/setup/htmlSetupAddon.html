@@ -346,9 +346,12 @@
     }
 
     function submitForm() {
-      const name_accounts = [];
-      $("input[name=account_name]").each(function() {
-        name_accounts.push($(this).val());
+      const name_accounts = $('input[name=account_name]').map(function(index) {
+        return {
+          require: 'new',
+          index: index,
+          name: $(this).val()
+        };
       });
 
       const payload = {

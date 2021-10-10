@@ -86,25 +86,24 @@ function processSpreadsheet_ (uuid, file_id) {
   settings_candidate.settings.initial_month = property.initial_month;
   settings_candidate.settings.financial_calendar = property.financial_calendar_sha256;
 
-
   property = metadata.getValueOf('db_accounts');
   if (!property) return 1;
   for (const k in property) {
     settings_candidate.settings.accounts.push({
-      index: k,
-      newIndex: -1,
-      id: 'acc' + k,
+      id: 'acc_' + k,
+      prevIndex: +k,
+
+      require: 'copy',
+      index: +k,
       name: property[k].name,
     });
   }
-
 
   property = metadata.getValueOf('db_cards');
   if (!property) return 1;
   for (const k in property) {
     settings_candidate.misc.cards.push(property[k].name);
   }
-
 
   const sheet = spreadsheet.getSheetByName('Tags');
   if (sheet) settings_candidate.misc.tags = sheet.getLastRow() - 1;
