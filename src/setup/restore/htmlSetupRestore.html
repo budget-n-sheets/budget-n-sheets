@@ -7,14 +7,6 @@
   <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
   <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
   <style>
-    table {
-      width: 100%;
-    }
-
-    td.border {
-      border-bottom: none;
-    }
-
     .wait_load-wrapper {
       width: 190px;
     }
@@ -34,10 +26,6 @@
         left: 257px;
       }
     }
-
-    #content {
-      padding: 7px 5px;
-    }
   </style>
 </head>
 
@@ -45,88 +33,130 @@
   <div id="wrapper">
     <div id="content">
       <div class="panel active" id="restore-panel">
-        <table>
-          <tr>
-            <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">restore</i> Backup file</span></th>
-          </tr>
-          <tr>
-            <td class="name" style="width: 127px;">File name</td>
-            <td id="file_name">
-            </td>
-          </tr>
-          <tr>
-            <td class="border name">Date created</td>
-            <td class="border" id="date_created">
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <span class="error"><?= msg ?></span>
-              <div>
-                <button class="action" id="b-Select">Select backup</button>
-                <button onclick="closeHost()">Cancel</button>
-              </div>
-            </td>
-          </tr>
-        </table>
+        <div>
+          <ol style="padding-left: 16px;">
+            <li>Select a backup to restore data from.</li>
+            <li>Enter the password to descrypt the backup.</li>
+            <li>Review the settings and make your changes.</li>
+            <li>Click <strong>RESTORE</strong>.</li>
+          </ol>
 
-        <div class="panel" id="details">
-          <p>Review the spreadsheet specs and settings.</p>
-
-          <table style="margin-top: 1.3em;">
-            <tr>
-              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
-            </tr>
-            <tr>
-              <td class="name" style="width: 127px;">Spreadsheet title</td>
-              <td id="spreadsheet_title"></td>
-            </tr>
-            <tr>
-              <td class="name">Financial year</td>
-              <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
-            </tr>
-            <tr>
-              <td class="name">Initial month</td>
-              <td id="initial_month"></td>
-            </tr>
-            <tr>
-              <td class="name">Decimal places</td>
-              <td id="decimal_places"></td>
-            </tr>
-          </table>
-
-          <table style="margin-top: 1.3em;">
-            <tr>
-              <th colspan="2" style="font-size:1.2em;"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
-            </tr>
-            <tr>
-              <td class="name">Financial calendar</td>
-              <td id="financial_calendar"></td>
-            </tr>
-          </table>
-
-          <table style="margin-top: 1.3em;">
-            <tr>
-              <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">assignment</i> Accounts, cards, and tags</span></th>
-            </tr>
-            <tr>
-              <td class="name" style="width: 127px;">Accounts</td>
-              <td id="accounts"></td>
-            </tr>
-            <tr>
-              <td class="name">Cards</td>
-              <td id="cards"></td>
-            </tr>
-            <tr>
-              <td class="name">Tags</td>
-              <td id="tags"></td>
-            </tr>
-          </table>
-
-          <div style="margin-top: 1.3em;">
-            <button class="create" id="b-Restore" disabled>Restore</button>
-          </div>
+          <p class="error" id="reponse"><?= msg ?></p>
+          <button class="action" id="b-Select">Select backup</button>
+          <button onclick="closeHost()">Cancel</button>
         </div>
+
+        <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
+          <div class="panel" id="details">
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">restore</i> Backup file</span></th>
+              </tr>
+              <tr>
+                <td class="name" style="width: 127px;">File name</td>
+                <td id="file_name"></td>
+              </tr>
+              <tr>
+                <td class="name">Date created</td>
+                <td id="date_created">
+                </td>
+              </tr>
+            </table>
+
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
+              </tr>
+              <tr>
+                <td class="name" style="width: 127px;"><label for="spreadsheet_name">Spreadsheet name</label></td>
+                <td><input type="text" id="spreadsheet_name" maxlength="53" required></td>
+              </tr>
+              <tr>
+                <td class="name"><label for="decimal_places">Decimal places</label></td>
+                <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+              </tr>
+            </table>
+
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2" style="font-size:1.2em;"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
+              </tr>
+              <tr>
+                <td class="name" style="width: 127px;">Financial year</td>
+                <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
+              </tr>
+              <tr>
+                <td class="name"><label for="initial_month">Initial month</label></td>
+                <td>
+                  <select id="initial_month" style="width:89px;">
+                    <option value="0" selected>January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="name">Financial calendar</td>
+                <td id="financial_calendar"></td>
+              </tr>
+            </table>
+
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th><span class="material-icons-outlined">account_balance</span></th>
+                <th colspan="2" style="width: 100%;">Accounts</th>
+              </tr>
+              <tbody id="accSortable">
+              </tbody>
+              <tr id="addAcc">
+                <td></td>
+                <td>
+                  <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
+                </td>
+                <td></td>
+              </tr>
+            </table>
+
+            <table style="width: 100%;margin-top: 2em;">
+              <tr>
+                <th></th>
+                <th>
+                  From spreadsheet<br>
+                  <span class="error" id="accError"></span>
+                </th>
+              </tr>
+              <tbody id="accRemoved">
+              </tbody>
+            </table>
+
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">assignment</i> Cards and tags</span></th>
+              </tr>
+              <tr>
+                <td class="name">Cards</td>
+                <td id="cards"></td>
+              </tr>
+              <tr>
+                <td class="name">Tags</td>
+                <td id="tags"></td>
+              </tr>
+            </table>
+
+            <div style="margin-top: 1.3em;">
+              <button class="create" id="b-Restore" type="submit" form="the_form" disabled>Restore</button>
+            </div>
+          </div>
+        </form>
       </div>
 
       <div class="panel" id="setup-panel">
@@ -154,44 +184,66 @@
     </div>
   </div>
 
-  <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script>
     const uuid = <?= uuid ?>;
-    let TIMEOUT_ID, FILE_ID;
+    const Glob = {
+      timeout_id: 0,
+      accounts: {},
+      num_acc: 0
+    };
 
     $(document).ready(function() {
       $('#b-Select').click(pickFile);
       <? if (isValid) { ?>
-      $('#b-Restore').click(restoreNow);
       $('#b-Select').prop('disabled', true);
+
+      $("#i-AddAcc").click(() => addAccInput());
+      $('#accSortable').sortable({
+        axis: 'y',
+        handle: '.handle',
+        opacity: 0.71
+      });
 
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
-        .retrieveBackupInfo(uuid);
+        .restrieveSettingsSummary(uuid, 'restore');
       <? } ?>
     });
 
     <? if (isValid) { ?>
-    function restoreNow() {
-      this.disabled = true;
+    function submitForm() {
+      $('#b-Copy').prop('disabled', true);
       window.scrollTo(0, 0);
+      $('#accError').empty();
 
       $(".panel").hide();
       $("#setup-panel").fadeIn("fast").addClass("active");
       google.script.host.setHeight(233);
 
-      TIMEOUT_ID = setTimeout(function() {
+      Glob.timeout_id = setTimeout(function() {
         google.script.host.setHeight(293);
         $("#timeout").fadeIn();
       }, 240000);
 
+      const name_accounts = [];
+      $("input[name=account_name]").each(function() {
+        const key = $(this).closest('tr').attr('id');
+        name_accounts.push(key ? Glob.accounts[key] : { name: $(this).val() });
+      });
+
       const payload = {
         protocol: 'restore',
         config: {
-          file_id: FILE_ID,
-          financial_year: $('#financial_year').val()
+          name_accounts: name_accounts,
+
+          spreadsheet_name: $("#spreadsheet_name").val(),
+          decimal_places: $("#decimal_places").val(),
+
+          financial_year: $("#financial_year").val(),
+          initial_month: $("#initial_month").val()
         }
       };
 
@@ -205,17 +257,136 @@
       if (!info) return;
       $('#b-Select').prop('disabled', false);
 
-      FILE_ID = info.file_id;
+      $("#file_name").append(info.source.file_name);
+      $("#date_created").append(info.source.date_created);
 
-      $('#financial_year').val(info.financial_year);
-      delete info.financial_year;
+      $("#spreadsheet_name").val(info.settings.spreadsheet_name);
+      $('#decimal_places').val(info.settings.decimal_places);
 
-      for (const key in info) {
-        $("#" + key).append(info[key]);
-      }
+      $('#financial_year').val(info.settings.financial_year);
+      $('#initial_month').val(info.settings.initial_month);
+      $('#financial_calendar').append(info.settings.financial_calendar);
+
+      info.settings.accounts.forEach(o => {
+        Glob.accounts[o.id] = o;
+        addAccInput(o.id);
+      });
+
+      $('#cards').append(info.misc.cards);
+      $('#tags').append(info.misc.tags);
 
       $('#details').fadeIn('fast');
       $('#b-Restore').prop('disabled', false);
+    }
+
+    $(document).on('click', '.add-acc', function() {
+      $('#accError').empty();
+      if (Glob.num_acc > 4) {
+        $('#addAcc').hide();
+        $('#accError').append('No slot available.');
+        return;
+      };
+
+      const key = $(this).attr('id');
+      $(this).closest('tr').remove();
+      addAccInput(key);
+    });
+
+    $(document).on('click', '.remove-acc', function() {
+      $('#accError').empty();
+      if (Glob.num_acc === 1) return;
+
+      const $tr = $(this).closest('tr');
+      const key = $tr.attr('id');
+      if (key) deselectAcc(key);
+
+      $tr.remove();
+      Glob.num_acc--;
+
+      if (Glob.num_acc < 5) $('#addAcc').show();
+      if (Glob.num_acc === 1) $('.remove-acc').css({ visibility: 'hidden' });
+    });
+
+    function addAccInput(key) {
+      $('#accError').empty();
+      if (Glob.num_acc > 4) return;
+
+      const $tr = $('<tr>').attr({ class: 'num_acc' });
+      if (key) $tr.attr('id', key);
+
+      let $el = null;
+
+      const $td1 = $('<td>');
+      $el = $('<span>').attr({class: 'material-icons remove-acc'})
+        .css({
+          visibility: 'hidden',
+          cursor: 'pointer',
+          'padding-right': '3px'
+        })
+        .text('remove_circle')
+        .appendTo($td1);
+      $td1.append($el);
+
+
+      const $td2 = $('<td>').css({ width: '100%' });
+      $el = $('<input>').attr({
+          type: 'text',
+          name: 'account_name',
+          placeholder: 'Name',
+          required: true
+        })
+        .css({ width: '100%' });
+      if (key) {
+        $el.attr({
+          value: Glob.accounts[key].name,
+          disabled: true,
+          readonly: true
+        });
+      }
+      $td2.append($el);
+
+      const $td3 = $('<td>');
+      $('<span>').attr({ class: 'material-icons handle' })
+        .css({ cursor: 'grabbing' })
+        .text('drag_handle')
+        .appendTo($td3);
+
+      $td1.appendTo($tr);
+      $td2.appendTo($tr);
+      $td3.appendTo($tr);
+
+      $('#accSortable').append($tr);
+      Glob.num_acc++;
+
+      if (Glob.num_acc > 4) $('#addAcc').hide();
+      if (Glob.num_acc > 1) $('.remove-acc').css({ visibility: 'visible' });
+
+      if (!key) $tr.find('input').focus();
+    }
+
+    function deselectAcc(key) {
+      const $tr = $('<tr>');
+
+      const $td1 = $('<td>');
+      $('<span>').attr({ class: 'material-icons add-acc', id: key })
+        .css({ cursor: 'pointer' })
+        .text('add_circle')
+        .appendTo($td1);
+
+      const $td2 = $('<td>').css({ width: '100%' });
+      $('<input>').attr({
+          type: 'text',
+          value: Glob.accounts[key].name,
+          disabled: true,
+          readonly: true
+        })
+        .css({ width: '100%' })
+        .appendTo($td2);
+
+      $td1.appendTo($tr);
+      $td2.appendTo($tr);
+
+      $('#accRemoved').append($tr);
     }
     <? } ?>
 
@@ -228,7 +399,7 @@
     }
 
     function panelError(err) {
-      clearTimeout(TIMEOUT_ID);
+      clearTimeout(Glob.timeout_id);
       google.script.host.setHeight(197);
       $("#error-panel").siblings().remove();
       $("#error-panel").fadeIn("fast").addClass("active");
