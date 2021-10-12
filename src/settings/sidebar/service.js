@@ -5,7 +5,7 @@ function getUserSettings () {
 
 function saveUserSettings (settings) {
   if (!User2.isAdmin()) return 1;
-  UserSettings.setSettings(settings);
+  new UserSettings().saveSidebarSettings(settings).flush();
 }
 
 function updateSettingsMetadata_ (user_settings) {
