@@ -24,6 +24,27 @@ class UserSettings {
     return user_settings;
   }
 
+  static updateMetadata_ () {
+    const user_settings = CachedAccess.get('user_settings');
+
+    const metadata = {
+      initial_month: user_settings.initial_month,
+      financial_calendar_sha256: '',
+      post_day_events: user_settings.post_day_events,
+      cash_flow_events: user_settings.cash_flow_events
+    };
+
+    if (user_settings.financial_calendar !== '') {
+      metadata.financial_calendar_sha256 = Utilities2.computeDigest(
+        'SHA_256',
+        user_settings.financial_calendar,
+        'UTF_8'
+      );
+    }
+
+    new Metadata().update('user_settings', metadata);
+  }
+
   flush () {
     const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
@@ -96,8 +117,7 @@ class UserSettings {
 
     SettingsSpreadsheet.setValueOf('decimal_places', decimal_places);
 
-    updateSettingsMetadata_(user_settings);
-
+    UserSettings.updateMetadata_();
     return this;
   }
 }
