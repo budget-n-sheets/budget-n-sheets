@@ -20,7 +20,7 @@
             <li>Click <strong>RESTORE</strong>.</li>
           </ol>
 
-          <p class="error" id="reponse"><?= msg ?></p>
+          <p class="error" id="reponse"><?= status_msg ?></p>
           <button class="action" id="b-Select">Select backup</button>
           <button onclick="closeHost()">Cancel</button>
         </div>
@@ -56,80 +56,7 @@
               </tr>
             </table>
 
-            <table style="margin-top: 1.3em;">
-              <tr>
-                <th colspan="2" style="font-size:1.2em;"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
-              </tr>
-              <tr>
-                <td class="name" style="width: 127px;">Financial year</td>
-                <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
-              </tr>
-              <tr>
-                <td class="name"><label for="initial_month">Initial month</label></td>
-                <td>
-                  <select id="initial_month" style="width:89px;">
-                    <option value="0" selected>January</option>
-                    <option value="1">February</option>
-                    <option value="2">March</option>
-                    <option value="3">April</option>
-                    <option value="4">May</option>
-                    <option value="5">June</option>
-                    <option value="6">July</option>
-                    <option value="7">August</option>
-                    <option value="8">September</option>
-                    <option value="9">October</option>
-                    <option value="10">November</option>
-                    <option value="11">December</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td class="name">Financial calendar</td>
-                <td id="financial_calendar"></td>
-              </tr>
-            </table>
-
-            <table style="margin-top: 1.3em;">
-              <tr>
-                <th><span class="material-icons-outlined">account_balance</span></th>
-                <th colspan="2" style="width: 100%;">Accounts</th>
-              </tr>
-              <tbody id="accSortable">
-              </tbody>
-              <tr id="addAcc">
-                <td></td>
-                <td>
-                  <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
-                </td>
-                <td></td>
-              </tr>
-            </table>
-
-            <table style="width: 100%;margin-top: 2em;">
-              <tr>
-                <th></th>
-                <th>
-                  From spreadsheet<br>
-                  <span class="error" id="accError"></span>
-                </th>
-              </tr>
-              <tbody id="accRemoved">
-              </tbody>
-            </table>
-
-            <table style="margin-top: 1.3em;">
-              <tr>
-                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">assignment</i> Cards and tags</span></th>
-              </tr>
-              <tr>
-                <td class="name">Cards</td>
-                <td id="cards"></td>
-              </tr>
-              <tr>
-                <td class="name">Tags</td>
-                <td id="tags"></td>
-              </tr>
-            </table>
+            <?!= htmlSetupRestoreCommon ?>
 
             <div style="margin-top: 1.3em;">
               <button class="create" id="b-Restore" type="submit" form="the_form" disabled>Restore</button>
@@ -175,7 +102,7 @@
 
     $(document).ready(function() {
       $('#b-Select').click(pickFile);
-      <? if (isValid) { ?>
+      <? if (isContinued) { ?>
       $('#b-Select').prop('disabled', true);
 
       $("#i-AddAcc").click(() => addAccInput());
@@ -192,7 +119,7 @@
       <? } ?>
     });
 
-    <? if (isValid) { ?>
+    <? if (isContinued) { ?>
     function submitForm() {
       $('#b-Copy').prop('disabled', true);
       window.scrollTo(0, 0);
@@ -266,116 +193,6 @@
       $('#details').fadeIn('fast');
       $('#b-Restore').prop('disabled', false);
     }
-
-    $(document).on('click', '.add-acc', function() {
-      $('#accError').empty();
-      if (Glob.num_acc > 4) {
-        $('#addAcc').hide();
-        $('#accError').append('No slot available.');
-        return;
-      };
-
-      const key = $(this).attr('id');
-      $(this).closest('tr').remove();
-      addAccInput(key);
-    });
-
-    $(document).on('click', '.remove-acc', function() {
-      $('#accError').empty();
-      if (Glob.num_acc === 1) return;
-
-      const $tr = $(this).closest('tr');
-      const key = $tr.attr('id');
-      if (key) deselectAcc(key);
-
-      $tr.remove();
-      Glob.num_acc--;
-
-      if (Glob.num_acc < 5) $('#addAcc').show();
-      if (Glob.num_acc === 1) $('.remove-acc').css({ visibility: 'hidden' });
-    });
-
-    function addAccInput(key) {
-      $('#accError').empty();
-      if (Glob.num_acc > 4) return;
-
-      const $tr = $('<tr>').attr({ class: 'num_acc' });
-      if (key) $tr.attr('id', key);
-
-      let $el = null;
-
-      const $td1 = $('<td>');
-      $el = $('<span>').attr({class: 'material-icons remove-acc'})
-        .css({
-          visibility: 'hidden',
-          cursor: 'pointer',
-          'padding-right': '3px'
-        })
-        .text('remove_circle')
-        .appendTo($td1);
-      $td1.append($el);
-
-
-      const $td2 = $('<td>').css({ width: '100%' });
-      $el = $('<input>').attr({
-          type: 'text',
-          name: 'account_name',
-          placeholder: 'Name',
-          required: true
-        })
-        .css({ width: '100%' });
-      if (key) {
-        $el.attr({
-          value: Glob.accounts[key].name,
-          disabled: true,
-          readonly: true
-        });
-      }
-      $td2.append($el);
-
-      const $td3 = $('<td>');
-      $('<span>').attr({ class: 'material-icons handle' })
-        .css({ cursor: 'grabbing' })
-        .text('drag_handle')
-        .appendTo($td3);
-
-      $td1.appendTo($tr);
-      $td2.appendTo($tr);
-      $td3.appendTo($tr);
-
-      $('#accSortable').append($tr);
-      Glob.num_acc++;
-
-      if (Glob.num_acc > 4) $('#addAcc').hide();
-      if (Glob.num_acc > 1) $('.remove-acc').css({ visibility: 'visible' });
-
-      if (!key) $tr.find('input').focus();
-    }
-
-    function deselectAcc(key) {
-      const $tr = $('<tr>');
-
-      const $td1 = $('<td>');
-      $('<span>').attr({ class: 'material-icons add-acc', id: key })
-        .css({ cursor: 'pointer' })
-        .text('add_circle')
-        .appendTo($td1);
-
-      const $td2 = $('<td>').css({ width: '100%' });
-      $('<input>').attr({
-          type: 'text',
-          value: Glob.accounts[key].name,
-          disabled: true,
-          readonly: true
-        })
-        .css({ width: '100%' })
-        .appendTo($td2);
-
-      $td1.appendTo($tr);
-      $td2.appendTo($tr);
-
-      $('#accRemoved').append($tr);
-    }
     <? } ?>
 
     function pickFile() {
@@ -394,6 +211,9 @@
       $("#footer-buttons").append("<button onclick=\"closeHost();\">Close</button>");
     }
   </script>
+  <? if (isContinued) { ?>
+    <?!= jsSetupRestoreCommon ?>
+  <? } ?>
 </body>
 
 </html>
