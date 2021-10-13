@@ -38,7 +38,7 @@ function processLegacyBackup_ (uuid, file, data) {
   }
 
   const string = Utilities2.base64DecodeWebSafe(parts[0], 'UTF_8');
-  if (processBackup_(uuid, file, JSON.parse(string)) !== 0) {
+  if (SettingsCandidate.processBackup(uuid, file, JSON.parse(string)) !== 0) {
     showDialogSetupRestore(uuid, 'Sorry, something went wrong. Try again in a moment.');
     return;
   }
@@ -75,7 +75,7 @@ function requestDevelopBackup (uuid, file_id, password) {
     'UTF_8');
   CacheService3.user().put(address, password, 180);
 
-  if (processBackup_(uuid, { file: file, id: file_id, name: file.getName() }, decrypted) !== 0) {
+  if (SettingsCandidate.processBackup(uuid, { file: file, id: file_id, name: file.getName() }, decrypted) !== 0) {
     showDialogSetupRestore(uuid, 'Sorry, something went wrong. Try again in a moment.');
     return;
   }
@@ -122,51 +122,4 @@ function decryptBackup_ (password, backup) {
   } catch (err) {
     LogLog.error(err);
   }
-}
-
-function processBackup_ (uuid, file, data) {
-  if (!FeatureFlag.getStatusOf('setup/restore')) return 1;
-
-  const settings_candidate = {
-    uuid: uuid,
-    protocol: 'restore',
-    source: {
-      file_id: file.id,
-      file_url: '',
-      file_name: file.name,
-      type: 'JSON',
-      date_created: new Date(data.backup.date_request).toString()
-    },
-    settings: {
-      spreadsheet_name: data.backup.spreadsheet_title,
-      financial_year: data.const_properties.financial_year,
-      initial_month: data.user_settings.initial_month,
-      decimal_places: data.spreadsheet_settings.decimal_places,
-      financial_calendar: data.user_settings.sha256_financial_calendar,
-      accounts: []
-    },
-    misc: {
-      cards: [],
-      tags: 0
-    }
-  };
-
-  for (const k in data.db_tables.accounts) {
-    settings_candidate.settings.accounts.push({
-      id: 'acc_' + k,
-      prevIndex: +k,
-
-      require: 'restore',
-      index: +k,
-      name: data.db_tables.accounts[k].name,
-    });
-  }
-
-  for (const k in data.db_tables.cards) {
-    settings_candidate.misc.cards.push(data.db_tables.cards[k].name);
-  }
-
-  PropertiesService3.document().setProperty('settings_candidate', settings_candidate);
-  cacheSettingsSummary_(settings_candidate);
-  return 0;
 }

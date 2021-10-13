@@ -11,7 +11,7 @@ function requestValidateSpreadsheet (uuid, file_id) {
     return;
   }
 
-  if (processSpreadsheet_(uuid, file_id) !== 0) {
+  if (SettingsCandidate.processSpreadsheet(uuid, file_id) !== 0) {
     showDialogSetupCopy(uuid, 'Sorry, it was not possible to verify the spreadsheet.');
     return;
   }
@@ -45,70 +45,5 @@ function validateSpreadsheet_ (uuid, file_id) {
     return;
   }
 
-  return 0;
-}
-
-function processSpreadsheet_ (uuid, file_id) {
-  if (!FeatureFlag.getStatusOf('setup/copy')) return 1;
-
-  const spreadsheet = SpreadsheetApp.openById(file_id);
-  const metadata = new Metadata(spreadsheet);
-  let property;
-
-  const settings_candidate = {
-    uuid: uuid,
-    protocol: 'copy',
-    source: {
-      file_id: file_id,
-      file_url: spreadsheet.getUrl(),
-      type: 'GOOGLE_SHEETS'
-    },
-    settings: {
-      spreadsheet_name: spreadsheet.getName(),
-      financial_year: Consts.date.getFullYear(),
-      initial_month: Consts.date.getMonth(),
-      decimal_places: 2,
-      financial_calendar: '',
-      accounts: []
-    },
-    misc: {
-      cards: [],
-      tags: 0
-    }
-  };
-
-  property = metadata.getValueOf('const_properties');
-  if (!property) return 1;
-  settings_candidate.settings.financial_year = property.financial_year;
-
-  property = metadata.getValueOf('user_settings');
-  if (!property) return 1;
-  settings_candidate.settings.initial_month = property.initial_month;
-  settings_candidate.settings.financial_calendar = property.financial_calendar_sha256;
-
-  property = metadata.getValueOf('db_accounts');
-  if (!property) return 1;
-  for (const k in property) {
-    settings_candidate.settings.accounts.push({
-      id: 'acc_' + k,
-      prevIndex: +k,
-
-      require: 'copy',
-      index: +k,
-      name: property[k].name,
-    });
-  }
-
-  property = metadata.getValueOf('db_cards');
-  if (!property) return 1;
-  for (const k in property) {
-    settings_candidate.misc.cards.push(property[k].name);
-  }
-
-  const sheet = spreadsheet.getSheetByName('Tags');
-  if (sheet) settings_candidate.misc.tags = sheet.getLastRow() - 1;
-
-  PropertiesService3.document().setProperty('settings_candidate', settings_candidate);
-  cacheSettingsSummary_(settings_candidate);
   return 0;
 }
