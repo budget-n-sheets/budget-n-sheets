@@ -47,9 +47,9 @@ class SettingsCandidate {
   }
 
   static processSpreadsheet (uuid, fileId) {
-    if (!FeatureFlag.getStatusOf('setup/copy')) return 1;
+    if (!FeatureFlag.getStatusOf('setup/copy')) throw 1;
 
-    const spreadsheet = SpreadsheetApp.openById(file_id);
+    const spreadsheet = SpreadsheetApp.openById(fileId);
     const metadata = new Metadata(spreadsheet);
     let property;
 
@@ -57,7 +57,7 @@ class SettingsCandidate {
       uuid: uuid,
       protocol: 'copy',
       source: {
-        file_id: file_id,
+        file_id: fileId,
         file_url: spreadsheet.getUrl(),
         type: 'GOOGLE_SHEETS'
       },
@@ -76,16 +76,16 @@ class SettingsCandidate {
     };
 
     property = metadata.getValueOf('const_properties');
-    if (!property) return 1;
+    if (!property) throw 1;
     settings_candidate.settings.financial_year = property.financial_year;
 
     property = metadata.getValueOf('user_settings');
-    if (!property) return 1;
+    if (!property) throw 1;
     settings_candidate.settings.initial_month = property.initial_month;
     settings_candidate.settings.financial_calendar = property.financial_calendar_sha256;
 
     property = metadata.getValueOf('db_accounts');
-    if (!property) return 1;
+    if (!property) throw 1;
     for (const k in property) {
       settings_candidate.settings.accounts.push({
         id: 'acc_' + k,
@@ -98,7 +98,7 @@ class SettingsCandidate {
     }
 
     property = metadata.getValueOf('db_cards');
-    if (!property) return 1;
+    if (!property) throw 1;
     for (const k in property) {
       settings_candidate.misc.cards.push(property[k].name);
     }
@@ -108,6 +108,5 @@ class SettingsCandidate {
 
     PropertiesService3.document().setProperty('settings_candidate', settings_candidate);
     cacheSettingsSummary_(settings_candidate);
-    return 0;
   }
 }
