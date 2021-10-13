@@ -6,9 +6,9 @@ class SettingsCandidate {
       uuid: uuid,
       protocol: 'restore',
       source: {
-        file_id: file.id,
+        file_id: file.getId(),
         file_url: '',
-        file_name: file.name,
+        file_name: file.getName(),
         type: 'JSON',
         date_created: new Date(data.backup.date_request).toString()
       },

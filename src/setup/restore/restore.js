@@ -1,87 +1,48 @@
-function requestValidateBackup (uuid, file_id) {
+function requestValidateBackup (uuid, fileId) {
   if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;
   }
 
-  if (!isUserOwner(file_id)) {
-    showDialogSetupRestore(uuid, 'No file with the given ID could be found, or you do not have permission to access it.');
-    return;
+  showDialogMessage('Add-on restore', 'Verifying the backup...', 1);
+  let status = 0;
+
+  try {
+    status = new BackupValidation(uuid, fileId).verify();
+  } catch (err) {
+    LogLog.error(err);
+    status = typeof err === 'number' ? err : 9;
   }
 
-  const file = DriveApp.getFileById(file_id);
-  const data = file.getBlob().getDataAsString();
+  if (status === 0) return;
 
-  if (/:[0-9a-fA-F]+$/.test(data)) {
-    processLegacyBackup_(uuid, { file: file, id: file_id, name: file.getName() }, data);
-    return;
-  }
-
-  const scriptlet = { file_id: file_id, uuid: uuid };
-  const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlEnterPassword')
-    .assignReservedHref()
-    .setScriptletValues(scriptlet)
-    .evaluate()
-    .setWidth(281)
-    .setHeight(127);
-
-  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Enter password');
+  const address = Utilities2.computeDigest('SHA_1', ['setup_status', uuid, 'restore'].join(':'), 'UTF_8');
+  CacheService3.document().put(address, status);
+  if (status === 100) CacheService3.user().put(uuid, true);
+  showDialogSetupRestore(uuid);
 }
 
-function processLegacyBackup_ (uuid, file, data) {
-  const parts = data.split(':');
-  const sha = Utilities2.computeDigest('SHA_1', parts[0], 'UTF_8');
-
-  if (sha !== parts[1]) {
-    showDialogSetupRestore(uuid, 'The file is either not a supported file type or the file is corrupted.');
-    return;
-  }
-
-  const string = Utilities2.base64DecodeWebSafe(parts[0], 'UTF_8');
-  if (SettingsCandidate.processBackup(uuid, file, JSON.parse(string)) !== 0) {
-    showDialogSetupRestore(uuid, 'Sorry, something went wrong. Try again in a moment.');
-    return;
-  }
-
-  CacheService3.user().put(uuid, true);
-  showDialogSetupRestore(uuid, '');
-}
-
-function requestDevelopBackup (uuid, file_id, password) {
+function continuedValidateBackup (uuid, fileId, password) {
   if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;
   }
 
   showDialogMessage('Add-on restore', 'Verifying backup...', 1);
+  let status = 0;
 
-  if (!isUserOwner(file_id)) {
-    showDialogSetupRestore(uuid, 'No file with the given ID could be found, or you do not have permission to access it.');
-    return;
+  try {
+    status = new BackupValidation(uuid, fileId).continued(password);
+  } catch (err) {
+    LogLog.error(err);
+    status = typeof err === 'number' ? err : 9;
   }
 
-  const file = DriveApp.getFileById(file_id);
-  const data = file.getBlob().getDataAsString();
-  const decrypted = decryptBackup_(password, data);
+  const address = Utilities2.computeDigest('SHA_1', ['setup_status', uuid, 'restore'].join(':'), 'UTF_8');
+  CacheService3.document().put(address, status);
 
-  if (decrypted == null) {
-    showDialogSetupRestore(uuid, 'The password is incorrect or the file is corrupted.');
-    return;
-  }
-
-  const address = Utilities2.computeDigest(
-    'SHA_1',
-    uuid + file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
-    'UTF_8');
-  CacheService3.user().put(address, password, 180);
-
-  if (SettingsCandidate.processBackup(uuid, { file: file, id: file_id, name: file.getName() }, decrypted) !== 0) {
-    showDialogSetupRestore(uuid, 'Sorry, something went wrong. Try again in a moment.');
-    return;
-  }
-
-  CacheService3.user().put(uuid, true);
-  showDialogSetupRestore(uuid, '');
+  if (status === 0) CacheService3.user().put(uuid, true);
+  showDialogSetupRestore(uuid);
 }
 
 function unwrapBackup_ (uuid, blob, file_id) {
