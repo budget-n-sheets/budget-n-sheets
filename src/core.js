@@ -205,33 +205,13 @@ function showDialogSetupAddon_ () {
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Start budget spreadsheet');
 }
 
-function showDialogSetupRestore (uuid, msg) {
-  const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlSetupRestore')
-    .assignReservedHref()
-    .setScriptletValues({
-      isValid: (msg === ''),
-      msg: (msg || ''),
-      uuid: uuid
-    })
-    .evaluate()
-    .setWidth(353)
-    .setHeight(359);
-
+function showDialogSetupRestore (uuid) {
+  const htmlOutput = new SetupRestoreDialog(uuid).build();
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Restore from backup');
 }
 
-function showDialogSetupCopy (uuid, msg) {
-  const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlSetupCopy')
-    .assignReservedHref()
-    .setScriptletValues({
-      isValid: (msg === ''),
-      msg: (msg || ''),
-      uuid: uuid
-    })
-    .evaluate()
-    .setWidth(353)
-    .setHeight(359);
-
+function showDialogSetupCopy (uuid) {
+  const htmlOutput = new SetupCopyDialog(uuid).build();
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Copy from spreadsheet');
 }
 

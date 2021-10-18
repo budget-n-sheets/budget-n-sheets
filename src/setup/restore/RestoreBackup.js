@@ -89,8 +89,9 @@ class RestoreBackup {
       }
 
       this.name_accounts.forEach(e => {
-        if (ttt[mm][1 + e.prevIndex].length > 0) {
-          insertRows.insertRowsTo(4 + ttt[mm][1 + e.prevIndex].length, true);
+        const numRows = ttt[mm][1 + e.prevIndex].length;
+        if (numRows > 0) {
+          insertRows.insertRowsTo(4 + numRows, true);
           sheet.getRange(5, 1 + 5 * (1 + e.index), numRows, 4).setValues(ttt[mm][1 + e.prevIndex]);
         }
       });
