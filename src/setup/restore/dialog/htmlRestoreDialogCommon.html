@@ -1,0 +1,74 @@
+<table style="margin-top: 1.3em;">
+  <tr>
+    <th colspan="2" style="font-size:1.2em;"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
+  </tr>
+  <tr>
+    <td class="name" style="width: 127px;">Financial year</td>
+    <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
+  </tr>
+  <tr>
+    <td class="name"><label for="initial_month">Initial month</label></td>
+    <td>
+      <select id="initial_month" style="width:89px;">
+        <option value="0" selected>January</option>
+        <option value="1">February</option>
+        <option value="2">March</option>
+        <option value="3">April</option>
+        <option value="4">May</option>
+        <option value="5">June</option>
+        <option value="6">July</option>
+        <option value="7">August</option>
+        <option value="8">September</option>
+        <option value="9">October</option>
+        <option value="10">November</option>
+        <option value="11">December</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="name">Financial calendar</td>
+    <td id="financial_calendar"></td>
+  </tr>
+</table>
+
+<table style="margin-top: 1.3em;">
+  <tr>
+    <th><span class="material-icons-outlined">account_balance</span></th>
+    <th colspan="2" style="width: 100%;">Accounts</th>
+  </tr>
+  <tbody id="accSortable">
+  </tbody>
+  <tr id="addAcc">
+    <td></td>
+    <td>
+      <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
+    </td>
+    <td></td>
+  </tr>
+</table>
+
+<table style="width: 100%;margin-top: 2em;">
+  <tr>
+    <th></th>
+    <th>
+      From <?= location ?><br>
+      <span class="error" id="accError"></span>
+    </th>
+  </tr>
+  <tbody id="accRemoved">
+  </tbody>
+</table>
+
+<table style="margin-top: 2em;">
+  <tr>
+    <th colspan="2"><i class="material-icons-outlined">assignment</i> Cards and tags</th>
+  </tr>
+  <tr>
+    <td class="name">Cards</td>
+    <td id="cards"></td>
+  </tr>
+  <tr>
+    <td class="name">Tags</td>
+    <td id="tags"></td>
+  </tr>
+</table>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="content">
+      <div class="panel active" id="restore-panel">
+        <div>
+          <ol style="padding-left: 16px;">
+            <li>Select a backup to restore data from.</li>
+            <li>Enter the password to descrypt the backup.</li>
+            <li>Review the settings and make your changes.</li>
+            <li>Click <strong>RESTORE</strong>.</li>
+          </ol>
+
+          <p class="error" id="reponse"><?= status_msg ?></p>
+          <button class="action" id="b-Select">Select backup</button>
+          <button onclick="closeHost()">Cancel</button>
+        </div>
+
+        <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
+          <div class="panel" id="details">
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">restore</i> Backup file</span></th>
+              </tr>
+              <tr>
+                <td class="name" style="width: 127px;">File name</td>
+                <td id="file_name"></td>
+              </tr>
+              <tr>
+                <td class="name">Date created</td>
+                <td id="date_created">
+                </td>
+              </tr>
+            </table>
+
+            <table style="margin-top: 1.3em;">
+              <tr>
+                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
+              </tr>
+              <tr>
+                <td class="name" style="width: 127px;"><label for="spreadsheet_name">Spreadsheet name</label></td>
+                <td><input type="text" id="spreadsheet_name" maxlength="53" required></td>
+              </tr>
+              <tr>
+                <td class="name"><label for="decimal_places">Decimal places</label></td>
+                <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+              </tr>
+            </table>
+
+            <?!= htmlRestoreDialogCommon ?>
+
+            <div style="margin-top: 1.3em;">
+              <button class="create" id="b-Restore" type="submit" form="the_form" disabled>Restore</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel" id="setup-panel">
+        <div style="width:100%;margin:40px auto 0 auto;" align="center">
+          <h2>Restoring your spreadsheet</h2>
+          <br>
+          <div class="wait_load-wrapper">
+            <div class="wait_load-bar"></div>
+          </div>
+          <div style="width:263px;margin-top:19px;">
+            This process takes up to 4 minutes. Do not edit the spreadsheet until it is finished.
+          </div>
+        </div>
+        <div id="timeout" style="display: none;margin-top: 2em;">
+          This is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.<br>
+          <button onclick="closeHost()">Close</button>
+        </div>
+      </div>
+
+      <div class="panel" id="error-panel">
+        <p style="font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
+        <p>An error report was sent anonymously.</p>
+        <a href="<?= send_feedback ?>" target="_blank"><b>Send feedback</b></a>
+      </div>
+    </div>
+  </div>
+
+  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script>
+    const uuid = <?= uuid ?>;
+    const Glob = {
+      timeout_id: 0,
+      accounts: {},
+      num_acc: 0
+    };
+
+    $(document).ready(function() {
+      $('#b-Select').click(pickFile);
+      <? if (isContinued) { ?>
+      $('#b-Select').prop('disabled', true);
+
+      $("#i-AddAcc").click(() => addAccInput());
+      $('#accSortable').sortable({
+        axis: 'y',
+        handle: '.handle',
+        opacity: 0.71
+      });
+
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(refreshInfo)
+        .restrieveSettingsSummary(uuid, 'restore');
+      <? } ?>
+    });
+
+    <? if (isContinued) { ?>
+    function submitForm() {
+      $('#b-Copy').prop('disabled', true);
+      window.scrollTo(0, 0);
+      $('#accError').empty();
+
+      $(".panel").hide();
+      $("#setup-panel").fadeIn("fast").addClass("active");
+      google.script.host.setHeight(233);
+
+      Glob.timeout_id = setTimeout(function() {
+        google.script.host.setHeight(293);
+        $("#timeout").fadeIn();
+      }, 240000);
+
+      const name_accounts = [];
+      $('input[name=account_name]').each(function(index) {
+        const key = $(this).closest('tr').attr('id');
+        if (key) {
+          Glob.accounts[key].index = index;
+          name_accounts.push(Glob.accounts[key]);
+        } else {
+          name_accounts.push({
+            require: 'new',
+            index: index,
+            name: $(this).val()
+          });
+        }
+      });
+
+      const payload = {
+        protocol: 'restore',
+        config: {
+          name_accounts: name_accounts,
+
+          spreadsheet_name: $("#spreadsheet_name").val(),
+          decimal_places: $("#decimal_places").val(),
+
+          financial_year: $("#financial_year").val(),
+          initial_month: $("#initial_month").val()
+        }
+      };
+
+      google.script.run
+        .withFailureHandler(panelError)
+        .withSuccessHandler(null)
+        .setupService(uuid, payload);
+    }
+
+    function refreshInfo(info) {
+      if (!info) return;
+      $('#b-Select').prop('disabled', false);
+
+      $("#file_name").append(info.source.file_name);
+      $("#date_created").append(info.source.date_created);
+
+      $("#spreadsheet_name").val(info.settings.spreadsheet_name);
+      $('#decimal_places').val(info.settings.decimal_places);
+
+      $('#financial_year').val(info.settings.financial_year);
+      $('#initial_month').val(info.settings.initial_month);
+      $('#financial_calendar').append(info.settings.financial_calendar);
+
+      info.settings.accounts.forEach(o => {
+        Glob.accounts[o.id] = o;
+        addAccInput(o.id);
+      });
+
+      $('#cards').append(info.misc.cards);
+      $('#tags').append(info.misc.tags);
+
+      $('#details').fadeIn('fast');
+      $('#b-Restore').prop('disabled', false);
+    }
+    <? } ?>
+
+    function pickFile() {
+      this.disabled = true;
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(closeHost)
+        .showDialogPickerRestore(uuid, 'restore');
+    }
+
+    function panelError(err) {
+      clearTimeout(Glob.timeout_id);
+      google.script.host.setHeight(197);
+      $("#error-panel").siblings().remove();
+      $("#error-panel").fadeIn("fast").addClass("active");
+      $("#footer-buttons").append("<button onclick=\"closeHost();\">Close</button>");
+    }
+  </script>
+  <? if (isContinued) { ?>
+    <?!= jsRestoreDialogCommon ?>
+  <? } ?>
+</body>
+
+</html>

@@ -11,6 +11,18 @@
       width: 100%;
     }
 
+    table {
+      counter-reset: tr-count;
+    }
+
+    tr.num_acc {
+      counter-increment: tr-count;
+    }
+
+    .acc_counter:after {
+      content: ' ' counter(tr-count);
+    }
+
     #restore-panel table {
       font-size: 14px;
       border-collapse: collapse;
@@ -116,7 +128,7 @@
           </div>
         </div>
 
-        <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
+        <form accept-charset="UTF-8" id="the_form" onsubmit="return submitForm();">
           <table style="width: 100%;">
             <tr>
               <td class="name" style="width:50%;"><label for="spreadsheet_name">Spreadsheet title</label></td>
@@ -157,64 +169,21 @@
           </table>
           <table style="width: 100%; margin-top: 2em;">
             <tr>
-              <th colspan="2"><i class="material-icons-outlined">account_balance</i> Accounts</th>
-            </tr>
-            <tr>
-              <td class="name" style="width:50%;"><label for="number_accounts">Accounts</label></td>
-              <td>
-                <select id="number_accounts" style="width:83px;">
-                  <option value="1" selected>One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                  <option value="4">Four</option>
-                  <option value="5">Five</option>
-                </select>
-              </td>
+              <th colspan="3"><i class="material-icons-outlined">account_balance</i> Accounts</th>
             </tr>
             <tr class="num_acc">
+              <td><label class="acc_counter" style="font-weight: bold;">Account</label></td>
               <td>
-                <label style="font-weight: bold;">Account 1</label><br />
-                <span class="gray">Name</span>
+                <input type="text" name="account_name" style="width: 100%;" placeholder="Name" required>
               </td>
-              <td>
-                <input type="text" name="account_name" style="width: 100%;" required>
-              </td>
+              <td><span class="material-icons remove-acc" style="padding-left: 3px;visibility: hidden;cursor: pointer;">remove_circle</span></td>
             </tr>
-            <tr class="num_acc">
+            <tr id="addAcc">
+              <td></td>
               <td>
-                <label style="font-weight: bold;">Account 2</label><br />
-                <span class="gray">Name</span>
+                <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
               </td>
-              <td>
-                <input type="text" name="account_name" style="width: 100%;">
-              </td>
-            </tr>
-            <tr class="num_acc">
-              <td>
-                <label style="font-weight: bold;">Account 3</label><br />
-                <span class="gray">Name</span>
-              </td>
-              <td>
-                <input type="text" name="account_name" style="width: 100%;">
-              </td>
-            </tr>
-            <tr class="num_acc">
-              <td>
-                <label style="font-weight: bold;">Account 4</label><br />
-                <span class="gray">Name</span>
-              </td>
-              <td>
-                <input type="text" name="account_name" style="width: 100%;">
-              </td>
-            </tr>
-            <tr class="num_acc">
-              <td>
-                <label style="font-weight: bold;">Account 5</label><br />
-                <span class="gray">Name</span>
-              </td>
-              <td>
-                <input type="text" name="account_name" style="width: 100%;">
-              </td>
+              <td></td>
             </tr>
           </table>
         </form>
@@ -252,6 +221,7 @@
   </div>
   <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
+    const Glob = { num_acc: 1 };
     const uuid = <?= uuid ?>;
     var TIMEOUT_ID;
 
@@ -263,6 +233,7 @@
       <? if (setup_copy) { ?>
       $("#b-Copy").click(showCopy);
       <? } ?>
+      $('#i-AddAcc').click(addAccInput);
 
       var date = new Date();
       $("#financial_year").val(date.getFullYear());
@@ -270,19 +241,62 @@
         $("#initial_month").val(date.getMonth() - 1);
       }
 
-      $(".num_acc").slice(1).hide();
       $("#main-panel").fadeIn().addClass("active");
     });
 
-    $("#number_accounts").change(function() {
-      var num_acc = Number($(this).val());
+    $(document).on('click', '.remove-acc', function() {
+      if (Glob.num_acc === 1) return;
 
-      $(".num_acc").show();
-      $(".num_acc").slice(num_acc).hide();
+      $(this).closest('tr').remove();
+      Glob.num_acc--;
 
-      $("input[name=account_name]").attr("required", true);
-      $("input[name=account_name]").slice(num_acc).attr("required", false).val("");
+      if (Glob.num_acc < 5) $('#addAcc').show();
+      if (Glob.num_acc === 1) $('.remove-acc').css({ visibility: 'hidden' });
     });
+
+    function addAccInput() {
+      if (Glob.num_acc > 4) return;
+
+      const $tr = $('<tr>').attr({ class: 'num_acc' });
+
+      const $td1 = $('<td>').append([
+        $('<label>').attr({ class: 'acc_counter' })
+          .css({ 'font-weight': 'bold' })
+          .text('Account')
+      ]);
+
+      const $td2 = $('<td>').append([
+        $('<input>').attr({
+            type: 'text',
+            name: 'account_name',
+            placeholder: 'Name',
+            required: true
+          })
+          .css({ width: '100%' })
+      ]);
+
+      const $td3 = $('<td>');
+      $('<span>').attr({ class: 'material-icons remove-acc' })
+        .css({
+          'padding-left': '3px',
+          cursor: 'pointer',
+          visibility: 'hidden'
+        })
+        .text('remove_circle')
+        .appendTo($td3);
+
+      $td1.appendTo($tr);
+      $td2.appendTo($tr);
+      $td3.appendTo($tr);
+
+      $('#addAcc').before($tr);
+      Glob.num_acc++;
+
+      if (Glob.num_acc > 4) $('#addAcc').hide();
+      if (Glob.num_acc > 1) $('.remove-acc').css({ visibility: 'visible' });
+
+      $tr.find('input').focus();
+    }
 
     <? if (setup_restore) { ?>
     function showRestore() {
@@ -332,25 +346,18 @@
     }
 
     function submitForm() {
-      window.scrollTo(0, 0);
-
-      var p = $(".active").attr("id");
-      $("#" + p).removeClass("active");
-
-      $(".panel").hide();
-      $("#footer-buttons button").remove();
-      $("#setup-panel").fadeIn("fast").addClass("active");
-      google.script.host.setHeight(233);
-
       const name_accounts = [];
-      $("input[required][name=account_name]").each(function(i) {
-        name_accounts[i] = $(this).val();
+      $('input[name=account_name]').each(function(index) {
+        name_accounts.push({
+          require: 'new',
+          index: index,
+          name: $(this).val()
+        });
       });
 
       const payload = {
         protocol: 'new',
         config: {
-          number_accounts: $("#number_accounts").val(),
           name_accounts: name_accounts,
 
           spreadsheet_name: $("#spreadsheet_name").val(),
@@ -371,6 +378,16 @@
         .withFailureHandler(panelError)
         .withSuccessHandler(null)
         .setupService(uuid, payload);
+
+      window.scrollTo(0, 0);
+
+      var p = $(".active").attr("id");
+      $("#" + p).removeClass("active");
+
+      $(".panel").hide();
+      $("#footer-buttons button").remove();
+      $("#setup-panel").fadeIn("fast").addClass("active");
+      google.script.host.setHeight(233);
     }
 
     function panelError(err) {

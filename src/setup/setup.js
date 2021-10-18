@@ -17,8 +17,7 @@ function setupService (uuid, payload) {
   console.time('setup/' + payload.protocol);
   if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.');
 
-  payload.uuid = uuid;
-  const config = SetupConfig.digestConfig(payload);
+  const config = SetupConfig.digestConfig(uuid, payload);
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   spreadsheet.rename(config.spreadsheet_name);
 
@@ -27,18 +26,11 @@ function setupService (uuid, payload) {
     .copyTemplate()
     .makeInstall();
 
-  if (payload.protocol === 'restore') {
-    try {
-      new RestoreBackup(config.backup).restore();
-    } catch (err) {
-      LogLog.error(err);
-    }
-  } else if (payload.protocol === 'copy') {
-    try {
-      new RestoreCopy(config.file_id).copy();
-    } catch (err) {
-      LogLog.error(err);
-    }
+  try {
+    if (payload.protocol === 'restore') new RestoreBackup(config).restore();
+    else if (payload.protocol === 'copy') new RestoreCopy(config).copy();
+  } catch (err) {
+    LogLog.error(err);
   }
 
   CachedAccess.update('class_version2', {
@@ -50,6 +42,7 @@ function setupService (uuid, payload) {
 
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService3.document().setProperty('is_installed', true);
+  PropertiesService3.document().deleteProperty('settings_candidate');
 
   try {
     TriggersService.start();
