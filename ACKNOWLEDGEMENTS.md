@@ -4,11 +4,7 @@ This application makes use of the following third party libraries:
 
 ## Stanford Javascript Crypto Library
 
-http://opensource.org/licenses/GPL-2.0
-
-The Stanford Javascript Crypto Library (hosted here on GitHub) is a project by the Stanford Computer Security Lab to build a secure, powerful, fast, small, easy-to-use, cross-browser library for cryptography in Javascript.
-
-Copyright (c) 2009-2015, Emily Stark, Mike Hamburg and Dan Boneh at Stanford University.
+Copyright (c) 2009-2015, Emily Stark, Mike Hamburg and Dan Boneh at Stanford University. (https://crypto.stanford.edu/sjcl/)
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
