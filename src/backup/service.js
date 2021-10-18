@@ -13,8 +13,10 @@ function showDialogBackupSession () {
     return 1;
   }
 
+  const jsZxcvbn = HtmlService.createHtmlOutputFromFile('zxcvbn/jsZxcvbn').getContent();
   const htmlOutput = HtmlService2.createTemplateFromFile('backup/htmlNewPassword')
     .assignReservedHref()
+    .setScriptletValues({ jsZxcvbn: jsZxcvbn })
     .evaluate()
     .setHeight(443)
     .setWidth(281);

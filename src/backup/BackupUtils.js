@@ -1,12 +1,10 @@
 class BackupUtils {
   static checkPasswordPolicy (password) {
     if (typeof password !== 'string') return false;
-    if (password.length < 12) return false;
-    if (!/[a-z]+/.test(password)) return false;
-    if (!/[A-Z]+/.test(password)) return false;
-    if (!/[0-9]+/.test(password)) return false;
-    if (!/[~!@#$%^*\-_=+[{\]}/;:,.?]+/.test(password)) return false;
-    if (!/^[0-9a-zA-Z~!@#$%^*\-_=+[{\]}/;:,.?]{12,}$/.test(password)) return false;
+
+    const result = zxcvbn(password);
+    if (result.score < 3) return false;
+    if (!/^[0-9a-zA-Z~!@#$%^*\-_=+[{\]}/;:,.?]+$/.test(password)) return false;
 
     return true;
   }
