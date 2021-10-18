@@ -3,7 +3,7 @@
     google.script.run
       .withSuccessHandler(loadUserSettings)
       .withFailureHandler(showError)
-      .retrieveUserSettings();
+      .getUserSettings();
   });
 
   $(document).on('click', '#b-Save', saveSettings);
