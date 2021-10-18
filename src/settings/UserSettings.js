@@ -63,7 +63,10 @@ class UserSettings {
     }
 
     try {
-      if (this._flush.view_mode) setViewMode_(SettingsSpreadsheet.getValueOf('view_mode') !== 'simple');
+      if (this._flush.view_mode) {
+        const mode = SettingsSpreadsheet.getValueOf('view_mode') === 'simple';
+        setViewMode_(mode);
+      }
     } catch (err) {
       LogLog.error(err);
     }
