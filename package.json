@@ -1,8 +1,10 @@
 {
   "standard": {
-    "globals": [ "sjcl", "FormulaBuild", "FormatNumber", "ConsoleLog", "CacheService2", "PropertiesService2", "SpreadsheetApp2", "MONTH_NAME", "DATE_NOW", "PATCH_THIS" ],
+    "globals": [
+      "sjcl", "zxcvbn", "FormulaBuild", "FormatNumber", "ConsoleLog", "CacheService2", "PropertiesService2", "SpreadsheetApp2", "MONTH_NAME", "DATE_NOW", "PATCH_THIS"
+    ],
     "ignore": [
-      "sjcl/sjcl.js"
+      "sjcl/sjcl.js", "zxcvbn/zxcvbn.js"
     ]
   }
 }
