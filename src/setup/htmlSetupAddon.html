@@ -346,12 +346,13 @@
     }
 
     function submitForm() {
-      const name_accounts = $('input[name=account_name]').map(function(index) {
-        return {
+      const name_accounts = [];
+      $('input[name=account_name]').each(function(index) {
+        name_accounts.push({
           require: 'new',
           index: index,
           name: $(this).val()
-        };
+        });
       });
 
       const payload = {
