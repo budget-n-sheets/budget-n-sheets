@@ -1,6 +1,6 @@
 class SetupRestoreDialog extends RestoreDialog {
   constructor (uuid) {
-    super('restore', uuid, 'setup/restore/htmlSetupRestore');
+    super('restore', uuid, 'setup/restore/dialog/htmlSetupRestore');
   }
 
   evalStatus_ (status) {
