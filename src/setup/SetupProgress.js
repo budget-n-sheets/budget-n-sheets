@@ -33,6 +33,11 @@ class SetupProgress {
     const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
     const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
 
+    if (config.name_accounts.length > 5) {
+      config.name_accounts = config.name_accounts.slice(0, 5);
+      config.number_accounts = 5;
+    }
+
     this._config = {
       name_accounts: config.name_accounts,
       number_accounts: Number(config.number_accounts),
