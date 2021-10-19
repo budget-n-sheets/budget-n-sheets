@@ -18,7 +18,7 @@ function showDialogBackupSession () {
     .assignReservedHref()
     .setScriptletValues({ jsZxcvbn: jsZxcvbn })
     .evaluate()
-    .setHeight(367)
+    .setHeight(383)
     .setWidth(281);
 
   ui.showModalDialog(htmlOutput, 'Enter password');
