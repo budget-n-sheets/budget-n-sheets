@@ -2,7 +2,7 @@ class Backup {
   constructor () {
     this._spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     this._backup = {
-      backup: {},
+      metadata: {},
       ttt: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}, 11: {} },
       cards: { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [] },
       tags: [],
@@ -39,8 +39,7 @@ class Backup {
       this._backup.db_tables.accounts[k] = {
         name: account.name,
         balance: account.balance,
-        time_a: account.time_start,
-        time_z: 11
+        time_start: account.time_start
       };
       k++;
     }
@@ -89,7 +88,7 @@ class Backup {
       decimal_places: SettingsSpreadsheet.getValueOf('decimal_places')
     };
 
-    this._backup.user_settings.sha256_financial_calendar = this._backup.user_settings.financial_calendar
+    this._backup.user_settings.financial_calendar = this._backup.user_settings.financial_calendar
       ? Utilities2.computeDigest('SHA_256', this._backup.user_settings.financial_calendar, 'UTF_8')
       : '';
 
@@ -128,11 +127,11 @@ class Backup {
   }
 
   setMeta_ () {
-    this._backup.backup = {
+    this._backup.metadata = {
       version: Info.backup.version,
       date_request: Consts.date.getTime(),
       spreadsheet_id: this._spreadsheet.getId(),
-      spreadsheet_title: this._spreadsheet.getName()
+      spreadsheet_name: this._spreadsheet.getName()
     };
   }
 

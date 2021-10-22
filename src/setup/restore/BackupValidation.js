@@ -56,9 +56,10 @@ class BackupValidation {
     const data = file.getBlob().getDataAsString();
 
     const decrypted = decryptBackup_(password, data);
-    if (decrypted == null) throw 3;
+    const patched = BackupPatchService.patchThis(decrypted);
+    if (patched == null) throw 3;
 
-    SettingsCandidate.processBackup(this._uuid, file, decrypted);
+    SettingsCandidate.processBackup(this._uuid, file, patched);
 
     const address = Utilities2.computeDigest('SHA_1', this._uuid + file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(), 'UTF_8');
     CacheService3.user().put(address, password, 180);
