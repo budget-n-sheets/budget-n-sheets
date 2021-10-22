@@ -1,11 +1,12 @@
-class Update {
+class Update extends PatchThis {
   constructor (v0, vA, list) {
-    this._v0 = v0;
-    this._vA = vA;
-    this._list = list;
+    super();
+
+    this._source = v0;
+    this._reference = Object.freeze(Object.assign({}, vA));
+    this._patches = list;
 
     this.status = 0;
-    this.response = 1;
     this.position = {};
   }
 
@@ -17,27 +18,19 @@ class Update {
   run () {
     this.status = 1;
 
-    if (!SemVerUtils.hasSemVerFormat(this._v0)) return this;
-    if (!SemVerUtils.hasSemVerFormat(this._vA)) return this;
-    if (SemVerUtils.hasMinimumVersion(this._v0, this._vA)) {
+    if (!SemVerUtils.hasSemVerFormat(this._source)) return this;
+    if (!SemVerUtils.hasSemVerFormat(this._reference)) return this;
+    if (SemVerUtils.hasMinimumVersion(this._source, this._reference)) {
       this.response = 0;
       return this;
     }
 
-    const patch = new PatchThis();
+    this.makeConfig().update();
 
-    patch.setPatches(this._list)
-      .fromVer(this._v0)
-      .toVer(this._vA)
-      .makeConfig()
-      .update();
-
-    this.position = patch.getPosition();
-    this.response = patch.response;
+    this.position = this.getPosition();
     this.status = 2;
 
     this.setPosition_();
-
     return this;
   }
 }

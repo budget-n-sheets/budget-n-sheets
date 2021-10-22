@@ -19,6 +19,10 @@
 
 class PatchThis {
   constructor () {
+    this._source = null;
+    this._reference = null;
+    this._patches = null;
+
     this._control = {
       major: { pos: 0 },
       minor: { pos: 0, list: [], ref: -1 },
@@ -41,9 +45,10 @@ class PatchThis {
       if (control.pos >= control.list.length) {
         control.pos--;
         break;
-      } else if (control.list[control.pos] != null) {
+      } else if (control.list[control.pos] !== '') {
         try {
-          this.response = control.list[control.pos]();
+          const name = control.list[control.pos];
+          this.response = this[name]();
         } catch (err) {
           LogLog.error(err);
           this.response = 2;
