@@ -10,10 +10,10 @@ class SettingsCandidate {
         file_url: '',
         file_name: file.getName(),
         type: 'JSON',
-        date_created: new Date(data.backup.date_request).toString()
+        date_created: new Date(data.metadata.date_request).toString()
       },
       settings: {
-        spreadsheet_name: data.backup.spreadsheet_title,
+        spreadsheet_name: data.metadata.spreadsheet_name,
         financial_year: data.const_properties.financial_year,
         initial_month: data.user_settings.initial_month,
         decimal_places: data.spreadsheet_settings.decimal_places,
