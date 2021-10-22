@@ -82,7 +82,7 @@ class SettingsCandidate {
     property = metadata.getValueOf('user_settings');
     if (!property) throw 1;
     settings_candidate.settings.initial_month = property.initial_month;
-    settings_candidate.settings.financial_calendar = property.financial_calendar_sha256;
+    settings_candidate.settings.financial_calendar = property.financial_calendar;
 
     property = metadata.getValueOf('db_accounts');
     if (!property) throw 1;

@@ -542,7 +542,7 @@ class SetupParts {
 
     const metadata = {
       initial_month: this._config.initial_month,
-      financial_calendar_sha256: '',
+      financial_calendar: '',
       post_day_events: false,
       cash_flow_events: false
     };

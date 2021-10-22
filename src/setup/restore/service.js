@@ -25,20 +25,18 @@ function restrieveSettingsSummary (uuid, protocol) {
   lock.releaseLock();
 
   if (settings.settings.financial_calendar) {
-    const calendars = Calendar.listAllCalendars();
-    let found = false;
+    let calendar = null;
 
-    for (const sha1 in calendars) {
-      const digest = Utilities2.computeDigest('SHA_256', calendars[sha1].id, 'UTF_8');
-
-      if (digest === settings.settings.financial_calendar) {
-        settings.settings.financial_calendar = calendars[sha1].name;
-        found = true;
-        break;
-      }
+    if (protocol === 'copy') {
+      calendar = CalendarApp.getCalendarById(settings.settings.financial_calendar);
+      settings.settings.financial_calendar = calendar.getName();
+    } else if (protocol === 'restore') {
+      const calendars = Calendar.listAllCalendars();
+      calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, settings.settings.financial_calendar);
+      settings.settings.financial_calendar = calendar.name;
     }
 
-    if (!found) settings.settings.financial_calendar = '<i>Google Calendar not found or you do not have permission to access it.</i>';
+    if (!calendar) settings.settings.financial_calendar = '<i>Google Calendar not found or you do not have permission to access it.</i>';
   }
 
   settings.misc.cards = settings.misc.cards.length > 0 ? settings.misc.cards.join(', ') : '-';

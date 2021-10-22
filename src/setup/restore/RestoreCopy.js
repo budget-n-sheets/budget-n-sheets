@@ -25,18 +25,14 @@ class RestoreCopy {
 
   copySettings_ () {
     const metadata = this.metadata.getValueOf('user_settings');
-    if (metadata.financial_calendar_sha256 === '') return;
+    if (metadata.financial_calendar === '') return;
 
     const calendars = Calendar.listAllCalendars();
-    for (const key in calendars) {
-      const digest = Utilities2.computeDigest('SHA_256', calendars[key].id, 'UTF_8');
-
-      if (digest === metadata.financial_calendar_sha256) {
-        SettingsUser.setValueOf('financial_calendar', calendars[key].id);
-        SettingsUser.setValueOf('post_day_events', metadata.post_day_events);
-        SettingsUser.setValueOf('cash_flow_events', metadata.cash_flow_events);
-        break;
-      }
+    const calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, metadata.financial_calendar);
+    if (calendar) {
+      SettingsUser.setValueOf('financial_calendar', calendar.id);
+      SettingsUser.setValueOf('post_day_events', metadata.post_day_events);
+      SettingsUser.setValueOf('cash_flow_events', metadata.cash_flow_events);
     }
   }
 
