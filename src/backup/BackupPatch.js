@@ -4,7 +4,7 @@ class BackupPatch extends PatchThis {
 
     this._payload = payload;
 
-    this._source = payload.metadata.version;
+    this._source = (payload.metadata ?? payload.backup).version;
     this._reference = Object.freeze(Object.assign({}, Info.backup.version));
     this._patches = [
       [
