@@ -105,4 +105,13 @@ class CalendarUtils {
 
     return output;
   }
+
+  static getMetaByHash (algorithm, calendars, hash) {
+    for (const sha1 in calendars) {
+      const digest = Utilities2.computeDigest(algorithm, calendars[sha1].id, 'UTF_8');
+      if (hash === digest) return calendars[sha1];
+    }
+
+    return null;
+  }
 }
