@@ -23,18 +23,14 @@ class RestoreBackup {
 
   restoreSettings_ () {
     const user_settings = this.backup.user_settings;
-    if (!user_settings.sha256_financial_calendar) return;
+    if (!user_settings.financial_calendar) return;
 
     const calendars = Calendar.listAllCalendars();
-    for (const key in calendars) {
-      const digest = Utilities2.computeDigest('SHA_256', calendars[key].id, 'UTF_8');
-
-      if (digest === user_settings.sha256_financial_calendar) {
-        SettingsUser.setValueOf('financial_calendar', calendars[key].id);
-        SettingsUser.setValueOf('post_day_events', user_settings.post_day_events);
-        SettingsUser.setValueOf('cash_flow_events', user_settings.cash_flow_events);
-        break;
-      }
+    const calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, user_settings.financial_calendar);
+    if (calendar) {
+      SettingsUser.setValueOf('financial_calendar', calendar.id);
+      SettingsUser.setValueOf('post_day_events', user_settings.post_day_events);
+      SettingsUser.setValueOf('cash_flow_events', user_settings.cash_flow_events);
     }
   }
 

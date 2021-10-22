@@ -17,7 +17,7 @@ class SettingsCandidate {
         financial_year: data.const_properties.financial_year,
         initial_month: data.user_settings.initial_month,
         decimal_places: data.spreadsheet_settings.decimal_places,
-        financial_calendar: data.user_settings.sha256_financial_calendar,
+        financial_calendar: data.user_settings.financial_calendar,
         accounts: []
       },
       misc: {
