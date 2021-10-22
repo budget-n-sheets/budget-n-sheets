@@ -70,9 +70,10 @@ function unwrapBackup_ (uuid, blob, file_id) {
   }
 
   const decrypted = decryptBackup_(password, data);
-  if (decrypted == null) throw new Error('decryptBackup_(): Decryption failed.');
+  const patched = BackupPatchService.patchThis(decrypted);
+  if (patched == null) throw new Error('decryptBackup_(): Decryption failed.');
 
-  return decrypted;
+  return patched;
 }
 
 function decryptBackup_ (password, backup) {
