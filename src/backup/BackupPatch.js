@@ -15,6 +15,10 @@ class BackupPatch extends PatchThis {
     this.position = {};
   }
 
+  get payload () {
+    return this._payload;
+  }
+
   setPosition_ () {
     this._payload.backup.version = this.getPosition();
     return this;
