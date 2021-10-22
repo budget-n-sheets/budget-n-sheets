@@ -1,7 +1,5 @@
 class Backup {
   constructor () {
-    this.version = { major: 0, minor: 1, patch: 0 };
-
     this._spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     this._backup = {
       backup: {},
@@ -131,7 +129,7 @@ class Backup {
 
   setMeta_ () {
     this._backup.backup = {
-      version: this.version,
+      version: Info.backup.version,
       date_request: Consts.date.getTime(),
       spreadsheet_id: this._spreadsheet.getId(),
       spreadsheet_title: this._spreadsheet.getName()
