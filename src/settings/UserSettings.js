@@ -65,10 +65,12 @@ class UserSettings {
 
     try {
       const sheet = spreadsheet.getSheetByName('_Settings');
-      if (sheet) sheet.getRange('B4')
-        .setFormula(
-          new FormatNumber().localeSignal(SettingsUser.getValueOf('initial_month') + 1)
-        );
+      if (sheet) {
+        sheet.getRange('B4')
+          .setFormula(
+            new FormatNumber().localeSignal(SettingsUser.getValueOf('initial_month') + 1)
+          );
+      }
 
       if (this._flush.initial_month) updateTabsColors();
     } catch (err) {

@@ -1,3 +1,3 @@
-function doGet(e) {
+function doGet (e) {
   return HtmlService.createHtmlOutput(e.queryString);
 }

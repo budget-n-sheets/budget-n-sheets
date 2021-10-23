@@ -33,7 +33,7 @@ class SettingsCandidate {
 
         require: 'restore',
         index: +k,
-        name: data.db_tables.accounts[k].name,
+        name: data.db_tables.accounts[k].name
       });
     }
 
@@ -93,7 +93,7 @@ class SettingsCandidate {
 
         require: 'copy',
         index: +k,
-        name: property[k].name,
+        name: property[k].name
       });
     }
 

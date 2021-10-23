@@ -38,9 +38,9 @@ class BackupValidation {
     const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlEnterPassword')
       .assignReservedHref()
       .setScriptletValues({
-          uuid: this._uuid,
-          file_id: this._fileId
-        })
+        uuid: this._uuid,
+        file_id: this._fileId
+      })
       .evaluate()
       .setWidth(281)
       .setHeight(127);

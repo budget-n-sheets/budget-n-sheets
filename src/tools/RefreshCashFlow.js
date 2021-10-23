@@ -96,11 +96,11 @@ class RefreshCashFlow {
     if (numRows < 1) return;
 
     const snapshot = sheet.getRange(
-        this.specs.ttt.row,
-        1 + this.specs.ttt.width + 1,
-        numRows,
-        (this.specs.ttt.width + 1) * this.num_acc
-      ).getValues();
+      this.specs.ttt.row,
+      1 + this.specs.ttt.width + 1,
+      numRows,
+      (this.specs.ttt.width + 1) * this.num_acc
+    ).getValues();
 
     let k = 0;
     let i = -1;

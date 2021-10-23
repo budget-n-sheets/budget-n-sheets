@@ -195,8 +195,8 @@ class CardsService extends TablesService {
 
   getByCode (code, withAliases) {
     for (const id in this._db) {
-      if (code === this._db[id].code
-      || (withAliases && this._db[id].aliases.indexOf(code) > -1)) return { id: id, metadata: Utils.deepCopy(this._db[id]) };
+      if (code === this._db[id].code ||
+      (withAliases && this._db[id].aliases.indexOf(code) > -1)) return { id: id, metadata: Utils.deepCopy(this._db[id]) };
     }
 
     return null;

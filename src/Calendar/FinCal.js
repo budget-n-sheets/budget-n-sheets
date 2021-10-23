@@ -15,7 +15,7 @@ class FinCal {
   }
 
   set dateoffset (offset) {
-    return this.dateOffset = offset;
+    this.dateOffset = offset;
   }
 
   getEventsForDay (date) {
