@@ -54,7 +54,9 @@ function unwrapBackup_ (uuid, blob, file_id) {
     const sha = Utilities2.computeDigest('SHA_1', parts[0], 'UTF_8');
     if (sha !== parts[1]) throw new Error("Hashes don't match.");
 
-    return parts[0];
+    return JSON.parse(
+      Utilities2.base64DecodeWebSafe(parts[0], 'UTF_8')
+    );
   }
 
   const address = Utilities2.computeDigest(
