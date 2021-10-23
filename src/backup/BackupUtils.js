@@ -1,10 +1,7 @@
 class BackupUtils {
   static checkPasswordPolicy (password) {
     if (typeof password !== 'string') return false;
-
-    const result = zxcvbn(password);
-    if (result.score < 3) return false;
-    if (!/^[0-9a-zA-Z~!@#$%^*\-_=+([{)\]}/;:,.?]+$/.test(password)) return false;
+    if (password.length < 8) return false;
 
     return true;
   }
