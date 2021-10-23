@@ -14,8 +14,14 @@ class BackupValidation {
 
     if (sha !== parts[1]) throw 1;
 
-    const string = Utilities2.base64DecodeWebSafe(parts[0], 'UTF_8');
-    SettingsCandidate.processBackup(this._uuid, this._file, JSON.parse(string));
+    const patched = BackupPatchService.patchThis(
+      JSON.parse(
+        Utilities2.base64DecodeWebSafe(parts[0], 'UTF_8')
+      )
+    );
+    if (patched == null) throw 3;
+
+    SettingsCandidate.processBackup(this._uuid, this._file, patched);
   }
 
   verifyMetadata_ () {

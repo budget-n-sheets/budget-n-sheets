@@ -54,7 +54,14 @@ function unwrapBackup_ (uuid, blob, file_id) {
     const sha = Utilities2.computeDigest('SHA_1', parts[0], 'UTF_8');
     if (sha !== parts[1]) throw new Error("Hashes don't match.");
 
-    return JSON.parse(Utilities2.base64DecodeWebSafe(parts[0], 'UTF_8'));
+    const patched = BackupPatchService.patchThis(
+      JSON.parse(
+        Utilities2.base64DecodeWebSafe(parts[0], 'UTF_8')
+      )
+    );
+    if (patched == null) throw new Error('unwrapBackup_(): Unwrap failed.');
+
+    return patched;
   }
 
   const address = Utilities2.computeDigest(
@@ -71,7 +78,7 @@ function unwrapBackup_ (uuid, blob, file_id) {
 
   const decrypted = decryptBackup_(password, data);
   const patched = BackupPatchService.patchThis(decrypted);
-  if (patched == null) throw new Error('decryptBackup_(): Decryption failed.');
+  if (patched == null) throw new Error('unwrapBackup_(): Unwrap failed.');
 
   return patched;
 }
