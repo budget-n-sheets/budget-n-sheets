@@ -74,8 +74,6 @@ class RestoreBackup {
 
     let mm = -1;
     while (++mm < 12) {
-      if (ttt[mm] == null) continue;
-
       const sheet = Spreadsheet2.getSheetByName(Consts.month_name.short[mm]);
       const insertRows = new ToolInsertRowsMonth(mm);
 
@@ -85,7 +83,7 @@ class RestoreBackup {
       }
 
       this.name_accounts.forEach(e => {
-        const numRows = ttt[mm][1 + e.prevIndex].length;
+        const numRows = ttt[mm][1 + e.prevIndex]?.length || 0;
         if (numRows > 0) {
           insertRows.insertRowsTo(4 + numRows, true);
           sheet.getRange(5, 1 + 5 * (1 + e.index), numRows, 4).setValues(ttt[mm][1 + e.prevIndex]);
