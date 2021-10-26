@@ -15,10 +15,13 @@ function requestValidateBackup (uuid, fileId) {
   }
 
   if (status === 0) return;
+  if (status === 100) {
+    CacheService3.user().put(uuid, true);
+    status = 0;
+  }
 
   const address = Utilities2.computeDigest('SHA_1', ['setup_status', uuid, 'restore'].join(':'), 'UTF_8');
   CacheService3.document().put(address, status);
-  if (status === 100) CacheService3.user().put(uuid, true);
   showDialogSetupRestore(uuid);
 }
 
