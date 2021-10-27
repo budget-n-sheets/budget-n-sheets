@@ -29,11 +29,11 @@ function restrieveSettingsSummary (uuid, protocol) {
 
     if (protocol === 'copy') {
       calendar = CalendarApp.getCalendarById(settings.settings.financial_calendar);
-      settings.settings.financial_calendar = calendar.getName();
+      settings.settings.financial_calendar = calendar ? calendar.getName() : '';
     } else if (protocol === 'restore') {
       const calendars = Calendar.listAllCalendars();
       calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, settings.settings.financial_calendar);
-      settings.settings.financial_calendar = calendar.name;
+      settings.settings.financial_calendar = calendar?.name || '';
     }
 
     if (!calendar) settings.settings.financial_calendar = '<i>Google Calendar not found or you do not have permission to access it.</i>';
