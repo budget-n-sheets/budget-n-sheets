@@ -1,6 +1,6 @@
 class SettingsCandidate {
   static processBackup (uuid, file, data) {
-    if (!FeatureFlag.getStatusOf('setup/restore')) return 1;
+    if (!FeatureFlag.getStatusOf('setup/restore')) throw 1;
 
     const settings_candidate = {
       uuid: uuid,
