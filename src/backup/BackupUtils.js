@@ -22,7 +22,7 @@ class BackupUtils {
 
     MailApp.sendEmail(
       Session.getEffectiveUser().getEmail(),
-      'Your Budget n Sheets Backup',
+      'Your budget spreadsheet backup',
       htmlMessage,
       {
         name: 'Add-on Budget n Sheets',
