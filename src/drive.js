@@ -14,14 +14,10 @@ function getOAuthToken () {
 }
 
 function isUserOwner (fileId) {
-  let file;
-
   try {
-    file = DriveApp.getFileById(fileId);
+    return DriveApp.getFileById(fileId).getOwner().getEmail() === Session.getEffectiveUser().getEmail();
   } catch (err) {
     LogLog.error(err);
     return false;
   }
-
-  return file.getOwner().getEmail() === Session.getEffectiveUser().getEmail();
 }
