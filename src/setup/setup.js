@@ -14,7 +14,6 @@ function setupService (uuid, payload) {
   }
   CacheService3.user().remove(uuid);
 
-  console.time('setup/' + payload.protocol);
   if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.');
 
   const config = SetupConfig.digestConfig(uuid, payload);
@@ -52,6 +51,4 @@ function setupService (uuid, payload) {
 
   showDialogSetupEnd();
   onOpen();
-
-  console.timeEnd('setup/' + payload.protocol);
 }
