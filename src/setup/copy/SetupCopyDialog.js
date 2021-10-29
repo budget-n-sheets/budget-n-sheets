@@ -1,6 +1,6 @@
 class SetupCopyDialog extends RestoreDialog {
   constructor (uuid) {
-    super('copy', uuid, 'setup/restore/dialog/htmlSetupCopy');
+    super('copy', uuid, 'setup/copy/htmlSetupCopy');
   }
 
   evalStatus_ (status) {

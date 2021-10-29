@@ -227,7 +227,7 @@ function showDialogPickerRestore (uuid, topic) {
   const developer_key = Bs.getDeveloperKey();
   if (developer_key === 1) showDialogErrorMessage();
 
-  const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlPickerRestore')
+  const htmlOutput = HtmlService2.createTemplateFromFile('setup/common/htmlPickerRestore')
     .setScriptletValues({
       picker_key: developer_key,
       isRestore: isRestore,

@@ -32,8 +32,8 @@ class RestoreDialog extends HtmlTemplate2 {
   loadCommon_ () {
     const dialogCommon = new RestoreDialogCommon(this.protocol);
 
-    this.htmlTemplate.htmlRestoreDialogCommon = dialogCommon.getHtmlContent();
-    this.htmlTemplate.jsRestoreDialogCommon = dialogCommon.getJsContent();
+    this.htmlTemplate.htmlCommonDialog = dialogCommon.getHtmlContent();
+    this.htmlTemplate.jsCommonDialog = dialogCommon.getJsContent();
   }
 
   build () {

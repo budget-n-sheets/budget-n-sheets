@@ -1,7 +1,7 @@
 class RestoreDialogCommon extends HtmlPanel {
   constructor (protocol) {
-    const htmlTemplate = HtmlService2.createTemplateFromFile('setup/restore/dialog/htmlRestoreDialogCommon');
-    const jsTemplate = HtmlService2.createTemplateFromFile('setup/restore/dialog/jsRestoreDialogCommon');
+    const htmlTemplate = HtmlService2.createTemplateFromFile('setup/common/htmlCommonDialog');
+    const jsTemplate = HtmlService2.createTemplateFromFile('setup/common/jsCommonDialog');
 
     super(htmlTemplate, jsTemplate);
     this.loadScriptletValues_(protocol);
