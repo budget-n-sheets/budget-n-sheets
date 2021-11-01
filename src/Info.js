@@ -2,8 +2,8 @@ const Info = Object.freeze({
   apps_script: {
     version: {
       major: 0,
-      minor: 44,
-      patch: 3
+      minor: 45,
+      patch: 0
     }
   },
 
