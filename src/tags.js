@@ -16,7 +16,7 @@ function getTagData_ () {
   const table = sheet.getRange(2, 5, lastRow - 1, 16).getValues();
 
   for (let i = 0; i < table.length; i++) {
-    if (table[i][0] === '' || !/^\w+$/.test(table[i][0])) continue;
+    if (table[i][0] === '' || !/^\S+$/.test(table[i][0])) continue;
 
     data.tags[i] = table[i][0];
     data.months[i] = table[i].slice(1, 13);

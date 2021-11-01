@@ -46,7 +46,7 @@
               <label for="card_code">Code</label>
             </td>
             <td>
-              <input id="card_code" type="text" maxlength="17" pattern="^\w+$" required>
+              <input id="card_code" type="text" maxlength="17" pattern="^\S+$" required>
               <br>
               <span class="gray">Charset: 0-9, a-z, A-Z, _</span>
             </td>
@@ -56,7 +56,7 @@
               <label for="card_aliases">Code aliases</label>
             </td>
             <td>
-              <input id="card_aliases" type="text" maxlength="191" pattern="^\w+(\s*,\s*\w+)*$">
+              <input id="card_aliases" type="text" maxlength="191" pattern="^\S+(\s*,\s*\S+)*$">
               <br>
               <span class="gray">Separate aliases with commas.<br>Charset: 0-9, a-z, A-Z, _</span>
             </td>

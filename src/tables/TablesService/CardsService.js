@@ -12,7 +12,7 @@ class CardsService extends TablesService {
     card.name = card.name.trim();
     card.code = card.code.trim();
 
-    if (!Array.isArray(card.aliases)) card.aliases = card.aliases.match(/\w+/g) || [];
+    if (!Array.isArray(card.aliases)) card.aliases = card.aliases.match(/\S+/g) || [];
     card.aliases = card.aliases.filter(alias => alias !== card.code);
 
     card.limit = Number(card.limit);
@@ -122,7 +122,7 @@ class CardsService extends TablesService {
 
     this.formatValues_(metadata);
 
-    if (!/^\w+$/.test(metadata.code)) return 10;
+    if (!/^\S+$/.test(metadata.code)) return 10;
     if (this.hasCode(metadata.code)) return 11;
 
     const id = TablesUtils.getUtid();
@@ -236,7 +236,7 @@ class CardsService extends TablesService {
 
     this.formatValues_(metadata);
 
-    if (!/^\w+$/.test(metadata.code)) return 10;
+    if (!/^\S+$/.test(metadata.code)) return 10;
 
     const card = this._db[id];
     metadata.index = card.index;

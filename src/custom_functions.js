@@ -67,7 +67,7 @@ function BSSUMBYTAG (tag, range) {
   let cr = 0;
   let regex = [];
   for (let i = 0; i < n; i++) {
-    if (/^\w+$/.test(tag[i])) {
+    if (/^\S+$/.test(tag[i])) {
       sum[i] = [0];
       regex[cr] = tag[i];
       tag[i] = '#' + tag[i];
