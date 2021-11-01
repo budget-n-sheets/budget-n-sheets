@@ -1,13 +1,13 @@
 class TriggersService {
   static installOnEdit_ () {
-    ScriptApp.newTrigger('onEditInstallable_')
+    ScriptApp.newTrigger('onEditHandler_')
       .forSpreadsheet(SpreadsheetApp2.getActiveSpreadsheet().getId())
       .onEdit()
       .create();
   }
 
   static installOnOpen_ () {
-    ScriptApp.newTrigger('onOpenInstallable_')
+    ScriptApp.newTrigger('onOpenHandler_')
       .forSpreadsheet(SpreadsheetApp2.getActiveSpreadsheet().getId())
       .onOpen()
       .create();
@@ -25,7 +25,7 @@ class TriggersService {
       const weekday = [ScriptApp.WeekDay.SUNDAY, ScriptApp.WeekDay.MONDAY, ScriptApp.WeekDay.TUESDAY, ScriptApp.WeekDay.WEDNESDAY, ScriptApp.WeekDay.THURSDAY, ScriptApp.WeekDay.FRIDAY, ScriptApp.WeekDay.SATURDAY];
       const day = new Date(financial_year, 0, 1).getDay();
 
-      ScriptApp.newTrigger('weeklyTriggerPos_')
+      ScriptApp.newTrigger('weeklyHandler_')
         .timeBased()
         .atHour(hour)
         .nearMinute(minute)
@@ -34,7 +34,7 @@ class TriggersService {
         .inTimezone(timezone)
         .create();
     } else if (yyyy === financial_year) {
-      ScriptApp.newTrigger('dailyTrigger_')
+      ScriptApp.newTrigger('dailyHandler_')
         .timeBased()
         .atHour(hour)
         .nearMinute(minute)
@@ -44,7 +44,7 @@ class TriggersService {
     } else {
       const day = 1 + Noise.randomInteger(28);
 
-      ScriptApp.newTrigger('weeklyTriggerPos_')
+      ScriptApp.newTrigger('monthlyHandler_')
         .timeBased()
         .atHour(hour)
         .nearMinute(minute)

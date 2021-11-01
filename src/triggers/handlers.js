@@ -1,4 +1,5 @@
-function onOpenInstallable_ (e) {
+function onOpenInstallable_ (e) { onOpenHandler_(e); }
+function onOpenHandler_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
   try {
@@ -8,7 +9,8 @@ function onOpenInstallable_ (e) {
   }
 }
 
-function onEditInstallable_ (e) {
+function onEditInstallable_ (e) { onEditHandler_(e); }
+function onEditHandler_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
   const name = e.range.getSheet().getName();
@@ -23,7 +25,27 @@ function onEditInstallable_ (e) {
   }
 }
 
-function dailyTrigger_ (e) {
+function weeklyTriggerPre_ (e) { weeklyHandler_(e); }
+function weeklyHandler_ (e) {
+  if (isAuthorizationRequired_()) return;
+  if (!AppsScript.isInstalled()) return;
+  if (UpdateService.checkAndUpdate()) return;
+
+  const financial_year = SettingsConst.getValueOf('financial_year');
+  const date = Utils.getLocaleDate();
+  const yyyymm = {
+    year: date.getFullYear(),
+    month: date.getMonth()
+  };
+
+  if (yyyymm.year > financial_year) return;
+
+  treatLayout_(yyyymm.year, yyyymm.month);
+  TriggersService.restart();
+}
+
+function dailyTrigger_ (e) { dailyHandler_(e); }
+function dailyHandler_ (e) {
   if (isAuthorizationRequired_()) return;
   if (!AppsScript.isInstalled()) return;
   if (UpdateService.checkAndUpdate()) return;
@@ -60,7 +82,8 @@ function dailyTrigger_ (e) {
   }
 }
 
-function weeklyTriggerPos_ (e) {
+function weeklyTriggerPos_ (e) { monthlyHandler_(e); }
+function monthlyHandler_ (e) {
   if (isAuthorizationRequired_()) return;
   if (!AppsScript.isInstalled()) return;
 
@@ -79,22 +102,4 @@ function weeklyTriggerPos_ (e) {
   } else if (yyyy === financial_year && month > 2) {
     RecalculationService.suspend(0, yyyymmdd.month - 2);
   }
-}
-
-function weeklyTriggerPre_ (e) {
-  if (isAuthorizationRequired_()) return;
-  if (!AppsScript.isInstalled()) return;
-  if (UpdateService.checkAndUpdate()) return;
-
-  const financial_year = SettingsConst.getValueOf('financial_year');
-  const date = Utils.getLocaleDate();
-  const yyyymm = {
-    year: date.getFullYear(),
-    month: date.getMonth()
-  };
-
-  if (yyyymm.year > financial_year) return;
-
-  treatLayout_(yyyymm.year, yyyymm.month);
-  TriggersService.restart();
 }
