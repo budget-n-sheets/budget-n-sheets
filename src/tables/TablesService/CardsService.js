@@ -211,7 +211,10 @@ class CardsService extends TablesService {
       if (withAliases) codes.push(this._db[id].aliases);
     }
 
-    const regExp = codes.flat().sort((a, b) => b.length - a.length).join('|');
+    const regExp = codes.flat()
+      .sort((a, b) => b.length - a.length)
+      .map(e => e.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'))
+      .join('|');
     return new RegExp('(' + regExp + ')', 'g');
   }
 
