@@ -130,7 +130,9 @@ class AccountsService extends TablesService {
       names.push(this._db[id].name);
     }
 
-    const regExp = names.sort((a, b) => b.length - a.length).join('|');
+    const regExp = names.sort((a, b) => b.length - a.length)
+      .map(e => e.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'))
+      .join('|');
     return new RegExp('(' + regExp + ')', 'g');
   }
 
