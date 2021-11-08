@@ -13,13 +13,56 @@ class UpdateScript extends Update {
         ['', '', '', '', '', '', '', '', '', '', 'update_v0m42p10_', 'patchV0m42p11_', '', '', '', 'patchV0m42p15_', '', 'patchV0m42p17_', '', '', '', 'patchV0m42p21_', '', '', '', '', '', '', 'patchV0m42p28_', '', 'patchV0m42p30_', 'patchV0m42p31_', '', 'patchV0m42p33_', '', '', '', '', '', '', '', '', '', '', ''],
         ['', '', ''],
         ['', '', '', ''],
-        ['']
+        ['', 'patchV0m45p1_']
       ]
     ];
 
     super(v0, vA, list);
 
     this._key = 'script';
+  }
+
+  /**
+   * Change combo to column chart in Summary.
+   *
+   * 0.45.1
+   */
+  patchV0m45p1_ () {
+    const sheet = Spreadsheet2.getSheetByName('Summary');
+    if (!sheet) return 0;
+
+    const charts = sheet.getCharts();
+
+    for (const chart of charts) {
+      const range = chart.getRanges()[0];
+      if (range.getRow() === 25) {
+        sheet.removeChart(chart);
+        break;
+      }
+    }
+
+    const options = {
+      0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Income' },
+      1: { color: '#cccccc', type: 'bars', labelInLegend: 'Expenses' },
+      2: { color: '#45818e', type: 'bars', labelInLegend: 'Income' },
+      3: { color: '#e69138', type: 'bars', labelInLegend: 'Expenses' }
+    };
+
+    const chart = sheet.newChart()
+      .addRange(sheet.getRange('C25:G36'))
+      .setChartType(Charts.ChartType.COLUMN)
+      .setPosition(24, 2, 0, 0)
+      .setOption('mode', 'view')
+      .setOption('legend', 'top')
+      .setOption('focusTarget', 'category')
+      .setOption('series', options)
+      .setOption('vAxis.minorGridlines.count', 3)
+      .setOption('height', 482)
+      .setOption('width', 886);
+
+    sheet.insertChart(chart.build());
+
+    return 0;
   }
 
   /**
