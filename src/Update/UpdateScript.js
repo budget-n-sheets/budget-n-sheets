@@ -183,6 +183,7 @@ class UpdateScript extends Update {
    */
   patchV0m42p15_ () {
     if (PropertiesService.getDocumentProperties().getProperty('DB_TABLES') == null) return 3;
+    if (PropertiesService.getDocumentProperties().getProperty('db_accounts') == null) return 3;
 
     SpreadsheetApp2.getActiveSpreadsheet()
       .createDeveloperMetadataFinder()
