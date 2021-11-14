@@ -82,6 +82,8 @@ class UpdateScript extends Update {
    * 0.42.31
    */
   patchV0m42p31_ () {
+    if (!Spreadsheet2.getSheetByName('_Backstage')) return 3;
+
     try {
       RecalculationService.resume(0, 12);
     } catch (err) {
