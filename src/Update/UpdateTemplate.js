@@ -6,13 +6,26 @@ class UpdateTemplate extends Update {
       [
         null, [''], [''], [''], [''], [''], [''], [''], [''], [''],
         [''], [''], [''],
-        ['v0m13p0_']
+        ['v0m13p0_', 'v0m13p1_']
       ]
     ];
 
     super(v0, vA, list);
 
     this._key = 'template';
+  }
+
+  /**
+   * Fix month name.
+   *
+   * 0.13.1
+   */
+  v0m13p1_ () {
+    const sheet = Spreadsheet2.getSheetByName('Summary');
+    if (!sheet) return 0;
+
+    sheet.getRange('B20').setValue('October');
+    return 0;
   }
 
   /**
