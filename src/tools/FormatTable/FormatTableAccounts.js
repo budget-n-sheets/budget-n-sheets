@@ -50,7 +50,7 @@ class FormatTableAccounts extends FormatTable {
     const numRows = this.sheet.getLastRow() - this.specs.row + 1;
     if (numRows < 2) return;
 
-    for (const range in this.rangeList.ranges) {
+    for (const range of this.rangeList.ranges) {
       if (range.getNumRows() > 1) this.formatRange_(range);
     }
 
