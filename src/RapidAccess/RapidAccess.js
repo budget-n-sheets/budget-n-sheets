@@ -21,6 +21,7 @@ const Goldfish = {
   },
   spreadsheet: {
     _self: {},
+    metadata: null,
     sheets: {}
   }
 };

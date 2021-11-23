@@ -36,7 +36,7 @@ class SettingsSpreadsheet {
 
   static updateMetadata () {
     const properties = RapidAccess.properties().spreadsheet();
-    new Metadata().update('spreadsheet_settings', {
+    Spreadsheet2.getMetadata().update('spreadsheet_settings', {
       decimal_places: properties.decimal_places
     });
   }
