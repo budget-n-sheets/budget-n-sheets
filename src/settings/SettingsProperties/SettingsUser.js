@@ -1,8 +1,4 @@
 class SettingsUser {
-  static load_ () {
-    this._properties = RapidAccess.properties().user();
-  }
-
   static getValueOf (key) {
     switch (key) {
       case 'financial_calendar':
@@ -11,8 +7,7 @@ class SettingsUser {
       case 'cash_flow_events':
       case 'initial_month':
       case 'optimize_load':
-        this.load_();
-        return this._properties[key];
+        return RapidAccess.properties().user()[key];
 
       default:
         console.error('SettingsUser: getValueOf(): Switch case is default.', key);
@@ -27,11 +22,12 @@ class SettingsUser {
       case 'override_zero':
       case 'cash_flow_events':
       case 'initial_month':
-      case 'optimize_load':
-        this.load_();
-        this._properties[key] = newValue;
-        CachedAccess.update('user_settings', this._properties);
+      case 'optimize_load': {
+        const properties = RapidAccess.properties().user();
+        properties[key] = newValue;
+        CachedAccess.update('user_settings', properties);
         break;
+      }
 
       default:
         console.error('SettingsUser: setValueOf(): Switch case is default.', key);
