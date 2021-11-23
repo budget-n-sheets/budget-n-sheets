@@ -24,6 +24,7 @@ class SettingsSpreadsheet {
         const properties = RapidAccess.properties().spreadsheet();
         properties[key] = newValue;
         CachedAccess.update('spreadsheet_settings', properties);
+        this.updateMetadata();
         break;
       }
 
@@ -31,5 +32,12 @@ class SettingsSpreadsheet {
         console.error('SettingsSpreadsheet: setValueOf(): Switch case is default.', key);
         break;
     }
+  }
+
+  static updateMetadata () {
+    const properties = RapidAccess.properties().spreadsheet();
+    new Metadata().update('spreadsheet_settings', {
+      decimal_places: properties.decimal_places
+    });
   }
 }
