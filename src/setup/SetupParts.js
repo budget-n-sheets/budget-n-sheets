@@ -458,7 +458,7 @@ class SetupParts {
   setupProperties_ () {
     const adminId = User2.getId();
 
-    let properties;
+    let properties, metadata;
 
     properties = {
       initial_month: this._config.initial_month,
@@ -483,7 +483,7 @@ class SetupParts {
     };
     CachedAccess.update('const_properties', properties);
 
-    const metadata = {
+    metadata = {
       number_accounts: this._config.number_accounts,
       financial_year: this._config.financial_year
     };
@@ -498,6 +498,12 @@ class SetupParts {
       optimize_load: [false, false, false, false, false, false, false, false, false, false, false, false]
     };
     CachedAccess.update('spreadsheet_settings', properties);
+
+    metadata = {
+      decimal_places: this._config.decimal_places
+    };
+
+    this._metadata.update('spreadsheet_settings', metadata);
   }
 
   setupSettings_ () {

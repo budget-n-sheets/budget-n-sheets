@@ -25,16 +25,21 @@ class UserSettings {
   }
 
   static updateMetadata_ () {
-    const user_settings = CachedAccess.get('user_settings');
+    const metadata = new Metadata();
+    let properties;
 
-    const metadata = {
-      initial_month: user_settings.initial_month,
-      financial_calendar: user_settings.financial_calendar,
-      post_day_events: user_settings.post_day_events,
-      cash_flow_events: user_settings.cash_flow_events
-    };
+    properties = CachedAccess.get('user_settings');
+    metadata.update('user_settings', {
+      initial_month: properties.initial_month,
+      financial_calendar: properties.financial_calendar,
+      post_day_events: properties.post_day_events,
+      cash_flow_events: properties.cash_flow_events
+    });
 
-    new Metadata().update('user_settings', metadata);
+    properties = CachedAccess.get('spreadsheet_settings');
+    metadata.update('spreadsheet_settings', {
+      decimal_places: properties.decimal_places
+    });
   }
 
   flush () {
