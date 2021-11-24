@@ -33,6 +33,7 @@ class UpdateScript extends Update {
 
     SettingsUser.updateMetadata();
     SettingsSpreadsheet.updateMetadata();
+    return 0;
   }
 
   /**
