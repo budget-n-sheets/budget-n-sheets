@@ -119,7 +119,14 @@ class UpdateScript extends Update {
    * 0.42.28
    */
   patchV0m42p28_ () {
-    return switchActivity_('resume', 0, 11);
+    try {
+      RecalculationService.resume(0, 12);
+    } catch (err) {
+      LogLog.error(err);
+      return 1;
+    }
+
+    return 0;
   }
 
   /**
