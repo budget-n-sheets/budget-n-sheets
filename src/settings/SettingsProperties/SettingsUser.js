@@ -22,18 +22,18 @@ class SettingsUser {
       case 'override_zero':
       case 'cash_flow_events':
       case 'initial_month':
-      case 'optimize_load': {
-        const properties = RapidAccess.properties().user();
-        properties[key] = newValue;
-        CachedAccess.update('user_settings', properties);
-        this.updateMetadata();
+      case 'optimize_load':
         break;
-      }
 
       default:
         console.error('SettingsUser: setValueOf(): Switch case is default.', key);
-        break;
+        return;
     }
+
+    const properties = RapidAccess.properties().user();
+    properties[key] = newValue;
+    CachedAccess.update('user_settings', properties);
+    this.updateMetadata();
   }
 
   static updateMetadata () {

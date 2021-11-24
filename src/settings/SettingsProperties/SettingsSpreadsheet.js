@@ -20,18 +20,18 @@ class SettingsSpreadsheet {
       case 'decimal_places':
       case 'spreadsheet_locale':
       case 'view_mode':
-      case 'optimize_load': {
-        const properties = RapidAccess.properties().spreadsheet();
-        properties[key] = newValue;
-        CachedAccess.update('spreadsheet_settings', properties);
-        this.updateMetadata();
+      case 'optimize_load':
         break;
-      }
 
       default:
         console.error('SettingsSpreadsheet: setValueOf(): Switch case is default.', key);
-        break;
+        return;
     }
+
+    const properties = RapidAccess.properties().spreadsheet();
+    properties[key] = newValue;
+    CachedAccess.update('spreadsheet_settings', properties);
+    this.updateMetadata();
   }
 
   static updateMetadata () {
