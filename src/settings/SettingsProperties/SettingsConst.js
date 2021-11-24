@@ -1,6 +1,7 @@
 class SettingsConst {
   static getValueOf (key) {
     switch (key) {
+      case 'setup_channel':
       case 'financial_year':
       case 'number_accounts':
       case 'date_created':

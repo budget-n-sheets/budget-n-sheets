@@ -477,6 +477,7 @@ class SetupParts {
     CachedAccess.update('admin_settings', properties);
 
     properties = {
+      setup_channel: this._config.setup_channel,
       date_created: this._date.time,
       number_accounts: this._config.number_accounts,
       financial_year: this._config.financial_year
@@ -484,6 +485,7 @@ class SetupParts {
     CachedAccess.update('const_properties', properties);
 
     metadata = {
+      setup_channel: this._config.setup_channel,
       number_accounts: this._config.number_accounts,
       financial_year: this._config.financial_year
     };

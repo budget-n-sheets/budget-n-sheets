@@ -95,6 +95,7 @@ class Backup {
     delete this._backup.user_settings.financial_calendar;
     delete this._backup.admin_settings.admin_id;
     delete this._backup.const_properties.date_created;
+    delete this._backup.const_properties.setup_channel;
   }
 
   collectTags_ () {

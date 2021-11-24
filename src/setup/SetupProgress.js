@@ -1,5 +1,6 @@
 class SetupProgress {
   constructor () {
+    this._config = {};
   }
 
   copyTemplate () {
@@ -39,6 +40,8 @@ class SetupProgress {
     }
 
     this._config = {
+      setup_channel: config.setup_channel,
+
       name_accounts: config.name_accounts,
       number_accounts: Number(config.number_accounts),
 

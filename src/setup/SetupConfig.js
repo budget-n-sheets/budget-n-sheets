@@ -40,6 +40,8 @@ class SetupConfig {
         throw new Error('SetupConfig: digestConfig(): Switch case is default.');
     }
 
+    config.setup_channel = payload.protocol;
+
     config.spreadsheet_name = config.spreadsheet_name.trim();
     if (config.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.');
 
