@@ -226,6 +226,7 @@ function showDialogSetupAddon_ () {
 
   const scriptlet = {
     uuid: SessionService.startSession().getUuid(),
+    setup_follow_up: FeatureFlag.getStatusOf('setup/follow_up'),
     setup_restore: FeatureFlag.getStatusOf('setup/restore'),
     setup_copy: FeatureFlag.getStatusOf('setup/copy')
   };
@@ -238,6 +239,9 @@ function showDialogSetupAddon_ () {
     .setHeight(359);
 
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Start budget spreadsheet');
+}
+
+function showDialogSetupFollowUp (uuid) {
 }
 
 function showDialogSetupRestore (uuid) {
