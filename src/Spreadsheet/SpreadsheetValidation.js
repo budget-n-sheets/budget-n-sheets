@@ -1,5 +1,5 @@
 class SpreadsheetValidation {
-  static evalValidation (fileId) {
+  static evalValid (fileId) {
     if (!isUserOwner(fileId)) throw 2;
 
     const file = DriveApp.getFileById(fileId);

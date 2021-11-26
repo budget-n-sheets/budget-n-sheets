@@ -8,7 +8,7 @@ function requestValidateSpreadsheet (uuid, fileId) {
   let status = 0;
 
   try {
-    SpreadsheetValidation.evalValidity(fileId);
+    SpreadsheetValidation.evalValid(fileId);
     SettingsCandidate.processSpreadsheet(uuid, fileId);
   } catch (err) {
     LogLog.error(err);
