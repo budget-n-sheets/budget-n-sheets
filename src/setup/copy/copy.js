@@ -8,7 +8,8 @@ function requestValidateSpreadsheet (uuid, fileId) {
   let status = 0;
 
   try {
-    new SpreadsheetValidation(uuid, fileId).verify();
+    SpreadsheetValidation.evalValidity(fileId);
+    SettingsCandidate.processSpreadsheet(uuid, fileId);
   } catch (err) {
     LogLog.error(err);
     status = typeof err === 'number' ? err : 3;

@@ -1,24 +1,14 @@
 class SpreadsheetValidation {
-  constructor (uuid, fileId) {
-    this._uuid = uuid;
-    this._fileId = fileId;
-  }
+  static evalValidation (fileId) {
+    if (!isUserOwner(fileId)) throw 2;
 
-  verifyMetadata_ () {
-    if (!isUserOwner(this._fileId)) throw 2;
-
-    const file = DriveApp.getFileById(this._fileId);
+    const file = DriveApp.getFileById(fileId);
     if (file.getMimeType() !== MimeType.GOOGLE_SHEETS) throw 1;
 
-    const spreadsheet = SpreadsheetApp.openById(this._fileId);
+    const spreadsheet = SpreadsheetApp.openById(fileId);
     const bs = new BsAuth(spreadsheet);
 
     if (!bs.verify()) throw 1;
     if (bs.getValueOf('admin_id') !== User2.getId()) throw 2;
-  }
-
-  verify () {
-    this.verifyMetadata_();
-    SettingsCandidate.processSpreadsheet(this._uuid, this._fileId);
   }
 }
