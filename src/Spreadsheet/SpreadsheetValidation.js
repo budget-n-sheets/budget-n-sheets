@@ -8,6 +8,7 @@ class SpreadsheetValidation {
     const spreadsheet = SpreadsheetApp.openById(fileId);
     const bs = new BsAuth(spreadsheet);
 
+    if (!bs.hasSig()) throw 1;
     if (!bs.verify()) throw 1;
     if (bs.getValueOf('admin_id') !== User2.getId()) throw 2;
   }
