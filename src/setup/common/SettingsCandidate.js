@@ -56,8 +56,8 @@ class SettingsCandidate {
     return 0;
   }
 
-  static processSpreadsheet (uuid, fileId) {
-    if (!FeatureFlag.getStatusOf('setup/copy')) throw new Error('Feature flagged.');
+  static processSpreadsheet (protocol, uuid, fileId) {
+    if (!FeatureFlag.getStatusOf(`setup/${protocol}`)) throw new Error('Feature flagged.');
 
     const spreadsheet = SpreadsheetApp.openById(fileId);
     const metadata = new Metadata(spreadsheet);
@@ -65,7 +65,7 @@ class SettingsCandidate {
 
     const settings_candidate = {
       uuid: uuid,
-      protocol: 'copy',
+      protocol: protocol,
       source: {
         file_id: fileId,
         file_url: spreadsheet.getUrl(),

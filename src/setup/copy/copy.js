@@ -37,7 +37,7 @@ function requestValidateSpreadsheet_ (uuid, fileId) {
 
   if (status === 0) {
     try {
-      SettingsCandidate.processSpreadsheet(uuid, fileId);
+      SettingsCandidate.processSpreadsheet('copy', uuid, fileId);
     } catch (err) {
       LogLog.error(err);
       status = 3;

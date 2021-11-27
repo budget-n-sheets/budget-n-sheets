@@ -31,7 +31,7 @@ function retrieveSettingsSummary (uuid, protocol) {
   if (settings.settings.financial_calendar) {
     let calendar = null;
 
-    if (protocol === 'copy') {
+    if (protocol === 'copy' || protocol === 'follow_up') {
       calendar = CalendarApp.getCalendarById(settings.settings.financial_calendar);
       settings.settings.financial_calendar = calendar ? calendar.getName() : '';
     } else if (protocol === 'restore') {
