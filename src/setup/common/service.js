@@ -6,7 +6,7 @@ function cacheSettingsSummary_ (settings) {
   CacheService3.document().put(address, settings);
 }
 
-function restrieveSettingsSummary (uuid, protocol) {
+function retrieveSettingsSummary (uuid, protocol) {
   if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;
