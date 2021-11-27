@@ -242,6 +242,8 @@ function showDialogSetupAddon_ () {
 }
 
 function showDialogSetupFollowUp (uuid) {
+  const htmlOutput = new SetupFollowUpDialog(uuid).build();
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Follow-up budget year');
 }
 
 function showDialogSetupRestore (uuid) {
