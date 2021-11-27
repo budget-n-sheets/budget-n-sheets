@@ -84,6 +84,9 @@ class SettingsCandidate {
     settings_candidate.settings.initial_month = property.initial_month;
     settings_candidate.settings.financial_calendar = property.financial_calendar;
 
+    property = metadata.getValueOf('spreadsheet_settings');
+    settings_candidate.settings.decimal_places = property?.decimal_places || 2;
+
     property = metadata.getValueOf('db_accounts');
     if (!property) throw 1;
     for (const k in property) {
