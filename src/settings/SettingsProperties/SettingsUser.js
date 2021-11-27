@@ -37,7 +37,7 @@ class SettingsUser {
   }
 
   static updateMetadata () {
-    const properties = RapidAccess.properties().spreadsheet();
+    const properties = RapidAccess.properties().user();
     Spreadsheet2.getMetadata().update('user_settings', {
       initial_month: properties.initial_month,
       financial_calendar: properties.financial_calendar,
