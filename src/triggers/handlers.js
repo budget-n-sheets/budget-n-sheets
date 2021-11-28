@@ -27,7 +27,6 @@ function onEditHandler_ (e) {
 
 function weeklyTriggerPre_ (e) { weeklyHandler_(e); }
 function weeklyHandler_ (e) {
-  if (isAuthorizationRequired_()) return;
   if (!AppsScript.isInstalled()) return;
   if (UpdateService.checkAndUpdate()) return;
 
@@ -46,7 +45,6 @@ function weeklyHandler_ (e) {
 
 function dailyTrigger_ (e) { dailyHandler_(e); }
 function dailyHandler_ (e) {
-  if (isAuthorizationRequired_()) return;
   if (!AppsScript.isInstalled()) return;
   if (UpdateService.checkAndUpdate()) return;
 
@@ -84,7 +82,6 @@ function dailyHandler_ (e) {
 
 function weeklyTriggerPos_ (e) { monthlyHandler_(e); }
 function monthlyHandler_ (e) {
-  if (isAuthorizationRequired_()) return;
   if (!AppsScript.isInstalled()) return;
 
   UpdateService.checkAndUpdate();
