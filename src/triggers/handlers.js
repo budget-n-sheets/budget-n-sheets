@@ -31,15 +31,13 @@ function weeklyHandler_ (e) {
   if (UpdateService.checkAndUpdate()) return;
 
   const financial_year = SettingsConst.getValueOf('financial_year');
+
   const date = Utils.getLocaleDate();
-  const yyyymm = {
-    year: date.getFullYear(),
-    month: date.getMonth()
-  };
+  const yyyy = date.getFullYear();
 
-  if (yyyymm.year > financial_year) return;
+  if (yyyy > financial_year) return;
 
-  treatLayout_(yyyymm.year, yyyymm.month);
+  treatLayout_(yyyy, date.getMonth());
   TriggersService.restart();
 }
 
@@ -48,27 +46,26 @@ function dailyHandler_ (e) {
   if (!AppsScript.isInstalled()) return;
   if (UpdateService.checkAndUpdate()) return;
 
-  const date = Utils.getLocaleDate();
-  const yyyymmdd = {
-    year: date.getFullYear(),
-    month: date.getMonth(),
-    date: date.getDate()
-  };
-
   const financial_year = SettingsConst.getValueOf('financial_year');
 
-  if (financial_year < yyyymmdd.year) {
-    treatLayout_(yyyymmdd.year, yyyymmdd.month);
+  const date = Utils.getLocaleDate();
+  const yyyy = date.getFullYear();
+  const mm = date.getMonth();
+
+  if (financial_year < yyyy) {
+    treatLayout_(yyyy, mm);
     TriggersService.restart();
     return;
   }
 
-  if (yyyymmdd.date === 1) {
-    treatLayout_(yyyymmdd.year, yyyymmdd.month);
+  const dd = date.getDate();
+
+  if (dd === 1) {
+    treatLayout_(yyyy, mm);
 
     try {
-      if (yyyymmdd.month > 2) {
-        RecalculationService.suspend(0, yyyymmdd.month - 2);
+      if (mm > 2) {
+        RecalculationService.suspend(0, mm - 2);
       }
     } catch (err) {
       LogLog.error(err);
@@ -86,17 +83,5 @@ function monthlyHandler_ (e) {
 
   UpdateService.checkAndUpdate();
 
-  const date = Utils.getLocaleDate();
-  const month = date.getMonth();
-
-  if (month % 3 !== 0) return;
-
-  const financial_year = SettingsConst.getValueOf('financial_year');
-  const yyyy = date.getFullYear();
-
-  if (yyyy > financial_year) {
-    RecalculationService.suspend(0, 12);
-  } else if (yyyy === financial_year && month > 2) {
-    RecalculationService.suspend(0, yyyymmdd.month - 2);
-  }
+  if (Utils.getLocaleDate().getMonth() % 3 === 0) RecalculationService.suspend(0, 12);
 }
