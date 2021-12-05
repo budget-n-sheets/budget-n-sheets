@@ -31,13 +31,9 @@ function weeklyHandler_ (e) {
   if (UpdateService.checkAndUpdate()) return;
 
   const financial_year = SettingsConst.getValueOf('financial_year');
+  if (e.year > financial_year) return;
 
-  const date = Utils.getLocaleDate();
-  const yyyy = date.getFullYear();
-
-  if (yyyy > financial_year) return;
-
-  treatLayout_(yyyy, date.getMonth());
+  treatLayout_(e.year, e.month - 1);
   TriggersService.restart();
 }
 
@@ -48,9 +44,8 @@ function dailyHandler_ (e) {
 
   const financial_year = SettingsConst.getValueOf('financial_year');
 
-  const date = Utils.getLocaleDate();
-  const yyyy = date.getFullYear();
-  const mm = date.getMonth();
+  const yyyy = e.year;
+  const mm = e.month - 1;
 
   if (financial_year < yyyy) {
     treatLayout_(yyyy, mm);
@@ -58,21 +53,20 @@ function dailyHandler_ (e) {
     return;
   }
 
-  const dd = date.getDate();
-
-  if (dd === 1) {
+  if (e['day-of-month'] === 1) {
     treatLayout_(yyyy, mm);
 
-    try {
-      if (mm > 2) {
+    if (mm > 2) {
+      try {
         RecalculationService.suspend(0, mm - 2);
+      } catch (err) {
+        LogLog.error(err);
       }
-    } catch (err) {
-      LogLog.error(err);
     }
   }
 
   if (SettingsUser.getValueOf('post_day_events')) {
+    const date = Utils.getLocaleDate();
     CalendarService.syncDayWithSpreadsheet(date);
   }
 }
@@ -83,5 +77,5 @@ function monthlyHandler_ (e) {
 
   UpdateService.checkAndUpdate();
 
-  if (Utils.getLocaleDate().getMonth() % 3 === 0) RecalculationService.suspend(0, 12);
+  if ((e.month - 1) % 3 === 0) RecalculationService.suspend(0, 12);
 }
