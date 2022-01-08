@@ -27,6 +27,7 @@ function onEditHandler_ (e) {
 
 function weeklyTriggerPre_ (e) { weeklyHandler_(e); }
 function weeklyHandler_ (e) {
+  if (!AppsScript.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
 
   const financial_year = SettingsConst.getValueOf('financial_year');
@@ -38,6 +39,7 @@ function weeklyHandler_ (e) {
 
 function dailyTrigger_ (e) { dailyHandler_(e); }
 function dailyHandler_ (e) {
+  if (!AppsScript.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
 
   const financial_year = SettingsConst.getValueOf('financial_year');
@@ -71,6 +73,7 @@ function dailyHandler_ (e) {
 
 function weeklyTriggerPos_ (e) { monthlyHandler_(e); }
 function monthlyHandler_ (e) {
+  if (!AppsScript.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
 
   if ((e.month - 1) % 3 === 0) RecalculationService.suspend(0, 12);
