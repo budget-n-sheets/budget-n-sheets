@@ -1,4 +1,16 @@
 class AppsScript {
+  static isAuthorized () {
+    if (!PropertiesService) return false;
+
+    try {
+      PropertiesService.getUserProperties();
+    } catch (e) {
+      return false;
+    }
+
+    return ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL).getAuthorizationStatus() === ScriptApp.AuthorizationStatus.NOT_REQUIRED;
+  }
+
   static isInstalled () {
     let isInstalled = CacheService3.document().get('is_installed');
     if (isInstalled) return isInstalled;
