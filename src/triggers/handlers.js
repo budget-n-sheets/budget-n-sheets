@@ -1,4 +1,3 @@
-function onOpenInstallable_ (e) { onOpenHandler_(e); }
 function onOpenHandler_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
@@ -9,7 +8,6 @@ function onOpenHandler_ (e) {
   }
 }
 
-function onEditInstallable_ (e) { onEditHandler_(e); }
 function onEditHandler_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
@@ -25,7 +23,6 @@ function onEditHandler_ (e) {
   }
 }
 
-function weeklyTriggerPre_ (e) { weeklyHandler_(e); }
 function weeklyHandler_ (e) {
   if (!AppsScript.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
@@ -37,7 +34,6 @@ function weeklyHandler_ (e) {
   TriggersService.restart();
 }
 
-function dailyTrigger_ (e) { dailyHandler_(e); }
 function dailyHandler_ (e) {
   if (!AppsScript.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
@@ -71,7 +67,6 @@ function dailyHandler_ (e) {
   }
 }
 
-function weeklyTriggerPos_ (e) { monthlyHandler_(e); }
 function monthlyHandler_ (e) {
   if (!AppsScript.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
