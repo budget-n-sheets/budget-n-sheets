@@ -79,14 +79,18 @@ function BSSUMBYTAG (tag, range) {
     }
   }
 
-  if (range === '') return sum;
+  if (range === '' || regex.length === 0) return sum;
 
-  if (regex.length === 0) return sum;
-  else if (regex.length === 1) regex = regex[0];
-  else regex = regex.join('|');
+  regex = regex.map(e => {
+    try {
+      new RegExp('#(' + e + ')');
+      return e;
+    } catch (err) {
+      return e.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+  }).join('|');
 
-  regex = '#(' + regex + ')';
-  regex = new RegExp(regex);
+  regex = new RegExp('#(' + regex + ')');
 
   for (let i = 0; i < range.length; i++) {
     if (!range[i][1]) continue;
