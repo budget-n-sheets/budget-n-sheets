@@ -144,7 +144,7 @@ class DemoCalendar extends QuickstartDemo {
     }
 
     this.acc_name = new AccountsService().getAny().metadata.name;
-    this.card_code = new CardsService().getAny().metadata.code || '';
+    this.card_code = new CardsService().getAny()?.metadata.code || '';
 
     this.getSheets_();
 
