@@ -746,13 +746,13 @@ class SetupParts {
 
     sheet.protect().setWarningOnly(true);
 
-    let range_accounts = '';
-    let range_cards = '';
-
-    const ranges = [];
+    let ranges = [];
     for (let k = 0; k <= num_acc; k++) {
       ranges[k] = RangeUtils.rollA1Notation(5, 2 + 5 * k, 400, 1);
     }
+
+    let range_accounts = '';
+    let range_cards = '';
 
     for (let i = 0; i < 12; i++) {
       range_cards += 'Cards!' + RangeUtils.rollA1Notation(6, 2 + 6 * i, 400, 1) + '; ';
@@ -774,6 +774,37 @@ class SetupParts {
     formula = 'UNIQUE({' + formula + '})';
 
     sheet.getRange(1, 2).setFormula(formula);
+
+    const tags = 'Tags!' + RangeUtils.rollA1Notation(2, 5, 40, 1);
+
+    ranges = [];
+    for (let k = 0; k <= num_acc; k++) {
+      ranges[k] = RangeUtils.rollA1Notation(5, 4 + 5 * k, 400, 1);
+    }
+
+    range_accounts = '';
+    range_cards = '';
+
+    for (let i = 0; i < 12; i++) {
+      range_cards += 'Cards!' + RangeUtils.rollA1Notation(6, 5 + 6 * i, 400, 1) + '; ';
+
+      for (let k = 0; k <= num_acc; k++) {
+        range_accounts += Consts.month_name.short[i] + '!' + ranges[k] + '; ';
+      }
+    }
+
+    range_accounts = '{' + range_accounts.slice(0, -2) + '}';
+    range_cards = '{' + range_cards.slice(0, -2) + '}';
+
+    formula = 'IFNA(FILTER(' + tags + '; REGEXMATCH(' + tags + '; "^\\S+$")); )';
+    formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#dp"; "#wd"; "#qcc"; "#ign"; "#rct"; "#trf"})';
+    formula = 'SORT(TRIM(' + range_accounts + ')); ' + formula;
+    sheet.getRange(1, 3).setFormula('UNIQUE({' + formula + '})');
+
+    formula = 'IFNA(FILTER(' + tags + '; REGEXMATCH(' + tags + '; "^\\S+$")); )';
+    formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#wd"; "#ign"})';
+    formula = 'SORT(TRIM(' + range_cards + ')); ' + formula;
+    sheet.getRange(1, 4).setFormula('UNIQUE({' + formula + '})');
 
     SpreadsheetApp.flush();
   }
