@@ -121,6 +121,8 @@ class UpdateTemplate extends Update {
     r = this.v0m13p2s1_();
     if (r !== 0) return r;
 
+    askResetSuggestions();
+
     return 0;
   }
 
