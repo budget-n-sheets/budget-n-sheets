@@ -10,7 +10,7 @@ class HtmlTemplate2 {
       home_help: 'https://www.budgetnsheets.com/support',
       privacy_policy: 'https://www.budgetnsheets.com/privacy-policy',
       terms_of_service: 'https://www.budgetnsheets.com/terms-of-service',
-      join_forum: 'https://groups.google.com/g/add-on-budget-n-sheets-forum',
+      join_subreddit: 'https://www.reddit.com/r/budgetnsheets/',
       send_feedback: 'https://www.budgetnsheets.com/contact',
       home_wiki: 'https://github.com/guimspace/budget-n-sheets/wiki',
       g_marketplace: 'https://gsuite.google.com/marketplace/app/budget_n_sheets/628594713587'
