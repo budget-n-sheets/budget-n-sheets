@@ -763,15 +763,15 @@ class SetupParts {
     }
 
     range_accounts = '{' + range_accounts.slice(0, -2) + '}';
-    sheet.getRange(1, 1).setFormula('SORT(UNIQUE(' + range_accounts + '))');
+    sheet.getRange(1, 1).setFormula('SORT(UNIQUE(TRIM(' + range_accounts + ')))');
 
     range_cards = '{' + range_cards.slice(0, -2) + '}';
 
-    let formula = 'FILTER(' + range_cards + '; NOT(REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+"))); ';
-    formula += 'ARRAYFORMULA(REGEXREPLACE(FILTER(' + range_cards + '; REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+")); "[0-9]+/[0-9]+"; ""))';
-    formula = 'SORT(UNIQUE({' + formula + '})); ';
-    formula += 'SORT(FILTER(' + range_cards + '; REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+")))';
-    formula = '{' + formula + '}';
+    let formula = 'IFNA(FILTER(' + range_cards + '; NOT(REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+"))); ); ';
+    formula += 'REGEXREPLACE(IFNA(FILTER(' + range_cards + '; REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+")); ); "[0-9]+/[0-9]+"; "")';
+    formula = 'SORT(TRIM({' + formula + '})); ';
+    formula += 'SORT(TRIM(IFNA(FILTER(' + range_cards + '; REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+")); )))';
+    formula = 'UNIQUE({' + formula + '})';
 
     sheet.getRange(1, 2).setFormula(formula);
 
