@@ -52,6 +52,78 @@ function askDeactivation () {
   return true;
 }
 
+function askResetSuggestions () {
+  const lock = LockService.getDocumentLock();
+  if (!lock.tryLock(200)) return;
+
+  const sheetUnique = Spreadsheet2.getSheetByName('_Unique');
+  if (!sheetUnique) return;
+
+  const num_acc = SettingsConst.getValueOf('number_accounts');
+
+  let ruleDV = SpreadsheetApp.newDataValidation()
+    .requireValueInRange(sheetUnique.getRange('A:A'), false)
+    .setAllowInvalid(true)
+    .build();
+  let ruleTV = SpreadsheetApp.newDataValidation()
+    .requireValueInRange(sheetUnique.getRange('C:C'), false)
+    .setAllowInvalid(true)
+    .build();
+
+  let i = -1;
+  while (++i < 12) {
+    const sheetMm = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);
+    if (!sheetMm) continue;
+
+    const height = sheetMm.getMaxRows() - 4;
+    if (height < 1) continue;
+
+    for (let k = 0; k <= num_acc; k++) {
+      sheetMm.getRange(5, 2 + 5 * k, height, 1)
+        .clearDataValidations()
+        .setDataValidation(ruleDV);
+
+      sheetMm.getRange(5, 4 + 5 * k, height, 1)
+        .clearDataValidations()
+        .setDataValidation(ruleTV);
+    }
+  }
+
+  const sheetCards = Spreadsheet2.getSheetByName('Cards');
+  if (!sheetCards) {
+    lock.releaseLock();
+    return;
+  }
+
+  const height = sheetCards.getMaxRows() - 5;
+  if (height < 1) {
+    lock.releaseLock();
+    return;
+  }
+
+  ruleDV = SpreadsheetApp.newDataValidation()
+    .requireValueInRange(sheetUnique.getRange('B:B'), false)
+    .setAllowInvalid(true)
+    .build();
+  ruleTV = SpreadsheetApp.newDataValidation()
+    .requireValueInRange(sheetUnique.getRange('D:D'), false)
+    .setAllowInvalid(true)
+    .build();
+
+  i = -1;
+  while (++i < 12) {
+    sheetCards.getRange(6, 2 + 6 * i, height, 1)
+      .clearDataValidations()
+      .setDataValidation(ruleDV);
+
+    sheetCards.getRange(6, 5 + 6 * i, height, 1)
+      .clearDataValidations()
+      .setDataValidation(ruleTV);
+  }
+
+  lock.releaseLock();
+}
+
 function askResetProtection () {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(200)) return;
