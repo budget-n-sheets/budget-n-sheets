@@ -1,6 +1,7 @@
 <script>
   $(document).ready(function() {
-    $("#b-Reset").click(resetProtection);
+    $("#b-Reset1").click(resetProtection);
+    $("#b-Reset2").click(resetSuggestions);
     $("#b-Reinstall").click(reinstallTriggers);
   });
 
@@ -15,6 +16,19 @@
       .withFailureHandler(showError)
       .withUserObject(this)
       .askResetProtection();
+  }
+
+  function resetSuggestions() {
+    this.disabled = true;
+    $("#footer_response").empty();
+
+    google.script.run.withSuccessHandler(function(r, o) {
+        showStatus("Reseted suggestions");
+        o.disabled = false;
+      })
+      .withFailureHandler(showError)
+      .withUserObject(this)
+      .askResetSuggestions();
   }
 
   function reinstallTriggers() {
