@@ -42,66 +42,10 @@ class UpdateTemplate extends Update {
     const sheet = spreadsheet.getSheetByName('_Unique');
     if (!sheet) return 0;
 
-    const num_acc = SettingsConst.getValueOf('number_accounts');
-    const numCards = Spreadsheet2.getSheetByName('Cards').getMaxRows() - 5;
-
-    let range_accounts = '';
-    let range_cards = '';
-
-    for (let i = 0; i < 12; i++) {
-      range_cards += 'Cards!' + RangeUtils.rollA1Notation(6, 2 + 6 * i, numCards, 1) + '; ';
-
-      const mm = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);
-      if (!mm) continue;
-      const numRows = mm.getMaxRows() - 4;
-
-      for (let k = 0; k <= num_acc; k++) {
-        range_accounts += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 2 + 5 * k, numRows, 1) + '; ';
-      }
-    }
-
-    range_accounts = '{' + range_accounts.slice(0, -2) + '}';
-    sheet.getRange(1, 1).setFormula('SORT(UNIQUE(TRIM(' + range_accounts + ')))');
-
-    range_cards = '{' + range_cards.slice(0, -2) + '}';
-
-    let formula = 'IFNA(FILTER(' + range_cards + '; NOT(REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+"))); ); ';
-    formula += 'REGEXREPLACE(IFNA(FILTER(' + range_cards + '; REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+")); ); "[0-9]+/[0-9]+"; "")';
-    formula = 'SORT(TRIM({' + formula + '})); ';
-    formula += 'SORT(TRIM(IFNA(FILTER(' + range_cards + '; REGEXMATCH(' + range_cards + '; "[0-9]+/[0-9]+")); )))';
-    formula = 'UNIQUE({' + formula + '})';
-
-    sheet.getRange(1, 2).setFormula(formula);
-
-    const tags = 'Tags!' + RangeUtils.rollA1Notation(2, 5, 40, 1);
-
-    range_accounts = '';
-    range_cards = '';
-
-    for (let i = 0; i < 12; i++) {
-      range_cards += 'Cards!' + RangeUtils.rollA1Notation(6, 5 + 6 * i, numCards, 1) + '; ';
-
-      const mm = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);
-      if (!mm) continue;
-      const numRows = mm.getMaxRows() - 4;
-
-      for (let k = 0; k <= num_acc; k++) {
-        range_accounts += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 4 + 5 * k, numRows, 1) + '; ';
-      }
-    }
-
-    range_accounts = '{' + range_accounts.slice(0, -2) + '}';
-    range_cards = '{' + range_cards.slice(0, -2) + '}';
-
-    formula = 'IFNA(FILTER(' + tags + '; REGEXMATCH(' + tags + '; "^\\S+$")); )';
-    formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#dp"; "#wd"; "#qcc"; "#ign"; "#rct"; "#trf"})';
-    formula = 'SORT(TRIM(' + range_accounts + ')); ' + formula;
-    sheet.getRange(1, 3).setFormula('UNIQUE({' + formula + '})');
-
-    formula = 'IFNA(FILTER(' + tags + '; REGEXMATCH(' + tags + '; "^\\S+$")); )';
-    formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#wd"; "#ign"})';
-    formula = 'SORT(TRIM(' + range_cards + ')); ' + formula;
-    sheet.getRange(1, 4).setFormula('UNIQUE({' + formula + '})');
+    sheet.getRange(1, 1).setFormula(SheetUniqueFormulas.getTttTransaction_());
+    sheet.getRange(1, 2).setFormula(SheetUniqueFormulas.getCardsTransaction_());
+    sheet.getRange(1, 3).setFormula(SheetUniqueFormulas.getTttTags_());
+    sheet.getRange(1, 4).setFormula(SheetUniqueFormulas.getCardsTags_());
 
     return 0;
   }
