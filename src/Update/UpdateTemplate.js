@@ -15,6 +15,16 @@ class UpdateTemplate extends Update {
     this._key = 'template';
   }
 
+  /**
+   * Fix data valiation ranges.
+   *
+   * 0.13.3
+   */
+  v0m13p3_ () {
+    askResetSuggestions();
+    return 0;
+  }
+
   v0m13p2s0_ () {
     const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
@@ -37,9 +47,7 @@ class UpdateTemplate extends Update {
   }
 
   v0m13p2s1_ () {
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
-
-    const sheet = spreadsheet.getSheetByName('_Unique');
+    const sheet = Spreadsheet2.getSheetByName('_Unique');
     if (!sheet) return 0;
 
     sheet.getRange(1, 1).setFormula(SheetUniqueFormulas.getTttTransaction_());
@@ -64,8 +72,6 @@ class UpdateTemplate extends Update {
 
     r = this.v0m13p2s1_();
     if (r !== 0) return r;
-
-    askResetSuggestions();
 
     return 0;
   }
