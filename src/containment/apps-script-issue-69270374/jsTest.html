@@ -1,0 +1,17 @@
+<script>
+  /*
+   * https://www.budgetnsheets.com/support/known-issues/apps-script-issue-69270374
+   * 8d4adafda11
+   */
+  window.addEventListener('load', (e) => {
+    google.script.run
+      .withSuccessHandler((e, o) => console.log('8d4adafda11: ok'))
+      .withFailureHandler(containment8d4adafda11Notice)
+      .containment8d4adafda11Test();
+  });
+
+  function containment8d4adafda11Notice (e, o) {
+    console.log('8d4adafda11: fail');
+    document.getElementsByTagName('body')[0].innerHTML = <?= htmlNotice ?>;
+  }
+</script>

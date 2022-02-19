@@ -187,8 +187,6 @@ function showDialogSetupAddon_ () {
     return;
   }
 
-  SetupUtils.showSetupNotice();
-
   const scriptlet = {
     uuid: SetupService.getUuid(),
     setup_restore: FeatureFlag.getStatusOf('setup/restore'),
