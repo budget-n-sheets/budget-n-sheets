@@ -13,7 +13,7 @@ class HtmlTemplate2 {
       join_subreddit: 'https://www.reddit.com/r/budgetnsheets/',
       send_feedback: 'https://www.budgetnsheets.com/contact',
       home_wiki: 'https://github.com/guimspace/budget-n-sheets/wiki',
-      g_marketplace: 'https://gsuite.google.com/marketplace/app/budget_n_sheets/628594713587'
+      g_marketplace: 'https://workspace.google.com/marketplace/app/budget_n_sheets/628594713587'
     };
 
     for (const key in reservedHref) {
