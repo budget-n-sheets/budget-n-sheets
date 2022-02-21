@@ -4,23 +4,30 @@ class PickerDialog extends HtmlTemplate2 {
     super(htmlTemplate);
 
     this.uuid = uuid;
+    this.title = '';
   }
 
   build (topic) {
     const devKey = Bs.getDeveloperKey();
 
-    const isRestore = (topic === 'restore');
-    const title = (isRestore ? 'Select backup' : 'Select spreadsheet');
+    switch (topic) {
+      case 'copy':
+        this.title = 'Select spreadsheet';
+        break;
+      case 'restore':
+        this.title = 'Select backup';
+        break;
+    }
 
     return this.setScriptletValues(
       {
         picker_key: devKey,
-        isRestore: isRestore,
+        topic: topic,
         uuid: this.uuid
       })
       .evaluate()
       .setWidth(617)
       .setHeight(487)
-      .setTitle(title);
+      .setTitle(this.title);
   }
 }

@@ -47,12 +47,12 @@
      */
     function createPicker(token) {
       if (pickerApiLoaded && token) {
-        <? if (isRestore) { ?>
+        <? if (topic === 'restore') { ?>
         const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
           .setIncludeFolders(false)
           .setSelectFolderEnabled(false)
           .setMimeTypes('text/plain,application/octet-stream')
-        <? } else { ?>
+        <? } else if (topic === 'copy') { ?>
         const docsView = new google.picker.DocsView(google.picker.ViewId.SPREADSHEETS)
           .setMimeTypes('application/vnd.google-apps.spreadsheet')
         <? } ?>
@@ -87,10 +87,10 @@
       const action = data[google.picker.Response.ACTION];
       if (action == google.picker.Action.CANCEL) {
         google.script.run
-        <? if (isRestore) { ?>
-        .showDialogSetupRestore(uuid);
-        <? } else { ?>
+        <? if (topic === 'copy') { ?>
         .showDialogSetupCopy(uuid);
+        <? } else if (topic === 'restore') { ?>
+        .showDialogSetupRestore(uuid);
         <? } ?>
         return;
       }
@@ -99,10 +99,10 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
-        <? if (isRestore) { ?>
-        .requestValidateBackup(uuid, doc[google.picker.Document.ID]);
-        <? } else { ?>
+        <? if (topic === 'copy') { ?>
         .requestValidateSpreadsheet(uuid, doc[google.picker.Document.ID]);
+        <? } else if (topic === 'restore') { ?>
+        .requestValidateBackup(uuid, doc[google.picker.Document.ID]);
         <? } ?>
     }
   </script>
