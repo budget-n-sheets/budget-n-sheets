@@ -6,10 +6,7 @@ class Bs {
     if (key) return key;
 
     key = PropertiesService.getScriptProperties().getProperty('developer_key');
-    if (!key) {
-      console.error("Bs: getDeveloperKey(): Property 'developer_key' not found");
-      return 1;
-    }
+    if (!key) throw new Error('Bs: getDeveloperKey(): Property "developer_key" not found');
 
     scriptCache.put('developer_key', key);
     return key;
@@ -22,10 +19,7 @@ class Bs {
     if (key) return key;
 
     key = PropertiesService.getScriptProperties().getProperty('inner_lock');
-    if (!key) {
-      console.error("Bs: getInnerKey(): Property 'inner_lock' not found");
-      return 1;
-    }
+    if (!key) throw new Error('Bs: getInnerKey(): Property "inner_lock" not found');
 
     scriptCache.put('inner_lock', key);
     return key;

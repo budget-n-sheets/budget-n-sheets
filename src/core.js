@@ -221,8 +221,12 @@ function showDialogPickerRestore (uuid, topic) {
     return;
   }
 
-  const htmlOutput = new PickerDialog(uuid).build(topic);
-  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, htmlOutput.getTitle());
+  try {
+    const htmlOutput = new PickerDialog(uuid).build(topic);
+    SpreadsheetApp2.getUi().showModalDialog(htmlOutput, htmlOutput.getTitle());
+  } catch (err) {
+    showDialogErrorMessage(err);
+  }
 }
 
 function showDialogSetupEnd () {

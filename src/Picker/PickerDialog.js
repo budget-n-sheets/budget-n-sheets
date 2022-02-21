@@ -7,11 +7,10 @@ class PickerDialog extends HtmlTemplate2 {
   }
 
   build (topic) {
+    const devKey = Bs.getDeveloperKey();
+
     const isRestore = (topic === 'restore');
     const title = (isRestore ? 'Select backup' : 'Select spreadsheet');
-
-    const devKey = Bs.getDeveloperKey();
-    if (devKey === 1) return;
 
     return this.setScriptletValues(
       {
