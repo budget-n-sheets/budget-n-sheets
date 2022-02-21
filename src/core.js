@@ -221,23 +221,8 @@ function showDialogPickerRestore (uuid, topic) {
     return;
   }
 
-  const isRestore = (topic === 'restore');
-  const title = (isRestore ? 'Select backup' : 'Select spreadsheet');
-
-  const developer_key = Bs.getDeveloperKey();
-  if (developer_key === 1) showDialogErrorMessage();
-
-  const htmlOutput = HtmlService2.createTemplateFromFile('setup/common/htmlPickerRestore')
-    .setScriptletValues({
-      picker_key: developer_key,
-      isRestore: isRestore,
-      uuid: uuid
-    })
-    .evaluate()
-    .setWidth(617)
-    .setHeight(487);
-
-  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, title);
+  const htmlOutput = new PickerDialog(uuid).build(topic);
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, htmlOutput.getTitle());
 }
 
 function showDialogSetupEnd () {

@@ -10,12 +10,7 @@
   <script>
     const uuid = <?= uuid ?>;
     const DEVELOPER_KEY = <?= picker_key ?>;
-    var pickerApiLoaded = false;
-    var fileId = '';
-    var DIMENSIONS = {
-      width: 593,
-      height: 479
-    };
+    let pickerApiLoaded = false;
 
     /**
      * Loads the Google Picker API.
@@ -72,7 +67,7 @@
           .setDeveloperKey(DEVELOPER_KEY)
           .setCallback(pickerCallback)
           .setOrigin('https://docs.google.com')
-          .setSize(DIMENSIONS.width, DIMENSIONS.height)
+          .setSize(593, 479)
           .build();
 
         picker.setVisible(true);
@@ -93,9 +88,9 @@
       if (action == google.picker.Action.CANCEL) {
         google.script.run
         <? if (isRestore) { ?>
-          .showDialogSetupRestore(uuid);
+        .showDialogSetupRestore(uuid);
         <? } else { ?>
-          .showDialogSetupCopy(uuid);
+        .showDialogSetupCopy(uuid);
         <? } ?>
         return;
       }
@@ -115,9 +110,7 @@
   <script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    $(document).ready(function() {
-      getOAuthToken();
-    });
+    window.onload = getOAuthToken;
   </script>
 </body>
 
