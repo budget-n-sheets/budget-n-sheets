@@ -48,10 +48,10 @@ function continuedValidateBackup (uuid, fileId, password) {
   showDialogSetupRestore(uuid);
 }
 
-function unwrapBackup_ (uuid, blob, file_id) {
-  const data = blob.getDataAsString();
+function unwrapBackup_ (uuid, file_id) {
+  const backup = new BackupFile(file_id);
 
-  if (/:[0-9a-fA-F]+$/.test(data)) {
+  if (backup.metadata.isLegacyFormat) {
     const parts = data.split(':');
 
     const sha = Utilities2.computeDigest('SHA_1', parts[0], 'UTF_8');
@@ -79,7 +79,7 @@ function unwrapBackup_ (uuid, blob, file_id) {
     return;
   }
 
-  const decrypted = decryptBackup_(password, data);
+  const decrypted = decryptBackup_(password, backup.data);
   const patched = BackupPatchService.patchThis(decrypted);
   if (patched == null) throw new Error('unwrapBackup_(): Unwrap failed.');
 

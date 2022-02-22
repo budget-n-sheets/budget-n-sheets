@@ -1,15 +1,11 @@
 class BackupValidation {
   constructor (uuid, fileId) {
     this._uuid = uuid;
-    this._fileId = fileId;
-
-    this._file = null;
-    this.isLegacy = false;
-    this._data = null;
+    this._backup = new BackupFile(fileId);
   }
 
   verifyLegacyBackup_ () {
-    const parts = this._data.split(':');
+    const parts = this._backup.data.split(':');
     const sha = Utilities2.computeDigest('SHA_1', parts[0], 'UTF_8');
 
     if (sha !== parts[1]) throw 1;
@@ -21,22 +17,11 @@ class BackupValidation {
     );
     if (patched == null) throw 3;
 
-    SettingsCandidate.processBackup(this._uuid, this._file, patched);
-  }
-
-  verifyMetadata_ () {
-    if (!isUserOwner(this._fileId)) throw 2;
-
-    this._file = DriveApp.getFileById(this._fileId);
-    this._data = this._file.getBlob().getDataAsString();
-
-    if (/:[0-9a-fA-F]+$/.test(this._data)) this.isLegacy = true;
+    SettingsCandidate.processBackup(this._uuid, this._backup, patched);
   }
 
   verify () {
-    this.verifyMetadata_();
-
-    if (this.isLegacy) {
+    if (this._backup.metadata.isLegacyFormat) {
       this.verifyLegacyBackup_();
       return 100;
     }
@@ -45,7 +30,7 @@ class BackupValidation {
       .assignReservedHref()
       .setScriptletValues({
         uuid: this._uuid,
-        file_id: this._fileId
+        file_id: this._backup.metadata.id
       })
       .evaluate()
       .setWidth(281)
@@ -56,18 +41,16 @@ class BackupValidation {
   }
 
   continued (password) {
-    if (!isUserOwner(this._fileId)) throw 2;
-
-    const file = DriveApp.getFileById(this._fileId);
-    const data = file.getBlob().getDataAsString();
-
-    const decrypted = decryptBackup_(password, data);
+    const decrypted = decryptBackup_(password, this._backup.data);
     const patched = BackupPatchService.patchThis(decrypted);
     if (patched == null) throw 3;
 
-    SettingsCandidate.processBackup(this._uuid, file, patched);
+    SettingsCandidate.processBackup(this._uuid, this._backup, patched);
 
-    const address = Utilities2.computeDigest('SHA_1', this._uuid + file.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(), 'UTF_8');
+    const address = Utilities2.computeDigest(
+      'SHA_1',
+      this._uuid + this._backup.metadata.id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+      'UTF_8');
     CacheService3.user().put(address, password, 180);
     return 0;
   }

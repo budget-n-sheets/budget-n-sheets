@@ -1,11 +1,6 @@
 class SpreadsheetValidation {
   static evalValid (fileId) {
-    if (!isUserOwner(fileId)) throw 2;
-
-    const file = DriveApp.getFileById(fileId);
-    if (file.getMimeType() !== MimeType.GOOGLE_SHEETS) throw 1;
-
-    const spreadsheet = SpreadsheetApp.openById(fileId);
+    const spreadsheet = new DriveFile(fileId).asSpreadsheet();
     const bs = new BsAuth(spreadsheet);
 
     if (!bs.hasSig()) throw 1;

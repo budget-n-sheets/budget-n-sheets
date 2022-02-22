@@ -14,8 +14,7 @@ class SetupConfig {
     if (candidate.uuid !== uuid) throw new Error('UUID does not match.');
     if (candidate.protocol !== 'restore') throw new Error('Protocol does not match.');
 
-    const blob = DriveApp.getFileById(candidate.source.file_id).getBlob();
-    config.backup = unwrapBackup_(uuid, blob, candidate.source.file_id);
+    config.backup = unwrapBackup_(uuid, candidate.source.file_id);
     if (config.backup == null) return;
 
     return config;
