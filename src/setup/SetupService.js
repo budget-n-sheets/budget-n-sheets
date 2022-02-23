@@ -1,8 +1,8 @@
 class SetupService {
   static checkRequirements () {
-    if (!AppsScript.isTemplateAvailable()) return 1;
-    if (AppsScript.isInstalled()) return 2;
-    if (AppsScript.isLocked()) return 3;
+    if (!BnsTemplate.isAvailable()) return 1;
+    if (Addon.isInstalled()) return 2;
+    if (BnsTemplate.isLocked()) return 3;
 
     const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 

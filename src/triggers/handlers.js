@@ -2,7 +2,7 @@ function onOpenHandler_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
   try {
-    AppsScript.loadCache();
+    CachedAccess.loadCache();
   } catch (err) {
     LogLog.error(err);
   }
@@ -24,7 +24,7 @@ function onEditHandler_ (e) {
 }
 
 function weeklyHandler_ (e) {
-  if (!AppsScript.isAuthorized()) return;
+  if (!Addon.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
 
   const financial_year = SettingsConst.getValueOf('financial_year');
@@ -35,7 +35,7 @@ function weeklyHandler_ (e) {
 }
 
 function dailyHandler_ (e) {
-  if (!AppsScript.isAuthorized()) return;
+  if (!Addon.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
 
   const financial_year = SettingsConst.getValueOf('financial_year');
@@ -68,7 +68,7 @@ function dailyHandler_ (e) {
 }
 
 function monthlyHandler_ (e) {
-  if (!AppsScript.isAuthorized()) return;
+  if (!Addon.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
 
   if ((e.month - 1) % 3 === 0) RecalculationService.suspend(0, 12);

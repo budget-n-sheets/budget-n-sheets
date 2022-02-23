@@ -6,7 +6,7 @@ function alertQuickstartSheetMissing (name) {
 }
 
 function playQuickstart (id) {
-  if (!AppsScript.isInstalled()) return;
+  if (!Addon.isInstalled()) return;
 
   const channel = id.match(/([a-z_]+)(\d+)/);
   if (!channel) {

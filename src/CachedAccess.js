@@ -8,6 +8,19 @@ class CachedAccess {
     return properties;
   }
 
+  static loadCache () {
+    const isLoaded = CacheService3.document().get('load_cache');
+    if (isLoaded) return;
+
+    const keys = ['class_version2', 'user_settings', 'spreadsheet_settings', 'const_properties'];
+    for (let i = 0; i < keys.length; i++) {
+      const properties = PropertiesService3.document().getProperty(keys[i]);
+      CacheService3.document().put(keys[i], properties);
+    }
+
+    CacheService3.document().put('load_cache', true);
+  }
+
   static remove (key) {
     PropertiesService3.document().deleteProperty(key);
     CacheService3.document().remove(key);

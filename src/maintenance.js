@@ -1,6 +1,6 @@
 function askDeactivation () {
-  if (!AppsScript.isInstalled()) {
-    AppsScript.uninstall();
+  if (!Addon.isInstalled()) {
+    Addon.uninstall();
     onOpen();
     return true;
   }
@@ -41,7 +41,7 @@ function askDeactivation () {
     ui.ButtonSet.YES_NO);
   if (response2 !== ui.Button.YES) return;
 
-  AppsScript.uninstall();
+  Addon.uninstall();
   onOpen();
 
   ui.alert(

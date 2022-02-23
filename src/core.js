@@ -25,7 +25,7 @@ function onOpen (e) {
       .addSeparator()
       .addItem('About the add-on', 'showDialogAboutAddon');
   } else {
-    if (AppsScript.isInstalled()) {
+    if (Addon.isInstalled()) {
       menu.addItem('Format table', 'toolFormatTable');
 
       if (!CardsService.isEmpty()) menu.addItem('Forward installments', 'toolForwardInstallments');
@@ -107,7 +107,7 @@ function showDialogAboutAddon () {
   User2.setId();
   let v0;
 
-  if (AppsScript.isInstalled()) v0 = ClassVersion.getValueOf('script');
+  if (Addon.isInstalled()) v0 = ClassVersion.getValueOf('script');
   else v0 = Info.apps_script.version;
 
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlAboutAddon')

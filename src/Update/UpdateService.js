@@ -34,7 +34,7 @@ class UpdateService {
     if (update.response === 2) {
       console.warn('Update: script: Failed at ', update.position);
     } else if (update.response > 2) {
-      AppsScript.uninstall();
+      Addon.uninstall();
     }
 
     return update.response;
@@ -46,13 +46,13 @@ class UpdateService {
   }
 
   static checkAndUpdate (isOnline) {
-    if (!AppsScript.isInstalled()) return 1;
+    if (!Addon.isInstalled()) return 1;
     if (Addon.isUpToDate()) return 0;
 
     isOnline = !!isOnline;
     const ui = isOnline ? SpreadsheetApp2.getUi() : null;
 
-    if (!AppsScript.isTemplateAvailable()) {
+    if (!BnsTemplate.isAvailable()) {
       if (isOnline) {
         ui.alert(
           'New version available',
