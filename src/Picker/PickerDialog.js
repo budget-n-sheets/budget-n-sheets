@@ -1,6 +1,6 @@
 class PickerDialog extends HtmlTemplate2 {
   constructor (uuid) {
-    const htmlTemplate = HtmlService.createTemplateFromFile('Picker/htmlPickerRestore');
+    const htmlTemplate = HtmlService.createTemplateFromFile('Picker/htmlPickerDialog');
     super(htmlTemplate);
 
     this.uuid = uuid;

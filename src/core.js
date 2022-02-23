@@ -213,7 +213,7 @@ function showDialogSetupCopy (uuid) {
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Copy from spreadsheet');
 }
 
-function showDialogPickerRestore (uuid, topic) {
+function showDialogPicker (uuid, topic) {
   if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
     return;

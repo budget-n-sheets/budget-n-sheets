@@ -201,7 +201,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
-        .showDialogPickerRestore(uuid, 'restore');
+        .showDialogPicker(uuid, 'restore');
     }
 
     function panelError(err) {

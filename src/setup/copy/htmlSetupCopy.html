@@ -182,7 +182,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
-        .showDialogPickerRestore(uuid, 'copy');
+        .showDialogPicker(uuid, 'copy');
     }
 
     function panelError(err) {
