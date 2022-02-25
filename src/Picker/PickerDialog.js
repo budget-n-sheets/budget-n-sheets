@@ -1,33 +1,24 @@
 class PickerDialog extends HtmlTemplate2 {
-  constructor (uuid) {
+  constructor (uuid, topic) {
+    if (!CacheService3.user().get(uuid)) throw new Error('PickerDialog: Session expired.');
+
     const htmlTemplate = HtmlService.createTemplateFromFile('Picker/htmlPickerDialog');
     super(htmlTemplate);
 
-    this.uuid = uuid;
-    this.title = '';
+    this._devKey = Bs.getDeveloperKey();
+    this._uuid = uuid;
+    this.topic = topic;
   }
 
-  build (topic) {
-    const devKey = Bs.getDeveloperKey();
-
-    switch (topic) {
-      case 'copy':
-        this.title = 'Select spreadsheet';
-        break;
-      case 'restore':
-        this.title = 'Select backup';
-        break;
-    }
-
+  build () {
     return this.setScriptletValues(
       {
-        picker_key: devKey,
-        topic: topic,
-        uuid: this.uuid
+        devKey: this._devKey,
+        uuid: this._uuid,
+        topic: this.topic
       })
       .evaluate()
       .setWidth(617)
-      .setHeight(487)
-      .setTitle(this.title);
+      .setHeight(487);
   }
 }

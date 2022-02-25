@@ -1,3 +1,12 @@
+function showDialogPicker (uuid, topic, title) {
+  try {
+    const htmlOutput = new PickerDialog(uuid, topic).build().setTitle(title);
+    SpreadsheetApp2.getUi().showModalDialog(htmlOutput, title);
+  } catch (err) {
+    showDialogErrorMessage(err);
+  }
+}
+
 /**
  * Gets the user's OAuth 2.0 access token so that it can be passed to Picker.
  * This technique keeps Picker from needing to show its own authorization

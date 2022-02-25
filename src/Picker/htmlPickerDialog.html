@@ -8,8 +8,12 @@
 
 <body>
   <script>
-    const uuid = <?= uuid ?>;
-    const DEVELOPER_KEY = <?= picker_key ?>;
+    class Consts {
+      static get uuid () {
+        return <?= uuid ?>;
+      }
+    }
+
     let pickerApiLoaded = false;
 
     /**
@@ -64,7 +68,7 @@
           .enableFeature(google.picker.Feature.NAV_HIDDEN)
           .hideTitleBar()
           .setOAuthToken(token)
-          .setDeveloperKey(DEVELOPER_KEY)
+          .setDeveloperKey(<?= devKey ?>)
           .setCallback(pickerCallback)
           .setOrigin('https://docs.google.com')
           .setSize(593, 479)
@@ -88,9 +92,9 @@
       if (action == google.picker.Action.CANCEL) {
         google.script.run
         <? if (topic === 'copy') { ?>
-        .showDialogSetupCopy(uuid);
+        .showDialogSetupCopy(Consts.uuid);
         <? } else if (topic === 'restore') { ?>
-        .showDialogSetupRestore(uuid);
+        .showDialogSetupRestore(Consts.uuid);
         <? } ?>
         return;
       }
@@ -100,9 +104,9 @@
         .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
         <? if (topic === 'copy') { ?>
-        .requestValidateSpreadsheet(uuid, doc[google.picker.Document.ID]);
+        .requestValidateSpreadsheet(Consts.uuid, doc[google.picker.Document.ID]);
         <? } else if (topic === 'restore') { ?>
-        .requestValidateBackup(uuid, doc[google.picker.Document.ID]);
+        .requestValidateBackup(Consts.uuid, doc[google.picker.Document.ID]);
         <? } ?>
     }
   </script>

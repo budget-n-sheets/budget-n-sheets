@@ -213,20 +213,6 @@ function showDialogSetupCopy (uuid) {
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Copy from spreadsheet');
 }
 
-function showDialogPicker (uuid, topic) {
-  if (!CacheService3.user().get(uuid)) {
-    showSessionExpired();
-    return;
-  }
-
-  try {
-    const htmlOutput = new PickerDialog(uuid).build(topic);
-    SpreadsheetApp2.getUi().showModalDialog(htmlOutput, htmlOutput.getTitle());
-  } catch (err) {
-    showDialogErrorMessage(err);
-  }
-}
-
 function showDialogSetupEnd () {
   const htmlOutput = HtmlService2.createTemplateFromFile('setup/htmlSetupEnd')
     .assignReservedHref()

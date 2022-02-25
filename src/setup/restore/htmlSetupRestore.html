@@ -201,7 +201,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
-        .showDialogPicker(uuid, 'restore');
+        .showDialogPicker(uuid, 'restore', 'Select backup');
     }
 
     function panelError(err) {
