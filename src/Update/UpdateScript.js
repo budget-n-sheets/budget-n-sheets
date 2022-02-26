@@ -13,7 +13,7 @@ class UpdateScript extends Update {
         ['', '', '', '', '', '', '', '', '', '', 'update_v0m42p10_', 'patchV0m42p11_', '', '', '', 'patchV0m42p15_', '', 'patchV0m42p17_', '', '', '', 'patchV0m42p21_', '', '', '', '', '', '', 'patchV0m42p28_', '', 'patchV0m42p30_', 'patchV0m42p31_', '', 'patchV0m42p33_', '', '', '', '', '', '', '', '', '', '', ''],
         ['', '', ''],
         ['', '', '', ''],
-        ['', 'patchV0m45p1_', '', '', 'patchV0m45p4_', '', '', 'patchV0m45p7_', '', '', '', '', '']
+        ['', 'patchV0m45p1_', '', '', 'patchV0m45p4_', '', '', 'patchV0m45p7_', '', '', '', '', '', '']
       ]
     ];
 
