@@ -1,28 +1,22 @@
 function cacheSettingsSummary_ (settings) {
-  const address = Utilities2.computeDigest(
-    'SHA_1',
-    ['settings_summary', settings.uuid, settings.protocol].join(':'),
-    'UTF_8');
-  CacheService3.document().put(address, settings);
+  SessionService.getSession(settings.uuid).createContext(['settings', settings.protocol], settings);
 }
 
 function retrieveSettingsSummary (uuid, protocol) {
-  if (!CacheService3.user().get(uuid)) {
-    showSessionExpired();
-    return;
-  }
-
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(1000)) return;
 
-  const address = Utilities2.computeDigest(
-    'SHA_1',
-    ['settings_summary', uuid, protocol].join(':'),
-    'UTF_8');
-  const settings = CacheService3.document().get(address);
-  if (settings == null) return;
-  CacheService3.document().remove(address);
+  let settings;
+  try {
+    settings = SessionService.getSession(uuid).retrieveContext(['settings', protocol]);
+  } catch (err) {
+    settings = null;
+    LogLog.error(err);
+    showSessionExpired();
+  }
+
   lock.releaseLock();
+  if (settings == null) return;
 
   if (settings.settings.financial_calendar) {
     let calendar = null;

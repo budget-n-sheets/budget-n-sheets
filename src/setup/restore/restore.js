@@ -1,5 +1,9 @@
 function requestValidateBackup (uuid, fileId) {
-  if (!CacheService3.user().get(uuid)) {
+  let session;
+  try {
+    session = SessionService.getSession(uuid);
+  } catch (err) {
+    LogLog.error(err);
     showSessionExpired();
     return;
   }
@@ -15,18 +19,18 @@ function requestValidateBackup (uuid, fileId) {
   }
 
   if (status === 0) return;
-  if (status === 100) {
-    CacheService3.user().put(uuid, true);
-    status = 0;
-  }
+  if (status === 100) status = 0;
 
-  const address = Utilities2.computeDigest('SHA_1', ['setup_status', uuid, 'restore'].join(':'), 'UTF_8');
-  CacheService3.document().put(address, status);
+  session.createContext(['setup', 'restore'], status);
   showDialogSetupRestore(uuid);
 }
 
 function continuedValidateBackup (uuid, fileId, password) {
-  if (!CacheService3.user().get(uuid)) {
+  let session;
+  try {
+    session = SessionService.getSession(uuid);
+  } catch (err) {
+    LogLog.error(err);
     showSessionExpired();
     return;
   }
@@ -41,10 +45,7 @@ function continuedValidateBackup (uuid, fileId, password) {
     status = 3;
   }
 
-  const address = Utilities2.computeDigest('SHA_1', ['setup_status', uuid, 'restore'].join(':'), 'UTF_8');
-  CacheService3.document().put(address, status);
-
-  if (status === 0) CacheService3.user().put(uuid, true);
+  session.createContext(['setup', 'restore'], status);
   showDialogSetupRestore(uuid);
 }
 
@@ -67,14 +68,12 @@ function unwrapBackup_ (uuid, file_id) {
     return patched;
   }
 
-  const address = Utilities2.computeDigest(
-    'SHA_1',
-    uuid + file_id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
-    'UTF_8');
-  const password = CacheService3.user().get(address);
-  CacheService3.user().remove(address);
 
-  if (password == null) {
+  let password = '';
+  try {
+    password = SessionService.getSession(uuid).retrieveContext([file_id, SpreadsheetApp2.getActiveSpreadsheet().getId()]);
+  } catch (err) {
+    LogLog.error(err);
     showSessionExpired();
     return;
   }

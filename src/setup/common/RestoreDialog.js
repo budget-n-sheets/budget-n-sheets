@@ -18,9 +18,7 @@ class RestoreDialog extends HtmlTemplate2 {
       return;
     }
 
-    const address = Utilities2.computeDigest('SHA_1', ['setup_status', this._scriptlet.uuid, this.protocol].join(':'), 'UTF_8');
-    const status = CacheService3.document().get(address);
-    CacheService3.document().remove(address);
+    const status = SessionService.getSession(this._scriptlet.uuid).retrieveContext(['setup', this.protocol]);
 
     lock.releaseLock();
 

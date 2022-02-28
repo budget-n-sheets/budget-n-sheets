@@ -8,15 +8,21 @@ function setupService (uuid, payload) {
     return;
   }
 
-  if (!CacheService3.user().get(uuid)) {
+  let session;
+  try {
+    session = SessionService.getSession(uuid);
+  } catch (err) {
+    LogLog.error(err);
     showSessionExpired();
     return;
   }
-  CacheService3.user().remove(uuid);
 
   if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.');
 
   const config = SetupConfig.digestConfig(uuid, payload);
+  session.end();
+  session = null;
+
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   spreadsheet.rename(config.spreadsheet_name);
 

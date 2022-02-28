@@ -1,6 +1,6 @@
 class PickerDialog extends HtmlTemplate2 {
   constructor (uuid, topic) {
-    if (!CacheService3.user().get(uuid)) throw new Error('PickerDialog: Session expired.');
+    if (!SessionService.hasSession(uuid)) throw new Error('Session expired.');
 
     const htmlTemplate = HtmlService.createTemplateFromFile('Picker/htmlPickerDialog');
     super(htmlTemplate);

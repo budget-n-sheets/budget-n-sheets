@@ -1,5 +1,9 @@
 function requestValidateSpreadsheet (uuid, fileId) {
-  if (!CacheService3.user().get(uuid)) {
+  let session;
+  try {
+    session = SessionService.getSession(uuid);
+  } catch (err) {
+    LogLog.error(err);
     showSessionExpired();
     return;
   }
@@ -23,8 +27,7 @@ function requestValidateSpreadsheet (uuid, fileId) {
     }
   }
 
-  const address = Utilities2.computeDigest('SHA_1', ['setup_status', uuid, 'copy'].join(':'), 'UTF_8');
-  CacheService3.document().put(address, status);
+  session.createContext(['setup', 'copy'], status);
 
   if (status === 0) CacheService3.user().put(uuid, true);
   showDialogSetupCopy(uuid);

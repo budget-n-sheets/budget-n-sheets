@@ -46,12 +46,12 @@ class BackupValidation {
     if (patched == null) throw new Error('Update failed.');
 
     SettingsCandidate.processBackup(this._uuid, this._backup, patched);
+    SessionService.getSession(this._uuid)
+      .createContext(
+        [this._backup.getId(), SpreadsheetApp2.getActiveSpreadsheet().getId()],
+        password,
+        180);
 
-    const address = Utilities2.computeDigest(
-      'SHA_1',
-      this._uuid + this._backup.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
-      'UTF_8');
-    CacheService3.user().put(address, password, 180);
     return 0;
   }
 }
