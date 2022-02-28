@@ -10,7 +10,7 @@ class DriveFile {
   }
 
   asSpreadsheet () {
-    if (this.file.getMimeType() !== MimeType.GOOGLE_SHEETS) throw new Error('DriveFile: asSpreadsheet(): Invalid mime type.');
+    if (this.file.getMimeType() !== MimeType.GOOGLE_SHEETS) throw new Error('DriveFile: asSpreadsheet(): File is not a Google Sheet.');
     return SpreadsheetApp.openById(this.metadata.id);
   }
 
