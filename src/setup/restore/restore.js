@@ -52,7 +52,7 @@ function unwrapBackup_ (uuid, file_id) {
   const backup = new BackupFile(file_id);
 
   if (backup.metadata.isLegacyFormat) {
-    const parts = data.split(':');
+    const parts = backup.data.split(':');
 
     const sha = Utilities2.computeDigest('SHA_1', parts[0], 'UTF_8');
     if (sha !== parts[1]) throw new Error("Hashes don't match.");

@@ -30,7 +30,7 @@ class BackupValidation {
       .assignReservedHref()
       .setScriptletValues({
         uuid: this._uuid,
-        file_id: this._backup.metadata.id
+        file_id: this._backup.getId()
       })
       .evaluate()
       .setWidth(281)
@@ -49,7 +49,7 @@ class BackupValidation {
 
     const address = Utilities2.computeDigest(
       'SHA_1',
-      this._uuid + this._backup.metadata.id + SpreadsheetApp2.getActiveSpreadsheet().getId(),
+      this._uuid + this._backup.getId() + SpreadsheetApp2.getActiveSpreadsheet().getId(),
       'UTF_8');
     CacheService3.user().put(address, password, 180);
     return 0;
