@@ -26,17 +26,10 @@ class BackupValidation {
       return 100;
     }
 
-    const htmlOutput = HtmlService2.createTemplateFromFile('setup/restore/htmlEnterPassword')
-      .assignReservedHref()
-      .setScriptletValues({
-        uuid: this._uuid,
-        file_id: this._backup.getId()
-      })
-      .evaluate()
-      .setWidth(281)
-      .setHeight(127);
-
-    SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Enter password');
+    new ShadowService(this._uuid)
+      .setParam('fileId', this._backup.getId())
+      .setCallbackFunction('continuedValidateBackup_')
+      .showDialog();
     return 0;
   }
 
