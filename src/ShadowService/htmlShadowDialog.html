@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Enter Password</title>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+</head>
+
+<body>
+  <div style="margin: 11px 0;">
+    <input id="pass" style="font-size: 113%;width: 100%;" type="password" placeholder="Password" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" required>
+  </div>
+
+  <button class="action" id="button-submit">Submit</button>
+  <button onclick="closeHost()">Cancel</button>
+
+  <script>
+    document.getElementById('button-submit').addEventListener('click', submit);
+
+    function closeHost (e, o) {
+      google.script.host.close();
+    }
+
+    function submit () {
+      this.disabled = true;
+      google.script.run
+        .withSuccessHandler(closeHost)
+        .withFailureHandler((err, obj) => {
+          console.log(err.message);
+          console.log(err.stack);
+
+          google.script.run
+            .withSuccessHandler(closeHost)
+            .withFailureHandler(null)
+            .showDialogErrorMessage({
+              message: err.message,
+              stack: err.stack
+            });
+        })
+        .returnToShadow(<?= uuid ?>, document.getElementById('pass').value);
+    }
+  </script>
+</body>
+
+</html>

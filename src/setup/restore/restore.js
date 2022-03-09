@@ -1,3 +1,10 @@
+function showDialogPickerRestore (uuid) {
+  new PickerService(uuid)
+    .setCallbackFunction('requestValidateBackup')
+    .setFallbackFunction('showDialogSetupRestore')
+    .showDialog('restore', 'Select backup');
+}
+
 function requestValidateBackup (uuid, fileId) {
   let session;
   try {
@@ -25,7 +32,7 @@ function requestValidateBackup (uuid, fileId) {
   showDialogSetupRestore(uuid);
 }
 
-function continuedValidateBackup (uuid, fileId, password) {
+function continuedValidateBackup_ (uuid, password, param) {
   let session;
   try {
     session = SessionService.getSession(uuid);
@@ -39,7 +46,7 @@ function continuedValidateBackup (uuid, fileId, password) {
   let status = 0;
 
   try {
-    status = new BackupValidation(uuid, fileId).continued(password);
+    status = new BackupValidation(uuid, param.fileId).continued(password);
   } catch (err) {
     LogLog.error(err);
     status = 3;

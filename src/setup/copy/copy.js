@@ -1,3 +1,10 @@
+function showDialogPickerCopy (uuid) {
+  new PickerService(uuid)
+    .setCallbackFunction('requestValidateSpreadsheet')
+    .setFallbackFunction('showDialogSetupCopy')
+    .showDialog('copy', 'Select spreadsheet');
+}
+
 function requestValidateSpreadsheet (uuid, fileId) {
   let session;
   try {
