@@ -1,11 +1,11 @@
 function showDialogPickerRestore (uuid) {
   new PickerService(uuid)
-    .setCallbackFunction('requestValidateBackup')
+    .setCallbackFunction('requestValidateBackup_')
     .setFallbackFunction('showDialogSetupRestore')
     .showDialog('restore', 'Select backup');
 }
 
-function requestValidateBackup (uuid, fileId) {
+function requestValidateBackup_ (uuid, fileId) {
   let session;
   try {
     session = SessionService.getSession(uuid);
