@@ -1,3 +1,10 @@
+function showDialogPickerCopy (uuid) {
+  new PickerService(uuid)
+    .setCallbackFunction('requestValidateSpreadsheet')
+    .setFallbackFunction('showDialogSetupCopy')
+    .showDialog('copy', 'Select spreadsheet');
+}
+
 function requestValidateSpreadsheet (uuid, fileId) {
   if (!CacheService3.user().get(uuid)) {
     showSessionExpired();

@@ -90,12 +90,7 @@
     function pickerCallback(data) {
       const action = data[google.picker.Response.ACTION];
       if (action == google.picker.Action.CANCEL) {
-        google.script.run
-        <? if (topic === 'copy') { ?>
-        .showDialogSetupCopy(Consts.uuid);
-        <? } else if (topic === 'restore') { ?>
-        .showDialogSetupRestore(Consts.uuid);
-        <? } ?>
+        google.script.run.fallbackToPicker(Consts.uuid);
         return;
       }
 
@@ -103,11 +98,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
-        <? if (topic === 'copy') { ?>
-        .requestValidateSpreadsheet(Consts.uuid, doc[google.picker.Document.ID]);
-        <? } else if (topic === 'restore') { ?>
-        .requestValidateBackup(Consts.uuid, doc[google.picker.Document.ID]);
-        <? } ?>
+        .callbackToPicker(Consts.uuid, doc[google.picker.Document.ID]);
     }
   </script>
 

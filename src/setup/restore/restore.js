@@ -1,3 +1,10 @@
+function showDialogPickerRestore (uuid) {
+  new PickerService(uuid)
+    .setCallbackFunction('requestValidateBackup')
+    .setFallbackFunction('showDialogSetupRestore')
+    .showDialog('restore', 'Select backup');
+}
+
 function requestValidateBackup (uuid, fileId) {
   if (!CacheService3.user().get(uuid)) {
     showSessionExpired();
