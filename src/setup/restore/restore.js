@@ -11,7 +11,7 @@ function requestValidateBackup (uuid, fileId) {
     status = new BackupValidation(uuid, fileId).verify();
   } catch (err) {
     LogLog.error(err);
-    status = typeof err === 'number' ? err : 9;
+    status = 1;
   }
 
   if (status === 0) return;
@@ -38,7 +38,7 @@ function continuedValidateBackup (uuid, fileId, password) {
     status = new BackupValidation(uuid, fileId).continued(password);
   } catch (err) {
     LogLog.error(err);
-    status = typeof err === 'number' ? err : 9;
+    status = 3;
   }
 
   const address = Utilities2.computeDigest('SHA_1', ['setup_status', uuid, 'restore'].join(':'), 'UTF_8');

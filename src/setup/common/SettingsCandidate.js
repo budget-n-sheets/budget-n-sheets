@@ -1,6 +1,6 @@
 class SettingsCandidate {
   static processBackup (uuid, file, data) {
-    if (!FeatureFlag.getStatusOf('setup/restore')) throw 1;
+    if (!FeatureFlag.getStatusOf('setup/restore')) throw new Error('Feature flagged.');
 
     const settings_candidate = {
       uuid: uuid,
@@ -47,7 +47,7 @@ class SettingsCandidate {
   }
 
   static processSpreadsheet (uuid, fileId) {
-    if (!FeatureFlag.getStatusOf('setup/copy')) throw 1;
+    if (!FeatureFlag.getStatusOf('setup/copy')) throw new Error('Feature flagged.');
 
     const spreadsheet = SpreadsheetApp.openById(fileId);
     const metadata = new Metadata(spreadsheet);
@@ -76,11 +76,11 @@ class SettingsCandidate {
     };
 
     property = metadata.getValueOf('const_properties');
-    if (!property) throw 1;
+    if (!property) throw new Error('Property not found.');
     settings_candidate.settings.financial_year = property.financial_year;
 
     property = metadata.getValueOf('user_settings');
-    if (!property) throw 1;
+    if (!property) throw new Error('Property not found.');
     settings_candidate.settings.initial_month = property.initial_month;
     settings_candidate.settings.financial_calendar = property.financial_calendar;
 
@@ -88,7 +88,7 @@ class SettingsCandidate {
     settings_candidate.settings.decimal_places = property?.decimal_places || 2;
 
     property = metadata.getValueOf('db_accounts');
-    if (!property) throw 1;
+    if (!property) throw new Error('Property not found.');
     for (const k in property) {
       settings_candidate.settings.accounts.push({
         id: 'acc_' + k,
@@ -101,7 +101,7 @@ class SettingsCandidate {
     }
 
     property = metadata.getValueOf('db_cards');
-    if (!property) throw 1;
+    if (!property) throw new Error('Property not found.');
     for (const k in property) {
       settings_candidate.misc.cards.push(property[k].name);
     }
