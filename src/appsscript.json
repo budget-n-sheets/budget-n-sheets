@@ -1,6 +1,14 @@
 {
   "timeZone": "Etc/GMT",
-  "dependencies": {},
+  "dependencies": {
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "Sheets",
+        "version": "v4",
+        "serviceId": "sheets"
+      }
+    ]
+  },
   "webapp": {
     "access": "ANYONE",
     "executeAs": "USER_ACCESSING"
