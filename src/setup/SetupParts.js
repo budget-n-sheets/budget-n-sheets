@@ -590,19 +590,24 @@ class SetupParts {
     }
     sheet.getRange(11, 4, 12, 4).setFormulas(formulas);
 
-    chart = sheet.newChart()
-      .addRange(sheet.getRange('C25:G36'))
-      .setChartType(Charts.ChartType.COLUMN)
-      .setPosition(24, 2, 0, 0)
-      .setOption('mode', 'view')
-      .setOption('legend', 'top')
-      .setOption('focusTarget', 'category')
-      .setOption('series', options)
-      .setOption('vAxis.minorGridlines.count', 3)
-      .setOption('height', 482)
-      .setOption('width', 886);
+    try {
+      chart = sheet.newChart()
+        .addRange(sheet.getRange('C25:G36'))
+        .setChartType(Charts.ChartType.COLUMN)
+        .setPosition(24, 2, 0, 0)
+        .setOption('mode', 'view')
+        .setOption('legend', 'top')
+        .setOption('focusTarget', 'category')
+        .setOption('series', options)
+        .setOption('vAxis.minorGridlines.count', 3)
+        .setOption('height', 482)
+        .setOption('width', 886)
+        .build();
 
-    sheet.insertChart(chart.build());
+      sheet.insertChart(chart);
+    } catch (err) {
+      LogLog.error(err);
+    }
 
     if (this._config.decimal_places !== 2) {
       sheet.getRangeList(['D9:I22', 'D25:G36']).setNumberFormat(this._config.number_format);
@@ -611,19 +616,24 @@ class SetupParts {
     formula = formulaBuild.table2().data();
     sheet.getRange(55, 2).setFormula(formula);
 
-    chart = sheet.newChart()
-      .addRange(sheet.getRange('B54:B64'))
-      .addRange(sheet.getRange('D54:D64'))
-      .setNumHeaders(1)
-      .setChartType(Charts.ChartType.PIE)
-      .setPosition(52, 8, 0, 0)
-      .setOption('mode', 'view')
-      .setOption('legend', 'top')
-      .setOption('focusTarget', 'category')
-      .setOption('height', 447)
-      .setOption('width', 444);
+    try {
+      chart = sheet.newChart()
+        .addRange(sheet.getRange('B54:B64'))
+        .addRange(sheet.getRange('D54:D64'))
+        .setNumHeaders(1)
+        .setChartType(Charts.ChartType.PIE)
+        .setPosition(52, 8, 0, 0)
+        .setOption('mode', 'view')
+        .setOption('legend', 'top')
+        .setOption('focusTarget', 'category')
+        .setOption('height', 447)
+        .setOption('width', 444)
+        .build();
 
-    sheet.insertChart(chart.build());
+      sheet.insertChart(chart);
+    } catch (err) {
+      LogLog.error(err);
+    }
 
     formula = formulaBuild.table3().total();
     sheet.getRange(75, 4).setFormula(formula);
@@ -634,19 +644,24 @@ class SetupParts {
       2: { color: '#45818e', type: 'line', labelInLegend: 'Average' }
     };
 
-    chart = sheet.newChart()
-      .addRange(sheet.getRange('B75:B86'))
-      .addRange(sheet.getRange('I75:K86'))
-      .setChartType(Charts.ChartType.COMBO)
-      .setPosition(72, 8, 0, 0)
-      .setOption('mode', 'view')
-      .setOption('legend', 'top')
-      .setOption('focusTarget', 'category')
-      .setOption('series', options)
-      .setOption('height', 459)
-      .setOption('width', 444);
+    try {
+      chart = sheet.newChart()
+        .addRange(sheet.getRange('B75:B86'))
+        .addRange(sheet.getRange('I75:K86'))
+        .setChartType(Charts.ChartType.COMBO)
+        .setPosition(72, 8, 0, 0)
+        .setOption('mode', 'view')
+        .setOption('legend', 'top')
+        .setOption('focusTarget', 'category')
+        .setOption('series', options)
+        .setOption('height', 459)
+        .setOption('width', 444)
+        .build();
 
-    sheet.insertChart(chart.build());
+      sheet.insertChart(chart);
+    } catch (err) {
+      LogLog.error(err);
+    }
 
     SpreadsheetApp.flush();
   }
