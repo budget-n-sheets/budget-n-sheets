@@ -11,6 +11,7 @@ class SetupParts {
 
     this._config = config;
     this._spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    this._spreadsheetId = SpreadsheetApp2.getActiveSpreadsheet().getId();
     this._metadata = new Metadata();
   }
 
@@ -564,14 +565,8 @@ class SetupParts {
     const formulaBuild = FormulaBuild.summary();
 
     const sheet = Spreadsheet2.getSheetByName('Summary');
+    const sheetId = sheet.getSheetId();
     let formula, chart, options;
-
-    options = {
-      0: { color: '#b7b7b7', type: 'bars', labelInLegend: 'Income' },
-      1: { color: '#cccccc', type: 'bars', labelInLegend: 'Expenses' },
-      2: { color: '#45818e', type: 'bars', labelInLegend: 'Income' },
-      3: { color: '#e69138', type: 'bars', labelInLegend: 'Expenses' }
-    };
 
     sheet.protect()
       .setUnprotectedRanges([
@@ -589,22 +584,14 @@ class SetupParts {
       formulas[i][2] = buildTable1.expensesMonth(i);
     }
     sheet.getRange(11, 4, 12, 4).setFormulas(formulas);
+    sheet.getRange(24, 3, 1, 7).setValues([
+      ['Month', 'Income', 'Expenses', 'Income', 'Expenses', 'Avg Income', 'Avg Expenses']
+    ]);
 
     try {
-      chart = sheet.newChart()
-        .addRange(sheet.getRange('C25:G36'))
-        .setChartType(Charts.ChartType.COLUMN)
-        .setPosition(24, 2, 0, 0)
-        .setOption('mode', 'view')
-        .setOption('legend', 'top')
-        .setOption('focusTarget', 'category')
-        .setOption('series', options)
-        .setOption('vAxis.minorGridlines.count', 3)
-        .setOption('height', 482)
-        .setOption('width', 886)
-        .build();
+      const request = { addChart: { chart: { position: { overlayPosition: { widthPixels: 886, heightPixels: 482, anchorCell: { sheetId: sheetId, rowIndex: 23, columnIndex: 1 } } }, spec: { hiddenDimensionStrategy: 'SKIP_HIDDEN_ROWS_AND_COLUMNS', basicChart: { headerCount: 1, chartType: 'COMBO', legendPosition: 'TOP_LEGEND', compareMode: 'CATEGORY', interpolateNulls: true, domains: [{ domain: { sourceRange: { sources: [{ sheetId: sheetId, startRowIndex: 23, endRowIndex: 36, startColumnIndex: 2, endColumnIndex: 3 }] } } }], series: [{ type: 'COLUMN', targetAxis: 'LEFT_AXIS', color: { red: 183 / 255, green: 183 / 255, blue: 183 / 255 }, colorStyle: { rgbColor: { red: 183 / 255, green: 183 / 255, blue: 183 / 255 } }, series: { sourceRange: { sources: [{ sheetId: sheetId, startRowIndex: 23, endRowIndex: 36, startColumnIndex: 3, endColumnIndex: 4 }] } } }, { type: 'COLUMN', targetAxis: 'LEFT_AXIS', color: { red: 204 / 255, green: 204 / 255, blue: 204 / 255 }, colorStyle: { rgbColor: { red: 204 / 255, green: 204 / 255, blue: 204 / 255 } }, series: { sourceRange: { sources: [{ sheetId: sheetId, startRowIndex: 23, endRowIndex: 36, startColumnIndex: 4, endColumnIndex: 5 }] } } }, { type: 'COLUMN', targetAxis: 'LEFT_AXIS', color: { red: 69 / 255, green: 129 / 255, blue: 142 / 255 }, colorStyle: { rgbColor: { red: 69 / 255, green: 129 / 255, blue: 142 / 255 } }, series: { sourceRange: { sources: [{ sheetId: sheetId, startRowIndex: 23, endRowIndex: 36, startColumnIndex: 5, endColumnIndex: 6 }] } } }, { type: 'COLUMN', targetAxis: 'LEFT_AXIS', color: { red: 230 / 255, green: 145 / 255, blue: 56 / 255 }, colorStyle: { rgbColor: { red: 230 / 255, green: 145 / 255, blue: 56 / 255 } }, series: { sourceRange: { sources: [{ sheetId: sheetId, startRowIndex: 23, endRowIndex: 36, startColumnIndex: 6, endColumnIndex: 7 }] } } }, { type: 'LINE', targetAxis: 'LEFT_AXIS', color: { red: 69 / 255, green: 129 / 255, blue: 142 / 255 }, colorStyle: { rgbColor: { red: 69 / 255, green: 129 / 255, blue: 142 / 255 } }, series: { sourceRange: { sources: [{ sheetId: sheetId, startRowIndex: 23, endRowIndex: 36, startColumnIndex: 7, endColumnIndex: 8 }] } } }, { type: 'LINE', targetAxis: 'LEFT_AXIS', color: { red: 230 / 255, green: 145 / 255, blue: 56 / 255 }, colorStyle: { rgbColor: { red: 230 / 255, green: 145 / 255, blue: 56 / 255 } }, series: { sourceRange: { sources: [{ sheetId: sheetId, startRowIndex: 23, endRowIndex: 36, startColumnIndex: 8, endColumnIndex: 9 }] } } }] } } } } };
 
-      sheet.insertChart(chart);
+      Sheets.Spreadsheets.batchUpdate({ requests: [request] }, this._spreadsheetId);
     } catch (err) {
       LogLog.error(err);
     }
