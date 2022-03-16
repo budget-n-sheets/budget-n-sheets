@@ -1,3 +1,9 @@
+function dailyTrigger_ (e) {
+  ScriptApp.getProjectTriggers().forEach(trigger => {
+    if (trigger.getUniqueId() === e.triggerUid) ScriptApp.deleteTrigger(trigger);
+  });
+}
+
 function onOpenHandler_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
