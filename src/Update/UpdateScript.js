@@ -14,13 +14,34 @@ class UpdateScript extends Update {
         ['', '', ''],
         ['', '', '', ''],
         ['', 'patchV0m45p1_', '', '', 'patchV0m45p4_', '', '', 'patchV0m45p7_', '', '', '', '', '', '', '', ''],
-        ['', '', 'patchV0m46p2_']
+        ['', '', 'patchV0m46p2_', 'patchV0m46p3_']
       ]
     ];
 
     super(v0, vA, list);
 
     this._key = 'script';
+  }
+
+  /**
+   * Rebuild all charts in Summary.
+   *
+   * 0.46.3
+   */
+  patchV0m46p3_ () {
+    const sheet = Spreadsheet2.getSheetByName('Summary');
+    if (!sheet) return 0;
+
+    const charts = sheet.getCharts();
+    if (charts.length > 2) sheet.removeChart(charts[2]);
+
+    sheet.getRange(74, 9, 1, 3).setValues([
+      ['Total', 'Total', 'Average']
+    ]);
+
+    new SheetSummaryCharts().insertChart3();
+
+    return 0;
   }
 
   /**
