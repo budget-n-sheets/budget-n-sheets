@@ -1,15 +1,9 @@
-class SuspendRecalculation extends BackstageRecalculation {
-  constructor () {
-    super();
-  }
-
+class SuspendRecalculation extends SheetBackstageRecalculation {
   suspend (start, end) {
-    if (!this.sheet) return;
-
     if (end == null) end = 12;
     if (start >= end) return;
 
-    const columns = this.sheet.getLastColumn() - 1;
+    const columns = this._sheet.getLastColumn() - 1;
     if (columns < 1) return;
 
     const range = this.getGroupRange(start, 0, end - start);

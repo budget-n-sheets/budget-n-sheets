@@ -1,4 +1,4 @@
-class BackstageRecalculation extends SheetBackstage {
+class SheetBackstageRecalculation extends SheetBackstage {
   constructor () {
     super();
     this.load = SettingsSpreadsheet.getValueOf('optimize_load');

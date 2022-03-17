@@ -1,8 +1,6 @@
-class SheetBackstage {
+class SheetBackstage extends ExtendedSheet {
   constructor () {
-    this.sheet = SpreadsheetApp2.getActiveSpreadsheet().getSheetByName('_Backstage');
-
-    this.num_acc = SettingsConst.getValueOf('number_accounts');
+    super('_Backstage');
 
     this.specs = Object.freeze({
       init: { row: 2, column: 2 },
@@ -14,12 +12,14 @@ class SheetBackstage {
   }
 
   getGroupRange (monthOffset, tableOffset, numMonths, numTables) {
+    const num_acc = SettingsConst.getValueOf('number_accounts');
+
     if (!monthOffset) monthOffset = 0;
     if (!tableOffset) tableOffset = 0;
     if (!numMonths) numMonths = 12 - monthOffset;
-    if (!numTables) numTables = 12 + this.num_acc - tableOffset;
+    if (!numTables) numTables = 12 + num_acc - tableOffset;
 
-    return this.sheet.getRange(
+    return this._sheet.getRange(
       this.specs.init.row + this.specs.table.height * monthOffset,
       this.specs.init.column + this.specs.table.width * tableOffset,
       this.specs.table.height * numMonths,
