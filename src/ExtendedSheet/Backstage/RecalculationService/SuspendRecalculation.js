@@ -1,6 +1,5 @@
 class SuspendRecalculation extends SheetBackstageRecalculation {
-  suspend (start, end) {
-    if (end == null) end = 12;
+  suspend (start, end = 12) {
     if (start >= end) return;
 
     const columns = this._sheet.getLastColumn() - 1;

@@ -11,11 +11,9 @@ class SheetBackstage extends ExtendedSheet {
     });
   }
 
-  getGroupRange (monthOffset, tableOffset, numMonths, numTables) {
+  getGroupRange (monthOffset = 0, tableOffset = 0, numMonths, numTables) {
     const num_acc = SettingsConst.getValueOf('number_accounts');
 
-    if (!monthOffset) monthOffset = 0;
-    if (!tableOffset) tableOffset = 0;
     if (!numMonths) numMonths = 12 - monthOffset;
     if (!numTables) numTables = 12 + num_acc - tableOffset;
 

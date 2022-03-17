@@ -229,8 +229,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
     }
   }
 
-  resume (start, end) {
-    if (end == null) end = 12;
+  resume (start, end = 12) {
     if (start >= end) return;
 
     this.start = start;
