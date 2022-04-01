@@ -1,8 +1,8 @@
 class ResumeRecalculation extends SheetBackstageRecalculation {
   constructor () {
     super();
-    this.formulas = FormulaBuild.backstage();
 
+    this.formulas = FormulaBuild.backstage();
     this.fastA1 = Object.freeze({
       values: ['C5:C', 'H5:H', 'M5:M', 'R5:R', 'W5:W', 'AB5:AB'],
       tags: ['D5:D', 'I5:I', 'N5:N', 'S5:S', 'X5:X', 'AC5:AC'],
