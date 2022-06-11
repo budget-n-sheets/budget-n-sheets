@@ -9,10 +9,13 @@ class CardsService extends TablesService {
   }
 
   formatValues_ (card) {
-    card.name = card.name.trim();
-    card.code = card.code.trim();
+    card.name = card.name.trim().replace(/\s+/g, " ").slice(0, 64);
+    card.code = card.code.trim().replace(/\s+/g, " ").slice(0, 32);
 
-    if (!Array.isArray(card.aliases)) card.aliases = card.aliases.match(/\S+/g) || [];
+    if (!Array.isArray(card.aliases)) {
+      card.aliases = card.aliases.trim().replace(/\s+/g, " ").slice(0, 256);
+      card.aliases = card.aliases.match(/\S+/g) || [];
+    }
     card.aliases = card.aliases.filter(alias => alias !== card.code);
 
     card.limit = Number(card.limit);

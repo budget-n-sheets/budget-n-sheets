@@ -41,11 +41,11 @@ class SetupConfig {
 
     config.setup_channel = payload.protocol;
 
-    config.spreadsheet_name = config.spreadsheet_name.trim();
+    config.spreadsheet_name = config.spreadsheet_name.trim().replace(/\s+/g, " ").slice(0, 128);
     if (config.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.');
 
     config.name_accounts.forEach((e, i, a) => {
-      a[i].name = e.name.trim();
+      a[i].name = e.name.trim().replace(/\s+/g, " ").slice(0, 64);
       if (a[i].name === '') throw new Error('Invalid account name.');
     });
     config.name_accounts.sort((a, b) => a.index - b.index);

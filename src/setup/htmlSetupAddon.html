@@ -132,7 +132,7 @@
           <table style="width: 100%;">
             <tr>
               <td class="name" style="width:50%;"><label for="spreadsheet_name">Spreadsheet title</label></td>
-              <td><input type="text" id="spreadsheet_name" maxlength="53" required></td>
+              <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
             </tr>
             <tr>
               <td class="name"><label for="decimal_places">Decimal places</label></td>
@@ -174,7 +174,7 @@
             <tr class="num_acc">
               <td><label class="acc_counter" style="font-weight: bold;">Account</label></td>
               <td>
-                <input type="text" name="account_name" style="width: 100%;" placeholder="Name" required>
+                <input type="text" name="account_name" style="width: 100%;" maxlength="64" placeholder="Name" required>
               </td>
               <td><span class="material-icons remove-acc" style="padding-left: 3px;visibility: hidden;cursor: pointer;">remove_circle</span></td>
             </tr>
@@ -271,7 +271,8 @@
             type: 'text',
             name: 'account_name',
             placeholder: 'Name',
-            required: true
+            required: true,
+            maxlength: 64
           })
           .css({ width: '100%' })
       ]);
