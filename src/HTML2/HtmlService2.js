@@ -5,6 +5,6 @@ class HtmlService2 {
   }
 
   static htmlInclude (fileName) {
-    return HtmlService.createHtmlOutputFromFile(fileName).getContent();
+    return HtmlService.createTemplateFromFile(fileName).evaluate().getContent();
   }
 }
