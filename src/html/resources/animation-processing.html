@@ -1,0 +1,30 @@
+<style>
+  .animation-processing-wrapper {
+    width: 211px;
+    height: 5px;
+    background-color: #efefef;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .animation-processing-bar {
+    width: 93px;
+    height: 5px;
+    background-color: #4a86e8;
+    position: absolute;
+    animation-name: animateProcessingBar;
+    animation-duration: 1709ms;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes animateProcessingBar {
+    from {
+      left: -211px;
+    }
+
+    to {
+      left: 211px;
+    }
+  }
+</style>
