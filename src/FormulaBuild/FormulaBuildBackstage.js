@@ -47,16 +47,6 @@ class FormulaBuildBackstageAccounts {
     return formula;
   }
 
-  static bsreport (mm, tags, value_tags, bsblank) {
-    let formula;
-
-    formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + tags + '; ' + bsblank + '; 1)))';
-    formula = 'IFERROR(FILTER(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value_tags + '; ' + bsblank + '; 2); ' + formula + '); "")';
-    formula = 'BSREPORT(TRANSPOSE(' + formula + '))';
-
-    return formula;
-  }
-
   static bsblank (mm, header, value) {
     return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + Consts.month_name.short[mm] + '!' + value + '); ROW(' + Consts.month_name.short[mm] + '!' + value + ') - ROW(' + Consts.month_name.short[mm] + '!' + header + '); FALSE)); ROWS(' + Consts.month_name.short[mm] + '!' + value + '))';
   }
