@@ -4,28 +4,32 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+  <?!= HtmlService2.htmlInclude("html/resources/third-party/add-ons1"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/animation-processing"); ?>
   <style>
-    .wait_load_wrapper {
+    .message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .timeout {
+      display: none;
+    }
+
+    .animation-processing-wrapper {
       width: 137px;
       height: 5px;
-      background-color: #efefef;
-      position: relative;
-      overflow: hidden;
     }
 
-    .wait_load_bar {
+    .animation-processing-bar {
       width: 79px;
       height: 5px;
-      background-color: #4a86e8;
-      position: absolute;
-      animation-name: animate;
       animation-duration: 1201ms;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
+      animation-name: animateProcessingBar;
     }
 
-    @keyframes animate {
+    @keyframes animateProcessingBar {
       from {
         left: -137px;
       }
@@ -38,29 +42,28 @@
 </head>
 
 <body>
-  <div style="width: 100%;height: 100%;margin: auto;" align="center">
-    <span style="font-size: 1.1em;"><?= message ?></span>
-    <br>
-    <br>
-    <div class="wait_load_wrapper">
-      <div class="wait_load_bar"></div>
+  <div class="message">
+    <h2><?= message ?></h2>
+
+    <div class="animation-processing-wrapper">
+      <div class="animation-processing-bar"></div>
     </div>
   </div>
-  <div id="timeout" style="display: none;margin-top: 2em;">
-    It is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.
-    <br>
-    <br>
+  <div class="timeout">
+    <p>It is taking longer than expected. You can try again or <a style="font-weight: bold;" href="<?= send_feedback ?>" target="_blank">report a problem</a>.</p>
+
     <button onclick="google.script.host.close()">Close</button>
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
   <? if (hasTimeout) { ?>
+  <?!= HtmlService2.htmlInclude("html/resources/third-party/jquery-min"); ?>
   <script>
-    $(document).ready(function() {
+    window.onload = function() {
       setTimeout(function() {
         google.script.host.setHeight(173);
-        $("#timeout").fadeIn();
+        $(".timeout").fadeIn();
       }, 60000);
-    });
+    }
   </script>
   <? } ?>
 </body>

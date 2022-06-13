@@ -132,7 +132,7 @@ function showDialogErrorMessage (err) {
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Something went wrong');
 }
 
-function showDialogMessage (title, message, timeout) {
+function showDialogMessage (title, message, timeout = false) {
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlMessageScreen')
     .assignReservedHref()
     .setScriptletValues({ message: message, hasTimeout: timeout })

@@ -15,7 +15,7 @@ function requestValidateSpreadsheet_ (uuid, fileId) {
     return;
   }
 
-  showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', 1);
+  showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', true);
   let status = 0;
 
   try {

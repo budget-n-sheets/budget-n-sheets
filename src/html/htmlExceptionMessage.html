@@ -4,13 +4,14 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+  <?!= HtmlService2.htmlInclude("html/resources/third-party/add-ons1"); ?>
 </head>
 
 <body>
-  <p><span style="font-size: 1.3em;">Sorry, something went wrong. Please try again.</span><br>An error report was sent anonymously.</p>
-  <a href="<?= send_feedback ?>" target="_blank"><b>Send feedback</b></a><br><br>
-  <button onclick="google.script.host.close()">OK</button>
+  <p>Oops, something went wrong. Please try again.</p>
+  <p>If the problem persist, you can <a style="font-weight: bold;" href="<?= send_feedback ?>" target="_blank">share additional information</a> with the developer.</p>
+
+  <button onclick="google.script.host.close()">Ok</button>
 </body>
 
 </html>

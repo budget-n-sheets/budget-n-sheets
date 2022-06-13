@@ -4,36 +4,70 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude('gas-common/htmlStyles'); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/containers"); ?>
+  <style>
+    h2 {
+      margin: 0;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      flex: 1;
+    }
+
+    li {
+      font-weight: bold;
+    }
+
+    .content-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .links {
+      margin-top: 0.7em;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1em;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="wrapper">
-    <div id="content">
-      <div align="center">
-        <a href="<?= g_marketplace ?>" target="_blank"><img style="height: 73px;" src="https://raw.githubusercontent.com/guimspace/budget-n-sheets/master/media/icon/icon-large.png" alt="Add-on Budget n Sheets"></a><br>
-        <span style="font-size: 19px;">Budget n Sheets</span>
-      </div>
+  <div class="content-container">
+    <div class="header">
+      <a href="<?= g_marketplace ?>" target="_blank"><img height="73" src="https://raw.githubusercontent.com/guimspace/budget-n-sheets/master/media/icon/icon-large.png" alt="Add-on Budget n Sheets"></a>
+      <h2>Budget n Sheets</h2>
+    </div>
+    <div>
+      <p><strong>Easy budget spreadsheet to annotate your daily expenses. Free, ad-free, open-source.</strong></p>
 
-      <div style="margin: 1em 0 0.7em 0;font-size: 13px;text-align: justify;">
-        <strong>Easy budget spreadsheet to annotate your daily expenses. Free, ad-free, open-source.</strong>
-      </div>
-
-      <div>
-        <strong>Version:</strong> v<?= version ?> &nbsp;&nbsp; <a href="https://www.budgetnsheets.com/release-notes" target="_blank">What's new</a>
-      </div>
-
-      <div style="margin-top: 0.3em;font-weight: bold;">
-        <a href="<?= join_subreddit ?>" target="_blank">Reddit</a><br>
-        <a href="<?= send_feedback ?>" target="_blank">Send feedback</a><br><br>
-
-        <a href="<?= privacy_policy ?>" target="_blank">Privacy policy</a><br>
-        <a href="<?= terms_of_service ?>" target="_blank">Terms of service</a><br>
-        <a href="https://www.budgetnsheets.com/acknowledgements" target="_blank">Acknowledgements</a><br><br>
-
-        <a href="https://www.budgetnsheets.com/donate" target="_blank">Donate</a><br>
-        <a href="<?= g_marketplace ?>" target="_blank">Rate the add-on</a>
-      </div>
+      <strong>Version:</strong> v<?= version ?> <a href="https://www.budgetnsheets.com/release-notes" target="_blank">What's new</a>
+    </div>
+    <div class="links">
+      <ul>
+        <li><a href="<?= join_subreddit ?>" target="_blank">Reddit</a></li>
+        <li><a href="<?= send_feedback ?>" target="_blank">Send feedback</a></li>
+      </ul>
+      <ul>
+        <li><a href="<?= privacy_policy ?>" target="_blank">Privacy policy</a></li>
+        <li><a href="<?= terms_of_service ?>" target="_blank">Terms of service</a></li>
+        <li><a href="https://www.budgetnsheets.com/acknowledgements" target="_blank">Acknowledgements</a></li>
+      </ul>
+      <ul>
+        <li><a href="https://www.budgetnsheets.com/donate" target="_blank">Donate</a></li>
+        <li><a href="<?= g_marketplace ?>" target="_blank">Rate the add-on</a></li>
+      </ul>
     </div>
   </div>
 </body>
