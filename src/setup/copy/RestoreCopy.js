@@ -53,7 +53,7 @@ class RestoreCopy {
     const cardsService = new CardsService();
 
     for (const k in metadata) {
-      metadata[k].aliases = metadata[k].aliases.join(' ');
+      metadata[k].aliases = metadata[k].aliases.join(',');
       cardsService.create(metadata[k]);
     }
     cardsService.save();

@@ -98,7 +98,7 @@
 
             $("#card_name").val(card.name);
             $("#card_code").val(card.code);
-            $("#card_aliases").val(card.aliases.join(' '));
+            $("#card_aliases").val(card.aliases.join(', '));
             $("#card_limit").val(card.limit);
           })
           .withFailureHandler(showError)
