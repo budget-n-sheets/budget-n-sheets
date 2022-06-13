@@ -23,6 +23,19 @@ class FormulaBuildBackstageAccounts {
     return formula;
   }
 
+  static income (mm, value, tags, bsblank) {
+    let formula;
+
+    formula = `ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${tags}; ${bsblank}; 1)`;
+    formula = `REGEXMATCH(${formula}; "#rct"); `;
+    formula += `ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${value}; ${bsblank}; 1) >= 0`;
+
+    formula = `FILTER(ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${value}; ${bsblank}; 1); ${formula})`;
+    formula = `IFERROR(SUM(${formula}); 0)`;
+
+    return formula;
+  }
+
   static expensesIgn (mm, value, tags, bsblank) {
     let formula;
 
@@ -46,6 +59,39 @@ class FormulaBuildBackstageAccounts {
 
   static bsblank (mm, header, value) {
     return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + Consts.month_name.short[mm] + '!' + value + '); ROW(' + Consts.month_name.short[mm] + '!' + value + ') - ROW(' + Consts.month_name.short[mm] + '!' + header + '); FALSE)); ROWS(' + Consts.month_name.short[mm] + '!' + value + '))';
+  }
+
+  static reportTag (tag, mm, value, tags, bsblank) {
+    const valueAddress = `ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${value}; ${bsblank}; 1)`;
+    const tagsAddress = `ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${tags}; ${bsblank}; 1)`;
+
+    let formula = '';
+
+    switch (tag) {
+      case 'wd':
+        formula += `REGEXMATCH(${tagsAddress}; "#wd"); `;
+        formula += `${valueAddress} <= 0`;
+        break;
+      case 'dp':
+        formula += `REGEXMATCH(${tagsAddress}; "#dp"); `;
+        formula += `${valueAddress} >= 0`;
+        break;
+      case 'trf+':
+        formula += `REGEXMATCH(${tagsAddress}; "#trf"); `;
+        formula += `${valueAddress} >= 0`;
+        break;
+      case 'trf-':
+        formula += `REGEXMATCH(${tagsAddress}; "#trf"); `;
+        formula += `${valueAddress} < 0`;
+        break;
+      default:
+        throw new Error('Invalid tag.');
+    }
+
+    return [
+      `IFERROR(SUM(FILTER(${valueAddress}; ${formula})); 0)`,
+      `IFERROR(COUNTA(FILTER(${tagsAddress}; ${formula})); 0)`
+    ];
   }
 }
 
