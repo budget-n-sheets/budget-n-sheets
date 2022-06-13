@@ -84,7 +84,25 @@ class SetupParts {
         accounts[this._h * i][4 + this._w * k] = buildAccounts.bsblank(i, header_value, values[1 + k]);
         accounts[1 + this._h * i][this._w * k] = buildAccounts.balance(i, values[1 + k], balance1[5 * i + k], bsblank);
         accounts[2 + this._h * i][this._w * k] = buildAccounts.expensesIgn(i, values[1 + k], tags[1 + k], bsblank);
-        accounts[this._h * i][1 + this._w * k] = buildAccounts.bsreport(i, tags[1 + k], combo[1 + k], bsblank);
+        accounts[3 + this._h * i][this._w * k] = buildAccounts.income(i, values[1 + k], tags[1 + k], bsblank);
+
+        formula = buildAccounts.reportTag('wd', i, values[1 + k], tags[1 + k], bsblank);
+        accounts[this._h * i][1 + this._w * k] = formula[0];
+        accounts[this._h * i][2 + this._w * k] = formula[1];
+
+        formula = buildAccounts.reportTag('dp', i, values[1 + k], tags[1 + k], bsblank);
+        accounts[1 + this._h * i][1 + this._w * k] = formula[0];
+        accounts[1 + this._h * i][2 + this._w * k] = formula[1];
+
+        formula = buildAccounts.reportTag('trf+', i, values[1 + k], tags[1 + k], bsblank);
+        accounts[2 + this._h * i][1 + this._w * k] = formula[0];
+        accounts[2 + this._h * i][2 + this._w * k] = formula[1];
+
+        formula = buildAccounts.reportTag('trf-', i, values[1 + k], tags[1 + k], bsblank);
+        accounts[3 + this._h * i][1 + this._w * k] = formula[0];
+        accounts[3 + this._h * i][2 + this._w * k] = formula[1];
+
+        accounts[4 + this._h * i][1 + this._w * k] = RangeUtils.rollA1Notation(5 + this._h * i, 7 + this._w * k);
       }
 
       wallet[1 + this._h * i][0] = income;

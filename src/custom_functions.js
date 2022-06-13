@@ -1,54 +1,7 @@
-function BSBLANK (array) {
-  Utilities.sleep(200);
-  if (!Array.isArray(array)) return 1;
-  if (!Array.isArray(array[0])) return 1;
-
-  const n = array[0].indexOf('');
-  return (n > -1 ? n + 1 : array[0].length);
-}
-
 function BSREPORT (data) {
-  Utilities.sleep(300);
-
-  const stats = [
+  return [
     [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]
   ];
-
-  if (data === '') return stats;
-
-  const sum_range = data[0];
-  const range = data[1];
-
-  let i = -1;
-  const n = sum_range.length;
-
-  while (++i < n && sum_range[i] !== '') {
-    if (range[i].indexOf('#wd') !== -1 && sum_range[i] <= 0) {
-      stats[0][1]++;
-      stats[0][0] += sum_range[i];
-    }
-
-    if (range[i].indexOf('#dp') !== -1 && sum_range[i] >= 0) {
-      stats[1][1]++;
-      stats[1][0] += sum_range[i];
-    }
-
-    if (range[i].indexOf('#trf') !== -1) {
-      if (sum_range[i] >= 0) {
-        stats[2][1]++;
-        stats[2][0] += sum_range[i];
-      } else {
-        stats[3][1]++;
-        stats[3][0] += sum_range[i];
-      }
-    }
-
-    if (range[i].indexOf('#rct') !== -1) {
-      stats[4][0] += sum_range[i];
-    }
-  }
-
-  return stats;
 }
 
 function BSSUMBYTAG (tag, range) {
