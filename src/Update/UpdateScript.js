@@ -14,13 +14,31 @@ class UpdateScript extends Update {
         ['', '', ''],
         ['', '', '', ''],
         ['', 'patchV0m45p1_', '', '', 'patchV0m45p4_', '', '', 'patchV0m45p7_', '', '', '', '', '', '', '', ''],
-        ['', '', 'patchV0m46p2_', 'patchV0m46p3_', '']
+        ['', '', 'patchV0m46p2_', 'patchV0m46p3_', '', 'patchV0m46p5_']
       ]
     ];
 
     super(v0, vA, list);
 
     this._key = 'script';
+  }
+
+  /**
+   * Resume activity to update functions.
+   *
+   * 0.46.5
+   */
+   patchV0m46p5_ () {
+    if (!Spreadsheet2.getSheetByName('_Backstage')) return 3;
+
+    try {
+      RecalculationService.resume(0, 12);
+    } catch (err) {
+      LogLog.error(err);
+      return 1;
+    }
+
+    return 0;
   }
 
   /**
