@@ -63,7 +63,7 @@ class DemoCalendar extends QuickstartDemo {
         day: 5,
         length: 1,
         title: 'Income',
-        description: 'acc_name\nvalue\n\n#trf #rct\n---\nSimilar to <b>The simplest event</b> but with a few tags. While the tags don\'t play any role in cash flow, they are posted in the table along with the other details.',
+        description: 'acc_name\nvalue\n\n#trf #inc\n---\nSimilar to <b>The simplest event</b> but with a few tags. While the tags don\'t play any role in cash flow, they are posted in the table along with the other details.',
         value: 1234.56
       }
     ];

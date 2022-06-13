@@ -55,7 +55,7 @@ class SheetUniqueFormulas {
     ranges = '{' + ranges.slice(0, -2) + '}';
 
     let formula = 'IFNA(FILTER(' + ref + '; REGEXMATCH(' + ref + '; "^\\S+$")); )';
-    formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#dp"; "#wd"; "#qcc"; "#ign"; "#rct"; "#trf"})';
+    formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#dp"; "#wd"; "#qcc"; "#ign"; "#inc"; "#trf"})';
     formula = 'SORT(TRIM(' + ranges + ')); ' + formula;
 
     return 'UNIQUE({' + formula + '})';

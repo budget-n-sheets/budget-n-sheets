@@ -27,7 +27,7 @@ class FormulaBuildBackstageAccounts {
     let formula;
 
     formula = `ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${tags}; ${bsblank}; 1)`;
-    formula = `REGEXMATCH(${formula}; "#rct"); `;
+    formula = `REGEXMATCH(${formula}; "#(rct|inc)"); `;
     formula += `ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${value}; ${bsblank}; 1) >= 0`;
 
     formula = `FILTER(ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${value}; ${bsblank}; 1); ${formula})`;
@@ -39,7 +39,7 @@ class FormulaBuildBackstageAccounts {
   static expensesIgn (mm, value, tags, bsblank) {
     let formula;
 
-    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + tags + '; ' + bsblank + '; 1); "#(dp|wd|qcc|ign|rct|trf)"))';
+    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + tags + '; ' + bsblank + '; 1); "#(dp|wd|qcc|ign|rct|inc|trf)"))';
     formula = 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1))); ' + formula;
     formula = 'FILTER(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1); ' + formula + ')';
     formula = 'IFERROR(SUM(' + formula + '); 0)';

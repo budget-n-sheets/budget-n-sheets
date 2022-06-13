@@ -18,10 +18,10 @@ class DemoStatements extends QuickstartDemo {
         break;
       case 3:
         this.list = [
-          [[7, 'Income (in cash), add #rct tag', Noise.randomValue(3, 2), '#rct']],
+          [[7, 'Income (in cash), add #inc tag', Noise.randomValue(3, 2), '#inc']],
           [
-            [7, 'Income (via transfer #trf), add #rct tag', Noise.randomValue(3, 2), '#trf #rct'],
-            [7, 'Income (via deposit #dp), add #rct tag', Noise.randomValue(3, 2), '#dp #rct']
+            [7, 'Income (via transfer #trf), add #inc tag', Noise.randomValue(3, 2), '#trf #inc'],
+            [7, 'Income (via deposit #dp), add #inc tag', Noise.randomValue(3, 2), '#dp #inc']
           ]
         ];
         break;
