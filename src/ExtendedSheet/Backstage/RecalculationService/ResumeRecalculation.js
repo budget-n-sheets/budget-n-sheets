@@ -82,8 +82,26 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
 
         table[0 + offset][0 + columnOffset] = '=' + fastA1.balance2[5 * mm + k];
 
-        formula = formulas.bsreport(mm, fastA1.tags[1 + k] + maxRows, fastA1.combo[1 + k] + maxRows, bsblank);
-        table[0 + offset][1 + columnOffset] = formula;
+        formula = formulas.income(mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        table[3 + offset][0 + columnOffset] = formula;
+
+        formula = formulas.reportTag('wd', mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        table[0 + offset][1 + columnOffset] = formula[0];
+        table[0 + offset][2 + columnOffset] = formula[1];
+
+        formula = formulas.reportTag('dp', mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        table[1 + offset][1 + columnOffset] = formula[0];
+        table[1 + offset][2 + columnOffset] = formula[1];
+
+        formula = formulas.reportTag('trf+', mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        table[2 + offset][1 + columnOffset] = formula[0];
+        table[2 + offset][2 + columnOffset] = formula[1];
+
+        formula = formulas.reportTag('trf-', mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        table[3 + offset][1 + columnOffset] = formula[0];
+        table[3 + offset][2 + columnOffset] = formula[1];
+
+        table[4 + offset][1 + columnOffset] = RangeUtils.rollA1Notation(5 + this._h * mm, 7 + columnOffset);
 
         formula = formulas.bsblank(mm, header, fastA1.values[1 + k] + maxRows);
         table[0 + offset][4 + columnOffset] = formula;
