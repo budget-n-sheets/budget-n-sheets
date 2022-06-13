@@ -20,7 +20,7 @@ function BSSUMBYTAG (tag, range) {
   let cr = 0;
   let regex = [];
   for (let i = 0; i < n; i++) {
-    if (/^\S+$/.test(tag[i])) {
+    if (/^\w+$/.test(tag[i])) {
       sum[i] = [0];
       regex[cr] = tag[i];
       tag[i] = '#' + tag[i];
@@ -33,17 +33,7 @@ function BSSUMBYTAG (tag, range) {
   }
 
   if (range === '' || regex.length === 0) return sum;
-
-  regex = regex.map(e => {
-    try {
-      new RegExp('#(' + e + ')');
-      return e;
-    } catch (err) {
-      return e.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-    }
-  }).join('|');
-
-  regex = new RegExp('#(' + regex + ')');
+  regex = new RegExp('#(' + regex.join('|') + ')');
 
   for (let i = 0; i < range.length; i++) {
     if (!range[i][1]) continue;

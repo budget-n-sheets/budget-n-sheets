@@ -85,10 +85,10 @@ class CalendarUtils {
         metadata.value = NaN;
       }
 
-      matches = description.match(/!#\S+/);
+      matches = description.match(/!#\w+/);
       if (matches) metadata.tagImportant = match[0].slice(2);
 
-      metadata.tags = description.match(/#\S+/g) || [];
+      metadata.tags = description.match(/#\w+/g) || [];
       metadata.tags.forEach((t, i, a) => { a[i] = t.slice(1); });
 
       if (evento.isAllDayEvent()) {
