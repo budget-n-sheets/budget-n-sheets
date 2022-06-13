@@ -15,7 +15,7 @@ function requestValidateBackup_ (uuid, fileId) {
     return;
   }
 
-  showDialogMessage('Add-on restore', 'Verifying the backup...', 1);
+  showDialogMessage('Add-on restore', 'Verifying the backup...', true);
   let status = 0;
 
   try {
@@ -42,7 +42,7 @@ function continuedValidateBackup_ (uuid, password, param) {
     return;
   }
 
-  showDialogMessage('Add-on restore', 'Verifying backup...', 1);
+  showDialogMessage('Add-on restore', 'Verifying the backup...', true);
   let status = 0;
 
   try {

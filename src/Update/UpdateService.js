@@ -83,7 +83,7 @@ class UpdateService {
       return 1;
     }
 
-    if (isOnline) showDialogMessage('Add-on update', 'Updating add-on...', 1);
+    if (isOnline) showDialogMessage('Add-on update', 'Updating the add-on...', true);
 
     if (SettingsSpreadsheet.getValueOf('spreadsheet_locale') !== SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetLocale()) {
       updateDecimalSeparator_();

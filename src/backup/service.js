@@ -31,7 +31,7 @@ function backupService (password) {
   if (!Addon.isUpToDate()) return 2;
   if (!BackupUtils.checkPasswordPolicy(password)) return 1;
 
-  showDialogMessage('Add-on backup', 'Backing up...', 1);
+  showDialogMessage('Add-on backup', 'Backing up...', true);
 
   const blob = SjclService.encrypt(
     password,
