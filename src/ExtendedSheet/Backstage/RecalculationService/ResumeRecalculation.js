@@ -169,7 +169,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
         table[1 + offset][0 + columnOffset] = formulas.credit(numRows, mm, regex[k], bsblank);
         table[2 + offset][0 + columnOffset] = formulas.expensesIgn(numRows, mm, regex[k], bsblank);
         table[3 + offset][0 + columnOffset] = formulas.expenses(numRows, mm, regex[k], bsblank);
-        table[3 + offset][1 + columnOffset] = formulas.bscardpart(numRows, mm, RangeUtils.rollA1Notation(1, col + columnOffset), bsblank);
+        table[3 + offset][1 + columnOffset] = formulas.cardDue(numRows, mm, RangeUtils.rollA1Notation(1, col + columnOffset), bsblank);
 
         listRange1.push(RangeUtils.rollA1Notation(6 + rowOffset, 0 + col + columnOffset));
         listRange2.push(RangeUtils.rollA1Notation(6 + rowOffset, 1 + col + columnOffset));
