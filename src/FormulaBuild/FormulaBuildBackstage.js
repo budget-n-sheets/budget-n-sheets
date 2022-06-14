@@ -188,7 +188,7 @@ class FormulaBuildBackstageCards {
     formula += `REGEXMATCH(ARRAY_CONSTRAIN(Cards!${transaction}; ${bsblank}; 1); "[0-9]+/[0-9]+"); `;
     formula += `NOT(REGEXMATCH(ARRAY_CONSTRAIN(Cards!${transaction}; ${bsblank}; 1); "[^0-9\\s][0-9]+/[0-9]+"))`;
 
-    formula = `QUERY(FILTER(${formula}), "SELECT (Col2 - Col1) * Col3 WHERE Col1 < Col2 LABEL (Col2 - Col1) * Col3 ''")`
+    formula = `QUERY(FILTER(${formula}); "SELECT (Col2 - Col1) * Col3 WHERE Col1 < Col2 LABEL (Col2 - Col1) * Col3 ''")`
     formula = `IF(${regex} = ""; 0; SUM(IFNA(${formula}; 0)))`;
 
     return formula;
