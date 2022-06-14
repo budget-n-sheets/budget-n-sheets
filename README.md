@@ -26,5 +26,5 @@ For larger changes and feature ideas, please open an issue first for a discussio
 
 ## License
 
-Copyright (C) 2017-2020 Guilherme T Maeoka  
+Copyright (C) 2017-2022 Guilherme T Maeoka  
 License GPLv3+: GNU GPL version 3 or later <https://www.gnu.org/licenses/>.
