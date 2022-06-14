@@ -14,7 +14,7 @@ class UpdateScript extends Update {
         ['', '', ''],
         ['', '', '', ''],
         ['', 'patchV0m45p1_', '', '', 'patchV0m45p4_', '', '', 'patchV0m45p7_', '', '', '', '', '', '', '', ''],
-        ['', '', 'patchV0m46p2_', 'patchV0m46p3_', '', '', 'patchV0m46p6_']
+        ['', '', 'patchV0m46p2_', 'patchV0m46p3_', '', '', '', 'v0m46p7_']
       ]
     ];
 
@@ -26,9 +26,9 @@ class UpdateScript extends Update {
   /**
    * Resume activity to update functions.
    *
-   * 0.46.6
+   * 0.46.7
    */
-   patchV0m46p6_ () {
+   v0m46p7_ () {
     if (!Spreadsheet2.getSheetByName('_Backstage')) return 3;
 
     try {
