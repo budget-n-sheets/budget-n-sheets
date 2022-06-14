@@ -22,17 +22,6 @@ function onOpenHandler_ (e) {
 
 function onEditHandler_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
-
-  const name = e.range.getSheet().getName();
-  const mm = Consts.month_name.short.indexOf(name);
-  if (mm === -1) return;
-
-  try {
-    const load = SettingsSpreadsheet.getValueOf('optimize_load');
-    if (load[mm]) RecalculationService.resume(mm, mm + 1);
-  } catch (err) {
-    LogLog.error(err);
-  }
 }
 
 function weeklyHandler_ (e) {
@@ -63,14 +52,6 @@ function dailyHandler_ (e) {
 
   if (e['day-of-month'] === 1) {
     treatLayout_(yyyy, mm);
-
-    if (mm > 2) {
-      try {
-        RecalculationService.suspend(0, mm - 2);
-      } catch (err) {
-        LogLog.error(err);
-      }
-    }
   }
 
   if (SettingsUser.getValueOf('post_day_events')) {
@@ -82,6 +63,4 @@ function dailyHandler_ (e) {
 function monthlyHandler_ (e) {
   if (!Addon.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
-
-  if ((e.month - 1) % 3 === 0) RecalculationService.suspend(0, 12);
 }
