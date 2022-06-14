@@ -6,7 +6,7 @@ class UpdateTemplate extends Update {
       [
         null, [''], [''], [''], [''], [''], [''], [''], [''], [''],
         [''], [''], [''],
-        ['v0m13p0_', 'v0m13p1_', 'v0m13p2_', 'v0m13p3_', 'v0m13p4_']
+        ['v0m13p0_', 'v0m13p1_', 'v0m13p2_', 'v0m13p3_', 'v0m13p4_', 'v0m13p5_']
       ]
     ];
 
@@ -16,11 +16,11 @@ class UpdateTemplate extends Update {
   }
 
   /**
-   * Update tags data validation rule.
+   * Fix tags data validation rule.
    *
-   * 0.13.4
+   * 0.13.5
    */
-   v0m13p4_ () {
+   v0m13p5_ () {
     const sheet = Spreadsheet2.getSheetByName('Tags');
     if (!sheet) return 0;
 
