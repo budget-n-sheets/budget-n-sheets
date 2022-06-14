@@ -14,7 +14,7 @@ class CardsService extends TablesService {
 
     if (!Array.isArray(card.aliases)) {
       card.aliases = card.aliases.trim().replace(/\s+/g, " ").slice(0, 256);
-      card.aliases = card.aliases.match(/\S+/g) || [];
+      card.aliases = card.aliases.match(/\w+/g) || [];
     }
     card.aliases = card.aliases.filter(alias => alias !== card.code);
 
@@ -125,7 +125,7 @@ class CardsService extends TablesService {
 
     this.formatValues_(metadata);
 
-    if (!/^\S+$/.test(metadata.code)) return 10;
+    if (!/^\w+$/.test(metadata.code)) return 10;
     if (this.hasCode(metadata.code)) return 11;
 
     const id = TablesUtils.getUtid();
@@ -242,7 +242,7 @@ class CardsService extends TablesService {
 
     this.formatValues_(metadata);
 
-    if (!/^\S+$/.test(metadata.code)) return 10;
+    if (!/^\w+$/.test(metadata.code)) return 10;
 
     const card = this._db[id];
     metadata.index = card.index;

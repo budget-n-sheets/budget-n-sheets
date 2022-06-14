@@ -18,7 +18,7 @@ class SheetUniqueFormulas {
     }
     ranges = '{' + ranges.slice(0, -2) + '}';
 
-    let formula = 'IFNA(FILTER(' + ref + '; REGEXMATCH(' + ref + '; "^\\S+$")); )';
+    let formula = 'IFNA(FILTER(' + ref + '; REGEXMATCH(' + ref + '; "^\\w+$")); )';
     formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#wd"; "#ign"})';
     formula = 'SORT(TRIM(' + ranges + ')); ' + formula;
 
@@ -54,7 +54,7 @@ class SheetUniqueFormulas {
     if (n === 0) return '';
     ranges = '{' + ranges.slice(0, -2) + '}';
 
-    let formula = 'IFNA(FILTER(' + ref + '; REGEXMATCH(' + ref + '; "^\\S+$")); )';
+    let formula = 'IFNA(FILTER(' + ref + '; REGEXMATCH(' + ref + '; "^\\w+$")); )';
     formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#dp"; "#wd"; "#qcc"; "#ign"; "#inc"; "#trf"})';
     formula = 'SORT(TRIM(' + ranges + ')); ' + formula;
 

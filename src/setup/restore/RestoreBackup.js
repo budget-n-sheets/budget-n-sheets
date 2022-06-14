@@ -50,7 +50,7 @@ class RestoreBackup {
 
     const cardsService = new CardsService();
     for (const i in this.backup.db_tables.cards) {
-      db_tables.cards[i].aliases = db_tables.cards[i].aliases.join(' ');
+      db_tables.cards[i].aliases = db_tables.cards[i].aliases.join(',');
       cardsService.create(db_tables.cards[i]);
     }
     cardsService.save();
