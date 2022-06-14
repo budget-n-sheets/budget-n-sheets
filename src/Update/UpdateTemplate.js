@@ -6,13 +6,37 @@ class UpdateTemplate extends Update {
       [
         null, [''], [''], [''], [''], [''], [''], [''], [''], [''],
         [''], [''], [''],
-        ['v0m13p0_', 'v0m13p1_', 'v0m13p2_', 'v0m13p3_']
+        ['v0m13p0_', 'v0m13p1_', 'v0m13p2_', 'v0m13p3_', 'v0m13p4_']
       ]
     ];
 
     super(v0, vA, list);
 
     this._key = 'template';
+  }
+
+  /**
+   * Update tags data validation rule.
+   *
+   * 0.13.4
+   */
+   v0m13p4_ () {
+    const sheet = Spreadsheet2.getSheetByName('Tags');
+    if (!sheet) return 0;
+
+    const numRows = sheet.getMaxRows() - 1;
+    if (numRows < 1) return 0;
+
+    sheet.getRange(2, 5, numRows, 1).clearDataValidations();
+
+    const rule = SpreadsheetApp.newDataValidation()
+      .requireFormulaSatisfied('=REGEXMATCH($E2; "^\\w+$")')
+      .setHelpText('Charset: 0-9, a-z, A-Z, _')
+      .setAllowInvalid(true)
+      .build();
+
+    sheet.getRange(2, 5, numRows, 1).setDataValidation(rule);
+    return 0;
   }
 
   /**
