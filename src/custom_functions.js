@@ -60,22 +60,5 @@ function BSSUMBYTAG (tag, range) {
 }
 
 function BSCARDPART (data) {
-  Utilities.sleep(300);
-
-  if (!data) return 0;
-
-  const current = data[0];
-  const max = data[1];
-  const values = data[2];
-
-  let sum = 0;
-
-  for (let i = 0; i < values.length; i++) {
-    if (current[i] >= max[i]) continue;
-    if (current[i] === '' || max[i] === '' || values[i] === '') continue;
-
-    sum += (max[i] - current[i]) * values[i];
-  }
-
-  return sum;
+  return 0;
 }
