@@ -60,7 +60,6 @@ class TriggersService {
   }
 
   static start () {
-    this.installOnEdit_();
     this.installOnOpen_();
     this.installTimeBased_();
   }
