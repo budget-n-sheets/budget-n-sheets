@@ -4,118 +4,72 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude('gas-common/htmlStyles'); ?>
-  <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/containers"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/material-icons"); ?>
   <style>
-    .table_row {
-      display: table-row;
+    .item {
+      padding: 7px 5px;
+      display: flex;
+      align-items: center;
     }
 
-    .item_table {
-      width: 100%;
-      margin-bottom: 17px;
-      display: table;
-      background: #f3f3f3;
-      border-radius: 7px;
-      border: 2px solid #d9d9d9;
+    .item:hover {
+      cursor: pointer;
+      border-radius: 5px;
+      background: #f1f3f4;
     }
 
-    .item_cell {
-      width: 100%;
-      padding: 11px;
-      display: table-cell;
+    .text {
+      flex: 1;
     }
 
-    .item_menu {
-      font-weight: bold;
-      word-spacing: 11px;
+    .dl-box {
+      margin: 0 7px;
     }
 
-    .footer_table {
-      display: table;
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 7px;
-      border-top: 1px solid #dadbe0;
+    .dl-icon {
+      color: rgba(0, 0, 0, 0.26);
     }
 
-    .footer_cell {
-      display: table-cell;
-      vertical-align: middle;
+    .item:hover > .dl-box > .dl-icon {
+      color: rgba(0, 0, 0, 0.54);
     }
   </style>
 </head>
 
 <body>
-  <div id="wrapper">
-
-    <div id="content" style="margin-bottom:4.7em;">
-      <div class="panel" id="panel_List">
-        <div id="box_Templates">
-        </div>
-      </div>
-
-
-      <div class="panel active" id="wait_load" align="center">
-        <b>Loading templates...</b><br>
-
-        <div class="wait_load-wrapper">
-          <div class="wait_load-bar"></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="footer">
-      <div class="footer_table">
-        <div class="table_row">
-          <div class="footer_cell left" style="width: 100%;">
-          </div>
-          <div class="footer_cell right">
-            <a href="<?= send_feedback ?>" target="_blank"><i class="material-icons-outlined md-24 md-click" title="Send feedback">feedback</i></a>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="content-container box">
   </div>
 
-  <?!= HtmlService2.htmlInclude('gas-common/htmlJavaScript'); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <script>
-    $(document).ready(function() {
+    window.onload = function() {
       google.script.run
         .withSuccessHandler(listTemplates)
         .withFailureHandler(showError)
         .coolGalleryService({ job: 'list' });
-    });
-
-    function listTemplates(list) {
-      for (const key in list) {
-        const template = list[key];
-
-        let item = '';
-
-        item += '<div class="item_table"><div class="table_row"><div class="item_cell">';
-        item += '<span style="font-size: 23px;">' + template.name + '</span><br>';
-        item += '<p style="font-size: 17px;">' + template.description + '</p>';
-        item += '<span class="gray">' + template.version_date + '</span><br>';
-        item += '<span class="gray">' + template.version_name + '</span>';
-        item += '</div></div><div class="table_row"><div class="item_cell item_menu">';
-        if (template.preview_id) item += '<a href="https://docs.google.com/spreadsheets/d/e/' + template.preview_id + '/pubhtml" target="_blank">Preview</a> ';
-        item += '<a class="m-la" id="' + key + '">Import</a>';
-        item += '</div></div></div>';
-
-        $('#box_Templates').append(item);
-      }
-
-      $('#panel_List').fadeIn('fast')
-        .siblings()
-        .hide();
     }
 
-    $(document).on('click', '.m-la', function() {
-      $('#content').css('opacity', 0.6);
+    function listTemplates (list) {
+      const $box = $('.box');
 
+      const $dl_icon = $('<div>').attr({class: 'dl-box'}).append($('<span>').attr({class: 'dl-icon material-icons md-24'}).text('download'));
+
+      for (const key in list) {
+        const $text = $('<div>').attr({class: 'text'}).append([
+          $('<strong>').text(list[key].name), $('<br>'), list[key].description
+        ]);
+        $box.append($('<div>').attr({class: 'item m-dl', id: key}).append([$text, $dl_icon.clone()]));
+      }
+
+      $('.box > .item:not(:first-child)').before('<hr>');
+    }
+
+    $(document).on('click', '.m-dl', function() {
+      $('.content-container').css('opacity', 0.6);
       google.script.run
-        .withSuccessHandler(e => $('#content').css('opacity', 1))
+        .withSuccessHandler(e => $('.content-container').css('opacity', 1))
         .withFailureHandler(showError)
         .coolGalleryService({ job: 'get', id: this.id });
     });
