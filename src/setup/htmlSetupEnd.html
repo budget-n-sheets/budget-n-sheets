@@ -4,36 +4,39 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
+  <style>
+    .header {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+  </style>
 </head>
 
 <body>
-  <div align="center">
-    <img style="height:83px;" src="https://raw.githubusercontent.com/guimspace/budget-n-sheets/master/media/icon/icon-large.png" alt="Budget n Sheets">
-    <h2 style="margin-bottom:0.3em;">Budget n Sheets</h2>
+  <div class="header">
+    <img height="83" src="https://raw.githubusercontent.com/guimspace/budget-n-sheets/master/media/icon/icon-large.png" alt="Budget n Sheets">
+    <h1>Budget n Sheets</h1>
   </div>
-  <p>Your new budget spreadsheet is ready!</p>
+
+  <p>Your budget spreadsheet is ready!</p>
 
   <ul>
-    <li>Join the subreddit <a href="<?= join_subreddit ?>" target="_blank"><b>r/budgetnsheets</b></a> to post questions and discussions.</li>
-    <li>Send valuable <a href="<?= send_feedback ?>" target="_blank"><b>feedback</b></a> and <a href="<?= g_marketplace ?>" target="_blank"><b>rate</b></a> the add-on.</li>
-    <li>Find support in the <a href="<?= home_help ?>" target="_blank"><b>Help</b></a> page.</li>
+    <li>Join our community at <a href="<?= join_subreddit ?>" target="_blank"><b>r/budgetnsheets</b></a> to post questions and discussions.</li>
+    <li>Send <a href="<?= send_feedback ?>" target="_blank"><b>feedback</b></a> and <a href="<?= g_marketplace ?>" target="_blank"><b>rate</b></a> the add-on.</li>
+    <li>Submit your requests in the <a href="<?= home_help ?>" target="_blank"><b>Support</b></a> page.</li>
   </ul>
 
-  <br>
-  <br>
+  <button class="action" onclick="showQuickstart()">Show quickstart</button>
+  <button onClick="google.script.host.close()">Close</button>
 
-  <button class="action" id="b-Quickstart">Show quickstart</button> <button onClick="closeHost()">Close</button>
-
-  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
   <script>
-    $(document).ready(function() {
-      $("#b-Quickstart").click(function() {
-        google.script.run
-          .withSuccessHandler(closeHost)
-          .showPanelQuickstart();
-      });
-    });
+    function showQuickstart () {
+      google.script.run
+        .withSuccessHandler(e => google.script.host.close())
+        .showPanelQuickstart();
+    }
   </script>
 </body>
 
