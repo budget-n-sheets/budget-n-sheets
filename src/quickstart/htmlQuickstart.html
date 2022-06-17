@@ -8,9 +8,30 @@
   <?!= HtmlService2.htmlInclude("html/resources/containers"); ?>
   <?!= HtmlService2.htmlInclude("html/resources/material-icons"); ?>
   <style>
-    .material-icons.b-play {
+    h1 {
+      flex: 1;
+      margin: 0;
+    }
+
+    .b-play {
       cursor: pointer;
       font-weight: bold;
+    }
+
+    .topic-header {
+      margin: 1em 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .m-expand, .m-collapse {
+      cursor: pointer;
+      margin: 0 7px;
+      border-radius: 50%;
+    }
+
+    .m-expand:hover, .m-collapse:hover {
+      background: #f3f3f3;
     }
   </style>
 </head>
@@ -25,95 +46,115 @@
     <hr>
 
     <div>
-      <h1 style="margin-bottom: 5px;">Basics</h1>
+      <div class="topic-header">
+        <h1>Basics</h1>
+        <div class="m-collapse"><span class="material-icons md-24">expand_less</span></div>
+      </div>
+      <div>
+        <h2>Decimal separator</h2>
+        <p>Your spreadsheet uses <b><?= dec_p ?></b> (<?= dec_n ?>) as decimal separator.</p>
 
-      <h2>Decimal separator</h2>
-      <p>Your spreadsheet uses <b><?= dec_p ?></b> (<?= dec_n ?>) as decimal separator.</p>
+        <h2>Plus and minus signs</h2>
+        <p><b>Positive numbers:</b> whenever values are <b>towards</b> your balance.</p>
+        <p><b>Negative numbers:</b> whenever values are <b>outwards</b> your balance.</p>
 
-      <h2>Plus and minus signs</h2>
-      <p><b>Positive numbers:</b> whenever values are <b>towards</b> your balance.</p>
-      <p><b>Negative numbers:</b> whenever values are <b>outwards</b> your balance.</p>
+        <h2>Protected sheets and ranges</h2>
+        <p>Do <b>not</b> edit protected tabs and ranges! It may break the spreadsheet functionality.</p>
+        <p>It is <b>safe</b> to: show/hide tabs, expand/collapse column and row groups, show/hide columns and rows.</p>
 
-      <h2>Protected sheets and ranges</h2>
-      <p>Do <b>not</b> edit protected tabs and ranges! It may break the spreadsheet functionality.</p>
-      <p>It is <b>safe</b> to: show/hide tabs, expand/collapse column and row groups, show/hide columns and rows.</p>
+        <h2>Privacy and Security</h2>
+        <p>The add-on Budget n Sheets does not collect your data, settings or any personal information. Everything is stored within your buget spreadsheet.</p>
+        <p><a href="<?= home_wiki ?>/Deactivate-or-Uninstall" target="_blank">Learn how to deactivate or uninstall the add-on.</a></p>
+        <p><a href="https://support.google.com/accounts/answer/46526" target="_blank">Make your Google Account more secure</a>.</p>
+        <p><a href="https://support.google.com/docs/answer/10381817" target="_blank">Understand the basics of privacy in Google Sheets</a>.</p>
+        <p>The content you save on Google Sheets is private to you, from others, unless you choose to share it. <a href="https://support.google.com/drive/answer/2494893" target="_blank">Learn how to share or stop sharing files in Google Sheets</a>.</p>
+        <p>Use caution when sharing your Google Calendar and choose what others can access. <a href="https://support.google.com/calendar/answer/37082" target="_blank">Learn how to share or stop sharing your calendar wit someone</a>.</p>
 
-      <h2>Privacy and Security</h2>
-      <p>The add-on Budget n Sheets does not collect your data, settings or any personal information. Everything is stored within your buget spreadsheet.</p>
-      <p><a href="<?= home_wiki ?>/Deactivate-or-Uninstall" target="_blank">Learn how to deactivate or uninstall the add-on.</a></p>
-      <p><a href="https://support.google.com/accounts/answer/46526" target="_blank">Make your Google Account more secure</a>.</p>
-      <p><a href="https://support.google.com/docs/answer/10381817" target="_blank">Understand the basics of privacy in Google Sheets</a>.</p>
-      <p>The content you save on Google Sheets is private to you, from others, unless you choose to share it. <a href="https://support.google.com/drive/answer/2494893" target="_blank">Learn how to share or stop sharing files in Google Sheets</a>.</p>
-      <p>Use caution when sharing your Google Calendar and choose what others can access. <a href="https://support.google.com/calendar/answer/37082" target="_blank">Learn how to share or stop sharing your calendar wit someone</a>.</p>
-
-      <h2>Support</h2>
-      <p><a href="<?= send_feedback ?>" target="_blank">Share your ideas, feedback, and report issues</a>.</p>
-      <p>You are encouraged to join the subreddit <a href="<?= join_subreddit ?>" target="_blank">r/budgetnsheets</a> to discuss feature requests, make questions, and share feedback on the latests changes.</p>
-      <p>Find more in <b>Add-ons</b> &gt; <b>Budget n Sheets</b> &gt; <b>More</b> &gt; <b>About the add-on</b> and <b><a href="<?= home_help ?>" target="_blank">Support</a></b> page.</p>
+        <h2>Support</h2>
+        <p><a href="<?= send_feedback ?>" target="_blank">Share your ideas, feedback, and report issues</a>.</p>
+        <p>You are encouraged to join the subreddit <a href="<?= join_subreddit ?>" target="_blank">r/budgetnsheets</a> to discuss feature requests, make questions, and share feedback on the latests changes.</p>
+        <p>Find more in <b>Add-ons</b> &gt; <b>Budget n Sheets</b> &gt; <b>More</b> &gt; <b>About the add-on</b> and <b><a href="<?= home_help ?>" target="_blank">Support</a></b> page.</p>
+      </div>
     </div>
 
     <hr>
 
     <div>
-      <h1 style="margin-bottom: 5px;">Registering Transactions</h1>
+      <div class="topic-header">
+        <h1>Registering Transactions</h1>
+        <div class="m-collapse"><span class="material-icons md-24">expand_less</span></div>
+      </div>
+      <div>
+        <p>Expenses with <b>cash</b> <span class="material-icons md-18 b-play" id="statements1">play_circle_outline</span></p>
+        <p>Expenses with <b>debit card</b> <span class="material-icons md-18 b-play" id="statements2">play_circle_outline</span></p>
+        <p>Expenses with <b>credit card</b>: See <b>Accounts and Cards</b>.</p>
+        <p>Register income <span class="material-icons md-18 b-play" id="statements3">play_circle_outline</span></p>
+        <p>Ignore a value <span class="material-icons md-18 b-play" id="statements4">play_circle_outline</span></p>
 
-      <p>Expenses with <b>cash</b> <span class="material-icons md-18 b-play" id="statements1">play_circle_outline</span></p>
-      <p>Expenses with <b>debit card</b> <span class="material-icons md-18 b-play" id="statements2">play_circle_outline</span></p>
-      <p>Expenses with <b>credit card</b>: See <b>Accounts and Cards</b>.</p>
-      <p>Register income <span class="material-icons md-18 b-play" id="statements3">play_circle_outline</span></p>
-      <p>Ignore a value <span class="material-icons md-18 b-play" id="statements4">play_circle_outline</span></p>
+        <h2>Account transactions</h2>
+        <p>Deposits <span class="material-icons md-18 b-play" id="transactions1">play_circle_outline</span></p>
+        <p>Transfer from someone <span class="material-icons md-18 b-play" id="transactions2">play_circle_outline</span></p>
+        <p>Transfer to someone <span class="material-icons md-18 b-play" id="transactions3">play_circle_outline</span></p>
+        <p>Withdrawals <span class="material-icons md-18 b-play" id="transactions4">play_circle_outline</span></p>
 
-      <h2>Account transactions</h2>
-      <p>Deposits <span class="material-icons md-18 b-play" id="transactions1">play_circle_outline</span></p>
-      <p>Transfer from someone <span class="material-icons md-18 b-play" id="transactions2">play_circle_outline</span></p>
-      <p>Transfer to someone <span class="material-icons md-18 b-play" id="transactions3">play_circle_outline</span></p>
-      <p>Withdrawals <span class="material-icons md-18 b-play" id="transactions4">play_circle_outline</span></p>
+        <h2>Cash flow</h2>
+        <p>After entering expenses and transactions, sync the cash flow. <span class="material-icons md-18 b-play" id="cash_flow1">play_circle_outline</span></p>
 
-      <h2>Cash flow</h2>
-      <p>After entering expenses and transactions, sync the cash flow. <span class="material-icons md-18 b-play" id="cash_flow1">play_circle_outline</span></p>
-
-      <h2>Blank value</h2>
-      <p>Transactions are not accounted for when below a row with a blank value. <span class="material-icons md-18 b-play" id="blank_value1">play_circle_outline</span></p>
-      <p><b>Tip</b> Quickly peek the total expenses and balance. <span class="material-icons md-18 b-play" id="blank_value2">play_circle_outline</span></p>
+        <h2>Blank value</h2>
+        <p>Transactions are not accounted for when below a row with a blank value. <span class="material-icons md-18 b-play" id="blank_value1">play_circle_outline</span></p>
+        <p><b>Tip</b> Quickly peek the total expenses and balance. <span class="material-icons md-18 b-play" id="blank_value2">play_circle_outline</span></p>
+      </div>
     </div>
 
     <hr>
 
     <div>
-      <h1 style="margin-bottom: 5px;">Accounts and Cards</h1>
+      <div class="topic-header">
+        <h1>Accounts and Cards</h1>
+        <div class="m-collapse"><span class="material-icons md-24">expand_less</span></div>
+      </div>
+      <div>
+        <p>Set an initial month and balance for each account. From the initial month and onwards, the balance is affected by the transactions. <span class="material-icons md-18 b-play" id="acc_cards1">play_circle_outline</span></p>
 
-      <p>Set an initial month and balance for each account. From the initial month and onwards, the balance is affected by the transactions. <span class="material-icons md-18 b-play" id="acc_cards1">play_circle_outline</span></p>
-
-      <p>Create a <b>card</b> for each credit card you own. <span class="material-icons md-18 b-play" id="acc_cards2">play_circle_outline</span></p>
-      <p>Register card expenses and refunds <span class="material-icons md-18 b-play" id="acc_cards3">play_circle_outline</span></p>
-      <p>Register card bill payment <span class="material-icons md-18 b-play" id="acc_cards4">play_circle_outline</span></p>
+        <p>Create a <b>card</b> for each credit card you own. <span class="material-icons md-18 b-play" id="acc_cards2">play_circle_outline</span></p>
+        <p>Register card expenses and refunds <span class="material-icons md-18 b-play" id="acc_cards3">play_circle_outline</span></p>
+        <p>Register card bill payment <span class="material-icons md-18 b-play" id="acc_cards4">play_circle_outline</span></p>
+      </div>
     </div>
 
     <hr>
 
     <div>
-      <h1 style="margin-bottom: 5px;">Custom tags</h1>
+      <div class="topic-header">
+        <h1>Custom Tags</h1>
+        <div class="m-collapse"><span class="material-icons md-24">expand_less</span></div>
+      </div>
+      <div>
+        <p>Use tags to track specific transactions and generate analytics by tag and category.</p>
+        <p><b>Note</b> The accepted charset for a code is: 0-9, a-z, A-Z, _</p>
 
-      <p>Use tags to track specific transactions and generate analytics by tag and category.</p>
-      <p><b>Note</b> The accepted charset for a code is: 0-9, a-z, A-Z, _</p>
-
-      <p>Create a tag <span class="material-icons md-18 b-play" id="tags1">play_circle_outline</span></p>
-      <p>Create subtags <span class="material-icons md-18 b-play" id="tags3">play_circle_outline</span></p>
-      <p>Tag some expenses <span class="material-icons md-18 b-play" id="tags2">play_circle_outline</span></p>
-      <p>Import an analytics sheet from the <b>BnS Gallery</b> <span class="material-icons md-18 b-play" id="tags4">play_circle_outline</span></p>
+        <p>Create a tag <span class="material-icons md-18 b-play" id="tags1">play_circle_outline</span></p>
+        <p>Create subtags <span class="material-icons md-18 b-play" id="tags3">play_circle_outline</span></p>
+        <p>Tag some expenses <span class="material-icons md-18 b-play" id="tags2">play_circle_outline</span></p>
+        <p>Import an analytics sheet from the <b>BnS Gallery</b> <span class="material-icons md-18 b-play" id="tags4">play_circle_outline</span></p>
+      </div>
     </div>
     <? if (isCurrent) { ?>
 
     <hr>
 
     <div>
-      <h1 style="margin-bottom: 5px;">Financial Calendar</h1>
+      <div class="topic-header">
+        <h1>Financial Calendar</h1>
+        <div class="m-collapse"><span class="material-icons md-24">expand_less</span></div>
+      </div>
+      <div>
+        <p>Visit the wiki to learn how to setup, create events and sync your financial calendar: <a href="https://github.com/guimspace/budget-n-sheets/wiki/Financial-Calendar" target="_blank">Wiki - Financial Calendar</a>.</p>
 
-      <p>Visit the wiki to learn how to setup, create events and sync your financial calendar: <a href="https://github.com/guimspace/budget-n-sheets/wiki/Financial-Calendar" target="_blank">Wiki - Financial Calendar</a>.</p>
 
-
-      <p>After playing the demo below, open your <a href="https://calendar.google.com/" target="_blank">Calendar</a> and click each calendar event created to view a brief explanation in the description.</p>
-      <p>Create calendar events and update the cash flow <span class="material-icons md-18 b-play" id="calendar1">play_circle_outline</span></p>
+        <p>After playing the demo below, open your <a href="https://calendar.google.com/" target="_blank">Calendar</a> and click each calendar event created to view a brief explanation in the description.</p>
+        <p>Create calendar events and update the cash flow <span class="material-icons md-18 b-play" id="calendar1">play_circle_outline</span></p>
+      </div>
     </div>
 
     <? } ?>
@@ -129,6 +170,18 @@
 
   <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <script>
+    $('.m-expand, .m-collapse').click(function() {
+      if ($(this).hasClass('m-collapse')) {
+        $(this).attr('class', 'm-expand');
+        $(this).children().text('expand_more');
+        $(this).parent().siblings().hide();
+      } else {
+        $(this).attr('class', 'm-collapse');
+        $(this).children().text('expand_less');
+        $(this).parent().siblings().show();
+      }
+    });
+
     const $container = $('.content-container');
     $(".b-play").click(function() {
       $container.css('opacity', 0.61);
