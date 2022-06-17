@@ -7,6 +7,10 @@
   <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
   <?!= HtmlService2.htmlInclude("html/resources/containers"); ?>
   <style>
+    table {
+      width: 100%;
+    }
+
     .footer {
       padding: 5px;
     }
@@ -15,8 +19,8 @@
 
 <body>
   <div class="content-container">
-    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
-      <table style="width:100%;">
+    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm()">
+      <table>
         <tr>
           <th colspan="2">
             Details
@@ -31,7 +35,7 @@
           </td>
         </tr>
         <tr>
-          <td class="name" style="vertical-align:top;">
+          <td class="name" style="vertical-align: top;">
             <label for="card_code">Code</label>
           </td>
           <td>
@@ -39,7 +43,7 @@
           </td>
         </tr>
         <tr>
-          <td class="name" style="vertical-align:top;">
+          <td class="name" style="vertical-align: top;">
             <label for="card_aliases">Code aliases</label>
           </td>
           <td>
@@ -67,51 +71,55 @@
     <span class="current" id="response"></span>
     <div>
       <? if (is_edit) { ?>
-      <button class="action" id="b-Submit" type="submit" form="the_form">Save</button>
+      <button class="action" type="submit" form="the_form">Save</button>
       <? } else { ?>
-      <button class="create" id="b-Submit" type="submit" form="the_form">Add</button>
+      <button class="create" type="submit" form="the_form">Add</button>
       <? } ?>
-      <button onclick="closeHost();">Cancel</button>
+      <button onclick="closeHost()">Cancel</button>
     </div>
   </div>
 
   <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <script>
     <? if (is_edit) { ?>
-      $(document).ready(function() {
-        google.script.run
-          .withSuccessHandler(card => {
-            if (!card) showError();
+    $(document).ready(function() {
+      $('input, button').prop('disabled', true);
 
-            $("#card_name").val(card.name);
-            $("#card_code").val(card.code);
-            $("#card_aliases").val(card.aliases.join(', '));
-            $("#card_limit").val(card.limit);
-          })
-          .withFailureHandler(showError)
-          .cardsClientService({
-            job: 'get',
-            id: $('#card_id').val()
-          });
-      });
+      google.script.run
+        .withSuccessHandler(card => {
+          if (!card) showError();
+
+          $('input, button').prop('disabled', false);
+
+          $('#card_name').val(card.name);
+          $('#card_code').val(card.code);
+          $('#card_aliases').val(card.aliases.join(', '));
+          $('#card_limit').val(card.limit);
+        })
+        .withFailureHandler(showError)
+        .cardsClientService({
+          job: 'get',
+          id: $('#card_id').val()
+        });
+    });
     <? } ?>
 
-    function submitForm() {
-      $("#response").empty();
-      $("#b-Submit").prop("disabled", true);
+    function submitForm () {
+      $('.current').empty();
+      $('input, button').prop('disabled', true);
 
       const payload = {
         <? if (is_edit) { ?>
         job: 'update',
-        id: $("#card_id").val(),
+        id: $('#card_id').val(),
         <? } else { ?>
         job: 'create',
         <? } ?>
         metadata: {
-          name : $("#card_name").val(),
-          code : $("#card_code").val(),
-          aliases: $("#card_aliases").val(),
-          limit: $("#card_limit").val()
+          name: $('#card_name').val(),
+          code : $('#card_code').val(),
+          aliases: $('#card_aliases').val(),
+          limit: $('#card_limit').val()
         }
       };
 
@@ -121,28 +129,11 @@
         .cardsClientService(payload);
     }
 
-    function submitAftermath(r) {
-      $("#response").empty();
-
-      var response;
-      switch (r) {
-        case 1:
-          response = "Sorry, something went wrong. Please, try again.";
-          break;
-        case 10:
-          response = "The code has an invalid format.";
-          break;
-        case 11:
-          response = "The code is already in use.";
-          break;
-
-        default:
-          break;
-      }
+    function submitAftermath (r) {
+      $('.current').text(r ? 'Sorry, something went wrong. Please, try again.' : '');
 
       if (r) {
-        $("#response").append(response);
-        $("#b-Submit").prop("disabled", false);
+        $('input, button').prop('disabled', false);
         return;
       }
 
