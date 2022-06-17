@@ -19,8 +19,8 @@
 
 <body>
   <div class="content-container">
-    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
-      <table style="width:100%;">
+    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm()">
+      <table>
         <tr>
           <th colspan="2">
             Details
@@ -39,7 +39,7 @@
             <label for="acc_time_start">Initial month</label>
           </td>
           <td>
-            <select id="acc_time_start" style="width:83px;">
+            <select id="acc_time_start" style="width: 83px;">
               <option value="0" selected>January</option>
               <option value="1">February</option>
               <option value="2">March</option>
@@ -60,7 +60,7 @@
             <label for="acc_balance">Initial balance</label>
           </td>
           <td>
-            $ <input id="acc_balance" style="width:7.3em;" type="number" value="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required>
+            $ <input id="acc_balance" style="width: 7.3em;" type="number" value="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required>
           </td>
         </tr>
       </table>
@@ -72,20 +72,24 @@
     <span class="current" id="response"></span>
     <div>
       <button class="action" type="submit" form="the_form">Save</button>
-      <button onclick="closeHost();">Cancel</button>
+      <button onclick="closeHost()">Cancel</button>
     </div>
   </div>
 
   <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <script>
     $(document).ready(function() {
+      $('input, button').prop('disabled', true);
+
       google.script.run
         .withSuccessHandler(account => {
           if (!account) showError();
 
-          $("#acc_name").val(account.name);
-          $("#acc_time_start").val(account.time_start);
-          $("#acc_balance").val(account.balance);
+          $('input, button').prop('disabled', true);
+
+          $('#acc_name').val(account.name);
+          $('#acc_time_start').val(account.time_start);
+          $('#acc_balance').val(account.balance);
         })
         .withFailureHandler(showError)
         .accountsClientService({
@@ -94,16 +98,16 @@
         });
     });
 
-    function submitForm() {
-      $("#b-Submit").prop("disabled", true);
+    function submitForm () {
+      $('input, button').prop('disabled', true);
 
       const payload = {
         job: 'update',
-        id: $("#account_id").val(),
+        id: $('#account_id').val(),
         metadata: {
-          name: $("#acc_name").val(),
-          time_start: $("#acc_time_start").val(),
-          balance: $("#acc_balance").val()
+          name: $('#acc_name').val(),
+          time_start: $('#acc_time_start').val(),
+          balance: $('#acc_balance').val()
         }
       };
 
@@ -113,10 +117,11 @@
         .accountsClientService(payload);
     }
 
-    function submitAftermath(r) {
+    function submitAftermath (r) {
+      $('.current').text(r ? 'Sorry, something went wrong. Please, try again.' : '');
+
       if (r) {
-        $("#response").empty().append("Sorry, something went wrong. Please, try again.");
-        $("#b-Submit").prop("disabled", false);
+        $('input, button').prop('disabled', false);
         return;
       }
 
