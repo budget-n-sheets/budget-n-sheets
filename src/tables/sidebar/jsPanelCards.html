@@ -20,7 +20,7 @@
       .showDialogDeleteCard($(this).parent().attr("id"));
   });
 
-  $("#b-AddCard").click(function(e) {
+  $(".c-add-card").click(function(e) {
     google.script.run
       .withFailureHandler(showError)
       .showDialogAddCard();
@@ -28,8 +28,11 @@
 
   function reloadListCards(r) {
     if (!r) return;
-    $("#item-AddCard").hide();
-    $("#box_Cards").empty();
+
+    $(".c-add-card").show();
+    $('#panel-cards > hr').remove();
+    $("#panel-cards > div:not(:last-child)").remove();
+
     google.script.run
       .withSuccessHandler(listCards)
       .withFailureHandler(showError)
@@ -37,35 +40,21 @@
   }
 
   function listCards(db_cards) {
+    const $box = $('#panel-cards');
+
     for (const id in db_cards) {
-      const card = db_cards[id];
+      const $text = $('<div>').attr({class: 'text'}).append([
+        $('<strong>').text(db_cards[id].name)
+      ]);
+      const $icons = $('<div>').attr({class: 'md-box', id: id}).append([
+        $('<span>').attr({class: 'c-edit material-icons md-18'}).text('edit'),
+        $('<span>').attr({class: 'c-remove material-icons md-18'}).text('delete')
+      ]);
 
-      let item = "<div class=\"table_row\">";
-      item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + card.name + "</div>";
-      item += "</div>";
-
-      item += "<div class=\"table_row\">";
-      item += "<div class=\"item_cell\" style=\"border-bottom: 1px solid #d9d9d9;font-size: 14px;line-height: 1.3;\">";
-      item += "Code: " + card.code + "<br>";
-      item += "Credit limit: " + FormatNumber.financial(card.limit);
-      if (card.aliases.length > 0) {
-        item += "<br>";
-        item += "Code aliases: " + card.aliases.join(", ");
-      }
-      item += "</div>";
-      item += "</div>";
-
-      item += "<div class=\"table_row\">";
-      item += "<div class=\"item_cell item_menu\" id=\"" + id + "\">";
-      item += "<a class=\"c-edit\">Edit</a> ";
-      item += "<a class=\"c-remove\">Remove</a>";
-      item += "</div>";
-      item += "</div>";
-
-      item = "<div class=\"item_table\">" + item + "</div>"
-      $("#box_Cards").append(item);
+      $box.prepend($('<div>').attr({class: 'item'}).append([$text, $icons]));
     }
 
-    if (Object.keys(db_cards).length < 10) $("#item-AddCard").show();
+    if (Object.keys(db_cards).length >= 10) $('.c-add-card').hide();
+    $('#panel-cards > div:not(:first-child)').before('<hr>');
   }
 </script>
