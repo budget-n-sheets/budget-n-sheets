@@ -7,7 +7,6 @@
   });
 
   $(document).on("click", ".c-edit", function(e) {
-    $("#response").empty();
     google.script.run
       .withSuccessHandler(responseHandler)
       .withFailureHandler(showError)
@@ -15,7 +14,6 @@
   });
 
   $(document).on("click", ".c-remove", function(e) {
-    $("#response").empty();
     google.script.run
       .withSuccessHandler(reloadListCards)
       .withFailureHandler(showError)
@@ -23,7 +21,6 @@
   });
 
   $("#b-AddCard").click(function(e) {
-    $("#response").empty();
     google.script.run
       .withFailureHandler(showError)
       .showDialogAddCard();

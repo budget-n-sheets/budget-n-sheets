@@ -7,8 +7,6 @@
   });
 
   $(document).on("click", ".a-edit", function(e) {
-    $("#response").empty();
-
     google.script.run
       .withSuccessHandler(responseHandler)
       .withFailureHandler(showError)
