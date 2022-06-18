@@ -7,10 +7,6 @@
   <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
   <?!= HtmlService2.htmlInclude("html/resources/containers"); ?>
   <style>
-    table {
-      width: 100%;
-    }
-
     .footer {
       padding: 5px;
     }
@@ -27,7 +23,7 @@
           </th>
         </tr>
         <tr>
-          <td class="name">
+          <td>
             <label for="card_name">Name</label>
           </td>
           <td>
@@ -35,7 +31,7 @@
           </td>
         </tr>
         <tr>
-          <td class="name" style="vertical-align: top;">
+          <td>
             <label for="card_code">Code</label>
           </td>
           <td>
@@ -43,7 +39,7 @@
           </td>
         </tr>
         <tr>
-          <td class="name" style="vertical-align: top;">
+          <td>
             <label for="card_aliases">Code aliases</label>
           </td>
           <td>
@@ -53,11 +49,11 @@
           </td>
         </tr>
         <tr>
-          <td class="name">
+          <td>
             <label for="card_limit">Credit limit</label>
           </td>
           <td>
-            $ <input id="card_limit" style="width: 7.3em;" type="number" value="0" min="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required>
+            $ <input id="card_limit" type="number" value="0" min="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required>
           </td>
         </tr>
       </table>

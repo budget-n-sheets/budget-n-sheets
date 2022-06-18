@@ -7,10 +7,6 @@
   <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
   <?!= HtmlService2.htmlInclude("html/resources/containers"); ?>
   <style>
-    table {
-      width: 100%;
-    }
-
     .footer {
       padding: 5px;
     }
@@ -27,7 +23,7 @@
           </th>
         </tr>
         <tr>
-          <td class="name">
+          <td>
             <label for="acc_name">Name</label>
           </td>
           <td>
@@ -35,7 +31,7 @@
           </td>
         </tr>
         <tr>
-          <td class="name">
+          <td>
             <label for="acc_time_start">Initial month</label>
           </td>
           <td>
@@ -56,11 +52,11 @@
           </td>
         </tr>
         <tr>
-          <td class="name">
+          <td>
             <label for="acc_balance">Initial balance</label>
           </td>
           <td>
-            $ <input id="acc_balance" style="width: 7.3em;" type="number" value="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required>
+            $ <input id="acc_balance" type="number" value="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required>
           </td>
         </tr>
       </table>
