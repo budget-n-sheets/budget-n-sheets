@@ -55,7 +55,7 @@
         <td><label for="financial_calendar">Calendar</label></td>
         <td>
           <select id="financial_calendar" style="max-width: 17em;" required>
-            <option value="" selected>Disable</option>
+            <option value="" selected>Disabled</option>
             <? for (const sha1 in calendars) { ?>
             <option value=<?= sha1 ?>><?= calendars[sha1].name + (calendars[sha1].isOwner ? '' : ' *') ?></option>
             <? } ?>
