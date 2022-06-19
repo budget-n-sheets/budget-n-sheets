@@ -6,32 +6,32 @@
       .cardsClientService({ job: 'list' });
   });
 
-  $(document).on("click", ".c-edit", function(e) {
+  $(document).on('click', '.c-edit', function(e) {
     google.script.run
       .withSuccessHandler(responseHandler)
       .withFailureHandler(showError)
-      .showDialogEditCard($(this).parent().attr("id"));
+      .showDialogEditCard($(this).parent().attr('id'));
   });
 
-  $(document).on("click", ".c-remove", function(e) {
+  $(document).on('click', '.c-remove', function(e) {
     google.script.run
       .withSuccessHandler(reloadListCards)
       .withFailureHandler(showError)
-      .showDialogDeleteCard($(this).parent().attr("id"));
+      .showDialogDeleteCard($(this).parent().attr('id'));
   });
 
-  $(".c-add-card").click(function(e) {
+  $('.c-add-card').click(function(e) {
     google.script.run
       .withFailureHandler(showError)
       .showDialogAddCard();
   });
 
-  function reloadListCards(r) {
+  function reloadListCards (r) {
     if (!r) return;
 
-    $(".c-add-card").show();
+    $('.c-add-card').show();
     $('#panel-cards > hr').remove();
-    $("#panel-cards > div:not(:last-child)").remove();
+    $('#panel-cards > div:not(:last-child)').remove();
 
     google.script.run
       .withSuccessHandler(listCards)
@@ -39,7 +39,7 @@
       .cardsClientService({ job: 'list' });
   }
 
-  function listCards(db_cards) {
+  function listCards (db_cards) {
     const $box = $('#panel-cards');
 
     for (const id in db_cards) {

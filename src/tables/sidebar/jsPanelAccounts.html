@@ -6,14 +6,14 @@
       .accountsClientService({ job: 'list' });
   });
 
-  $(document).on("click", ".a-edit", function(e) {
+  $(document).on('click', '.a-edit', function(e) {
     google.script.run
       .withSuccessHandler(responseHandler)
       .withFailureHandler(showError)
       .showDialogEditAccount($(this).parent().attr('id'));
   });
 
-  function listAccounts(db_accounts) {
+  function listAccounts (db_accounts) {
     const $box = $('#panel-accounts');
 
     for (const id in db_accounts) {
