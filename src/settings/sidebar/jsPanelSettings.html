@@ -9,52 +9,52 @@
   $(document).on('click', '#b-Save', saveSettings);
 
   <? if (isCalendarEnabled) { ?>
-  $("#financial_calendar").change(function() {
-    if ($(this).val() === "") {
-      $(".options-calendar").prop("disabled", true);
-      $(".options-calendar").prop("checked", false);
+  $('#financial_calendar').change(function() {
+    if ($(this).val() === '') {
+      $('.options-calendar').prop('disabled', true);
+      $('.options-calendar').prop('checked', false);
     } else {
-      $(".options-calendar").prop("disabled", false);
+      $('.options-calendar').prop('disabled', false);
     }
     return;
   });
   <? } ?>
 
-  function loadUserSettings(user_settings) {
-    $("#initial_month").val(user_settings.initial_month);
-    $("#decimal_places").val(user_settings.decimal_places);
+  function loadUserSettings (user_settings) {
+    $('#initial_month').val(user_settings.initial_month);
+    $('#decimal_places').val(user_settings.decimal_places);
     $('#view_mode').val(user_settings.view_mode);
 
     <? if (isCalendarEnabled) { ?>
-    $("#financial_calendar").val(user_settings.financial_calendar);
+    $('#financial_calendar').val(user_settings.financial_calendar);
     if (user_settings.financial_calendar) {
-      if (user_settings.post_day_events) $("#post_day_events").prop("checked", true);
-      if (user_settings.cash_flow_events) $("#cash_flow_events").prop("checked", true);
-      $(".options-calendar").prop("disabled", false);
+      if (user_settings.post_day_events) $('#post_day_events').prop('checked', true);
+      if (user_settings.cash_flow_events) $('#cash_flow_events').prop('checked', true);
+      $('.options-calendar').prop('disabled', false);
     }
     <? } ?>
 
-    $("#b-Save").prop("disabled", false);
+    $('#b-Save').prop('disabled', false);
   }
 
-  function saveSettings() {
+  function saveSettings () {
     this.disabled = true;
-    $("#footer_response").empty();
+    $('#footer_response').empty();
 
     var user_settings = {
       <? if (isCalendarEnabled) { ?>
-      financial_calendar: $("#financial_calendar").val(),
-      post_day_events: $("#post_day_events").prop("checked"),
-      cash_flow_events: $("#cash_flow_events").prop("checked"),
+      financial_calendar: $('#financial_calendar').val(),
+      post_day_events: $('#post_day_events').prop('checked'),
+      cash_flow_events: $('#cash_flow_events').prop('checked'),
       <? } ?>
-      initial_month : $("#initial_month").val(),
-      decimal_places : $("#decimal_places").val(),
+      initial_month : $('#initial_month').val(),
+      decimal_places : $('#decimal_places').val(),
       view_mode: $('#view_mode').val()
     };
 
     google.script.run.withSuccessHandler(function(r, o) {
         if (r) showError()
-        showStatus("Saved settings");
+        showStatus('Saved settings');
         o.disabled = false;
       })
       .withFailureHandler(showError)

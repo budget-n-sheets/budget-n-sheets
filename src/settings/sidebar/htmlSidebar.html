@@ -78,25 +78,25 @@
   <?!= HtmlService2.htmlInclude('html/resources/javascript'); ?>
   <?!= containment8d4adafda11Frame(); ?>
   <script>
-    $(document).on("click", ".header-container > .tab", function() {
-      if ($(this).hasClass("active")) return;
+    $(document).on('click', '.header-container > .tab', function() {
+      if ($(this).hasClass('active')) return;
 
-      const id = $(this).attr("id");
+      const id = $(this).attr('id');
       let panel;
 
-      $(this).addClass("active")
+      $(this).addClass('active')
         .siblings()
-        .removeClass("active");
+        .removeClass('active');
       $('.footer button').remove();
 
       window.scrollTo(0, 0);
-      if (id === "tab-settings") {
+      if (id === 'tab-settings') {
         panel = '#panel-settings';
         $('.footer > div').append($('<button>').attr({class: 'action', id: 'b-Save'}).text('Save'));
-      } else if (id === "tab-maintenance") {
+      } else if (id === 'tab-maintenance') {
         panel = '#panel-maintenance';
       <? if (settings_backup) { ?>
-      } else if (id === "tab-backup") {
+      } else if (id === 'tab-backup') {
         panel = '#panel-backup';
         $('.footer > div').append($('<button>').attr({class: 'action', id: 'b-Backup'}).text('Back up now'));
       <? } ?>
@@ -107,8 +107,8 @@
         .hide();
     });
 
-    function showStatus(msg) {
-      $(".current").empty().append(msg);
+    function showStatus (msg) {
+      $('.current').empty().append(msg);
     }
   </script>
   <?!= jsPanelSettings ?>

@@ -1,16 +1,16 @@
 <script>
   $(document).ready(function() {
-    $("#b-Reset1").click(resetProtection);
-    $("#b-Reset2").click(resetSuggestions);
-    $("#b-Reinstall").click(reinstallTriggers);
+    $('#b-Reset1').click(resetProtection);
+    $('#b-Reset2').click(resetSuggestions);
+    $('#b-Reinstall').click(reinstallTriggers);
   });
 
-  function resetProtection() {
+  function resetProtection () {
     this.disabled = true;
-    $(".current").empty();
+    $('.current').empty();
 
     google.script.run.withSuccessHandler(function(r, o) {
-        showStatus("Reseted protection");
+        showStatus('Reseted protection');
         o.disabled = false;
       })
       .withFailureHandler(showError)
@@ -18,12 +18,12 @@
       .askResetProtection();
   }
 
-  function resetSuggestions() {
+  function resetSuggestions () {
     this.disabled = true;
-    $(".current").empty();
+    $('.current').empty();
 
     google.script.run.withSuccessHandler(function(r, o) {
-        showStatus("Reseted suggestions");
+        showStatus('Reseted suggestions');
         o.disabled = false;
       })
       .withFailureHandler(showError)
@@ -31,12 +31,12 @@
       .askResetSuggestions();
   }
 
-  function reinstallTriggers() {
+  function reinstallTriggers () {
     this.disabled = true;
-    $(".current").empty();
+    $('.current').empty();
 
     google.script.run.withSuccessHandler(function(r, o) {
-        if (!r) showStatus("Reinstalled triggers");
+        if (!r) showStatus('Reinstalled triggers');
         o.disabled = false;
       })
       .withFailureHandler(showError)

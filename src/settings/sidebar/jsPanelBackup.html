@@ -1,13 +1,13 @@
 <script>
   $(document).on('click', '#b-Backup', backupNow);
 
-  function backupNow() {
+  function backupNow () {
     this.disabled = true;
-    $(".current").empty();
+    $('.current').empty();
 
     google.script.run
       .withSuccessHandler(function(r, o) {
-        if (r > 1) showStatus("Something went wrong. Try again later.");
+        if (r > 1) showStatus('Something went wrong. Try again later.');
         o.disabled = false;
       })
       .withFailureHandler(showError)
