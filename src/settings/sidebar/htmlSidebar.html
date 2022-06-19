@@ -8,14 +8,16 @@
   <?!= HtmlService2.htmlInclude('html/resources/containers'); ?>
   <?!= HtmlService2.htmlInclude('html/resources/material-icons'); ?>
   <style>
-    td p {
-      margin-top: 0;
-      margin-bottom: 0;
-      text-align: justify;
+    a {
+      font-weight: bold;
     }
 
-    .table_row {
-      display: table-row;
+    tr.comment > td:first-child {
+      width: 100%;
+    }
+
+    td > p {
+      margin: 0;
     }
 
     .header-container {
