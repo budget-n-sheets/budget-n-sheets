@@ -27,7 +27,7 @@
             <label for="acc_name">Name</label>
           </td>
           <td>
-            <input id="acc_name" type="text" maxlength="64" required>
+            <input id="acc_name" type="text" maxlength="64" required disabled>
           </td>
         </tr>
         <tr>
@@ -35,7 +35,7 @@
             <label for="acc_time_start">Initial month</label>
           </td>
           <td>
-            <select id="acc_time_start" style="width: 83px;">
+            <select id="acc_time_start" style="width: 83px;" disabled>
               <option value="0" selected>January</option>
               <option value="1">February</option>
               <option value="2">March</option>
@@ -56,7 +56,7 @@
             <label for="acc_balance">Initial balance</label>
           </td>
           <td>
-            $ <input id="acc_balance" type="number" value="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required>
+            $ <input id="acc_balance" type="number" value="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required disabled>
           </td>
         </tr>
       </table>
@@ -67,7 +67,7 @@
   <div class="footer">
     <span class="current" id="response"></span>
     <div>
-      <button class="action" type="submit" form="the_form">Save</button>
+      <button class="action" type="submit" form="the_form" disabled>Save</button>
       <button onclick="closeHost()">Cancel</button>
     </div>
   </div>
@@ -75,13 +75,11 @@
   <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <script>
     $(document).ready(function() {
-      $('input, button').prop('disabled', true);
-
       google.script.run
         .withSuccessHandler(account => {
           if (!account) showError();
 
-          $('input, button').prop('disabled', true);
+          $('input, select, button').prop('disabled', false);
 
           $('#acc_name').val(account.name);
           $('#acc_time_start').val(account.time_start);
@@ -95,7 +93,7 @@
     });
 
     function submitForm () {
-      $('input, button').prop('disabled', true);
+      $('.current').empty();
 
       const payload = {
         job: 'update',
@@ -107,6 +105,7 @@
         }
       };
 
+      $('input, select, button').prop('disabled', true);
       google.script.run
         .withSuccessHandler(submitAftermath)
         .withFailureHandler(showError)
@@ -117,7 +116,7 @@
       $('.current').text(r ? 'Sorry, something went wrong. Please, try again.' : '');
 
       if (r) {
-        $('input, button').prop('disabled', false);
+        $('input, select, button').prop('disabled', false);
         return;
       }
 
