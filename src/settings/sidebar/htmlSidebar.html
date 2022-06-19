@@ -39,9 +39,16 @@
       display: none;
     }
 
-    .footer {
+    .footer > div {
       padding: 5px;
+    }
+
+    .footer-buttons {
       border-top: 1px solid #dadbe0;
+    }
+
+    .footer-buttons > div {
+      display: none;
     }
   </style>
 </head>
@@ -70,9 +77,18 @@
   </div>
 
   <div class="footer">
-    <span class="current"></span>
     <div>
-      <button class="action" id="b-Save" disabled>Save</button>
+      <span class="current"></span>
+    </div>
+    <div class="footer-buttons">
+      <div class="panel-settings">
+        <button class="action" id="b-Save">Save</button>
+      </div>
+      <div class="panel-maintenance">
+      </div>
+      <div class="panel-backup">
+        <button class="action" id="b-Backup">Back up now</button>
+      </div>
     </div>
   </div>
   <?!= HtmlService2.htmlInclude('html/resources/javascript'); ?>
@@ -87,21 +103,14 @@
       $(this).addClass('active')
         .siblings()
         .removeClass('active');
-      $('.footer button').remove();
+
+      if (id === 'tab-settings') panel = '.panel-settings';
+      else if (id === 'tab-maintenance') panel = '.panel-maintenance';
+      <? if (settings_backup) { ?>
+      else if (id === 'tab-backup') panel = '.panel-backup';
+      <? } ?>
 
       window.scrollTo(0, 0);
-      if (id === 'tab-settings') {
-        panel = '#panel-settings';
-        $('.footer > div').append($('<button>').attr({class: 'action', id: 'b-Save'}).text('Save'));
-      } else if (id === 'tab-maintenance') {
-        panel = '#panel-maintenance';
-      <? if (settings_backup) { ?>
-      } else if (id === 'tab-backup') {
-        panel = '#panel-backup';
-        $('.footer > div').append($('<button>').attr({class: 'action', id: 'b-Backup'}).text('Back up now'));
-      <? } ?>
-      }
-
       $(panel).show()
         .siblings()
         .hide();
