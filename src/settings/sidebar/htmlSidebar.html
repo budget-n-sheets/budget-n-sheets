@@ -48,14 +48,14 @@
 
 <body>
   <div class="header-container">
-    <div class="tab active" id="tab_settings">
+    <div class="tab active" id="tab-settings">
       <i class="material-icons-outlined md-24" title="Settings">settings</i>
     </div>
-    <div class="tab" id="tab_maintenance">
+    <div class="tab" id="tab-maintenance">
       <i class="material-icons-outlined md-24" title="Maintenance">build</i>
     </div>
     <? if (settings_backup) { ?>
-    <div class="tab" id="tab_backup">
+    <div class="tab" id="tab-backup">
       <i class="material-icons-outlined md-24" title="Backup">backup</i>
     </div>
     <? } ?>
@@ -70,7 +70,7 @@
   </div>
 
   <div class="footer">
-    <span class="current" id="response"></span>
+    <span class="current"></span>
     <div>
       <button class="action" id="b-Save" disabled>Save</button>
     </div>
@@ -78,38 +78,37 @@
   <?!= HtmlService2.htmlInclude('html/resources/javascript'); ?>
   <?!= containment8d4adafda11Frame(); ?>
   <script>
-    $(document).on("click", ".header_tab", function() {
+    $(document).on("click", ".header-container > .tab", function() {
       if ($(this).hasClass("active")) return;
 
-      var select = $(this).attr("id");
+      const id = $(this).attr("id");
+      let panel;
 
       $(this).addClass("active")
         .siblings()
         .removeClass("active");
-      $('.footer_cell.left button').remove();
+      $('.footer button').remove();
 
       window.scrollTo(0, 0);
-      if (select === "tab_settings") {
-        $('.footer_cell.left').append('<button class="action" id="b-Save">Save</button>');
-        $("#panel_Settings").show()
-          .siblings()
-          .hide();
-      } else if (select === "tab_maintenance") {
-        $("#panel_Maintenance").show()
-          .siblings()
-          .hide();
+      if (id === "tab-settings") {
+        panel = '#panel-settings';
+        $('.footer > div').append($('<button>').attr({class: 'action', id: 'b-Save'}).text('Save'));
+      } else if (id === "tab-maintenance") {
+        panel = '#panel-maintenance';
       <? if (settings_backup) { ?>
-      } else if (select === "tab_backup") {
-        $('.footer_cell.left').append('<button id="b-Backup" class="action">Back up now</button>');
-        $("#panel_Backup").show()
-          .siblings()
-          .hide();
+      } else if (id === "tab-backup") {
+        panel = '#panel-backup';
+        $('.footer > div').append($('<button>').attr({class: 'action', id: 'b-Backup'}).text('Back up now'));
       <? } ?>
       }
+
+      $(panel).show()
+        .siblings()
+        .hide();
     });
 
     function showStatus(msg) {
-      $("#footer_response").empty().append(msg);
+      $(".current").empty().append(msg);
     }
   </script>
   <?!= jsPanelSettings ?>

@@ -1,4 +1,4 @@
-<div id="panel_Settings">
+<div id="panel-settings">
   <form accept-charset="UTF-8">
     <table>
       <tr>
@@ -51,9 +51,9 @@
         <th colspan="2">Financial calendar</th>
       </tr>
       <? if (isCalendarEnabled) { ?>
-      <tr>
-        <td class="comment"><label for="financial_calendar">Calendar</label></td>
-        <td class="comment">
+      <tr class="comment">
+        <td><label for="financial_calendar">Calendar</label></td>
+        <td>
           <select id="financial_calendar" style="max-width: 17em;" required>
             <option value="" selected>Disable</option>
             <? for (const sha1 in calendars) { ?>
@@ -63,8 +63,8 @@
         </td>
       </tr>
       <tr>
-        <td class="secondary" colspan="2">
-          * Calendar is not owned by you.
+        <td colspan="2">
+          <span class="secondary">* Calendar is not owned by you.</span>
         </td>
       </tr>
       <tr>

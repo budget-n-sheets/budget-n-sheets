@@ -7,7 +7,7 @@
 
   function resetProtection() {
     this.disabled = true;
-    $("#footer_response").empty();
+    $(".current").empty();
 
     google.script.run.withSuccessHandler(function(r, o) {
         showStatus("Reseted protection");
@@ -20,7 +20,7 @@
 
   function resetSuggestions() {
     this.disabled = true;
-    $("#footer_response").empty();
+    $(".current").empty();
 
     google.script.run.withSuccessHandler(function(r, o) {
         showStatus("Reseted suggestions");
@@ -33,7 +33,7 @@
 
   function reinstallTriggers() {
     this.disabled = true;
-    $("#footer_response").empty();
+    $(".current").empty();
 
     google.script.run.withSuccessHandler(function(r, o) {
         if (!r) showStatus("Reinstalled triggers");
