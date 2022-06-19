@@ -5,25 +5,35 @@
   <title>Enter Password</title>
   <base target="_top">
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
+  <style>
+    .box {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1em;
+    }
+  </style>
 </head>
 
 <body>
-  <div style="margin: 11px 0;">
-    <input id="pass" style="font-size: 113%;width: 100%;" type="password" placeholder="Password" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" required>
+  <div class="box">
+    <input id="pass" style="font-size: 1.17em;" type="password" placeholder="Password" maxlength="512" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" required>
+
+    <div>
+      <button class="action" id="button-submit">Submit</button>
+      <button onclick="closeHost()">Cancel</button>
+    </div>
   </div>
 
-  <button class="action" id="button-submit">Submit</button>
-  <button onclick="closeHost()">Cancel</button>
-
   <script>
-    document.getElementById('button-submit').addEventListener('click', submit);
+    document.getElementById('button-submit').addEventListener('click', submitPass);
 
     function closeHost (e, o) {
       google.script.host.close();
     }
 
-    function submit () {
+    function submitPass () {
       this.disabled = true;
       google.script.run
         .withSuccessHandler(closeHost)

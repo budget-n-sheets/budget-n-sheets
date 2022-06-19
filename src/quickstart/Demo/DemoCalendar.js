@@ -132,7 +132,12 @@ class DemoCalendar extends QuickstartDemo {
     return response === ui.Button.YES;
   }
 
-  makeConfig () {
+  makeConfig (num) {
+    if (num === 1) {
+      showSidebarSettings();
+      return;
+    }
+
     if (!this.evalPermission_()) return;
 
     if (this.date.yyyy === this._settings.financial_year) {

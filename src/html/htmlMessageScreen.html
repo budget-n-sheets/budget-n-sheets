@@ -4,7 +4,7 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude("html/resources/third-party/add-ons1"); ?>
+  <link rel="stylesheet" href="<?= HtmlResources.css.add_ons ?>">
   <?!= HtmlService2.htmlInclude("html/resources/animation-processing"); ?>
   <style>
     .message {
@@ -56,7 +56,7 @@
   </div>
 
   <? if (hasTimeout) { ?>
-  <?!= HtmlService2.htmlInclude("html/resources/third-party/jquery-min"); ?>
+  <script src="<?= HtmlResources.js.jquery_min ?>"></script>
   <script>
     window.onload = function() {
       setTimeout(function() {
