@@ -11,6 +11,32 @@
       padding: 5px;
     }
   </style>
+  <style>
+    .color-picker {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-evenly;
+      gap: 0.3em;
+    }
+
+    .color-picker > .card {
+      margin: 3px 0;
+      width: 3em;
+      height: 3em;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #whitesmoke {
+      border: 1px solid lightgray;
+    }
+
+    .color-picker > .card.active, #whitesmoke.active {
+      margin: 0;
+      border: 3px solid black;
+    }
+  </style>
 </head>
 
 <body>
@@ -59,6 +85,24 @@
             $ <input id="acc_balance" type="number" value="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required disabled>
           </td>
         </tr>
+        <tr>
+          <td colspan="2">
+            <div class="color-picker">
+              <div class="card" id="whitesmoke" style="background-color: whitesmoke;"></div>
+              <div class="card" id="slategray" style="background-color: slategray;"></div>
+              <div class="card" id="black" style="background-color: black;"></div>
+              <div class="card" id="darkblue" style="background-color: darkblue;"></div>
+              <div class="card" id="slateblue" style="background-color: slateblue;"></div>
+              <div class="card" id="lightskyblue" style="background-color: lightskyblue;"></div>
+              <div class="card" id="seagreen" style="background-color: seagreen;"></div>
+              <div class="card" id="mediumseagreen" style="background-color: mediumseagreen;"></div>
+              <div class="card" id="crimson" style="background-color: crimson;"></div>
+              <div class="card" id="deeppink" style="background-color: deeppink;"></div>
+              <div class="card" id="darkorange" style="background-color: darkorange;"></div>
+              <div class="card" id="goldenrod" style="background-color: goldenrod;"></div>
+            </div>
+          </td>
+        </tr>
       </table>
       <input id="account_id" style="display: none;" type="text" value="<?= account_id ?>">
     </form>
@@ -90,6 +134,12 @@
           job: 'get',
           id: $('#account_id').val()
         });
+    });
+
+    $('.color-picker > .card').click(function() {
+      if($(this).is('.active')) return;
+      $('.color-picker > .card').removeClass('active');
+      $(this).addClass('active');
     });
 
     function submitForm () {
