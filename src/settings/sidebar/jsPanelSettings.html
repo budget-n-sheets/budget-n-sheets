@@ -1,5 +1,6 @@
 <script>
   $(document).ready(function() {
+    $('.panel-settings').show();
     google.script.run
       .withSuccessHandler(loadUserSettings)
       .withFailureHandler(showError)
@@ -33,7 +34,6 @@
     }
 
     <? } ?>
-    $('.panel-settings').show();
   }
 
   function saveSettings () {
