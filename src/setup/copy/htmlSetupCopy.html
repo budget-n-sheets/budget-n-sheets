@@ -4,72 +4,74 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
-  <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/material-icons"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/animation-processing"); ?>
+  <style>
+    .panel {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="wrapper">
-    <div id="content">
-      <div class="panel active" id="restore-panel">
-        <div>
-          <ol style="padding-left: 16px;">
-            <li>Select a spreadsheet to copy data from.</li>
-            <li>Review the settings and make your changes.</li>
-            <li>Click <strong>COPY</strong>.</li>
-          </ol>
+  <div class="panel" id="restore-panel">
+    <div>
+      <ol style="padding-left: 16px;">
+        <li>Select a spreadsheet to copy data from.</li>
+        <li>Review the settings and make your changes.</li>
+        <li>Click <strong>COPY</strong>.</li>
+      </ol>
 
-          <p class="error" id="reponse"><?= status_msg ?></p>
-          <button class="action" id="b-Select">Select spreadsheet</button>
+      <p class="error" id="reponse"><?= status_msg ?></p>
+      <button class="action" id="b-Select">Select spreadsheet</button>
+      <button onclick="closeHost()">Cancel</button>
+    </div>
+
+    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
+      <div class="panel" id="details">
+        <table style="margin-top: 1.3em;">
+          <tr>
+            <th colspan="2"><i class="material-icons-outlined">table_chart</i> Spreadsheet</th>
+          </tr>
+          <tr>
+            <td class="name" style="width: 127px;"><label for="spreadsheet_name">Spreadsheet name</label></td>
+            <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
+          </tr>
+          <tr>
+            <td class="name"><label for="decimal_places">Decimal places</label></td>
+            <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+          </tr>
+        </table>
+
+        <?!= htmlCommonDialog ?>
+
+        <div style="margin-top: 1.3em;">
+          <button class="create" id="b-Copy" type="submit" form="the_form" disabled>Copy</button>
           <button onclick="closeHost()">Cancel</button>
         </div>
-
-        <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
-          <div class="panel" id="details">
-            <table style="margin-top: 1.3em;">
-              <tr>
-                <th colspan="2"><i class="material-icons-outlined">table_chart</i> Spreadsheet</th>
-              </tr>
-              <tr>
-                <td class="name" style="width: 127px;"><label for="spreadsheet_name">Spreadsheet name</label></td>
-                <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
-              </tr>
-              <tr>
-                <td class="name"><label for="decimal_places">Decimal places</label></td>
-                <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
-              </tr>
-            </table>
-
-            <?!= htmlCommonDialog ?>
-
-            <div style="margin-top: 1.3em;">
-              <button class="create" id="b-Copy" type="submit" form="the_form" disabled>Copy</button>
-              <button onclick="closeHost()">Cancel</button>
-            </div>
-          </div>
-        </form>
       </div>
+    </form>
+  </div>
 
-      <div class="panel" id="setup-panel">
-        <div style="width:100%;margin:40px auto 0 auto;" align="center">
-          <h2>Copying your spreadsheet</h2>
-          <br>
-          <div class="wait_load-wrapper">
-            <div class="wait_load-bar"></div>
-          </div>
-          <div style="width:263px;margin-top:19px;">
-            This process takes up to 4 minutes. Do not edit the spreadsheet until it is finished.
-          </div>
-        </div>
-        <div id="timeout" style="display: none;margin-top: 2em;">
-          This is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.<br>
-          <button onclick="closeHost()">Close</button>
-        </div>
+  <div class="panel" id="setup-panel">
+    <div style="width:100%;margin:40px auto 0 auto;" align="center">
+      <h2>Copying your spreadsheet</h2>
+      <br>
+      <div class="animation-processing-wrapper">
+        <div class="animation-processing-bar"></div>
       </div>
+      <div style="width:263px;margin-top:19px;">
+        This process takes up to 4 minutes. Do not edit the spreadsheet until it is finished.
+      </div>
+    </div>
+    <div id="timeout" style="display: none;margin-top: 2em;">
+      This is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.<br>
+      <button onclick="closeHost()">Close</button>
     </div>
   </div>
 
-  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <?!= containment8d4adafda11Frame(); ?>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script>
