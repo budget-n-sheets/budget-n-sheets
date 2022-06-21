@@ -12,31 +12,74 @@
     .content-container > div {
       display: none;
     }
+
+    .panel#main-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .panel-main-header {
+      margin-top: 3em;
+    }
   </style>
   <style>
-    table {
+    table.start-options {
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    table.start-options tr {
+      vertical-align: middle;
+      cursor: pointer;
+    }
+
+    table.start-options tr:hover {
+      background-color: #f3f3f3;
+    }
+
+    table.start-options td {
+      padding: 11px 3px;
+    }
+  </style>
+  <style>
+    #form-panel table {
+      margin-top: 0.7em;
+    }
+
+    #form-panel table td:first-child {
+      width: 40%;
+    }
+
+    .panel-form-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .md-click {
+      border-radius: 50%;
+    }
+
+    .md-click:hover {
+      background: #f3f3f3;
+    }
+
+    .table-accounts {
       counter-reset: tr-count;
     }
 
-    tr.num_acc {
+    .table-accounts tr.num_acc {
       counter-increment: tr-count;
     }
 
     .acc_counter:after {
       content: ' ' counter(tr-count);
     }
-
-    #restore-panel table {
-      font-size: 14px;
-      border-collapse: collapse;
-    }
-
-    #restore-panel tr:hover {
-      background-color: #f3f3f3;
-    }
-
-    #restore-panel td {
-      padding: 11px 3px;
+  </style>
+  <style>
+    #timeout {
+      display: none;
     }
   </style>
   <style>
@@ -64,14 +107,16 @@
 
 <body>
   <div class="content-container">
-    <div class="panel" id="main-panel" align="center">
-      <img style="height:83px;margin:1.7em 0 0 0;" src="https://raw.githubusercontent.com/guimspace/budget-n-sheets/master/media/icon/icon-large.png" alt="Budget n Sheets">
-      <h2 style="margin-bottom:0.3em;">Budget n Sheets</h2>
-      <span class="gray" style="font-style:italic;">Mind your budget</span>
-      <div style="margin-top:2.3em;">
-        <button class="action" style="width:13em;" onclick="clickNext()">Start</button>
+    <div class="panel" id="main-panel">
+      <div class="panel-main-header">
+        <img height="103" src="https://raw.githubusercontent.com/guimspace/budget-n-sheets/master/media/icon/icon-large.png" alt="Budget n Sheets">
       </div>
-      <div style="margin-top:0.7em;">
+      <h2 style="margin-bottom: 0;">Budget n Sheets</h2>
+      <h3 class="gray" style="margin-top: 0.5em;font-style: italic;">Mind your budget</h3>
+      <div style="margin-top: 1em;">
+        <button class="action" style="width: 13em;" onclick="clickNext()">Start</button>
+      </div>
+      <div style="margin-top: 1em;">
         <a href="<?= privacy_policy ?>" target="_blank">Privacy Policy</a> and <a href="<?= terms_of_service ?>" target="_blank">Terms of Service</a>
       </div>
     </div>
@@ -79,34 +124,35 @@
     <div class="panel" id="note-panel">
       <h2>Attention</h2>
       <p>The build process will delete all tabs and data from the spreadsheet!</p>
-      <p>If the spreadsheet has important or sensitive data that you care about, <a href="https://support.google.com/docs/answer/49114" target="_blank"><b>make a copy or start a new spreadsheet</b></a> before continuing, then restart the process.</p>
+      <p>If the spreadsheet has important or sensitive data that you care about, <a href="https://support.google.com/docs/answer/49114" target="_blank"><strong>make a copy or start a new spreadsheet</strong></a> before continuing, then restart the process.</p>
     </div>
 
     <div class="panel" id="restore-panel">
       <h2>Let's get started</h2>
-
-      <table>
-        <tr id="b-Continue">
-          <td style="vertical-align: middle;border-bottom: none;"><span class="material-icons-outlined">new_releases</span></td>
-          <td style="cursor: pointer;">
-            <b>Set up as new</b><br>
+      <table class="start-options">
+        <tr class="comment" id="b-Continue">
+          <td><span class="material-icons-outlined">new_releases</span></td>
+          <td>
+            <div>
+              <strong>Set up as new</strong>
+            </div>
             Get a new budget spreadsheet.
           </td>
         </tr>
         <? if (setup_copy) { ?>
-        <tr id="b-Copy">
-          <td style="vertical-align: middle;border-bottom: none;"><span class="material-icons-outlined">content_copy</span></td>
-          <td style="cursor: pointer;">
-            <b>Copy your data</b><br>
+        <tr class="comment" id="b-Copy">
+          <td><span class="material-icons-outlined">content_copy</span></td>
+          <td>
+            <strong>Copy your data</strong><br>
             Copy content from an old budget spreadsheet.
           </td>
         </tr>
         <? } ?>
         <? if (setup_restore) { ?>
-        <tr id="b-Restore">
-          <td style="vertical-align: middle;"><span class="material-icons-outlined">restore</span></td>
-          <td style="cursor: pointer;">
-            <b>Restore your data</b><br>
+        <tr class="comment" id="b-Restore">
+          <td><span class="material-icons-outlined">restore</span></td>
+          <td>
+            <strong>Restore your data</strong><br>
             Restore a budget spreadsheet from a backup.
           </td>
         </tr>
@@ -115,40 +161,36 @@
     </div>
 
     <div class="panel" id="form-panel">
-      <div style="display:table;width:100%;">
-        <div style="display:table-row;">
-          <div style="width:100%;display:table-cell;vertical-align:middle;">
-            <h2>Spreadsheet specs</h2>
-          </div>
-          <div align="right" style="display:table-cell;vertical-align:middle;">
-            <a style="color: rgba(0, 0, 0, 0.54);" href="<?= home_wiki ?>/Getting-Started#2-start-a-budget-sheet" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a>
-          </div>
+      <div class="panel-form-header">
+        <h2>Spreadsheet specs</h2>
+        <div>
+          <a href="<?= home_wiki ?>/Getting-Started#2-start-a-budget-sheet" target="_blank"><span class="material-icons md-24 md-click">help_outline</span></a>
         </div>
       </div>
 
       <form accept-charset="UTF-8" id="the_form" onsubmit="return submitForm();">
-        <table style="width: 100%;">
+        <table>
           <tr>
-            <td class="name" style="width:50%;"><label for="spreadsheet_name">Spreadsheet title</label></td>
+            <td><label for="spreadsheet_name">Spreadsheet title</label></td>
             <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
           </tr>
           <tr>
-            <td class="name"><label for="decimal_places">Decimal places</label></td>
-            <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+            <td><label for="decimal_places">Decimal places</label></td>
+            <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
           </tr>
         </table>
-        <table style="width: 100%; margin-top: 2em;">
+        <table>
           <tr>
-            <th colspan="2"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
+            <th colspan="2"><span class="material-icons-outlined">calendar_today</span> Calendar</th>
           </tr>
           <tr>
-            <td class="name" style="width:50%;"><label for="financial_year">Financial year</label></td>
-            <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
+            <td><label for="financial_year">Financial year</label></td>
+            <td><input type="number" id="financial_year" min="1889" max="2111" step="1" required></td>
           </tr>
           <tr>
-            <td class="name" style="width:50%;"><label for="initial_month">Initial month</label></td>
+            <td><label for="initial_month">Initial month</label></td>
             <td>
-              <select id="initial_month" style="width:89px;">
+              <select id="initial_month">
                 <option value="0" selected>January</option>
                 <option value="1">February</option>
                 <option value="2">March</option>
@@ -165,21 +207,21 @@
             </td>
           </tr>
         </table>
-        <table style="width: 100%; margin-top: 2em;">
+        <table class="table-accounts">
           <tr>
-            <th colspan="3"><i class="material-icons-outlined">account_balance</i> Accounts</th>
+            <th colspan="3"><span class="material-icons-outlined">account_balance</span> Accounts</th>
           </tr>
           <tr class="num_acc">
-            <td><label class="acc_counter" style="font-weight: bold;">Account</label></td>
+            <td><label class="acc_counter">Account</label></td>
             <td>
-              <input type="text" name="account_name" style="width: 100%;" maxlength="64" placeholder="Name" required>
+              <input type="text" name="account_name" maxlength="64" placeholder="Name" required>
             </td>
             <td><span class="material-icons remove-acc" style="padding-left: 3px;visibility: hidden;cursor: pointer;">remove_circle</span></td>
           </tr>
           <tr id="addAcc">
             <td></td>
             <td>
-              <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
+              <input type="text" id="i-AddAcc" placeholder="Add account" readonly>
             </td>
             <td></td>
           </tr>
@@ -188,17 +230,12 @@
     </div>
 
     <div class="panel" id="setup-panel">
-      <div style="width:100%;margin:40px auto 0 auto;" align="center">
-        <h2>Assembling your spreadsheet</h2>
-        <br>
-        <div class="animation-processing-wrapper">
-          <div class="animation-processing-bar"></div>
-        </div>
-        <div style="width:263px;margin-top:19px;">
-          This process takes up to two minutes. Do not edit the spreadsheet until it is finished.
-        </div>
+      <h2>Assembling your spreadsheet</h2>
+      <div class="animation-processing-wrapper">
+        <div class="animation-processing-bar"></div>
       </div>
-      <div id="timeout" style="display: none;margin-top: 2em;">
+      <p>This process takes up to two minutes. Do not edit the spreadsheet until it is finished.</p>
+      <div id="timeout">
         It is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.
       </div>
     </div>
@@ -249,9 +286,7 @@
       const $tr = $('<tr>').attr({ class: 'num_acc' });
 
       const $td1 = $('<td>').append([
-        $('<label>').attr({ class: 'acc_counter' })
-          .css({ 'font-weight': 'bold' })
-          .text('Account')
+        $('<label>').attr({ class: 'acc_counter' }).text('Account')
       ]);
 
       const $td2 = $('<td>').append([
@@ -262,7 +297,6 @@
             required: true,
             maxlength: 64
           })
-          .css({ width: '100%' })
       ]);
 
       const $td3 = $('<td>');
