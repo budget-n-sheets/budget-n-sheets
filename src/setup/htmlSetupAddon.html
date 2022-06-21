@@ -202,12 +202,6 @@
         It is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.
       </div>
     </div>
-
-    <div class="panel" id="error-panel">
-      <p style="font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
-      <p>An error report was sent anonymously.</p>
-      <a href="<?= send_feedback ?>" target="_blank"><b>Send feedback</b></a>
-    </div>
   </div>
 
   <div class="footer-container">
@@ -298,7 +292,7 @@
     function showRestore() {
       $("#restore-panel").fadeOut();
       google.script.run
-        .withFailureHandler(panelError)
+        .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
         .showDialogSetupRestore(uuid);
     }
@@ -308,7 +302,7 @@
     function showCopy() {
       $("#restore-panel").fadeOut();
       google.script.run
-        .withFailureHandler(panelError)
+        .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
         .showDialogSetupCopy(uuid);
     }
@@ -371,7 +365,7 @@
       }, 120000);
 
       google.script.run
-        .withFailureHandler(panelError)
+        .withFailureHandler(showError)
         .withSuccessHandler(null)
         .setupService(uuid, payload);
 
@@ -384,15 +378,6 @@
       $("#footer-buttons button").remove();
       $("#setup-panel").fadeIn("fast").addClass("active");
       google.script.host.setHeight(233);
-    }
-
-    function panelError(err) {
-      clearTimeout(TIMEOUT_ID);
-      google.script.host.setHeight(197);
-      $("#footer-buttons button").remove();
-      $("#error-panel").siblings().remove();
-      $("#error-panel").fadeIn("fast").addClass("active");
-      $("#footer-buttons").append("<button onclick=\"closeHost();\">OK</button>");
     }
   </script>
 </body>
