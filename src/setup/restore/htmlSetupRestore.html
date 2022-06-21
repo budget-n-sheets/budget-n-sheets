@@ -8,6 +8,18 @@
   <?!= HtmlService2.htmlInclude("html/resources/material-icons"); ?>
   <?!= HtmlService2.htmlInclude("html/resources/animation-processing"); ?>
   <style>
+    table {
+      margin-top: 0.7em;
+    }
+
+    tr > td:first-child {
+      width: 40%;
+    }
+
+    ol {
+      padding-left: 17px;
+    }
+
     .panel {
       display: none;
     }
@@ -17,7 +29,7 @@
 <body>
   <div class="panel" id="restore-panel">
     <div>
-      <ol style="padding-left: 16px;">
+      <ol>
         <li>Select a backup to restore data from.</li>
         <li>Enter the password to decrypt the backup.</li>
         <li>Review the settings and make your changes.</li>
@@ -31,12 +43,12 @@
 
     <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
       <div class="panel" id="details">
-        <table style="margin-top: 1.3em;">
+        <table>
           <tr>
-            <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">restore</i> Backup file</span></th>
+            <th colspan="2"><span><i class="material-icons-outlined">restore</i> Backup file</span></th>
           </tr>
           <tr>
-            <td class="name" style="width: 127px;">File name</td>
+            <td class="name">File name</td>
             <td id="file_name"></td>
           </tr>
           <tr>
@@ -46,17 +58,17 @@
           </tr>
         </table>
 
-        <table style="margin-top: 1.3em;">
+        <table>
           <tr>
-            <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
+            <th colspan="2"><span><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
           </tr>
           <tr>
-            <td class="name" style="width: 127px;"><label for="spreadsheet_name">Spreadsheet name</label></td>
+            <td class="name"><label for="spreadsheet_name">Spreadsheet name</label></td>
             <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
           </tr>
           <tr>
             <td class="name"><label for="decimal_places">Decimal places</label></td>
-            <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+            <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
           </tr>
         </table>
 
