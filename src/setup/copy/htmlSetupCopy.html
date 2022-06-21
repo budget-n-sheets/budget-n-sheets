@@ -66,12 +66,6 @@
           <button onclick="closeHost()">Close</button>
         </div>
       </div>
-
-      <div class="panel" id="error-panel">
-        <p style="font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
-        <p>An error report was sent anonymously.</p>
-        <a href="<?= send_feedback ?>" target="_blank"><b>Send feedback</b></a>
-      </div>
     </div>
   </div>
 
@@ -81,7 +75,6 @@
   <script>
     const uuid = <?= uuid ?>;
     const Glob = {
-      timeout_id: 0,
       accounts: {},
       num_acc: 0
     };
@@ -103,6 +96,7 @@
         .withSuccessHandler(refreshInfo)
         .retrieveSettingsSummary(uuid, 'copy');
       <? } ?>
+      $('#restore-panel').fadeIn('fast');
     });
 
     <? if (isContinued) { ?>
@@ -138,7 +132,7 @@
       $("#setup-panel").fadeIn("fast").addClass("active");
       google.script.host.setHeight(233);
 
-      Glob.timeout_id = setTimeout(function() {
+      setTimeout(function() {
         google.script.host.setHeight(293);
         $("#timeout").fadeIn();
       }, 240000);
@@ -172,7 +166,7 @@
       };
 
       google.script.run
-        .withFailureHandler(panelError)
+        .withFailureHandler(showError)
         .withSuccessHandler(null)
         .setupService(uuid, payload);
     }
@@ -184,14 +178,6 @@
         .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
         .showDialogPickerCopy(uuid);
-    }
-
-    function panelError(err) {
-      clearTimeout(Glob.timeout_id);
-      google.script.host.setHeight(197);
-      $("#error-panel").siblings().remove();
-      $("#error-panel").fadeIn("fast").addClass("active");
-      $("#footer-buttons").append("<button onclick=\"closeHost();\">Close</button>");
     }
   </script>
   <? if (isContinued) { ?>
