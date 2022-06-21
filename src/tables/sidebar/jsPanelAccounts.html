@@ -1,5 +1,6 @@
 <script>
   $(document).ready(function() {
+    $('#panel-accounts').show();
     google.script.run
       .withSuccessHandler(listAccounts)
       .withFailureHandler(showError)
@@ -28,6 +29,5 @@
     }
 
     $('#panel-accounts > div:not(:first-child)').before('<hr>');
-    $box.show();
   }
 </script>
