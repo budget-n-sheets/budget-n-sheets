@@ -23,6 +23,26 @@
     .panel {
       display: none;
     }
+
+    .text {
+      width: 23em;
+      text-align: center;
+    }
+
+    #panel-setup #notice {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+
+    #panel-setup #notice > * {
+      margin: 1em 0;
+    }
+
+    #panel-setup #timeout {
+      display: none;
+    }
   </style>
 </head>
 
@@ -66,19 +86,16 @@
     </form>
   </div>
 
-  <div class="panel" id="setup-panel">
-    <div style="width:100%;margin:40px auto 0 auto;" align="center">
+  <div class="panel" id="panel-setup">
+    <div id="notice">
       <h2>Copying your spreadsheet</h2>
-      <br>
       <div class="animation-processing-wrapper">
         <div class="animation-processing-bar"></div>
       </div>
-      <div style="width:263px;margin-top:19px;">
-        This process takes up to 4 minutes. Do not edit the spreadsheet until it is finished.
-      </div>
+      <p class="text">This process takes up to 4 minutes. Do not edit the spreadsheet until it is finished.</p>
     </div>
-    <div id="timeout" style="display: none;margin-top: 2em;">
-      This is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.<br>
+    <div id="timeout">
+      <p>This is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.</p>
       <button onclick="closeHost()">Close</button>
     </div>
   </div>
@@ -143,11 +160,11 @@
       $('#accError').empty();
 
       $(".panel").hide();
-      $("#setup-panel").fadeIn("fast").addClass("active");
-      google.script.host.setHeight(233);
+      google.script.host.setHeight(181);
+      $("#panel-setup").fadeIn("fast").addClass("active");
 
       setTimeout(function() {
-        google.script.host.setHeight(293);
+        google.script.host.setHeight(251);
         $("#timeout").fadeIn();
       }, 240000);
 
