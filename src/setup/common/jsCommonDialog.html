@@ -1,9 +1,9 @@
 <script>
   $(document).on('click', '.add-acc', function() {
-    $('#tr-acc-error').empty();
+    $('#tr-acc-error').hide();
     if (Glob.num_acc > 4) {
       $('#tr-add-acc').hide();
-      $('#tr-acc-error').append('No slot available.');
+      $('#tr-acc-error').show();
       return;
     };
 
@@ -13,7 +13,7 @@
   });
 
   $(document).on('click', '.remove-acc', function() {
-    $('#tr-acc-error').empty();
+    $('#tr-acc-error').hide();
     if (Glob.num_acc === 1) return;
 
     const $tr = $(this).closest('tr');
@@ -29,8 +29,8 @@
     });
   });
 
-  function addAccInput(key) {
-    $('#tr-acc-error').empty();
+  function addAccInput (key) {
+    $('#tr-acc-error').hide();
     if (Glob.num_acc > 4) return;
 
     const $tr = $('<tr>').attr({
@@ -101,7 +101,7 @@
     if (!key) $tr.find('input').focus();
   }
 
-  function deselectAcc(key) {
+  function deselectAcc (key) {
     const $tr = $('<tr>');
 
     const $td1 = $('<td>');

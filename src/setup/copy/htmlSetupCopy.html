@@ -47,11 +47,15 @@
     #panel-setup #timeout {
       display: none;
     }
+
+    #tr-acc-error {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
-  <div class="panel" id="restore-panel">
+  <div class="panel" id="panel-restore">
     <div>
       <ol>
         <li>Select a spreadsheet to copy data from.</li>
@@ -64,7 +68,7 @@
       <button onclick="closeHost()">Cancel</button>
     </div>
 
-    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
+    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm()">
       <div class="panel" id="details">
         <table>
           <tr>
@@ -108,8 +112,8 @@
   <?!= containment8d4adafda11Frame(); ?>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script>
-    const uuid = <?= uuid ?>;
     const Glob = {
+      uuid: <?= uuid ?>,
       accounts: {},
       num_acc: 0
     };
@@ -119,7 +123,7 @@
       <? if (isContinued) { ?>
       $('#b-Select').prop('disabled', true);
 
-      $("#m-add-acc").click(() => addAccInput());
+      $('#m-add-acc').click(() => addAccInput());
       $('#tr-acc-sort').sortable({
         axis: 'y',
         handle: '.handle',
@@ -129,17 +133,17 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
-        .retrieveSettingsSummary(uuid, 'copy');
+        .retrieveSettingsSummary(Glob.uuid, 'copy');
       <? } ?>
-      $('#restore-panel').fadeIn('fast');
+      $('#panel-restore').fadeIn('fast');
     });
 
     <? if (isContinued) { ?>
-    function refreshInfo(info) {
+    function refreshInfo (info) {
       if (!info) return;
       $('#b-Select').prop('disabled', false);
 
-      $("#spreadsheet_name").val(info.settings.spreadsheet_name);
+      $('#spreadsheet_name').val(info.settings.spreadsheet_name);
       $('#decimal_places').val(info.settings.decimal_places);
 
       $('#financial_year').val(info.settings.financial_year);
@@ -158,28 +162,28 @@
       $('#b-Copy').prop('disabled', false);
     }
 
-    function submitForm() {
+    function submitForm () {
       $('#b-Copy').prop('disabled', true);
       window.scrollTo(0, 0);
-      $('#tr-acc-error').empty();
+      $('#tr-acc-error').hide();
 
-      $(".panel").hide();
+      $('.panel').hide();
       google.script.host.setHeight(181);
-      $("#panel-setup").fadeIn("fast");
+      $('#panel-setup').fadeIn('fast');
 
       setTimeout(function() {
         google.script.host.setHeight(251);
-        $("#timeout").fadeIn();
+        $('#timeout').fadeIn();
       }, 240000);
 
-      const name_accounts = [];
-      $('input[name=account_name]').each(function(index) {
+      const accounts = [];
+      $('input[name="account_name"]').each(function(index) {
         const key = $(this).closest('tr').attr('id');
         if (key) {
           Glob.accounts[key].index = index;
-          name_accounts.push(Glob.accounts[key]);
+          accounts.push(Glob.accounts[key]);
         } else {
-          name_accounts.push({
+          accounts.push({
             require: 'new',
             index: index,
             name: $(this).val()
@@ -190,29 +194,27 @@
       const payload = {
         protocol: 'copy',
         config: {
-          name_accounts: name_accounts,
-
-          spreadsheet_name: $("#spreadsheet_name").val(),
-          decimal_places: $("#decimal_places").val(),
-
-          financial_year: $("#financial_year").val(),
-          initial_month: $("#initial_month").val()
+          name_accounts: accounts,
+          spreadsheet_name: $('#spreadsheet_name').val(),
+          decimal_places: $('#decimal_places').val(),
+          financial_year: $('#financial_year').val(),
+          initial_month: $('#initial_month').val()
         }
       };
 
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(null)
-        .setupService(uuid, payload);
+        .setupService(Glob.uuid, payload);
     }
     <? } ?>
 
-    function pickFile() {
+    function pickFile () {
       this.disabled = true;
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
-        .showDialogPickerCopy(uuid);
+        .showDialogPickerCopy(Glob.uuid);
     }
   </script>
   <? if (isContinued) { ?>
