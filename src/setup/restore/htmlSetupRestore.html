@@ -29,6 +29,10 @@
       text-align: center;
     }
 
+    .footer {
+      margin-top: 0.7em;
+    }
+
     #panel-setup #notice {
       display: flex;
       flex-direction: column;
@@ -65,14 +69,14 @@
       <div class="panel" id="details">
         <table>
           <tr>
-            <th colspan="2"><span><i class="material-icons-outlined">restore</i> Backup file</span></th>
+            <th colspan="2"><span class="material-icons-outlined">restore</span> Backup file</th>
           </tr>
           <tr>
-            <td class="name">File name</td>
+            <td><label for="file_name">File name</label></td>
             <td id="file_name"></td>
           </tr>
           <tr>
-            <td class="name">Date created</td>
+            <td><label for="date_created">Date created</label></td>
             <td id="date_created">
             </td>
           </tr>
@@ -80,21 +84,21 @@
 
         <table>
           <tr>
-            <th colspan="2"><span><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
+            <th colspan="2"><span class="material-icons-outlined">table_chart</span> Spreadsheet</th>
           </tr>
           <tr>
-            <td class="name"><label for="spreadsheet_name">Spreadsheet name</label></td>
+            <td><label for="spreadsheet_name">Spreadsheet name</label></td>
             <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
           </tr>
           <tr>
-            <td class="name"><label for="decimal_places">Decimal places</label></td>
+            <td><label for="decimal_places">Decimal places</label></td>
             <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
           </tr>
         </table>
 
         <?!= htmlCommonDialog ?>
 
-        <div style="margin-top: 1.3em;">
+        <div class="footer">
           <button class="create" id="b-Restore" type="submit" form="the_form" disabled>Restore</button>
           <button onclick="closeHost()">Cancel</button>
         </div>
@@ -131,8 +135,8 @@
       <? if (isContinued) { ?>
       $('#b-Select').prop('disabled', true);
 
-      $("#i-AddAcc").click(() => addAccInput());
-      $('#accSortable').sortable({
+      $("#m-add-acc").click(() => addAccInput());
+      $('#tr-acc-sort').sortable({
         axis: 'y',
         handle: '.handle',
         opacity: 0.71
@@ -150,11 +154,11 @@
     function submitForm() {
       $('#b-Copy').prop('disabled', true);
       window.scrollTo(0, 0);
-      $('#accError').empty();
+      $('#tr-acc-error').empty();
 
       $(".panel").hide();
       google.script.host.setHeight(181);
-      $("#panel-setup").fadeIn("fast").addClass("active");
+      $("#panel-setup").fadeIn("fast");
 
       setTimeout(function() {
         google.script.host.setHeight(251);

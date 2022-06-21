@@ -1,9 +1,9 @@
 <script>
   $(document).on('click', '.add-acc', function() {
-    $('#accError').empty();
+    $('#tr-acc-error').empty();
     if (Glob.num_acc > 4) {
-      $('#addAcc').hide();
-      $('#accError').append('No slot available.');
+      $('#tr-add-acc').hide();
+      $('#tr-acc-error').append('No slot available.');
       return;
     };
 
@@ -13,7 +13,7 @@
   });
 
   $(document).on('click', '.remove-acc', function() {
-    $('#accError').empty();
+    $('#tr-acc-error').empty();
     if (Glob.num_acc === 1) return;
 
     const $tr = $(this).closest('tr');
@@ -23,14 +23,14 @@
     $tr.remove();
     Glob.num_acc--;
 
-    if (Glob.num_acc < 5) $('#addAcc').show();
+    if (Glob.num_acc < 5) $('#tr-add-acc').show();
     if (Glob.num_acc === 1) $('.remove-acc').css({
       visibility: 'hidden'
     });
   });
 
   function addAccInput(key) {
-    $('#accError').empty();
+    $('#tr-acc-error').empty();
     if (Glob.num_acc > 4) return;
 
     const $tr = $('<tr>').attr({
@@ -90,10 +90,10 @@
     $td2.appendTo($tr);
     $td3.appendTo($tr);
 
-    $('#accSortable').append($tr);
+    $('#tr-acc-sort').append($tr);
     Glob.num_acc++;
 
-    if (Glob.num_acc > 4) $('#addAcc').hide();
+    if (Glob.num_acc > 4) $('#tr-add-acc').hide();
     if (Glob.num_acc > 1) $('.remove-acc').css({
       visibility: 'visible'
     });
@@ -132,6 +132,6 @@
     $td1.appendTo($tr);
     $td2.appendTo($tr);
 
-    $('#accRemoved').append($tr);
+    $('#tr-acc-delisted').append($tr);
   }
 </script>

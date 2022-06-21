@@ -1,13 +1,13 @@
 <table>
   <tr>
-    <th colspan="2"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
+    <th colspan="2"><span class="material-icons-outlined">calendar_today</span> Calendar</th>
   </tr>
   <tr>
-    <td class="name">Financial year</td>
+    <td><label for="financial_year">Financial year</label></td>
     <td><input type="number" id="financial_year" min="1889" max="2111" step="1" required></td>
   </tr>
   <tr>
-    <td class="name"><label for="initial_month">Initial month</label></td>
+    <td><label for="initial_month">Initial month</label></td>
     <td>
       <select id="initial_month">
         <option value="0" selected>January</option>
@@ -26,7 +26,7 @@
     </td>
   </tr>
   <tr>
-    <td class="name">Financial calendar</td>
+    <td><label for="financial_calendar">Financial calendar</label></td>
     <td id="financial_calendar"></td>
   </tr>
 </table>
@@ -36,12 +36,12 @@
     <th><span class="material-icons-outlined">account_balance</span></th>
     <th colspan="2" style="width: 100%;">Accounts</th>
   </tr>
-  <tbody id="accSortable">
+  <tbody id="tr-acc-sort">
   </tbody>
-  <tr id="addAcc">
+  <tr id="tr-add-acc">
     <td></td>
     <td>
-      <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
+      <input type="text" id="m-add-acc" style="width: 100%;" placeholder="Add account" readonly>
     </td>
     <td></td>
   </tr>
@@ -52,23 +52,23 @@
     <th></th>
     <th>
       From <?= location ?><br>
-      <span class="error" id="accError"></span>
+      <span class="error" id="tr-acc-error"></span>
     </th>
   </tr>
-  <tbody id="accRemoved">
+  <tbody id="tr-acc-delisted">
   </tbody>
 </table>
 
 <table>
   <tr>
-    <th colspan="2"><i class="material-icons-outlined">assignment</i> Cards and tags</th>
+    <th colspan="2"><span class="material-icons-outlined">assignment</span> Cards and tags</th>
   </tr>
   <tr>
-    <td class="name">Cards</td>
+    <td><label for="cards">Cards</label></td>
     <td id="cards"></td>
   </tr>
   <tr>
-    <td class="name">Tags</td>
+    <td><label for="tags">Tags</label></td>
     <td id="tags"></td>
   </tr>
 </table>
