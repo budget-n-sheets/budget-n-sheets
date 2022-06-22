@@ -21,6 +21,7 @@ class CardsService extends TablesService {
     card.aliases = card.aliases.filter(alias => alias !== card.code).slice(0, 16);
 
     card.limit = Number(card.limit);
+    card.color = 'whitesmoke';
   }
 
   updateMetadata_ () {
@@ -138,7 +139,8 @@ class CardsService extends TablesService {
       name: '',
       code: '',
       aliases: [],
-      limit: 0
+      limit: 0,
+      color: 'whitesmoke'
     };
 
     for (const key in card) {
