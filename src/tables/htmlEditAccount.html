@@ -128,6 +128,7 @@
           $('#acc_name').val(account.name);
           $('#acc_time_start').val(account.time_start);
           $('#acc_balance').val(account.balance);
+          $(`.color-picker > .card#${account.color}`).addClass('active');
         })
         .withFailureHandler(showError)
         .accountsClientService({
@@ -151,7 +152,8 @@
         metadata: {
           name: $('#acc_name').val(),
           time_start: $('#acc_time_start').val(),
-          balance: $('#acc_balance').val()
+          balance: $('#acc_balance').val(),
+          color: $('.color-picker > .card.active').attr('id')
         }
       };
 

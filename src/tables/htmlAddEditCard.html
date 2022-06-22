@@ -139,6 +139,7 @@
           $('#card_code').val(card.code);
           $('#card_aliases').val(card.aliases.join(', '));
           $('#card_limit').val(card.limit);
+          $(`.color-picker > .card#${card.color}`).addClass('active');
         })
         .withFailureHandler(showError)
         .cardsClientService({
@@ -180,7 +181,8 @@
           name: $('#card_name').val(),
           code : $('#card_code').val(),
           aliases: $('#card_aliases').val(),
-          limit: $('#card_limit').val()
+          limit: $('#card_limit').val(),
+          color: $('.color-picker > .card.active').attr('id')
         }
       };
 

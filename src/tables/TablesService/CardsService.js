@@ -21,7 +21,7 @@ class CardsService extends TablesService {
     card.aliases = card.aliases.filter(alias => alias !== card.code).slice(0, 16);
 
     card.limit = Number(card.limit);
-    card.color = 'whitesmoke';
+    if (!Consts.color_palette[card.color]) card.color = 'whitesmoke';
   }
 
   updateMetadata_ () {
