@@ -1,15 +1,15 @@
-<table style="margin-top: 1.3em;">
+<table>
   <tr>
-    <th colspan="2" style="font-size:1.2em;"><i class="material-icons-outlined">calendar_today</i> Calendar</th>
+    <th colspan="2"><span class="material-icons-outlined">calendar_today</span> Calendar</th>
   </tr>
   <tr>
-    <td class="name" style="width: 127px;">Financial year</td>
-    <td><input type="number" id="financial_year" style="width:61px;" min="1889" max="2111" step="1" required></td>
+    <td><label for="financial_year">Financial year</label></td>
+    <td><input type="number" id="financial_year" min="1889" max="2111" step="1" required></td>
   </tr>
   <tr>
-    <td class="name"><label for="initial_month">Initial month</label></td>
+    <td><label for="initial_month">Initial month</label></td>
     <td>
-      <select id="initial_month" style="width:89px;">
+      <select id="initial_month">
         <option value="0" selected>January</option>
         <option value="1">February</option>
         <option value="2">March</option>
@@ -26,49 +26,43 @@
     </td>
   </tr>
   <tr>
-    <td class="name">Financial calendar</td>
+    <td><label for="financial_calendar">Financial calendar</label></td>
     <td id="financial_calendar"></td>
   </tr>
 </table>
 
-<table style="margin-top: 1.3em;">
+<table id="tb-list-acc">
   <tr>
-    <th><span class="material-icons-outlined">account_balance</span></th>
-    <th colspan="2" style="width: 100%;">Accounts</th>
+    <th colspan="3"><span class="material-icons-outlined">account_balance</span> Accounts</th>
   </tr>
-  <tbody id="accSortable">
+  <tbody id="tr-acc-listed">
   </tbody>
-  <tr id="addAcc">
+  <tr id="tr-add-acc">
     <td></td>
     <td>
-      <input type="text" id="i-AddAcc" style="width: 100%;" placeholder="Add account" readonly>
+      <input type="text" id="m-add-acc" placeholder="Add account" readonly>
     </td>
     <td></td>
   </tr>
-</table>
-
-<table style="width: 100%;margin-top: 2em;">
-  <tr>
-    <th></th>
-    <th>
-      From <?= location ?><br>
-      <span class="error" id="accError"></span>
-    </th>
+  <tr id="tr-acc-error">
+    <td colspan="3">
+      <span class="error">No slot available.</span>
+    </td>
   </tr>
-  <tbody id="accRemoved">
+  <tbody id="tr-acc-delisted">
   </tbody>
 </table>
 
-<table style="margin-top: 2em;">
+<table>
   <tr>
-    <th colspan="2"><i class="material-icons-outlined">assignment</i> Cards and tags</th>
+    <th colspan="2"><span class="material-icons-outlined">assignment</span> Cards and tags</th>
   </tr>
   <tr>
-    <td class="name">Cards</td>
+    <td><label for="cards">Cards</label></td>
     <td id="cards"></td>
   </tr>
   <tr>
-    <td class="name">Tags</td>
+    <td><label for="tags">Tags</label></td>
     <td id="tags"></td>
   </tr>
 </table>
