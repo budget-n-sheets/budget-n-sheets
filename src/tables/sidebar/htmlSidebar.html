@@ -4,108 +4,76 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
-  <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/containers"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/material-icons"); ?>
   <style>
-    #header {
-      height: 3.7em;
-      margin-bottom: 0.5em;
-      width: 100%;
+    .header-container {
       border-bottom: 1px solid #dadbe0;
     }
 
-    .header_table {
-      display: table;
-      width: inherit;
-      height: inherit;
-      text-align: center;
-      border-collapse: separate;
-      border-spacing: 13px 7px;
-    }
-
-    .header_tab {
+    .header-container > .tab {
+      padding: 5px 0;
       cursor: pointer;
-      display: table-cell;
-      vertical-align: middle;
       color: rgba(0, 0, 0, 0.54);
+      text-align: center;
+      flex: 1;
     }
 
-    .header_tab.active {
+    .header-container > .tab.active {
       border-bottom: solid 2px;
     }
 
-    .footer_table {
-      width: 100%;
-      display: table;
-      border-collapse: separate;
-      border-spacing: 7px;
-      border-top: 1px solid #dadbe0;
+    .content-container > div {
+      display: none;
     }
 
-    .footer_cell {
-      display: table-cell;
-      vertical-align: middle;
+    .box > .item {
+      padding: 7px 5px;
+      display: flex;
+      align-items: center;
     }
 
-    .item_table {
-      width: 100%;
-      margin-bottom: 17px;
-      display: table;
-      border-radius: 7px;
-      border: 1px solid #d9d9d9;
+    .item > .text {
+      flex: 1;
     }
 
-    .item_cell {
-      width: 100%;
-      padding: 11px;
-      display: table-cell;
+    .item > .md-box {
+      margin: 0 7px;
     }
 
-    .item_menu {
-      font-weight: bold;
-      word-spacing: 11px;
+    .md-box > span {
+      padding: 5px;
+      cursor: pointer;
+      border-radius: 50%;
     }
 
-    .table_row {
-      display: table-row;
+    .md-box > span:hover {
+      background: #efefef;
+    }
+
+    .c-add-card .material-icons {
+      color: inherit;
     }
   </style>
 </head>
 
 <body>
-  <div id="wrapper">
-    <div id="header">
-      <div class="header_table">
-        <div class="table_row">
-          <div class="header_tab active" id="tab_accounts">
-            <i class="material-icons-outlined md-24" title="Accounts">account_balance</i>
-          </div>
-          <div class="header_tab" id="tab_cards">
-            <i class="material-icons-outlined md-24" title="Cards">credit_card</i>
-          </div>
-        </div>
-      </div>
+  <div class="header-container">
+    <div class="tab active" id="tab-accounts">
+      <i class="material-icons-outlined md-24" title="Accounts">account_balance</i>
     </div>
-
-    <div id="content" style="margin-bottom:4.7em;">
-      <?!= htmlPanelAccounts ?>
-      <?!= htmlPanelCards ?>
-    </div>
-
-    <div id="footer">
-      <div class="current" id="response" style="padding:0 7px;"></div>
-      <div class="footer_table">
-        <div class="table_row">
-          <div class="footer_cell" style="width:100%;">
-          </div>
-          <div class="footer_cell">
-            <a href="<?= home_wiki ?>" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a>
-          </div>
-        </div>
-      </div>
+    <div class="tab" id="tab-cards">
+      <i class="material-icons-outlined md-24" title="Cards">credit_card</i>
     </div>
   </div>
-  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
+
+  <div class="content-container">
+    <?!= htmlPanelAccounts ?>
+    <?!= htmlPanelCards ?>
+  </div>
+
+  <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <script>
     class FormatNumber {
       static financial (number) {
@@ -133,27 +101,27 @@
       }
     }
 
-    $(document).on("click", ".header_tab", function() {
-      if ($(this).hasClass("active")) return;
+    $(document).on('click', '.header-container > .tab', function() {
+      if ($(this).hasClass('active')) return;
 
-      var id = $(this).attr("id");
-      var panel;
+      const id = $(this).attr('id');
+      let panel;
 
       window.scrollTo(0, 0);
-      $(this).addClass("active")
+      $(this).addClass('active')
         .siblings()
-        .removeClass("active");
+        .removeClass('active');
 
-      if (id === "tab_accounts") panel = "#panel_Accounts";
-      else if (id === "tab_cards") panel = "#panel_Cards";
+      if (id === 'tab-accounts') panel = '#panel-accounts';
+      else if (id === 'tab-cards') panel = '#panel-cards';
 
       $(panel).show()
         .siblings()
         .hide();
     });
 
-    function responseHandler(r) {
-      if (r) $("#response").empty().append("Sorry, something went wrong. Please, try again.");
+    function responseHandler (r) {
+      if (r) alert('Sorry, something went wrong. Please, try again.');
     }
   </script>
   <?!= jsPanelAccounts ?>
