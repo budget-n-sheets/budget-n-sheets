@@ -31,29 +31,23 @@
   </tr>
 </table>
 
-<table>
+<table id="tb-list-acc">
   <tr>
-    <th><span class="material-icons-outlined">account_balance</span></th>
-    <th colspan="2" style="width: 100%;">Accounts</th>
+    <th colspan="3"><span class="material-icons-outlined">account_balance</span> Accounts</th>
   </tr>
-  <tbody id="tr-acc-sort">
+  <tbody id="tr-acc-listed">
   </tbody>
   <tr id="tr-add-acc">
     <td></td>
     <td>
-      <input type="text" id="m-add-acc" style="width: 100%;" placeholder="Add account" readonly>
+      <input type="text" id="m-add-acc" placeholder="Add account" readonly>
     </td>
     <td></td>
   </tr>
-</table>
-
-<table>
-  <tr>
-    <th></th>
-    <th>
-      From <?= location ?><br>
-      <span class="error" id="tr-acc-error">No slot available.</span>
-    </th>
+  <tr id="tr-acc-error">
+    <td colspan="3">
+      <span class="error">No slot available.</span>
+    </td>
   </tr>
   <tbody id="tr-acc-delisted">
   </tbody>

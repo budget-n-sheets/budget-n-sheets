@@ -79,8 +79,7 @@
       <? if (isContinued) { ?>
       $('#b-Select').prop('disabled', true);
 
-      $('#m-add-acc').click(() => addAccInput());
-      $('#tr-acc-sort').sortable({
+      $('#tr-acc-listed').sortable({
         axis: 'y',
         handle: '.handle',
         opacity: 0.71
@@ -95,6 +94,8 @@
     });
 
     <? if (isContinued) { ?>
+    $(document).on('click, focus', '#m-add-acc', () => addAccInput());
+
     function refreshInfo (info) {
       if (!info) return;
       $('#b-Select').prop('disabled', false);
