@@ -4,100 +4,88 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
-  <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/material-icons"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/animation-processing"); ?>
+  <?!= HtmlService2.htmlInclude('setup/common/cssCommonDialog'); ?>
 </head>
 
 <body>
-  <div id="wrapper">
-    <div id="content">
-      <div class="panel active" id="restore-panel">
-        <div>
-          <ol style="padding-left: 16px;">
-            <li>Select a backup to restore data from.</li>
-            <li>Enter the password to decrypt the backup.</li>
-            <li>Review the settings and make your changes.</li>
-            <li>Click <strong>RESTORE</strong>.</li>
-          </ol>
+  <div class="panel" id="panel-restore">
+    <div>
+      <ol>
+        <li>Select a backup to restore data from.</li>
+        <li>Enter the password to decrypt the backup.</li>
+        <li>Review the settings and make your changes.</li>
+        <li>Click <strong>RESTORE</strong>.</li>
+      </ol>
 
-          <p class="error" id="reponse"><?= status_msg ?></p>
-          <button class="action" id="b-Select">Select backup</button>
+      <p class="error" id="reponse"><?= status_msg ?></p>
+      <button class="action" id="b-Select">Select backup</button>
+      <button onclick="closeHost()">Cancel</button>
+    </div>
+
+    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm()">
+      <div class="panel" id="details">
+        <table>
+          <tr>
+            <th colspan="2"><span class="material-icons-outlined">restore</span> Backup file</th>
+          </tr>
+          <tr>
+            <td><label for="file_name">File name</label></td>
+            <td id="file_name"></td>
+          </tr>
+          <tr>
+            <td><label for="date_created">Date created</label></td>
+            <td id="date_created">
+            </td>
+          </tr>
+        </table>
+
+        <table>
+          <tr>
+            <th colspan="2"><span class="material-icons-outlined">table_chart</span> Spreadsheet</th>
+          </tr>
+          <tr>
+            <td><label for="spreadsheet_name">Spreadsheet name</label></td>
+            <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
+          </tr>
+          <tr>
+            <td><label for="decimal_places">Decimal places</label></td>
+            <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+          </tr>
+        </table>
+
+        <?!= htmlCommonDialog ?>
+
+        <div class="footer">
+          <button class="create" id="b-Restore" type="submit" form="the_form" disabled>Restore</button>
           <button onclick="closeHost()">Cancel</button>
         </div>
-
-        <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
-          <div class="panel" id="details">
-            <table style="margin-top: 1.3em;">
-              <tr>
-                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">restore</i> Backup file</span></th>
-              </tr>
-              <tr>
-                <td class="name" style="width: 127px;">File name</td>
-                <td id="file_name"></td>
-              </tr>
-              <tr>
-                <td class="name">Date created</td>
-                <td id="date_created">
-                </td>
-              </tr>
-            </table>
-
-            <table style="margin-top: 1.3em;">
-              <tr>
-                <th colspan="2"><span style="font-size: 1.2em;"><i class="material-icons-outlined">table_chart</i> Spreadsheet</span></th>
-              </tr>
-              <tr>
-                <td class="name" style="width: 127px;"><label for="spreadsheet_name">Spreadsheet name</label></td>
-                <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
-              </tr>
-              <tr>
-                <td class="name"><label for="decimal_places">Decimal places</label></td>
-                <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
-              </tr>
-            </table>
-
-            <?!= htmlCommonDialog ?>
-
-            <div style="margin-top: 1.3em;">
-              <button class="create" id="b-Restore" type="submit" form="the_form" disabled>Restore</button>
-              <button onclick="closeHost()">Cancel</button>
-            </div>
-          </div>
-        </form>
       </div>
+    </form>
+  </div>
 
-      <div class="panel" id="setup-panel">
-        <div style="width:100%;margin:40px auto 0 auto;" align="center">
-          <h2>Restoring your spreadsheet</h2>
-          <br>
-          <div class="wait_load-wrapper">
-            <div class="wait_load-bar"></div>
-          </div>
-          <div style="width:263px;margin-top:19px;">
-            This process takes up to 4 minutes. Do not edit the spreadsheet until it is finished.
-          </div>
-        </div>
-        <div id="timeout" style="display: none;margin-top: 2em;">
-          This is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.<br>
-          <button onclick="closeHost()">Close</button>
-        </div>
+  <div class="panel" id="panel-setup">
+    <div id="notice">
+      <h2>Restoring your spreadsheet</h2>
+      <div class="animation-processing-wrapper">
+        <div class="animation-processing-bar"></div>
       </div>
-
-      <div class="panel" id="error-panel">
-        <p style="font-size: 1.3em;">Sorry, something went wrong. Please try again.</p>
-        <p>An error report was sent anonymously.</p>
-        <a href="<?= send_feedback ?>" target="_blank"><b>Send feedback</b></a>
-      </div>
+      <p class="text">This process takes up to 4 minutes. Do not edit the spreadsheet until it is finished.</p>
+    </div>
+    <div id="timeout">
+      <p>This is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.</p>
+      <button onclick="closeHost()">Close</button>
     </div>
   </div>
 
-  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <?!= containment8d4adafda11Frame(); ?>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script>
-    const uuid = <?= uuid ?>;
     const Glob = {
-      timeout_id: 0,
+      uuid: <?= uuid ?>,
       accounts: {},
       num_acc: 0
     };
@@ -107,8 +95,7 @@
       <? if (isContinued) { ?>
       $('#b-Select').prop('disabled', true);
 
-      $("#i-AddAcc").click(() => addAccInput());
-      $('#accSortable').sortable({
+      $('#tr-acc-listed').sortable({
         axis: 'y',
         handle: '.handle',
         opacity: 0.71
@@ -117,67 +104,22 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
-        .retrieveSettingsSummary(uuid, 'restore');
+        .retrieveSettingsSummary(Glob.uuid, 'restore');
       <? } ?>
+      $('#panel-restore').fadeIn('fast');
     });
 
     <? if (isContinued) { ?>
-    function submitForm() {
-      $('#b-Copy').prop('disabled', true);
-      window.scrollTo(0, 0);
-      $('#accError').empty();
+    $(document).on('click, focus', '#m-add-acc', () => addAccInput());
 
-      $(".panel").hide();
-      $("#setup-panel").fadeIn("fast").addClass("active");
-      google.script.host.setHeight(233);
-
-      Glob.timeout_id = setTimeout(function() {
-        google.script.host.setHeight(293);
-        $("#timeout").fadeIn();
-      }, 240000);
-
-      const name_accounts = [];
-      $('input[name=account_name]').each(function(index) {
-        const key = $(this).closest('tr').attr('id');
-        if (key) {
-          Glob.accounts[key].index = index;
-          name_accounts.push(Glob.accounts[key]);
-        } else {
-          name_accounts.push({
-            require: 'new',
-            index: index,
-            name: $(this).val()
-          });
-        }
-      });
-
-      const payload = {
-        protocol: 'restore',
-        config: {
-          name_accounts: name_accounts,
-
-          spreadsheet_name: $("#spreadsheet_name").val(),
-          decimal_places: $("#decimal_places").val(),
-
-          financial_year: $("#financial_year").val(),
-          initial_month: $("#initial_month").val()
-        }
-      };
-
-      google.script.run
-        .withFailureHandler(panelError)
-        .withSuccessHandler(null)
-        .setupService(uuid, payload);
-    }
-
-    function refreshInfo(info) {
+    function refreshInfo (info) {
       if (!info) return;
       $('#b-Select').prop('disabled', false);
 
-      $("#file_name").append(info.source.file_name);
-      $("#date_created").append(info.source.date_created);
+      $('#file_name').append(info.source.file_name);
+      $('#date_created').append(info.source.date_created);
 
-      $("#spreadsheet_name").val(info.settings.spreadsheet_name);
+      $('#spreadsheet_name').val(info.settings.spreadsheet_name);
       $('#decimal_places').val(info.settings.decimal_places);
 
       $('#financial_year').val(info.settings.financial_year);
@@ -195,22 +137,60 @@
       $('#details').fadeIn('fast');
       $('#b-Restore').prop('disabled', false);
     }
+
+    function submitForm () {
+      $('#b-Copy').prop('disabled', true);
+      window.scrollTo(0, 0);
+      $('#tr-acc-error').hide();
+
+      $('.panel').hide();
+      google.script.host.setHeight(181);
+      $('#panel-setup').fadeIn('fast');
+
+      setTimeout(function() {
+        google.script.host.setHeight(251);
+        $('#timeout').fadeIn();
+      }, 240000);
+
+      const accounts = [];
+      $('input[name="account_name"]').each(function(index) {
+        const key = $(this).closest('tr').attr('id');
+        if (key) {
+          Glob.accounts[key].index = index;
+          accounts.push(Glob.accounts[key]);
+        } else {
+          accounts.push({
+            require: 'new',
+            index: index,
+            name: $(this).val()
+          });
+        }
+      });
+
+      const payload = {
+        protocol: 'restore',
+        config: {
+          name_accounts: accounts,
+          spreadsheet_name: $('#spreadsheet_name').val(),
+          decimal_places: $('#decimal_places').val(),
+          financial_year: $('#financial_year').val(),
+          initial_month: $('#initial_month').val()
+        }
+      };
+
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(null)
+        .setupService(Glob.uuid, payload);
+    }
     <? } ?>
 
-    function pickFile() {
+    function pickFile () {
       this.disabled = true;
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
-        .showDialogPickerRestore(uuid);
-    }
-
-    function panelError(err) {
-      clearTimeout(Glob.timeout_id);
-      google.script.host.setHeight(197);
-      $("#error-panel").siblings().remove();
-      $("#error-panel").fadeIn("fast").addClass("active");
-      $("#footer-buttons").append("<button onclick=\"closeHost();\">Close</button>");
+        .showDialogPickerRestore(Glob.uuid);
     }
   </script>
   <? if (isContinued) { ?>
