@@ -57,12 +57,18 @@
       justify-content: space-between;
     }
 
-    .md-click {
+    .m-help {
+      padding: 5px;
       border-radius: 50%;
     }
 
-    .md-click:hover {
+    .m-help:hover {
       background: #f3f3f3;
+    }
+
+    .m-remove-acc {
+      color: #f44336;
+      padding: 0 3px;
     }
 
     .table-accounts {
@@ -181,7 +187,7 @@
       <div class="panel-form-header">
         <h2>Spreadsheet specs</h2>
         <div>
-          <a href="<?= home_wiki ?>/Getting-Started#2-start-a-budget-sheet" target="_blank"><span class="material-icons md-24 md-click">help_outline</span></a>
+          <a href="<?= home_wiki ?>/Getting-Started#2-start-a-budget-sheet" target="_blank"><span class="material-icons md-24 md-click m-help">help_outline</span></a>
         </div>
       </div>
 
@@ -226,21 +232,22 @@
         </table>
         <table class="table-accounts">
           <tr>
-            <th colspan="3"><span class="material-icons-outlined">account_balance</span> Accounts</th>
+            <th colspan="2"><span class="material-icons-outlined">account_balance</span> Accounts</th>
           </tr>
           <tr class="tr-acc">
-            <td><label class="tr-acc-counter">Account</label></td>
+            <td>
+              <span class="material-icons md-18 md-click m-remove-acc" style="display: none;">remove_circle</span>
+              <label class="tr-acc-counter">Account</label>
+            </td>
             <td>
               <input type="text" name="acc-name" maxlength="64" placeholder="Name" required>
             </td>
-            <td><span class="material-icons m-remove-acc" style="padding-left: 3px;visibility: hidden;cursor: pointer;">remove_circle</span></td>
           </tr>
           <tr id="tr-add-acc">
             <td></td>
             <td>
               <input type="text" id="m-add-acc" placeholder="Add account" readonly>
             </td>
-            <td></td>
           </tr>
         </table>
       </form>
@@ -274,7 +281,6 @@
 
     $(document).ready(function() {
       $('#b-Continue').click(clickNext);
-      $('#m-add-acc').click(addAccInput);
       <? if (setup_restore) { ?>
       $('#b-Restore').click(showRestore);
       <? } ?>
@@ -289,6 +295,8 @@
       $('#panel-main').fadeIn().addClass('active');
     });
 
+    $('#m-add-acc').on('click, focus', addAccInput);
+
     $(document).on('click', '.m-remove-acc', function() {
       if (Glob.num_acc === 1) return;
 
@@ -296,7 +304,7 @@
       Glob.num_acc--;
 
       if (Glob.num_acc < 5) $('#tr-add-acc').show();
-      if (Glob.num_acc === 1) $('.m-remove-acc').css({ visibility: 'hidden' });
+      if (Glob.num_acc === 1) $('.m-remove-acc').hide();
     });
 
     function addAccInput () {
@@ -305,6 +313,7 @@
       const $tr = $('<tr>').attr({ class: 'tr-acc' });
 
       const $td1 = $('<td>').append([
+        $('<span>').attr({ class: 'material-icons md-18 md-click m-remove-acc' }).text('remove_circle'),
         $('<label>').attr({ class: 'tr-acc-counter' }).text('Account')
       ]);
 
@@ -318,25 +327,14 @@
           })
       ]);
 
-      const $td3 = $('<td>');
-      $('<span>').attr({ class: 'material-icons m-remove-acc' })
-        .css({
-          'padding-left': '3px',
-          cursor: 'pointer',
-          visibility: 'hidden'
-        })
-        .text('remove_circle')
-        .appendTo($td3);
-
       $td1.appendTo($tr);
       $td2.appendTo($tr);
-      $td3.appendTo($tr);
 
       $('#tr-add-acc').before($tr);
       Glob.num_acc++;
 
       if (Glob.num_acc > 4) $('#tr-add-acc').hide();
-      if (Glob.num_acc > 1) $('.m-remove-acc').css({ visibility: 'visible' });
+      if (Glob.num_acc > 1) $('.m-remove-acc').show();
 
       $tr.find('input').focus();
     }
