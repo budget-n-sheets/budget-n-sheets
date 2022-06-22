@@ -4,96 +4,86 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/containers"); ?>
   <style>
-    #footer {
-      display: table;
-    }
-
-    #footer2 {
-      display: table-row;
-    }
-
-    #footer3 {
-      display: table-cell;
-      height: 3.7em;
-      padding: 7px;
-      vertical-align: middle;
+    .footer {
+      padding: 5px;
     }
   </style>
 </head>
 
 <body>
-  <div id="wrapper">
-    <div id="content" style="margin-bottom:4.7em;">
-      <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
-        <table style="width:100%;">
-          <tr>
-            <th colspan="2">
-              Details
-            </th>
-          </tr>
-          <tr>
-            <td class="name">
-              <label for="acc_name">Name</label>
-            </td>
-            <td>
-              <input id="acc_name" type="text" maxlength="64" required>
-            </td>
-          </tr>
-          <tr>
-            <td class="name">
-              <label for="acc_time_start">Initial month</label>
-            </td>
-            <td>
-              <select id="acc_time_start" style="width:83px;">
-                <option value="0" selected>January</option>
-                <option value="1">February</option>
-                <option value="2">March</option>
-                <option value="3">April</option>
-                <option value="4">May</option>
-                <option value="5">June</option>
-                <option value="6">July</option>
-                <option value="7">August</option>
-                <option value="8">September</option>
-                <option value="9">October</option>
-                <option value="10">November</option>
-                <option value="11">December</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td class="name">
-              <label for="acc_balance">Initial balance</label>
-            </td>
-            <td>
-              $ <input id="acc_balance" style="width:7.3em;" type="number" value="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required>
-            </td>
-          </tr>
-        </table>
-        <input id="account_id" style="display: none;" type="text" value="<?= account_id ?>">
-      </form>
-    </div>
+  <div class="content-container">
+    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm()">
+      <table>
+        <tr>
+          <th colspan="2">
+            Details
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <label for="acc_name">Name</label>
+          </td>
+          <td>
+            <input id="acc_name" type="text" maxlength="64" required disabled>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="acc_time_start">Initial month</label>
+          </td>
+          <td>
+            <select id="acc_time_start" style="width: 83px;" disabled>
+              <option value="0" selected>January</option>
+              <option value="1">February</option>
+              <option value="2">March</option>
+              <option value="3">April</option>
+              <option value="4">May</option>
+              <option value="5">June</option>
+              <option value="6">July</option>
+              <option value="7">August</option>
+              <option value="8">September</option>
+              <option value="9">October</option>
+              <option value="10">November</option>
+              <option value="11">December</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="acc_balance">Initial balance</label>
+          </td>
+          <td>
+            $ <input id="acc_balance" type="number" value="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required disabled>
+          </td>
+        </tr>
+      </table>
+      <input id="account_id" style="display: none;" type="text" value="<?= account_id ?>">
+    </form>
+  </div>
 
-    <div id="footer">
-      <div class="current" id="response" style="padding:0 7px;"></div>
-      <div id="footer2">
-        <div id="footer3">
-          <button class="action" id="b-Submit" type="submit" form="the_form">Save</button> <button onclick="closeHost();">Cancel</button>
-        </div>
-      </div>
+  <div class="footer">
+    <span class="current" id="response"></span>
+    <div>
+      <button class="action" type="submit" form="the_form" disabled>Save</button>
+      <button onclick="closeHost()">Cancel</button>
     </div>
   </div>
-  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
+
+  <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <script>
     $(document).ready(function() {
       google.script.run
         .withSuccessHandler(account => {
           if (!account) showError();
 
-          $("#acc_name").val(account.name);
-          $("#acc_time_start").val(account.time_start);
-          $("#acc_balance").val(account.balance);
+          $('input, select, button').prop('disabled', false);
+
+          $('#acc_name').val(account.name);
+          $('#acc_time_start').val(account.time_start);
+          $('#acc_balance').val(account.balance);
         })
         .withFailureHandler(showError)
         .accountsClientService({
@@ -102,29 +92,31 @@
         });
     });
 
-    function submitForm() {
-      $("#b-Submit").prop("disabled", true);
+    function submitForm () {
+      $('.current').empty();
 
       const payload = {
         job: 'update',
-        id: $("#account_id").val(),
+        id: $('#account_id').val(),
         metadata: {
-          name: $("#acc_name").val(),
-          time_start: $("#acc_time_start").val(),
-          balance: $("#acc_balance").val()
+          name: $('#acc_name').val(),
+          time_start: $('#acc_time_start').val(),
+          balance: $('#acc_balance').val()
         }
       };
 
+      $('input, select, button').prop('disabled', true);
       google.script.run
         .withSuccessHandler(submitAftermath)
         .withFailureHandler(showError)
         .accountsClientService(payload);
     }
 
-    function submitAftermath(r) {
+    function submitAftermath (r) {
+      $('.current').text(r ? 'Sorry, something went wrong. Please, try again.' : '');
+
       if (r) {
-        $("#response").empty().append("Sorry, something went wrong. Please, try again.");
-        $("#b-Submit").prop("disabled", false);
+        $('input, select, button').prop('disabled', false);
         return;
       }
 

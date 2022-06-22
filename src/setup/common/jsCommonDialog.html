@@ -1,9 +1,9 @@
 <script>
-  $(document).on('click', '.add-acc', function() {
-    $('#accError').empty();
+  $(document).on('click', '.m-list-acc', function() {
+    $('#tr-acc-error').hide();
     if (Glob.num_acc > 4) {
-      $('#addAcc').hide();
-      $('#accError').append('No slot available.');
+      $('#tr-add-acc').hide();
+      $('#tr-acc-error').show();
       return;
     };
 
@@ -12,8 +12,8 @@
     addAccInput(key);
   });
 
-  $(document).on('click', '.remove-acc', function() {
-    $('#accError').empty();
+  $(document).on('click', '.m-delist-acc', function() {
+    $('#tr-acc-error').hide();
     if (Glob.num_acc === 1) return;
 
     const $tr = $(this).closest('tr');
@@ -23,14 +23,12 @@
     $tr.remove();
     Glob.num_acc--;
 
-    if (Glob.num_acc < 5) $('#addAcc').show();
-    if (Glob.num_acc === 1) $('.remove-acc').css({
-      visibility: 'hidden'
-    });
+    if (Glob.num_acc < 5) $('#tr-add-acc').show();
+    if (Glob.num_acc === 1) $('.m-delist-acc').hide()
   });
 
-  function addAccInput(key) {
-    $('#accError').empty();
+  function addAccInput (key) {
+    $('#tr-acc-error').hide();
     if (Glob.num_acc > 4) return;
 
     const $tr = $('<tr>').attr({
@@ -41,31 +39,18 @@
     let $el = null;
 
     const $td1 = $('<td>');
-    $el = $('<span>').attr({
-        class: 'material-icons remove-acc'
-      })
-      .css({
-        visibility: 'hidden',
-        cursor: 'pointer',
-        'padding-right': '3px'
-      })
+    $el = $('<span>').attr({class: 'material-icons md-18 md-click m-delist-acc'})
       .text('remove_circle')
       .appendTo($td1);
     $td1.append($el);
 
-
-    const $td2 = $('<td>').css({
-      width: '100%'
-    });
+    const $td2 = $('<td>');
     $el = $('<input>').attr({
         type: 'text',
         name: 'account_name',
         placeholder: 'Name',
         required: true,
         maxlength: 64
-      })
-      .css({
-        width: '100%'
       });
     if (key) {
       $el.attr({
@@ -90,48 +75,38 @@
     $td2.appendTo($tr);
     $td3.appendTo($tr);
 
-    $('#accSortable').append($tr);
+    $('#tr-acc-listed').append($tr);
     Glob.num_acc++;
 
-    if (Glob.num_acc > 4) $('#addAcc').hide();
-    if (Glob.num_acc > 1) $('.remove-acc').css({
-      visibility: 'visible'
-    });
+    if (Glob.num_acc > 4) $('#tr-add-acc').hide();
+    if (Glob.num_acc > 1) $('.m-delist-acc').show()
 
     if (!key) $tr.find('input').focus();
   }
 
-  function deselectAcc(key) {
+  function deselectAcc (key) {
     const $tr = $('<tr>');
 
     const $td1 = $('<td>');
     $('<span>').attr({
-        class: 'material-icons add-acc',
+        class: 'material-icons md-18 md-click m-list-acc',
         id: key
-      })
-      .css({
-        cursor: 'pointer'
       })
       .text('add_circle')
       .appendTo($td1);
 
-    const $td2 = $('<td>').css({
-      width: '100%'
-    });
+    const $td2 = $('<td>');
     $('<input>').attr({
         type: 'text',
         value: Glob.accounts[key].name,
         disabled: true,
         readonly: true
       })
-      .css({
-        width: '100%'
-      })
       .appendTo($td2);
 
     $td1.appendTo($tr);
     $td2.appendTo($tr);
 
-    $('#accRemoved').append($tr);
+    $('#tr-acc-delisted').append($tr);
   }
 </script>

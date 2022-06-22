@@ -4,137 +4,125 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
-  <?!= HtmlService2.htmlInclude('gas-common/htmlMaterialIcons'); ?>
+  <?!= HtmlService2.htmlInclude('html/resources/styles'); ?>
+  <?!= HtmlService2.htmlInclude('html/resources/containers'); ?>
+  <?!= HtmlService2.htmlInclude('html/resources/material-icons'); ?>
   <style>
-    td p {
-      margin-top: 0;
-      margin-bottom: 0;
-      text-align: justify;
+    a {
+      font-weight: bold;
     }
 
-    .table_row {
-      display: table-row;
+    table {
+      margin-top: 1em;
     }
 
-    #header {
-      height: 3.7em;
+    tr.comment > td:first-child {
       width: 100%;
+    }
+
+    td > p {
+      margin: 0;
+    }
+
+    .header-container {
       border-bottom: 1px solid #dadbe0;
     }
 
-    .header_table {
-      display: table;
-      width: inherit;
-      height: inherit;
-      text-align: center;
-      border-collapse: separate;
-      border-spacing: 13px 7px;
-    }
-
-    .header_tab {
+    .header-container > .tab {
+      padding: 5px 0;
       cursor: pointer;
-      display: table-cell;
-      vertical-align: middle;
       color: rgba(0, 0, 0, 0.54);
+      text-align: center;
+      flex: 1;
     }
 
-    .header_tab.active {
+    .header-container > .tab.active {
       border-bottom: solid 2px;
     }
 
-    .footer_table {
-      display: table;
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 7px;
+    .content-container > div {
+      display: none;
+    }
+
+    .footer > div {
+      padding: 5px;
+    }
+
+    .footer-buttons {
       border-top: 1px solid #dadbe0;
     }
 
-    .footer_cell {
-      display: table-cell;
-      vertical-align: middle;
+    .footer-buttons > div {
+      display: none;
     }
   </style>
 </head>
 
 <body>
-  <div id="wrapper">
-    <div id="header">
-      <div class="header_table">
-        <div class="table_row">
-          <div class="header_tab active" id="tab_settings">
-            <i class="material-icons-outlined md-24" title="Settings">settings</i>
-          </div>
-          <div class="header_tab" id="tab_maintenance">
-            <i class="material-icons-outlined md-24" title="Maintenance">build</i>
-          </div>
-          <? if (settings_backup) { ?>
-          <div class="header_tab" id="tab_backup">
-            <i class="material-icons-outlined md-24" title="Backup">backup</i>
-          </div>
-          <? } ?>
-        </div>
+  <div class="header-container">
+    <div class="tab active" id="tab-settings">
+      <i class="material-icons-outlined md-24" title="Settings">settings</i>
+    </div>
+    <div class="tab" id="tab-maintenance">
+      <i class="material-icons-outlined md-24" title="Maintenance">build</i>
+    </div>
+    <? if (settings_backup) { ?>
+    <div class="tab" id="tab-backup">
+      <i class="material-icons-outlined md-24" title="Backup">backup</i>
+    </div>
+    <? } ?>
+  </div>
+
+  <div class="content-container">
+    <?!= htmlPanelSettings ?>
+    <?!= htmlPanelMaintenance ?>
+    <? if (settings_backup) { ?>
+      <?!= htmlPanelBackup ?>
+    <? } ?>
+  </div>
+
+  <div class="footer">
+    <div>
+      <span class="current"></span>
+    </div>
+    <div class="footer-buttons">
+      <div class="panel-settings">
+        <button class="action" id="b-Save">Save</button>
       </div>
-    </div>
-
-    <div id="content" style="margin-top: 7px;margin-bottom: 4.3em;">
-      <?!= htmlPanelSettings ?>
-      <?!= htmlPanelMaintenance ?>
-      <? if (settings_backup) { ?>
-        <?!= htmlPanelBackup ?>
-      <? } ?>
-    </div>
-
-    <div id="footer">
-      <div class="current" id="footer_response" style="padding:0 7px;"></div>
-      <div class="footer_table">
-        <div class="table_row">
-          <div class="footer_cell left" style="width:100%;">
-            <button class="action" id="b-Save" disabled>Save</button>
-          </div>
-          <div class="footer_cell right">
-            <a href="<?= home_wiki ?>/Changing-Settings" target="_blank"><i class="material-icons md-24 md-click">help_outline</i></a>
-          </div>
-        </div>
+      <div class="panel-maintenance">
+      </div>
+      <div class="panel-backup">
+        <button class="action" id="b-Backup">Back up now</button>
       </div>
     </div>
   </div>
-  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
+  <?!= HtmlService2.htmlInclude('html/resources/javascript'); ?>
   <?!= containment8d4adafda11Frame(); ?>
   <script>
-    $(document).on("click", ".header_tab", function() {
-      if ($(this).hasClass("active")) return;
+    $(document).on('click', '.header-container > .tab', function() {
+      if ($(this).hasClass('active')) return;
 
-      var select = $(this).attr("id");
+      const id = $(this).attr('id');
+      let panel;
 
-      $(this).addClass("active")
+      $(this).addClass('active')
         .siblings()
-        .removeClass("active");
-      $('.footer_cell.left button').remove();
+        .removeClass('active');
+
+      if (id === 'tab-settings') panel = '.panel-settings';
+      else if (id === 'tab-maintenance') panel = '.panel-maintenance';
+      <? if (settings_backup) { ?>
+      else if (id === 'tab-backup') panel = '.panel-backup';
+      <? } ?>
 
       window.scrollTo(0, 0);
-      if (select === "tab_settings") {
-        $('.footer_cell.left').append('<button class="action" id="b-Save">Save</button>');
-        $("#panel_Settings").show()
-          .siblings()
-          .hide();
-      } else if (select === "tab_maintenance") {
-        $("#panel_Maintenance").show()
-          .siblings()
-          .hide();
-      <? if (settings_backup) { ?>
-      } else if (select === "tab_backup") {
-        $('.footer_cell.left').append('<button id="b-Backup" class="action">Back up now</button>');
-        $("#panel_Backup").show()
-          .siblings()
-          .hide();
-      <? } ?>
-      }
+      $(panel).show()
+        .siblings()
+        .hide();
     });
 
-    function showStatus(msg) {
-      $("#footer_response").empty().append(msg);
+    function showStatus (msg) {
+      $('.current').empty().append(msg);
     }
   </script>
   <?!= jsPanelSettings ?>

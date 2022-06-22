@@ -1,5 +1,6 @@
 <script>
   $(document).ready(function() {
+    $('.panel-settings').show();
     google.script.run
       .withSuccessHandler(loadUserSettings)
       .withFailureHandler(showError)
@@ -9,56 +10,54 @@
   $(document).on('click', '#b-Save', saveSettings);
 
   <? if (isCalendarEnabled) { ?>
-  $("#financial_calendar").change(function() {
-    if ($(this).val() === "") {
-      $(".options-calendar").prop("disabled", true);
-      $(".options-calendar").prop("checked", false);
+  $('#financial_calendar').change(function() {
+    if ($(this).val()) {
+      $('.options-calendar').prop('disabled', false);
     } else {
-      $(".options-calendar").prop("disabled", false);
+      $('.options-calendar').prop('disabled', true);
+      $('.options-calendar').prop('checked', false);
     }
-    return;
   });
   <? } ?>
 
-  function loadUserSettings(user_settings) {
-    $("#initial_month").val(user_settings.initial_month);
-    $("#decimal_places").val(user_settings.decimal_places);
-    $('#view_mode').val(user_settings.view_mode);
+  function loadUserSettings (settings) {
+    $('#initial_month').val(settings.initial_month);
+    $('#decimal_places').val(settings.decimal_places);
+    $('#view_mode').val(settings.view_mode);
 
     <? if (isCalendarEnabled) { ?>
-    $("#financial_calendar").val(user_settings.financial_calendar);
-    if (user_settings.financial_calendar) {
-      if (user_settings.post_day_events) $("#post_day_events").prop("checked", true);
-      if (user_settings.cash_flow_events) $("#cash_flow_events").prop("checked", true);
-      $(".options-calendar").prop("disabled", false);
+    $('#financial_calendar').val(settings.financial_calendar);
+    if (settings.financial_calendar) {
+      if (settings.post_day_events) $('#post_day_events').prop('checked', true);
+      if (settings.cash_flow_events) $('#cash_flow_events').prop('checked', true);
+      $('.options-calendar').prop('disabled', false);
     }
-    <? } ?>
 
-    $("#b-Save").prop("disabled", false);
+    <? } ?>
   }
 
-  function saveSettings() {
+  function saveSettings () {
     this.disabled = true;
-    $("#footer_response").empty();
+    $('.current').empty();
 
-    var user_settings = {
+    const settings = {
       <? if (isCalendarEnabled) { ?>
-      financial_calendar: $("#financial_calendar").val(),
-      post_day_events: $("#post_day_events").prop("checked"),
-      cash_flow_events: $("#cash_flow_events").prop("checked"),
+      financial_calendar: $('#financial_calendar').val(),
+      post_day_events: $('#post_day_events').prop('checked'),
+      cash_flow_events: $('#cash_flow_events').prop('checked'),
       <? } ?>
-      initial_month : $("#initial_month").val(),
-      decimal_places : $("#decimal_places").val(),
+      initial_month : $('#initial_month').val(),
+      decimal_places : $('#decimal_places').val(),
       view_mode: $('#view_mode').val()
     };
 
     google.script.run.withSuccessHandler(function(r, o) {
-        if (r) showError()
-        showStatus("Saved settings");
+        if (r) showError();
+        showStatus('Saved settings');
         o.disabled = false;
       })
       .withFailureHandler(showError)
       .withUserObject(this)
-      .saveUserSettings(user_settings);
+      .saveUserSettings(settings);
   }
 </script>
