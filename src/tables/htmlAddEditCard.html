@@ -35,7 +35,8 @@
             <label for="card_code">Code</label>
           </td>
           <td>
-            <input id="card_code" type="text" maxlength="32" placeholder="Charset: 0-9, a-z, A-Z, _" pattern="^\w+$" required disabled>
+            <input id="card_code" type="text" maxlength="16" pattern="^\w{1,16}$" required>
+            <div class="gray">Charset: 0-9, a-z, A-Z, _</div>
           </td>
         </tr>
         <tr>
@@ -43,9 +44,9 @@
             <label for="card_aliases">Code aliases</label>
           </td>
           <td>
-            <input id="card_aliases" type="text" maxlength="256" placeholder="Charset: 0-9, a-z, A-Z, _" pattern="^\w+(\s*,\s*\w+)*$" disabled>
-            <br>
-            <span class="gray">Separate aliases with commas.</span>
+            <textarea id="card_aliases" type="text" rows="3" maxlength="286"></textarea>
+            <div class="gray">Separate aliases with commas.</div>
+            <div class="gray">Charset: 0-9, a-z, A-Z, _</div>
           </td>
         </tr>
         <tr>
@@ -83,7 +84,7 @@
         .withSuccessHandler(card => {
           if (!card) showError();
 
-          $('input, select, button').prop('disabled', false);
+          $('input, textarea, select, button').prop('disabled', false);
 
           $('#card_name').val(card.name);
           $('#card_code').val(card.code);
@@ -96,8 +97,18 @@
           id: $('#card_id').val()
         });
       <? } else { ?>
-      $('input, select, button').prop('disabled', false);
+      $('input, textarea, select, button').prop('disabled', false);
       <? } ?>
+    });
+
+    $('#card_aliases').change(function() {
+      const code = $('#card_code').val();
+      this.value = this.value.replace(/\s/g, '')
+        .split(',')
+        .filter(alias => /^\w{1,16}$/.test(alias))
+        .filter(alias => alias !== code)
+        .slice(0, 16)
+        .join(', ');
     });
 
     function submitForm () {
@@ -118,7 +129,7 @@
         }
       };
 
-      $('input, select, button').prop('disabled', true);
+      $('input, textarea, select, button').prop('disabled', true);
       google.script.run
         .withSuccessHandler(submitAftermath)
         .withFailureHandler(showError)
@@ -129,7 +140,7 @@
       $('.current').text(r ? 'Sorry, something went wrong. Please, try again.' : '');
 
       if (r) {
-        $('input, select, button').prop('disabled', false);
+        $('input, textarea, select, button').prop('disabled', false);
         return;
       }
 
