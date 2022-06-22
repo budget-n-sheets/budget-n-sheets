@@ -51,7 +51,10 @@
         $('<span>').attr({class: 'c-remove material-icons md-18'}).text('delete')
       ]);
 
-      $box.prepend($('<div>').attr({class: 'item'}).append([$text, $icons]));
+      $box.prepend($('<div>')
+        .attr({class: 'item'})
+        .css({'background-color': db_cards[id].color})
+        .append([$text, $icons]));
     }
 
     if (Object.keys(db_cards).length >= 10) $('.c-add-card').hide();

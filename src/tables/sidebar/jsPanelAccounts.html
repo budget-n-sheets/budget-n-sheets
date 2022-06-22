@@ -25,7 +25,10 @@
         $('<span>').attr({class: 'a-edit material-icons md-18'}).text('edit')
       ]);
 
-      $box.append($('<div>').attr({class: 'item'}).append([$text, $icons]));
+      $box.append($('<div>')
+        .attr({class: 'item'})
+        .css({'background-color': db_accounts[id].color})
+        .append([$text, $icons]));
     }
 
     $('#panel-accounts > div:not(:first-child)').before('<hr>');
