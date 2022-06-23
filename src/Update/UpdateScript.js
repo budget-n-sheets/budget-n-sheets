@@ -14,13 +14,36 @@ class UpdateScript extends Update {
         ['', '', ''],
         ['', '', '', ''],
         ['', 'patchV0m45p1_', '', '', 'patchV0m45p4_', '', '', 'patchV0m45p7_', '', '', '', '', '', '', '', ''],
-        ['', '', 'patchV0m46p2_', 'patchV0m46p3_', '', '', '', 'v0m46p7_', '', '']
+        ['', '', 'patchV0m46p2_', 'patchV0m46p3_', '', '', '', 'v0m46p7_', '', '', 'v0m46p10_']
       ]
     ];
 
     super(v0, vA, list);
 
     this._key = 'script';
+  }
+
+  /**
+   * Add property 'color' to cards and acc.
+   *
+   * 0.46.10
+   */
+   v0m46p10_ () {
+    let db;
+
+    db = CachedAccess.get('db_accounts');
+    for (const id in db) {
+      db[id].color = 'whitesmoke';
+    }
+    CachedAccess.update('db_accounts', db);
+
+    db = CachedAccess.get('db_cards');
+    for (const id in db) {
+      db[id].color = 'whitesmoke';
+    }
+    CachedAccess.update('db_cards', db);
+
+    return 0;
   }
 
   /**
