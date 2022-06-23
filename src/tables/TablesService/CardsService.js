@@ -21,7 +21,7 @@ class CardsService extends TablesService {
     card.aliases = card.aliases.filter(alias => alias !== card.code).slice(0, 16);
 
     card.limit = Number(card.limit);
-    card.color = 'whitesmoke';
+    if (!Consts.color_palette[card.color]) card.color = 'whitesmoke';
   }
 
   updateMetadata_ () {
@@ -123,6 +123,48 @@ class CardsService extends TablesService {
     SpreadsheetApp.flush();
   }
 
+  updateConditionalColor_ () {
+    const sheet = this.spreadsheet.getSheetByName('Cards');
+    if (!sheet) return;
+
+    const height = sheet.getMaxRows() - 5;
+    if (height < 1) return;
+
+    const range = sheet.getRange(6, 3, height, 1);
+    const ranges = [];
+    for (let i = 0; i < 12; i++) {
+      ranges.push(range.offset(0, 6 * i));
+    }
+
+    const rules = [];
+    const colorPalette = Consts.color_palette;
+
+    for (const id in this._db) {
+      if (this._db[id].color === 'whitesmoke') continue;
+
+      const codes = [this._db[id].code].concat(this._db[id].aliases).join('|');
+
+      const rule = SpreadsheetApp.newConditionalFormatRule()
+        .whenFormulaSatisfied(`=REGEXMATCH(${RangeUtils.rollA1Notation(6, 3, 1, 1, 2)}; "${codes}")`)
+        .setRanges(ranges)
+        .setBold(true);
+
+      if (this._db[id].color !== 'black') rule.setFontColor(`#${colorPalette[this._db[id].color]}`);
+      rules.push(rule.build());
+    }
+
+    const rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied(`=REGEXMATCH(${RangeUtils.rollA1Notation(6, 5, 1, 1, 2)}; "#ign")`)
+      .setFontColor('#999999')
+      .setRanges(ranges)
+      .build();
+    rules.push(rule);
+
+    sheet.clearConditionalFormatRules();
+    sheet.setConditionalFormatRules(rules);
+    SpreadsheetApp.flush();
+  }
+
   create (metadata) {
     if (!this.hasSlotAvailable()) return 12;
 
@@ -171,6 +213,7 @@ class CardsService extends TablesService {
     this.updateMetadata_();
     this.updateNames_();
     this.updateRules_();
+    this.updateConditionalColor_();
 
     SpreadsheetApp.flush();
     return this;

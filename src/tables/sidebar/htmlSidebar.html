@@ -30,9 +30,14 @@
 
     .box > .item {
       padding: 7px 5px;
+      border-radius: 5px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+
+    .item > .text {
+      filter: invert() grayscale() contrast(10);
     }
 
     .item > .text h3 {
@@ -45,11 +50,15 @@
 
     .md-box > span {
       padding: 5px;
-      cursor: pointer;
-      border-radius: 50%;
+    }
+
+    .md-box > span:not(:hover) {
+      color: inherit;
+      filter: invert() grayscale() contrast(10);
     }
 
     .md-box > span:hover {
+      border-radius: 50%;
       background: #efefef;
     }
 
