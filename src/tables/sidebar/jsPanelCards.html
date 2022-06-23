@@ -44,7 +44,8 @@
 
     for (const id in db_cards) {
       const $text = $('<div>').attr({class: 'text'}).append([
-        $('<strong>').text(db_cards[id].name)
+        $('<h3>').text(db_cards[id].name),
+        $('<div>').append(`<strong>${db_cards[id].code}</strong> | $ ${FormatNumber.financial(db_cards[id].limit)}`)
       ]);
       const $icons = $('<div>').attr({class: 'md-box', id: id}).append([
         $('<span>').attr({class: 'c-edit material-icons md-18'}).text('edit'),
