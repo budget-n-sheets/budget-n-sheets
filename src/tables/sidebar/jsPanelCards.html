@@ -43,9 +43,7 @@
     const $box = $('#panel-cards');
 
     for (const id in db_cards) {
-      const $text = $('<div>').attr({class: 'text'}).append([
-        $('<strong>').text(db_cards[id].name)
-      ]);
+      const $text = $('<div>').attr({class: 'text'}).append(db_cards[id].name);
       const $icons = $('<div>').attr({class: 'md-box', id: id}).append([
         $('<span>').attr({class: 'c-edit material-icons md-18'}).text('edit'),
         $('<span>').attr({class: 'c-remove material-icons md-18'}).text('delete')

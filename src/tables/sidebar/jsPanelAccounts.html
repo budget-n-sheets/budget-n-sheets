@@ -18,9 +18,7 @@
     const $box = $('#panel-accounts');
 
     for (const id in db_accounts) {
-      const $text = $('<div>').attr({class: 'text'}).append([
-        $('<strong>').text(db_accounts[id].name)
-      ]);
+      const $text = $('<div>').attr({class: 'text'}).append(db_accounts[id].name);
       const $icons = $('<div>').attr({class: 'md-box', id: id}).append([
         $('<span>').attr({class: 'a-edit material-icons md-18'}).text('edit')
       ]);
