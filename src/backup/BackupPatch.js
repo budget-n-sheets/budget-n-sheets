@@ -9,7 +9,7 @@ class BackupPatch extends PatchThis {
     this._patches = [
       [
         null,
-        [null, 'patchV0m1p1_']
+        [null, 'patchV0m1p1_', 'v0m1p2_']
       ]
     ];
 
@@ -18,6 +18,22 @@ class BackupPatch extends PatchThis {
 
   get payload () {
     return this._payload;
+  }
+
+  v0m1p2_ () {
+    const o = this._payload;
+
+    for (const k in o.db_tables.accounts) {
+      const acc = o.db_tables.accounts[k];
+      Object.assign(acc, { color: 'whitesmoke' });
+    }
+
+    for (const k in o.db_tables.cards) {
+      const card = o.db_tables.cards[k];
+      Object.assign(card, { color: 'whitesmoke' });
+    }
+
+    return 0;
   }
 
   patchV0m1p1_ () {

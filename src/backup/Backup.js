@@ -39,7 +39,8 @@ class Backup {
       this._backup.db_tables.accounts[k] = {
         name: account.name,
         balance: account.balance,
-        time_start: account.time_start
+        time_start: account.time_start,
+        color: account.color
       };
       k++;
     }
@@ -54,7 +55,8 @@ class Backup {
         name: card.name,
         code: card.code,
         limit: card.limit,
-        aliases: card.aliases
+        aliases: card.aliases,
+        color: card.color
       };
       k++;
     }
