@@ -43,11 +43,21 @@
     const $box = $('#panel-cards');
 
     for (const id in db_cards) {
-      const $text = $('<div>').attr({class: 'text'}).append(db_cards[id].name);
-      const $icons = $('<div>').attr({class: 'md-box', id: id}).append([
-        $('<span>').attr({class: 'c-edit material-icons md-18'}).text('edit'),
-        $('<span>').attr({class: 'c-remove material-icons md-18'}).text('delete')
-      ]);
+      const $text = $('<div>').attr({class: 'text'})
+        .css('color', db_cards[id].color)
+        .append(db_cards[id].name);
+
+      const $icons = $('<div>').attr({class: 'md-box', id: id})
+        .css('color', db_cards[id].color)
+        .append([
+          $('<span>').attr({class: 'c-edit material-icons md-18 md-click'}).text('edit'),
+          $('<span>').attr({class: 'c-remove material-icons md-18 md-click'}).text('delete')
+        ]);
+
+      if (db_cards[id].color === 'slategray') {
+        $text.css('color', 'white');
+        $icons.css('color', 'white');
+      }
 
       $box.prepend($('<div>')
         .attr({class: 'item'})

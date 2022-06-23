@@ -38,6 +38,7 @@
 
     .item > .text {
       font-weight: bold;
+      filter: invert() grayscale() contrast(10);
     }
 
     .item > .md-box {
@@ -46,11 +47,15 @@
 
     .md-box > span {
       padding: 5px;
-      cursor: pointer;
-      border-radius: 50%;
+    }
+
+    .md-box > span:not(:hover) {
+      color: inherit;
+      filter: invert() grayscale() contrast(10);
     }
 
     .md-box > span:hover {
+      border-radius: 50%;
       background: #efefef;
     }
 
