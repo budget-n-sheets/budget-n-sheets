@@ -30,12 +30,19 @@
 
     .box > .item {
       padding: 7px 5px;
+      border-radius: 5px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
     }
 
     .item > .text {
-      flex: 1;
+      filter: invert() grayscale() contrast(10);
+    }
+
+    .item > .text h3 {
+      margin: 0;
+      color: inherit;
     }
 
     .item > .md-box {
@@ -44,15 +51,24 @@
 
     .md-box > span {
       padding: 5px;
-      cursor: pointer;
-      border-radius: 50%;
+    }
+
+    .md-box > span:not(:hover) {
+      color: inherit;
+      filter: invert() grayscale() contrast(10);
+      opacity: 0.54;
     }
 
     .md-box > span:hover {
+      border-radius: 50%;
       background: #efefef;
     }
 
-    .c-add-card .material-icons {
+    .item.b-add-card {
+      border: 3px dashed gray;
+    }
+
+    .b-add-card a.c-add-card > .material-icons {
       color: inherit;
     }
   </style>

@@ -18,14 +18,25 @@
     const $box = $('#panel-accounts');
 
     for (const id in db_accounts) {
-      const $text = $('<div>').attr({class: 'text'}).append([
-        $('<strong>').text(db_accounts[id].name)
-      ]);
-      const $icons = $('<div>').attr({class: 'md-box', id: id}).append([
-        $('<span>').attr({class: 'a-edit material-icons md-18'}).text('edit')
-      ]);
+      const $text = $('<div>').attr({class: 'text'})
+        .css('color', db_accounts[id].color)
+        .append($('<h3>').text(db_accounts[id].name));
 
-      $box.append($('<div>').attr({class: 'item'}).append([$text, $icons]));
+      const $icons = $('<div>').attr({class: 'md-box', id: id})
+        .css('color', db_accounts[id].color)
+        .append([
+          $('<span>').attr({class: 'a-edit material-icons md-18 md-click'}).text('edit')
+        ]);
+
+      if (db_accounts[id].color === 'slategray') {
+        $text.css('color', 'black');
+        $icons.css('color', 'black');
+      }
+
+      $box.append($('<div>')
+        .attr({class: 'item'})
+        .css({'background-color': db_accounts[id].color})
+        .append([$text, $icons]));
     }
 
     $('#panel-accounts > div:not(:first-child)').before('<hr>');

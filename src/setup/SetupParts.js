@@ -650,7 +650,8 @@ class SetupParts {
         index: k,
         name: name_acc[k].name,
         balance: 0,
-        time_start: initial_month
+        time_start: initial_month,
+        color: 'whitesmoke'
       };
 
       db_accounts[id] = {};
