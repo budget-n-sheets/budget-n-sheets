@@ -15,10 +15,10 @@ class Consts {
   static get color_palette () {
     return {
       whitesmoke: 'f5f5f5',
-      slategray: '2f4f4f',
+      slategray: '708090',
       black: '000000',
       darkblue: '00008b',
-      slateblue: '483d8b',
+      slateblue: '6a5acd',
       lightskyblue: '87cefa',
       seagreen: '2e8b57',
       mediumseagreen: '3cb371',
