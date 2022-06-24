@@ -130,35 +130,40 @@ class CardsService extends TablesService {
     const height = sheet.getMaxRows() - 5;
     if (height < 1) return;
 
-    const range = sheet.getRange(6, 3, height, 1);
+    const colorPalette = Consts.color_palette;
+    const rules = [];
+
+    let range;
+
+    range = sheet.getRange(6, 1, height, 5);
+    for (let i = 0; i < 12; i++) {
+      const rule = SpreadsheetApp.newConditionalFormatRule()
+        .whenFormulaSatisfied(`=REGEXMATCH(${RangeUtils.rollA1Notation(6, 5 + 6 * i, 1, 1, 2)}; "#ign")`)
+        .setFontColor('#999999')
+        .setRanges([range.offset(0, 6 * i)])
+        .build();
+      rules.push(rule);
+    }
+
+    range = sheet.getRange(6, 3, height, 1);
     const ranges = [];
     for (let i = 0; i < 12; i++) {
       ranges.push(range.offset(0, 6 * i));
     }
 
-    const rules = [];
-    const colorPalette = Consts.color_palette;
-
+    range = RangeUtils.rollA1Notation(6, 3, 1, 1);
     for (const id in this._db) {
       if (this._db[id].color === 'whitesmoke') continue;
 
       const codes = [this._db[id].code].concat(this._db[id].aliases).join('|');
-
       const rule = SpreadsheetApp.newConditionalFormatRule()
-        .whenFormulaSatisfied(`=REGEXMATCH(${RangeUtils.rollA1Notation(6, 3, 1, 1, 2)}; "${codes}")`)
+        .whenFormulaSatisfied(`=REGEXMATCH(${range}; "${codes}")`)
         .setRanges(ranges)
         .setBold(true);
 
       if (this._db[id].color !== 'black') rule.setFontColor(`#${colorPalette[this._db[id].color]}`);
       rules.push(rule.build());
     }
-
-    const rule = SpreadsheetApp.newConditionalFormatRule()
-      .whenFormulaSatisfied(`=REGEXMATCH(${RangeUtils.rollA1Notation(6, 5, 1, 1, 2)}; "#ign")`)
-      .setFontColor('#999999')
-      .setRanges(ranges)
-      .build();
-    rules.push(rule);
 
     sheet.clearConditionalFormatRules();
     sheet.setConditionalFormatRules(rules);
