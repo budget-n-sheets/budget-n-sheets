@@ -105,10 +105,10 @@
 
       $('#financial_year').val(info.settings.financial_year);
       $('#initial_month').val(info.settings.initial_month);
-      $('#financial_calendar').append(info.settings.financial_calendar);
+      $('#financial_calendar').text(info.settings.financial_calendar);
 
-      $('#cards').append(info.misc.cards);
-      $('#tags').append(info.misc.tags);
+      $('#cards').text(info.misc.cards);
+      $('#tags').text(info.misc.tags);
 
       info.settings.accounts.forEach(o => {
         Glob.accounts[o.id] = o;

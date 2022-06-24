@@ -116,23 +116,23 @@
       if (!info) return;
       $('#b-Select').prop('disabled', false);
 
-      $('#file_name').append(info.source.file_name);
-      $('#date_created').append(info.source.date_created);
+      $('#file_name').text(info.source.file_name);
+      $('#date_created').text(info.source.date_created);
 
       $('#spreadsheet_name').val(info.settings.spreadsheet_name);
       $('#decimal_places').val(info.settings.decimal_places);
 
       $('#financial_year').val(info.settings.financial_year);
       $('#initial_month').val(info.settings.initial_month);
-      $('#financial_calendar').append(info.settings.financial_calendar);
+      $('#financial_calendar').text(info.settings.financial_calendar);
 
       info.settings.accounts.forEach(o => {
         Glob.accounts[o.id] = o;
         addAccInput(o.id);
       });
 
-      $('#cards').append(info.misc.cards);
-      $('#tags').append(info.misc.tags);
+      $('#cards').text(info.misc.cards);
+      $('#tags').text(info.misc.tags);
 
       $('#details').fadeIn('fast');
       $('#b-Restore').prop('disabled', false);
