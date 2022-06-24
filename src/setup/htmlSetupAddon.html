@@ -368,14 +368,24 @@
       switch (current) {
         case 'panel-main':
           panel = 'panel-note';
-          $('.footer-container').append('<button class="action" onclick="clickNext()">Continue</button>');
+          $('.footer-container').append([
+            $('<button>').attr({class: 'action'})
+              .text('Continue')
+              .click(clickNext)
+          ]);
           break;
         case 'panel-note':
           panel = 'panel-restore';
           break;
         case 'panel-restore':
           panel = 'panel-form';
-          $('.footer-container').append('<button class="create" type="submit" form="the_form">Build</button>');
+          $('.footer-container').append([
+            $('<button>').attr({
+              class: 'create',
+              type: 'submit',
+              form: 'the_form'
+            }).text('Build')
+          ]);
           break;
 
         default:

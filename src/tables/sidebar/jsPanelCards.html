@@ -47,7 +47,10 @@
         .css('color', db_cards[id].color)
         .append([
           $('<h3>').text(db_cards[id].name),
-          $('<div>').append(`<strong>${db_cards[id].code}</strong> | $ ${FormatNumber.financial(db_cards[id].limit)}`)
+          $('<div>').append([
+            $('<strong>').text(db_cards[id].code),
+            document.createTextNode(` | $ ${FormatNumber.financial(db_cards[id].limit)}`)
+          ])
         ]);
 
       const $icons = $('<div>').attr({class: 'md-box', id: id})
