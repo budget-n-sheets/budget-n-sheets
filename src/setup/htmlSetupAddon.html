@@ -47,10 +47,6 @@
       margin-top: 1.3em;
     }
 
-    #panel-form tr > td:first-child {
-      width: 40%;
-    }
-
     .panel-form-header {
       display: flex;
       align-items: center;
@@ -192,7 +188,7 @@
       </div>
 
       <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm()">
-        <table>
+        <table class="form">
           <tr>
             <td><label for="spreadsheet_name">Spreadsheet title</label></td>
             <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
@@ -202,7 +198,7 @@
             <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
           </tr>
         </table>
-        <table>
+        <table class="form">
           <tr>
             <th colspan="2"><span class="material-icons-outlined">calendar_today</span> Calendar</th>
           </tr>
