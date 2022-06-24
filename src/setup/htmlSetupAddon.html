@@ -75,6 +75,10 @@
       counter-increment: tr-count;
     }
 
+    .table-accounts input {
+      width: 100%;
+    }
+
     .tr-acc-counter:after {
       content: ' ' counter(tr-count);
     }
@@ -126,7 +130,7 @@
 
 <body>
   <div class="content-container">
-    <div class="panel" id="panel-main">
+    <div class="panel active" id="panel-main">
       <div class="panel-main-header">
         <img height="103" src="https://raw.githubusercontent.com/guimspace/budget-n-sheets/master/media/icon/icon-large.png" alt="Budget n Sheets">
       </div>
@@ -288,7 +292,7 @@
       $('#financial_year').val(date.getFullYear());
       if (date.getMonth() > 1) $('#initial_month').val(date.getMonth() - 1);
 
-      $('#panel-main').fadeIn().addClass('active');
+      $('#panel-main').hide().fadeIn('slow');
     });
 
     $('#m-add-acc').on('click, focus', addAccInput);
