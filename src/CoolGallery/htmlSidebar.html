@@ -58,7 +58,8 @@
 
       for (const key in list) {
         const $text = $('<div>').attr({class: 'text'}).append([
-          $('<strong>').text(list[key].name), $('<br>'), list[key].description
+          $('<div>').append($('<strong>').text(list[key].name)),
+          $('<div>').text(list[key].description)
         ]);
         $box.append($('<div>').attr({class: 'item m-dl', id: key}).append([$text, $dl_icon.clone()]));
       }
