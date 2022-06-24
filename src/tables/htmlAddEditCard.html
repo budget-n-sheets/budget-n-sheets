@@ -4,158 +4,200 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude("gas-common/htmlStyles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/containers"); ?>
   <style>
-    #footer {
-      display: table;
+    .footer {
+      padding: 5px;
+    }
+  </style>
+  <style>
+    .color-picker {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-evenly;
+      gap: 0.3em;
     }
 
-    #footer2 {
-      display: table-row;
+    .color-picker > .card {
+      margin: 3px 0;
+      width: 3em;
+      height: 3em;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
-    #footer3 {
-      display: table-cell;
-      height: 3.7em;
-      padding: 7px;
-      vertical-align: middle;
+    #whitesmoke {
+      border: 1px solid lightgray;
+    }
+
+    .color-picker > .card.active, #whitesmoke.active {
+      margin: 0;
+      border: 3px solid black;
     }
   </style>
 </head>
 
 <body>
-  <div id="wrapper">
-    <div id="content" style="margin-bottom:4.7em;">
-      <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm();">
-        <table style="width:100%;">
-          <tr>
-            <th colspan="2">
-              Details
-            </th>
-          </tr>
-          <tr>
-            <td class="name">
-              <label for="card_name">Name</label>
-            </td>
-            <td>
-              <input id="card_name" type="text" maxlength="64" required>
-            </td>
-          </tr>
-          <tr>
-            <td class="name" style="vertical-align:top;">
-              <label for="card_code">Code</label>
-            </td>
-            <td>
-              <input id="card_code" type="text" maxlength="32" placeholder="Charset: 0-9, a-z, A-Z, _" pattern="^\w+$" required>
-            </td>
-          </tr>
-          <tr>
-            <td class="name" style="vertical-align:top;">
-              <label for="card_aliases">Code aliases</label>
-            </td>
-            <td>
-              <input id="card_aliases" type="text" maxlength="256" placeholder="Charset: 0-9, a-z, A-Z, _" pattern="^\w+(\s*,\s*\w+)*$">
-              <br>
-              <span class="gray">Separate aliases with commas.</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="name">
-              <label for="card_limit">Credit limit</label>
-            </td>
-            <td>
-              $ <input id="card_limit" style="width: 7.3em;" type="number" value="0" min="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required>
-            </td>
-          </tr>
-        </table>
-        <? if (is_edit) { ?>
-        <input id="card_id" style="display: none;" type="text" value="<?= card_id ?>">
-        <? } ?>
-      </form>
-    </div>
+  <div class="content-container">
+    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm()">
+      <table class="form">
+        <tr>
+          <th colspan="2">
+            Details
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <label for="card_name">Name</label>
+          </td>
+          <td>
+            <input id="card_name" type="text" maxlength="64" required disabled>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="card_code">Code</label>
+          </td>
+          <td>
+            <input id="card_code" type="text" maxlength="16" pattern="^\w{1,16}$" required>
+            <div class="gray">Charset: 0-9, a-z, A-Z, _</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="card_aliases">Code aliases</label>
+          </td>
+          <td>
+            <textarea id="card_aliases" type="text" rows="3" maxlength="286"></textarea>
+            <div class="gray">Separate aliases with commas.</div>
+            <div class="gray">Charset: 0-9, a-z, A-Z, _</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="card_limit">Credit limit ($)</label>
+          </td>
+          <td>
+            <input id="card_limit" type="number" value="0" min="0" step="<?= step ?>" placeholder="<?= placeholder ?>" required disabled>
+          </td>
+        </tr>
+        <tr class="comment">
+          <td colspan="2">
+            <label for="card_color">Color</label>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div class="color-picker">
+              <div class="card" id="whitesmoke" style="background-color: whitesmoke;"></div>
+              <div class="card" id="slategray" style="background-color: slategray;"></div>
+              <div class="card" id="black" style="background-color: black;"></div>
+              <div class="card" id="darkblue" style="background-color: darkblue;"></div>
+              <div class="card" id="slateblue" style="background-color: slateblue;"></div>
+              <div class="card" id="lightskyblue" style="background-color: lightskyblue;"></div>
+              <div class="card" id="seagreen" style="background-color: seagreen;"></div>
+              <div class="card" id="mediumseagreen" style="background-color: mediumseagreen;"></div>
+              <div class="card" id="crimson" style="background-color: crimson;"></div>
+              <div class="card" id="deeppink" style="background-color: deeppink;"></div>
+              <div class="card" id="darkorange" style="background-color: darkorange;"></div>
+              <div class="card" id="goldenrod" style="background-color: goldenrod;"></div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <? if (is_edit) { ?>
+      <input id="card_id" style="display: none;" type="text" value="<?= card_id ?>">
+      <? } ?>
+    </form>
+  </div>
 
-    <div id="footer">
-      <div class="current" id="response" style="padding:0 7px;"></div>
-      <div id="footer2">
-        <div id="footer3">
-          <? if (is_edit) { ?>
-          <button class="action" id="b-Submit" type="submit" form="the_form">Save</button>
-          <? } else { ?>
-          <button class="create" id="b-Submit" type="submit" form="the_form">Add</button>
-          <? } ?>
-          <button onclick="closeHost();">Cancel</button>
-        </div>
-      </div>
+  <div class="footer">
+    <span class="current" id="response"></span>
+    <div>
+      <? if (is_edit) { ?>
+      <button class="action" type="submit" form="the_form" disabled>Save</button>
+      <? } else { ?>
+      <button class="create" type="submit" form="the_form" disabled>Add</button>
+      <? } ?>
+      <button onclick="closeHost()">Cancel</button>
     </div>
   </div>
-  <?!= HtmlService2.htmlInclude("gas-common/htmlJavaScript"); ?>
+
+  <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <script>
-    <? if (is_edit) { ?>
-      $(document).ready(function() {
-        google.script.run
-          .withSuccessHandler(card => {
-            if (!card) showError();
+    $(document).ready(function() {
+      <? if (is_edit) { ?>
+      google.script.run
+        .withSuccessHandler(card => {
+          if (!card) showError();
 
-            $("#card_name").val(card.name);
-            $("#card_code").val(card.code);
-            $("#card_aliases").val(card.aliases.join(', '));
-            $("#card_limit").val(card.limit);
-          })
-          .withFailureHandler(showError)
-          .cardsClientService({
-            job: 'get',
-            id: $('#card_id').val()
-          });
-      });
-    <? } ?>
+          $('input, textarea, select, button').prop('disabled', false);
 
-    function submitForm() {
-      $("#response").empty();
-      $("#b-Submit").prop("disabled", true);
+          $('#card_name').val(card.name);
+          $('#card_code').val(card.code);
+          $('#card_aliases').val(card.aliases.join(', '));
+          $('#card_limit').val(card.limit);
+          $(`.color-picker > .card#${card.color}`).addClass('active');
+        })
+        .withFailureHandler(showError)
+        .cardsClientService({
+          job: 'get',
+          id: $('#card_id').val()
+        });
+      <? } else { ?>
+      $('input, textarea, select, button').prop('disabled', false);
+      <? } ?>
+    });
+
+    $('#card_aliases').change(function() {
+      const code = $('#card_code').val();
+      this.value = this.value.replace(/\s/g, '')
+        .split(',')
+        .filter(alias => /^\w{1,16}$/.test(alias))
+        .filter(alias => alias !== code)
+        .slice(0, 16)
+        .join(', ');
+    });
+
+    $('.color-picker > .card').click(function() {
+      if($(this).is('.active')) return;
+      $('.color-picker > .card').removeClass('active');
+      $(this).addClass('active');
+    });
+
+    function submitForm () {
+      $('.current').empty();
 
       const payload = {
         <? if (is_edit) { ?>
         job: 'update',
-        id: $("#card_id").val(),
+        id: $('#card_id').val(),
         <? } else { ?>
         job: 'create',
         <? } ?>
         metadata: {
-          name : $("#card_name").val(),
-          code : $("#card_code").val(),
-          aliases: $("#card_aliases").val(),
-          limit: $("#card_limit").val()
+          name: $('#card_name').val(),
+          code : $('#card_code').val(),
+          aliases: $('#card_aliases').val(),
+          limit: $('#card_limit').val(),
+          color: $('.color-picker > .card.active').attr('id')
         }
       };
 
+      $('input, textarea, select, button').prop('disabled', true);
       google.script.run
         .withSuccessHandler(submitAftermath)
         .withFailureHandler(showError)
         .cardsClientService(payload);
     }
 
-    function submitAftermath(r) {
-      $("#response").empty();
-
-      var response;
-      switch (r) {
-        case 1:
-          response = "Sorry, something went wrong. Please, try again.";
-          break;
-        case 10:
-          response = "The code has an invalid format.";
-          break;
-        case 11:
-          response = "The code is already in use.";
-          break;
-
-        default:
-          break;
-      }
+    function submitAftermath (r) {
+      $('.current').text(r ? 'Sorry, something went wrong. Please, try again.' : '');
 
       if (r) {
-        $("#response").append(response);
-        $("#b-Submit").prop("disabled", false);
+        $('input, textarea, select, button').prop('disabled', false);
         return;
       }
 

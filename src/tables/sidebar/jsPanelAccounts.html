@@ -1,45 +1,44 @@
 <script>
   $(document).ready(function() {
+    $('#panel-accounts').show();
     google.script.run
       .withSuccessHandler(listAccounts)
       .withFailureHandler(showError)
       .accountsClientService({ job: 'list' });
   });
 
-  $(document).on("click", ".a-edit", function(e) {
-    $("#response").empty();
-
+  $(document).on('click', '.a-edit', function(e) {
     google.script.run
       .withSuccessHandler(responseHandler)
       .withFailureHandler(showError)
-      .showDialogEditAccount(this.id);
+      .showDialogEditAccount($(this).parent().attr('id'));
   });
 
-  function listAccounts(db_accounts) {
-    const MN_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  function listAccounts (db_accounts) {
+    const $box = $('#panel-accounts');
 
     for (const id in db_accounts) {
-      const account = db_accounts[id];
+      const $text = $('<div>').attr({class: 'text'})
+        .css('color', db_accounts[id].color)
+        .append($('<h3>').text(db_accounts[id].name));
 
-      let item = "<div class=\"table_row\">";
-      item += "<div class=\"item_cell\" style=\"font-size: 23px;\">" + account.name + "</div>";
-      item += "</div>"
+      const $icons = $('<div>').attr({class: 'md-box', id: id})
+        .css('color', db_accounts[id].color)
+        .append([
+          $('<span>').attr({class: 'a-edit material-icons md-18 md-click'}).text('edit')
+        ]);
 
-      item += "<div class=\"table_row\">";
-      item += "<div class=\"item_cell\" style=\"border-bottom: 1px solid #d9d9d9;font-size: 14px;line-height: 1.3;\">";
-      item += "Initial month: " + MN_FULL[account.time_start] + "<br>";
-      item += "Initial balance: " + FormatNumber.financial(account.balance);
-      item += "</div>";
-      item += "</div>";
+      if (db_accounts[id].color === 'slategray') {
+        $text.css('color', 'black');
+        $icons.css('color', 'black');
+      }
 
-      item += "<div class=\"table_row\">";
-      item += "<div class=\"item_cell item_menu\">";
-      item += "<a class=\"a-edit\" id=\"" + id + "\">Edit</a>";
-      item += "</div>";
-      item += "</div>";
-
-      item = "<div class=\"item_table\">" + item + "</div>"
-      $("#box_Accounts").append(item);
+      $box.append($('<div>')
+        .attr({class: 'item'})
+        .css({'background-color': db_accounts[id].color})
+        .append([$text, $icons]));
     }
+
+    $('#panel-accounts > div:not(:first-child)').before('<hr>');
   }
 </script>

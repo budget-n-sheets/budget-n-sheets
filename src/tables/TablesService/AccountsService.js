@@ -5,10 +5,10 @@ class AccountsService extends TablesService {
   }
 
   formatValues_ (account) {
-    account.name = account.name.trim().replace(/\s+/g, " ").slice(0, 64);
+    account.name = account.name.trim().replace(/\s/g, ' ').slice(0, 64);
     account.time_start = Number(account.time_start);
     account.balance = Number(account.balance);
-    account.color = 'whitesmoke';
+    if (!Consts.color_palette[account.color]) account.color = 'whitesmoke';
   }
 
   updateMetadata_ () {

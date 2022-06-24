@@ -1,19 +1,19 @@
-<div class="panel active" id="panel_Settings">
+<div class="panel-settings">
   <form accept-charset="UTF-8">
-    <table style="width:100%;">
+    <table class="form">
       <tr>
         <th colspan="2">Spreadsheet</th>
       </tr>
       <tr>
-        <td class="name"><label>Name</label></td>
+        <td><label>Name</label></td>
         <td><?= doc_name ?></td>
       </tr>
       <tr>
-        <td class="name"><label>Financial year</label></td>
+        <td><label>Financial year</label></td>
         <td><?= financial_year ?></td>
       </tr>
       <tr>
-        <td class="name"><label for="initial_month">Initial month</label></td>
+        <td><label for="initial_month">Initial month</label></td>
         <td>
           <select id="initial_month" required>
             <option value="0" selected>January</option>
@@ -32,11 +32,11 @@
         </td>
       </tr>
       <tr>
-        <td class="name"><label for="decimal_places">Decimal places</label></td>
-        <td><input id="decimal_places" style="width: 61px;" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+        <td><label for="decimal_places">Decimal places</label></td>
+        <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
       </tr>
       <tr>
-        <td class="name"><label for="view_mode">View mode</label></td>
+        <td><label for="view_mode">View mode</label></td>
         <td>
           <select id="view_mode" required>
             <option value="complete" selected>Normal</option>
@@ -46,16 +46,16 @@
       </tr>
     </table>
     <? if (isOperationActive) { ?>
-    <table style="width:100%;margin-top:1.3em;">
+    <table class="form">
       <tr>
         <th colspan="2">Financial calendar</th>
       </tr>
       <? if (isCalendarEnabled) { ?>
-      <tr>
-        <td class="comment name"><label for="financial_calendar">Calendar</label></td>
-        <td class="comment">
-          <select id="financial_calendar" style="width: 157px" required>
-            <option value="" selected>Disable</option>
+      <tr class="comment">
+        <td><label for="financial_calendar">Calendar</label></td>
+        <td>
+          <select id="financial_calendar" style="width: 17em;" required>
+            <option value="" selected>Disabled</option>
             <? for (const sha1 in calendars) { ?>
             <option value=<?= sha1 ?>><?= calendars[sha1].name + (calendars[sha1].isOwner ? '' : ' *') ?></option>
             <? } ?>
@@ -63,8 +63,8 @@
         </td>
       </tr>
       <tr>
-        <td class="secondary" colspan="2">
-          * Calendar is not owned by you.
+        <td colspan="2">
+          <span class="secondary">* Calendar is not owned by you.</span>
         </td>
       </tr>
       <tr>
@@ -80,7 +80,7 @@
       <? } else { ?>
       <tr>
         <td>
-          It seems like Google Calendar is not enable for your account. <a href="<?= home_wiki ?>/Financial-Calendar" target="_blank"><b>Learn more</b></a>
+          It seems like Google Calendar is not enable for your account. <a href="<?= home_wiki ?>/Financial-Calendar" target="_blank">Learn more</a>
         </td>
       </tr>
       <? } ?>
