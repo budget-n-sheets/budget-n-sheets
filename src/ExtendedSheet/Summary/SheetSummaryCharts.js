@@ -14,33 +14,6 @@ class SheetSummaryCharts extends SheetSummary {
     return this;
   }
 
-  insertChart2 () {
-    const chart = this._sheet.newChart()
-      .addRange(this._sheet.getRange('B54:B64'))
-      .addRange(this._sheet.getRange('D54:D64'))
-      .setNumHeaders(1)
-      .setChartType(Charts.ChartType.PIE)
-      .setPosition(52, 8, 0, 0)
-      .setOption('mode', 'view')
-      .setOption('legend', 'top')
-      .setOption('focusTarget', 'category')
-      .setOption('height', 447)
-      .setOption('width', 444)
-      .build();
-
-    this._sheet.insertChart(chart);
-
-    return this;
-  }
-
-  insertChart3 () {
-    const request = { addChart: { chart: { position: { overlayPosition: { widthPixels: 444, heightPixels: 459, anchorCell: { sheetId: this._sheetId, rowIndex: 71, columnIndex: 7 } } }, spec: { hiddenDimensionStrategy: 'SKIP_HIDDEN_ROWS_AND_COLUMNS', basicChart: { headerCount: 1, chartType: 'COMBO', legendPosition: 'TOP_LEGEND', compareMode: 'CATEGORY', interpolateNulls: true, domains: [{ domain: { sourceRange: { sources: [{ sheetId: this._sheetId, startRowIndex: 74, endRowIndex: 86, startColumnIndex: 1, endColumnIndex: 2 }] } } }], series: [{ type: 'COLUMN', targetAxis: 'LEFT_AXIS', color: { red: 183 / 255, green: 183 / 255, blue: 183 / 255 }, colorStyle: { rgbColor: { red: 183 / 255, green: 183 / 255, blue: 183 / 255 } }, series: { sourceRange: { sources: [{ sheetId: this._sheetId, startRowIndex: 73, endRowIndex: 86, startColumnIndex: 8, endColumnIndex: 9 }] } } }, { type: 'COLUMN', targetAxis: 'LEFT_AXIS', color: { red: 69 / 255, green: 129 / 255, blue: 142 / 255 }, colorStyle: { rgbColor: { red: 69 / 255, green: 129 / 255, blue: 142 / 255 } }, series: { sourceRange: { sources: [{ sheetId: this._sheetId, startRowIndex: 73, endRowIndex: 86, startColumnIndex: 9, endColumnIndex: 10 }] } } }, { type: 'LINE', targetAxis: 'LEFT_AXIS', color: { red: 69 / 255, green: 129 / 255, blue: 142 / 255 }, colorStyle: { rgbColor: { red: 69 / 255, green: 129 / 255, blue: 142 / 255 } }, series: { sourceRange: { sources: [{ sheetId: this._sheetId, startRowIndex: 73, endRowIndex: 86, startColumnIndex: 10, endColumnIndex: 11 }] } } }] } } } } };
-
-    Sheets.Spreadsheets.batchUpdate({ requests: [request] }, this._spreadsheetId);
-
-    return this;
-  }
-
   removeAllCharts () {
     this._sheet.getCharts().forEach(chart => this._sheet.removeChart(chart));
 
