@@ -581,50 +581,36 @@ class SetupParts {
 
   setupSummary_ () {
     const formulaBuild = FormulaBuild.summary();
-
     const sheet = Spreadsheet2.getSheetByName('Summary');
-    const sheetId = sheet.getSheetId();
-    let formula, chart, options;
 
-    sheet.protect()
-      .setUnprotectedRanges([
-        sheet.getRange(52, 2, 1, 3), sheet.getRange(72, 2, 1, 3)
-      ])
-      .setWarningOnly(true);
-    sheet.getRange('B2').setValue(this._config.financial_year + ' | Year Summary');
+    let formulas, makeFormula;
 
-    const formulas = [];
-    const buildTable1 = formulaBuild.table1();
+    sheet.protect().setWarningOnly(true);
+    sheet.getRange('B2').setValue(`${this._config.financial_year} | Year Summary`);
+
+    makeFormula = formulaBuild.table1();
+    formulas = [];
     for (let i = 0; i < 12; i++) {
-      formulas[i] = ['', null, '', null];
-
-      formulas[i][0] = '=_Backstage!$B' + (3 + this._h * i);
-      formulas[i][2] = buildTable1.expensesMonth(i);
+      formulas[i] = [
+        '_Backstage!B' + (3 + this._h * i), null,
+        makeFormula.expensesMonth(i), null
+      ];
     }
-    sheet.getRange(11, 4, 12, 4).setFormulas(formulas);
-    sheet.getRange(24, 3, 1, 7).setValues([
-      ['Month', 'Income', 'Expenses', 'Income', 'Expenses', 'Avg Income', 'Avg Expenses']
-    ]);
+    sheet.getRange('D9:G20').setFormulas(formulas);
+
+    makeFormula = formulaBuild.chart1();
+    formulas = [[makeFormula.data(0).replace(/""/g, '0')]];
+    for (let i = 1; i < 12; i++) {
+      formulas[i] = [makeFormula.data(i)];
+    }
+    sheet.getRange('D24:D35').setFormulas(formulas);
 
     if (this._config.decimal_places !== 2) {
-      sheet.getRangeList(['D9:I22', 'D25:G36']).setNumberFormat(this._config.number_format);
+      sheet.getRangeList(['D6:I7', 'D9:I20', 'D24:I35']).setNumberFormat(this._config.number_format);
     }
 
-    formula = formulaBuild.table2().data();
-    sheet.getRange(55, 2).setFormula(formula);
-
-    sheet.getRange(74, 9, 1, 3).setValues([
-      ['Total', 'Total', 'Average']
-    ]);
-
-    formula = formulaBuild.table3().total();
-    sheet.getRange(75, 4).setFormula(formula);
-
-    new SheetSummaryCharts().insertChart1()
-      .insertChart2()
-      .insertChart3();
-
     SpreadsheetApp.flush();
+    new SheetSummaryCharts().insertChart1();
   }
 
   setupTables_ () {
