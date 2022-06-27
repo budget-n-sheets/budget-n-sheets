@@ -194,6 +194,11 @@
 
   <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
   <script>
+    const $bplay = $('.b-play');
+    const $container = $('.content-container');
+
+    $bplay.one('click', playDemo);
+
     $('.m-expand, .m-collapse').click(function() {
       if ($(this).hasClass('m-collapse')) {
         $(this).attr('class', 'm-expand');
@@ -206,14 +211,18 @@
       }
     });
 
-    const $container = $('.content-container');
-    $(".b-play").click(function() {
+    function playDemo () {
+      $bplay.off('click');
       $container.css('opacity', 0.61);
+
       google.script.run
         .withFailureHandler(showError)
-        .withSuccessHandler(e => $container.css('opacity', 1))
+        .withSuccessHandler(e => {
+          $bplay.one('click', playDemo);
+          $container.css('opacity', 1);
+        })
         .playQuickstart(this.id);
-    });
+    }
   </script>
 </body>
 

@@ -136,8 +136,28 @@
         .hide();
     });
 
+    const $container = $('.content-container');
+
+    function oneOff () {
+      $('.a-edit').off('click');
+      $('.c-add-card').off('click');
+      $('.c-edit').off('click');
+      $('.c-remove').off('click');
+      $container.css('opacity', 0.61);
+    }
+
+    function oneOn () {
+      $('.a-edit').one('click', oneAEdit);
+      $('.c-add-card').one('click', oneCAdd);
+      $('.c-edit').one('click', oneCEdit);
+      $('.c-remove').one('click', oneCRemove);
+      $container.css('opacity', 1);
+    }
+
     function responseHandler (r) {
       if (r) alert('Sorry, something went wrong. Please, try again.');
+      oneOff();
+      oneOn();
     }
   </script>
   <?!= jsPanelAccounts ?>

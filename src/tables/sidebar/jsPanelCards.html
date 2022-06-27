@@ -6,28 +6,35 @@
       .cardsClientService({ job: 'list' });
   });
 
-  $(document).on('click', '.c-edit', function(e) {
+  function oneCAdd () {
+    oneOff();
+    google.script.run
+      .withSuccessHandler(responseHandler)
+      .withFailureHandler(showError)
+      .showDialogAddCard();
+  }
+
+  function oneCEdit () {
+    oneOff();
     google.script.run
       .withSuccessHandler(responseHandler)
       .withFailureHandler(showError)
       .showDialogEditCard($(this).parent().attr('id'));
-  });
+  }
 
-  $(document).on('click', '.c-remove', function(e) {
+  function oneCRemove () {
+    oneOff();
     google.script.run
       .withSuccessHandler(reloadListCards)
       .withFailureHandler(showError)
       .showDialogDeleteCard($(this).parent().attr('id'));
-  });
-
-  $('.c-add-card').click(function(e) {
-    google.script.run
-      .withFailureHandler(showError)
-      .showDialogAddCard();
-  });
+  }
 
   function reloadListCards (r) {
-    if (!r) return;
+    if (!r) {
+      oneOn();
+      return;
+    }
 
     $('.c-add-card').show();
     $('#panel-cards > hr').remove();
@@ -73,5 +80,9 @@
 
     if (Object.keys(db_cards).length >= 10) $('.c-add-card').hide();
     $('#panel-cards > div:not(:first-child)').before('<hr>');
+
+    $('.c-add-card').one('click', oneCAdd);
+    $('.c-edit').one('click', oneCEdit);
+    $('.c-remove').one('click', oneCRemove);
   }
 </script>
