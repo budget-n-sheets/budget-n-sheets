@@ -67,7 +67,6 @@ function updateDecimalPlaces_ () {
   max = (sheet ? sheet.getMaxRows() - 1 : 0);
   if (max > 0) {
     sheet.getRange(2, 6, max, 12).setNumberFormat(number_format);
-    sheet.getRange(2, 19, max, 2).setNumberFormat(number_format);
   }
 
   sheet = spreadsheet.getSheetByName('_Backstage');
