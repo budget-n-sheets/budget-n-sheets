@@ -1,7 +1,16 @@
 class CoolFilterByTag extends CoolGallery {
   constructor () {
-    const metadata = CoolGalleryMetadata.filter_by_tag;
-    super(metadata);
+    super(CoolFilterByTag.metadata);
+  }
+
+  static get metadata () {
+    return {
+      template_id: '',
+      version_name: 'v0.3.0',
+      name: 'Filter by Tag',
+      description: 'Filter and sort transactions by a selected tag.',
+      sheets: ['Filter by Tag']
+    };
   }
 
   buildPart1_ () {

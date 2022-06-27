@@ -7,7 +7,10 @@ function coolGalleryService (payload) {
       CoolGalleryService.getCoolTemplate(payload.id);
       break;
     case 'list':
-      return CoolGalleryMetadata.getAll();
+      return {
+        filter_by_tag: CoolFilterByTag.metadata
+        // stats_for_tags: CoolStatsForTags.metadata
+      };
 
     default:
       console.error('coolGalleryService(): Switch case is default.', payload.job);

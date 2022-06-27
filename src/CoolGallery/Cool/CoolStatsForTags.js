@@ -1,7 +1,16 @@
 class CoolStatsForTags extends CoolGallery {
   constructor () {
-    const metadata = CoolGalleryMetadata.stats_for_tags;
-    super(metadata);
+    super(CoolStatsForTags.metadata);
+  }
+
+  static get metadata () {
+    return {
+      template_id: '',
+      version_name: 'v1.0.1',
+      name: 'Stats for Tags',
+      description: 'Basic statistics for your tags.',
+      sheets: ['Stats for Tags']
+    };
   }
 
   buildPart1_ () {
