@@ -1,10 +1,10 @@
-function coolGalleryService (payload) {
+function coolGalleryService (job, id) {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(200)) return;
 
-  switch (payload.job) {
+  switch (job) {
     case 'get':
-      CoolGalleryService.getCoolTemplate(payload.id);
+      CoolGalleryService.getCoolTemplate(id);
       break;
     case 'list':
       return {
@@ -13,7 +13,7 @@ function coolGalleryService (payload) {
       };
 
     default:
-      console.error('coolGalleryService(): Switch case is default.', payload.job);
-      return 1;
+      console.error('coolGalleryService(): Switch case is default.');
+      break;
   }
 }
