@@ -21,10 +21,7 @@ function updateDecimalPlaces_ () {
 
   sheet = spreadsheet.getSheetByName('Summary');
   if (sheet) {
-    sheet.getRangeList([
-      'D9:I22', 'D25:G36', 'D55:E65', 'D75:E88', 'I75:K86'
-    ])
-      .setNumberFormat(number_format);
+    sheet.getRangeList(['D6:I7', 'D9:I20', 'D24:I35']).setNumberFormat(number_format);
   }
 
   for (let i = 0; i < 12; i++) {
