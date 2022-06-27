@@ -1,6 +1,6 @@
 class CoolStatsForTags extends CoolGallery {
   constructor () {
-    const metadata = CoolGalleryMetadata.getStatsForTags();
+    const metadata = CoolGalleryMetadata.stats_for_tags;
     super(metadata);
   }
 

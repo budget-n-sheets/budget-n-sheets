@@ -1,5 +1,5 @@
 class CoolGalleryMetadata {
-  static getFilterByTag () {
+  static get filter_by_tag () {
     return {
       template_id: '',
       preview_id: null,
@@ -11,7 +11,7 @@ class CoolGalleryMetadata {
     };
   }
 
-  // static getStatsForTags () {
+  // static get stats_for_tags () {
   //   return {
   //     template_id: '',
   //     preview_id: '',
@@ -25,8 +25,8 @@ class CoolGalleryMetadata {
 
   static getAll () {
     return {
-      filter_by_tag: this.getFilterByTag()
-      // stats_for_tags: this.getStatsForTags()
+      filter_by_tag: this.filter_by_tag
+      // stats_for_tags: this.stats_for_tags
     };
   }
 }

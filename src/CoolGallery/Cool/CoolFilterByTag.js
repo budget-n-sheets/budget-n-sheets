@@ -1,6 +1,6 @@
 class CoolFilterByTag extends CoolGallery {
   constructor () {
-    const metadata = CoolGalleryMetadata.getFilterByTag();
+    const metadata = CoolGalleryMetadata.filter_by_tag;
     super(metadata);
   }
 
