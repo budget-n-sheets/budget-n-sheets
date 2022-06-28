@@ -6,7 +6,7 @@ class CoolFilterByTag extends CoolGallery {
   static get metadata () {
     return {
       template_id: '',
-      version_name: 'v0.3.0',
+      version_name: 'v0.4.0',
       name: 'Filter by Tag',
       description: 'Filter and sort transactions by a selected tag.',
       sheets: ['Filter by Tag']
