@@ -4,14 +4,10 @@ class CoolGalleryService {
     if (!this._cool) throw new Error('Invalid BnS template ID.');
   }
 
-  static getAvailableTemplates () {
-    const templates = {};
-    const list = ['filter_by_tag'/*, stats_for_tags*/];
-    for (const id of list) {
-      const cool = CoolGallery.getById(id);
-      if (cool.isSourceAvailable()) templates[id] = cool.metadata;
-    }
-    return templates;
+  static get templates () {
+    return {
+      filter_by_tag: CoolFilterByTag.metadata
+    };
   }
 
   install () {

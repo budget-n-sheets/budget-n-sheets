@@ -7,7 +7,7 @@ function coolGalleryService (job, id) {
       new CoolGalleryService(id).install();
       break;
     case 'list':
-      return CoolGalleryService.getAvailableTemplates();
+      return CoolGalleryService.templates;
 
     default:
       console.error('coolGalleryService(): Switch case is default.');
