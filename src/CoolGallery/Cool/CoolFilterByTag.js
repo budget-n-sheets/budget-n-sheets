@@ -55,21 +55,18 @@ class CoolFilterByTag extends CoolGallery {
     }
 
     formula = formula.slice(0, -3);
-    formula = 'IF(D8 = ""; ""; QUERY({\n' + formula + '\n}; "select * where Col6 is not null"))';
+    formula = 'IF(D3 = ""; ""; QUERY({\n' + formula + '\n}; "select * where Col6 is not null"))';
 
-    this._sheet.getRange('B12').setFormula(formula);
+    this._sheet.getRange('B6').setFormula(formula);
   }
 
-  buildTags_ () {
-    const sheet = this._spreadsheet.getSheetByName('Tags');
+  buildUniqueTags_ () {
+    const sheet = this._spreadsheet.getSheetByName('_Unique');
     if (!sheet) return;
 
-    const numRows = sheet.getMaxRows() - 1;
-    if (numRows < 1) return;
-
-    const range = sheet.getRange(2, 5, numRows, 1);
+    const range = sheet.getRange('$D$1:$D');
     const rule = SpreadsheetApp.newDataValidation()
-      .requireValueInRange(range, true)
+      .requireValueInRange(range, false)
       .setAllowInvalid(true)
       .build();
 
@@ -78,7 +75,7 @@ class CoolFilterByTag extends CoolGallery {
 
   make () {
     this.buildPart1_();
-    this.buildTags_();
+    this.buildUniqueTags_();
 
     this._sheet.setTabColor('#e69138');
     return this;
@@ -87,7 +84,7 @@ class CoolFilterByTag extends CoolGallery {
   makeConfig () {
     this._sheet = this._spreadsheet.getSheetByName('Filter by Tag');
 
-    this._consts.header = 'D8';
+    this._consts.header = 'D3';
     this._consts.num_acc = SettingsConst.getValueOf('number_accounts');
 
     this._settings.dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
