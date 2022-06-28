@@ -13,6 +13,8 @@ class CoolGallery {
         return new CoolFilterByTag();
       // case 'stats_for_tags':
       //   return new CoolStatsForTags();
+      case 'tags_by_category':
+        return new CoolTagsByCategory();
 
       default:
         console.error('CoolGallery: getById(): Switch case is default.', id);
