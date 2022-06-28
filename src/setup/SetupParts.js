@@ -359,7 +359,6 @@ class SetupParts {
 
     Spreadsheet2.getSheetByName('Cards').setTabColor('#e69138');
     Spreadsheet2.getSheetByName('Cash Flow').setTabColor('#e69138');
-    Spreadsheet2.getSheetByName('Tags').setTabColor('#e69138');
     Spreadsheet2.getSheetByName('_Backstage').setTabColor('#cc0000');
     Spreadsheet2.getSheetByName('_Unique').setTabColor('#cc0000');
     Spreadsheet2.getSheetByName('_Settings').setTabColor('#cc0000');
@@ -711,7 +710,7 @@ class SetupParts {
     this.setupUnique_();
     this.setupBackstage_();
     new MakeSheetSummary().install();
-    this.setupTags_();
+    new MakeSheetTags().install();
     this.setupCards_();
     this.setupCashFlow_();
     this.setupWest_();
