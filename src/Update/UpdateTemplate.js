@@ -16,6 +16,18 @@ class UpdateTemplate extends Update {
   }
 
   /**
+   * Update sheet 'Summary'.
+   * Refresh sheet 'Tags'.
+   *
+   * 0.14.0
+   */
+   v0m14p0_ () {
+    new MakeSheetSummary().reinstall();
+    new MakeSheetTags().makeConfig().make();
+    return 0;
+  }
+
+  /**
    * Fix tags data validation rule.
    *
    * 0.13.5
