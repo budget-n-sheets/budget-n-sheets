@@ -25,15 +25,6 @@ class CoolGallery {
     return this._metadata.name;
   }
 
-  config_ () {
-    this._sheets = [];
-    for (const name of this._metadata.sheets) {
-      this._sheets.push(this._spreadsheet.getSheetByName(name));
-    }
-    this._sheet = this._sheets[0];
-    return this;
-  }
-
   copyTemplate () {
     SpreadsheetService.copySheetsFromSource(this._metadata.template_id, this._metadata.sheets);
     SpreadsheetApp.flush();

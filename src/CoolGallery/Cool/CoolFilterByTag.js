@@ -14,8 +14,6 @@ class CoolFilterByTag extends CoolGallery {
   }
 
   buildPart1_ () {
-    const sheet = this._sheets[0];
-
     let formula = '';
 
     let i = 0;
@@ -59,7 +57,7 @@ class CoolFilterByTag extends CoolGallery {
     formula = formula.slice(0, -3);
     formula = 'IF(D8 = ""; ""; QUERY({\n' + formula + '\n}; "select * where Col6 is not null"))';
 
-    sheet.getRange('B12').setFormula(formula);
+    this._sheet.getRange('B12').setFormula(formula);
   }
 
   buildTags_ () {
@@ -75,19 +73,19 @@ class CoolFilterByTag extends CoolGallery {
       .setAllowInvalid(true)
       .build();
 
-    this._sheets[0].getRange(this.header).setDataValidation(rule);
+    this._sheet.getRange(this.header).setDataValidation(rule);
   }
 
   make () {
     this.buildPart1_();
     this.buildTags_();
 
-    this._sheets[0].setTabColor('#e69138');
+    this._sheet.setTabColor('#e69138');
     return this;
   }
 
   makeConfig () {
-    this.config_();
+    this._sheet = this._spreadsheet.getSheetByName('Filter by Tag');
 
     this.num_acc = SettingsConst.getValueOf('number_accounts');
     this.dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
