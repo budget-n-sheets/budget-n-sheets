@@ -2,6 +2,9 @@ class CoolGallery {
   constructor (metadata) {
     this._spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     this._metadata = metadata;
+
+    this._consts = {};
+    this._settings = {};
   }
 
   static getById (id) {
