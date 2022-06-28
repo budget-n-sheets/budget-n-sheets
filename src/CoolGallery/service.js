@@ -1,16 +1,16 @@
-function coolGalleryService (payload) {
+function coolGalleryService (job, id) {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(200)) return;
 
-  switch (payload.job) {
+  switch (job) {
     case 'get':
-      CoolGalleryService.getCoolTemplate(payload.id);
+      new CoolGalleryService(id).install();
       break;
     case 'list':
-      return CoolGalleryMetadata.getAll();
+      return CoolGalleryService.templates;
 
     default:
-      console.error('coolGalleryService(): Switch case is default.', payload.job);
-      return 1;
+      console.error('coolGalleryService(): Switch case is default.');
+      break;
   }
 }

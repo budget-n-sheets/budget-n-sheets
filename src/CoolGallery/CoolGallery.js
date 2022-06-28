@@ -2,6 +2,9 @@ class CoolGallery {
   constructor (metadata) {
     this._spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     this._metadata = metadata;
+
+    this._consts = {};
+    this._settings = {};
   }
 
   static getById (id) {
@@ -10,6 +13,8 @@ class CoolGallery {
         return new CoolFilterByTag();
       // case 'stats_for_tags':
       //   return new CoolStatsForTags();
+      case 'tags_by_category':
+        return new CoolTagsByCategory();
 
       default:
         console.error('CoolGallery: getById(): Switch case is default.', id);
@@ -17,20 +22,16 @@ class CoolGallery {
     }
   }
 
-  config_ () {
-    this._sheets = [];
-    for (const name of this._metadata.sheets) {
-      this._sheets.push(this._spreadsheet.getSheetByName(name));
-    }
+  get metadata () {
+    return this._metadata;
+  }
 
-    this._sheet = this._sheets[0];
-
-    return this;
+  get name () {
+    return this._metadata.name;
   }
 
   copyTemplate () {
-    const metadata = this._metadata;
-    SpreadsheetService.copySheetsFromSource(metadata.template_id, metadata.sheets);
+    SpreadsheetService.copySheetsFromSource(this._metadata.template_id, this._metadata.sheets);
     SpreadsheetApp.flush();
     return this;
   }
@@ -40,7 +41,6 @@ class CoolGallery {
       const sheet = this._spreadsheet.getSheetByName(name);
       if (sheet) this._spreadsheet.deleteSheet(sheet);
     }
-
     SpreadsheetApp.flush();
     return this;
   }
@@ -48,15 +48,10 @@ class CoolGallery {
   flush () {
     SpreadsheetApp.flush();
     this._spreadsheet.setActiveSheet(this._sheet);
-
     return this;
   }
 
-  getName () {
-    return this._metadata.name;
-  }
-
-  isAvailable () {
+  isSourceAvailable () {
     return SpreadsheetService.isSpreadsheetAvailable(this._metadata.template_id);
   }
 
@@ -64,7 +59,6 @@ class CoolGallery {
     for (const name of this._metadata.sheets) {
       if (this._spreadsheet.getSheetByName(name)) return true;
     }
-
     return false;
   }
 }
