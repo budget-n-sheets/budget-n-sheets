@@ -333,10 +333,6 @@ class SetupParts {
       sheets[i] = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);
     }
 
-    sheet = Spreadsheet2.getSheetByName('Summary');
-    this._spreadsheet.setActiveSheet(sheet);
-    sheet.setTabColor('#e69138');
-
     for (i = 0; i < 12; i++) {
       sheet = sheets[i];
 
@@ -363,7 +359,6 @@ class SetupParts {
 
     Spreadsheet2.getSheetByName('Cards').setTabColor('#e69138');
     Spreadsheet2.getSheetByName('Cash Flow').setTabColor('#e69138');
-    Spreadsheet2.getSheetByName('Tags').setTabColor('#e69138');
     Spreadsheet2.getSheetByName('_Backstage').setTabColor('#cc0000');
     Spreadsheet2.getSheetByName('_Unique').setTabColor('#cc0000');
     Spreadsheet2.getSheetByName('_Settings').setTabColor('#cc0000');
@@ -714,8 +709,8 @@ class SetupParts {
     this.setupMonthSheet_();
     this.setupUnique_();
     this.setupBackstage_();
-    this.setupSummary_();
-    this.setupTags_();
+    new MakeSheetSummary().install();
+    new MakeSheetTags().install();
     this.setupCards_();
     this.setupCashFlow_();
     this.setupWest_();
