@@ -5,11 +5,10 @@ class CoolFilterByTag extends CoolGallery {
 
   static get metadata () {
     return {
-      template_id: '',
-      version_name: 'v0.4.0',
+      id: '',
       name: 'Filter by Tag',
-      description: 'Filter and sort transactions by a selected tag.',
-      sheets: ['Filter by Tag']
+      version_name: 'v0.4.0',
+      description: 'Filter and sort transactions by a selected tag.'
     };
   }
 
@@ -55,7 +54,7 @@ class CoolFilterByTag extends CoolGallery {
     }
 
     formula = `IF(D3 = ""; ; IFERROR(QUERY({\n${formula.slice(0, -3)}\n}; "SELECT * WHERE Col6 IS NOT NULL"); ))`;
-    this._sheet.getRange('B6').setFormula(formula);
+    this.sheet.getRange('B6').setFormula(formula);
   }
 
   setDataValidation_ () {
@@ -68,23 +67,22 @@ class CoolFilterByTag extends CoolGallery {
       .setAllowInvalid(true)
       .build();
 
-    this._sheet.getRange(this._consts.header).setDataValidation(rule);
+    this.sheet.getRange(this._consts.header).setDataValidation(rule);
   }
 
   make () {
     this.setQuery_();
     this.setDataValidation_();
 
-    this._sheet.protect()
-      .setUnprotectedRanges([this._sheet.getRange('D3:F3')])
+    const sheet = this.sheet;
+    sheet.protect()
+      .setUnprotectedRanges([sheet.getRange('D3:F3')])
       .setWarningOnly(true);
-    this._sheet.setTabColor('#e69138');
+    sheet.setTabColor('#e69138');
     return this;
   }
 
   makeConfig () {
-    this._sheet = this._spreadsheet.getSheetByName('Filter by Tag');
-
     this._consts.header = 'D3';
     this._consts.num_acc = SettingsConst.getValueOf('number_accounts');
 

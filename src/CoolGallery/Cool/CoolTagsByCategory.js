@@ -5,11 +5,10 @@ class CoolTagsByCategory extends CoolGallery {
 
   static get metadata () {
     return {
-      template_id: '',
-      version_name: 'v0.1.2',
+      id: '',
       name: 'Tags by Category',
+      version_name: 'v0.1.2',
       description: 'Group tags by category.',
-      sheets: ['Tags by Category'],
       requires: ['Tags']
     };
   }
@@ -22,7 +21,7 @@ class CoolTagsByCategory extends CoolGallery {
     formula = `IF(_Settings!\$B\$7 > 0; ${formula}; "")`;
     formula = `{"average"; ${formula}}`;
 
-    this._sheet.getRange('N1').setFormula(formula);
+    this.sheet.getRange('N1').setFormula(formula);
   }
 
   setQuery_ () {
@@ -37,7 +36,7 @@ class CoolTagsByCategory extends CoolGallery {
       .join('')
       .slice(0, -2);
 
-    this._sheet.getRange('A1').setFormula(`IFERROR(QUERY({Tags!$B$1:$Q}, "${formula}"); )`);
+    this.sheet.getRange('A1').setFormula(`IFERROR(QUERY({Tags!$B$1:$Q}, "${formula}"); )`);
   }
 
   setTotalFormula_ () {
@@ -50,7 +49,7 @@ class CoolTagsByCategory extends CoolGallery {
     formula = `IF(_Settings!\$B\$7 > 0; ${formula}; "")`;
     formula = `{"total"; ${formula}}`;
 
-    this._sheet.getRange('O1').setFormula(formula);
+    this.sheet.getRange('O1').setFormula(formula);
   }
 
   make () {
@@ -58,13 +57,12 @@ class CoolTagsByCategory extends CoolGallery {
     this.setAverageFormula_();
     this.setTotalFormula_();
 
-    this._sheet.protect().setWarningOnly(true);
-    this._sheet.setTabColor('#e69138');
+    this.sheet.protect().setWarningOnly(true);
+    this.sheet.setTabColor('#e69138');
     return this;
   }
 
   makeConfig () {
-    this._sheet = this._spreadsheet.getSheetByName('Tags by Category');
     return this;
   }
 }
