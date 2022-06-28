@@ -13,7 +13,7 @@ class CoolFilterByTag extends CoolGallery {
     };
   }
 
-  buildPart1_ () {
+  setQuery_ () {
     let formula = '';
 
     let i = 0;
@@ -54,19 +54,17 @@ class CoolFilterByTag extends CoolGallery {
       i++;
     }
 
-    formula = formula.slice(0, -3);
-    formula = 'IF(D3 = ""; ""; QUERY({\n' + formula + '\n}; "select * where Col6 is not null"))';
-
+    formula = `IF(D3 = ""; ; IFERROR(QUERY({\n${formula.slice(0, -3)}\n}; "SELECT * WHERE Col6 IS NOT NULL"); ))`;
     this._sheet.getRange('B6').setFormula(formula);
   }
 
-  buildUniqueTags_ () {
+  setDataValidation_ () {
     const sheet = this._spreadsheet.getSheetByName('_Unique');
     if (!sheet) return;
 
     const range = sheet.getRange('$D$1:$D');
     const rule = SpreadsheetApp.newDataValidation()
-      .requireValueInRange(range, false)
+      .requireValueInRange(range, true)
       .setAllowInvalid(true)
       .build();
 
@@ -74,9 +72,12 @@ class CoolFilterByTag extends CoolGallery {
   }
 
   make () {
-    this.buildPart1_();
-    this.buildUniqueTags_();
+    this.setQuery_();
+    this.setDataValidation_();
 
+    this._sheet.protect()
+      .setUnprotectedRanges([this._sheet.getRange('D3:F3')])
+      .setWarningOnly(true);
     this._sheet.setTabColor('#e69138');
     return this;
   }
