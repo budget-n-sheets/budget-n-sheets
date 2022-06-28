@@ -9,13 +9,13 @@ class CoolGalleryService {
     const list = ['filter_by_tag'/*, stats_for_tags*/];
     for (const id of list) {
       const cool = CoolGallery.getById(id);
-      if (cool.isAvailable()) templates[id] = cool._metadata;
+      if (cool.isSourceAvailable()) templates[id] = cool.metadata;
     }
     return templates;
   }
 
   install () {
-    if (!this._cool.isAvailable()) return;
+    if (!this._cool.isSourceAvailable()) return;
     if (this._cool.isInstalled()) this._cool.deleteTemplate();
 
     this._cool.copyTemplate();

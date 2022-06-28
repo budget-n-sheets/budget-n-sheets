@@ -17,20 +17,25 @@ class CoolGallery {
     }
   }
 
+  get metadata () {
+    return this._metadata;
+  }
+
+  get name () {
+    return this._metadata.name;
+  }
+
   config_ () {
     this._sheets = [];
     for (const name of this._metadata.sheets) {
       this._sheets.push(this._spreadsheet.getSheetByName(name));
     }
-
     this._sheet = this._sheets[0];
-
     return this;
   }
 
   copyTemplate () {
-    const metadata = this._metadata;
-    SpreadsheetService.copySheetsFromSource(metadata.template_id, metadata.sheets);
+    SpreadsheetService.copySheetsFromSource(this._metadata.template_id, this._metadata.sheets);
     SpreadsheetApp.flush();
     return this;
   }
@@ -40,7 +45,6 @@ class CoolGallery {
       const sheet = this._spreadsheet.getSheetByName(name);
       if (sheet) this._spreadsheet.deleteSheet(sheet);
     }
-
     SpreadsheetApp.flush();
     return this;
   }
@@ -48,15 +52,10 @@ class CoolGallery {
   flush () {
     SpreadsheetApp.flush();
     this._spreadsheet.setActiveSheet(this._sheet);
-
     return this;
   }
 
-  getName () {
-    return this._metadata.name;
-  }
-
-  isAvailable () {
+  isSourceAvailable () {
     return SpreadsheetService.isSpreadsheetAvailable(this._metadata.template_id);
   }
 
@@ -64,7 +63,6 @@ class CoolGallery {
     for (const name of this._metadata.sheets) {
       if (this._spreadsheet.getSheetByName(name)) return true;
     }
-
     return false;
   }
 }
