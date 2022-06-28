@@ -6,14 +6,14 @@ class CoolFilterByTag extends CoolGallery {
   static get metadata () {
     return {
       template_id: '',
-      version_name: 'v0.3.0',
+      version_name: 'v0.4.0',
       name: 'Filter by Tag',
       description: 'Filter and sort transactions by a selected tag.',
       sheets: ['Filter by Tag']
     };
   }
 
-  buildPart1_ () {
+  setQuery_ () {
     let formula = '';
 
     let i = 0;
@@ -54,20 +54,15 @@ class CoolFilterByTag extends CoolGallery {
       i++;
     }
 
-    formula = formula.slice(0, -3);
-    formula = 'IF(D8 = ""; ""; QUERY({\n' + formula + '\n}; "select * where Col6 is not null"))';
-
-    this._sheet.getRange('B12').setFormula(formula);
+    formula = `IF(D3 = ""; ; IFERROR(QUERY({\n${formula.slice(0, -3)}\n}; "SELECT * WHERE Col6 IS NOT NULL"); ))`;
+    this._sheet.getRange('B6').setFormula(formula);
   }
 
-  buildTags_ () {
-    const sheet = this._spreadsheet.getSheetByName('Tags');
+  setDataValidation_ () {
+    const sheet = this._spreadsheet.getSheetByName('_Unique');
     if (!sheet) return;
 
-    const numRows = sheet.getMaxRows() - 1;
-    if (numRows < 1) return;
-
-    const range = sheet.getRange(2, 5, numRows, 1);
+    const range = sheet.getRange('$D$1:$D');
     const rule = SpreadsheetApp.newDataValidation()
       .requireValueInRange(range, true)
       .setAllowInvalid(true)
@@ -77,9 +72,12 @@ class CoolFilterByTag extends CoolGallery {
   }
 
   make () {
-    this.buildPart1_();
-    this.buildTags_();
+    this.setQuery_();
+    this.setDataValidation_();
 
+    this._sheet.protect()
+      .setUnprotectedRanges([this._sheet.getRange('D3:F3')])
+      .setWarningOnly(true);
     this._sheet.setTabColor('#e69138');
     return this;
   }
@@ -87,7 +85,7 @@ class CoolFilterByTag extends CoolGallery {
   makeConfig () {
     this._sheet = this._spreadsheet.getSheetByName('Filter by Tag');
 
-    this._consts.header = 'D8';
+    this._consts.header = 'D3';
     this._consts.num_acc = SettingsConst.getValueOf('number_accounts');
 
     this._settings.dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
