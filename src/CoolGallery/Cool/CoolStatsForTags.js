@@ -139,7 +139,7 @@ class CoolStatsForTags extends CoolGallery {
     this._sheets[0].getRange(92, 2, 1, 2).setDataValidation(rule);
   }
 
-  build () {
+  make () {
     this.buildPart1_();
     this.buildPart2_();
     this.buildPart3_();
@@ -147,6 +147,7 @@ class CoolStatsForTags extends CoolGallery {
     this.buildTags_();
 
     this._sheets[0].setTabColor('#e69138');
+    return this;
   }
 
   makeConfig () {

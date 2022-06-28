@@ -78,11 +78,12 @@ class CoolFilterByTag extends CoolGallery {
     this._sheets[0].getRange(this.header).setDataValidation(rule);
   }
 
-  build () {
+  make () {
     this.buildPart1_();
     this.buildTags_();
 
     this._sheets[0].setTabColor('#e69138');
+    return this;
   }
 
   makeConfig () {

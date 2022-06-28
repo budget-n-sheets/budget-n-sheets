@@ -4,13 +4,10 @@ function coolGalleryService (job, id) {
 
   switch (job) {
     case 'get':
-      CoolGalleryService.getCoolTemplate(id);
+      new CoolGalleryService(id).install();
       break;
     case 'list':
-      return {
-        filter_by_tag: CoolFilterByTag.metadata
-        // stats_for_tags: CoolStatsForTags.metadata
-      };
+      return CoolGalleryService.getAvailableTemplates();
 
     default:
       console.error('coolGalleryService(): Switch case is default.');

@@ -1,27 +1,24 @@
 class CoolGalleryService {
-  static getCoolTemplate (id) {
-    const ui = SpreadsheetApp2.getUi();
-    const cool = CoolGallery.getById(id);
+  constructor (id = '') {
+    this._cool = CoolGallery.getById(id);
+    if (!this._cool) throw new Error('Invalid BnS template ID.');
+  }
 
-    if (!cool.isAvailable()) {
-      ui.alert(
-        "Can't import analytics page",
-        'Something went wrong. Try again later.',
-        ui.ButtonSet.OK);
-      return;
+  static getAvailableTemplates () {
+    const templates = {};
+    const list = ['filter_by_tag'/*, stats_for_tags*/];
+    for (const id of list) {
+      const cool = CoolGallery.getById(id);
+      if (cool.isAvailable()) templates[id] = cool._metadata;
     }
+    return templates;
+  }
 
-    if (cool.isInstalled()) {
-      const response = ui.alert(
-        cool.getName() + ' already exists',
-        'Do you want to replace it?',
-        ui.ButtonSet.YES_NO);
+  install () {
+    if (!this._cool.isAvailable()) return;
+    if (this._cool.isInstalled()) this._cool.deleteTemplate();
 
-      if (response !== ui.Button.YES) return;
-    }
-
-    cool.deleteTemplate().copyTemplate();
-    cool.makeConfig().build();
-    cool.flush();
+    this._cool.copyTemplate();
+    this._cool.makeConfig().make().flush();
   }
 }
