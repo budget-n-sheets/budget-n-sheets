@@ -333,10 +333,6 @@ class SetupParts {
       sheets[i] = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);
     }
 
-    sheet = Spreadsheet2.getSheetByName('Summary');
-    this._spreadsheet.setActiveSheet(sheet);
-    sheet.setTabColor('#e69138');
-
     for (i = 0; i < 12; i++) {
       sheet = sheets[i];
 
@@ -714,7 +710,7 @@ class SetupParts {
     this.setupMonthSheet_();
     this.setupUnique_();
     this.setupBackstage_();
-    this.setupSummary_();
+    new MakeSheetSummary().install();
     this.setupTags_();
     this.setupCards_();
     this.setupCashFlow_();

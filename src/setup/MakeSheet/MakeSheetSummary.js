@@ -20,6 +20,7 @@ class MakeSheetSummary extends MakeSheet {
 
     sheet.getRange('B2').setValue(`${this._consts.financial_year} | Year Summary`);
     sheet.getRangeList(['D6:I7', 'D9:I20', 'D24:I35']).setNumberFormat(this._settings.number_format);
+
     sheet.protect().setWarningOnly(true);
     sheet.setTabColor('#e69138');
 
