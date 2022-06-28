@@ -51,9 +51,8 @@
         .coolGalleryService('list');
     }
 
+    const $box = $('.box');
     function listTemplates (list) {
-      const $box = $('.box');
-
       const $dl_icon = $('<div>').attr({class: 'dl-box'}).append($('<span>').attr({class: 'dl-icon material-icons md-24'}).text('download'));
 
       for (const key in list) {
@@ -65,15 +64,22 @@
       }
 
       $('.box > .item:not(:first-child)').before('<hr>');
+      $('.m-dl').one('click', getTemplate);
     }
 
-    $(document).on('click', '.m-dl', function() {
-      $('.content-container').css('opacity', 0.6);
+    const $container = $('.content-container');
+    function getTemplate () {
+      $('.c-remove').off('click');
+      $container.css('opacity', 0.61);
+
       google.script.run
-        .withSuccessHandler(e => $('.content-container').css('opacity', 1))
+        .withSuccessHandler(e => {
+          $('.m-dl').one('click', getTemplate);
+          $container.css('opacity', 1);
+        })
         .withFailureHandler(showError)
         .coolGalleryService('get', this.id);
-    });
+    }
   </script>
 </body>
 
