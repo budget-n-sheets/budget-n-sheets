@@ -72,7 +72,7 @@ class FormulaBuildTagsTable {
 
     formula = 'IFERROR(FILTER(' + concat_value_tags + '; NOT(ISBLANK(' + concat_tags + '))); "")';
     formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';
-    formula = '{"' + Consts.month_name.long[mm] + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
+    formula = '{"' + Consts.month_name.long[mm].toLowerCase() + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
 
     return formula;
   }
