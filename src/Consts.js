@@ -28,4 +28,8 @@ class Consts {
       goldenrod: 'daa520'
     };
   }
+
+  static get tags_categories () {
+    return ['Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling'];
+  }
 }
