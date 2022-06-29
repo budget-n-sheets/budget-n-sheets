@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/material-icons"); ?>
+  <?!= HtmlService2.htmlInclude("html/resources/containers"); ?>
+
+  <style>
+    h2 {
+      margin: 0;
+    }
+
+    table input {
+      width: 100%;
+    }
+
+    .content-container {
+      margin: 1em 0;
+      overflow: auto;
+    }
+
+    .footer-container {
+      justify-content: start;
+    }
+
+    .m-remove {
+      color: #f44336;
+      padding: 0 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Edit categories</h2>
+  <div class="content-container">
+    <table>
+      <tbody id="tr-list">
+      </tbody>
+      <tr id="tr-add">
+        <td></td>
+        <td>
+          <input type="text" id="m-add" placeholder="Add category" readonly>
+        </td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+  <div class="footer-container">
+    <button class="action" id="m-save" disabled>Done</button>
+    <button id="m-reset" disabled>Reset</button>
+  </div>
+
+  <?!= HtmlService2.htmlInclude('html/resources/javascript'); ?>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script>
+    const Glob = {
+      categories: <?!= categories ?>,
+      numCat: 0
+    };
+
+    $('#tr-list').sortable({
+      axis: 'y',
+      handle: '.handle',
+      opacity: 0.71
+    });
+
+    $('#m-add').on('click, focus', () => addCatInput());
+    $('#m-reset').click(resetCategories);
+
+    $(document).ready(function() {
+      google.script.run
+        .withSuccessHandler(listCategories)
+        .withFailureHandler(showError)
+        .tagsService('get');
+    });
+
+    function listCategories (list) {
+      list.forEach(n => addCatInput(n));
+      $('input, button').prop('disabled', false);
+      $('#m-save').one('click', saveCategories);
+      if (list.length >= 64) $('#tr-add').hide();
+      if (list.length === 0) addCatInput('Other');
+    }
+
+    $(document).on('click', '.m-remove', function() {
+      const $tr = $(this).closest('tr');
+      $tr.remove();
+      Glob.numCat--;
+      if (Glob.numCat < 64) $('#tr-add').show();
+      if (Glob.numCat === 1) $('.m-remove').css('visibility', 'hidden');
+    });
+
+    function addCatInput (name) {
+      if (Glob.numCat >= 64) return;
+
+      const $tr = $('<tr>');
+
+      $tr.append(
+        $('<td>').append(
+          $('<span>').attr('class', 'material-icons md-18 md-click m-remove').text('remove_circle')));
+
+      $tr.append(
+        $('<td>').append(
+          $('<input>').attr({
+            type: 'text',
+            name: 'catName',
+            value: name || '',
+            placeholder: 'Name',
+            required: true,
+            maxlength: 64
+          })));
+
+      $tr.append(
+        $('<td>').append(
+          $('<span>').attr('class', 'material-icons handle')
+            .css({cursor: 'grabbing'})
+            .text('drag_handle')));
+
+      $('#tr-list').append($tr);
+      Glob.numCat++;
+      if (!name) $tr.find('input').focus();
+
+      if (Glob.numCat >= 64) $('#tr-add').hide();
+      if (Glob.numCat > 1) $('.m-remove').css('visibility', 'visible');
+    }
+
+    function resetCategories () {
+      $('#tr-list > tr').remove();
+      Glob.numCat = 0;
+      Glob.categories.forEach(n => addCatInput(n));
+    }
+
+    function saveCategories () {
+      $('input, button').prop('disabled', true);
+      $('.m-remove').css('visibility', 'hidden');
+
+      let categories = [];
+      $('input[name="catName"]').each(function() {
+        categories.push(this.value);
+      });
+
+      categories = categories.filter(c => c && c != null).map(c => c.trim()).filter((v, i, s) => v && s.indexOf(v) === i);
+      if (categories.length === 0) {
+        $('input, button').prop('disabled', false);
+        $('.m-remove').css('visibility', 'visible');
+        $('#m-save').one('click', saveCategories);
+        addCatInput('Other');
+        alert('Plese add at least one category.');
+        return;
+      }
+
+      google.script.run
+        .withSuccessHandler(closeHost)
+        .withFailureHandler(showError)
+        .tagsService('save', categories);
+    }
+  </script>
+</body>
+
+</html>
+

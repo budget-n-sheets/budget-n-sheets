@@ -35,7 +35,8 @@ function onOpen (e) {
         .addSeparator()
         .addSubMenu(ui.createMenu('Open panel')
           .addItem('Accounts & Cards', 'showPanelTables')
-          .addItem('BnS Gallery', 'showPanelAnalytics'))
+          .addItem('BnS Gallery', 'showPanelAnalytics')
+          .addItem('Tagging', 'showPanelTagging'))
         .addSubMenu(ui.createMenu('Pages view')
           .addItem('Collapse', 'toolHideSheets_')
           .addItem('Expand', 'toolShowSheets_')
@@ -86,6 +87,22 @@ function showPanelAnalytics () {
     .setTitle('BnS Gallery');
 
   SpreadsheetApp2.getUi().showSidebar(htmlOutput);
+}
+
+function showPanelTagging () {
+  if (!Spreadsheet2.getSheetByName('Tags')) {
+    SpreadsheetApp2.getUi().alert("Can't open Tagging", "The sheet Tags is missing.");
+    return;
+  }
+
+  const htmlOutput = HtmlService2.createTemplateFromFile('tags/htmlDialog')
+    .assignReservedHref()
+    .setScriptletValues({ categories: JSON.stringify(Consts.tags_categories) })
+    .evaluate()
+    .setWidth(281)
+    .setHeight(421);
+
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Tagging');
 }
 
 function showSidebarSettings () {
