@@ -7,6 +7,7 @@ class CoolGalleryService {
   static get templates () {
     return {
       filter_by_tag: CoolFilterByTag.metadata,
+      stats_for_tags: CoolStatsForTags.metadata,
       tags_by_category: CoolTagsByCategory.metadata
     };
   }

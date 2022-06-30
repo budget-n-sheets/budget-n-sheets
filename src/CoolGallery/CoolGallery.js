@@ -7,8 +7,8 @@ class CoolGallery extends MirrorSheet {
     switch (id) {
       case 'filter_by_tag':
         return new CoolFilterByTag();
-      // case 'stats_for_tags':
-      //   return new CoolStatsForTags();
+      case 'stats_for_tags':
+        return new CoolStatsForTags();
       case 'tags_by_category':
         return new CoolTagsByCategory();
 
