@@ -5,8 +5,10 @@ function accountsClientService (payload) {
   switch (payload.job) {
     case 'get':
       return new AccountsService().getById(payload.id);
-    case 'list':
-      return new AccountsService().getAll();
+    case 'list': {
+      const accs = new AccountsService().getAll();
+      return Object.keys(accs).map(key => Object.assign(accs[key], { id: key })).sort((a, b) => a.index - b.index);
+    }
     case 'update': {
       const service = new AccountsService();
       service.update(payload.id, payload.metadata).save();
@@ -35,8 +37,10 @@ function cardsClientService (payload) {
     }
     case 'get':
       return new CardsService().getById(payload.id);
-    case 'list':
-      return new CardsService().getAll();
+    case 'list': {
+      const cards = new CardsService().getAll();
+      return Object.keys(cards).map(key => Object.assign(cards[key], { id: key })).sort((a, b) => b.index - a.index);
+    }
     case 'update': {
       const service = new CardsService();
       service.update(payload.id, payload.metadata).save();

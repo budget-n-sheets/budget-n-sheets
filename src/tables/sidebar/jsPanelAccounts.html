@@ -15,28 +15,28 @@
       .showDialogEditAccount($(this).parent().attr('id'));
   }
 
-  function listAccounts (db_accounts) {
+  function listAccounts (accounts) {
     const $box = $('#panel-accounts');
 
-    for (const id in db_accounts) {
+    for (const acc of accounts) {
       const $text = $('<div>').attr({class: 'text'})
-        .css('color', db_accounts[id].color)
-        .append($('<h3>').text(db_accounts[id].name));
+        .css('color', acc.color)
+        .append($('<h3>').text(acc.name));
 
-      const $icons = $('<div>').attr({class: 'md-box', id: id})
-        .css('color', db_accounts[id].color)
+      const $icons = $('<div>').attr({class: 'md-box', id: acc.id})
+        .css('color', acc.color)
         .append([
           $('<span>').attr({class: 'a-edit material-icons md-18 md-click'}).text('edit')
         ]);
 
-      if (db_accounts[id].color === 'slategray') {
+      if (acc.color === 'slategray') {
         $text.css('color', 'black');
         $icons.css('color', 'black');
       }
 
       $box.append($('<div>')
         .attr({class: 'item'})
-        .css({'background-color': db_accounts[id].color})
+        .css({'background-color': acc.color})
         .append([$text, $icons]));
     }
 

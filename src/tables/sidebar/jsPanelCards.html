@@ -46,39 +46,39 @@
       .cardsClientService({ job: 'list' });
   }
 
-  function listCards (db_cards) {
+  function listCards (cards) {
     const $box = $('#panel-cards');
 
-    for (const id in db_cards) {
+    for (const card of cards) {
       const $text = $('<div>').attr({class: 'text'})
-        .css('color', db_cards[id].color)
+        .css('color', card.color)
         .append([
-          $('<h3>').text(db_cards[id].name),
+          $('<h3>').text(card.name),
           $('<div>').append([
-            $('<strong>').text(db_cards[id].code),
-            document.createTextNode(` | $ ${FormatNumber.financial(db_cards[id].limit)}`)
+            $('<strong>').text(card.code),
+            document.createTextNode(` | $ ${FormatNumber.financial(card.limit)}`)
           ])
         ]);
 
-      const $icons = $('<div>').attr({class: 'md-box', id: id})
-        .css('color', db_cards[id].color)
+      const $icons = $('<div>').attr({class: 'md-box', id: card.id})
+        .css('color', card.color)
         .append([
           $('<span>').attr({class: 'c-edit material-icons md-18 md-click'}).text('edit'),
           $('<span>').attr({class: 'c-remove material-icons md-18 md-click'}).text('delete')
         ]);
 
-      if (db_cards[id].color === 'slategray') {
+      if (card.color === 'slategray') {
         $text.css('color', 'black');
         $icons.css('color', 'black');
       }
 
       $box.prepend($('<div>')
         .attr({class: 'item'})
-        .css({'background-color': db_cards[id].color})
+        .css({'background-color': card.color})
         .append([$text, $icons]));
     }
 
-    if (Object.keys(db_cards).length >= 10) $('.c-add-card').hide();
+    if (Object.keys(cards).length >= 10) $('.c-add-card').hide();
     $('#panel-cards > div:not(:first-child)').before('<hr>');
 
     $('.c-add-card').one('click', oneCAdd);
