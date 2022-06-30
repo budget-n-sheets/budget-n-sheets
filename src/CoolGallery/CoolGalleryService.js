@@ -13,6 +13,7 @@ class CoolGalleryService {
 
   install () {
     if (!this._cool.isSourceAvailable()) return;
+    if (!this._cool.checkDependencies()) this._cool.meetRequirements();
     if (this._cool.isInstalled()) this._cool.deleteTemplate();
 
     this._cool.copyTemplate();

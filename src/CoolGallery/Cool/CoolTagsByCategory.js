@@ -57,6 +57,10 @@ class CoolTagsByCategory extends CoolGallery {
     this.sheet.getRange('O1').setFormula(formula);
   }
 
+  fixDependencies () {
+    new MakeSheetTags().reinstall();
+  }
+
   make () {
     this.setFormat_();
     this.setAverageFormula_();
