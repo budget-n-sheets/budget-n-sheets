@@ -9,7 +9,8 @@ class BackupPatch extends PatchThis {
     this._patches = [
       [
         null,
-        [null, 'patchV0m1p1_', 'v0m1p2_']
+        [null, 'patchV0m1p1_', 'v0m1p2_'],
+        ['v0m2p0_']
       ]
     ];
 
@@ -18,6 +19,12 @@ class BackupPatch extends PatchThis {
 
   get payload () {
     return this._payload;
+  }
+
+  v0m2p0_ () {
+    this._payload.tags_categories = Consts.tags_categories;
+
+    return 0;
   }
 
   v0m1p2_ () {
