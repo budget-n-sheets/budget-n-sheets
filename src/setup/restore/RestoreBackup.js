@@ -66,6 +66,10 @@ class RestoreBackup {
       .setValues(this.backup.tags);
   }
 
+  restoreTagsCategories_ () {
+    TagsService.setCategories(this.backup.tags_categories);
+  }
+
   restoreTtt_ () {
     const ttt = this.backup.ttt;
 
@@ -94,6 +98,7 @@ class RestoreBackup {
     this.restoreTtt_();
     this.restoreCards_();
     this.restoreTags_();
+    this.restoreTagsCategories_();
     this.restoreSettings_();
   }
 }

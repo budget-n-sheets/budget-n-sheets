@@ -6,6 +6,7 @@ class Backup {
       ttt: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}, 11: {} },
       cards: { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [] },
       tags: [],
+      tags_categories: [],
       db_tables: {
         accounts: {},
         cards: {}
@@ -118,6 +119,10 @@ class Backup {
     this._backup.tags = n > 0 ? table.slice(0, n) : [];
   }
 
+  collectTagsCategories_ () {
+    this._backup.tags_categories = TagsService.getCategories();
+  }
+
   filterTable_ (table) {
     let n = table.length - 1;
 
@@ -142,6 +147,7 @@ class Backup {
     this.collectMonths_();
     this.collectCards_();
     this.collectTags_();
+    this.collectTagsCategories_();
 
     this.collectDbAccounts_();
     this.collectDbCards_();
