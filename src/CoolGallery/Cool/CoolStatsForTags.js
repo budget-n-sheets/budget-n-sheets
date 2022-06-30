@@ -141,22 +141,126 @@ class CoolStatsForTags extends CoolGallery {
     this.sheet.getRange(92, 2, 1, 2).setDataValidation(rule);
   }
 
+  insertChart1_ () {
+    this.sheet.insertChart(
+      this.sheet.newChart()
+        .addRange(this.sheetTagsByCategory.getRange('A1:A'))
+        .addRange(this.sheetTagsByCategory.getRange('B1:M'))
+        .setNumHeaders(1)
+        .setChartType(Charts.ChartType.COLUMN)
+        .setPosition(5, 2, 0, 0)
+        .setTransposeRowsAndColumns(true)
+        .setOption('title', 'Category per month')
+        .setOption('mode', 'view')
+        .setOption('legend', 'left')
+        .setOption('useFirstColumnAsDomain', true)
+        .setOption('focusTarget', 'category')
+        .setOption('backgroundColor', { fill: '#f3f3f3' })
+        .setOption('height', 421)
+        .setOption('width', 1013)
+        .build());
+  }
+
+  insertChart2_ () {
+    this.sheet.insertChart(
+      this.sheet.newChart()
+        .addRange(this.sheetTagsByCategory.getRange('A1:A'))
+        .addRange(this.sheetTagsByCategory.getRange('B1:M'))
+        .setNumHeaders(1)
+        .setChartType(Charts.ChartType.BAR)
+        .setPosition(26, 2, 0, 0)
+        .setTransposeRowsAndColumns(true)
+        .setOption('title', 'Share per month')
+        .setOption('mode', 'view')
+        .setOption('legend', 'left')
+        .setOption('isStacked', 'percent')
+        .setOption('useFirstColumnAsDomain', true)
+        .setOption('focusTarget', 'category')
+        .setOption('backgroundColor', { fill: '#f3f3f3' })
+        .setOption('height', 421)
+        .setOption('width', 1013)
+        .build());
+  }
+
+  insertChart3_ () {
+    this.sheet.insertChart(
+      this.sheet.newChart()
+        .addRange(this.sheetTagsByCategory.getRange('A1:A'))
+        .addRange(this.sheetTagsByCategory.getRange('N1:N'))
+        .setNumHeaders(1)
+        .setChartType(Charts.ChartType.PIE)
+        .setPosition(47, 2, 0, 0)
+        .setOption('useFirstColumnAsDomain', true)
+        .setOption('mode', 'view')
+        .setOption('focusTarget', 'category')
+        .setOption('backgroundColor', { fill: '#f3f3f3' })
+        .setOption('title', 'Average per category')
+        .setOption('pieHole', 0.5)
+        .setOption('height', 421)
+        .setOption('width', 1013)
+        .build());
+  }
+
+  insertChart4_ () {
+    this.sheet.insertChart(
+      this.sheet.newChart()
+        .addRange(this.sheetTagsByCategory.getRange('A1:A'))
+        .addRange(this.sheetTagsByCategory.getRange('N1:N'))
+        .setNumHeaders(1)
+        .setChartType(Charts.ChartType.RADAR)
+        .setPosition(68, 2, 0, 0)
+        .setOption('useFirstColumnAsDomain', true)
+        .setOption('mode', 'view')
+        .setOption('focusTarget', 'category')
+        .setOption('backgroundColor', { fill: '#f3f3f3' })
+        .setOption('title', 'Average per category')
+        .setOption('lineWidth', 3)
+        .setOption('pointSize', 7)
+        .setOption('height', 421)
+        .setOption('width', 491)
+        .build());
+
+    this.sheet.insertChart(
+      this.sheet.newChart()
+        .addRange(this.sheetTagsByCategory.getRange('A1:A'))
+        .addRange(this.sheetTagsByCategory.getRange('O1:O'))
+        .setNumHeaders(1)
+        .setChartType(Charts.ChartType.RADAR)
+        .setPosition(68, 7, 11, 0)
+        .setOption('useFirstColumnAsDomain', true)
+        .setOption('mode', 'view')
+        .setOption('focusTarget', 'category')
+        .setOption('backgroundColor', { fill: '#f3f3f3' })
+        .setOption('title', 'Total per category')
+        .setOption('lineWidth', 3)
+        .setOption('pointSize', 7)
+        .setOption('height', 421)
+        .setOption('width', 491)
+        .build());
+  }
+
+  setFormat_ () {
+    this.sheet.protect().setWarningOnly(true);
+    this.sheet.setTabColor('#e69138');
+  }
+
   fixDependencies () {
     new CoolGalleryService('tags_by_category').install();
   }
 
   make () {
-    this.buildPart1_();
-    this.buildPart2_();
-    this.buildPart3_();
-    this.buildPart4_();
-    this.buildTags_();
+    this.setFormat_();
+    this.insertChart1_();
+    this.insertChart2_();
+    this.insertChart3_();
+    this.insertChart4_();
 
-    this.sheet.setTabColor('#e69138');
+
     return this;
   }
 
   makeConfig () {
+    this.sheetTagsByCategory = Spreadsheet2.getSheetByName('Tags by Category');
     return this;
   }
 }
