@@ -8,7 +8,8 @@ class CoolStatsForTags extends CoolGallery {
       id: '',
       name: 'Stats for Tags',
       version_name: 'v1.0.1',
-      description: 'Basic statistics for your tags.'
+      description: 'Basic statistics for your tags.',
+      requires: ['Tags by Category']
     };
   }
 
@@ -138,6 +139,10 @@ class CoolStatsForTags extends CoolGallery {
       .build();
 
     this.sheet.getRange(92, 2, 1, 2).setDataValidation(rule);
+  }
+
+  fixDependencies () {
+    new CoolGalleryService('tags_by_category').install();
   }
 
   make () {
