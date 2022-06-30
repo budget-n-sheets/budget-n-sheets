@@ -46,6 +46,7 @@ function onOpen (e) {
         .addItem('Change settings', 'showSidebarSettings')
         .addSubMenu(ui.createMenu('More')
           .addItem('About the add-on', 'showDialogAboutAddon')
+          .addItem('Check for updates', 'checkForUpdates')
           .addItem('Show Quickstart', 'showPanelQuickstart')
           .addSeparator()
           .addItem('Deactive the add-on', 'askDeactivation'));
@@ -118,6 +119,19 @@ function showSidebarSettings () {
 
   const htmlSidebar = new SettingsSidebar().build();
   SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
+}
+
+function checkForUpdates () {
+  if (!Addon.isInstalled()) return;
+  if (Addon.isUpToDate()) {
+    SpreadsheetApp2.getUi().alert(
+      'Budget n Sheets Update',
+      "You're up to date.",
+      SpreadsheetApp2.getUi().ButtonSet.OK);
+    return;
+  }
+
+  UpdateService.checkAndUpdate(true);
 }
 
 function showDialogAboutAddon () {
