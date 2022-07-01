@@ -24,6 +24,11 @@ class CoolTagsByCategory extends CoolGallery {
     this.sheet.getRange('N1').setFormula(formula);
   }
 
+  setFormat_ () {
+    const num_format = this._consts.number_format;
+    this.sheet.getRange('B2:O').setNumberFormat(`${num_format};(${num_format})`);
+  }
+
   setQuery_ () {
     let formula;
 
@@ -53,9 +58,10 @@ class CoolTagsByCategory extends CoolGallery {
   }
 
   make () {
-    this.setQuery_();
+    this.setFormat_();
     this.setAverageFormula_();
     this.setTotalFormula_();
+    this.setQuery_();
 
     this.sheet.protect().setWarningOnly(true);
     this.sheet.setTabColor('#e69138');
@@ -63,6 +69,8 @@ class CoolTagsByCategory extends CoolGallery {
   }
 
   makeConfig () {
+    this._consts.number_format = FormatNumberUtils.getNumberFormat();
+
     return this;
   }
 }

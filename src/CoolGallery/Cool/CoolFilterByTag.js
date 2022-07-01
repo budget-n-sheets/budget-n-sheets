@@ -12,6 +12,24 @@ class CoolFilterByTag extends CoolGallery {
     };
   }
 
+  setDataValidation_ () {
+    const sheet = this._spreadsheet.getSheetByName('_Unique');
+    if (!sheet) return;
+
+    const range = sheet.getRange('$D$1:$D');
+    const rule = SpreadsheetApp.newDataValidation()
+      .requireValueInRange(range, true)
+      .setAllowInvalid(true)
+      .build();
+
+    this.sheet.getRange(this._consts.header).setDataValidation(rule);
+  }
+
+  setFormat_ () {
+    const num_format = this._consts.number_format;
+    this.sheet.getRange('F6:F').setNumberFormat(`${num_format};(${num_format})`);
+  }
+
   setQuery_ () {
     let formula = '';
 
@@ -57,22 +75,10 @@ class CoolFilterByTag extends CoolGallery {
     this.sheet.getRange('B6').setFormula(formula);
   }
 
-  setDataValidation_ () {
-    const sheet = this._spreadsheet.getSheetByName('_Unique');
-    if (!sheet) return;
-
-    const range = sheet.getRange('$D$1:$D');
-    const rule = SpreadsheetApp.newDataValidation()
-      .requireValueInRange(range, true)
-      .setAllowInvalid(true)
-      .build();
-
-    this.sheet.getRange(this._consts.header).setDataValidation(rule);
-  }
-
   make () {
-    this.setQuery_();
+    this.setFormat_();
     this.setDataValidation_();
+    this.setQuery_();
 
     const sheet = this.sheet;
     sheet.protect()
@@ -85,6 +91,7 @@ class CoolFilterByTag extends CoolGallery {
   makeConfig () {
     this._consts.header = 'D3';
     this._consts.num_acc = SettingsConst.getValueOf('number_accounts');
+    this._consts.number_format = FormatNumberUtils.getNumberFormat();
 
     this._settings.dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
     this._settings.dec_p = (this._settings.dec_s ? ', ' : ' \\ ');
