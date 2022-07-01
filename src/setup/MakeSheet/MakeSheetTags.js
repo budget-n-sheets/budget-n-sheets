@@ -15,7 +15,7 @@ class MakeSheetTags extends MakeSheet {
     const sheet = this.sheet;
     const maxRows = sheet.getMaxRows() - 1;
 
-    sheet.getRange(2, 6, maxRows, 12).setNumberFormat(this._settings.number_format);
+    sheet.getRange('F2:S').setNumberFormat(this._consts.number_format);
 
     sheet.protect()
       .setUnprotectedRanges([sheet.getRange(2, 1, maxRows, 5)])
@@ -52,9 +52,8 @@ class MakeSheetTags extends MakeSheet {
     this._consts.maxRows = this.sheet.getMaxRows() - 1;
     this._consts.financial_year = SettingsConst.getValueOf('financial_year');
 
-    this._settings.dec_p = SettingsSpreadsheet.getValueOf('decimal_places');
-    this._settings.dec_c = (this._settings.dec_p > 0 ? '.' + '0'.repeat(this._settings.dec_p) : '');
-    this._settings.number_format = `#,##0${this._settings.dec_c};(#,##0${this._settings.dec_c})`;
+    const numberFormat = FormatNumberUtils.getNumberFormat();
+    this._consts.number_format = `${numberFormat};(${numberFormat})`;
 
     return this;
   }
