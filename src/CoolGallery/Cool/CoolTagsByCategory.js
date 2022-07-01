@@ -7,7 +7,7 @@ class CoolTagsByCategory extends CoolGallery {
     return {
       id: '',
       name: 'Tags by Category',
-      version_name: 'v0.1.2',
+      version_name: 'v1.0.0',
       description: 'Group tags by category.',
       requires: ['Tags']
     };
