@@ -13,12 +13,11 @@ class MakeSheetTags extends MakeSheet {
 
   setFormat_ () {
     const sheet = this.sheet;
-    const maxRows = sheet.getMaxRows() - 1;
 
     sheet.getRange('F2:S').setNumberFormat(this._consts.number_format);
 
     sheet.protect()
-      .setUnprotectedRanges([sheet.getRange(2, 1, maxRows, 5)])
+      .setUnprotectedRanges([sheet.getRange('A2:E')])
       .setWarningOnly(true);
     sheet.setTabColor('#e69138');
   }
@@ -49,9 +48,6 @@ class MakeSheetTags extends MakeSheet {
   }
 
   makeConfig () {
-    this._consts.maxRows = this.sheet.getMaxRows() - 1;
-    this._consts.financial_year = SettingsConst.getValueOf('financial_year');
-
     const numberFormat = FormatNumberUtils.getNumberFormat();
     this._consts.number_format = `${numberFormat};(${numberFormat})`;
 
