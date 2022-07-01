@@ -12,7 +12,7 @@ class FormulaBuildTagsStats {
   static average () {
     let formula;
 
-    formula = 'ARRAYFORMULA(IF(E2:E <> ""; $T$2:$T/_Settings!B6; ))';
+    formula = 'ARRAYFORMULA(IF(E2:E <> ""; $S$2:$S/_Settings!B6; ))';
     formula = 'IF(_Settings!$B$6 > 0; ' + formula + '; ARRAYFORMULA($F$2:$F * 0))';
     formula = 'IF(_Settings!$B$7 > 0; ' + formula + '; "")';
     formula = '{"average"; ' + formula + '}';
