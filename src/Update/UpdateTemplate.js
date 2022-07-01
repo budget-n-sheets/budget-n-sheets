@@ -7,13 +7,71 @@ class UpdateTemplate extends Update {
         null, [''], [''], [''], [''], [''], [''], [''], [''], [''],
         [''], [''], [''],
         ['v0m13p0_', 'v0m13p1_', 'v0m13p2_', 'v0m13p3_', '', 'v0m13p5_'],
-        ['v0m14p0_']
+        ['v0m14p0_', 'v0m14p1_', 'v0m14p2_']
       ]
     ];
 
     super(v0, vA, list);
 
     this._key = 'template';
+  }
+
+  /**
+   * Update sheet 'Tags'.
+   *
+   * 0.14.2
+   */
+   v0m14p2_ () {
+    const sheet = Spreadsheet2.getSheetByName('Tags');
+    if (!sheet) return 0;
+
+    const maxColumns = sheet.getMaxColumns();
+    if (maxColumns < 17) return 0;
+    else if (maxColumns > 19) sheet.deleteColumn(18);
+    else if (maxColumns < 19) sheet.insertColumnsAfter(17, 19 - maxColumns);
+
+    sheet.getRange('C1:C2').copyTo(sheet.getRange('R1:S2'), { formatOnly: true });
+    sheet.getRange('G2:G').copyTo(sheet.getRange('R2:S'), { formatOnly: true });
+    sheet.setColumnWidth(18, 127);
+    sheet.setColumnWidth(19, 127);
+    sheet.getRange('Q1:R').setBorder(null, null, null, null, true, null, '#000000', SpreadsheetApp.BorderStyle.DASHED);
+
+    const range = sheet.getRange('F2:Q');
+    const rules = [];
+
+    let rule;
+
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=COLUMN() - 5 < INDIRECT("_Settings!B4")')
+      .setFontColor('#cccccc')
+      .setRanges([range])
+      .build();
+    rules.push(rule);
+
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=COLUMN() - 5 > INDIRECT("_Settings!B4") - 1 + INDIRECT("_Settings!B6")')
+      .setFontColor('#999999')
+      .setRanges([range])
+      .build();
+    rules.push(rule);
+
+    sheet.clearConditionalFormatRules();
+    sheet.setConditionalFormatRules(rules);
+
+    new MakeSheetTags().makeConfig().make();
+
+    return 0;
+  }
+
+  /**
+   * Add missing group of columns in 'Cash Flow'.
+   *
+   * 0.14.1
+   */
+   v0m14p1_ () {
+    const sheet = Spreadsheet2.getSheetByName('Cash Flow');
+    if (sheet && sheet.getColumnGroupDepth(2) === 0) sheet.getRange('B1:D1').shiftColumnGroupDepth(1);
+    return 0;
   }
 
   /**
