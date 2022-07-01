@@ -25,10 +25,15 @@ class MakeSheetTags extends MakeSheet {
 
   setFormulas_ () {
     const build = FormulaBuild.tags().table();
-    const formulas = [[]];
-    for (let i = 0; i < 12; i++) {
-      formulas[0][i] = build.month(400, 400, i);
-    }
+
+    let numRowsCards = (Spreadsheet2.getSheetByName('Cards')?.getMaxRows() || 5) - 5;
+    if (numRowsCards < 1) numRowsCards = 1;
+
+    const formulas = Consts.month_name.short.map((m, i) => {
+      let numRowsMonth = (Spreadsheet2.getSheetByName(m)?.getMaxRows() || 4) - 4;
+      return build.month(numRowsMonth < 1 ? 1 : numRowsMonth, numRowsCards, i);
+    });
+
     this.sheet.getRange('F1:Q1').setFormulas(formulas);
   }
 
