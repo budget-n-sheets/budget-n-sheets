@@ -7,7 +7,7 @@ class CoolFilterByTag extends CoolGallery {
     return {
       id: '',
       name: 'Filter by Tag',
-      version_name: 'v0.4.0',
+      version_name: 'v1.0.0',
       description: 'Filter and sort transactions by a selected tag.'
     };
   }
