@@ -35,13 +35,13 @@ class CoolTagsByCategory extends CoolGallery {
     formula = "SELECT Col1, SUM(Col5), SUM(Col6), SUM(Col7), SUM(Col8), SUM(Col9), SUM(Col10), SUM(Col11), SUM(Col12), SUM(Col13), SUM(Col14), SUM(Col15), SUM(Col16) ";
     formula += "WHERE Col1 <> '' AND Col3 = true AND Col4 <> '' ";
     formula += "GROUP BY Col1 ";
-    formula += "LABEL Col1 'category', ";
+    formula += "LABEL Col1 '', ";
     formula += Consts.month_name.long
-      .map((m, i) => `SUM(Col${5 + i}) '${m.toLowerCase()}', `)
+      .map((m, i) => `SUM(Col${5 + i}) '', `)
       .join('')
       .slice(0, -2);
 
-    this.sheet.getRange('A1').setFormula(`IFERROR(QUERY({Tags!$B$1:$Q}, "${formula}"); )`);
+    this.sheet.getRange('A2').setFormula(`IFERROR(QUERY({Tags!$B$1:$Q}, "${formula}"); )`);
   }
 
   setTotalFormula_ () {
