@@ -9,8 +9,8 @@ class CardsService extends TablesService {
   }
 
   formatValues_ (card) {
-    card.name = card.name.trim().replace(/\s/g, ' ').slice(0, 64);
-    card.code = card.code.trim().replace(/\s/g, '').slice(0, 16);
+    card.name = card.name.trim().replace(/\s+/g, ' ').slice(0, 64);
+    card.code = card.code.trim().replace(/\s+/g, '').slice(0, 16);
 
     if (!Array.isArray(card.aliases)) {
       card.aliases = card.aliases.trim()

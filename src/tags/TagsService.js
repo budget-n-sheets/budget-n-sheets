@@ -24,7 +24,7 @@ class TagsService {
     const sheet = Spreadsheet2.getSheetByName('Tags');
     if (!sheet) throw new Error('TagsService: setCategories(): Missing sheet Tags.');
 
-    categories = categories.map(c => c.trim()).filter((v, i, s) => v && s.indexOf(v) === i);
+    categories = categories.map(c => c.trim().replace(/\s+/g, ' ').slice(0, 64)).filter((v, i, s) => v && s.indexOf(v) === i);
     if (categories.length < 1) categories = ['Other'];
 
     const rule = SpreadsheetApp.newDataValidation()
