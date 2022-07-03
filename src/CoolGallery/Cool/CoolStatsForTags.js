@@ -148,7 +148,7 @@ class CoolStatsForTags extends CoolGallery {
         .addRange(this.sheetTagsByCategory.getRange('B1:M'))
         .setNumHeaders(1)
         .setChartType(Charts.ChartType.COLUMN)
-        .setPosition(5, 2, 0, 0)
+        .setPosition(this.nextRow, 2, 0, 0)
         .setTransposeRowsAndColumns(true)
         .setOption('title', 'Category per month')
         .setOption('mode', 'view')
@@ -159,6 +159,8 @@ class CoolStatsForTags extends CoolGallery {
         .setOption('height', 421)
         .setOption('width', 1013)
         .build());
+
+    this.nextRow += 21;
   }
 
   insertChart2_ () {
@@ -168,7 +170,7 @@ class CoolStatsForTags extends CoolGallery {
         .addRange(this.sheetTagsByCategory.getRange('B1:M'))
         .setNumHeaders(1)
         .setChartType(Charts.ChartType.BAR)
-        .setPosition(26, 2, 0, 0)
+        .setPosition(this.nextRow, 2, 0, 0)
         .setTransposeRowsAndColumns(true)
         .setOption('title', 'Share per month')
         .setOption('mode', 'view')
@@ -180,6 +182,8 @@ class CoolStatsForTags extends CoolGallery {
         .setOption('height', 421)
         .setOption('width', 1013)
         .build());
+
+    this.nextRow += 21;
   }
 
   insertChart3_ () {
@@ -189,7 +193,7 @@ class CoolStatsForTags extends CoolGallery {
         .addRange(this.sheetTagsByCategory.getRange('N1:N'))
         .setNumHeaders(1)
         .setChartType(Charts.ChartType.PIE)
-        .setPosition(47, 2, 0, 0)
+        .setPosition(this.nextRow, 2, 0, 0)
         .setOption('useFirstColumnAsDomain', true)
         .setOption('mode', 'view')
         .setOption('focusTarget', 'category')
@@ -199,6 +203,8 @@ class CoolStatsForTags extends CoolGallery {
         .setOption('height', 421)
         .setOption('width', 1013)
         .build());
+
+    this.nextRow += 21;
   }
 
   insertChart4_ () {
@@ -208,7 +214,7 @@ class CoolStatsForTags extends CoolGallery {
         .addRange(this.sheetTagsByCategory.getRange('N1:N'))
         .setNumHeaders(1)
         .setChartType(Charts.ChartType.RADAR)
-        .setPosition(68, 2, 0, 0)
+        .setPosition(this.nextRow, 2, 0, 0)
         .setOption('useFirstColumnAsDomain', true)
         .setOption('mode', 'view')
         .setOption('focusTarget', 'category')
@@ -226,7 +232,7 @@ class CoolStatsForTags extends CoolGallery {
         .addRange(this.sheetTagsByCategory.getRange('O1:O'))
         .setNumHeaders(1)
         .setChartType(Charts.ChartType.RADAR)
-        .setPosition(68, 7, 11, 0)
+        .setPosition(this.nextRow, 7, 11, 0)
         .setOption('useFirstColumnAsDomain', true)
         .setOption('mode', 'view')
         .setOption('focusTarget', 'category')
@@ -237,6 +243,8 @@ class CoolStatsForTags extends CoolGallery {
         .setOption('height', 421)
         .setOption('width', 491)
         .build());
+
+    this.nextRow += 21;
   }
 
   setFormat_ () {
@@ -261,6 +269,7 @@ class CoolStatsForTags extends CoolGallery {
 
   makeConfig () {
     this.sheetTagsByCategory = Spreadsheet2.getSheetByName('Tags by Category');
+    this.nextRow = 5;
     return this;
   }
 }
