@@ -259,7 +259,7 @@ class CoolStatsForTags extends CoolGallery {
   make () {
     this.setFormat_();
     this.insertChart1_();
-    this.insertChart2_();
+    // this.insertChart2_();
     this.insertChart3_();
     this.insertChart4_();
 
