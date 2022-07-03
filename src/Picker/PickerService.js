@@ -18,6 +18,7 @@ class PickerService extends Pushback {
 
     const htmlOutput = HtmlService2.createTemplateFromFile('Picker/htmlPickerDialog')
       .setScriptletValues({
+        locale: Session.getActiveUserLocale(),
         devKey: Bs.getDeveloperKey(),
         uuid: this._uuid,
         topic: topic
