@@ -120,7 +120,8 @@ class Backup {
   }
 
   collectTagsCategories_ () {
-    this._backup.tags_categories = TagsService.getCategories();
+    const init = Consts.tags_categories;
+    this._backup.tags_categories = TagsService.getCategories().filter(c => init.indexOf(c) === -1);
   }
 
   filterTable_ (table) {

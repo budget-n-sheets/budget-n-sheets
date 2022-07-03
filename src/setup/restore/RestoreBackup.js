@@ -67,7 +67,8 @@ class RestoreBackup {
   }
 
   restoreTagsCategories_ () {
-    TagsService.setCategories(this.backup.tags_categories);
+    const categories = this.backup.tags_categories.concat(Consts.tags_categories);
+    TagsService.setCategories(categories);
   }
 
   restoreTtt_ () {
