@@ -7,8 +7,8 @@ class CoolGallery extends MirrorSheet {
     switch (id) {
       case 'filter_by_tag':
         return new CoolFilterByTag();
-      // case 'stats_for_tags':
-      //   return new CoolStatsForTags();
+      case 'stats_for_tags':
+        return new CoolStatsForTags();
       case 'tags_by_category':
         return new CoolTagsByCategory();
 
@@ -18,10 +18,21 @@ class CoolGallery extends MirrorSheet {
     }
   }
 
+  checkDependencies () {
+    for (const name of this._metadata.requires) {
+      if (!Spreadsheet2.getSheetByName(name)) return false;
+    }
+    return true;
+  }
+
   flush () {
     SpreadsheetApp.flush();
     this._spreadsheet.setActiveSheet(this.sheet);
     return this;
+  }
+
+  meetRequirements () {
+    this.fixDependencies();
   }
 
   isSourceAvailable () {
