@@ -16,7 +16,7 @@ class UpdateScript extends Update {
         ['', 'patchV0m45p1_', '', '', 'patchV0m45p4_', '', '', 'patchV0m45p7_', '', '', '', '', '', '', '', ''],
         ['', '', 'patchV0m46p2_', 'patchV0m46p3_', '', '', '', 'v0m46p7_', '', '', 'v0m46p10_'],
         ['', ''],
-        ['', '']
+        ['', '', '']
       ]
     ];
 
