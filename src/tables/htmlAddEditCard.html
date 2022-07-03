@@ -91,7 +91,7 @@
         <tr>
           <td colspan="2">
             <div class="color-picker">
-              <div class="card" id="whitesmoke" style="background-color: whitesmoke;"></div>
+              <div class="card active" id="whitesmoke" style="background-color: whitesmoke;"></div>
               <div class="card" id="slategray" style="background-color: slategray;"></div>
               <div class="card" id="black" style="background-color: black;"></div>
               <div class="card" id="darkblue" style="background-color: darkblue;"></div>
@@ -139,6 +139,8 @@
           $('#card_code').val(card.code);
           $('#card_aliases').val(card.aliases.join(', '));
           $('#card_limit').val(card.limit);
+
+          $('.color-picker > .card').removeClass('active');
           $(`.color-picker > .card#${card.color}`).addClass('active');
         })
         .withFailureHandler(showError)
