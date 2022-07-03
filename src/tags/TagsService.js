@@ -1,8 +1,7 @@
 class TagsService {
   static getCategories () {
     const sheet = Spreadsheet2.getSheetByName('Tags');
-    if (!sheet) throw new Error('TagsService: getCategories(): Missing sheet Tags.');
-
+    if (!sheet) return Consts.tags_categories;
     if (sheet.getMaxRows() < 2) return Consts.tags_categories;
 
     let categories = sheet.getRange('B2:B').getValues().map(r => r[0]).filter(v => v);
@@ -23,7 +22,7 @@ class TagsService {
 
   static setCategories (categories) {
     const sheet = Spreadsheet2.getSheetByName('Tags');
-    if (!sheet) return;
+    if (!sheet) throw new Error('TagsService: setCategories(): Missing sheet Tags.');
 
     categories = categories.map(c => c.trim()).filter((v, i, s) => v && s.indexOf(v) === i);
     if (categories.length < 1) categories = ['Other'];
