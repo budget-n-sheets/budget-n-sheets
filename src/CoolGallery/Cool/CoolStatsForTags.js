@@ -7,7 +7,7 @@ class CoolStatsForTags extends CoolGallery {
     return {
       id: '',
       name: 'Stats for Tags',
-      version_name: 'v1.0.1',
+      version_name: 'v2.0.0',
       description: 'Basic statistics for your tags.',
       requires: ['Tags by Category']
     };
