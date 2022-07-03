@@ -153,7 +153,7 @@
     <div class="panel" id="panel-restore">
       <h2>Let&apos;s get started</h2>
       <table class="start-options">
-        <tr class="comment" id="b-Continue">
+        <tr class="comment restore-button" id="setup-continue">
           <td><span class="material-icons-outlined">new_releases</span></td>
           <td>
             <div><strong>Set up as new</strong></div>
@@ -161,7 +161,7 @@
           </td>
         </tr>
         <? if (setup_copy) { ?>
-        <tr class="comment" id="b-Copy">
+        <tr class="comment restore-button" id="setup-copy">
           <td><span class="material-icons-outlined">content_copy</span></td>
           <td>
             <div><strong>Copy your data</strong></div>
@@ -170,7 +170,7 @@
         </tr>
         <? } ?>
         <? if (setup_restore) { ?>
-        <tr class="comment" id="b-Restore">
+        <tr class="comment restore-button" id="setup-restore">
           <td><span class="material-icons-outlined">restore</span></td>
           <td>
             <div><strong>Restore your data</strong></div>
@@ -278,13 +278,7 @@
     };
 
     $(document).ready(function() {
-      $('#b-Continue').click(clickNext);
-      <? if (setup_restore) { ?>
-      $('#b-Restore').click(showRestore);
-      <? } ?>
-      <? if (setup_copy) { ?>
-      $('#b-Copy').click(showCopy);
-      <? } ?>
+      $('.restore-button').one('click', setupOption);
 
       const date = new Date();
       $('#financial_year').val(date.getFullYear());
@@ -304,6 +298,18 @@
       if (Glob.num_acc < 5) $('#tr-add-acc').show();
       if (Glob.num_acc === 1) $('.m-remove-acc').hide();
     });
+
+    function setupOption () {
+      $('.restore-button').off('click');
+      if (this.id === 'setup-continue') clickNext();
+      <? if (setup_restore) { ?>
+      if (this.id === 'setup-restore') showRestore();
+      <? } ?>
+      <? if (setup_copy) { ?>
+      if (this.id === 'setup-copy') showCopy();
+      <? } ?>
+      closeHost();
+    }
 
     function addAccInput () {
       if (Glob.num_acc > 4) return;
