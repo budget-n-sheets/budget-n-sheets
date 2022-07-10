@@ -8,7 +8,8 @@ class CoolFilterByTag extends CoolGallery {
       id: '',
       name: 'Filter by Tag',
       version_name: 'v1.0.0',
-      description: 'Filter and sort transactions by a selected tag.'
+      description: 'Filter and sort transactions by a selected tag.',
+      requires: []
     };
   }
 
