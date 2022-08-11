@@ -18,9 +18,7 @@ class Update extends PatchThis {
   run () {
     this.status = 1;
 
-    if (!SemVerUtils.hasSemVerFormat(this._source)) return this;
-    if (!SemVerUtils.hasSemVerFormat(this._reference)) return this;
-    if (SemVerUtils.hasMinimumVersion(this._source, this._reference)) {
+    if (PatchThisUtils.isLatestVersion(this._source, this._reference)) {
       this.response = 0;
       return this;
     }
