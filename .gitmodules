@@ -1,0 +1,3 @@
+[submodule "src/PatchThis"]
+	path = src/PatchThis
+	url = https://github.com/guimspace/PatchThis.git
