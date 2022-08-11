@@ -1,12 +1,8 @@
 class BackupPatch extends PatchThis {
   constructor (payload) {
-    super();
-
-    this._payload = payload;
-
-    this._source = (payload.metadata ?? payload.backup).version;
-    this._reference = Object.freeze(Object.assign({}, Info.backup.version));
-    this._patches = [
+    const source = (payload.metadata ?? payload.backup).version;
+    const reference = Object.freeze(Object.assign({}, Info.backup.version));
+    const patches = [
       [
         null,
         [null, 'patchV0m1p1_', 'v0m1p2_'],
@@ -14,6 +10,8 @@ class BackupPatch extends PatchThis {
       ]
     ];
 
+    super(source, reference, patches);
+    this._payload = payload;
     this.position = {};
   }
 
@@ -71,9 +69,7 @@ class BackupPatch extends PatchThis {
   }
 
   run () {
-    if (!SemVerUtils.hasSemVerFormat(this._source)) return this;
-    if (!SemVerUtils.hasSemVerFormat(this._reference)) return this;
-    if (SemVerUtils.hasMinimumVersion(this._source, this._reference)) {
+    if (PatchThisUtils.isLatestVersion(this.getPosition(), this._reference)) {
       this.response = 0;
       return this;
     }
