@@ -1,10 +1,8 @@
 class Update extends PatchThis {
-  constructor (v0, vA, list) {
-    super();
+  constructor (source, reference, patches) {
+    super(source, reference, patches);
 
-    this._source = v0;
-    this._reference = Object.freeze(Object.assign({}, vA));
-    this._patches = list;
+    this._key = null;
 
     this.status = 0;
     this.position = {};
@@ -18,12 +16,12 @@ class Update extends PatchThis {
   run () {
     this.status = 1;
 
-    if (PatchThisUtils.isLatestVersion(this._source, this._reference)) {
+    if (PatchThisUtils.isLatestVersion(this.getPosition(), this._reference)) {
       this.response = 0;
       return this;
     }
 
-    this.makeConfig().update();
+    this.update();
 
     this.position = this.getPosition();
     this.status = 2;

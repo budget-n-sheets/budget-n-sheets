@@ -12,7 +12,6 @@ class UpdateTemplate extends Update {
     ];
 
     super(v0, vA, list);
-
     this._key = 'template';
   }
 

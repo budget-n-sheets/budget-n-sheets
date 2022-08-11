@@ -21,7 +21,6 @@ class UpdateScript extends Update {
     ];
 
     super(v0, vA, list);
-
     this._key = 'script';
   }
 
