@@ -1,3 +1,6 @@
 [submodule "src/PatchThis"]
 	path = src/PatchThis
 	url = https://github.com/guimspace/PatchThis.git
+[submodule "src/SessionService"]
+	path = src/SessionService
+	url = https://github.com/guimspace/SessionService.git
