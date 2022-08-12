@@ -38,7 +38,7 @@ function setupService (uuid, payload) {
     LogLog.error(err);
   }
 
-  CachedAccess.update('class_version2', {
+  CachedProperties.withDocument().update('class_version2', {
     script: Info.apps_script.version,
     template: Info.template.version
   });

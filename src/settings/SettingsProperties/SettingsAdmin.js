@@ -17,7 +17,7 @@ class SettingsAdmin {
       case 'automatic_backup': {
         const properties = RapidAccess.properties().admin();
         properties[key] = newValue;
-        CachedAccess.update('admin_settings', properties);
+        CachedProperties.withDocument().update('admin_settings', properties);
         break;
       }
 

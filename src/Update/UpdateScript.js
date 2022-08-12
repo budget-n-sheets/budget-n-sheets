@@ -33,17 +33,17 @@ class UpdateScript extends Update {
    v0m46p10_ () {
     let db;
 
-    db = CachedAccess.get('db_accounts');
+    db = CachedProperties.withDocument().get('db_accounts');
     for (const id in db) {
       db[id].color = 'whitesmoke';
     }
-    CachedAccess.update('db_accounts', db);
+    CachedProperties.withDocument().update('db_accounts', db);
 
-    db = CachedAccess.get('db_cards');
+    db = CachedProperties.withDocument().get('db_cards');
     for (const id in db) {
       db[id].color = 'whitesmoke';
     }
-    CachedAccess.update('db_cards', db);
+    CachedProperties.withDocument().update('db_cards', db);
 
     return 0;
   }
@@ -276,7 +276,7 @@ class UpdateScript extends Update {
       delete db_accounts[id].time_a;
       delete db_accounts[id].time_z;
     }
-    CachedAccess.update('db_accounts', db_accounts);
+    CachedProperties.withDocument().update('db_accounts', db_accounts);
 
     const db_cards = {};
     db = db_tables.cards.data;
@@ -288,7 +288,7 @@ class UpdateScript extends Update {
       db_cards[id].index = i;
       delete db_cards[id].id;
     }
-    CachedAccess.update('db_cards', db_cards);
+    CachedProperties.withDocument().update('db_cards', db_cards);
 
     PropertiesService3.document().deleteProperty('DB_TABLES');
     return 0;

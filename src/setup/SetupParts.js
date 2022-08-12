@@ -482,13 +482,13 @@ class SetupParts {
       override_zero: false,
       optimize_load: true
     };
-    CachedAccess.update('user_settings', properties);
+    CachedProperties.withDocument().update('user_settings', properties);
 
     properties = {
       admin_id: adminId,
       automatic_backup: false
     };
-    CachedAccess.update('admin_settings', properties);
+    CachedProperties.withDocument().update('admin_settings', properties);
 
     properties = {
       setup_channel: this._config.setup_channel,
@@ -496,7 +496,7 @@ class SetupParts {
       number_accounts: this._config.number_accounts,
       financial_year: this._config.financial_year
     };
-    CachedAccess.update('const_properties', properties);
+    CachedProperties.withDocument().update('const_properties', properties);
 
     metadata = {
       setup_channel: this._config.setup_channel,
@@ -513,7 +513,7 @@ class SetupParts {
       spreadsheet_locale: this._spreadsheet.getSpreadsheetLocale(),
       optimize_load: [false, false, false, false, false, false, false, false, false, false, false, false]
     };
-    CachedAccess.update('spreadsheet_settings', properties);
+    CachedProperties.withDocument().update('spreadsheet_settings', properties);
 
     metadata = {
       decimal_places: this._config.decimal_places
@@ -644,10 +644,10 @@ class SetupParts {
     }
 
     this._metadata.update('db_accounts', meta_accounts);
-    CachedAccess.update('db_accounts', db_accounts);
+    CachedProperties.withDocument().update('db_accounts', db_accounts);
 
     this._metadata.update('db_cards', {});
-    CachedAccess.update('db_cards', {});
+    CachedProperties.withDocument().update('db_cards', {});
   }
 
   setupTags_ () {

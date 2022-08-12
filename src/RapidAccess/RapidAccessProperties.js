@@ -5,7 +5,7 @@ class RapidAccessProperties {
 
   admin () {
     return this._properties.admin ||
-          (this._properties.admin = CachedAccess.get('admin_settings'));
+          (this._properties.admin = CachedProperties.withDocument().get('admin_settings'));
   }
 
   clear () {
@@ -18,16 +18,16 @@ class RapidAccessProperties {
 
   const () {
     return this._properties.const ||
-          (this._properties.const = CachedAccess.get('const_properties'));
+          (this._properties.const = CachedProperties.withDocument().get('const_properties'));
   }
 
   spreadsheet () {
     return this._properties.spreadsheet ||
-          (this._properties.spreadsheet = CachedAccess.get('spreadsheet_settings'));
+          (this._properties.spreadsheet = CachedProperties.withDocument().get('spreadsheet_settings'));
   }
 
   user () {
     return this._properties.user ||
-          (this._properties.user = CachedAccess.get('user_settings'));
+          (this._properties.user = CachedProperties.withDocument().get('user_settings'));
   }
 }

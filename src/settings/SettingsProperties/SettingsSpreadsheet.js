@@ -30,7 +30,7 @@ class SettingsSpreadsheet {
 
     const properties = RapidAccess.properties().spreadsheet();
     properties[key] = newValue;
-    CachedAccess.update('spreadsheet_settings', properties);
+    CachedProperties.withDocument().update('spreadsheet_settings', properties);
     this.updateMetadata();
   }
 

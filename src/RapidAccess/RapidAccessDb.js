@@ -5,11 +5,11 @@ class RapidAccessDb {
 
   accounts () {
     return this._db.accounts ||
-          (this._db.accounts = CachedAccess.get('db_accounts'));
+          (this._db.accounts = CachedProperties.withDocument().get('db_accounts'));
   }
 
   cards () {
     return this._db.cards ||
-          (this._db.cards = CachedAccess.get('db_cards'));
+          (this._db.cards = CachedProperties.withDocument().get('db_cards'));
   }
 }

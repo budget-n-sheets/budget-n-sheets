@@ -32,7 +32,7 @@ class SettingsUser {
 
     const properties = RapidAccess.properties().user();
     properties[key] = newValue;
-    CachedAccess.update('user_settings', properties);
+    CachedProperties.withDocument().update('user_settings', properties);
     this.updateMetadata();
   }
 

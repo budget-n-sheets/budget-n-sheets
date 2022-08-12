@@ -8,7 +8,7 @@ class UserSettings {
   }
 
   static getSettings () {
-    const user_settings = CachedAccess.get('user_settings');
+    const user_settings = CachedProperties.withDocument().get('user_settings');
 
     if (user_settings.financial_calendar) {
       user_settings.financial_calendar = Utilities2.computeDigest(
@@ -101,7 +101,7 @@ class UserSettings {
     this._flush.initial_month = user_settings.initial_month !== SettingsUser.getValueOf('initial_month');
     this._flush.view_mode = settings.view_mode !== SettingsSpreadsheet.getValueOf('view_mode');
 
-    CachedAccess.update('user_settings', user_settings);
+    CachedProperties.withDocument().update('user_settings', user_settings);
     RapidAccess.properties().clear();
 
     SettingsSpreadsheet.setValueOf('decimal_places', decimal_places);
