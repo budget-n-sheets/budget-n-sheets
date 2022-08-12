@@ -4,3 +4,6 @@
 [submodule "src/SessionService"]
 	path = src/SessionService
 	url = https://github.com/guimspace/SessionService.git
+[submodule "src/gas-goldfish"]
+	path = src/gas-goldfish
+	url = https://github.com/guimspace/gas-goldfish.git
