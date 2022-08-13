@@ -25,6 +25,18 @@ class Addon {
     return BnsScript.isUpToDate() && BnsTemplate.isUpToDate();
   }
 
+  static loadCache () {
+    const cache = CacheService3.document();
+    const isLoaded = cache.get('load_cache');
+    if (isLoaded) return;
+
+    const properties = PropertiesService3.document();
+    const keys = ['class_version2', 'user_settings', 'spreadsheet_settings', 'const_properties'];
+    keys.forEach(key => cache.put(key, properties.getProperty(key)));
+
+    cache.put('load_cache', true);
+  }
+
   static uninstall () {
     TriggersService.stop();
     const lock = !!(this.isInstalled() || BnsTemplate.isLocked());

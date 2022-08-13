@@ -14,7 +14,7 @@ function onOpenHandler_ (e) {
   if (e.authMode !== ScriptApp.AuthMode.FULL) return;
 
   try {
-    CachedAccess.loadCache();
+    Addon.loadCache();
   } catch (err) {
     LogLog.error(err);
   }
