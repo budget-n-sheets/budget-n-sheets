@@ -1,6 +1,6 @@
 class FormatNumber {
   constructor () {
-    const settings = RapidAccess.properties().spreadsheet();
+    const settings = SettingsSpreadsheet.getAll();
 
     this.dec_p = settings.decimal_places;
     this.dec_s = settings.decimal_separator ? '.' : ',';

@@ -88,7 +88,7 @@ class Backup {
     this._backup.class_version2 = documentProperties.getProperty('class_version2');
 
     this._backup.spreadsheet_settings = {
-      decimal_places: SettingsSpreadsheet.getValueOf('decimal_places')
+      decimal_places: SettingsSpreadsheet.get('decimal_places')
     };
 
     this._backup.user_settings.financial_calendar = this._backup.user_settings.financial_calendar

@@ -8,7 +8,7 @@ function updateDecimalPlaces_ () {
   const num_acc = SettingsConst.get('number_accounts');
   const col = 2 + w_ + w_ * num_acc;
 
-  const dec_p = SettingsSpreadsheet.getValueOf('decimal_places');
+  const dec_p = SettingsSpreadsheet.get('decimal_places');
   const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
   const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
 
@@ -76,7 +76,7 @@ function updateDecimalSeparator_ () {
   const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
   let sheet, cell, t;
 
-  const dec_p = SettingsSpreadsheet.getValueOf('decimal_places');
+  const dec_p = SettingsSpreadsheet.get('decimal_places');
   const format = '0' + (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '.0');
 
   sheet = spreadsheet.getSheetByName('_Settings');
@@ -98,8 +98,9 @@ function updateDecimalSeparator_ () {
   if (t) spreadsheet.deleteSheet(sheet);
   else sheet.getRange(10, 2).setValue(v);
 
-  SettingsSpreadsheet.setValueOf('decimal_separator', v);
-  SettingsSpreadsheet.setValueOf('spreadsheet_locale', spreadsheet.getSpreadsheetLocale());
+  SettingsSpreadsheet.set('decimal_separator', v)
+    .set('spreadsheet_locale', spreadsheet.getSpreadsheetLocale())
+    .updateMetadata();
 }
 
 function updateHideShowSheets (sheets, financial_year, yyyy, mm) {

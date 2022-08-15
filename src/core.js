@@ -61,7 +61,7 @@ function onOpen (e) {
 }
 
 function showPanelQuickstart () {
-  const dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
+  const dec_p = SettingsSpreadsheet.get('decimal_separator');
   const financial_year = SettingsConst.get('financial_year');
 
   const scriptlet = {

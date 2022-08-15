@@ -11,7 +11,7 @@ class SuspendRecalculation extends SheetBackstageRecalculation {
     for (let i = start; i < end; i++) {
       this.load[i] = true;
     }
-    SettingsSpreadsheet.setValueOf('optimize_load', this.load);
+    SettingsSpreadsheet.set('optimize_load', this.load);
 
     SpreadsheetApp.flush();
     return this;

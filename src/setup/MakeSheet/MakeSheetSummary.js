@@ -64,7 +64,7 @@ class MakeSheetSummary extends MakeSheet {
   makeConfig () {
     this._consts.financial_year = SettingsConst.get('financial_year');
 
-    this._settings.dec_p = SettingsSpreadsheet.getValueOf('decimal_places');
+    this._settings.dec_p = SettingsSpreadsheet.get('decimal_places');
     this._settings.dec_c = (this._settings.dec_p > 0 ? '.' + '0'.repeat(this._settings.dec_p) : '');
     this._settings.number_format = `#,##0${this._settings.dec_c};(#,##0${this._settings.dec_c})`;
 

@@ -87,7 +87,7 @@ class FormulaBuildBackstageAccounts {
 
 class FormulaBuildBackstageCards {
   static load_ () {
-    this._settings = RapidAccess.properties().spreadsheet();
+    this._settings = SettingsSpreadsheet.getAll();
   }
 
   static credit (numRows, mm, regex, bsblank) {

@@ -6,7 +6,7 @@ function showPanelTables () {
 }
 
 function showDialogEditAccount (id) {
-  const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
+  const decimal_places = SettingsSpreadsheet.get('decimal_places');
 
   const scriptlet = {
     account_id: id,
@@ -24,7 +24,7 @@ function showDialogEditAccount (id) {
 }
 
 function showDialogAddCard () {
-  const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
+  const decimal_places = SettingsSpreadsheet.get('decimal_places');
 
   const scriptlet = {
     is_edit: false,
@@ -42,7 +42,7 @@ function showDialogAddCard () {
 }
 
 function showDialogEditCard (id) {
-  const decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
+  const decimal_places = SettingsSpreadsheet.get('decimal_places');
 
   const scriptlet = {
     is_edit: true,
