@@ -34,7 +34,7 @@ class CardsService extends TablesService {
       k++;
     }
 
-    new Metadata().update('db_cards', metadata);
+    Spreadsheet2.getMetadata().set('db_cards', metadata);
   }
 
   updateNames_ () {

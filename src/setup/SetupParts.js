@@ -12,7 +12,7 @@ class SetupParts {
     this._config = config;
     this._spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
     this._spreadsheetId = SpreadsheetApp2.getActiveSpreadsheet().getId();
-    this._metadata = new Metadata();
+    this._metadata = Spreadsheet2.getMetadata();
   }
 
   setupBackstage_ () {
@@ -504,7 +504,7 @@ class SetupParts {
       financial_year: this._config.financial_year
     };
 
-    this._metadata.update('const_properties', metadata);
+    this._metadata.set('const_properties', metadata);
 
     properties = {
       view_mode: 'complete',
@@ -519,7 +519,7 @@ class SetupParts {
       decimal_places: this._config.decimal_places
     };
 
-    this._metadata.update('spreadsheet_settings', metadata);
+    this._metadata.set('spreadsheet_settings', metadata);
   }
 
   setupSettings_ () {
@@ -569,7 +569,7 @@ class SetupParts {
       cash_flow_events: false
     };
 
-    this._metadata.update('user_settings', metadata);
+    this._metadata.set('user_settings', metadata);
 
     SpreadsheetApp.flush();
   }
@@ -643,10 +643,10 @@ class SetupParts {
       Object.assign(meta_accounts[k], account);
     }
 
-    this._metadata.update('db_accounts', meta_accounts);
+    this._metadata.set('db_accounts', meta_accounts);
     CachedProperties.withDocument().update('db_accounts', db_accounts);
 
-    this._metadata.update('db_cards', {});
+    this._metadata.set('db_cards', {});
     CachedProperties.withDocument().update('db_cards', {});
   }
 
