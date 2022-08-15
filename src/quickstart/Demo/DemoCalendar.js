@@ -17,7 +17,7 @@ class DemoCalendar extends QuickstartDemo {
 
     this._settings = {
       financial_year: SettingsConst.get('financial_year'),
-      initial_month: SettingsUser.getValueOf('initial_month')
+      initial_month: SettingsUser.get('initial_month')
     };
   }
 

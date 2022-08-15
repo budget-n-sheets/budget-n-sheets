@@ -60,7 +60,7 @@ class UserSettings {
       if (sheet) {
         sheet.getRange('B4')
           .setFormula(
-            new FormatNumber().localeSignal(SettingsUser.getValueOf('initial_month') + 1)
+            new FormatNumber().localeSignal(SettingsUser.get('initial_month') + 1)
           );
       }
 
@@ -98,10 +98,13 @@ class UserSettings {
     };
 
     this._flush.decimal_places = decimal_places !== SettingsSpreadsheet.getValueOf('decimal_places');
-    this._flush.initial_month = user_settings.initial_month !== SettingsUser.getValueOf('initial_month');
+    this._flush.initial_month = user_settings.initial_month !== SettingsUser.get('initial_month');
     this._flush.view_mode = settings.view_mode !== SettingsSpreadsheet.getValueOf('view_mode');
 
-    CachedProperties.withDocument().update('user_settings', user_settings);
+    for (const key in user_settings) {
+      SettingsUser.set(key, user_settings[key]);
+    }
+
     RapidAccess.properties().clear();
 
     SettingsSpreadsheet.setValueOf('decimal_places', decimal_places);

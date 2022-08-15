@@ -30,9 +30,10 @@ class RestoreCopy {
     const calendars = Calendar.listAllCalendars();
     const calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, metadata.financial_calendar);
     if (calendar) {
-      SettingsUser.setValueOf('financial_calendar', calendar.id);
-      SettingsUser.setValueOf('post_day_events', metadata.post_day_events);
-      SettingsUser.setValueOf('cash_flow_events', metadata.cash_flow_events);
+      SettingsUser.set('financial_calendar', calendar.id)
+        .set('post_day_events', metadata.post_day_events)
+        .set('cash_flow_events', metadata.cash_flow_events)
+        .updateMetadata();
     }
   }
 

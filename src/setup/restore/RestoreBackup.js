@@ -28,9 +28,10 @@ class RestoreBackup {
     const calendars = Calendar.listAllCalendars();
     const calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, user_settings.financial_calendar);
     if (calendar) {
-      SettingsUser.setValueOf('financial_calendar', calendar.id);
-      SettingsUser.setValueOf('post_day_events', user_settings.post_day_events);
-      SettingsUser.setValueOf('cash_flow_events', user_settings.cash_flow_events);
+      SettingsUser.set('financial_calendar', calendar.id)
+        .set('post_day_events', user_settings.post_day_events)
+        .set('cash_flow_events', user_settings.cash_flow_events)
+        .updateMetadata();
     }
   }
 

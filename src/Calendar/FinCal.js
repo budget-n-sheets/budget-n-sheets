@@ -1,6 +1,6 @@
 class FinCal {
   constructor () {
-    this.id = SettingsUser.getValueOf('financial_calendar');
+    this.id = SettingsUser.get('financial_calendar');
     this.calendar = CalendarApp.getCalendarById(this.id);
     if (!this.calendar) return this;
 

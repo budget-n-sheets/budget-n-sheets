@@ -344,8 +344,9 @@ class UpdateScript extends Update {
    * 0.41.3
    */
   update_v0m41p3_ () {
-    const initial_month = SettingsUser.getValueOf('initial_month');
-    SettingsUser.setValueOf('initial_month', initial_month);
+    const initial_month = SettingsUser.get('initial_month');
+    SettingsUser.set('initial_month', initial_month);
+    SettingsUser.updateMetadata();
 
     return 0;
   }
