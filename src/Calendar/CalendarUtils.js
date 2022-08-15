@@ -3,8 +3,8 @@ class CalendarUtils {
     const output = [];
 
     const dateOffset = Utils.getDateOffset();
-    const dec_p = SettingsSpreadsheet.getValueOf('decimal_places');
-    const dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
+    const dec_p = SettingsSpreadsheet.get('decimal_places');
+    const dec_s = SettingsSpreadsheet.get('decimal_separator');
     const valueRegExp = FormatNumberUtils.getCurrencyRegExp();
 
     const accountsService = new AccountsService();

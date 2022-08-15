@@ -1,5 +1,5 @@
 function toggleViewMode_ () {
-  const mode = SettingsSpreadsheet.getValueOf('view_mode');
+  const mode = SettingsSpreadsheet.get('view_mode');
 
   const response = setViewMode_(mode === 'simple');
   if (response === 1) {
@@ -23,7 +23,7 @@ function setViewMode_ (mode) {
     LogLog.error(err);
     return 2;
   } finally {
-    SettingsSpreadsheet.setValueOf('view_mode', mode ? 'complete' : 'simple');
+    SettingsSpreadsheet.set('view_mode', mode ? 'complete' : 'simple');
     lock.releaseLock();
   }
 

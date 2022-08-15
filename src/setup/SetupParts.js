@@ -545,7 +545,7 @@ class SetupParts {
     if (dec_p === 0) sheet.getRange(8, 2).setNumberFormat('0');
 
     this._config.decimal_separator = dec_p;
-    SettingsSpreadsheet.setValueOf('decimal_separator', dec_p);
+    SettingsSpreadsheet.set('decimal_separator', dec_p).updateMetadata();
 
     const formater = new FormatNumber();
     cell = [

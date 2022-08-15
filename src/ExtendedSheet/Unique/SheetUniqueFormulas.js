@@ -32,7 +32,7 @@ class SheetUniqueFormulas {
     if (num < 1) return '';
 
     const ref = 'Tags!' + RangeUtils.rollA1Notation(2, 5, num, 1);
-    const num_acc = SettingsConst.getValueOf('number_accounts');
+    const num_acc = SettingsConst.get('number_accounts');
 
     let ranges = '';
     let n = 0;
@@ -86,7 +86,7 @@ class SheetUniqueFormulas {
   }
 
   static getTttTransaction_ () {
-    const num_acc = SettingsConst.getValueOf('number_accounts');
+    const num_acc = SettingsConst.get('number_accounts');
 
     let ranges = '';
     let n = 0;

@@ -1,13 +1,13 @@
 class FinCal {
   constructor () {
-    this.id = SettingsUser.getValueOf('financial_calendar');
+    this.id = SettingsUser.get('financial_calendar');
     this.calendar = CalendarApp.getCalendarById(this.id);
     if (!this.calendar) return this;
 
     this.isOwner = this.calendar.isOwnedByMe();
 
     this.dateOffset = Utils.getDateOffset();
-    this.fin_year = SettingsConst.getValueOf('financial_year');
+    this.fin_year = SettingsConst.get('financial_year');
   }
 
   get dateoffset () {

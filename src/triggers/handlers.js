@@ -28,7 +28,7 @@ function weeklyHandler_ (e) {
   if (!Addon.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
 
-  const financial_year = SettingsConst.getValueOf('financial_year');
+  const financial_year = SettingsConst.get('financial_year');
   if (e.year > financial_year) return;
 
   treatLayout_(e.year, e.month - 1);
@@ -39,7 +39,7 @@ function dailyHandler_ (e) {
   if (!Addon.isAuthorized()) return;
   if (UpdateService.checkAndUpdate()) return;
 
-  const financial_year = SettingsConst.getValueOf('financial_year');
+  const financial_year = SettingsConst.get('financial_year');
 
   const yyyy = e.year;
   const mm = e.month - 1;
@@ -54,7 +54,7 @@ function dailyHandler_ (e) {
     treatLayout_(yyyy, mm);
   }
 
-  if (SettingsUser.getValueOf('post_day_events')) {
+  if (SettingsUser.get('post_day_events')) {
     const date = Utils.getLocaleDate();
     CalendarService.syncDayWithSpreadsheet(date);
   }

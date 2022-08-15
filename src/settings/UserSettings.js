@@ -18,8 +18,8 @@ class UserSettings {
         .substring(0, 12);
     }
 
-    user_settings.decimal_places = SettingsSpreadsheet.getValueOf('decimal_places');
-    user_settings.view_mode = SettingsSpreadsheet.getValueOf('view_mode');
+    user_settings.decimal_places = SettingsSpreadsheet.get('decimal_places');
+    user_settings.view_mode = SettingsSpreadsheet.get('view_mode');
 
     return user_settings;
   }
@@ -33,7 +33,7 @@ class UserSettings {
     const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
 
     try {
-      if (SettingsSpreadsheet.getValueOf('spreadsheet_locale') !== spreadsheet.getSpreadsheetLocale()) {
+      if (SettingsSpreadsheet.get('spreadsheet_locale') !== spreadsheet.getSpreadsheetLocale()) {
         updateDecimalSeparator_();
       }
     } catch (err) {
@@ -48,7 +48,7 @@ class UserSettings {
 
     try {
       if (this._flush.view_mode) {
-        const mode = SettingsSpreadsheet.getValueOf('view_mode') === 'simple';
+        const mode = SettingsSpreadsheet.get('view_mode') === 'simple';
         setViewMode_(mode);
       }
     } catch (err) {
@@ -60,7 +60,7 @@ class UserSettings {
       if (sheet) {
         sheet.getRange('B4')
           .setFormula(
-            new FormatNumber().localeSignal(SettingsUser.getValueOf('initial_month') + 1)
+            new FormatNumber().localeSignal(SettingsUser.get('initial_month') + 1)
           );
       }
 
@@ -97,14 +97,15 @@ class UserSettings {
       cash_flow_events: calendar.cash_flow_events
     };
 
-    this._flush.decimal_places = decimal_places !== SettingsSpreadsheet.getValueOf('decimal_places');
-    this._flush.initial_month = user_settings.initial_month !== SettingsUser.getValueOf('initial_month');
-    this._flush.view_mode = settings.view_mode !== SettingsSpreadsheet.getValueOf('view_mode');
+    this._flush.decimal_places = decimal_places !== SettingsSpreadsheet.get('decimal_places');
+    this._flush.initial_month = user_settings.initial_month !== SettingsUser.get('initial_month');
+    this._flush.view_mode = settings.view_mode !== SettingsSpreadsheet.get('view_mode');
 
-    CachedProperties.withDocument().update('user_settings', user_settings);
-    RapidAccess.properties().clear();
+    for (const key in user_settings) {
+      SettingsUser.set(key, user_settings[key]);
+    }
 
-    SettingsSpreadsheet.setValueOf('decimal_places', decimal_places);
+    SettingsSpreadsheet.set('decimal_places', decimal_places);
 
     UserSettings.updateMetadata_();
     return this;

@@ -2,7 +2,7 @@ class SheetBackstage extends ExtendedSheet {
   constructor () {
     super('_Backstage');
 
-    this.num_acc = SettingsConst.getValueOf('number_accounts');
+    this.num_acc = SettingsConst.get('number_accounts');
 
     this.specs = Object.freeze({
       init: { row: 2, column: 2 },

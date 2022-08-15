@@ -16,8 +16,8 @@ class DemoCalendar extends QuickstartDemo {
     this.card_code = '';
 
     this._settings = {
-      financial_year: SettingsConst.getValueOf('financial_year'),
-      initial_month: SettingsUser.getValueOf('initial_month')
+      financial_year: SettingsConst.get('financial_year'),
+      initial_month: SettingsUser.get('initial_month')
     };
   }
 

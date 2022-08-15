@@ -61,8 +61,8 @@ function onOpen (e) {
 }
 
 function showPanelQuickstart () {
-  const dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
-  const financial_year = SettingsConst.getValueOf('financial_year');
+  const dec_p = SettingsSpreadsheet.get('decimal_separator');
+  const financial_year = SettingsConst.get('financial_year');
 
   const scriptlet = {
     isCurrent: (Consts.date < new Date(financial_year, 11, 1)),

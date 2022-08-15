@@ -36,7 +36,7 @@ class QuickstartDemo {
   getSheets_ () {
     const c = this.required.indexOf('mm');
     if (c !== -1) {
-      this.mm = SettingsConst.getValueOf('financial_year') === Consts.date.getFullYear() ? Consts.date.getMonth() : 0;
+      this.mm = SettingsConst.get('financial_year') === Consts.date.getFullYear() ? Consts.date.getMonth() : 0;
       this.required[c] = Consts.month_name.short[this.mm];
     }
 

@@ -16,7 +16,7 @@ class DemoAccCards extends QuickstartDemo {
     let mm = 1;
 
     if (num === 3) {
-      if (SettingsConst.getValueOf('financial_year') === Consts.date.getFullYear()) {
+      if (SettingsConst.get('financial_year') === Consts.date.getFullYear()) {
         mm = Consts.date.getMonth();
         if (mm === 0) mm = 1;
         else if (mm === 11) mm = 10;
