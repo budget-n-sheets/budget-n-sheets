@@ -9,12 +9,6 @@ const Goldfish = {
     spreadsheet: null,
     user: null
   },
-  services: {
-    properties: {
-      document: null,
-      user: null
-    }
-  },
   spreadsheet: {
     _self: {},
     metadata: null,
@@ -29,10 +23,6 @@ class RapidAccess {
 
   static properties () {
     return new RapidAccessProperties(Goldfish.properties);
-  }
-
-  static services () {
-    return new RapidAccessServices(Goldfish.services);
   }
 
   static spreadsheet () {
