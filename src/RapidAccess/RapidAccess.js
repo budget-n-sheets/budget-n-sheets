@@ -3,12 +3,6 @@ const Goldfish = {
     accounts: null,
     cards: null
   },
-  properties: {
-    admin: null,
-    const: null,
-    spreadsheet: null,
-    user: null
-  },
   spreadsheet: {
     _self: {},
     metadata: null,
@@ -19,10 +13,6 @@ const Goldfish = {
 class RapidAccess {
   static db () {
     return new RapidAccessDb(Goldfish.db);
-  }
-
-  static properties () {
-    return new RapidAccessProperties(Goldfish.properties);
   }
 
   static spreadsheet () {

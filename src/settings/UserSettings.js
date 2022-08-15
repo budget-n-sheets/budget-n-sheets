@@ -105,8 +105,6 @@ class UserSettings {
       SettingsUser.set(key, user_settings[key]);
     }
 
-    RapidAccess.properties().clear();
-
     SettingsSpreadsheet.set('decimal_places', decimal_places);
 
     UserSettings.updateMetadata_();
