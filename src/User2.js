@@ -1,12 +1,12 @@
 class User2 {
   static getId () {
-    this._userId = CacheService.getUserCache().get('user_id');
+    this._userId = CacheService2.getUserCache().get('user_id');
     if (this._userId) return this._userId;
 
     this._userId = PropertiesService.getUserProperties().getProperty('user_id');
     if (!this._userId) this.setId();
 
-    CacheService.getUserCache().put('user_id', this._userId);
+    CacheService2.getUserCache().put('user_id', this._userId);
     return this._userId;
   }
 

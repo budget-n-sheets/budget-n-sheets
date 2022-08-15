@@ -12,11 +12,11 @@ class Addon {
   }
 
   static isInstalled () {
-    let isInstalled = CacheService3.document().get('is_installed');
+    let isInstalled = CacheService2.getDocumentCache().get('is_installed');
     if (isInstalled) return isInstalled;
 
     isInstalled = !!PropertiesService3.document().getProperty('is_installed');
-    CacheService3.document().put('is_installed', isInstalled);
+    CacheService2.getDocumentCache().put('is_installed', isInstalled);
 
     return isInstalled;
   }
@@ -26,7 +26,7 @@ class Addon {
   }
 
   static loadCache () {
-    const cache = CacheService3.document();
+    const cache = CacheService2.getDocumentCache();
     const isLoaded = cache.get('load_cache');
     if (isLoaded) return;
 
@@ -41,6 +41,6 @@ class Addon {
     TriggersService.stop();
     const lock = !!(this.isInstalled() || BnsTemplate.isLocked());
     PropertiesService3.document().setProperties({ lock_spreadsheet: lock }, true);
-    CacheService3.document().removeAll(CACHE_KEYS);
+    CacheService2.getDocumentCache().removeAll(CACHE_KEYS);
   }
 }
