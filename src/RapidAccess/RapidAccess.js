@@ -10,10 +10,6 @@ const Goldfish = {
     user: null
   },
   services: {
-    cache: {
-      document: null,
-      user: null
-    },
     properties: {
       document: null,
       user: null

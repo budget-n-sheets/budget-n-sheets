@@ -3,28 +3,8 @@ class RapidAccessServices {
     this._services = services;
   }
 
-  cache () {
-    return new RapidAccessServicesCache(this._services.cache);
-  }
-
   properties () {
     return new RapidAccessServicesProperties(this._services.properties);
-  }
-}
-
-class RapidAccessServicesCache {
-  constructor (cache) {
-    this._cache = cache;
-  }
-
-  document () {
-    return this._cache.document ||
-          (this._cache.document = CacheService.getDocumentCache());
-  }
-
-  user () {
-    return this._cache.user ||
-          (this._cache.user = CacheService.getUserCache());
   }
 }
 
