@@ -259,7 +259,7 @@ class UpdateScript extends Update {
    * 0.42.17
    */
   patchV0m42p17_ () {
-    const db_tables = PropertiesService3.document().getProperty('DB_TABLES');
+    const db_tables = PropertiesService2.getDocumentProperties().getProperty('DB_TABLES');
     let db;
 
     const db_accounts = {};
@@ -290,7 +290,7 @@ class UpdateScript extends Update {
     }
     CachedProperties.withDocument().update('db_cards', db_cards);
 
-    PropertiesService3.document().deleteProperty('DB_TABLES');
+    PropertiesService2.getDocumentProperties().deleteProperty('DB_TABLES');
     return 0;
   }
 
@@ -333,7 +333,7 @@ class UpdateScript extends Update {
    * 0.42.10
    */
   update_v0m42p10_ () {
-    PropertiesService3.document().deleteProperty('spreadsheet_triggers');
+    PropertiesService2.getDocumentProperties().deleteProperty('spreadsheet_triggers');
 
     return 0;
   }

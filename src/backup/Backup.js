@@ -81,7 +81,7 @@ class Backup {
   }
 
   collectProperties_ () {
-    const documentProperties = PropertiesService3.document();
+    const documentProperties = PropertiesService2.getDocumentProperties();
     this._backup.user_settings = documentProperties.getProperty('user_settings');
     this._backup.admin_settings = documentProperties.getProperty('admin_settings');
     this._backup.const_properties = documentProperties.getProperty('const_properties');

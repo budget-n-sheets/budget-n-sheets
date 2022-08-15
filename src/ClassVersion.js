@@ -14,7 +14,7 @@ class ClassVersion {
     switch (key) {
       case 'script':
       case 'template': {
-        const class_version2 = PropertiesService3.document().getProperty('class_version2');
+        const class_version2 = PropertiesService2.getDocumentProperties().getProperty('class_version2');
         class_version2[key] = newValue;
         CachedProperties.withDocument().update('class_version2', class_version2);
         break;

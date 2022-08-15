@@ -46,7 +46,7 @@ function setupService (uuid, payload) {
   new BsAuth(spreadsheet).update();
 
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
-  PropertiesService3.document().setProperty('is_installed', true);
+  PropertiesService2.getDocumentProperties().setProperty('is_installed', true);
 
   try {
     TriggersService.start();
