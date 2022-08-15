@@ -53,7 +53,7 @@ class CalendarService {
       new LedgerCards().mergeTransactions(mm, tableCards);
     }
 
-    const num_ttt = 1 + SettingsConst.getValueOf('number_accounts');
+    const num_ttt = 1 + SettingsConst.get('number_accounts');
     const ledger = new LedgerAccounts(mm);
     for (const k in tableTtt) {
       if (tableTtt[k].length === 0) continue;

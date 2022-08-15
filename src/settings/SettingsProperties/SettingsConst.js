@@ -1,15 +1,15 @@
-class SettingsConst {
-  static getValueOf (key) {
-    switch (key) {
-      case 'setup_channel':
-      case 'financial_year':
-      case 'number_accounts':
-      case 'date_created':
-        return RapidAccess.properties().const()[key];
+class SettingsConst extends Settings {
+  static get _config () {
+    return {
+      protect: true
+    };
+  }
 
-      default:
-        console.error('SettingsConst: getValueOf(): Switch case is default.', key);
-        break;
-    }
+  static get _key () {
+    return 'const_properties';
+  }
+
+  static get _scope () {
+    return 'document';
   }
 }

@@ -7,7 +7,7 @@ class ViewModeCompact {
     const _h = TABLE_DIMENSION.height;
     const _w = TABLE_DIMENSION.width;
 
-    const num_acc = SettingsConst.getValueOf('number_accounts');
+    const num_acc = SettingsConst.get('number_accounts');
     const col = 2 + _w + _w * num_acc;
 
     const range = sheet.getRange(2, 4, 1, 2);
@@ -29,7 +29,7 @@ class ViewModeCompact {
   }
 
   static compactTtt_ () {
-    const num_acc = SettingsConst.getValueOf('number_accounts');
+    const num_acc = SettingsConst.get('number_accounts');
 
     for (let i = 0; i < 12; i++) {
       const sheet = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);

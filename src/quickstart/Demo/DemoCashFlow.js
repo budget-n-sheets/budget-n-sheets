@@ -4,7 +4,7 @@ class DemoCashFlow extends QuickstartDemo {
   }
 
   demo_ () {
-    const num_acc = 1 + SettingsConst.getValueOf('number_accounts');
+    const num_acc = 1 + SettingsConst.get('number_accounts');
 
     const ledger = new LedgerAccounts(this.mm);
 

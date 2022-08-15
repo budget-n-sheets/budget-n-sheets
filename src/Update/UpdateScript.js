@@ -441,7 +441,7 @@ class UpdateScript extends Update {
     const unique = spreadsheet.getSheetByName('_Unique');
     if (!unique) return 1;
 
-    const num_acc = SettingsConst.getValueOf('number_accounts');
+    const num_acc = SettingsConst.get('number_accounts');
     const rule = SpreadsheetApp.newDataValidation()
       .requireValueInRange(unique.getRange('A:A'), false)
       .setAllowInvalid(true)
