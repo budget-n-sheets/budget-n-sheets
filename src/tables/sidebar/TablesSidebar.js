@@ -39,6 +39,6 @@ class TablesSidebar extends HtmlTemplate2 {
     this.loadPanels_();
     this.loadScriptletValues_();
 
-    return this.assignReservedHref().evaluate().setTitle('Accounts & Cards');
+    return this.setScriptletValues(HtmlResources.href.reserved).evaluate().setTitle('Accounts & Cards');
   }
 }

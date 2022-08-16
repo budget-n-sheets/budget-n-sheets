@@ -5,13 +5,13 @@ class HtmlPanel {
   }
 
   getHtmlContent () {
-    return this._htmlTemplate.assignReservedHref()
+    return this._htmlTemplate.setScriptletValues(HtmlResources.href.reserved)
       .evaluate()
       .getContent();
   }
 
   getJsContent () {
-    return this._jsTemplate.assignReservedHref()
+    return this._jsTemplate.setScriptletValues(HtmlResources.href.reserved)
       .evaluate()
       .getContent();
   }

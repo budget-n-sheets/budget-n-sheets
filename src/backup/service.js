@@ -15,7 +15,7 @@ function showDialogBackupSession () {
 
   const jsZxcvbn = HtmlService.createHtmlOutputFromFile('zxcvbn/jsZxcvbn').getContent();
   const htmlOutput = HtmlService2.createTemplateFromFile('backup/htmlNewPassword')
-    .assignReservedHref()
+    .setScriptletValues(HtmlResources.href.reserved)
     .setScriptletValues({ jsZxcvbn: jsZxcvbn })
     .evaluate()
     .setHeight(421)
