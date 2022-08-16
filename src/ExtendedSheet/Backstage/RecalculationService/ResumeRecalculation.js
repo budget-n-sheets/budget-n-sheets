@@ -23,7 +23,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
 
     let mm = this.start - 1;
     while (++mm < this.end) {
-      const month = Spreadsheet2.getSheetByName(Consts.month_name.short[mm]);
+      const month = Spreadsheet3.getSheetByName(Consts.month_name.short[mm]);
       if (!month) continue;
 
       const numRows = month.getMaxRows() - 4;
@@ -64,7 +64,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
 
     let mm = this.start - 1;
     while (++mm < this.end) {
-      const month = Spreadsheet2.getSheetByName(Consts.month_name.short[mm]);
+      const month = Spreadsheet3.getSheetByName(Consts.month_name.short[mm]);
       if (!month) continue;
 
       const maxRows = month.getMaxRows();
@@ -121,7 +121,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
     const formulas = this.formulas.cards();
     const col = 2 + this._w + this._w * this.num_acc + this._w;
 
-    const sheet = Spreadsheet2.getSheetByName('Cards');
+    const sheet = Spreadsheet3.getSheetByName('Cards');
     if (!sheet) return;
 
     const numRows = sheet.getMaxRows() - 5;
@@ -198,7 +198,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
 
     let mm = this.start;
     while (++mm < actual) {
-      const month = Spreadsheet2.getSheetByName(Consts.month_name.short[mm]);
+      const month = Spreadsheet3.getSheetByName(Consts.month_name.short[mm]);
       if (!month) continue;
 
       const maxRows = month.getMaxRows();

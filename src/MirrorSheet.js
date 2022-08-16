@@ -17,7 +17,7 @@ class MirrorSheet {
 
   get sheet () {
     return this._sheet ||
-          (this._sheet = Spreadsheet2.getSheetByName(this.name));
+          (this._sheet = Spreadsheet3.getSheetByName(this.name));
   }
 
   copyTemplate () {
@@ -27,7 +27,7 @@ class MirrorSheet {
   }
 
   deleteTemplate () {
-    const sheet = Spreadsheet2.getSheetByName(this.name);
+    const sheet = Spreadsheet3.getSheetByName(this.name);
     if (sheet) this._spreadsheet.deleteSheet(this.sheet);
     this._sheet = null;
     SpreadsheetApp.flush();

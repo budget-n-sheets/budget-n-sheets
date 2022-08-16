@@ -1,13 +1,13 @@
 class SheetUniqueFormulas {
   static getCardsTags_ () {
-    let sheet = Spreadsheet2.getSheetByName('Tags');
+    let sheet = Spreadsheet3.getSheetByName('Tags');
     if (!sheet) return '';
     let num = sheet.getMaxRows() - 1;
     if (num < 1) return '';
 
     const ref = 'Tags!' + RangeUtils.rollA1Notation(2, 5, num, 1);
 
-    sheet = Spreadsheet2.getSheetByName('Cards');
+    sheet = Spreadsheet3.getSheetByName('Cards');
     if (!sheet) return '';
     num = sheet.getMaxRows() - 5;
     if (num < 1) return '';
@@ -26,7 +26,7 @@ class SheetUniqueFormulas {
   }
 
   static getTttTags_ () {
-    const sheet = Spreadsheet2.getSheetByName('Tags');
+    const sheet = Spreadsheet3.getSheetByName('Tags');
     if (!sheet) return '';
     const num = sheet.getMaxRows() - 1;
     if (num < 1) return '';
@@ -38,7 +38,7 @@ class SheetUniqueFormulas {
     let n = 0;
 
     for (let i = 0; i < 12; i++) {
-      const sheet = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);
+      const sheet = Spreadsheet3.getSheetByName(Consts.month_name.short[i]);
       if (!sheet) continue;
 
       const num = sheet.getMaxRows() - 4;
@@ -62,7 +62,7 @@ class SheetUniqueFormulas {
   }
 
   static getCardsTransaction_ () {
-    const sheet = Spreadsheet2.getSheetByName('Cards');
+    const sheet = Spreadsheet3.getSheetByName('Cards');
     if (!sheet) return '';
 
     const num = sheet.getMaxRows() - 5;
@@ -92,7 +92,7 @@ class SheetUniqueFormulas {
     let n = 0;
 
     for (let i = 0; i < 12; i++) {
-      const sheet = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);
+      const sheet = Spreadsheet3.getSheetByName(Consts.month_name.short[i]);
       if (!sheet) continue;
 
       const num = sheet.getMaxRows() - 4;

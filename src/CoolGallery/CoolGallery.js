@@ -20,7 +20,7 @@ class CoolGallery extends MirrorSheet {
 
   checkDependencies () {
     for (const name of this._metadata.requires) {
-      if (!Spreadsheet2.getSheetByName(name)) return false;
+      if (!Spreadsheet3.getSheetByName(name)) return false;
     }
     return true;
   }

@@ -54,7 +54,7 @@ class UpdateScript extends Update {
    * 0.46.7
    */
    v0m46p7_ () {
-    if (!Spreadsheet2.getSheetByName('_Backstage')) return 3;
+    if (!Spreadsheet3.getSheetByName('_Backstage')) return 3;
 
     try {
       RecalculationService.resume(0, 12);
@@ -72,7 +72,7 @@ class UpdateScript extends Update {
    * 0.46.3
    */
   patchV0m46p3_ () {
-    const sheet = Spreadsheet2.getSheetByName('Summary');
+    const sheet = Spreadsheet3.getSheetByName('Summary');
     if (!sheet) return 0;
 
     const charts = sheet.getCharts();
@@ -93,7 +93,7 @@ class UpdateScript extends Update {
    * 0.46.2
    */
   patchV0m46p2_ () {
-    const sheet = Spreadsheet2.getSheetByName('Summary');
+    const sheet = Spreadsheet3.getSheetByName('Summary');
     if (!sheet) return 0;
 
     const sheetId = sheet.getSheetId();
@@ -140,7 +140,7 @@ class UpdateScript extends Update {
    * 0.45.1
    */
   patchV0m45p1_ () {
-    const sheet = Spreadsheet2.getSheetByName('Summary');
+    const sheet = Spreadsheet3.getSheetByName('Summary');
     if (!sheet) return 0;
 
     const charts = sheet.getCharts();
@@ -183,7 +183,7 @@ class UpdateScript extends Update {
    * 0.42.33
    */
   patchV0m42p33_ () {
-    const sheet = Spreadsheet2.getSheetByName('Quick Actions');
+    const sheet = Spreadsheet3.getSheetByName('Quick Actions');
     if (sheet) sheet.setTabColor('#b7b7b7');
     return 0;
   }
@@ -194,7 +194,7 @@ class UpdateScript extends Update {
    * 0.42.31
    */
   patchV0m42p31_ () {
-    if (!Spreadsheet2.getSheetByName('_Backstage')) return 3;
+    if (!Spreadsheet3.getSheetByName('_Backstage')) return 3;
 
     try {
       RecalculationService.resume(0, 12);

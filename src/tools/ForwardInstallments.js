@@ -1,6 +1,6 @@
 class ForwardInstallments {
   constructor () {
-    this.sheet = Spreadsheet2.getSheetByName('Cards');
+    this.sheet = Spreadsheet3.getSheetByName('Cards');
 
     this.formater = new FormatNumber();
 

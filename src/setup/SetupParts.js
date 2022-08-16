@@ -12,14 +12,14 @@ class SetupParts {
     this._config = config;
     this._spreadsheet = SpreadsheetApp3.getActive();
     this._spreadsheetId = SpreadsheetApp3.getActive().getId();
-    this._metadata = Spreadsheet2.getMetadata();
+    this._metadata = Spreadsheet3.getMetadata();
   }
 
   setupBackstage_ () {
     const formulasBackstage = FormulaBuild.backstage();
     const numRows = SPREADSHEET_SPECS.initial_height;
 
-    const sheet = Spreadsheet2.getSheetByName('_Backstage');
+    const sheet = Spreadsheet3.getSheetByName('_Backstage');
 
     let formula;
     let income, expenses;
@@ -123,7 +123,7 @@ class SetupParts {
   setupCards_ () {
     const formulasCards = FormulaBuild.cards().header();
 
-    const sheet = Spreadsheet2.getSheetByName('Cards');
+    const sheet = Spreadsheet3.getSheetByName('Cards');
     let formula;
     let expr1, expr2, expr3;
     let i, k;
@@ -186,7 +186,7 @@ class SetupParts {
   }
 
   setupCashFlow_ () {
-    const sheet = Spreadsheet2.getSheetByName('Cash Flow');
+    const sheet = Spreadsheet3.getSheetByName('Cash Flow');
     let ranges, formula;
     let d, s;
     let i, j, k;
@@ -330,7 +330,7 @@ class SetupParts {
 
     const sheets = [];
     for (i = 0; i < 12; i++) {
-      sheets[i] = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);
+      sheets[i] = Spreadsheet3.getSheetByName(Consts.month_name.short[i]);
     }
 
     for (i = 0; i < 12; i++) {
@@ -357,12 +357,12 @@ class SetupParts {
       sheets[this._date.mm].setTabColor('#6aa84f');
     }
 
-    Spreadsheet2.getSheetByName('Cards').setTabColor('#e69138');
-    Spreadsheet2.getSheetByName('Cash Flow').setTabColor('#e69138');
-    Spreadsheet2.getSheetByName('_Backstage').setTabColor('#cc0000');
-    Spreadsheet2.getSheetByName('_Unique').setTabColor('#cc0000');
-    Spreadsheet2.getSheetByName('_Settings').setTabColor('#cc0000');
-    Spreadsheet2.getSheetByName('_About BnS').setTabColor('#6aa84f');
+    Spreadsheet3.getSheetByName('Cards').setTabColor('#e69138');
+    Spreadsheet3.getSheetByName('Cash Flow').setTabColor('#e69138');
+    Spreadsheet3.getSheetByName('_Backstage').setTabColor('#cc0000');
+    Spreadsheet3.getSheetByName('_Unique').setTabColor('#cc0000');
+    Spreadsheet3.getSheetByName('_Settings').setTabColor('#cc0000');
+    Spreadsheet3.getSheetByName('_About BnS').setTabColor('#6aa84f');
 
     if (t) {
       for (i = 0; i < 12; i++) {
@@ -380,10 +380,10 @@ class SetupParts {
       }
     }
 
-    Spreadsheet2.getSheetByName('_Backstage').hideSheet();
-    Spreadsheet2.getSheetByName('_Unique').hideSheet();
-    Spreadsheet2.getSheetByName('_Settings').hideSheet();
-    Spreadsheet2.getSheetByName('_About BnS').hideSheet();
+    Spreadsheet3.getSheetByName('_Backstage').hideSheet();
+    Spreadsheet3.getSheetByName('_Unique').hideSheet();
+    Spreadsheet3.getSheetByName('_Settings').hideSheet();
+    Spreadsheet3.getSheetByName('_About BnS').hideSheet();
 
     SpreadsheetApp.flush();
   }
@@ -391,7 +391,7 @@ class SetupParts {
   setupMonthSheet_ () {
     const formulaBuild = FormulaBuild.ttt().header();
 
-    const sheetTTT = Spreadsheet2.getSheetByName('TTT');
+    const sheetTTT = Spreadsheet3.getSheetByName('TTT');
     let sheet, formula;
     let expr1, expr2, expr3, expr4;
     let i, k;
@@ -524,7 +524,7 @@ class SetupParts {
 
   setupSettings_ () {
     const buildFormulas = FormulaBuild.settings().formulas();
-    const sheet = Spreadsheet2.getSheetByName('_Settings');
+    const sheet = Spreadsheet3.getSheetByName('_Settings');
     let cell, dec_p;
 
     this._spreadsheet.setActiveSheet(sheet);
@@ -576,7 +576,7 @@ class SetupParts {
 
   setupSummary_ () {
     const formulaBuild = FormulaBuild.summary();
-    const sheet = Spreadsheet2.getSheetByName('Summary');
+    const sheet = Spreadsheet3.getSheetByName('Summary');
 
     let formulas, makeFormula;
 
@@ -651,7 +651,7 @@ class SetupParts {
   }
 
   setupTags_ () {
-    const sheet = Spreadsheet2.getSheetByName('Tags');
+    const sheet = Spreadsheet3.getSheetByName('Tags');
     const maxRows = sheet.getMaxRows() - 1;
 
     const formulaBuild = FormulaBuild.tags();
@@ -676,7 +676,7 @@ class SetupParts {
   }
 
   setupUnique_ () {
-    const sheet = Spreadsheet2.getSheetByName('_Unique');
+    const sheet = Spreadsheet3.getSheetByName('_Unique');
 
     const num_acc = this._config.number_accounts;
 
@@ -694,7 +694,7 @@ class SetupParts {
   }
 
   setupWest_ () {
-    Spreadsheet2.getSheetByName('_About BnS')
+    Spreadsheet3.getSheetByName('_About BnS')
       .protect()
       .setWarningOnly(true);
 

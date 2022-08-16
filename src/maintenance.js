@@ -56,7 +56,7 @@ function askResetSuggestions () {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(200)) return;
 
-  const sheetUnique = Spreadsheet2.getSheetByName('_Unique');
+  const sheetUnique = Spreadsheet3.getSheetByName('_Unique');
   if (!sheetUnique) return;
 
   const num_acc = SettingsConst.get('number_accounts');
@@ -72,7 +72,7 @@ function askResetSuggestions () {
 
   let i = -1;
   while (++i < 12) {
-    const sheetMm = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);
+    const sheetMm = Spreadsheet3.getSheetByName(Consts.month_name.short[i]);
     if (!sheetMm) continue;
 
     const height = sheetMm.getMaxRows() - 4;
@@ -89,7 +89,7 @@ function askResetSuggestions () {
     }
   }
 
-  const sheetCards = Spreadsheet2.getSheetByName('Cards');
+  const sheetCards = Spreadsheet3.getSheetByName('Cards');
   if (!sheetCards) {
     lock.releaseLock();
     return;

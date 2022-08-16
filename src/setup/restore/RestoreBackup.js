@@ -9,7 +9,7 @@ class RestoreBackup {
   restoreCards_ () {
     const cards = this.backup.cards;
 
-    const sheet = Spreadsheet2.getSheetByName('Cards');
+    const sheet = Spreadsheet3.getSheetByName('Cards');
     const insertRows = new ToolInsertRowsCards();
 
     let mm = -1;
@@ -62,7 +62,7 @@ class RestoreBackup {
     if (this.backup.tags.length < 1) return;
 
     new ToolInsertRowsTags().insertRowsTo(1 + this.backup.tags.length, true);
-    Spreadsheet2.getSheetByName('Tags')
+    Spreadsheet3.getSheetByName('Tags')
       .getRange(2, 1, this.backup.tags.length, 5)
       .setValues(this.backup.tags);
   }
@@ -77,7 +77,7 @@ class RestoreBackup {
 
     let mm = -1;
     while (++mm < 12) {
-      const sheet = Spreadsheet2.getSheetByName(Consts.month_name.short[mm]);
+      const sheet = Spreadsheet3.getSheetByName(Consts.month_name.short[mm]);
       const insertRows = new ToolInsertRowsMonth(mm);
 
       if (ttt[mm][0] && ttt[mm][0].length > 0) {

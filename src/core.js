@@ -91,7 +91,7 @@ function showPanelAnalytics () {
 }
 
 function showPanelTagging () {
-  if (!Spreadsheet2.getSheetByName('Tags')) {
+  if (!Spreadsheet3.getSheetByName('Tags')) {
     SpreadsheetApp2.getUi().alert("Can't open Tagging", "The sheet Tags is missing.");
     return;
   }
