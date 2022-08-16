@@ -1,6 +1,6 @@
 class Metadata {
   constructor (spreadsheet) {
-    this.spreadsheet = spreadsheet || SpreadsheetApp2.getActiveSpreadsheet();
+    this.spreadsheet = spreadsheet || SpreadsheetApp2.getActive();
 
     this.keys = [];
     this.metadata = {};

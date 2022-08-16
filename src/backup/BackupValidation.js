@@ -41,7 +41,7 @@ class BackupValidation {
     SettingsCandidate.processBackup(this._uuid, this._backup, patched);
     SessionService.getSession(this._uuid)
       .createContext(
-        [this._backup.getId(), SpreadsheetApp2.getActiveSpreadsheet().getId()],
+        [this._backup.getId(), SpreadsheetApp2.getActive().getId()],
         password,
         180);
 

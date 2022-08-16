@@ -30,7 +30,7 @@ class UserSettings {
   }
 
   flush () {
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActive();
 
     try {
       if (SettingsSpreadsheet.getValueOf('spreadsheet_locale') !== spreadsheet.getSpreadsheetLocale()) {

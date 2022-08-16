@@ -4,7 +4,7 @@ class SetupService {
     if (Addon.isInstalled()) return 2;
     if (BnsTemplate.isLocked()) return 3;
 
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActive();
 
     const owner = spreadsheet.getOwner();
     if (owner) {

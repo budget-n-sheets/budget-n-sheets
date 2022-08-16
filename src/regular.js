@@ -1,5 +1,5 @@
 function treatLayout_ (yyyy, mm) {
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActive();
   const financial_year = SettingsConst.getValueOf('financial_year');
   let month, i;
 

@@ -169,7 +169,7 @@ class DemoCalendar extends QuickstartDemo {
     tool.indexes = indexes;
     tool.refresh();
 
-    SpreadsheetApp2.getActiveSpreadsheet().setActiveSheet(this.sheet);
+    SpreadsheetApp2.getActive().setActiveSheet(this.sheet);
     this.sheet.getRange(1, 2 + 4 * this.date.mm, 1, 3).activate();
   }
 }

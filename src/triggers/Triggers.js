@@ -1,6 +1,6 @@
 class Triggers {
   static get triggers () {
-    return ScriptApp.getUserTriggers(SpreadsheetApp2.getActiveSpreadsheet());
+    return ScriptApp.getUserTriggers(SpreadsheetApp2.getActive());
   }
 
   static deleteAllUserTriggers () {

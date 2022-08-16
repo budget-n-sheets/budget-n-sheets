@@ -23,7 +23,7 @@ function setupService (uuid, payload) {
   session.end();
   session = null;
 
-  const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp2.getActive();
   spreadsheet.rename(config.spreadsheet_name);
 
   new SetupProgress().makeClean()

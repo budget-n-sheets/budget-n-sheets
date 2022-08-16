@@ -4,7 +4,7 @@ class Utils {
   }
 
   static getLocaleDate (date) {
-    let timezone = SpreadsheetApp2.getActiveSpreadsheet().getSpreadsheetTimeZone();
+    let timezone = SpreadsheetApp2.getActive().getSpreadsheetTimeZone();
     if (typeof timezone !== 'string' || timezone === '') timezone = 'GMT';
 
     const formatDate = Utilities.formatDate(date || Consts.date, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");

@@ -1,7 +1,7 @@
 class RestoreBackup {
   constructor (config) {
     this.backup = config.backup;
-    this.spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    this.spreadsheet = SpreadsheetApp2.getActive();
 
     this.name_accounts = config.name_accounts.filter(e => e.require === 'restore');
   }

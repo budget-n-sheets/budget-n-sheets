@@ -213,7 +213,7 @@ class UpdateScript extends Update {
    * 0.42.30
    */
   patchV0m42p30_ () {
-    SpreadsheetApp2.getActiveSpreadsheet()
+    SpreadsheetApp2.getActive()
       .createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .find()
@@ -304,7 +304,7 @@ class UpdateScript extends Update {
     if (PropertiesService.getDocumentProperties().getProperty('DB_TABLES') == null) return 3;
     if (PropertiesService.getDocumentProperties().getProperty('db_accounts') == null) return 3;
 
-    SpreadsheetApp2.getActiveSpreadsheet()
+    SpreadsheetApp2.getActive()
       .createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .withKey('db_accounts')
@@ -322,7 +322,7 @@ class UpdateScript extends Update {
    * 0.42.11
    */
   patchV0m42p11_ () {
-    new BsAuth(SpreadsheetApp2.getActiveSpreadsheet()).update();
+    new BsAuth(SpreadsheetApp2.getActive()).update();
 
     return 0;
   }
@@ -356,7 +356,7 @@ class UpdateScript extends Update {
    * 0.40.1
    */
   update_v0m40p1_ () {
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActive();
     const unique = spreadsheet.getSheetByName('_Unique');
     if (!unique) return 0;
 
@@ -406,7 +406,7 @@ class UpdateScript extends Update {
   }
 
   update_v0m40p0s2_ () {
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActive();
     const unique = spreadsheet.getSheetByName('_Unique');
     if (!unique) return 1;
 
@@ -437,7 +437,7 @@ class UpdateScript extends Update {
   }
 
   update_v0m40p0s1_ () {
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActive();
     const unique = spreadsheet.getSheetByName('_Unique');
     if (!unique) return 1;
 
@@ -473,7 +473,7 @@ class UpdateScript extends Update {
   }
 
   update_v0m40p0s0_ () {
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActive();
 
     let sheet = spreadsheet.getSheetByName('_Unique');
     if (sheet) spreadsheet.deleteSheet(sheet);

@@ -4,7 +4,7 @@ class SetupProgress {
   }
 
   copyTemplate () {
-    const spreadsheet = SpreadsheetApp2.getActiveSpreadsheet();
+    const spreadsheet = SpreadsheetApp2.getActive();
     const sheets = spreadsheet.getSheets();
 
     SpreadsheetService.copySheetsFromSource(
