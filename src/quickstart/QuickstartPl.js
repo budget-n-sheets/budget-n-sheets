@@ -13,6 +13,6 @@ class QuickstartPl {
     if (!demo.isReady) return;
 
     demo.play(num);
-    SpreadsheetApp2.getActive().toast('Done.', 'Quickstart');
+    SpreadsheetApp3.getActive().toast('Done.', 'Quickstart');
   }
 }

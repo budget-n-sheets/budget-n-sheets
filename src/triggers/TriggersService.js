@@ -1,14 +1,14 @@
 class TriggersService {
   static installOnEdit_ () {
     ScriptApp.newTrigger('onEditHandler_')
-      .forSpreadsheet(SpreadsheetApp2.getActive().getId())
+      .forSpreadsheet(SpreadsheetApp3.getActive().getId())
       .onEdit()
       .create();
   }
 
   static installOnOpen_ () {
     ScriptApp.newTrigger('onOpenHandler_')
-      .forSpreadsheet(SpreadsheetApp2.getActive().getId())
+      .forSpreadsheet(SpreadsheetApp3.getActive().getId())
       .onOpen()
       .create();
   }
@@ -19,7 +19,7 @@ class TriggersService {
     const minute = Noise.randomInteger(60);
 
     const financial_year = SettingsConst.get('financial_year');
-    const timezone = SpreadsheetApp2.getActive().getSpreadsheetTimeZone() || 'GMT';
+    const timezone = SpreadsheetApp3.getActive().getSpreadsheetTimeZone() || 'GMT';
 
     if (yyyy < financial_year) {
       const weekday = [ScriptApp.WeekDay.SUNDAY, ScriptApp.WeekDay.MONDAY, ScriptApp.WeekDay.TUESDAY, ScriptApp.WeekDay.WEDNESDAY, ScriptApp.WeekDay.THURSDAY, ScriptApp.WeekDay.FRIDAY, ScriptApp.WeekDay.SATURDAY];

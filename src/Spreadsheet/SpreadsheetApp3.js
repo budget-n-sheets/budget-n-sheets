@@ -1,7 +1,6 @@
-class SpreadsheetApp2 {
+class SpreadsheetApp3 {
   static getActive () {
-    const self = RapidAccess.spreadsheet().self;
-    return self.getActive || (self.getActive = SpreadsheetApp.getActive());
+    return SpreadsheetApp2.getActive().spreadsheet;
   }
 
   static getActiveSpreadsheet () {

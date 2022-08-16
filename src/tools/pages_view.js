@@ -50,7 +50,7 @@ function hideSheets_ (a) {
     }
   }
 
-  const spreadsheet = SpreadsheetApp2.getActive();
+  const spreadsheet = SpreadsheetApp3.getActive();
   const delta = Utils.getMonthDelta(mm);
 
   for (let i = 0; i < 12; i++) {
@@ -63,7 +63,7 @@ function hideSheets_ (a) {
 }
 
 function showSheets_ () {
-  const spreadsheet = SpreadsheetApp2.getActive();
+  const spreadsheet = SpreadsheetApp3.getActive();
 
   for (let i = 0; i < 12; i++) {
     const sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);

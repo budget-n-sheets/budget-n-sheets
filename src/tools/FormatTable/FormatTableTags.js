@@ -1,7 +1,7 @@
 class FormatTableTags extends FormatTable {
   constructor () {
     super();
-    this.sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
+    this.sheet = SpreadsheetApp3.getActive().getSheetByName('Tags');
 
     this.specs = Object.freeze({
       nullSearch: 5,

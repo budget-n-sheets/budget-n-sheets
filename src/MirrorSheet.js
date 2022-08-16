@@ -1,6 +1,6 @@
 class MirrorSheet {
   constructor (metadata) {
-    this._spreadsheet = SpreadsheetApp2.getActive();
+    this._spreadsheet = SpreadsheetApp3.getActive();
     this._metadata = metadata;
 
     this._consts = {};

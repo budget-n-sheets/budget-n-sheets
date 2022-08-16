@@ -5,11 +5,11 @@ class Spreadsheet2 {
 
   static getSheetByName (name) {
     const sheets = RapidAccess.spreadsheet().sheets();
-    if (!sheets[name]) return sheets[name] = SpreadsheetApp2.getActive().getSheetByName(name);
+    if (!sheets[name]) return sheets[name] = SpreadsheetApp3.getActive().getSheetByName(name);
     try {
       sheets[name].getType();
     } catch (err) {
-      sheets[name] = SpreadsheetApp2.getActive().getSheetByName(name);
+      sheets[name] = SpreadsheetApp3.getActive().getSheetByName(name);
     } finally {
       return sheets[name];
     }

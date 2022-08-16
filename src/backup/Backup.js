@@ -1,6 +1,6 @@
 class Backup {
   constructor () {
-    this._spreadsheet = SpreadsheetApp2.getActive();
+    this._spreadsheet = SpreadsheetApp3.getActive();
     this._backup = {
       metadata: {},
       ttt: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}, 11: {} },

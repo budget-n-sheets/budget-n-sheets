@@ -10,8 +10,8 @@ class SetupParts {
     });
 
     this._config = config;
-    this._spreadsheet = SpreadsheetApp2.getActive();
-    this._spreadsheetId = SpreadsheetApp2.getActive().getId();
+    this._spreadsheet = SpreadsheetApp3.getActive();
+    this._spreadsheetId = SpreadsheetApp3.getActive().getId();
     this._metadata = Spreadsheet2.getMetadata();
   }
 

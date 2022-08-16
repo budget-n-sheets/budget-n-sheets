@@ -22,7 +22,7 @@ class TablesService {
   }
 
   initSpreadsheet_ () {
-    if (this.spreadsheet == null) this.spreadsheet = SpreadsheetApp2.getActive();
+    if (this.spreadsheet == null) this.spreadsheet = SpreadsheetApp3.getActive();
   }
 
   getAll () {

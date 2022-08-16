@@ -7,7 +7,7 @@ class BackupUtils {
   }
 
   static sendEmail (blob) {
-    const spreadsheet = SpreadsheetApp2.getActive();
+    const spreadsheet = SpreadsheetApp3.getActive();
     const scriptlet = {
       spreadsheet_url: spreadsheet.getUrl(),
       spreadsheet_name: spreadsheet.getName(),
