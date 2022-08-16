@@ -4,10 +4,10 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <?!= HtmlService2.htmlInclude("html/resources/styles"); ?>
-  <?!= HtmlService2.htmlInclude("html/resources/material-icons"); ?>
-  <?!= HtmlService2.htmlInclude("html/resources/animation-processing"); ?>
-  <?!= HtmlService2.htmlInclude('setup/common/cssCommonDialog'); ?>
+  <?!= HtmlService2.include("html/resources/styles"); ?>
+  <?!= HtmlService2.include("html/resources/material-icons"); ?>
+  <?!= HtmlService2.include("html/resources/animation-processing"); ?>
+  <?!= HtmlService2.include('setup/common/cssCommonDialog'); ?>
 </head>
 
 <body>
@@ -80,7 +80,7 @@
     </div>
   </div>
 
-  <?!= HtmlService2.htmlInclude("html/resources/javascript"); ?>
+  <?!= HtmlService2.include("html/resources/javascript"); ?>
   <?!= containment8d4adafda11Frame(); ?>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script>
