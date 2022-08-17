@@ -1,9 +1,9 @@
 [submodule "src/PatchThis"]
 	path = src/PatchThis
-	url = https://github.com/guimspace/PatchThis.git
+	url = https://github.com/budget-n-sheets/PatchThis.git
 [submodule "src/SessionService"]
 	path = src/SessionService
-	url = https://github.com/guimspace/SessionService.git
+	url = https://github.com/budget-n-sheets/SessionService.git
 [submodule "src/gas-goldfish"]
 	path = src/gas-goldfish
-	url = https://github.com/guimspace/gas-goldfish.git
+	url = https://github.com/budget-n-sheets/gas-goldfish.git
