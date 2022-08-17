@@ -41,7 +41,7 @@ class SettingsCandidate {
       settings_candidate.misc.cards.push(data.db_tables.cards[k].name);
     }
 
-    PropertiesService3.document().setProperty('settings_candidate', settings_candidate);
+    PropertiesService2.getDocumentProperties().setProperty('settings_candidate', settings_candidate);
     cacheSettingsSummary_(settings_candidate);
     return 0;
   }
@@ -75,19 +75,19 @@ class SettingsCandidate {
       }
     };
 
-    property = metadata.getValueOf('const_properties');
+    property = metadata.get('const_properties');
     if (!property) throw new Error('Property not found.');
     settings_candidate.settings.financial_year = property.financial_year;
 
-    property = metadata.getValueOf('user_settings');
+    property = metadata.get('user_settings');
     if (!property) throw new Error('Property not found.');
     settings_candidate.settings.initial_month = property.initial_month;
     settings_candidate.settings.financial_calendar = property.financial_calendar;
 
-    property = metadata.getValueOf('spreadsheet_settings');
+    property = metadata.get('spreadsheet_settings');
     settings_candidate.settings.decimal_places = property?.decimal_places || 2;
 
-    property = metadata.getValueOf('db_accounts');
+    property = metadata.get('db_accounts');
     if (!property) throw new Error('Property not found.');
     for (const k in property) {
       settings_candidate.settings.accounts.push({
@@ -100,7 +100,7 @@ class SettingsCandidate {
       });
     }
 
-    property = metadata.getValueOf('db_cards');
+    property = metadata.get('db_cards');
     if (!property) throw new Error('Property not found.');
     for (const k in property) {
       settings_candidate.misc.cards.push(property[k].name);
@@ -109,7 +109,7 @@ class SettingsCandidate {
     const sheet = spreadsheet.getSheetByName('Tags');
     if (sheet) settings_candidate.misc.tags = sheet.getLastRow() - 1;
 
-    PropertiesService3.document().setProperty('settings_candidate', settings_candidate);
+    PropertiesService2.getDocumentProperties().setProperty('settings_candidate', settings_candidate);
     cacheSettingsSummary_(settings_candidate);
   }
 }

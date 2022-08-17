@@ -39,7 +39,7 @@ class FormulaBuildTagsStats {
 
 class FormulaBuildTagsTable {
   static load_ () {
-    this._settings = RapidAccess.properties().const();
+    this._settings = SettingsConst.getAll();
   }
 
   static month (numRowsMonth, numRowsCards, mm) {

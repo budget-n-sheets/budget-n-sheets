@@ -12,7 +12,7 @@ class SetupParts {
     this._config = config;
     this._spreadsheet = SpreadsheetApp2.getActive();
     this._spreadsheetId = SpreadsheetApp2.getActive().getId();
-    this._metadata = new Metadata();
+    this._metadata = Spreadsheet2.getMetadata();
   }
 
   setupBackstage_ () {
@@ -482,13 +482,13 @@ class SetupParts {
       override_zero: false,
       optimize_load: true
     };
-    CachedAccess.update('user_settings', properties);
+    CachedProperties.withDocument().update('user_settings', properties);
 
     properties = {
       admin_id: adminId,
       automatic_backup: false
     };
-    CachedAccess.update('admin_settings', properties);
+    CachedProperties.withDocument().update('admin_settings', properties);
 
     properties = {
       setup_channel: this._config.setup_channel,
@@ -496,7 +496,7 @@ class SetupParts {
       number_accounts: this._config.number_accounts,
       financial_year: this._config.financial_year
     };
-    CachedAccess.update('const_properties', properties);
+    CachedProperties.withDocument().update('const_properties', properties);
 
     metadata = {
       setup_channel: this._config.setup_channel,
@@ -504,7 +504,7 @@ class SetupParts {
       financial_year: this._config.financial_year
     };
 
-    this._metadata.update('const_properties', metadata);
+    this._metadata.set('const_properties', metadata);
 
     properties = {
       view_mode: 'complete',
@@ -513,13 +513,13 @@ class SetupParts {
       spreadsheet_locale: this._spreadsheet.getSpreadsheetLocale(),
       optimize_load: [false, false, false, false, false, false, false, false, false, false, false, false]
     };
-    CachedAccess.update('spreadsheet_settings', properties);
+    CachedProperties.withDocument().update('spreadsheet_settings', properties);
 
     metadata = {
       decimal_places: this._config.decimal_places
     };
 
-    this._metadata.update('spreadsheet_settings', metadata);
+    this._metadata.set('spreadsheet_settings', metadata);
   }
 
   setupSettings_ () {
@@ -545,7 +545,7 @@ class SetupParts {
     if (dec_p === 0) sheet.getRange(8, 2).setNumberFormat('0');
 
     this._config.decimal_separator = dec_p;
-    SettingsSpreadsheet.setValueOf('decimal_separator', dec_p);
+    SettingsSpreadsheet.set('decimal_separator', dec_p).updateMetadata();
 
     const formater = new FormatNumber();
     cell = [
@@ -569,7 +569,7 @@ class SetupParts {
       cash_flow_events: false
     };
 
-    this._metadata.update('user_settings', metadata);
+    this._metadata.set('user_settings', metadata);
 
     SpreadsheetApp.flush();
   }
@@ -643,11 +643,11 @@ class SetupParts {
       Object.assign(meta_accounts[k], account);
     }
 
-    this._metadata.update('db_accounts', meta_accounts);
-    CachedAccess.update('db_accounts', db_accounts);
+    this._metadata.set('db_accounts', meta_accounts);
+    CachedProperties.withDocument().update('db_accounts', db_accounts);
 
-    this._metadata.update('db_cards', {});
-    CachedAccess.update('db_cards', {});
+    this._metadata.set('db_cards', {});
+    CachedProperties.withDocument().update('db_cards', {});
   }
 
   setupTags_ () {

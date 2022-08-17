@@ -15,7 +15,7 @@ class BackupUtils {
     };
 
     const htmlMessage = HtmlService2.createTemplateFromFile('backup/htmlBackupEmail')
-      .assignReservedHref()
+      .setScriptletValues(HtmlResources.href.reserved)
       .setScriptletValues(scriptlet)
       .evaluate()
       .getContent();

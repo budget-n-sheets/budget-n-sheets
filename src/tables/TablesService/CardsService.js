@@ -34,7 +34,7 @@ class CardsService extends TablesService {
       k++;
     }
 
-    new Metadata().update('db_cards', metadata);
+    Spreadsheet2.getMetadata().set('db_cards', metadata);
   }
 
   updateNames_ () {
@@ -43,7 +43,7 @@ class CardsService extends TablesService {
 
     const _h = TABLE_DIMENSION.height;
     const _w = TABLE_DIMENSION.width;
-    const num_acc = SettingsConst.getValueOf('number_accounts');
+    const num_acc = SettingsConst.get('number_accounts');
 
     sheet.getRange(1, 2 + _w + _w * num_acc + _w, 1, 10 * _w).setValue('');
 
@@ -232,7 +232,7 @@ class CardsService extends TablesService {
 
     const cards = this.getAll();
 
-    const num_acc = SettingsConst.getValueOf('number_accounts');
+    const num_acc = SettingsConst.get('number_accounts');
     const snapshot = new SheetBackstage().getGroupRange(0, 2 + num_acc, 12, 10).getValues();
 
     for (const id in cards) {

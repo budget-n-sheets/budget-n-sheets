@@ -1,29 +1,9 @@
-class SettingsAdmin {
-  static getValueOf (key) {
-    switch (key) {
-      case 'admin_id':
-      case 'automatic_backup':
-        return RapidAccess.properties().admin()[key];
-
-      default:
-        console.error('SettingsAdmin: getValueOf(): Switch case is default.', key);
-        break;
-    }
+class SettingsAdmin extends Settings {
+  static get _key () {
+    return 'admin_settings';
   }
 
-  static setValueOf (key, newValue) {
-    switch (key) {
-      case 'admin_id':
-      case 'automatic_backup': {
-        const properties = RapidAccess.properties().admin();
-        properties[key] = newValue;
-        CachedAccess.update('admin_settings', properties);
-        break;
-      }
-
-      default:
-        console.error('SettingsAdmin: setValueOf(): Switch case is default.', key);
-        break;
-    }
+  static get _scope () {
+    return 'document';
   }
 }

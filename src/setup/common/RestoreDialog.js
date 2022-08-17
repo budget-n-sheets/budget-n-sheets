@@ -38,7 +38,7 @@ class RestoreDialog extends HtmlTemplate2 {
     this.evalLastStatus_();
     this.loadCommon_();
 
-    return this.assignReservedHref()
+    return this.setScriptletValues(HtmlResources.href.reserved)
       .setScriptletValues(this._scriptlet)
       .evaluate()
       .setWidth(353)

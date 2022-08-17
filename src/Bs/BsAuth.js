@@ -89,7 +89,7 @@ class BsAuth {
   update () {
     this._data.counter++;
     this._data.date = new Date().getTime();
-    this._data.admin_id = SettingsAdmin.getValueOf('admin_id');
+    this._data.admin_id = SettingsAdmin.get('admin_id');
 
     this.sign_();
 

@@ -24,10 +24,10 @@ class TablesSidebar extends HtmlTemplate2 {
   }
 
   loadScriptletValues_ () {
-    const dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
+    const dec_s = SettingsSpreadsheet.get('decimal_separator');
 
     const scriptlet = {
-      decimal_places: SettingsSpreadsheet.getValueOf('decimal_places'),
+      decimal_places: SettingsSpreadsheet.get('decimal_places'),
       dec_s: (dec_s ? '.' : ','),
       dec_t: (dec_s ? ',' : '.')
     };
@@ -39,6 +39,6 @@ class TablesSidebar extends HtmlTemplate2 {
     this.loadPanels_();
     this.loadScriptletValues_();
 
-    return this.assignReservedHref().evaluate().setTitle('Accounts & Cards');
+    return this.setScriptletValues(HtmlResources.href.reserved).evaluate().setTitle('Accounts & Cards');
   }
 }

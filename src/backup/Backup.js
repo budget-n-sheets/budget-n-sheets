@@ -64,7 +64,7 @@ class Backup {
   }
 
   collectMonths_ () {
-    const numTables = 1 + SettingsConst.getValueOf('number_accounts');
+    const numTables = 1 + SettingsConst.get('number_accounts');
 
     for (let mm = 0; mm < 12; mm++) {
       const sheet = this._spreadsheet.getSheetByName(Consts.month_name.short[mm]);
@@ -81,14 +81,14 @@ class Backup {
   }
 
   collectProperties_ () {
-    const documentProperties = PropertiesService3.document();
+    const documentProperties = PropertiesService2.getDocumentProperties();
     this._backup.user_settings = documentProperties.getProperty('user_settings');
     this._backup.admin_settings = documentProperties.getProperty('admin_settings');
     this._backup.const_properties = documentProperties.getProperty('const_properties');
     this._backup.class_version2 = documentProperties.getProperty('class_version2');
 
     this._backup.spreadsheet_settings = {
-      decimal_places: SettingsSpreadsheet.getValueOf('decimal_places')
+      decimal_places: SettingsSpreadsheet.get('decimal_places')
     };
 
     this._backup.user_settings.financial_calendar = this._backup.user_settings.financial_calendar

@@ -61,8 +61,8 @@ function onOpen (e) {
 }
 
 function showPanelQuickstart () {
-  const dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
-  const financial_year = SettingsConst.getValueOf('financial_year');
+  const dec_p = SettingsSpreadsheet.get('decimal_separator');
+  const financial_year = SettingsConst.get('financial_year');
 
   const scriptlet = {
     isCurrent: (Consts.date < new Date(financial_year, 11, 1)),
@@ -71,7 +71,7 @@ function showPanelQuickstart () {
   };
 
   const htmlOutput = HtmlService2.createTemplateFromFile('quickstart/htmlQuickstart')
-    .assignReservedHref()
+    .setScriptletValues(HtmlResources.href.reserved)
     .setScriptletValues(scriptlet)
     .evaluate()
     .setTitle('Quickstart');
@@ -83,7 +83,7 @@ function showPanelAnalytics () {
   if (UpdateService.checkAndUpdate(true)) return;
 
   const htmlOutput = HtmlService2.createTemplateFromFile('CoolGallery/htmlSidebar')
-    .assignReservedHref()
+    .setScriptletValues(HtmlResources.href.reserved)
     .evaluate()
     .setTitle('BnS Gallery');
 
@@ -97,7 +97,7 @@ function showPanelTagging () {
   }
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tags/htmlDialog')
-    .assignReservedHref()
+    .setScriptletValues(HtmlResources.href.reserved)
     .setScriptletValues({ categories: JSON.stringify(Consts.tags_categories) })
     .evaluate()
     .setWidth(281)
@@ -142,7 +142,7 @@ function showDialogAboutAddon () {
   else v0 = Info.apps_script.version;
 
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlAboutAddon')
-    .assignReservedHref()
+    .setScriptletValues(HtmlResources.href.reserved)
     .setScriptletValues({ version: v0.major + '.' + v0.minor + '.' + v0.patch })
     .evaluate()
     .setWidth(281)
@@ -155,7 +155,7 @@ function showDialogErrorMessage (err) {
   if (err) LogLog.error(err);
 
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlExceptionMessage')
-    .assignReservedHref()
+    .setScriptletValues(HtmlResources.href.reserved)
     .evaluate()
     .setWidth(373)
     .setHeight(137);
@@ -165,7 +165,7 @@ function showDialogErrorMessage (err) {
 
 function showDialogMessage (title, message, timeout = false) {
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlMessageScreen')
-    .assignReservedHref()
+    .setScriptletValues(HtmlResources.href.reserved)
     .setScriptletValues({ message: message, hasTimeout: timeout })
     .evaluate()
     .setWidth(263)
@@ -225,7 +225,7 @@ function showDialogSetupAddon_ () {
   };
 
   const htmlOutput = HtmlService2.createTemplateFromFile('setup/htmlSetupAddon')
-    .assignReservedHref()
+    .setScriptletValues(HtmlResources.href.reserved)
     .setScriptletValues(scriptlet)
     .evaluate()
     .setWidth(353)
@@ -246,7 +246,7 @@ function showDialogSetupCopy (uuid) {
 
 function showDialogSetupEnd () {
   const htmlOutput = HtmlService2.createTemplateFromFile('setup/htmlSetupEnd')
-    .assignReservedHref()
+    .setScriptletValues(HtmlResources.href.reserved)
     .evaluate()
     .setWidth(353)
     .setHeight(367);

@@ -9,7 +9,7 @@ class ViewModeNormal {
     const _h = TABLE_DIMENSION.height;
     const _w = TABLE_DIMENSION.width;
 
-    const num_acc = SettingsConst.getValueOf('number_accounts');
+    const num_acc = SettingsConst.get('number_accounts');
     const col = 2 + _w + _w * num_acc;
 
     sheet.showRows(3, 2);
@@ -26,7 +26,7 @@ class ViewModeNormal {
 
   static expandTtt_ () {
     const formulas = FormulaBuildTtt.header();
-    const num_acc = SettingsConst.getValueOf('number_accounts');
+    const num_acc = SettingsConst.get('number_accounts');
 
     for (let i = 0; i < 12; i++) {
       const sheet = Spreadsheet2.getSheetByName(Consts.month_name.short[i]);

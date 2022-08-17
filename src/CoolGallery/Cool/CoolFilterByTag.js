@@ -91,10 +91,10 @@ class CoolFilterByTag extends CoolGallery {
 
   makeConfig () {
     this._consts.header = 'D3';
-    this._consts.num_acc = SettingsConst.getValueOf('number_accounts');
+    this._consts.num_acc = SettingsConst.get('number_accounts');
     this._consts.number_format = FormatNumberUtils.getNumberFormat();
 
-    this._settings.dec_s = SettingsSpreadsheet.getValueOf('decimal_separator');
+    this._settings.dec_s = SettingsSpreadsheet.get('decimal_separator');
     this._settings.dec_p = (this._settings.dec_s ? ', ' : ' \\ ');
 
     return this;

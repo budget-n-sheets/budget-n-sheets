@@ -19,7 +19,7 @@ class SetupService {
 
   static getUuid () {
     const uuid = Utilities.getUuid();
-    CacheService3.user().put(uuid, true);
+    CacheService2.getUserCache().put(uuid, true);
     return uuid;
   }
 }

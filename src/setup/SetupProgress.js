@@ -18,8 +18,8 @@ class SetupProgress {
   }
 
   makeClean () {
-    CacheService3.document().removeAll(CACHE_KEYS);
-    PropertiesService3.document().deleteAllProperties();
+    CacheService2.getDocumentCache().removeAll(CACHE_KEYS);
+    PropertiesService2.getDocumentProperties().deleteAllProperties();
 
     Triggers.deleteAllUserTriggers();
 

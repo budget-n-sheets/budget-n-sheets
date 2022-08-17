@@ -1,7 +1,7 @@
 class SheetBackstageRecalculation extends SheetBackstage {
   constructor () {
     super();
-    this.load = SettingsSpreadsheet.getValueOf('optimize_load');
+    this.load = SettingsSpreadsheet.get('optimize_load');
   }
 
   get _h () {

@@ -24,21 +24,22 @@ class RestoreCopy {
   }
 
   copySettings_ () {
-    const metadata = this.metadata.getValueOf('user_settings');
+    const metadata = this.metadata.get('user_settings');
     if (metadata.financial_calendar === '') return;
 
     const calendars = Calendar.listAllCalendars();
     const calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, metadata.financial_calendar);
     if (calendar) {
-      SettingsUser.setValueOf('financial_calendar', calendar.id);
-      SettingsUser.setValueOf('post_day_events', metadata.post_day_events);
-      SettingsUser.setValueOf('cash_flow_events', metadata.cash_flow_events);
+      SettingsUser.set('financial_calendar', calendar.id)
+        .set('post_day_events', metadata.post_day_events)
+        .set('cash_flow_events', metadata.cash_flow_events)
+        .updateMetadata();
     }
   }
 
   copyTables_ () {
     if (this.name_accounts.length > 0) {
-      const metadata = this.metadata.getValueOf('db_accounts');
+      const metadata = this.metadata.get('db_accounts');
       const accountsService = new AccountsService();
 
       this.name_accounts.forEach(e => {
@@ -49,7 +50,7 @@ class RestoreCopy {
       accountsService.flush();
     }
 
-    const metadata = this.metadata.getValueOf('db_cards');
+    const metadata = this.metadata.get('db_cards');
     const cardsService = new CardsService();
 
     for (const k in metadata) {

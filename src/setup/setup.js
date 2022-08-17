@@ -38,7 +38,7 @@ function setupService (uuid, payload) {
     LogLog.error(err);
   }
 
-  CachedAccess.update('class_version2', {
+  CachedProperties.withDocument().update('class_version2', {
     script: Info.apps_script.version,
     template: Info.template.version
   });
@@ -46,7 +46,7 @@ function setupService (uuid, payload) {
   new BsAuth(spreadsheet).update();
 
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
-  PropertiesService3.document().setProperty('is_installed', true);
+  PropertiesService2.getDocumentProperties().setProperty('is_installed', true);
 
   try {
     TriggersService.start();

@@ -59,7 +59,7 @@ function askResetSuggestions () {
   const sheetUnique = Spreadsheet2.getSheetByName('_Unique');
   if (!sheetUnique) return;
 
-  const num_acc = SettingsConst.getValueOf('number_accounts');
+  const num_acc = SettingsConst.get('number_accounts');
 
   let ruleDV = SpreadsheetApp.newDataValidation()
     .requireValueInRange(sheetUnique.getRange('A:A'), false)
@@ -133,7 +133,7 @@ function askResetProtection () {
   let protections, protection;
   let n, i, j, k;
 
-  const number_accounts = SettingsConst.getValueOf('number_accounts');
+  const number_accounts = SettingsConst.get('number_accounts');
 
   for (i = 0; i < 12; i++) {
     sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);

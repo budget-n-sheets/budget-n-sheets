@@ -6,7 +6,7 @@ class BnsTemplate {
   }
 
   static isLocked () {
-    return !!PropertiesService3.document().getProperty('lock_spreadsheet');
+    return !!PropertiesService2.getDocumentProperties().getProperty('lock_spreadsheet');
   }
 
   static isUpToDate () {

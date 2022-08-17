@@ -6,7 +6,7 @@ class FormulaBuildCards {
 
 class FormulaBuildCardsHeader {
   static load_ () {
-    this._settings = RapidAccess.properties().spreadsheet();
+    this._settings = SettingsSpreadsheet.getAll();
   }
 
   static index (card, headers) {

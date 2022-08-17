@@ -4,9 +4,9 @@ class RefreshCashFlow {
 
     this.formater = new FormatNumber();
 
-    this.dec_p = SettingsSpreadsheet.getValueOf('decimal_separator');
-    this.num_acc = SettingsConst.getValueOf('number_accounts');
-    this.financial_year = SettingsConst.getValueOf('financial_year');
+    this.dec_p = SettingsSpreadsheet.get('decimal_separator');
+    this.num_acc = SettingsConst.get('number_accounts');
+    this.financial_year = SettingsConst.get('financial_year');
 
     this.db_cards = new CardsService().getAllBalances() || {};
 

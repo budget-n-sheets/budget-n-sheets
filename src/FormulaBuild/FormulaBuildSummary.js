@@ -28,7 +28,7 @@ class FormulaBuildSummaryTable1 {
 
 class FormulaBuildSummaryChart1 {
   static load_ () {
-    this._settings = RapidAccess.properties().spreadsheet();
+    this._settings = SettingsSpreadsheet.getAll();
   }
 
   static data (mm) {

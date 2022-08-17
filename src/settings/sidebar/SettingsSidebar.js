@@ -38,6 +38,6 @@ class SettingsSidebar extends HtmlTemplate2 {
   build () {
     this.loadPanels_();
     this.assignFeatureFlag_();
-    return this.assignReservedHref().evaluate().setTitle('Settings');
+    return this.setScriptletValues(HtmlResources.href.reserved).evaluate().setTitle('Settings');
   }
 }

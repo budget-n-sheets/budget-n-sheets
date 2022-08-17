@@ -1,6 +1,6 @@
 function treatLayout_ (yyyy, mm) {
   const spreadsheet = SpreadsheetApp2.getActive();
-  const financial_year = SettingsConst.getValueOf('financial_year');
+  const financial_year = SettingsConst.get('financial_year');
   let month, i;
 
   if (financial_year > yyyy) return; // Too soon to format the spreadsheet.

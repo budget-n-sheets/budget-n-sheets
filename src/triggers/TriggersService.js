@@ -18,7 +18,7 @@ class TriggersService {
     const hour = 2 + Noise.randomInteger(4);
     const minute = Noise.randomInteger(60);
 
-    const financial_year = SettingsConst.getValueOf('financial_year');
+    const financial_year = SettingsConst.get('financial_year');
     const timezone = SpreadsheetApp2.getActive().getSpreadsheetTimeZone() || 'GMT';
 
     if (yyyy < financial_year) {

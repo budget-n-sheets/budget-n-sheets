@@ -33,17 +33,17 @@ class UpdateScript extends Update {
    v0m46p10_ () {
     let db;
 
-    db = CachedAccess.get('db_accounts');
+    db = CachedProperties.withDocument().get('db_accounts');
     for (const id in db) {
       db[id].color = 'whitesmoke';
     }
-    CachedAccess.update('db_accounts', db);
+    CachedProperties.withDocument().update('db_accounts', db);
 
-    db = CachedAccess.get('db_cards');
+    db = CachedProperties.withDocument().get('db_cards');
     for (const id in db) {
       db[id].color = 'whitesmoke';
     }
-    CachedAccess.update('db_cards', db);
+    CachedProperties.withDocument().update('db_cards', db);
 
     return 0;
   }
@@ -259,7 +259,7 @@ class UpdateScript extends Update {
    * 0.42.17
    */
   patchV0m42p17_ () {
-    const db_tables = PropertiesService3.document().getProperty('DB_TABLES');
+    const db_tables = PropertiesService2.getDocumentProperties().getProperty('DB_TABLES');
     let db;
 
     const db_accounts = {};
@@ -276,7 +276,7 @@ class UpdateScript extends Update {
       delete db_accounts[id].time_a;
       delete db_accounts[id].time_z;
     }
-    CachedAccess.update('db_accounts', db_accounts);
+    CachedProperties.withDocument().update('db_accounts', db_accounts);
 
     const db_cards = {};
     db = db_tables.cards.data;
@@ -288,9 +288,9 @@ class UpdateScript extends Update {
       db_cards[id].index = i;
       delete db_cards[id].id;
     }
-    CachedAccess.update('db_cards', db_cards);
+    CachedProperties.withDocument().update('db_cards', db_cards);
 
-    PropertiesService3.document().deleteProperty('DB_TABLES');
+    PropertiesService2.getDocumentProperties().deleteProperty('DB_TABLES');
     return 0;
   }
 
@@ -333,7 +333,7 @@ class UpdateScript extends Update {
    * 0.42.10
    */
   update_v0m42p10_ () {
-    PropertiesService3.document().deleteProperty('spreadsheet_triggers');
+    PropertiesService2.getDocumentProperties().deleteProperty('spreadsheet_triggers');
 
     return 0;
   }
@@ -344,8 +344,9 @@ class UpdateScript extends Update {
    * 0.41.3
    */
   update_v0m41p3_ () {
-    const initial_month = SettingsUser.getValueOf('initial_month');
-    SettingsUser.setValueOf('initial_month', initial_month);
+    const initial_month = SettingsUser.get('initial_month');
+    SettingsUser.set('initial_month', initial_month);
+    SettingsUser.updateMetadata();
 
     return 0;
   }
@@ -441,7 +442,7 @@ class UpdateScript extends Update {
     const unique = spreadsheet.getSheetByName('_Unique');
     if (!unique) return 1;
 
-    const num_acc = SettingsConst.getValueOf('number_accounts');
+    const num_acc = SettingsConst.get('number_accounts');
     const rule = SpreadsheetApp.newDataValidation()
       .requireValueInRange(unique.getRange('A:A'), false)
       .setAllowInvalid(true)

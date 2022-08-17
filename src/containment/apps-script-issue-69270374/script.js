@@ -5,7 +5,7 @@
 
 function containment8d4adafda11Frame () {
   const htmlNotice = HtmlService2.createTemplateFromFile('containment/apps-script-issue-69270374/htmlNotice')
-    .assignReservedHref()
+    .setScriptletValues(HtmlResources.href.reserved)
     .evaluate()
     .getContent();
 

@@ -21,7 +21,7 @@ class AccountsService extends TablesService {
       k++;
     }
 
-    new Metadata().update('db_accounts', metadata);
+    Spreadsheet2.getMetadata().set('db_accounts', metadata);
   }
 
   updateNames_ () {
@@ -59,8 +59,8 @@ class AccountsService extends TablesService {
     const _h = TABLE_DIMENSION.height;
     const ranges = ['G', 'L', 'Q', 'V', 'AA'];
 
-    const number_accounts = SettingsConst.getValueOf('number_accounts');
-    const financial_year = SettingsConst.getValueOf('financial_year');
+    const number_accounts = SettingsConst.get('number_accounts');
+    const financial_year = SettingsConst.get('financial_year');
 
     const formulas = ['=0 + B4'];
     for (let i = 1; i < 12; i++) {

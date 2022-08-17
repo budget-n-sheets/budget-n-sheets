@@ -1,6 +1,6 @@
 class SetupConfig {
   static configCopy_ (uuid, config) {
-    const candidate = PropertiesService3.document().getProperty('settings_candidate');
+    const candidate = PropertiesService2.getDocumentProperties().getProperty('settings_candidate');
     if (candidate.uuid !== uuid) throw new Error('UUID does not match.');
     if (candidate.protocol !== 'copy') throw new Error('Protocol does not match.');
 
@@ -10,7 +10,7 @@ class SetupConfig {
   }
 
   static configRestore_ (uuid, config) {
-    const candidate = PropertiesService3.document().getProperty('settings_candidate');
+    const candidate = PropertiesService2.getDocumentProperties().getProperty('settings_candidate');
     if (candidate.uuid !== uuid) throw new Error('UUID does not match.');
     if (candidate.protocol !== 'restore') throw new Error('Protocol does not match.');
 
