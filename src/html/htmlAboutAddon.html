@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <?!= HtmlService2.include("html/resources/styles"); ?>
   <?!= HtmlService2.include("html/resources/containers"); ?>
+  <?!= HtmlService2.include("html/resources/material-icons"); ?>
   <style>
     h2 {
       margin: 0;
@@ -41,6 +42,21 @@
       gap: 1em;
     }
   </style>
+  <style>
+    .project-donate-box {
+      margin: 10px 0;
+      padding: 5px;
+      border: 2px solid lightgray;
+      border-radius: 10px;
+      font-size: 1.1em;
+      cursor: pointer;
+    }
+
+    .project-donate-box:hover {
+      border-color: gray;
+      background-color: whitesmoke;
+    }
+  </style>
 </head>
 
 <body>
@@ -55,6 +71,10 @@
     <strong>Version:</strong> v<?= version ?> <a href="https://www.budgetnsheets.com/release-notes" target="_blank">What&apos;s new</a>
   </div>
 
+  <div class="project-donate-box" onclick="window.open('https://www.budgetnsheets.com/donate', '_blank')">
+    <span class="material-icons-outlined" style="color: #e930a3">favorite_border</span> Donate to Budget n Sheets
+  </div>
+
   <div class="links">
     <ul>
       <li><a href="<?= join_subreddit ?>" target="_blank">Reddit</a></li>
@@ -64,10 +84,6 @@
       <li><a href="<?= privacy_policy ?>" target="_blank">Privacy policy</a></li>
       <li><a href="<?= terms_of_service ?>" target="_blank">Terms of service</a></li>
       <li><a href="https://www.budgetnsheets.com/acknowledgements" target="_blank">Acknowledgements</a></li>
-    </ul>
-    <ul>
-      <li><a href="https://www.budgetnsheets.com/donate" target="_blank">Donate</a></li>
-      <li><a href="<?= g_marketplace ?>" target="_blank">Rate the add-on</a></li>
     </ul>
   </div>
 </body>
