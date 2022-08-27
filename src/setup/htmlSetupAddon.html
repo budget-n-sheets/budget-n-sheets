@@ -145,9 +145,9 @@
     </div>
 
     <div class="panel" id="panel-note">
-      <h2>Attention</h2>
-      <p>The build process will delete all tabs and data from the spreadsheet!</p>
-      <p>If the spreadsheet has important or sensitive data that you care about, <a href="https://support.google.com/docs/answer/49114" target="_blank"><strong>make a copy or start a new spreadsheet</strong></a> before continuing, then restart the process.</p>
+      <h2><span class="material-icons-outlined" style="color: #f1c232">warning_amber</span> Attention</h2>
+
+      <p style="font-size: 1.17em;"><strong>All tabs and data from this spreadsheet will be deleted.</strong> If this spreadsheet has important data, restart the setup in a <a href="https://sheets.new" target="_blank"><strong>new spreadsheet</strong></a>.</p>
     </div>
 
     <div class="panel" id="panel-restore">
@@ -374,9 +374,7 @@
         case 'panel-main':
           panel = 'panel-note';
           $('.footer-container').append([
-            $('<button>').attr({class: 'action'})
-              .text('Continue')
-              .click(clickNext)
+            $('<button>').text('Continue').click(clickNext)
           ]);
           break;
         case 'panel-note':
