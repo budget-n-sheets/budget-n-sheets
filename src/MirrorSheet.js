@@ -21,7 +21,8 @@ class MirrorSheet {
   }
 
   copyTemplate () {
-    SpreadsheetService.copySheetsFromSource(this._metadata.id, [this.name]);
+    const source = SpreadsheetApp.openById(this._metadata.id);
+    SpreadsheetApp2.getActive().copySheetsFrom(source, [this.name]);
     SpreadsheetApp.flush();
     return this;
   }
