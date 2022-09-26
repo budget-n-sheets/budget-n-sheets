@@ -21,7 +21,7 @@ function askDeactivation () {
     'backing-up your data so that you can restore it later.\n\n' +
 
     'The deactivation affects only this spreadsheet:\n' +
-    SpreadsheetApp3.getActive().getName() + '\n\n' +
+    SpreadsheetApp2.getActive().spreadsheet.getName() + '\n\n' +
 
     'By deactivating the add-on:\n' +
     '- The spreadsheet is locked.\n' +
@@ -128,7 +128,7 @@ function askResetProtection () {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(200)) return;
 
-  const spreadsheet = SpreadsheetApp3.getActive();
+  const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
   let sheet, ranges, range;
   let protections, protection;
   let n, i, j, k;

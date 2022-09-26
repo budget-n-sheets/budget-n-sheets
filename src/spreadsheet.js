@@ -1,5 +1,5 @@
 function updateDecimalPlaces_ () {
-  const spreadsheet = SpreadsheetApp3.getActive();
+  const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
   let sheet, max;
 
   const h_ = TABLE_DIMENSION.height;
@@ -73,7 +73,7 @@ function updateDecimalPlaces_ () {
 }
 
 function updateDecimalSeparator_ () {
-  const spreadsheet = SpreadsheetApp3.getActive();
+  const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
   let sheet, cell, t;
 
   const dec_p = SettingsSpreadsheet.get('decimal_places');
@@ -133,7 +133,7 @@ function updateHideShowSheets (sheets, financial_year, yyyy, mm) {
 }
 
 function updateTabsColors (sheets, financial_year, yyyy, mm) {
-  const spreadsheet = SpreadsheetApp3.getActive();
+  const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
   let date, delta, i;
 
   const init_month = SettingsUser.get('initial_month');

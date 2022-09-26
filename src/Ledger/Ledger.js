@@ -11,7 +11,7 @@ class Ledger {
   }
 
   activate () {
-    SpreadsheetApp3.getActive().setActiveSheet(this._sheet);
+    SpreadsheetApp2.getActive().spreadsheet.setActiveSheet(this._sheet);
     this.lastRange.activate();
   }
 

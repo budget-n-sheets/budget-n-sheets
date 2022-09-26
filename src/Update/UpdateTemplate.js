@@ -120,7 +120,7 @@ class UpdateTemplate extends Update {
   }
 
   v0m13p2s0_ () {
-    const spreadsheet = SpreadsheetApp3.getActive();
+    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
 
     let sheet = spreadsheet.getSheetByName('_About BnS');
     if (sheet) spreadsheet.deleteSheet(sheet);

@@ -1,6 +1,6 @@
 class QuickstartDemo {
   constructor (required) {
-    this.spreadsheet = SpreadsheetApp3.getActive();
+    this.spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
     this.sheet = null;
 
     this.required = required || [];
