@@ -49,7 +49,7 @@ class CalendarService {
       }
     }
 
-    if (tableCards.length > 0 && Spreadsheet3.getSheetByName('Cards')) {
+    if (tableCards.length > 0 && SpreadsheetApp2.getActive().getSheetByName('Cards')) {
       new LedgerCards().mergeTransactions(mm, tableCards);
     }
 

@@ -25,11 +25,11 @@ class MakeSheetTags extends MakeSheet {
   setFormulas_ () {
     const formulaBuild = FormulaBuild.tags();
 
-    let numRowsCards = (Spreadsheet3.getSheetByName('Cards')?.getMaxRows() || 5) - 5;
+    let numRowsCards = (SpreadsheetApp2.getActive().getSheetByName('Cards')?.getMaxRows() || 5) - 5;
     if (numRowsCards < 1) numRowsCards = 1;
 
     const formulas = Consts.month_name.short.map((m, i) => {
-      let numRowsMonth = (Spreadsheet3.getSheetByName(m)?.getMaxRows() || 4) - 4;
+      let numRowsMonth = (SpreadsheetApp2.getActive().getSheetByName(m)?.getMaxRows() || 4) - 4;
       return formulaBuild.table().month(numRowsMonth < 1 ? 1 : numRowsMonth, numRowsCards, i);
     });
 

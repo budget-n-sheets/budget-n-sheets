@@ -21,7 +21,7 @@ class UpdateTemplate extends Update {
    * 0.14.2
    */
    v0m14p2_ () {
-    const sheet = Spreadsheet3.getSheetByName('Tags');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
     if (!sheet) return 0;
 
     const maxColumns = sheet.getMaxColumns();
@@ -68,7 +68,7 @@ class UpdateTemplate extends Update {
    * 0.14.1
    */
    v0m14p1_ () {
-    const sheet = Spreadsheet3.getSheetByName('Cash Flow');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Cash Flow');
     if (sheet && sheet.getColumnGroupDepth(2) === 0) sheet.getRange('B1:D1').shiftColumnGroupDepth(1);
     return 0;
   }
@@ -91,7 +91,7 @@ class UpdateTemplate extends Update {
    * 0.13.5
    */
    v0m13p5_ () {
-    const sheet = Spreadsheet3.getSheetByName('Tags');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
     if (!sheet) return 0;
 
     const numRows = sheet.getMaxRows() - 1;
@@ -141,7 +141,7 @@ class UpdateTemplate extends Update {
   }
 
   v0m13p2s1_ () {
-    const sheet = Spreadsheet3.getSheetByName('_Unique');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('_Unique');
     if (!sheet) return 0;
 
     sheet.getRange(1, 1).setFormula(SheetUniqueFormulas.getTttTransaction_());
@@ -176,7 +176,7 @@ class UpdateTemplate extends Update {
    * 0.13.1
    */
   v0m13p1_ () {
-    const sheet = Spreadsheet3.getSheetByName('Summary');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Summary');
     if (!sheet) return 0;
 
     sheet.getRange('B20').setValue('October');
@@ -189,7 +189,7 @@ class UpdateTemplate extends Update {
    * 0.13.0
    */
   v0m13p0_ () {
-    const sheet = Spreadsheet3.getSheetByName('Tags');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
     if (!sheet) return 0;
 
     const numRows = sheet.getMaxRows() - 1;

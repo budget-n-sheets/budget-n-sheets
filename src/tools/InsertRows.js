@@ -61,7 +61,7 @@ class InsertRows {
 class ToolInsertRowsMonth extends InsertRows {
   constructor (mm) {
     const name = Consts.month_name.short[mm];
-    const sheet = Spreadsheet3.getSheetByName(name);
+    const sheet = SpreadsheetApp2.getActive().getSheetByName(name);
     super(sheet);
 
     this._headerRow = 4;
@@ -70,7 +70,7 @@ class ToolInsertRowsMonth extends InsertRows {
 
 class ToolInsertRowsCards extends InsertRows {
   constructor () {
-    const sheet = Spreadsheet3.getSheetByName('Cards');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Cards');
     super(sheet);
 
     this._headerRow = 5;
@@ -79,7 +79,7 @@ class ToolInsertRowsCards extends InsertRows {
 
 class ToolInsertRowsTags extends InsertRows {
   constructor () {
-    const sheet = Spreadsheet3.getSheetByName('Tags');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
     super(sheet);
 
     this._headerRow = 1;

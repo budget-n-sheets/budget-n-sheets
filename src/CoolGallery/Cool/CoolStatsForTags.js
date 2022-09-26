@@ -268,7 +268,7 @@ class CoolStatsForTags extends CoolGallery {
   }
 
   makeConfig () {
-    this.sheetTagsByCategory = Spreadsheet3.getSheetByName('Tags by Category');
+    this.sheetTagsByCategory = SpreadsheetApp2.getActive().getSheetByName('Tags by Category');
     this.nextRow = 5;
     return this;
   }

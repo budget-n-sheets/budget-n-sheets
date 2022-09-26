@@ -1,6 +1,6 @@
 class ViewModeNormal {
   static expandCards_ () {
-    const sheet = Spreadsheet3.getSheetByName('Cards');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Cards');
     if (!sheet) return;
     if (sheet.getMaxRows() < 4) return;
 
@@ -29,7 +29,7 @@ class ViewModeNormal {
     const num_acc = SettingsConst.get('number_accounts');
 
     for (let i = 0; i < 12; i++) {
-      const sheet = Spreadsheet3.getSheetByName(Consts.month_name.short[i]);
+      const sheet = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);
       if (!sheet) continue;
       if (sheet.getMaxRows() < 3) continue;
 
