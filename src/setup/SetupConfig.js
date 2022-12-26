@@ -1,3 +1,13 @@
+/**
+ * Budget n Sheets Copyright 2017-2022 Guilherme T Maeoka
+ * <https://github.com/budget-n-sheets/budget-n-sheets>
+ *
+ * This program comes with ABSOLUTELY NO WARRANTY.
+ * This is free software, and you are welcome to redistribute it
+ * under certain conditions.
+ * <https://www.gnu.org/licenses/>
+ */
+
 class SetupConfig {
   static configCopy_ (uuid, config) {
     const candidate = PropertiesService2.getDocumentProperties().getProperty('settings_candidate');
