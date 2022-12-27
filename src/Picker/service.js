@@ -1,4 +1,14 @@
 /**
+ * Budget n Sheets Copyright 2017-2022 Guilherme T Maeoka
+ * <https://github.com/budget-n-sheets/budget-n-sheets>
+ *
+ * This program comes with ABSOLUTELY NO WARRANTY.
+ * This is free software, and you are welcome to redistribute it
+ * under certain conditions.
+ * <https://www.gnu.org/licenses/>
+ */
+
+/**
  * Gets the user's OAuth 2.0 access token so that it can be passed to Picker.
  * This technique keeps Picker from needing to show its own authorization
  * dialog, but is only possible if the OAuth scope that Picker needs is
