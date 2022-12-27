@@ -10,6 +10,6 @@ class SettingsSpreadsheet extends Settings {
   static updateMetadata () {
     const keys = ['decimal_places'];
     const properties = this.getAll(keys);
-    Spreadsheet3.getMetadata().set(this._key, properties);
+    SpreadsheetApp2.getActive().getMetadata().set(this._key, properties);
   }
 }

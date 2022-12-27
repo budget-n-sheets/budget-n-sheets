@@ -2,7 +2,7 @@ class SheetSummaryCharts extends SheetSummary {
   constructor () {
     super();
 
-    this._spreadsheetId = SpreadsheetApp3.getActive().getId();
+    this._spreadsheetId = SpreadsheetApp2.getActive().getId();
     this._sheetId = this._sheet.getSheetId();
   }
 

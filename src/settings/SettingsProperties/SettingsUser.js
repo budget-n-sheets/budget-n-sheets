@@ -10,6 +10,6 @@ class SettingsUser extends Settings {
   static updateMetadata () {
     const keys = ['initial_month', 'financial_calendar', 'post_day_events', 'cash_flow_events'];
     const properties = this.getAll(keys);
-    Spreadsheet3.getMetadata().set(this._key, properties);
+    SpreadsheetApp2.getActive().getMetadata().set(this._key, properties);
   }
 }

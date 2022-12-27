@@ -1,6 +1,6 @@
 class RestoreCopy {
   constructor (config) {
-    this.destination = SpreadsheetApp3.getActive();
+    this.destination = SpreadsheetApp2.getActive().spreadsheet;
 
     this.source_id = config.file_id;
     this.source = SpreadsheetApp.openById(config.file_id);

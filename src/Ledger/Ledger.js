@@ -1,6 +1,6 @@
 class Ledger {
   constructor (name) {
-    this._sheet = Spreadsheet3.getSheetByName(name);
+    this._sheet = SpreadsheetApp2.getActive().getSheetByName(name);
     this.lastRange = null;
 
     this._insertRows = null;
@@ -11,7 +11,7 @@ class Ledger {
   }
 
   activate () {
-    SpreadsheetApp3.getActive().setActiveSheet(this._sheet);
+    SpreadsheetApp2.getActive().spreadsheet.setActiveSheet(this._sheet);
     this.lastRange.activate();
   }
 

@@ -1,6 +1,6 @@
 class RefreshCashFlow {
   constructor () {
-    this.sheet = Spreadsheet3.getSheetByName('Cash Flow');
+    this.sheet = SpreadsheetApp2.getActive().getSheetByName('Cash Flow');
 
     this.formater = new FormatNumber();
 
@@ -89,7 +89,7 @@ class RefreshCashFlow {
   }
 
   readTttTransactions_ () {
-    const sheet = Spreadsheet3.getSheetByName(Consts.month_name.short[this.mm]);
+    const sheet = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[this.mm]);
     if (!sheet) return;
 
     const numRows = sheet.getLastRow() - this.specs.ttt.row + 1;

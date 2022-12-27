@@ -54,7 +54,7 @@ class UpdateScript extends Update {
    * 0.46.7
    */
    v0m46p7_ () {
-    if (!Spreadsheet3.getSheetByName('_Backstage')) return 3;
+    if (!SpreadsheetApp2.getActive().getSheetByName('_Backstage')) return 3;
 
     try {
       RecalculationService.resume(0, 12);
@@ -72,7 +72,7 @@ class UpdateScript extends Update {
    * 0.46.3
    */
   patchV0m46p3_ () {
-    const sheet = Spreadsheet3.getSheetByName('Summary');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Summary');
     if (!sheet) return 0;
 
     const charts = sheet.getCharts();
@@ -93,7 +93,7 @@ class UpdateScript extends Update {
    * 0.46.2
    */
   patchV0m46p2_ () {
-    const sheet = Spreadsheet3.getSheetByName('Summary');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Summary');
     if (!sheet) return 0;
 
     const sheetId = sheet.getSheetId();
@@ -140,7 +140,7 @@ class UpdateScript extends Update {
    * 0.45.1
    */
   patchV0m45p1_ () {
-    const sheet = Spreadsheet3.getSheetByName('Summary');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Summary');
     if (!sheet) return 0;
 
     const charts = sheet.getCharts();
@@ -183,7 +183,7 @@ class UpdateScript extends Update {
    * 0.42.33
    */
   patchV0m42p33_ () {
-    const sheet = Spreadsheet3.getSheetByName('Quick Actions');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Quick Actions');
     if (sheet) sheet.setTabColor('#b7b7b7');
     return 0;
   }
@@ -194,7 +194,7 @@ class UpdateScript extends Update {
    * 0.42.31
    */
   patchV0m42p31_ () {
-    if (!Spreadsheet3.getSheetByName('_Backstage')) return 3;
+    if (!SpreadsheetApp2.getActive().getSheetByName('_Backstage')) return 3;
 
     try {
       RecalculationService.resume(0, 12);
@@ -213,7 +213,7 @@ class UpdateScript extends Update {
    * 0.42.30
    */
   patchV0m42p30_ () {
-    SpreadsheetApp3.getActive()
+    SpreadsheetApp2.getActive().spreadsheet
       .createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .find()
@@ -304,7 +304,7 @@ class UpdateScript extends Update {
     if (PropertiesService.getDocumentProperties().getProperty('DB_TABLES') == null) return 3;
     if (PropertiesService.getDocumentProperties().getProperty('db_accounts') == null) return 3;
 
-    SpreadsheetApp3.getActive()
+    SpreadsheetApp2.getActive().spreadsheet
       .createDeveloperMetadataFinder()
       .withVisibility(SpreadsheetApp.DeveloperMetadataVisibility.PROJECT)
       .withKey('db_accounts')
@@ -322,7 +322,7 @@ class UpdateScript extends Update {
    * 0.42.11
    */
   patchV0m42p11_ () {
-    new BsAuth(SpreadsheetApp3.getActive()).update();
+    new BsAuth(SpreadsheetApp2.getActive().spreadsheet).update();
 
     return 0;
   }
@@ -357,7 +357,7 @@ class UpdateScript extends Update {
    * 0.40.1
    */
   update_v0m40p1_ () {
-    const spreadsheet = SpreadsheetApp3.getActive();
+    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
     const unique = spreadsheet.getSheetByName('_Unique');
     if (!unique) return 0;
 
@@ -407,7 +407,7 @@ class UpdateScript extends Update {
   }
 
   update_v0m40p0s2_ () {
-    const spreadsheet = SpreadsheetApp3.getActive();
+    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
     const unique = spreadsheet.getSheetByName('_Unique');
     if (!unique) return 1;
 
@@ -438,7 +438,7 @@ class UpdateScript extends Update {
   }
 
   update_v0m40p0s1_ () {
-    const spreadsheet = SpreadsheetApp3.getActive();
+    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
     const unique = spreadsheet.getSheetByName('_Unique');
     if (!unique) return 1;
 
@@ -474,7 +474,7 @@ class UpdateScript extends Update {
   }
 
   update_v0m40p0s0_ () {
-    const spreadsheet = SpreadsheetApp3.getActive();
+    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
 
     let sheet = spreadsheet.getSheetByName('_Unique');
     if (sheet) spreadsheet.deleteSheet(sheet);

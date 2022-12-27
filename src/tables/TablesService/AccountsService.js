@@ -21,7 +21,7 @@ class AccountsService extends TablesService {
       k++;
     }
 
-    Spreadsheet3.getMetadata().set('db_accounts', metadata);
+    SpreadsheetApp2.getActive().getMetadata().set('db_accounts', metadata);
   }
 
   updateNames_ () {

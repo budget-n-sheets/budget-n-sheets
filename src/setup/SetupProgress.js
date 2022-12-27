@@ -4,13 +4,11 @@ class SetupProgress {
   }
 
   copyTemplate () {
-    const spreadsheet = SpreadsheetApp3.getActive();
+    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
     const sheets = spreadsheet.getSheets();
 
-    SpreadsheetService.copySheetsFromSource(
-      Info.template.id,
-      Info.template.sheets
-    );
+    const source = SpreadsheetApp.openById(Info.template.id);
+    SpreadsheetApp2.getActive().copySheetsFrom(source, Info.template.sheets);
 
     sheets.forEach(sheet => spreadsheet.deleteSheet(sheet));
     SpreadsheetApp.flush();
@@ -23,8 +21,9 @@ class SetupProgress {
 
     Triggers.deleteAllUserTriggers();
 
-    SpreadsheetService.deleteAllSheets();
-    SpreadsheetService.removeAllMetadata();
+    const spreadsheet = SpreadsheetApp2.getActive();
+    spreadsheet.deleteAllSheets();
+    spreadsheet.removeAllMetadata();
 
     return this;
   }

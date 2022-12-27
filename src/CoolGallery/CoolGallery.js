@@ -20,7 +20,7 @@ class CoolGallery extends MirrorSheet {
 
   checkDependencies () {
     for (const name of this._metadata.requires) {
-      if (!Spreadsheet3.getSheetByName(name)) return false;
+      if (!SpreadsheetApp2.getActive().getSheetByName(name)) return false;
     }
     return true;
   }
@@ -36,6 +36,11 @@ class CoolGallery extends MirrorSheet {
   }
 
   isSourceAvailable () {
-    return SpreadsheetService.isSpreadsheetAvailable(this._metadata.id);
+    try {
+      SpreadsheetApp.openById(this._metadata.id);
+    } catch (err) {
+      return false;
+    }
+    return true;
   }
 }

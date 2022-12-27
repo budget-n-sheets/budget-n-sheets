@@ -21,7 +21,7 @@ function askDeactivation () {
     'backing-up your data so that you can restore it later.\n\n' +
 
     'The deactivation affects only this spreadsheet:\n' +
-    SpreadsheetApp3.getActive().getName() + '\n\n' +
+    SpreadsheetApp2.getActive().spreadsheet.getName() + '\n\n' +
 
     'By deactivating the add-on:\n' +
     '- The spreadsheet is locked.\n' +
@@ -56,7 +56,7 @@ function askResetSuggestions () {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(200)) return;
 
-  const sheetUnique = Spreadsheet3.getSheetByName('_Unique');
+  const sheetUnique = SpreadsheetApp2.getActive().getSheetByName('_Unique');
   if (!sheetUnique) return;
 
   const num_acc = SettingsConst.get('number_accounts');
@@ -72,7 +72,7 @@ function askResetSuggestions () {
 
   let i = -1;
   while (++i < 12) {
-    const sheetMm = Spreadsheet3.getSheetByName(Consts.month_name.short[i]);
+    const sheetMm = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);
     if (!sheetMm) continue;
 
     const height = sheetMm.getMaxRows() - 4;
@@ -89,7 +89,7 @@ function askResetSuggestions () {
     }
   }
 
-  const sheetCards = Spreadsheet3.getSheetByName('Cards');
+  const sheetCards = SpreadsheetApp2.getActive().getSheetByName('Cards');
   if (!sheetCards) {
     lock.releaseLock();
     return;
@@ -128,7 +128,7 @@ function askResetProtection () {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(200)) return;
 
-  const spreadsheet = SpreadsheetApp3.getActive();
+  const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
   let sheet, ranges, range;
   let protections, protection;
   let n, i, j, k;

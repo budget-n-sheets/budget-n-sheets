@@ -1,6 +1,6 @@
 class TagsService {
   static getCategories () {
-    const sheet = Spreadsheet3.getSheetByName('Tags');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
     if (!sheet) return Consts.tags_categories;
     if (sheet.getMaxRows() < 2) return Consts.tags_categories;
 
@@ -21,7 +21,7 @@ class TagsService {
   }
 
   static setCategories (categories) {
-    const sheet = Spreadsheet3.getSheetByName('Tags');
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
     if (!sheet) throw new Error('TagsService: setCategories(): Missing sheet Tags.');
 
     categories = categories.map(c => c.trim().replace(/\s+/g, ' ').slice(0, 64)).filter((v, i, s) => v && s.indexOf(v) === i);

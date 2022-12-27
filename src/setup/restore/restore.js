@@ -78,7 +78,7 @@ function unwrapBackup_ (uuid, file_id) {
 
   let password = '';
   try {
-    password = SessionService.getSession(uuid).retrieveContext([file_id, SpreadsheetApp3.getActive().getId()]);
+    password = SessionService.getSession(uuid).retrieveContext([file_id, SpreadsheetApp2.getActive().getId()]);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();

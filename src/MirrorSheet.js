@@ -1,6 +1,6 @@
 class MirrorSheet {
   constructor (metadata) {
-    this._spreadsheet = SpreadsheetApp3.getActive();
+    this._spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
     this._metadata = metadata;
 
     this._consts = {};
@@ -17,17 +17,18 @@ class MirrorSheet {
 
   get sheet () {
     return this._sheet ||
-          (this._sheet = Spreadsheet3.getSheetByName(this.name));
+          (this._sheet = SpreadsheetApp2.getActive().getSheetByName(this.name));
   }
 
   copyTemplate () {
-    SpreadsheetService.copySheetsFromSource(this._metadata.id, [this.name]);
+    const source = SpreadsheetApp.openById(this._metadata.id);
+    SpreadsheetApp2.getActive().copySheetsFrom(source, [this.name]);
     SpreadsheetApp.flush();
     return this;
   }
 
   deleteTemplate () {
-    const sheet = Spreadsheet3.getSheetByName(this.name);
+    const sheet = SpreadsheetApp2.getActive().getSheetByName(this.name);
     if (sheet) this._spreadsheet.deleteSheet(this.sheet);
     this._sheet = null;
     SpreadsheetApp.flush();

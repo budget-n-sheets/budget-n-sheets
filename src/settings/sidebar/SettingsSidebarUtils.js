@@ -12,7 +12,7 @@ class SettingsSidebarUtils {
   static panelSettings_ () {
     const values = {};
 
-    const spreadsheet = SpreadsheetApp3.getActive();
+    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
     const financial_year = SettingsConst.get('financial_year');
     const isOperationActive = (financial_year >= Consts.date.getFullYear());
 
