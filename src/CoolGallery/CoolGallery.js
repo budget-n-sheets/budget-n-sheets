@@ -36,6 +36,11 @@ class CoolGallery extends MirrorSheet {
   }
 
   isSourceAvailable () {
-    return SpreadsheetService.isSpreadsheetAvailable(this._metadata.id);
+    try {
+      SpreadsheetApp.openById(this._metadata.id);
+    } catch (err) {
+      return false;
+    }
+    return true;
   }
 }

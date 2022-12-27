@@ -1,8 +1,12 @@
 class BnsTemplate {
   static isAvailable () {
-    const b = SpreadsheetService.isSpreadsheetAvailable(Info.template.id);
-    if (!b) throw new Error('Spreadsheet template is not available!');
-    return b;
+    try {
+      SpreadsheetApp.openById(Info.template.id);
+    } catch (err) {
+      console.error('BnS template is not available!');
+      return false;
+    }
+    return true;
   }
 
   static isLocked () {
