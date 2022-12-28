@@ -8,12 +8,6 @@
  * <https://www.gnu.org/licenses/>
  */
 
-/**
- * Copyright (c) 2019 Guilherme T Maeoka
- * This code is licensed under MIT license.
- * <https://github.com/guimspace/gas-common>
- */
-
 class Utilities2 {
   static getDigestAlgorithm (v) {
     switch (v) {

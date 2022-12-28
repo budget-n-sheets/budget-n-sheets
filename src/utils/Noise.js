@@ -8,12 +8,6 @@
  * <https://www.gnu.org/licenses/>
  */
 
-/**
- * Copyright (c) 2019 Guilherme T Maeoka
- * This code is licensed under MIT license.
- * <https://github.com/guimspace/gas-common>
- */
-
 class Noise {
   /**
    * Generates a random integer from the interval [0, n).
