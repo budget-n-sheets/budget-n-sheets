@@ -20,6 +20,5 @@ class SpreadsheetValidation {
 
     if (!bs.hasSig()) throw new Error('Validation failed.');
     if (!bs.verify()) throw new Error('Validation failed.');
-    if (bs.getValueOf('admin_id') !== User2.getId()) throw new Error('Permission denied.');
   }
 }
