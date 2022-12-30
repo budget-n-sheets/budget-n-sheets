@@ -51,7 +51,6 @@ class BsAuth {
     this._data = {
       counter: 0,
       date: 0,
-      admin_id: '',
       spreadsheet_id: this._spreadsheet.getId()
     };
   }
@@ -86,7 +85,6 @@ class BsAuth {
     switch (key) {
       case 'counter':
       case 'date':
-      case 'admin_id':
       case 'spreadsheet_id':
         return this._data[key];
     }
@@ -99,7 +97,6 @@ class BsAuth {
   update () {
     this._data.counter++;
     this._data.date = new Date().getTime();
-    this._data.admin_id = SettingsAdmin.get('admin_id');
 
     this.sign_();
 

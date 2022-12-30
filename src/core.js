@@ -18,7 +18,6 @@
  */
 function onInstall (e) {
   onOpen(e);
-  User2.setId();
 }
 
 /**
@@ -145,7 +144,6 @@ function checkForUpdates () {
 }
 
 function showDialogAboutAddon () {
-  User2.setId();
   let v0;
 
   if (Addon.isInstalled()) v0 = ClassVersion.getValueOf('script');
@@ -185,8 +183,6 @@ function showDialogMessage (title, message, timeout = false) {
 }
 
 function showDialogSetupAddon_ () {
-  User2.setId();
-
   const status = SetupService.checkRequirements();
 
   let title = '';
