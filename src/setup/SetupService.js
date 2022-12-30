@@ -14,16 +14,12 @@ class SetupService {
     if (Addon.isInstalled()) return 2;
     if (BnsTemplate.isLocked()) return 3;
 
-    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
+    const spreadsheet = SpreadsheetApp.getActive();
 
-    const owner = spreadsheet.getOwner();
-    if (owner) {
-      const user = Session.getEffectiveUser().getEmail();
-      if (owner.getEmail() !== user) return 4;
-    }
+    const permission = new DriveFile(spreadsheet.getId()).getUserPermission()
+    if (DriveRoles.getRoleLevel(permission.role) > 2) return 4
 
     if (spreadsheet.getFormUrl()) return 5;
-
     return 0;
   }
 

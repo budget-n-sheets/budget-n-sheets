@@ -10,7 +10,12 @@
 
 class SpreadsheetValidation {
   static evalValid (fileId) {
-    const spreadsheet = new DriveFile(fileId).asSpreadsheet();
+    const file = new DriveFile(fileId)
+
+    const permission = file.getUserPermission()
+    if (DriveRoles.getRoleLevel(permission.role) > 2) throw new Error("You don't have enough permission to access this file.")
+
+    const spreadsheet = file.asSpreadsheet();
     const bs = new BsAuth(spreadsheet);
 
     if (!bs.hasSig()) throw new Error('Validation failed.');
