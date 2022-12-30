@@ -12,14 +12,9 @@ class SetupService {
   static checkRequirements () {
     if (!BnsTemplate.isAvailable()) return 1;
     if (Addon.isInstalled()) return 2;
+    if (!AddonUser.hasBaselinePermission()) return 4
     if (BnsTemplate.isLocked()) return 3;
-
-    const spreadsheet = SpreadsheetApp.getActive();
-
-    const permission = new DriveFile(spreadsheet.getId()).getUserPermission()
-    if (DriveRoles.getRoleLevel(permission.role) > 2) return 4
-
-    if (spreadsheet.getFormUrl()) return 5;
+    if (SpreadsheetApp2.getActive().spreadsheet.getFormUrl()) return 5;
     return 0;
   }
 

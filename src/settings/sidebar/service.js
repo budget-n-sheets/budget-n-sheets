@@ -9,11 +9,11 @@
  */
 
 function getUserSettings () {
-  if (!User2.isAdmin()) return;
+  if (!AddonUser.hasBaselinePermission()) return
   return UserSettings.getSettings();
 }
 
 function saveUserSettings (settings) {
-  if (!User2.isAdmin()) return 1;
+  if (!AddonUser.hasBaselinePermission()) return 1
   new UserSettings().saveSidebarSettings(settings).flush();
 }

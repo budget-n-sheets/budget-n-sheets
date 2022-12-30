@@ -117,7 +117,7 @@ function showPanelTagging () {
 }
 
 function showSidebarSettings () {
-  if (!User2.isAdmin()) {
+  if (!AddonUser.hasBaselinePermission()) {
     SpreadsheetApp2.getUi().alert(
       'Permission denied',
       "You don't have permission to change the settings.",
