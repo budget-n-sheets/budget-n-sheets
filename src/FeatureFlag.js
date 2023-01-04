@@ -20,6 +20,11 @@ class FeatureFlag {
         return false;
     }
 
-    return PropertiesService.getScriptProperties().getProperty(name) === 'true';
+    const c = CacheService.getScriptCache();
+    return c.get(name) ?? ((c) => {
+      const v = PropertiesService.getScriptProperties().getProperty(name);
+      c.put(name, v);
+      return v;
+    })(c);
   }
 }
