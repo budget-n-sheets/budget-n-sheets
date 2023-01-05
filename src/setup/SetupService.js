@@ -12,7 +12,7 @@ class SetupService {
   static checkRequirements () {
     if (!BnsTemplate.isAvailable()) return 1;
     if (Addon.isInstalled()) return 2;
-    if (BnsTemplate.isLocked()) return 3;
+    if (Addon.isLocked()) return 3;
 
     const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
 
