@@ -21,17 +21,4 @@ class Bs {
     scriptCache.put('developer_key', key);
     return key;
   }
-
-  static getInnerKey () {
-    const scriptCache = CacheService.getScriptCache();
-
-    let key = scriptCache.get('inner_lock');
-    if (key) return key;
-
-    key = PropertiesService.getScriptProperties().getProperty('inner_lock');
-    if (!key) throw new Error('Bs: getInnerKey(): Property "inner_lock" not found');
-
-    scriptCache.put('inner_lock', key);
-    return key;
-  }
 }
