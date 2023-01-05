@@ -53,8 +53,6 @@ function setupService (uuid, payload) {
     template: Info.template.version
   });
 
-  new BsAuth(spreadsheet).update();
-
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService2.getDocumentProperties().setProperty('is_installed', true);
 
