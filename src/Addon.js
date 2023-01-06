@@ -56,9 +56,5 @@ class Addon {
     const lock = !!(this.isInstalled() || this.isLocked());
     PropertiesService2.getDocumentProperties().setProperties({ lock_spreadsheet: lock }, true);
     CacheService2.getDocumentCache().removeAll(CACHE_KEYS);
-    SpreadsheetApp2.getActive()
-      .getMetadata()
-      .set('is_installed', false)
-      .set('lock_spreadsheet', true)
   }
 }

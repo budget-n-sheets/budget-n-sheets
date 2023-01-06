@@ -9,7 +9,20 @@
  */
 
 class Stamp {
-  static evalValid (fileId) {
-    const spreadsheet = new DriveFile(fileId).asSpreadsheet();
+  static seal () {
+    if (!Addon.isInstalled()) throw new Error('Add-on is not installed.')
+    const spreadsheet = SpreadsheetApp2.getActive()
+    spreadsheet.getMetadata()
+      .set('stamp', {
+        date: new Date().getTime(),
+        spreadsheet_id: spreadsheet.getId()
+      });
+  }
+
+  static verify (id = '') {
+    return id === SpreadsheetApp2.openById(id)
+      .getMetadata()
+      .get('stamp')
+      .spreadsheet_id
   }
 }

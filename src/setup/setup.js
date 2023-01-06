@@ -55,7 +55,7 @@ function setupService (uuid, payload) {
 
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService2.getDocumentProperties().setProperty('is_installed', true);
-  SpreadsheetApp2.getActive().getMetadata().set('is_installed', true)
+  Stamp.seal()
 
   try {
     TriggersService.start();
