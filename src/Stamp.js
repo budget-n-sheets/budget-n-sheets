@@ -8,7 +8,7 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class SpreadsheetValidation {
+class Stamp {
   static evalValid (fileId) {
     const spreadsheet = new DriveFile(fileId).asSpreadsheet();
   }

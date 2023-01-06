@@ -29,7 +29,7 @@ function requestValidateSpreadsheet_ (uuid, fileId) {
   let status = 0;
 
   try {
-    SpreadsheetValidation.evalValid(fileId);
+    Stamp.evalValid(fileId);
   } catch (err) {
     LogLog.error(err);
     status = 1;
