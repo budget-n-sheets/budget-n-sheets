@@ -27,7 +27,7 @@ class UpdateScript extends Update {
         ['', '', 'patchV0m46p2_', 'patchV0m46p3_', '', '', '', 'v0m46p7_', '', '', 'v0m46p10_'],
         ['', ''],
         ['', '', '', '', ''],
-        ['', '', '', '', '', '']
+        ['', '', '', '', '', '', 'v0m49p6_']
       ]
     ];
 
@@ -36,11 +36,21 @@ class UpdateScript extends Update {
   }
 
   /**
+   * Stamp.
+   *
+   * 0.49.6
+   */
+  v0m49p6_ () {
+    Stamp.seal()
+    return 0;
+  }
+
+  /**
    * Add property 'color' to cards and acc.
    *
    * 0.46.10
    */
-   v0m46p10_ () {
+  v0m46p10_ () {
     let db;
 
     db = CachedProperties.withDocument().get('db_accounts');
@@ -63,7 +73,7 @@ class UpdateScript extends Update {
    *
    * 0.46.7
    */
-   v0m46p7_ () {
+  v0m46p7_ () {
     if (!SpreadsheetApp2.getActive().getSheetByName('_Backstage')) return 3;
 
     try {
