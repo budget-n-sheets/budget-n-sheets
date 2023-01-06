@@ -22,17 +22,11 @@ class Addon {
   }
 
   static isInstalled () {
-    let isInstalled = CacheService2.getDocumentCache().get('is_installed');
-    if (isInstalled) return isInstalled;
-
-    isInstalled = !!PropertiesService2.getDocumentProperties().getProperty('is_installed');
-    CacheService2.getDocumentCache().put('is_installed', isInstalled);
-
-    return isInstalled;
+    return CachedProperties.withDocument().get('is_installed')
   }
 
   static isLocked () {
-    return !!PropertiesService2.getDocumentProperties().getProperty('lock_spreadsheet');
+    return CachedProperties.withDocument().get('lock_spreadsheet')
   }
 
   static isUpToDate () {
