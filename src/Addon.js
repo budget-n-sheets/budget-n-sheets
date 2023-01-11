@@ -31,6 +31,10 @@ class Addon {
     return isInstalled;
   }
 
+  static isLocked () {
+    return !!PropertiesService2.getDocumentProperties().getProperty('lock_spreadsheet');
+  }
+
   static isUpToDate () {
     return BnsScript.isUpToDate() && BnsTemplate.isUpToDate();
   }
@@ -49,7 +53,7 @@ class Addon {
 
   static uninstall () {
     TriggersService.stop();
-    const lock = !!(this.isInstalled() || BnsTemplate.isLocked());
+    const lock = !!(this.isInstalled() || this.isLocked());
     PropertiesService2.getDocumentProperties().setProperties({ lock_spreadsheet: lock }, true);
     CacheService2.getDocumentCache().removeAll(CACHE_KEYS);
   }
