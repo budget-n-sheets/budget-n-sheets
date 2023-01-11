@@ -22,7 +22,7 @@ class FeatureFlag {
 
     const c = CacheService.getScriptCache();
     return c.get(name) ?? ((c) => {
-      const v = PropertiesService.getScriptProperties().getProperty(name);
+      const v = ('true' === PropertiesService.getScriptProperties().getProperty(name))
       c.put(name, v);
       return v;
     })(c);
