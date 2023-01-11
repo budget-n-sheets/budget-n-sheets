@@ -72,7 +72,7 @@ class UpdateService {
       return 1;
     }
 
-    if (!User2.isAdmin()) {
+    if (!AddonUser.hasBaselinePermission()) {
       if (isOnline) {
         ui.alert(
           'Add-on update',

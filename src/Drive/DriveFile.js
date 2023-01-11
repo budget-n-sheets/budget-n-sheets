@@ -11,12 +11,7 @@
 class DriveFile {
   constructor (fileId) {
     this.file = DriveApp.getFileById(fileId);
-    this.metadata = {
-      id: fileId,
-      owner: this.file.getOwner()
-    };
-
-    if (this.metadata.owner.getEmail() !== Session.getEffectiveUser().getEmail()) throw new Error('DriveFile: not owner, permission denied.');
+    this.metadata = Object.seal(Drive.Files.get(fileId, { supportsAllDrives: true }))
   }
 
   asSpreadsheet () {
@@ -30,5 +25,9 @@ class DriveFile {
 
   getName () {
     return this.file.getName();
+  }
+
+  getUserPermission () {
+    return this.metadata.userPermission
   }
 }

@@ -10,7 +10,7 @@
 
 function showDialogBackupSession () {
   if (!Addon.isInstalled()) return 2;
-  if (!User2.isAdmin()) return 2;
+  if (!AddonUser.hasBaselinePermission()) return 2
   if (!Addon.isUpToDate()) return 2;
 
   const ui = SpreadsheetApp2.getUi();
@@ -37,7 +37,7 @@ function showDialogBackupSession () {
 function backupService (password) {
   if (!FeatureFlag.getStatusOf('settings/backup')) return 2;
   if (!Addon.isInstalled()) return 2;
-  if (!User2.isAdmin()) return 2;
+  if (!AddonUser.hasBaselinePermission()) return 2
   if (!Addon.isUpToDate()) return 2;
   if (!BackupUtils.checkPasswordPolicy(password)) return 1;
 

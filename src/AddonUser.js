@@ -8,12 +8,14 @@
  * <https://www.gnu.org/licenses/>
  */
 
-function getUserSettings () {
-  if (!AddonUser.hasBaselinePermission()) return
-  return UserSettings.getSettings();
-}
+class AddonUser {
+  static getAccessLevel () {
+    const id = SpreadsheetApp2.getActive().getId()
+    const permission = new DriveFile(id).getUserPermission()
+    return DriveRoles.getRoleLevel(permission.role)
+  }
 
-function saveUserSettings (settings) {
-  if (!AddonUser.hasBaselinePermission()) return 1
-  new UserSettings().saveSidebarSettings(settings).flush();
+  static hasBaselinePermission () {
+    return this.getAccessLevel() <= 2
+  }
 }

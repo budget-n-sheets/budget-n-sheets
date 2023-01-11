@@ -8,12 +8,21 @@
  * <https://www.gnu.org/licenses/>
  */
 
-function getUserSettings () {
-  if (!AddonUser.hasBaselinePermission()) return
-  return UserSettings.getSettings();
-}
+class DriveRoles {
+  static getRoleLevel (role) {
+    switch (role) {
+      case 'owner':
+      case 'organizer':
+        return 1
+      case 'fileOrganizer':
+        return 2
+      case 'writer':
+        return 4
+      case 'reader':
+        return 8
 
-function saveUserSettings (settings) {
-  if (!AddonUser.hasBaselinePermission()) return 1
-  new UserSettings().saveSidebarSettings(settings).flush();
+      default:
+        return 8
+    }
+  }
 }

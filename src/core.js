@@ -18,7 +18,6 @@
  */
 function onInstall (e) {
   onOpen(e);
-  User2.setId();
 }
 
 /**
@@ -117,7 +116,7 @@ function showPanelTagging () {
 }
 
 function showSidebarSettings () {
-  if (!User2.isAdmin()) {
+  if (!AddonUser.hasBaselinePermission()) {
     SpreadsheetApp2.getUi().alert(
       'Permission denied',
       "You don't have permission to change the settings.",
@@ -145,7 +144,6 @@ function checkForUpdates () {
 }
 
 function showDialogAboutAddon () {
-  User2.setId();
   let v0;
 
   if (Addon.isInstalled()) v0 = ClassVersion.getValueOf('script');
@@ -185,8 +183,6 @@ function showDialogMessage (title, message, timeout = false) {
 }
 
 function showDialogSetupAddon_ () {
-  User2.setId();
-
   const status = SetupService.checkRequirements();
 
   let title = '';
