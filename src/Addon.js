@@ -29,6 +29,10 @@ class Addon {
     return CachedProperties.withDocument().get('lock_spreadsheet')
   }
 
+  static isLocked () {
+    return !!PropertiesService2.getDocumentProperties().getProperty('lock_spreadsheet');
+  }
+
   static isUpToDate () {
     return BnsScript.isUpToDate() && BnsTemplate.isUpToDate();
   }

@@ -8,24 +8,14 @@
  * <https://www.gnu.org/licenses/>
  */
 
-const Goldfish = {
-  db: {
-    accounts: null,
-    cards: null
-  },
-  spreadsheet: {
-    _self: {},
-    metadata: null,
-    sheets: {}
-  }
-};
-
-class RapidAccess {
-  static db () {
-    return new RapidAccessDb(Goldfish.db);
+class AddonUser {
+  static getAccessLevel () {
+    const id = SpreadsheetApp2.getActive().getId()
+    const permission = new DriveFile(id).getUserPermission()
+    return DriveRoles.getRoleLevel(permission.role)
   }
 
-  static spreadsheet () {
-    return new RapidAccessSpreadsheet(Goldfish.spreadsheet);
+  static hasBaselinePermission () {
+    return this.getAccessLevel() <= 2
   }
 }

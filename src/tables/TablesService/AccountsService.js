@@ -10,7 +10,7 @@
 
 class AccountsService extends TablesService {
   constructor () {
-    const db = RapidAccess.db().accounts();
+    const db = CachedProperties.withDocument().get('db_accounts')
     super('db_accounts', db);
   }
 

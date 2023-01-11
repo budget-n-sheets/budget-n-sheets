@@ -480,8 +480,6 @@ class SetupParts {
   }
 
   setupProperties_ () {
-    const adminId = User2.getId();
-
     let properties, metadata;
 
     properties = {
@@ -495,7 +493,6 @@ class SetupParts {
     CachedProperties.withDocument().update('user_settings', properties);
 
     properties = {
-      admin_id: adminId,
       automatic_backup: false
     };
     CachedProperties.withDocument().update('admin_settings', properties);

@@ -10,12 +10,12 @@
 
 class CardsService extends TablesService {
   constructor () {
-    const db = RapidAccess.db().cards();
+    const db = CachedProperties.withDocument().get('db_cards')
     super('db_cards', db);
   }
 
   static isEmpty () {
-    return Object.keys(RapidAccess.db().cards() || {}).length === 0;
+    return Object.keys(CachedProperties.withDocument().get('db_cards') || {}).length === 0;
   }
 
   formatValues_ (card) {
