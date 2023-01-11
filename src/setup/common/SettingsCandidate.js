@@ -85,19 +85,19 @@ class SettingsCandidate {
       }
     };
 
-    property = metadata.get('const_properties');
+    property = JSON.parse(metadata.get('const_properties'));
     if (!property) throw new Error('Property not found.');
     settings_candidate.settings.financial_year = property.financial_year;
 
-    property = metadata.get('user_settings');
+    property = JSON.parse(metadata.get('user_settings'));
     if (!property) throw new Error('Property not found.');
     settings_candidate.settings.initial_month = property.initial_month;
     settings_candidate.settings.financial_calendar = property.financial_calendar;
 
-    property = metadata.get('spreadsheet_settings');
+    property = JSON.parse(metadata.get('spreadsheet_settings'));
     settings_candidate.settings.decimal_places = property?.decimal_places || 2;
 
-    property = metadata.get('db_accounts');
+    property = JSON.parse(metadata.get('db_accounts'));
     if (!property) throw new Error('Property not found.');
     for (const k in property) {
       settings_candidate.settings.accounts.push({
@@ -110,7 +110,7 @@ class SettingsCandidate {
       });
     }
 
-    property = metadata.get('db_cards');
+    property = JSON.parse(metadata.get('db_cards'));
     if (!property) throw new Error('Property not found.');
     for (const k in property) {
       settings_candidate.misc.cards.push(property[k].name);

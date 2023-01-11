@@ -34,7 +34,7 @@ class RestoreCopy {
   }
 
   copySettings_ () {
-    const metadata = this.metadata.get('user_settings');
+    const metadata = JSON.parse(this.metadata.get('user_settings'));
     if (metadata.financial_calendar === '') return;
 
     const calendars = Calendar.listAllCalendars();
@@ -49,7 +49,7 @@ class RestoreCopy {
 
   copyTables_ () {
     if (this.name_accounts.length > 0) {
-      const metadata = this.metadata.get('db_accounts');
+      const metadata = JSON.parse(this.metadata.get('db_accounts'));
       const accountsService = new AccountsService();
 
       this.name_accounts.forEach(e => {
@@ -60,7 +60,7 @@ class RestoreCopy {
       accountsService.flush();
     }
 
-    const metadata = this.metadata.get('db_cards');
+    const metadata = JSON.parse(this.metadata.get('db_cards'));
     const cardsService = new CardsService();
 
     for (const k in metadata) {
