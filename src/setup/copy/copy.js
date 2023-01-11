@@ -29,9 +29,7 @@ function requestValidateSpreadsheet_ (uuid, fileId) {
   let status = 0;
 
   try {
-    if (!Stamp.verify(fileId)) {
-      if (!verifyLegacyBsAuth_(fileId)) throw new Error('Verification failed.')
-    }
+    if (!Stamp.verify(fileId)) throw new Error('Verification failed.')
   } catch (err) {
     LogLog.error(err);
     status = 1;
@@ -50,9 +48,4 @@ function requestValidateSpreadsheet_ (uuid, fileId) {
 
   if (status === 0) CacheService2.getUserCache().put(uuid, true);
   showDialogSetupCopy(uuid);
-}
-
-function verifyLegacyBsAuth_ (id = '') {
-  const value = SpreadsheetApp2.openById(id).getMetadata().get('bs_sig')
-  return id === JSON.parse(Utilities2.base64DecodeWebSafe(value.encoded || value.data, 'UTF_8')).spreadsheet_id
 }

@@ -20,9 +20,10 @@ class Stamp {
   }
 
   static verify (id = '') {
-    return id === SpreadsheetApp2.openById(id)
-      .getMetadata()
-      .get('stamp')
-      .spreadsheet_id
+    return id === (JSON.parse(SpreadsheetApp2.openById(id).getMetadata().get('stamp'))?.spreadsheet_id ??
+      (function (id) {
+        const value = JSON.parse(SpreadsheetApp2.openById(id).getMetadata().get('bs_sig'))
+        return JSON.parse(Utilities2.base64DecodeWebSafe(value.encoded || value.data, 'UTF_8'))?.spreadsheet_id
+      })(id))
   }
 }
