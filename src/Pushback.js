@@ -9,7 +9,7 @@
  */
 
 class Pushback {
-  constructor (uuid) {
+  constructor () {
     this._session = SessionService.startSession();
     this._param = {};
   }
