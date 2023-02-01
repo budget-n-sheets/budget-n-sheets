@@ -20,9 +20,9 @@ function returnToShadow (uuid, password) {
     return;
   }
 
-  const callbackFunction = shadow.retrieveContext(['callback', 'function']);
-  const callbackUuid = shadow.retrieveContext(['callback', 'uuid']);
-  const param = shadow.retrieveContext(['parameter']);
+  const callbackFunction = shadow.getProperty('callbackFunction');
+  const callbackUuid = shadow.getProperty('callbackUuid');
+  const param = shadow.getProperty('parameter');
   shadow.end();
 
   if (!this[callbackFunction]) {

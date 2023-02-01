@@ -38,7 +38,7 @@ function requestValidateBackup_ (uuid, fileId) {
   if (status === 0) return;
   if (status === 100) status = 0;
 
-  session.createContext(['setup', 'restore'], status);
+  session.setProperty('setup/restore', status);
   showDialogSetupRestore(uuid);
 }
 
@@ -62,7 +62,7 @@ function continuedValidateBackup_ (uuid, password, param) {
     status = 3;
   }
 
-  session.createContext(['setup', 'restore'], status);
+  session.setProperty('setup/restore', status);
   showDialogSetupRestore(uuid);
 }
 
@@ -88,7 +88,7 @@ function unwrapBackup_ (uuid, file_id) {
 
   let password = '';
   try {
-    password = SessionService.getSession(uuid).retrieveContext([file_id, SpreadsheetApp2.getActive().getId()]);
+    password = SessionService.getSession(uuid).getProperty([file_id, SpreadsheetApp2.getActive().getId()].join('/'));
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();

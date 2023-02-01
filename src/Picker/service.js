@@ -35,9 +35,9 @@ function callbackToPicker (uuid, fileId) {
     return;
   }
 
-  const callbackFunction = picker.retrieveContext(['callback', 'function']);
-  const callbackUuid = picker.retrieveContext(['callback', 'uuid']);
-  const param = picker.retrieveContext(['parameter']);
+  const callbackFunction = picker.getProperty('callbackFunction');
+  const callbackUuid = picker.getProperty('callbackUuid');
+  const param = picker.getProperty('parameter');
   picker.end();
 
   if (!this[callbackFunction]) {
@@ -64,8 +64,8 @@ function fallbackToPicker (uuid) {
     return;
   }
 
-  const fallbackFunction = picker.retrieveContext(['fallback', 'function']);
-  const callbackUuid = picker.retrieveContext(['callback', 'uuid']);
+  const fallbackFunction = picker.getProperty('fallbackFunction');
+  const callbackUuid = picker.getProperty('callbackUuid');
   picker.end();
 
   if (!this[fallbackFunction]) {
