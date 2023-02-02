@@ -77,9 +77,7 @@ function unwrapBackup_ (uuid, file_id) {
 
     const patched = BackupPatchService.patchThis(
       JSON.parse(
-        Utilities2.base64DecodeWebSafe(parts[0], 'UTF_8')
-      )
-    );
+        Utilities2.base64DecodeWebSafe(parts[0], 'UTF_8')));
     if (patched == null) throw new Error('unwrapBackup_(): Unwrap failed.');
 
     return patched;
