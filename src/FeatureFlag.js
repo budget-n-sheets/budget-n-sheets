@@ -9,11 +9,12 @@
  */
 
 class FeatureFlag {
-  static getStatusOf (name) {
+  static getStatusOf (key) {
+    const name = `flags/feature/${key}`
     switch (name) {
-      case 'setup/restore':
-      case 'setup/copy':
-      case 'settings/backup':
+      case 'flags/feature/setup/restore':
+      case 'flags/feature/setup/copy':
+      case 'flags/feature/settings/backup':
         break;
 
       default:
