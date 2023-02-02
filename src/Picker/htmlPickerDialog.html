@@ -52,12 +52,12 @@
      */
     function createPicker (token) {
       if (pickerApiLoaded && token) {
-        <? if (topic === 'restore') { ?>
+        <? if (protocol === 'restore') { ?>
         const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
           .setIncludeFolders(false)
           .setSelectFolderEnabled(false)
           .setMimeTypes('text/plain,application/octet-stream')
-        <? } else if (topic === 'copy') { ?>
+        <? } else if (protocol === 'copy' || protocol === 'follow_up') { ?>
         const docsView = new google.picker.DocsView(google.picker.ViewId.SPREADSHEETS)
           .setMimeTypes('application/vnd.google-apps.spreadsheet')
         <? } ?>
