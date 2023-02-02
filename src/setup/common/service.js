@@ -9,7 +9,7 @@
  */
 
 function cacheSettingsSummary_ (settings) {
-  SessionService.getSession(settings.uuid).createContext(['settings', settings.protocol], settings);
+  SessionService.getSession(settings.uuid).setProperty(`settings/${settings.protocol}`, settings);
 }
 
 function retrieveSettingsSummary (uuid, protocol) {
@@ -18,7 +18,7 @@ function retrieveSettingsSummary (uuid, protocol) {
 
   let settings;
   try {
-    settings = SessionService.getSession(uuid).retrieveContext(['settings', protocol]);
+    settings = SessionService.getSession(uuid).getProperty(`settings/${protocol}`);
   } catch (err) {
     settings = null;
     LogLog.error(err);

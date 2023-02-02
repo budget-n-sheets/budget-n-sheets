@@ -28,7 +28,7 @@ class RestoreDialog extends HtmlTemplate2 {
       return;
     }
 
-    const status = SessionService.getSession(this._scriptlet.uuid).retrieveContext(['setup', this.protocol]);
+    const status = SessionService.getSession(this._scriptlet.uuid).getProperty(`setup/${this.protocol}`);
 
     lock.releaseLock();
 
