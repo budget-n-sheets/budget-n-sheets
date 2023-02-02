@@ -8,12 +8,6 @@
  * <https://www.gnu.org/licenses/>
  */
 
-function BSREPORT () {
-  return [
-    [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]
-  ];
-}
-
 function BSSUMBYTAG (tag, range) {
   if (!Array.isArray(tag)) return;
   if (!Array.isArray(tag[0])) return;
@@ -51,8 +45,4 @@ function BSSUMBYTAG (tag, range) {
   }
 
   return sum;
-}
-
-function BSCARDPART () {
-  return 0;
 }
