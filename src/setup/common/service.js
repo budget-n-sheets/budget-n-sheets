@@ -48,3 +48,40 @@ function retrieveSettingsSummary (uuid, protocol) {
 
   return settings;
 }
+
+function requestValidateSpreadsheet_ (protocol, uuid, fileId) {
+  let session;
+  try {
+    session = SessionService.getSession(uuid);
+  } catch (err) {
+    LogLog.error(err);
+    showSessionExpired();
+    return;
+  }
+
+  showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', true);
+  let status = 0;
+
+  try {
+    if (!Stamp.verify(fileId)) throw new Error('Verification failed.')
+  } catch (err) {
+    LogLog.error(err);
+    status = 1;
+  }
+
+  if (status === 0) {
+    try {
+      SettingsCandidate.processSpreadsheet(protocol, uuid, fileId);
+    } catch (err) {
+      LogLog.error(err);
+      status = 3;
+    }
+  }
+
+  session.setProperty(`setup/${protocol}`, status);
+
+  if (status === 0) CacheService2.getUserCache().put(uuid, true);
+
+  if (protocol === 'copy') showDialogSetupCopy(uuid);
+  else if (protocol === 'follow_up') showDialogSetupFollowUp(uuid);
+}

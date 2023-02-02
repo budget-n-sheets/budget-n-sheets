@@ -100,7 +100,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(closeHost)
-        .callbackToPicker(Consts.uuid, doc[google.picker.Document.ID]);
+        .callbackToPicker(Consts.uuid, doc[google.picker.Document.ID], <?= protocol ?>);
     }
   </script>
 

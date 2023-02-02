@@ -23,7 +23,7 @@ function getOAuthToken () {
   return ScriptApp.getOAuthToken();
 }
 
-function callbackToPicker (uuid, fileId) {
+function callbackToPicker (uuid, fileId, protocol) {
   if (typeof fileId !== 'string') return;
 
   let picker;
@@ -51,7 +51,7 @@ function callbackToPicker (uuid, fileId) {
     return;
   }
 
-  this[callbackFunction](callbackUuid, fileId, param);
+  this[callbackFunction](protocol, callbackUuid, fileId, param);
 }
 
 function fallbackToPicker (uuid) {
