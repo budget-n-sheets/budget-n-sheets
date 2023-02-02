@@ -10,21 +10,21 @@
 
 class SetupFollowUpDialog extends RestoreDialog {
   constructor (uuid) {
-    super('follow_up', uuid, 'setup/follow_up/htmlSetupFollowUp');
+    super('follow_up', uuid, 'setup/follow_up/htmlSetupFollowUp')
   }
 
   evalStatus_ (status) {
     switch (status) {
       case 1:
-        this._scriptlet.status_msg = 'Sorry, it was not possible to verify the spreadsheet.';
-        break;
+        this._scriptlet.status_msg = 'Sorry, it was not possible to verify the spreadsheet.'
+        break
       case 2:
-        this._scriptlet.status_msg = 'No spreadsheet with the given ID could be found, or you do not have permission to access it.';
-        break;
+        this._scriptlet.status_msg = 'No spreadsheet with the given ID could be found, or you do not have permission to access it.'
+        break
 
       default:
-        this._scriptlet.status_msg = 'Sorry, something went wrong. Try again in a moment.';
-        break;
+        this._scriptlet.status_msg = 'Sorry, something went wrong. Try again in a moment.'
+        break
     }
   }
 }

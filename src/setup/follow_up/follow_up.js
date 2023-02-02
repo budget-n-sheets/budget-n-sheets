@@ -12,5 +12,5 @@ function showDialogPickerFollowUp (uuid) {
   new PickerService(uuid)
     .setCallbackFunction('requestValidateSpreadsheet_')
     .setFallbackFunction('showDialogSetupFollowUp')
-    .showDialog('follow_up', 'Select spreadsheet');
+    .showDialog('follow_up', 'Select spreadsheet')
 }
