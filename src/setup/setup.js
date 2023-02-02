@@ -52,6 +52,12 @@ function setupService (uuid, payload) {
     script: Info.apps_script.version,
     template: Info.template.version
   });
+  SpreadsheetApp2.getActive()
+    .getMetadata()
+    .set('class_version2', {
+      script: Info.apps_script.version,
+      template: Info.template.version
+    })
 
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService2.getDocumentProperties().setProperty('is_installed', true);

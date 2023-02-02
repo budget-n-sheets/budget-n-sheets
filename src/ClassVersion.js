@@ -16,4 +16,12 @@ class ClassVersion extends Settings {
   static get _scope () {
     return 'document'
   }
+
+  static updateMetadata () {
+    const keys = ['script', 'template']
+    const properties = this.getAll(keys)
+    SpreadsheetApp2.getActive()
+      .getMetadata()
+      .set(this._key, properties)
+  }
 }
