@@ -19,7 +19,7 @@ class Update extends PatchThis {
   }
 
   setPosition_ () {
-    ClassVersion.setValueOf(this._key, this.position);
+    ClassVersion.set(this._key, this.position);
     return this;
   }
 

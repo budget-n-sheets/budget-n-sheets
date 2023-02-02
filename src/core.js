@@ -146,7 +146,7 @@ function checkForUpdates () {
 function showDialogAboutAddon () {
   let v0;
 
-  if (Addon.isInstalled()) v0 = ClassVersion.getValueOf('script');
+  if (Addon.isInstalled()) v0 = ClassVersion.get('script');
   else v0 = Info.apps_script.version;
 
   const htmlOutput = HtmlService2.createTemplateFromFile('html/htmlAboutAddon')
