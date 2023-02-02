@@ -17,10 +17,4 @@ class SetupService {
     if (SpreadsheetApp2.getActive().spreadsheet.getFormUrl()) return 5;
     return 0;
   }
-
-  static getUuid () {
-    const uuid = Utilities.getUuid();
-    CacheService2.getUserCache().put(uuid, true);
-    return uuid;
-  }
 }

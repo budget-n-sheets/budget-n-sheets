@@ -45,7 +45,5 @@ function requestValidateSpreadsheet_ (uuid, fileId) {
   }
 
   session.setProperty('setup/copy', status);
-
-  if (status === 0) CacheService2.getUserCache().put(uuid, true);
   showDialogSetupCopy(uuid);
 }
