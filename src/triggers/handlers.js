@@ -21,7 +21,7 @@ function weeklyTriggerPos_ (e) {
 }
 
 function onOpenHandler_ (e) {
-  if (e.authMode !== ScriptApp.AuthMode.FULL) return;
+  if (!Addon.isAuthorized(e)) return;
 
   try {
     Addon.loadCache();
@@ -31,11 +31,12 @@ function onOpenHandler_ (e) {
 }
 
 function onEditHandler_ (e) {
-  if (e.authMode !== ScriptApp.AuthMode.FULL) return;
+  if (!Addon.isAuthorized(e)) return;
 }
 
 function weeklyHandler_ (e) {
-  if (!Addon.isAuthorized()) return;
+  if (!Addon.isAuthorized(e)) return;
+  if (!AddonUser.hasBaselinePermission()) return
   if (UpdateService.checkAndUpdate()) return;
 
   const financial_year = SettingsConst.get('financial_year');
@@ -46,7 +47,8 @@ function weeklyHandler_ (e) {
 }
 
 function dailyHandler_ (e) {
-  if (!Addon.isAuthorized()) return;
+  if (!Addon.isAuthorized(e)) return;
+  if (!AddonUser.hasBaselinePermission()) return
   if (UpdateService.checkAndUpdate()) return;
 
   const financial_year = SettingsConst.get('financial_year');
@@ -71,6 +73,7 @@ function dailyHandler_ (e) {
 }
 
 function monthlyHandler_ (e) {
-  if (!Addon.isAuthorized()) return;
+  if (!Addon.isAuthorized(e)) return;
+  if (!AddonUser.hasBaselinePermission()) return
   if (UpdateService.checkAndUpdate()) return;
 }
