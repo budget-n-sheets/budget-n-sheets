@@ -8,18 +8,6 @@
  * <https://www.gnu.org/licenses/>
  */
 
-function dailyTrigger_ (e) {
-  ScriptApp.getProjectTriggers().forEach(trigger => {
-    if (trigger.getUniqueId() === e.triggerUid) ScriptApp.deleteTrigger(trigger);
-  });
-}
-
-function weeklyTriggerPos_ (e) {
-  ScriptApp.getProjectTriggers().forEach(trigger => {
-    if (trigger.getUniqueId() === e.triggerUid) ScriptApp.deleteTrigger(trigger);
-  });
-}
-
 function onOpenHandler_ (e) {
   if (!Addon.isAuthorized(e)) return;
 
