@@ -10,7 +10,7 @@
 
 class UpdateTemplate extends Update {
   constructor () {
-    const v0 = ClassVersion.getValueOf('template');
+    const v0 = ClassVersion.get('template');
     const vA = Info.template.version;
     const list = [
       [
