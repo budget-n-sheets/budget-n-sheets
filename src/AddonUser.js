@@ -16,6 +16,10 @@ class AddonUser {
   }
 
   static hasBaselinePermission () {
-    return this.getAccessLevel() <= 2
+    try {
+      return this.getAccessLevel() <= 2
+    } catch (err) {
+      return false
+    }
   }
 }
