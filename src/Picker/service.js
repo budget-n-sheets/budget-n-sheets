@@ -28,7 +28,7 @@ function callbackToPicker (uuid, fileId, protocol) {
 
   let picker;
   try {
-    picker = SessionService.getSession(uuid);
+    picker = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();
@@ -57,7 +57,7 @@ function callbackToPicker (uuid, fileId, protocol) {
 function fallbackToPicker (uuid) {
   let picker;
   try {
-    picker = SessionService.getSession(uuid);
+    picker = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();

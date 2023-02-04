@@ -13,7 +13,7 @@ function returnToShadow (uuid, password) {
 
   let shadow;
   try {
-    shadow = SessionService.getSession(uuid);
+    shadow = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();

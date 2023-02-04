@@ -18,7 +18,7 @@ function showDialogPickerRestore (uuid) {
 function requestValidateBackup_ (protocol, uuid, fileId) {
   let session;
   try {
-    session = SessionService.getSession(uuid);
+    session = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();
@@ -45,7 +45,7 @@ function requestValidateBackup_ (protocol, uuid, fileId) {
 function continuedValidateBackup_ (uuid, password, param) {
   let session;
   try {
-    session = SessionService.getSession(uuid);
+    session = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();
@@ -88,7 +88,7 @@ function unwrapBackup_ (uuid, file_id) {
 
   let password = '';
   try {
-    password = SessionService.getSession(uuid).getProperty([file_id, SpreadsheetApp2.getActive().getId()].join('/'));
+    password = SessionService.withUser().getSession(uuid).getProperty([file_id, SpreadsheetApp2.getActive().getId()].join('/'));
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();

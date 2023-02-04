@@ -10,7 +10,7 @@
 
 class Pushback {
   constructor () {
-    this._session = SessionService.startSession();
+    this._session = SessionService.withUser().startSession();
     this._param = {};
   }
 

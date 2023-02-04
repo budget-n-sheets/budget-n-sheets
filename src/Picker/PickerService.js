@@ -10,7 +10,7 @@
 
 class PickerService extends Pushback {
   constructor (uuid) {
-    SessionService.getSession(uuid)
+    SessionService.withUser().getSession(uuid)
 
     super();
     this._session.setProperty('callbackUuid', uuid);

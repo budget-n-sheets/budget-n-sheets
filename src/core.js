@@ -225,7 +225,7 @@ function showDialogSetupAddon_ () {
   }
 
   const scriptlet = {
-    uuid: SessionService.startSession().getUuid(),
+    uuid: SessionService.withUser().startSession().getUuid(),
     setup_follow_up: FeatureFlag.getStatusOf('setup/follow_up'),
     setup_restore: FeatureFlag.getStatusOf('setup/restore'),
     setup_copy: FeatureFlag.getStatusOf('setup/copy')

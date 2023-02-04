@@ -9,7 +9,7 @@
  */
 
 function cacheSettingsSummary_ (settings) {
-  SessionService.getSession(settings.uuid).setProperty(`settings/${settings.protocol}`, settings);
+  SessionService.withUser().getSession(settings.uuid).setProperty(`settings/${settings.protocol}`, settings);
 }
 
 function retrieveSettingsSummary (uuid, protocol) {
@@ -18,7 +18,7 @@ function retrieveSettingsSummary (uuid, protocol) {
 
   let settings;
   try {
-    settings = SessionService.getSession(uuid).getProperty(`settings/${protocol}`);
+    settings = SessionService.withUser().getSession(uuid).getProperty(`settings/${protocol}`);
   } catch (err) {
     settings = null;
     LogLog.error(err);
@@ -52,7 +52,7 @@ function retrieveSettingsSummary (uuid, protocol) {
 function requestValidateSpreadsheet_ (protocol, uuid, fileId) {
   let session;
   try {
-    session = SessionService.getSession(uuid);
+    session = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();
