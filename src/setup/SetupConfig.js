@@ -19,6 +19,17 @@ class SetupConfig {
     return config;
   }
 
+  static configFollowUp_ (uuid, config) {
+    const candidate = PropertiesService2.getDocumentProperties().getProperty('settings_candidate');
+    if (candidate.uuid !== uuid) throw new Error('UUID does not match.');
+    if (candidate.protocol !== 'follow_up') throw new Error('Protocol does not match.');
+
+    config.file_id = candidate.source.file_id;
+    config.financial_year = candidate.settings.financial_year + 1;
+
+    return config;
+  }
+
   static configRestore_ (uuid, config) {
     const candidate = PropertiesService2.getDocumentProperties().getProperty('settings_candidate');
     if (candidate.uuid !== uuid) throw new Error('UUID does not match.');
@@ -36,6 +47,9 @@ class SetupConfig {
     switch (payload.protocol) {
       case 'copy':
         config = this.configCopy_(uuid, payload.config);
+        break;
+      case 'follow_up':
+        config = this.configFollowUp_(uuid, payload.config);
         break;
       case 'new':
         config = Utils.deepCopy(payload.config);

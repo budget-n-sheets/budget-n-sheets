@@ -31,7 +31,7 @@ function retrieveSettingsSummary (uuid, protocol) {
   if (settings.settings.financial_calendar) {
     let calendar = null;
 
-    if (protocol === 'copy') {
+    if (protocol === 'copy' || protocol === 'follow_up') {
       calendar = CalendarApp.getCalendarById(settings.settings.financial_calendar);
       settings.settings.financial_calendar = calendar ? calendar.getName() : '';
     } else if (protocol === 'restore') {
@@ -47,4 +47,41 @@ function retrieveSettingsSummary (uuid, protocol) {
   settings.misc.tags = settings.misc.tags > 0 ? 'Up to ' + settings.misc.tags + ' tag(s) found.' : '-';
 
   return settings;
+}
+
+function requestValidateSpreadsheet_ (protocol, uuid, fileId) {
+  let session;
+  try {
+    session = SessionService.withUser().getSession(uuid);
+  } catch (err) {
+    LogLog.error(err);
+    showSessionExpired();
+    return;
+  }
+
+  showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', true);
+  let status = 0;
+
+  try {
+    if (!Stamp.verify(fileId)) throw new Error('Verification failed.')
+  } catch (err) {
+    LogLog.error(err);
+    status = 1;
+  }
+
+  if (status === 0) {
+    try {
+      SettingsCandidate.processSpreadsheet(protocol, uuid, fileId);
+    } catch (err) {
+      LogLog.error(err);
+      status = 3;
+    }
+  }
+
+  session.setProperty(`setup/${protocol}`, status);
+
+  if (status === 0) CacheService2.getUserCache().put(uuid, true);
+
+  if (protocol === 'copy') showDialogSetupCopy(uuid);
+  else if (protocol === 'follow_up') showDialogSetupFollowUp(uuid);
 }

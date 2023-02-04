@@ -44,6 +44,7 @@ function setupService (uuid, payload) {
   try {
     if (payload.protocol === 'restore') new RestoreBackup(config).restore();
     else if (payload.protocol === 'copy') new RestoreCopy(config).copy();
+    else if (payload.protocol === 'follow_up') new SetupFollowUp(config).copy();
   } catch (err) {
     LogLog.error(err);
   }

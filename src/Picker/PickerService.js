@@ -21,7 +21,7 @@ class PickerService extends Pushback {
     return this;
   }
 
-  showDialog (topic, title) {
+  showDialog (protocol, title) {
     this.config_();
 
     if (!this._fallbackFunction) throw new Error('Undefined fallback.');
@@ -32,7 +32,7 @@ class PickerService extends Pushback {
         locale: Session.getActiveUserLocale(),
         devKey: Bs.getDeveloperKey(),
         uuid: this._uuid,
-        topic: topic
+        protocol: protocol
       })
       .evaluate()
       .setWidth(617)

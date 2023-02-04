@@ -15,7 +15,7 @@ function showDialogPickerRestore (uuid) {
     .showDialog('restore', 'Select backup');
 }
 
-function requestValidateBackup_ (uuid, fileId) {
+function requestValidateBackup_ (protocol, uuid, fileId) {
   let session;
   try {
     session = SessionService.withUser().getSession(uuid);
@@ -38,7 +38,7 @@ function requestValidateBackup_ (uuid, fileId) {
   if (status === 0) return;
   if (status === 100) status = 0;
 
-  session.setProperty('setup/restore', status);
+  session.setProperty(`setup/${protocol}`, status);
   showDialogSetupRestore(uuid);
 }
 

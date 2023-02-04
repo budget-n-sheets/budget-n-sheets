@@ -1,5 +1,5 @@
 /**
- * Budget n Sheets Copyright 2017-2022 Guilherme T Maeoka
+ * Budget n Sheets Copyright 2017-2023 Guilherme T Maeoka
  * <https://github.com/budget-n-sheets/budget-n-sheets>
  *
  * This program comes with ABSOLUTELY NO WARRANTY.
@@ -8,9 +8,9 @@
  * <https://www.gnu.org/licenses/>
  */
 
-function showDialogPickerCopy (uuid) {
+function showDialogPickerFollowUp (uuid) {
   new PickerService(uuid)
     .setCallbackFunction('requestValidateSpreadsheet_')
-    .setFallbackFunction('showDialogSetupCopy')
-    .showDialog('copy', 'Select spreadsheet');
+    .setFallbackFunction('showDialogSetupFollowUp')
+    .showDialog('follow_up', 'Select spreadsheet')
 }
