@@ -20,7 +20,7 @@ function setupService (uuid, payload) {
 
   let session;
   try {
-    session = SessionService.getSession(uuid);
+    session = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();

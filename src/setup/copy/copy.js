@@ -18,7 +18,7 @@ function showDialogPickerCopy (uuid) {
 function requestValidateSpreadsheet_ (uuid, fileId) {
   let session;
   try {
-    session = SessionService.getSession(uuid);
+    session = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();
