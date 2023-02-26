@@ -41,10 +41,12 @@ class SetupFollowUp extends SetupSuperCopy {
     const backstage = this.source.getSheetByName('_Backstage')
     const balance = backstage ? backstage.getRange(113, 7, 1, 25).getValues() : null
 
+    const mm = this.initial_month
+
     this.name_accounts.forEach(e => {
       const meta = metadata[e.prevIndex]
       meta.balance = balance ? balance[0][5 * e.prevIndex] : 0
-      meta.time_start = 0
+      meta.time_start = mm
 
       const acc = accounts.getByName(e.name)
       if (acc) accounts.update(acc.id, meta)
