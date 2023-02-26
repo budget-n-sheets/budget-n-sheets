@@ -8,29 +8,9 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class SetupFollowUp {
+class SetupFollowUp extends SetupSuperCopy {
   constructor (config) {
-    this.destination = SpreadsheetApp2.getActive().spreadsheet
-
-    this.source_id = config.file_id
-    this.source = SpreadsheetApp.openById(config.file_id)
-
-    this.metadata = new Metadata(this.source)
-
-    this.name_accounts = config.name_accounts.filter(e => e.require === 'copy')
-  }
-
-  copyCards_ () {
-    const metadata = JSON.parse(this.metadata.get('db_cards'))
-    const cards = new CardsService()
-
-    for (const k in metadata) {
-      metadata[k].aliases = metadata[k].aliases.join(' ')
-      cards.create(metadata[k])
-    }
-
-    cards.save()
-    cards.flush()
+    super(config)
   }
 
   forwardInstallments_ () {
@@ -50,20 +30,6 @@ class SetupFollowUp {
       .getSheetByName('Cards')
       .getRange(6, 1, values.length, 5)
       .setValues(values)
-  }
-
-  copySettings_ () {
-    const metadata = JSON.parse(this.metadata.get('user_settings'))
-    if (metadata.financial_calendar === '') return
-
-    const calendars = Calendar.listAllCalendars()
-    const calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, metadata.financial_calendar)
-    if (calendar) {
-      SettingsUser.set('financial_calendar', calendar.id)
-        .set('post_day_events', metadata.post_day_events)
-        .set('cash_flow_events', metadata.cash_flow_events)
-        .updateMetadata()
-    }
   }
 
   setupAccounts_ () {
@@ -86,19 +52,6 @@ class SetupFollowUp {
 
     accounts.save()
     accounts.flush()
-  }
-
-  copyTags_ () {
-    const source = this.source.getSheetByName('Tags')
-    if (!source) return
-    const numRows = source.getLastRow() - 1
-    if (numRows < 1) return
-
-    const destination = this.destination.getSheetByName('Tags')
-    new ToolInsertRowsTags().insertRowsTo(1 + numRows, true)
-
-    const values = source.getRange(2, 1, numRows, 5).getValues()
-    destination.getRange(2, 1, numRows, 5).setValues(values)
   }
 
   copy () {
