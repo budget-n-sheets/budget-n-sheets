@@ -29,7 +29,7 @@ const HtmlResources = Object.freeze({
       terms_of_service: 'https://www.budgetnsheets.com/terms-of-service',
       join_subreddit: 'https://www.reddit.com/r/budgetnsheets/',
       send_feedback: 'https://www.budgetnsheets.com/contact',
-      home_wiki: 'https://github.com/guimspace/budget-n-sheets/wiki',
+      home_wiki: 'https://github.com/budget-n-sheets/budget-n-sheets/wiki',
       g_marketplace: 'https://workspace.google.com/marketplace/app/budget_n_sheets/628594713587'
     }
   }
