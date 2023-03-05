@@ -29,15 +29,16 @@
     <li>Submit your requests in the <a href="<?= home_help ?>" target="_blank"><b>Support</b></a> page.</li>
   </ul>
 
-  <button class="action" onclick="showQuickstart()">Show quickstart</button>
+  <button class="action" id="b-Quickstart">Show quickstart</button>
   <button onClick="google.script.host.close()">Close</button>
 
-  <script>
-    function showQuickstart () {
+    <script>
+    document.getElementById('b-Quickstart').addEventListener("click", ({target}) => {
+      target.disabled = true;
       google.script.run
         .withSuccessHandler(e => google.script.host.close())
         .showPanelQuickstart();
-    }
+    });
   </script>
 </body>
 
