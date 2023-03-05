@@ -32,13 +32,14 @@
   <button class="action" id="b-Quickstart">Show quickstart</button>
   <button onClick="google.script.host.close()">Close</button>
 
-    <script>
-    document.getElementById('b-Quickstart').addEventListener("click", ({target}) => {
-      target.disabled = true;
-      google.script.run
-        .withSuccessHandler(e => google.script.host.close())
-        .showPanelQuickstart();
-    });
+  <script>
+    document.getElementById('b-Quickstart')
+      .addEventListener('click', ({target}) => {
+        target.disabled = true
+        google.script.run
+          .withSuccessHandler(e => google.script.host.close())
+          .showPanelQuickstart()
+      })
   </script>
 </body>
 
