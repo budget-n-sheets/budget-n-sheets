@@ -49,11 +49,11 @@ class BackupValidation {
     if (patched == null) throw new Error('Update failed.');
 
     SettingsCandidate.processBackup(this._uuid, this._backup, patched);
-    SessionService.getSession(this._uuid)
-      .createContext(
-        [this._backup.getId(), SpreadsheetApp2.getActive().getId()],
-        password,
-        180);
+    SessionService.withUser().getSession(this._uuid)
+      .getContext(
+        [this._backup.getId(), SpreadsheetApp2.getActive().getId()].join('/'),
+        180)
+      .setProperty('password', password)
 
     return 0;
   }

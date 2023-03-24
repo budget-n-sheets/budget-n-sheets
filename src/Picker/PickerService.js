@@ -10,9 +10,10 @@
 
 class PickerService extends Pushback {
   constructor (uuid) {
-    if (!SessionService.hasSession(uuid)) throw new Error('Session expired.');
+    SessionService.withUser().getSession(uuid)
+
     super();
-    this._session.createContext(['callback', 'uuid'], uuid);
+    this._session.setProperty('callbackUuid', uuid);
   }
 
   setFallbackFunction (fallbackFunctionName) {
@@ -20,18 +21,18 @@ class PickerService extends Pushback {
     return this;
   }
 
-  showDialog (topic, title) {
+  showDialog (protocol, title) {
     this.config_();
 
     if (!this._fallbackFunction) throw new Error('Undefined fallback.');
-    this._session.createContext(['fallback', 'function'], this._fallbackFunction);
+    this._session.setProperty('fallbackFunction', this._fallbackFunction);
 
     const htmlOutput = HtmlService2.createTemplateFromFile('Picker/htmlPickerDialog')
       .setScriptletValues({
         locale: Session.getActiveUserLocale(),
         devKey: Bs.getDeveloperKey(),
         uuid: this._uuid,
-        topic: topic
+        protocol: protocol
       })
       .evaluate()
       .setWidth(617)

@@ -8,19 +8,12 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class RestoreCopy {
+class RestoreCopy extends SetupSuperCopy {
   constructor (config) {
-    this.destination = SpreadsheetApp2.getActive().spreadsheet;
-
-    this.source_id = config.file_id;
-    this.source = SpreadsheetApp.openById(config.file_id);
-
-    this.metadata = new Metadata(this.source);
-
-    this.name_accounts = config.name_accounts.filter(e => e.require === 'copy');
+    super(config)
   }
 
-  copyCards_ () {
+  copyCardsData_ () {
     const source = this.source.getSheetByName('Cards');
     if (!source) return;
     const numRows = source.getLastRow() - 5;
@@ -33,55 +26,19 @@ class RestoreCopy {
     destination.getRange(6, 1, numRows, 6 * 12).setValues(values);
   }
 
-  copySettings_ () {
-    const metadata = JSON.parse(this.metadata.get('user_settings'));
-    if (metadata.financial_calendar === '') return;
-
-    const calendars = Calendar.listAllCalendars();
-    const calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, metadata.financial_calendar);
-    if (calendar) {
-      SettingsUser.set('financial_calendar', calendar.id)
-        .set('post_day_events', metadata.post_day_events)
-        .set('cash_flow_events', metadata.cash_flow_events)
-        .updateMetadata();
-    }
-  }
-
   copyTables_ () {
-    if (this.name_accounts.length > 0) {
-      const metadata = JSON.parse(this.metadata.get('db_accounts'));
-      const accountsService = new AccountsService();
+    if (this.name_accounts.length === 0) return
 
-      this.name_accounts.forEach(e => {
-        const acc = accountsService.getByName(e.name);
-        if (acc) accountsService.update(acc.id, metadata[e.prevIndex]);
-      });
-      accountsService.save();
-      accountsService.flush();
-    }
+    const metadata = JSON.parse(this.metadata.get('db_accounts'));
+    const accountsService = new AccountsService();
 
-    const metadata = JSON.parse(this.metadata.get('db_cards'));
-    const cardsService = new CardsService();
+    this.name_accounts.forEach(e => {
+      const acc = accountsService.getByName(e.name);
+      if (acc) accountsService.update(acc.id, metadata[e.prevIndex]);
+    });
 
-    for (const k in metadata) {
-      metadata[k].aliases = metadata[k].aliases.join(',');
-      cardsService.create(metadata[k]);
-    }
-    cardsService.save();
-    cardsService.flush();
-  }
-
-  copyTags_ () {
-    const source = this.source.getSheetByName('Tags');
-    if (!source) return;
-    const numRows = source.getLastRow() - 1;
-    if (numRows < 1) return;
-
-    const destination = this.destination.getSheetByName('Tags');
-    new ToolInsertRowsTags().insertRowsTo(1 + numRows, true);
-
-    const values = source.getRange(2, 1, numRows, 5).getValues();
-    destination.getRange(2, 1, numRows, 5).setValues(values);
+    accountsService.save();
+    accountsService.flush();
   }
 
   copyTtt_ () {
@@ -107,8 +64,9 @@ class RestoreCopy {
 
   copy () {
     this.copyTables_();
+    this.copyCards_()
     this.copyTtt_();
-    this.copyCards_();
+    this.copyCardsData_();
     this.copyTags_();
     this.copySettings_();
   }

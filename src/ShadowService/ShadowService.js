@@ -10,9 +10,10 @@
 
 class ShadowService extends Pushback {
   constructor (uuid) {
-    if (!SessionService.hasSession(uuid)) throw new Error('Session expired.');
+    SessionService.withUser().getSession(uuid)
+
     super();
-    this._session.createContext(['callback', 'uuid'], uuid);
+    this._session.setProperty('callbackUuid', uuid);
   }
 
   showDialog () {

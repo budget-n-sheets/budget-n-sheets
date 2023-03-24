@@ -154,13 +154,22 @@
     <div class="panel" id="panel-restore">
       <h2>Let&apos;s get started</h2>
       <table class="start-options">
-        <tr class="comment restore-button" id="setup-continue">
+        <tr class="comment restore-button" id="setup-new">
           <td><span class="material-icons-outlined">new_releases</span></td>
           <td>
             <div><strong>Set up as new</strong></div>
             <div>Get a new budget spreadsheet.</div>
           </td>
         </tr>
+        <? if (setup_follow_up) { ?>
+        <tr class="comment restore-button" id="setup-follow_up">
+          <td><span class="material-icons-outlined">next_plan</span></td>
+          <td>
+            <div><strong>Follow-up year</strong></div>
+            <div>Get the continuation of an year.</div>
+          </td>
+        </tr>
+        <? } ?>
         <? if (setup_copy) { ?>
         <tr class="comment restore-button" id="setup-copy">
           <td><span class="material-icons-outlined">content_copy</span></td>
@@ -302,7 +311,10 @@
 
     function setupOption () {
       $('.restore-button').off('click');
-      if (this.id === 'setup-continue') clickNext();
+      if (this.id === 'setup-new') clickNext();
+      <? if (setup_follow_up) { ?>
+      if (this.id === 'setup-follow_up') showFollowUp();
+      <? } ?>
       <? if (setup_restore) { ?>
       if (this.id === 'setup-restore') showRestore();
       <? } ?>
@@ -342,6 +354,16 @@
 
       $tr.find('input').focus();
     }
+
+    <? if (setup_follow_up) { ?>
+    function showFollowUp () {
+      $('#panel-restore').fadeOut();
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(closeHost)
+        .showDialogSetupFollowUp(Glob.uuid);
+    }
+    <? } ?>
 
     <? if (setup_restore) { ?>
     function showRestore () {

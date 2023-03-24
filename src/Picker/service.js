@@ -23,21 +23,21 @@ function getOAuthToken () {
   return ScriptApp.getOAuthToken();
 }
 
-function callbackToPicker (uuid, fileId) {
+function callbackToPicker (uuid, fileId, protocol) {
   if (typeof fileId !== 'string') return;
 
   let picker;
   try {
-    picker = SessionService.getSession(uuid);
+    picker = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();
     return;
   }
 
-  const callbackFunction = picker.retrieveContext(['callback', 'function']);
-  const callbackUuid = picker.retrieveContext(['callback', 'uuid']);
-  const param = picker.retrieveContext(['parameter']);
+  const callbackFunction = picker.getProperty('callbackFunction');
+  const callbackUuid = picker.getProperty('callbackUuid');
+  const param = picker.getProperty('parameter');
   picker.end();
 
   if (!this[callbackFunction]) {
@@ -51,21 +51,21 @@ function callbackToPicker (uuid, fileId) {
     return;
   }
 
-  this[callbackFunction](callbackUuid, fileId, param);
+  this[callbackFunction](protocol, callbackUuid, fileId, param);
 }
 
 function fallbackToPicker (uuid) {
   let picker;
   try {
-    picker = SessionService.getSession(uuid);
+    picker = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();
     return;
   }
 
-  const fallbackFunction = picker.retrieveContext(['fallback', 'function']);
-  const callbackUuid = picker.retrieveContext(['callback', 'uuid']);
+  const fallbackFunction = picker.getProperty('fallbackFunction');
+  const callbackUuid = picker.getProperty('callbackUuid');
   picker.end();
 
   if (!this[fallbackFunction]) {

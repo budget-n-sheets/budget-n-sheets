@@ -20,7 +20,7 @@ function setupService (uuid, payload) {
 
   let session;
   try {
-    session = SessionService.getSession(uuid);
+    session = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();
@@ -44,6 +44,7 @@ function setupService (uuid, payload) {
   try {
     if (payload.protocol === 'restore') new RestoreBackup(config).restore();
     else if (payload.protocol === 'copy') new RestoreCopy(config).copy();
+    else if (payload.protocol === 'follow_up') new SetupFollowUp(config).copy();
   } catch (err) {
     LogLog.error(err);
   }
@@ -52,6 +53,12 @@ function setupService (uuid, payload) {
     script: Info.apps_script.version,
     template: Info.template.version
   });
+  SpreadsheetApp2.getActive()
+    .getMetadata()
+    .set('class_version2', {
+      script: Info.apps_script.version,
+      template: Info.template.version
+    })
 
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
   PropertiesService2.getDocumentProperties().setProperty('is_installed', true);

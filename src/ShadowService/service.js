@@ -13,16 +13,16 @@ function returnToShadow (uuid, password) {
 
   let shadow;
   try {
-    shadow = SessionService.getSession(uuid);
+    shadow = SessionService.withUser().getSession(uuid);
   } catch (err) {
     LogLog.error(err);
     showSessionExpired();
     return;
   }
 
-  const callbackFunction = shadow.retrieveContext(['callback', 'function']);
-  const callbackUuid = shadow.retrieveContext(['callback', 'uuid']);
-  const param = shadow.retrieveContext(['parameter']);
+  const callbackFunction = shadow.getProperty('callbackFunction');
+  const callbackUuid = shadow.getProperty('callbackUuid');
+  const param = shadow.getProperty('parameter');
   shadow.end();
 
   if (!this[callbackFunction]) {

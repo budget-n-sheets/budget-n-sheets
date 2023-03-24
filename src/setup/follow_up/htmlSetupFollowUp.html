@@ -1,0 +1,190 @@
+<!-- Budget n Sheets | (c) Guilherme T Maeoka | budgetnsheets.com/license -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= HtmlService2.include("html/resources/styles"); ?>
+  <?!= HtmlService2.include("html/resources/material-icons"); ?>
+  <?!= HtmlService2.include("html/resources/animation-processing"); ?>
+  <?!= HtmlService2.include('setup/common/cssCommonDialog'); ?>
+</head>
+
+<body>
+  <div class="panel" id="panel-restore">
+    <div>
+      <ol>
+        <li>Select a spreadsheet for follow-up.</li>
+        <li>Review the settings and make your changes.</li>
+        <li>Click <strong>BUILD</strong>.</li>
+      </ol>
+
+      <p class="error" id="reponse"><?= status_msg ?></p>
+      <button class="action" id="b-Select">Select spreadsheet</button>
+      <button onclick="closeHost()">Cancel</button>
+    </div>
+
+    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm()">
+      <div class="panel" id="details">
+        <table class="form">
+          <tr>
+            <th colspan="2"><span class="material-icons-outlined">table_chart</span> Spreadsheet</th>
+          </tr>
+          <tr>
+            <td><label for="spreadsheet_name">Spreadsheet name</label></td>
+            <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
+          </tr>
+          <tr>
+            <td><label for="decimal_places">Decimal places</label></td>
+            <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+          </tr>
+        </table>
+
+        <?!= htmlCommonDialog ?>
+
+        <div class="footer">
+          <button class="create" id="b-Build" type="submit" form="the_form" disabled>Build</button>
+          <button onclick="closeHost()">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="panel" id="panel-setup">
+    <div id="notice">
+      <h2>Building your spreadsheet</h2>
+      <div class="animation-processing-wrapper">
+        <div class="animation-processing-bar"></div>
+      </div>
+      <p class="text">This process takes up to 4 minutes. Do not edit the spreadsheet until it is finished.</p>
+    </div>
+    <div id="timeout">
+      <p>This is taking too long. You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.</p>
+      <button onclick="closeHost()">Close</button>
+    </div>
+  </div>
+
+  <?!= HtmlService2.include("html/resources/javascript"); ?>
+  <?!= appsScriptIssue69270374WorkaroundFrame(); ?>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script>
+    const Glob = {
+      uuid: <?= uuid ?>,
+      accounts: {},
+      num_acc: 0
+    };
+
+    $(document).ready(function() {
+      $('#b-Select').click(pickFile);
+      <? if (isContinued) { ?>
+      $('#b-Select').prop('disabled', true);
+
+      $('#tr-acc-listed').sortable({
+        axis: 'y',
+        handle: '.handle',
+        opacity: 0.71
+      });
+
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(refreshInfo)
+        .retrieveSettingsSummary(Glob.uuid, 'follow_up');
+      <? } ?>
+      $('#panel-restore').fadeIn('fast');
+    });
+
+    <? if (isContinued) { ?>
+    $(document).on('click, focus', '#m-add-acc', () => addAccInput());
+
+    function refreshInfo (info) {
+      if (!info) return;
+      $('#b-Select').prop('disabled', false);
+
+      $('#spreadsheet_name').val(info.settings.spreadsheet_name);
+      $('#decimal_places').val(info.settings.decimal_places);
+
+      $('#financial_year').closest('td')
+        .empty()
+        .css('display', 'flex')
+        .css('text-align', 'center')
+        .append([
+          $('<span>').css('flex', '1').text(info.settings.financial_year),
+          $('<span>').addClass('material-icons-outlined').css('flex', '1').text('arrow_forward'),
+          $('<span>').css('flex', '1').text(info.settings.financial_year + 1)
+        ])
+      $('#initial_month').val(info.settings.initial_month);
+      $('#financial_calendar').text(info.settings.financial_calendar);
+
+      $('#cards').text(info.misc.cards);
+      $('#tags').text(info.misc.tags);
+
+      info.settings.accounts.forEach(o => {
+        Glob.accounts[o.id] = o;
+        addAccInput(o.id);
+      });
+
+      $('#details').fadeIn('fast');
+      $('#b-Build').prop('disabled', false);
+    }
+
+    function submitForm () {
+      $('#b-Build').prop('disabled', true);
+      window.scrollTo(0, 0);
+      $('#tr-acc-error').hide();
+
+      $('.panel').hide();
+      google.script.host.setHeight(181);
+      $('#panel-setup').fadeIn('fast');
+
+      setTimeout(function() {
+        google.script.host.setHeight(251);
+        $('#timeout').fadeIn();
+      }, 240000);
+
+      const accounts = [];
+      $('input[name="account_name"]').each(function(index) {
+        const key = $(this).closest('tr').attr('id');
+        if (key) {
+          Glob.accounts[key].index = index;
+          accounts.push(Glob.accounts[key]);
+        } else {
+          accounts.push({
+            require: 'new',
+            index: index,
+            name: $(this).val()
+          });
+        }
+      });
+
+      const payload = {
+        protocol: 'follow_up',
+        config: {
+          name_accounts: accounts,
+          spreadsheet_name: $('#spreadsheet_name').val(),
+          decimal_places: $('#decimal_places').val(),
+          initial_month: $('#initial_month').val()
+        }
+      };
+
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(null)
+        .setupService(Glob.uuid, payload);
+    }
+    <? } ?>
+
+    function pickFile () {
+      this.disabled = true;
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(closeHost)
+        .showDialogPickerFollowUp(Glob.uuid);
+    }
+  </script>
+  <? if (isContinued) { ?>
+    <?!= jsCommonDialog ?>
+  <? } ?>
+</body>
+
+</html>

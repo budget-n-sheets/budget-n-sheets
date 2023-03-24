@@ -10,7 +10,7 @@
 
 class Pushback {
   constructor () {
-    this._session = SessionService.startSession();
+    this._session = SessionService.withUser().startSession();
     this._param = {};
   }
 
@@ -21,8 +21,8 @@ class Pushback {
   config_ () {
     if (!this._callbackFunction) throw new Error('Undefined callback.');
 
-    this._session.createContext(['callback', 'function'], this._callbackFunction);
-    this._session.createContext(['parameter'], this._param);
+    this._session.setProperty('callbackFunction', this._callbackFunction);
+    this._session.setProperty('parameter', this._param);
   }
 
   setCallbackFunction (callbackFunctionName) {
