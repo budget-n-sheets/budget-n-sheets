@@ -82,7 +82,7 @@ class CalendarUtils {
 
       if (!metadata.hasWallet && !metadata.account && !metadata.card) continue;
 
-      metadata.hasAtMute = /@(mute|ignore)/.test(description);
+      metadata.hasAtMute = /@(mute|ign)/.test(description);
       metadata.hasQcc = /#qcc/.test(description);
       metadata.translation = Utils.getTranslation(description);
 

@@ -66,7 +66,7 @@ class DemoCalendar extends QuickstartDemo {
         day: 3,
         length: 1,
         title: 'Ignored event',
-        description: 'acc_name\nvalue\n\n@ignore\n---\nThis event has the "@ignore" indicator, so it is not included in cash flow, nor posted in the table.',
+        description: 'acc_name\nvalue\n\n@ignore\n---\nThis event has the "@ignore" - or "@ign" for short - indicator, so it is not included in cash flow, nor posted in the table.',
         value: -1.23
       },
       {
