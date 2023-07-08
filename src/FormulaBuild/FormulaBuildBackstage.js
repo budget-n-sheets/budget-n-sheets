@@ -211,6 +211,19 @@ class FormulaBuildBackstageCards {
 }
 
 class FormulaBuildBackstageWallet {
+  static income (mm, value, tags, bsblank) {
+    let formula
+
+    formula = `ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${tags}; ${bsblank}; 1)`
+    formula = `REGEXMATCH(${formula}; "#inc"); `
+    formula += `ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${value}; ${bsblank}; 1) >= 0`
+
+    formula = `FILTER(ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${value}; ${bsblank}; 1); ${formula})`
+    formula = `IFERROR(SUM(${formula}); 0)`
+
+    return formula
+  }
+
   static bsblank (mm, value) {
     const header = 'C4'; // RangeUtils.rollA1Notation(4, 3);
     return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + Consts.month_name.short[mm] + '!' + value + '); ROW(' + Consts.month_name.short[mm] + '!' + value + ') - ROW(' + Consts.month_name.short[mm] + '!' + header + '); FALSE)); ROWS(' + Consts.month_name.short[mm] + '!' + value + '))';
