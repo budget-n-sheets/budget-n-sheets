@@ -36,7 +36,8 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
       const month = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[mm]);
       if (!month) continue;
 
-      const numRows = month.getMaxRows() - 4;
+      const maxRows = month.getMaxRows()
+      const numRows = maxRows - 4
       if (numRows < 1) continue;
 
       const rowOffset = this._h * mm;
@@ -45,8 +46,9 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
 
       table[0 + offset][4] = formulas.bsblank(mm, this.fastA1.values[0] + numRows);
       table[2 + offset][0] = formulas.expensesIgn(numRows, mm, bsblank);
+      table[2 + offset][1] = formulas.income(mm, `C5:C${maxRows}`, `D5:D${maxRows}`, bsblank)
 
-      let income = '0';
+      let income = RangeUtils.rollA1Notation(4 + this._h * mm, 3)
       let expenses = '0';
       for (let k = 0; k < this.num_acc; k++) {
         income += ' + ' + RangeUtils.rollA1Notation(6 + rowOffset, 8 + this._w * k);

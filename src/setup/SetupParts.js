@@ -76,13 +76,14 @@ class SetupParts {
     i = -1;
     while (++i < 12) {
       k = 0;
-      income = '0';
+      income = RangeUtils.rollA1Notation(4 + this._h * i, 3)
       expenses = '0';
 
       wallet[this._h * i][4] = buildWallet.bsblank(i, values[k]);
 
       const bsblank = RangeUtils.rollA1Notation(2 + this._h * i, 6);
       wallet[2 + this._h * i][0] = buildWallet.expensesIgn(numRows, i, bsblank);
+      wallet[2 + this._h * i][1] = buildWallet.income(i, values[0], tags[0], bsblank)
 
       for (; k < num_acc; k++) {
         const bsblank = RangeUtils.rollA1Notation(2 + this._h * i, 11 + this._w * k);
