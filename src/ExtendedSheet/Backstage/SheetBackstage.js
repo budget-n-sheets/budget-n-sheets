@@ -1,5 +1,5 @@
 /**
- * Budget n Sheets Copyright 2017-2022 Guilherme T Maeoka
+ * Budget n Sheets Copyright 2017-2023 Guilherme T Maeoka
  * <https://github.com/budget-n-sheets/budget-n-sheets>
  *
  * This program comes with ABSOLUTELY NO WARRANTY.
