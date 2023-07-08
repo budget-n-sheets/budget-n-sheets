@@ -90,7 +90,7 @@ class FormulaBuildBackstageAccounts {
 
     return [
       `IFERROR(SUM(FILTER(${valueAddress}; ${formula})); 0)`,
-      `COUNTA(IFNA(FILTER(${tagsAddress}; ${formula}); 0))`
+      `COUNTA(IFNA(FILTER(${tagsAddress}; ${formula}); ))`
     ];
   }
 }
