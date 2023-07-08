@@ -28,12 +28,30 @@ class UpdateScript extends Update {
         ['', ''],
         ['', '', '', '', ''],
         ['', '', '', '', '', '', 'v0m49p6_', '', ''],
-        ['']
+        ['', 'v0m50p1_']
       ]
     ];
 
     super(v0, vA, list);
     this._key = 'script';
+  }
+
+  /**
+   * Update backstage formulas.
+   *
+   * 0.50.1
+   */
+  v0m50p1_ () {
+    if (!SpreadsheetApp2.getActive().getSheetByName('_Backstage')) return 3;
+
+    try {
+      RecalculationService.resume(0, 12);
+    } catch (err) {
+      LogLog.error(err);
+      return 1;
+    }
+
+    return 0;
   }
 
   /**
