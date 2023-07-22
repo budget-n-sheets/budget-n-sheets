@@ -16,6 +16,6 @@ class BackupFile extends DriveFile {
     if (DriveRoles.getRoleLevel(permission.role) > 2) throw new Error("You don't have enough permission to access this file.")
 
     this.data = this.file.getBlob().getDataAsString();
-    this.metadata.isLegacyFormat = /:[0-9a-fA-F]{40}$/.test(this.data);
+    this.isLegacyFormat = /:[0-9a-fA-F]{40}$/.test(this.data);
   }
 }

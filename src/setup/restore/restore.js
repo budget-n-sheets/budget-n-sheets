@@ -69,7 +69,7 @@ function continuedValidateBackup_ (uuid, password, param) {
 function unwrapBackup_ (uuid, file_id) {
   const backup = new BackupFile(file_id);
 
-  if (backup.metadata.isLegacyFormat) {
+  if (backup.isLegacyFormat) {
     const parts = backup.data.split(':');
 
     const sha = Utilities2.computeDigest('SHA_1', parts[0], 'UTF_8');

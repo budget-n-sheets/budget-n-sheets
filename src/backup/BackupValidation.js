@@ -31,7 +31,7 @@ class BackupValidation {
   }
 
   verify () {
-    if (this._backup.metadata.isLegacyFormat) {
+    if (this._backup.isLegacyFormat) {
       this.verifyLegacyBackup_();
       return 100;
     }
