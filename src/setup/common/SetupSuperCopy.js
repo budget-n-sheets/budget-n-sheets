@@ -26,7 +26,7 @@ class SetupSuperCopy {
     const cards = new CardsService()
 
     for (const k in metadata) {
-      metadata[k].aliases = metadata[k].aliases.join(' ')
+      metadata[k].aliases = metadata[k].aliases.join(',')
       cards.create(metadata[k])
     }
 
