@@ -13,7 +13,7 @@ const Info = Object.freeze({
     version: {
       major: 0,
       minor: 50,
-      patch: 2
+      patch: 3
     }
   },
 
