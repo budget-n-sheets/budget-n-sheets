@@ -98,8 +98,7 @@ class CalendarUtils {
       matches = description.match(/!#\w+/);
       if (matches) metadata.tagImportant = matches[0].slice(2);
 
-      metadata.tags = description.match(/#\w+/g) || [];
-      metadata.tags.forEach((t, i, a) => { a[i] = t.slice(1); });
+      metadata.tags = (description.match(/#\w+/g) || []).map(t => t.slice(1))
 
       if (evento.isAllDayEvent()) {
         metadata.startDate = evento.getAllDayStartDate();
