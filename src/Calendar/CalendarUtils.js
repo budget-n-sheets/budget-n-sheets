@@ -96,7 +96,7 @@ class CalendarUtils {
       }
 
       matches = description.match(/!#\w+/);
-      if (matches) metadata.tagImportant = match[0].slice(2);
+      if (matches) metadata.tagImportant = matches[0].slice(2);
 
       metadata.tags = description.match(/#\w+/g) || [];
       metadata.tags.forEach((t, i, a) => { a[i] = t.slice(1); });
