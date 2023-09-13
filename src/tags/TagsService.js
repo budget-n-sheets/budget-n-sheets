@@ -30,6 +30,28 @@ class TagsService {
     return categories.length > 0 ? categories : Consts.tags_categories;
   }
 
+  static listTags () { // experimental
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
+    if (!sheet) return {};
+    if (sheet.getMaxRows() < 2) return {};
+
+    const list = {}
+    sheet.getRange('A2:S')
+      .getValues()
+      .filter(r => /^\w+$/.test(r[4]))
+      .forEach(r => {
+        if (list[r[4]]) return
+        const tag = r[4]
+        list[tag] = {
+          name: r[0], category: r[1], description: r[2], analytics: !!r[3],
+          months: r.slice(6, 17),
+          average: +r[17], total: +r[18]
+        }
+      })
+
+    return list
+  }
+
   static setCategories (categories) {
     const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
     if (!sheet) throw new Error('TagsService: setCategories(): Missing sheet Tags.');

@@ -63,6 +63,8 @@ class RefreshCashFlow {
     const upcoming = finCal.getUpcomingMonthEvents(this.mm);
     const events = CalendarUtils.digestEvents(upcoming);
 
+    const tagsStats = TagsService.listTags()
+
     const startDate = new Date(this.financial_year, this.mm, 1);
     const endDate = new Date(this.financial_year, this.mm + 1, 1);
 
@@ -72,14 +74,23 @@ class RefreshCashFlow {
 
       let value = ev.value || 0;
 
+      // TODO: optimize this fucker
       if (isNaN(ev.value)) {
-        if (!ev.hasQcc) continue;
-        if (!ev.card) continue;
-        if (!ev.hasWallet && !ev.account) continue;
+        if (ev.hasQcc) {
+          if (!ev.card) continue;
+          if (!ev.hasWallet && !ev.account) continue;
 
-        if (this.mm > 0) {
-          const card = this.db_cards[ev.card.id];
-          value = card.balances[this.mm - 1];
+          if (this.mm > 0) {
+            const card = this.db_cards[ev.card.id];
+            value = card.balances[this.mm - 1];
+          }
+        } else if (ev.translation && (ev.tags.length || ev.tagImportant)) {
+          const tag = ev.tagImportant || ev.tags[0]
+          if (!tagsStats[tag]) continue
+          if (ev.translation.type === 'Total') value = tagsStats[tag].total
+          else if (ev.translation.type === 'Avg') value = tagsStats[tag].average
+        } else {
+          continue
         }
       } else if (!ev.account) {
         continue;
