@@ -16,8 +16,9 @@ const SPREADSHEET_SPECS = Object.freeze({
   initial_height: 400,
 
   ttt: {
-    header: ['day', 'transaction', 'value', 'tags'],
-    width: 4,
+    header: ['acc / card', 'day', 'transaction', 'value', 'tags', 'ign'],
+    width: 6,
+    column: 2,
     row: 5
   },
 
