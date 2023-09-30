@@ -17,7 +17,7 @@ class MakeSheetTags extends MakeSheet {
     return {
       id: Info.template.id,
       name: 'Tags',
-      requires: ['TTT', 'Cards']
+      requires: ['TTT']
     }
   }
 
@@ -35,12 +35,9 @@ class MakeSheetTags extends MakeSheet {
   setFormulas_ () {
     const formulaBuild = FormulaBuild.tags();
 
-    let numRowsCards = (SpreadsheetApp2.getActive().getSheetByName('Cards')?.getMaxRows() || 5) - 5;
-    if (numRowsCards < 1) numRowsCards = 1;
-
     const formulas = Consts.month_name.short.map((m, i) => {
       let numRowsMonth = (SpreadsheetApp2.getActive().getSheetByName(m)?.getMaxRows() || 4) - 4;
-      return formulaBuild.table().month(numRowsMonth < 1 ? 1 : numRowsMonth, numRowsCards, i);
+      return formulaBuild.table().month(numRowsMonth < 1 ? 1 : numRowsMonth, i);
     });
 
     this.sheet.getRange('F1:Q1').setFormulas([formulas]);
