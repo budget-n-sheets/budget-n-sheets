@@ -21,12 +21,6 @@ const SPREADSHEET_SPECS = Object.freeze({
     row: 5
   },
 
-  cards: {
-    header: ['day', 'transaction', 'card', 'value', 'tags'],
-    width: 5,
-    row: 6
-  },
-
   cash_flow: {
     header: ['flow', 'balance', 'transactions'],
     width: 3,
