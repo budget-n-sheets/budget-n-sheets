@@ -364,7 +364,6 @@ class SetupParts {
     }
 
     SpreadsheetApp2.getActive().getSheetByName('Cash Flow').setTabColor('#e69138')
-    SpreadsheetApp2.getActive().getSheetByName('_Backstage').setTabColor('#cc0000')
     SpreadsheetApp2.getActive().getSheetByName('_Unique').setTabColor('#cc0000')
     SpreadsheetApp2.getActive().getSheetByName('_Settings').setTabColor('#cc0000')
     SpreadsheetApp2.getActive().getSheetByName('_About BnS').setTabColor('#6aa84f')
@@ -385,7 +384,6 @@ class SetupParts {
       }
     }
 
-    SpreadsheetApp2.getActive().getSheetByName('_Backstage').hideSheet()
     SpreadsheetApp2.getActive().getSheetByName('_Unique').hideSheet()
     SpreadsheetApp2.getActive().getSheetByName('_Settings').hideSheet()
     SpreadsheetApp2.getActive().getSheetByName('_About BnS').hideSheet()
@@ -670,7 +668,8 @@ class SetupParts {
     this.setupSettings_()
     this.setupMonthSheet_()
     this.setupUnique_()
-    this.setupBackstage_()
+    new MakeSheetBackstage().install()
+    RecalculationService.resume(0, 12)
     new MakeSheetSummary().install()
     new MakeSheetTags().install()
     this.setupCashFlow_()
