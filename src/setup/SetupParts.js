@@ -708,7 +708,6 @@ class SetupParts {
     this.setupBackstage_()
     new MakeSheetSummary().install()
     new MakeSheetTags().install()
-    this.setupCards_()
     this.setupCashFlow_()
     this.setupWest_()
     this.setupEast_()
