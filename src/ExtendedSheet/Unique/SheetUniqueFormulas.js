@@ -42,7 +42,6 @@ class SheetUniqueFormulas {
     if (num < 1) return '';
 
     const ref = 'Tags!' + RangeUtils.rollA1Notation(2, 5, num, 1);
-    const num_acc = SettingsConst.get('number_accounts');
 
     let ranges = '';
     let n = 0;
@@ -56,16 +55,14 @@ class SheetUniqueFormulas {
 
       n++;
 
-      for (let k = 0; k <= num_acc; k++) {
-        ranges += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 4 + 5 * k, num, 1) + '; ';
-      }
+      ranges += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 6, num, 1) + '; ';
     }
 
     if (n === 0) return '';
     ranges = '{' + ranges.slice(0, -2) + '}';
 
     let formula = 'IFNA(FILTER(' + ref + '; REGEXMATCH(' + ref + '; "^\\w+$")); )';
-    formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#dp"; "#wd"; "#qcc"; "#ign"; "#inc"; "#trf"})';
+    formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#dp"; "#wd"; "#qcc"; "#inc"; "#trf"})';
     formula = 'SORT(TRIM(' + ranges + ')); ' + formula;
 
     return 'UNIQUE({' + formula + '})';
