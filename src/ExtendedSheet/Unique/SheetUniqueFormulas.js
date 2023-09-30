@@ -9,32 +9,6 @@
  */
 
 class SheetUniqueFormulas {
-  static getCardsTags_ () {
-    let sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
-    if (!sheet) return '';
-    let num = sheet.getMaxRows() - 1;
-    if (num < 1) return '';
-
-    const ref = 'Tags!' + RangeUtils.rollA1Notation(2, 5, num, 1);
-
-    sheet = SpreadsheetApp2.getActive().getSheetByName('Cards');
-    if (!sheet) return '';
-    num = sheet.getMaxRows() - 5;
-    if (num < 1) return '';
-
-    let ranges = '';
-    for (let i = 0; i < 12; i++) {
-      ranges += 'Cards!' + RangeUtils.rollA1Notation(6, 5 + 6 * i, num, 1) + '; ';
-    }
-    ranges = '{' + ranges.slice(0, -2) + '}';
-
-    let formula = 'IFNA(FILTER(' + ref + '; REGEXMATCH(' + ref + '; "^\\w+$")); )';
-    formula = 'SORT({TRIM(CONCAT("#"; ' + formula + ')); "#wd"; "#ign"})';
-    formula = 'SORT(TRIM(' + ranges + ')); ' + formula;
-
-    return 'UNIQUE({' + formula + '})';
-  }
-
   static getTttTags_ () {
     const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
     if (!sheet) return '';
