@@ -530,7 +530,7 @@ class SetupParts {
     let cell, dec_p
 
     this._spreadsheet.setActiveSheet(sheet)
-    this._spreadsheet.moveActiveSheet(8)
+    this._spreadsheet.moveActiveSheet(7)
 
     sheet.protect().setWarningOnly(true)
 
