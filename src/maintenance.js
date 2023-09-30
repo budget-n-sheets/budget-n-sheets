@@ -82,6 +82,7 @@ function askResetSuggestions () {
 
   let i = -1;
   while (++i < 12) {
+    // TODO
     const sheetMm = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);
     if (!sheetMm) continue;
 
@@ -97,38 +98,6 @@ function askResetSuggestions () {
         .clearDataValidations()
         .setDataValidation(ruleTV);
     }
-  }
-
-  const sheetCards = SpreadsheetApp2.getActive().getSheetByName('Cards');
-  if (!sheetCards) {
-    lock.releaseLock();
-    return;
-  }
-
-  const height = sheetCards.getMaxRows() - 5;
-  if (height < 1) {
-    lock.releaseLock();
-    return;
-  }
-
-  ruleDV = SpreadsheetApp.newDataValidation()
-    .requireValueInRange(sheetUnique.getRange('B:B'), false)
-    .setAllowInvalid(true)
-    .build();
-  ruleTV = SpreadsheetApp.newDataValidation()
-    .requireValueInRange(sheetUnique.getRange('D:D'), false)
-    .setAllowInvalid(true)
-    .build();
-
-  i = -1;
-  while (++i < 12) {
-    sheetCards.getRange(6, 2 + 6 * i, height, 1)
-      .clearDataValidations()
-      .setDataValidation(ruleDV);
-
-    sheetCards.getRange(6, 5 + 6 * i, height, 1)
-      .clearDataValidations()
-      .setDataValidation(ruleTV);
   }
 
   lock.releaseLock();
