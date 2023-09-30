@@ -41,13 +41,7 @@ function updateDecimalPlaces_ () {
     max = sheet.getMaxRows() - 4;
     if (max < 1) continue;
 
-    const list = [];
-    for (let k = 0; k < num_acc; k++) {
-      list[k] = RangeUtils.rollA1Notation(5, 8 + 5 * k, max, 1);
-    }
-    list.push(RangeUtils.rollA1Notation(5, 3, max, 1));
-
-    sheet.getRangeList(list).setNumberFormat(number_format);
+    sheet.getRange(RangeUtils.rollA1Notation(5, 5, max, 1)).setNumberFormat(number_format);
   }
 
   sheet = spreadsheet.getSheetByName('Cash Flow');
