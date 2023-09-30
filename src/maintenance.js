@@ -146,6 +146,7 @@ function askResetProtection () {
   const number_accounts = SettingsConst.get('number_accounts');
 
   for (i = 0; i < 12; i++) {
+    // TODO
     sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);
     if (!sheet) continue;
 
@@ -163,35 +164,6 @@ function askResetProtection () {
     const rangeOff = sheet.getRange(5, 1, n, 4);
     for (k = 0; k < 1 + number_accounts; k++) {
       range = rangeOff.offset(0, 5 * k);
-      ranges.push(range);
-    }
-
-    sheet.protect()
-      .setUnprotectedRanges(ranges)
-      .setWarningOnly(true);
-  }
-
-  sheet = spreadsheet.getSheetByName('Cards');
-
-  if (sheet) n = sheet.getMaxRows() - 5;
-  else n = -1;
-
-  if (n > 0 && sheet.getMaxColumns() >= 72) {
-    protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
-    for (j = 0; j < protections.length; j++) {
-      protection = protections[j];
-      if (protection.canEdit()) protection.remove();
-    }
-
-    ranges = [];
-
-    const rangeOff1 = sheet.getRange(6, 1, n, 5);
-    const rangeOff2 = sheet.getRange(2, 1, 1, 3);
-    for (i = 0; i < 12; i++) {
-      range = rangeOff1.offset(0, 6 * i);
-      ranges.push(range);
-
-      range = rangeOff2.offset(0, 6 * i);
       ranges.push(range);
     }
 
