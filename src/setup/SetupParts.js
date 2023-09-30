@@ -681,14 +681,12 @@ class SetupParts {
     const sheet = SpreadsheetApp2.getActive().getSheetByName('_Unique')
 
     this._spreadsheet.setActiveSheet(sheet)
-    this._spreadsheet.moveActiveSheet(20)
+    this._spreadsheet.moveActiveSheet(19)
 
     sheet.protect().setWarningOnly(true)
 
     sheet.getRange(1, 1).setFormula(SheetUniqueFormulas.getTttTransaction_())
-    sheet.getRange(1, 2).setFormula(SheetUniqueFormulas.getCardsTransaction_())
-    sheet.getRange(1, 3).setFormula(SheetUniqueFormulas.getTttTags_())
-    sheet.getRange(1, 4).setFormula(SheetUniqueFormulas.getCardsTags_())
+    sheet.getRange(1, 2).setFormula(SheetUniqueFormulas.getTttTags_())
 
     SpreadsheetApp.flush()
   }
