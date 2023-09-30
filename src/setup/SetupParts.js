@@ -397,77 +397,42 @@ class SetupParts {
     const formulaBuild = FormulaBuild.ttt().header()
 
     const sheetTTT = SpreadsheetApp2.getActive().getSheetByName('TTT')
-    let sheet, formula
 
     const name_acc = this._config.name_accounts
     const num_acc = this._config.number_accounts
 
-    const sheets = new Array(12)
-
-    const headers = []
-    for (let k = 0; k < 1 + num_acc; k++) {
-      headers[k] = RangeUtils.rollA1Notation(1, 1 + 5 * k)
-    }
-
-    if (num_acc < 5) {
-      sheetTTT.deleteColumns(6 + 5 * num_acc, 5 * (5 - num_acc))
-    }
-
     if (this._config.decimal_places !== 2) {
-      const list_format = []
-
-      list_format[0] = RangeUtils.rollA1Notation(5, 3, 400, 1)
-
-      for (let k = 1; k <= num_acc; k++) {
-        list_format[k] = RangeUtils.rollA1Notation(5, 3 + 5 * k, 400, 1)
-      }
-
-      sheetTTT.getRangeList(list_format)
-        .setNumberFormat(this._config.number_format)
+      const range = RangeUtils.rollA1Notation(5, 5, 400, 1)
+      sheetTTT.getRange(range).setNumberFormat(this._config.number_format)
     }
 
     SpreadsheetApp.flush()
 
     for (let i = 0; i < 12; i++) {
-      sheet = this._spreadsheet.insertSheet(Consts.month_name.short[i], 3 + i, { template: sheetTTT })
-      sheets[i] = sheet
+      const sheet = this._spreadsheet.insertSheet(Consts.month_name.short[i], 3 + i, { template: sheetTTT })
 
-      sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(_Backstage!$B' + (4 + this._h * i) + '))')
+      let formula
 
-      const ranges = []
-      const rangeOff1 = sheet.getRange(2, 6)
-      const rangeOff2 = sheet.getRange(5, 1, 400, 4)
-      let k = 0
-      for (; k < num_acc; k++) {
-        ranges[k] = rangeOff2.offset(0, 5 * k)
+      // TODO
+      // sheet.getRange('A3').setFormula('CONCAT("Expenses "; TO_TEXT(_Backstage!$B' + (4 + this._h * i) + '))')
 
-        formula = formulaBuild.balance(k, i)
-        rangeOff1.offset(0, 5 * k).setFormula(formula)
+      // const rangeOff = sheet.getRange(2, 2)
 
-        formula = formulaBuild.expenses(k, i)
-        rangeOff1.offset(1, 5 * k).setFormula(formula)
+      // formula = formulaBuild.balance(k, i)
+      // rangeOff.offset(0, 5 * k).setFormula(formula)
 
-        formula = formulaBuild.report(k, i)
-        rangeOff1.offset(-1, 2 + 5 * k).setFormula(formula)
-      }
+      // formula = formulaBuild.expenses(k, i)
+      // rangeOff.offset(1, 5 * k).setFormula(formula)
 
-      ranges[k] = rangeOff2.offset(0, 5 * k)
+      // formula = formulaBuild.report(k, i)
+      // rangeOff.offset(-1, 2 + 5 * k).setFormula(formula)
+
       sheet.protect()
-        .setUnprotectedRanges(ranges)
+        .setUnprotectedRanges([
+          sheet.getRange(1, 2, 1, 3),
+          sheet.getRange(5, 2, 400, 6)
+        ])
         .setWarningOnly(true)
-    }
-
-    sheets[0].getRange(1, 1).setValue('Wallet')
-    for (let k = 0; k < num_acc; k++) {
-      sheets[0].getRange(1, 6 + k * 5).setValue(name_acc[k].name)
-    }
-
-    for (let i = 1; i < 12; i++) {
-      const rangeOff = sheets[i].getRange(1, 1)
-
-      for (let k = 0; k < 1 + num_acc; k++) {
-        rangeOff.offset(0, 5 * k).setFormula('=' + Consts.month_name.short[i - 1] + '!' + headers[k])
-      }
     }
 
     this._spreadsheet.deleteSheet(sheetTTT)
