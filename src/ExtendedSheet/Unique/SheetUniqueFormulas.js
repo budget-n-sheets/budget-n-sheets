@@ -68,18 +68,23 @@ class SheetUniqueFormulas {
     return 'UNIQUE({' + formula + '})';
   }
 
-  static getCardsTransaction_ () {
-    const sheet = SpreadsheetApp2.getActive().getSheetByName('Cards');
-    if (!sheet) return '';
-
-    const num = sheet.getMaxRows() - 5;
-    if (num < 1) return '';
-
+  static getTttTransaction_ () {
     let ranges = '';
+    let n = 0
 
     for (let i = 0; i < 12; i++) {
-      ranges += 'Cards!' + RangeUtils.rollA1Notation(6, 2 + 6 * i, num, 1) + '; ';
+      const sheet = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);
+      if (!sheet) continue;
+      const num = sheet.getMaxRows() - 4;
+      if (num < 1) continue;
+
+      n++;
+
+      ranges += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 4, num, 1) + '; ';
     }
+
+    if (n === 0) return '';
+
     ranges = '{' + ranges.slice(0, -2) + '}';
 
     let formula = 'IFNA(FILTER(' + ranges + '; NOT(REGEXMATCH(' + ranges + '; "[0-9]+/[0-9]+"))); ); ';
@@ -90,29 +95,5 @@ class SheetUniqueFormulas {
     formula = 'UNIQUE({' + formula + '})';
 
     return formula;
-  }
-
-  static getTttTransaction_ () {
-    const num_acc = SettingsConst.get('number_accounts');
-
-    let ranges = '';
-    let n = 0;
-
-    for (let i = 0; i < 12; i++) {
-      const sheet = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);
-      if (!sheet) continue;
-
-      const num = sheet.getMaxRows() - 4;
-      if (num < 1) continue;
-
-      n++;
-
-      for (let k = 0; k <= num_acc; k++) {
-        ranges += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 2 + 5 * k, num, 1) + '; ';
-      }
-    }
-
-    if (n === 0) return '';
-    return 'SORT(UNIQUE(TRIM({' + ranges.slice(0, -2) + '})))';
   }
 }
