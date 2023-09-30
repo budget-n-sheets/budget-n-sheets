@@ -363,7 +363,6 @@ class SetupParts {
       sheets[this._date.mm].setTabColor('#6aa84f')
     }
 
-    SpreadsheetApp2.getActive().getSheetByName('Cards').setTabColor('#e69138')
     SpreadsheetApp2.getActive().getSheetByName('Cash Flow').setTabColor('#e69138')
     SpreadsheetApp2.getActive().getSheetByName('_Backstage').setTabColor('#cc0000')
     SpreadsheetApp2.getActive().getSheetByName('_Unique').setTabColor('#cc0000')
