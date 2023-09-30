@@ -50,17 +50,6 @@ function updateDecimalPlaces_ () {
     sheet.getRangeList(list).setNumberFormat(number_format);
   }
 
-  sheet = spreadsheet.getSheetByName('Cards');
-  max = (sheet ? sheet.getMaxRows() - 5 : 0);
-  if (max > 0) {
-    const list = [];
-    for (let i = 0; i < 12; i++) {
-      list[i] = RangeUtils.rollA1Notation(6, 4 + 6 * i, max, 1);
-    }
-
-    sheet.getRangeList(list).setNumberFormat(number_format);
-  }
-
   sheet = spreadsheet.getSheetByName('Cash Flow');
   if (sheet) {
     const list = [];
