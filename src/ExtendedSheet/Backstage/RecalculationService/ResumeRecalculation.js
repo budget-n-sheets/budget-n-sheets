@@ -44,9 +44,9 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
       const offset = rowOffset - this.rowOffset;
       const bsblank = RangeUtils.rollA1Notation(this.specs.init.row + rowOffset, 6);
 
-      table[0 + offset][4] = formulas.bsblank(mm, this.fastA1.values[0] + numRows);
+      table[0 + offset][4] = formulas.bsblank(mm, numRows);
       table[2 + offset][0] = formulas.expensesIgn(numRows, mm, bsblank);
-      table[2 + offset][1] = formulas.income(mm, `C5:C${maxRows}`, `D5:D${maxRows}`, bsblank)
+      table[2 + offset][1] = formulas.income(mm, `E5:E${maxRows}`, `F5:F${maxRows}`, numRows, bsblank)
 
       let income = RangeUtils.rollA1Notation(4 + this._h * mm, 3)
       let expenses = '0';
@@ -68,10 +68,16 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
   resumeAccounts_ () {
     const formulas = this.formulas.accounts();
     const fastA1 = this.fastA1;
+    const col = 2 + this._w
 
     const table = new Array(this.height);
     for (let i = 0; i < this.height; i++) {
       table[i] = new Array(this._w * this.num_acc).fill(null);
+    }
+
+    const regex = []
+    for (let k = 0; k < this.num_acc; k++) {
+      regex[k] = RangeUtils.rollA1Notation(1, col + this._w * k)
     }
 
     let mm = this.start - 1;
@@ -80,6 +86,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
       if (!month) continue;
 
       const maxRows = month.getMaxRows();
+      const numRows = month.getMaxRows() - 4;
       if (maxRows < 1) continue;
 
       const rowOffset = this._h * mm;
@@ -94,34 +101,33 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
 
         table[0 + offset][0 + columnOffset] = '=' + fastA1.balance2[5 * mm + k];
 
-        formula = formulas.income(mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        formula = formulas.income(regex[k], mm, numRows, bsblank);
         table[3 + offset][0 + columnOffset] = formula;
 
-        formula = formulas.reportTag('wd', mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        formula = formulas.reportTag(regex[k], 'wd', mm, numRows, bsblank);
         table[0 + offset][1 + columnOffset] = formula[0];
         table[0 + offset][2 + columnOffset] = formula[1];
 
-        formula = formulas.reportTag('dp', mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        formula = formulas.reportTag(regex[k], 'dp', mm, numRows, bsblank);
         table[1 + offset][1 + columnOffset] = formula[0];
         table[1 + offset][2 + columnOffset] = formula[1];
 
-        formula = formulas.reportTag('trf+', mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        formula = formulas.reportTag(regex[k], 'trf+', mm, numRows, bsblank);
         table[2 + offset][1 + columnOffset] = formula[0];
         table[2 + offset][2 + columnOffset] = formula[1];
 
-        formula = formulas.reportTag('trf-', mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        formula = formulas.reportTag(regex[k], 'trf-', mm, numRows, bsblank);
         table[3 + offset][1 + columnOffset] = formula[0];
         table[3 + offset][2 + columnOffset] = formula[1];
 
         table[4 + offset][1 + columnOffset] = RangeUtils.rollA1Notation(5 + this._h * mm, 7 + columnOffset);
 
-        formula = formulas.bsblank(mm, header, fastA1.values[1 + k] + maxRows);
-        table[0 + offset][4 + columnOffset] = formula;
+        table[0 + offset][4 + columnOffset] = RangeUtils.rollA1Notation(2 + rowOffset, 6)
 
-        formula = formulas.balance(mm, fastA1.values[1 + k] + maxRows, fastA1.balance1[5 * mm + k], bsblank);
+        formula = formulas.balance(regex[k], mm, numRows, fastA1.balance1[5 * mm + k], bsblank);
         table[1 + offset][0 + columnOffset] = formula;
 
-        formula = formulas.expensesIgn(mm, fastA1.values[1 + k] + maxRows, fastA1.tags[1 + k] + maxRows, bsblank);
+        formula = formulas.expensesIgn(regex[k], mm, numRows, bsblank);
         table[2 + offset][0 + columnOffset] = formula;
       }
     }
@@ -132,12 +138,6 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
   resumeCards_ () {
     const formulas = this.formulas.cards();
     const col = 2 + this._w + this._w * this.num_acc + this._w;
-
-    const sheet = SpreadsheetApp2.getActive().getSheetByName('Cards');
-    if (!sheet) return;
-
-    const numRows = sheet.getMaxRows() - 5;
-    if (numRows < 1) return;
 
     const listRange1 = [];
     const listRange2 = [];
@@ -163,10 +163,15 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
 
     let mm = this.start - 1;
     while (++mm < this.end) {
+      const month = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[mm])
+      if (!month) return
+      const numRows = month.getMaxRows() - 4
+      if (numRows < 1) return
+
       const rowOffset = this._h * mm;
       const offset = rowOffset - this.rowOffset;
 
-      this._sheet.getRange(2 + rowOffset, 4 + col - this._w).setFormula(formulas.bsblank(numRows, mm));
+      this._sheet.getRange(2 + rowOffset, 4 + col - this._w).setFormula(`=${RangeUtils.rollA1Notation(2 + rowOffset, 6)}`);
       this._sheet.getRange(3 + rowOffset, col - this._w, 4)
         .setFormulaR1C1('RC[5] + RC[10] + RC[15] + RC[20] + RC[25] + RC[30] + RC[35] + RC[40] + RC[45] + RC[50]');
       this._sheet.getRange(4 + rowOffset, col - this._w)
@@ -181,7 +186,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
         table[1 + offset][0 + columnOffset] = formulas.credit(numRows, mm, regex[k], bsblank);
         table[2 + offset][0 + columnOffset] = formulas.expensesIgn(numRows, mm, regex[k], bsblank);
         table[3 + offset][0 + columnOffset] = formulas.expenses(numRows, mm, regex[k], bsblank);
-        table[3 + offset][1 + columnOffset] = formulas.cardDue(numRows, mm, RangeUtils.rollA1Notation(1, col + columnOffset), bsblank);
+        table[3 + offset][1 + columnOffset] = formulas.cardDue(numRows, mm, regex[k], bsblank);
 
         listRange1.push(RangeUtils.rollA1Notation(6 + rowOffset, 0 + col + columnOffset));
         listRange2.push(RangeUtils.rollA1Notation(6 + rowOffset, 1 + col + columnOffset));
