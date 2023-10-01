@@ -62,7 +62,7 @@ class FormulaBuildBackstageAccounts {
     const accs = RangeUtils.rollA1Notation(5, 2, numRows)
     const value = RangeUtils.rollA1Notation(5, 5, numRows)
     const tags = RangeUtils.rollA1Notation(5, 6, numRows)
-    const ign = RangeUtils.rollA1Notation(5, 6, numRows)
+    const ign = RangeUtils.rollA1Notation(5, 7, numRows)
 
     let formula;
 
@@ -165,7 +165,7 @@ class FormulaBuildBackstageCards {
     const month = Consts.month_name.short[mm]
     const card = RangeUtils.rollA1Notation(5, 2, numRows);
     const value = RangeUtils.rollA1Notation(5, 5, numRows);
-    const tags = RangeUtils.rollA1Notation(5, 6, numRows);
+    const ign = RangeUtils.rollA1Notation(5, 7, numRows, 1);
 
     let formula;
 
@@ -173,7 +173,7 @@ class FormulaBuildBackstageCards {
     formula += `REGEXMATCH(ARRAY_CONSTRAIN(${month}!` + card + '; ' + bsblank + '; 1); ' + regex + '); ';
     formula += `NOT(ISBLANK(ARRAY_CONSTRAIN(${month}!` + value + '; ' + bsblank + '; 1))); ';
     formula += `ARRAY_CONSTRAIN(${month}!` + value + '; ' + bsblank + '; 1) < 0; ';
-    formula += `NOT(REGEXMATCH(ARRAY_CONSTRAIN(${month}!` + tags + '; ' + bsblank + '; 1); "#ign"))';
+    formula += `NOT(ARRAY_CONSTRAIN(${month}!` + ign + '; ' + bsblank + '; 1))';
 
     formula = 'SUM(FILTER(' + formula + '))';
     formula = 'IFERROR(IF(' + regex + ' = ""; ""; ' + formula + '); 0)';
@@ -268,11 +268,11 @@ class FormulaBuildBackstageWallet {
     const month = Consts.month_name.short[mm]
     const wall = RangeUtils.rollA1Notation(5, 2, numRows);
     const value = RangeUtils.rollA1Notation(5, 5, numRows, 1);
-    const tags = RangeUtils.rollA1Notation(5, 6, numRows, 1);
+    const ign = RangeUtils.rollA1Notation(5, 7, numRows, 1);
 
     let formula;
 
-    formula = 'NOT(REGEXMATCH(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + tags + '; ' + bsblank + '; 1); "#ign")); ';
+    formula = 'NOT(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + ign + '; ' + bsblank + '; 1)); ';
     formula += `REGEXMATCH(ARRAY_CONSTRAIN(${month}!` + wall + '; ' + bsblank + '; 1); B1); ';
     formula += 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1))); ';
     formula = 'FILTER(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1); ' + formula + ')';
