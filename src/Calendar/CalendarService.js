@@ -60,14 +60,14 @@ class CalendarService {
     }
 
     if (tableCards.length > 0 && SpreadsheetApp2.getActive().getSheetByName('Cards')) {
-      new LedgerCards().mergeTransactions(mm, tableCards);
+      new LedgerTtt(mm).mergeTransactions(tableCards);
     }
 
     const num_ttt = 1 + SettingsConst.get('number_accounts');
-    const ledger = new LedgerAccounts(mm);
+    const ledger = new LedgerTtt(mm);
     for (const k in tableTtt) {
       if (tableTtt[k].length === 0) continue;
-      ledger.mergeTransactions(k, tableTtt[k]);
+      ledger.mergeTransactions(tableTtt[k]);
     }
   }
 }

@@ -70,10 +70,8 @@ class DemoAccCards extends QuickstartDemo {
 
     switch (num) {
       case 3:
-        this._ledger = new LedgerCards();
-        break;
       case 4:
-        this._ledger = new LedgerAccounts(this.mm);
+        this._ledger = new LedgerTtt(this.mm);
         break;
     }
 
@@ -101,8 +99,8 @@ class DemoAccCards extends QuickstartDemo {
     this.list.forEach((values, index) => {
       if (values.length === 0) return;
 
-      this._ledger.appendTransactions(index, values);
-      if (num === 2) this._ledger.fillInWithZeros(index);
+      this._ledger.appendTransactions(values);
+      if (num === 2) this._ledger.fillInWithZeros();
 
       rangeList.push(this._ledger.lastRange.getA1Notation());
     });

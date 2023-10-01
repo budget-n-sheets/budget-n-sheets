@@ -53,7 +53,6 @@ class ForwardInstallments {
     if (steps == null) steps = 11;
     if (steps < 1 || steps > 11) return;
 
-    const ledger = new LedgerCards();
     const w = this.specs.width + 1;
 
     for (const range of ranges) {
@@ -71,7 +70,7 @@ class ForwardInstallments {
 
       while (++mm < end && installments.length > 0) {
         const values = this.getNextInstallments(installments);
-        ledger.mergeTransactions(mm, values);
+        new LedgerTtt(mm).mergeTransactions(values);
       }
     }
   }
@@ -80,7 +79,6 @@ class ForwardInstallments {
     const numRows = this.sheet.getLastRow() - this.specs.row + 1;
     if (numRows < 1) return;
 
-    const ledger = new LedgerCards();
     const indexes = this.indexes.filter((v, i, s) => s.indexOf(v) === i).sort((a, b) => a - b);
 
     const nill = this.specs.nullSearch - 1;

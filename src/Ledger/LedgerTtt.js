@@ -8,15 +8,17 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class LedgerCards extends Ledger {
-  constructor () {
-    super('Cards');
-    this._category = 'cards';
+class LedgerTtt extends Ledger {
+  constructor (mm) {
+    const name = (typeof mm === 'number' ? Consts.month_name.short[mm] : mm);
+    super(name);
+    this._category = 'ttt';
 
     this._specs = Object.freeze({
       nullSearch: 4,
-      row: 6,
-      width: 5
+      column: 2,
+      row: 5,
+      width: 6
     });
   }
 }

@@ -55,13 +55,13 @@ class DemoStatements extends QuickstartDemo {
   }
 
   play () {
-    const ledger = new LedgerAccounts(this.mm);
+    const ledger = new LedgerTtt(this.mm);
     const rangeList = [];
 
     this.list.forEach((values, index) => {
       if (values.length === 0) return;
 
-      ledger.appendTransactions(index, values).fillInWithZeros(index);
+      ledger.appendTransactions(values).fillInWithZeros();
       rangeList.push(ledger.lastRange.getA1Notation());
     });
 

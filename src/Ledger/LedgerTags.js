@@ -15,6 +15,7 @@ class LedgerTags extends Ledger {
 
     this._specs = Object.freeze({
       nullSearch: 5,
+      column: 1,
       row: 2,
       width: 5
     });

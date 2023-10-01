@@ -16,11 +16,9 @@ class DemoCashFlow extends QuickstartDemo {
   demo_ () {
     const num_acc = 1 + SettingsConst.get('number_accounts');
 
-    const ledger = new LedgerAccounts(this.mm);
+    const ledger = new LedgerTtt(this.mm);
 
-    for (let k = 1; k < num_acc; k++) {
-      ledger.fillInWithZeros(k);
-    }
+    ledger.fillInWithZeros();
 
     const indexes = new Array(12).fill(false);
     indexes[this.mm] = true;

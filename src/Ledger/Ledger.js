@@ -25,7 +25,7 @@ class Ledger {
     this.lastRange.activate();
   }
 
-  appendTransactions (index, values) {
+  appendTransactions (values) {
     if (values.length === 0) return this;
     if (this._insertRows == null) this.initInsertRows_();
 
@@ -37,7 +37,7 @@ class Ledger {
 
     if (lastRow >= this._specs.row) {
       const snapshot = this._sheet.getRange(
-        this._specs.row, 1 + (this._specs.width + 1) * index,
+        this._specs.row, this._specs.column,
         lastRow - this._specs.row + 1, this._specs.width)
         .getValues();
 
@@ -49,8 +49,7 @@ class Ledger {
     }
 
     this.lastRange = this._sheet.getRange(
-      this._specs.row + row,
-      1 + (this._specs.width + 1) * index,
+      this._specs.row + row, this._specs.column,
       values.length,
       this._specs.width).setValues(values);
 
@@ -58,11 +57,11 @@ class Ledger {
     return this;
   }
 
-  fillInWithZeros (index) {
+  fillInWithZeros () {
     const numRows = this._sheet.getLastRow() - this._specs.row + 1;
     if (numRows < 1) return this;
 
-    const col = 3 + (this._specs.width + 1) * index;
+    const col = 5;
     const table = this._sheet.getRange(this._specs.row, col, numRows, 1).getValues();
 
     const top = table.findIndex(row => row[0] === '') - 1;
@@ -87,7 +86,7 @@ class Ledger {
     return this;
   }
 
-  mergeTransactions (index, values) {
+  mergeTransactions (values) {
     if (values.length === 0) return this;
     if (this._insertRows == null) this.initInsertRows_();
 
@@ -96,7 +95,7 @@ class Ledger {
 
     this._insertRows.insertRowsTo(height);
 
-    const offset = 1 + (this._specs.width + 1) * index;
+    const offset = this._specs.column;
 
     let table = [];
     if (lastRow >= this._specs.row) {
