@@ -32,7 +32,7 @@ class DemoAccCards extends QuickstartDemo {
         else if (mm === 11) mm = 10;
       }
 
-      this.required = ['Cards'];
+      this.required = ['mm'];
 
       this.list = [];
       for (let i = 0; i < mm - 1; i++) {
@@ -42,25 +42,25 @@ class DemoAccCards extends QuickstartDemo {
       const val = Noise.randomValueNegative(2, 2);
 
       this.list.push([
-        [7, 'Online shopping 1/3 (with instalments in d/d format)', code, val, '']
+        [code, 7, 'Online shopping 1/3 (with instalments in d/d format)', val, '', false]
       ]);
 
       this.list.push([
-        [-7, 'Online shopping 2/3 (with instalments in d/d format)', code, val, ''],
-        [3, 'Grocery shop', code, -10, ''],
-        [5, 'Gas station', code, Noise.randomValueNegative(3, 2), ''],
-        [5, 'Grocery shop refund', code, 10, '']
+        [code, -7, 'Online shopping 2/3 (with instalments in d/d format)', val, '', false],
+        [code, 3, 'Grocery shop', -10, '', false],
+        [code, 5, 'Gas station', Noise.randomValueNegative(3, 2), '', false],
+        [code, 5, 'Grocery shop refund', 10, '', false]
       ]);
 
       this.list.push([
-        [-7, 'Online shopping 3/3 (with instalments in d/d format)', code, val, '']
+        [code, -7, 'Online shopping 3/3 (with instalments in d/d format)', val, '', false]
       ]);
     } else if (num === 4) {
       this.required = ['mm'];
 
       this.list = [
         [],
-        [[7, code + ' bill payment', Noise.randomValueNegative(3, 2), '#qcc']]
+        [[code, 7, code + ' bill payment', Noise.randomValueNegative(3, 2), '#qcc', false]]
       ];
     } else {
       return;

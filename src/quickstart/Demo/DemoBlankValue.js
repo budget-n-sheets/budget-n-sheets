@@ -14,22 +14,25 @@ class DemoBlankValue extends QuickstartDemo {
   }
 
   makeConfig (num) {
+    this._accsService = new AccountsService()
+    const code = this._accsService.getAny().metadata.name
+
     switch (num) {
       case 1:
         this.list = [
           [
-            [5, 'Parking', Noise.randomValueNegative(3, 2), ''],
-            [7, 'No transactions below are accounted for due\nto this blank value', '', ''],
-            [11, 'Book Store', Noise.randomValueNegative(3, 2), ''],
-            [13, 'Shopping', Noise.randomValueNegative(3, 2), ''],
-            [17, 'Parking', Noise.randomValueNegative(3, 2), '']
+            [code, 5, 'Parking', Noise.randomValueNegative(3, 2), '', false],
+            [code, 7, 'No transactions below are accounted for due\nto this blank value', '', '', false],
+            [code, 11, 'Book Store', Noise.randomValueNegative(3, 2), '', false],
+            [code, 13, 'Shopping', Noise.randomValueNegative(3, 2), '', false],
+            [code, 17, 'Parking', Noise.randomValueNegative(3, 2), '', false]
           ],
           [
-            [5, 'Coffee shop', Noise.randomValueNegative(3, 2), ''],
-            [7, 'Fill in the blank values with zeros', '', ''],
-            ['', '', '', ''],
-            [13, 'Deposit', Noise.randomValue(4, 2), '#dp'],
-            [17, 'Transfer to Joe', Noise.randomValueNegative(3, 2), '#trf']
+            [code, 5, 'Coffee shop', Noise.randomValueNegative(3, 2), '', false],
+            [code, 7, 'Fill in the blank values with zeros', '', '', false],
+            [code, '', '', '', '', false],
+            [code, 13, 'Deposit', Noise.randomValue(4, 2), '#dp', false],
+            [code, 17, 'Transfer to Joe', Noise.randomValueNegative(3, 2), '#trf', false]
           ]
         ];
         break;
@@ -37,10 +40,10 @@ class DemoBlankValue extends QuickstartDemo {
         this.list = [
           [],
           [
-            [5, 'Some deposit', Noise.randomValue(4, 2), '#dp'],
-            [7, 'Delete the value to peek the balance and\nexpenses before the following transactions\nUndo with Ctrl+z or ⌘+z', Noise.randomValueNegative(3, 2), ''],
-            [11, 'Some expenses', Noise.randomValueNegative(3, 2), ''],
-            [13, 'Some expenses', Noise.randomValueNegative(3, 2), '']
+            [code, 5, 'Some deposit', Noise.randomValue(4, 2), '#dp', false],
+            [code, 7, 'Delete the value to peek the balance and\nexpenses before the following transactions\nUndo with Ctrl+z or ⌘+z', Noise.randomValueNegative(3, 2), '', false],
+            [code, 11, 'Some expenses', Noise.randomValueNegative(3, 2), '', false],
+            [code, 13, 'Some expenses', Noise.randomValueNegative(3, 2), '', false]
           ]
         ];
         break;

@@ -14,24 +14,27 @@ class DemoStatements extends QuickstartDemo {
   }
 
   makeConfig (num) {
+    this._accsService = new AccountsService()
+    const code = this._accsService.getAny().metadata.name
+
     switch (num) {
       case 1:
         this.list = [
-          [[7, 'Coffee shop', Noise.randomValueNegative(2, 2), '']]
+          [[code, 7, 'Coffee shop', Noise.randomValueNegative(2, 2), '', false]]
         ];
         break;
       case 2:
         this.list = [
           [],
-          [[7, 'Grocery shop', Noise.randomValueNegative(2, 2), '']]
+          [[code, 7, 'Grocery shop', Noise.randomValueNegative(2, 2), '', false]]
         ];
         break;
       case 3:
         this.list = [
-          [[7, 'Income (in cash), add #inc tag', Noise.randomValue(3, 2), '#inc']],
+          [[code, 7, 'Income (in cash), add #inc tag', Noise.randomValue(3, 2), '#inc', false]],
           [
-            [7, 'Income (via transfer #trf), add #inc tag', Noise.randomValue(3, 2), '#trf #inc'],
-            [7, 'Income (via deposit #dp), add #inc tag', Noise.randomValue(3, 2), '#dp #inc']
+            [code, 7, 'Income (via transfer #trf), add #inc tag', Noise.randomValue(3, 2), '#trf #inc', false],
+            [code, 7, 'Income (via deposit #dp), add #inc tag', Noise.randomValue(3, 2), '#dp #inc', false]
           ]
         ];
         break;
@@ -41,8 +44,8 @@ class DemoStatements extends QuickstartDemo {
 
         const val = -Noise.randomInteger(20);
         this.list.push([
-          [7, 'Pizza, my share', val, ''],
-          [7, 'Pizza, others share (not accounted in expenses), add #ign tag', 3 * val, '#ign']
+          [code, 7, 'Pizza, my share', val, '', false],
+          [code, 7, 'Pizza, others share (not accounted in expenses), add #ign tag', 3 * val, '', true]
         ]);
         break;
       }

@@ -18,6 +18,9 @@ class DemoTags extends QuickstartDemo {
   }
 
   makeConfig (num) {
+    this._accsService = new AccountsService()
+    const code = this._accsService.getAny().metadata.name
+
     switch (num) {
       case 1:
         this.required = ['Tags'];
@@ -26,11 +29,11 @@ class DemoTags extends QuickstartDemo {
       case 2:
         this.required = ['mm'];
         this.data = [
-          [3, 'Bus to Abc', Noise.randomValueNegative(2, 2), '#trip1'],
-          [3, 'Abc Pizza, lunch', Noise.randomValueNegative(2, 2), '#trip1'],
-          [4, 'Coffee Abc', Noise.randomValueNegative(2, 2), '#trip1 #coffee'],
-          [7, 'Flight to Def', Noise.randomValueNegative(2, 2), '#trip2'],
-          [8, 'Tower Def', Noise.randomValueNegative(2, 2), '#trip2']
+          [code, 3, 'Bus to Abc', Noise.randomValueNegative(2, 2), '#trip1', false],
+          [code, 3, 'Abc Pizza, lunch', Noise.randomValueNegative(2, 2), '#trip1', false],
+          [code, 4, 'Coffee Abc', Noise.randomValueNegative(2, 2), '#trip1 #coffee', false],
+          [code, 7, 'Flight to Def', Noise.randomValueNegative(2, 2), '#trip2', false],
+          [code, 8, 'Tower Def', Noise.randomValueNegative(2, 2), '#trip2', false]
         ];
         break;
       case 3:

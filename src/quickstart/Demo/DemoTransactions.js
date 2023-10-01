@@ -14,18 +14,21 @@ class DemoTransactions extends QuickstartDemo {
   }
 
   makeConfig (num) {
+    this._accsService = new AccountsService()
+    const code = this._accsService.getAny().metadata.name
+
     switch (num) {
       case 1:
-        this.data = [[7, 'Deposit (to my account #dp)', Noise.randomValue(3, 2), '#dp']];
+        this.data = [[code, 7, 'Deposit (to my account #dp)', Noise.randomValue(3, 2), '#dp', false]];
         break;
       case 2:
-        this.data = [[7, 'Transfer (from someone #trf)', Noise.randomValue(3, 2), '#trf']];
+        this.data = [[code, 7, 'Transfer (from someone #trf)', Noise.randomValue(3, 2), '#trf', false]];
         break;
       case 3:
-        this.data = [[7, 'Transfer (to someone #trf)', Noise.randomValueNegative(3, 2), '#trf']];
+        this.data = [[code, 7, 'Transfer (to someone #trf)', Noise.randomValueNegative(3, 2), '#trf', false]];
         break;
       case 4:
-        this.data = [[7, 'Withdrawal (cash dispenser #wd)', Noise.randomValueNegative(3, 2), '#wd']];
+        this.data = [[code, 7, 'Withdrawal (cash dispenser #wd)', Noise.randomValueNegative(3, 2), '#wd', false]];
         break;
 
       default:
