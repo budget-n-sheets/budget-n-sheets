@@ -35,7 +35,6 @@ class AccountsService extends TablesService {
   }
 
   updateNames_ () {
-    const jan = this.spreadsheet.getSheetByName('Jan');
     const backstage = this.spreadsheet.getSheetByName('_Backstage');
     if (!backstage) return;
 
@@ -57,8 +56,6 @@ class AccountsService extends TablesService {
       rangeOff.offset(1, 0).setFormula('0');
       backstage.getRangeList(list).setFormulaR1C1('R[-' + (_h - 1) + ']C');
       rangeOff.offset(1 + _h * acc.time_start, 0).setFormula('=' + this.formater.localeSignal(acc.balance));
-
-      if (jan) jan.getRange(1, 6 + 5 * acc.index).setValue(acc.name);
     }
   }
 
