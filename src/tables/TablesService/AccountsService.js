@@ -117,6 +117,7 @@ class AccountsService extends TablesService {
     this.initSpreadsheet_();
 
     this.updateMetadata_();
+    TablesService.updateRules()
     this.updateNames_();
     this.updateReferences_();
 

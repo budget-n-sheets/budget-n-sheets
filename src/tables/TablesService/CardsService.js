@@ -78,61 +78,6 @@ class CardsService extends TablesService {
     }
   }
 
-  updateRules_ () {
-    const sheet = this.spreadsheet.getSheetByName('Cards');
-    if (!sheet) return;
-
-    const height = sheet.getMaxRows() - 5;
-    if (height < 1) return;
-
-    const rangeOff1 = sheet.getRange(2, 2);
-    const rangeOff2 = sheet.getRange(6, 3, height, 1);
-
-    if (this._ids.length === 0) {
-      for (let i = 0; i < 12; i++) {
-        rangeOff1.offset(0, 6 * i).clearDataValidations();
-        rangeOff2.offset(0, 6 * i).clearDataValidations();
-      }
-
-      SpreadsheetApp.flush();
-      return;
-    }
-
-    const list1 = ['All'];
-    let list2 = [];
-
-    for (const id in this._db) {
-      const card = this._db[id];
-
-      list1.push(card.code);
-      list2.push(card.code);
-
-      list2 = list2.concat(card.aliases);
-    }
-
-    const rule1 = SpreadsheetApp.newDataValidation()
-      .requireValueInList(list1, true)
-      .setAllowInvalid(true)
-      .build();
-
-    const rule2 = SpreadsheetApp.newDataValidation()
-      .requireValueInList(list2, true)
-      .setAllowInvalid(true)
-      .build();
-
-    for (let i = 0; i < 12; i++) {
-      rangeOff1.offset(0, 6 * i)
-        .clearDataValidations()
-        .setDataValidation(rule1);
-
-      rangeOff2.offset(0, 6 * i)
-        .clearDataValidations()
-        .setDataValidation(rule2);
-    }
-
-    SpreadsheetApp.flush();
-  }
-
   updateConditionalColor_ () {
     const sheet = this.spreadsheet.getSheetByName('Cards');
     if (!sheet) return;
@@ -227,7 +172,7 @@ class CardsService extends TablesService {
 
     this.updateMetadata_();
     this.updateNames_();
-    this.updateRules_();
+    TablesService.updateRules()
     this.updateConditionalColor_();
 
     SpreadsheetApp.flush();

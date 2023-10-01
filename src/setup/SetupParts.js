@@ -434,6 +434,7 @@ class SetupParts {
     }
 
     this._spreadsheet.deleteSheet(sheetTTT)
+    TablesService.updateRules()
   }
 
   setupProperties_ () {
