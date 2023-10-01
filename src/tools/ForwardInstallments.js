@@ -17,10 +17,17 @@ class ForwardInstallments {
 
     this.rangeList = { indexes: [], ranges: [] };
     this.specs = Object.freeze({
+      columnOffset: 1,
       nullSearch: 4,
-      row: 6,
-      width: 5
+      row: 5,
+      width: 6
     });
+  }
+
+  static pick (sheet) {
+    const mm = Consts.month_name.short.indexOf(sheet.getName())
+    if (mm === -1) return 1
+    return new ForwardInstallments(mm)
   }
 
   static isCompatible (sheet) {
@@ -57,7 +64,7 @@ class ForwardInstallments {
     const w = this.specs.width + 1;
 
     for (const range of ranges) {
-      const column = range.getColumn() - 1;
+      const column = range.getColumn() - 2;
       let mm = (column - (column % w)) / w;
       if (mm > 11) continue;
 
@@ -84,17 +91,14 @@ class ForwardInstallments {
 
     const nill = this.specs.nullSearch - 1;
     for (const index of indexes) {
-      if (index < 0 || index > 10) continue;
-
       const range = this.sheet.getRange(
-        this.specs.row,
-        1 + (this.specs.width + 1) * index,
-        numRows,
-        this.specs.width);
+        this.specs.row, 2,
+        numRows, this.specs.width)
 
       let row = range.getValues().findIndex(line => line[nill] === '');
       if (row === -1) row = numRows;
       if (row > 0) this.forward_([range.offset(0, 0, row, this.specs.width)], 1);
+      break
     }
   }
 
@@ -103,17 +107,17 @@ class ForwardInstallments {
 
     for (let i = 0; i < snapshot.length; i++) {
       const line = snapshot[i];
-      if (line[1] === '') continue;
+      if (line[2] === '') continue;
 
-      const match = line[1].match(/((\d+)\/(\d+))/);
+      const match = line[2].match(/((\d+)\/(\d+))/);
       if (!match) continue;
 
       const p1 = +match[2];
       const p2 = +match[3];
       if (p1 >= p2) continue;
 
-      if (line[0] > 0) line[0] *= -1;
-      line[1] = line[1].trim();
+      if (line[1] > 0) line[1] *= -1;
+      line[2] = line[2].trim();
       line[3] = '=' + this.formater.localeSignal(line[3]);
 
       installments.push({
@@ -146,7 +150,7 @@ class ForwardInstallments {
       el.p1++;
 
       const line = el.line.slice();
-      line[1] = line[1].replace(el.reg, el.p1 + '/' + el.p2);
+      line[2] = line[2].replace(el.reg, el.p1 + '/' + el.p2);
 
       values.push(line);
 

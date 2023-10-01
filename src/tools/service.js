@@ -65,13 +65,11 @@ function toolService_ (job, param) {
       break;
     }
     case 'forwardInstallments': {
-      if (!ForwardInstallments.isCompatible(sheet)) {
+      const tool = ForwardInstallments.pick(sheet);
+      if (tool === 1) {
         ForwardInstallments.showWarning();
         break;
-      }
-
-      const tool = new ForwardInstallments();
-      if (!tool.sheet) {
+      } else if (!tool.sheet) {
         showDialogErrorMessage();
         break;
       }
