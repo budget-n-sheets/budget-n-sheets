@@ -16,6 +16,24 @@ class Ledger {
     this._insertRows = null;
   }
 
+  getLastRow_ () {
+    const numRows = this._sheet.getMaxRows() - this._specs.row + 1
+    const snapshot = this._sheet.getRange(
+      this._specs.row, this._specs.column,
+      numRows, this._specs.width
+    )
+      .getValues()
+
+    const nill = this._specs.nullSearch - 1
+
+    let n = 0
+    do {
+      if (snapshot[n][nill] === '') break
+    } while (++n < numRows)
+
+    return this._specs.row + n - 1
+  }
+
   initInsertRows_ () {
     this._insertRows = InsertRows.pick(this._sheet);
   }
@@ -29,7 +47,7 @@ class Ledger {
     if (values.length === 0) return this;
     if (this._insertRows == null) this.initInsertRows_();
 
-    const lastRow = this._sheet.getLastRow();
+    const lastRow = this.getLastRow_();
     let row = 0;
 
     const height = (lastRow < this._specs.row ? this._specs.row - 1 : lastRow) + values.length;
@@ -58,7 +76,7 @@ class Ledger {
   }
 
   fillInWithZeros () {
-    const numRows = this._sheet.getLastRow() - this._specs.row + 1;
+    const numRows = this.getLastRow_() - this._specs.row + 1;
     if (numRows < 1) return this;
 
     const col = 5;
@@ -90,7 +108,7 @@ class Ledger {
     if (values.length === 0) return this;
     if (this._insertRows == null) this.initInsertRows_();
 
-    const lastRow = this._sheet.getLastRow();
+    const lastRow = this.getLastRow_();
     const height = (lastRow < this._specs.row ? this._specs.row - 1 : lastRow) + values.length;
 
     this._insertRows.insertRowsTo(height);
