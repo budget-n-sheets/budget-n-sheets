@@ -9,35 +9,6 @@
  */
 
 class ViewModeCompact {
-  static compactCards_ () {
-    const sheet = SpreadsheetApp2.getActive().getSheetByName('Cards');
-    if (!sheet) return;
-    if (sheet.getMaxRows() < 4) return;
-
-    const _h = TABLE_DIMENSION.height;
-    const _w = TABLE_DIMENSION.width;
-
-    const num_acc = SettingsConst.get('number_accounts');
-    const col = 2 + _w + _w * num_acc;
-
-    const range = sheet.getRange(2, 4, 1, 2);
-    for (let i = 0; i < 12; i++) {
-      const head = RangeUtils.rollA1Notation(2, 1 + 6 * i);
-      const cell = '_Backstage!' + RangeUtils.rollA1Notation(2 + _h * i, col);
-
-      let formula = 'OFFSET(' + cell + '; 4; 5*' + head + '; 1; 1)';
-      formula = '"Balance: "; TEXT(' + formula + '; "#,##0.00;(#,##0.00)")';
-
-      range.offset(0, 6 * i, 3, 2).breakApart();
-      range.offset(0, 6 * i)
-        .merge()
-        .setFormula('CONCATENATE(' + formula + ')');
-    }
-
-    sheet.hideRows(3, 2);
-    SpreadsheetApp.flush();
-  }
-
   static compactTtt_ () {
     const num_acc = SettingsConst.get('number_accounts');
 
@@ -67,7 +38,6 @@ class ViewModeCompact {
   }
 
   static set () {
-    this.compactCards_();
     this.compactTtt_();
   }
 }

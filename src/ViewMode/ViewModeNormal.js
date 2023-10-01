@@ -9,31 +9,6 @@
  */
 
 class ViewModeNormal {
-  static expandCards_ () {
-    const sheet = SpreadsheetApp2.getActive().getSheetByName('Cards');
-    if (!sheet) return;
-    if (sheet.getMaxRows() < 4) return;
-
-    const formulas = FormulaBuildCards.header();
-
-    const _h = TABLE_DIMENSION.height;
-    const _w = TABLE_DIMENSION.width;
-
-    const num_acc = SettingsConst.get('number_accounts');
-    const col = 2 + _w + _w * num_acc;
-
-    sheet.showRows(3, 2);
-
-    const range = sheet.getRange(2, 4, 3, 2);
-    for (let i = 0; i < 12; i++) {
-      const index = RangeUtils.rollA1Notation(2, 1 + 6 * i);
-      const reference = '_Backstage!' + RangeUtils.rollA1Notation(2 + _h * i, col);
-      range.offset(0, 6 * i).merge().setFormula(formulas.report(index, reference));
-    }
-
-    SpreadsheetApp.flush();
-  }
-
   static expandTtt_ () {
     const formulas = FormulaBuildTtt.header();
     const num_acc = SettingsConst.get('number_accounts');
@@ -64,7 +39,6 @@ class ViewModeNormal {
   }
 
   static set () {
-    this.expandCards_();
     this.expandTtt_();
   }
 }
