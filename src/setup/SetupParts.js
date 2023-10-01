@@ -425,6 +425,8 @@ class SetupParts {
       // formula = formulaBuild.report(k, i)
       // rangeOff.offset(-1, 2 + 5 * k).setFormula(formula)
 
+      sheet.getRange(4, 2, sheet.getMaxRows() - 3, 6).createFilter()
+
       sheet.protect()
         .setUnprotectedRanges([
           sheet.getRange(1, 2, 1, 3),
