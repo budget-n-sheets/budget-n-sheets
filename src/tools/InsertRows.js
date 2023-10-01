@@ -32,7 +32,7 @@ class InsertRows {
   static showWarning () {
     SpreadsheetApp2.getUi().alert(
       "Can't insert rows",
-      'Select a month, Cards or Tags to insert rows.',
+      'Select a month or Tags to insert rows.',
       SpreadsheetApp2.getUi().ButtonSet.OK);
   }
 

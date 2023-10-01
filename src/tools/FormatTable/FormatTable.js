@@ -16,8 +16,6 @@ class FormatTable {
   static pick (sheet) {
     const name = sheet.getName();
     switch (name) {
-      case 'Cards':
-        return new FormatTableCards();
       case 'Tags':
         return new FormatTableTags();
 
@@ -27,13 +25,13 @@ class FormatTable {
 
     const mm = Consts.month_name.short.indexOf(name);
     if (mm === -1) return 1;
-    return new FormatTableAccounts(mm);
+    return new FormatTableTtt(mm);
   }
 
   static showWarning () {
     SpreadsheetApp2.getUi().alert(
       "Can't format table",
-      'Select a month, Cards or Tags to format the table.',
+      'Select a month or Tags to format the table.',
       SpreadsheetApp2.getUi().ButtonSet.OK);
   }
 

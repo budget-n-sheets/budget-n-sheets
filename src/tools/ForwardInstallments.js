@@ -9,8 +9,9 @@
  */
 
 class ForwardInstallments {
-  constructor () {
-    this.sheet = SpreadsheetApp2.getActive().getSheetByName('Cards');
+  constructor (mm) {
+    const name = Consts.month_name.short[mm]
+    this.sheet = SpreadsheetApp2.getActive().getSheetByName(name)
 
     this.formater = new FormatNumber();
 
@@ -23,13 +24,13 @@ class ForwardInstallments {
   }
 
   static isCompatible (sheet) {
-    return sheet.getName() === 'Cards';
+    return Consts.month_name.short.indexOf(sheet.getName()) > -1
   }
 
   static showWarning () {
     SpreadsheetApp2.getUi().alert(
       "Can't forward installments",
-      'Select Cards to forward installments.',
+      'Select a month to forward installments.',
       SpreadsheetApp2.getUi().ButtonSet.OK);
   }
 
