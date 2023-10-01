@@ -118,6 +118,7 @@ class AccountsService extends TablesService {
 
     this.updateMetadata_();
     TablesService.updateRules()
+    TablesService.updateConditionalColor()
     this.updateNames_();
     this.updateReferences_();
 
