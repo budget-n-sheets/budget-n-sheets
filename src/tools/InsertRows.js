@@ -17,8 +17,6 @@ class InsertRows {
   static pick (sheet) {
     const name = sheet.getName();
     switch (name) {
-      case 'Cards':
-        return new ToolInsertRowsCards();
       case 'Tags':
         return new ToolInsertRowsTags();
 
@@ -75,15 +73,6 @@ class ToolInsertRowsMonth extends InsertRows {
     super(sheet);
 
     this._headerRow = 4;
-  }
-}
-
-class ToolInsertRowsCards extends InsertRows {
-  constructor () {
-    const sheet = SpreadsheetApp2.getActive().getSheetByName('Cards');
-    super(sheet);
-
-    this._headerRow = 5;
   }
 }
 
