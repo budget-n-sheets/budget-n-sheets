@@ -74,24 +74,24 @@ class FormatTableTtt extends FormatTable {
   format () {
     if (!this.sheet) return
 
-    const numRows = this.sheet.getLastRow() - this.specs.row + 1
-    if (numRows < 2) return
-
-    for (const range of this.rangeList.ranges) {
-      if (range.getNumRows() > 1) this.formatRange_(range)
+    if (this.indexes.length === 0) {
+      for (const range of this.ranges) {
+        if (range.getNumRows() > 1) this.formatRange_(range)
+      }
+      return
     }
+
+    const numRows = this.sheet.getMaxRows() - this.specs.row + 1
+    if (numRows < 1) return
+
+    const range = this.sheet.getRange(
+      this.specs.row, 1 + this.specs.columnOffset,
+      numRows, this.specs.width)
 
     const nill = this.specs.nullSearch - 1
-    for (const index of this.rangeList.indexes) {
-      const range = this.sheet.getRange(
-        this.specs.row, 2,
-        numRows, this.specs.width)
-
-      let row = range.getValues().findIndex(line => line[nill] === '')
-      if (row === -1) row = numRows
-      if (row > 1) this.formatRange_(range.offset(0, 0, row, this.specs.width))
-      break
-    }
+    let row = range.getValues().findIndex(line => line[nill] === '')
+    if (row === -1) row = numRows
+    if (row > 1) this.formatRange_(range.offset(0, 0, row, this.specs.width))
 
     if (this.hasHideRows && this.rangeList.indexes.length > 0) this.hideRows_()
 

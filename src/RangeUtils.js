@@ -14,12 +14,12 @@ class RangeUtils {
     const w = specs.width + 1;
 
     for (const range of ranges) {
-      const column = range.getColumn() - 1;
+      const column = range.getColumn() - 1 - specs.columnOffset;
 
       if (column % w === 0 && range.getNumColumns() === specs.width) {
         selected.ranges.push(range);
       } else {
-        const last = range.getLastColumn() - 1;
+        const last = range.getLastColumn() - 1 - specs.columnOffset;
 
         const start = (column - (column % w)) / w;
         const end = (last - (last % w)) / w;

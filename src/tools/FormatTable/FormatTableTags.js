@@ -14,6 +14,7 @@ class FormatTableTags extends FormatTable {
     this.sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
 
     this.specs = Object.freeze({
+      columnOffset: 0,
       nullSearch: 5,
       row: 2,
       width: 5
@@ -68,14 +69,14 @@ class FormatTableTags extends FormatTable {
   format () {
     if (!this.sheet) return;
 
-    if (this.rangeList.indexes.length === 0) {
-      for (const range in this.rangeList.ranges) {
+    if (this.indexes.length === 0) {
+      for (const range of this.ranges) {
         if (range.getNumRows() > 1) this.formatRange_(range);
       }
       return;
     }
 
-    const maxRows = this.sheet.getMaxRows() - 1;
+    const maxRows = this.sheet.getMaxRows() - this.specs.row + 1;
     if (maxRows < 1) return;
 
     const range = this.sheet.getRange(2, 1, maxRows, 5);

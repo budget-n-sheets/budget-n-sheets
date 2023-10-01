@@ -11,6 +11,7 @@
 class ForwardInstallments {
   constructor (mm) {
     const name = Consts.month_name.short[mm]
+    this.mm = mm
     this.sheet = SpreadsheetApp2.getActive().getSheetByName(name)
 
     this.formater = new FormatNumber();
@@ -61,11 +62,8 @@ class ForwardInstallments {
     if (steps == null) steps = 11;
     if (steps < 1 || steps > 11) return;
 
-    const w = this.specs.width + 1;
-
     for (const range of ranges) {
-      const column = range.getColumn() - 2;
-      let mm = (column - (column % w)) / w;
+      let mm = +this.mm
       if (mm > 11) continue;
 
       const snapshot = range.getValues();
@@ -84,22 +82,19 @@ class ForwardInstallments {
   }
 
   forwardIndexes_ () {
-    const numRows = this.sheet.getLastRow() - this.specs.row + 1;
+    const numRows = this.sheet.getMaxRows() - this.specs.row + 1;
     if (numRows < 1) return;
 
     const indexes = this.indexes.filter((v, i, s) => s.indexOf(v) === i).sort((a, b) => a - b);
 
-    const nill = this.specs.nullSearch - 1;
-    for (const index of indexes) {
-      const range = this.sheet.getRange(
-        this.specs.row, 2,
-        numRows, this.specs.width)
+    const range = this.sheet.getRange(
+      this.specs.row, 1 + this.specs.columnOffset,
+      numRows, this.specs.width)
 
-      let row = range.getValues().findIndex(line => line[nill] === '');
-      if (row === -1) row = numRows;
-      if (row > 0) this.forward_([range.offset(0, 0, row, this.specs.width)], 1);
-      break
-    }
+    const nill = this.specs.nullSearch - 1
+    let row = range.getValues().findIndex(line => line[nill] === '')
+    if (row === -1) row = numRows
+    if (row > 0) this.forward_([range.offset(0, 0, row, this.specs.width)], 1)
   }
 
   filterInstallments (snapshot) {
@@ -132,13 +127,19 @@ class ForwardInstallments {
   }
 
   forward () {
-    if (this.rangeList.ranges.length > 0) this.forward_(this.rangeList.ranges);
-    else if (this.rangeList.indexes.length > 0) this.forwardIndexes_();
+    if (!this.sheet) return
 
-    SpreadsheetApp.flush();
+    if (this.indexes.length === 0) {
+      for (const range of this.ranges) {
+        this.forward_([range])
+      }
+      return
+    }
 
-    this.rangeList = { indexes: [], ranges: [] };
-    return this;
+    this.forwardIndexes_()
+
+    this.rangeList = { indexes: [], ranges: [] }
+    return this
   }
 
   getNextInstallments (installments) {

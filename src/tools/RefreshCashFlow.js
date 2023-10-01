@@ -24,6 +24,7 @@ class RefreshCashFlow {
     this.arrayMm = new Array(12).fill(false);
     this.specs = Object.freeze({
       cash_flow: {
+        columnOffset: 1,
         row: 4,
         width: 3
       },
