@@ -15,7 +15,6 @@ class RefreshCashFlow {
     this.formater = new FormatNumber();
 
     this.dec_p = SettingsSpreadsheet.get('decimal_separator');
-    this.num_acc = SettingsConst.get('number_accounts');
     this.financial_year = SettingsConst.get('financial_year');
 
     this.db_cards = new CardsService().getAllBalances() || {};
@@ -116,36 +115,23 @@ class RefreshCashFlow {
     const numRows = sheet.getLastRow() - this.specs.ttt.row + 1;
     if (numRows < 1) return;
 
-    const snapshot = sheet.getRange(
-      this.specs.ttt.row,
-      1 + this.specs.ttt.width + 1,
-      numRows,
-      (this.specs.ttt.width + 1) * this.num_acc
-    ).getValues();
+    const snapshot = sheet.getRange(this.specs.ttt.row, 2, numRows, 6).getValues()
 
-    let k = 0;
-    let i = -1;
-    let c = 0;
+    for (let i = 0; i < numRows; i++) {
+      const line = snapshot[i]
+      if (line[3] === '') break
 
-    while (k < this.num_acc) {
-      i++;
-      const line = snapshot[i];
+      // TODO
+      // Filter tables
 
-      if (i >= numRows || line[2 + c] === '') {
-        k++;
-        c += this.specs.ttt.width + 1;
-        i = -1;
-        continue;
-      }
+      let day = +line[1]
+      if (day < 1 || day > this.dd) continue
 
-      let day = +line[0 + c];
-      if (day <= 0 || day > this.dd) continue;
+      const value = line[3]
 
-      const value = line[2 + c];
-
-      day--;
-      this.values.flow[day] += this.formater.localeSignal(value);
-      this.values.transactions[day] += '@' + line[1 + c] + ' ';
+      day--
+      this.values.flow[day] += this.formater.localeSignal(value)
+      this.values.transactions[day] += '@' + line[2] + ' '
     }
   }
 
