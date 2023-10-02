@@ -15,10 +15,19 @@ class FormulaBuildTtt {
 }
 
 class FormulaBuildTttHeader {
-  static balance (index, mm) {
-    const balance = RangeUtils.rollA1Notation(3 + TABLE_DIMENSION.height * mm, 7 + TABLE_DIMENSION.width * index);
+  static balance (mm) {
+    let formula, accBalance, availCredit
 
-    return 'CONCAT("Balance "; TO_TEXT(_Backstage!' + balance + '))';
+    accBalance = `OFFSET('_Backstage'!B3; ${TABLE_DIMENSION.height * mm}; ${TABLE_DIMENSION.width} * G1)`
+    accBalance = `CONCAT("Balance "; TO_TEXT(${accBalance}))`
+
+    availCredit = `OFFSET('_Backstage'!C6; ${TABLE_DIMENSION.height * mm}; ${TABLE_DIMENSION.width} * G1)`
+    availCredit = `CONCAT("AVAIL credit "; TO_TEXT(${availCredit}))`
+
+    formula = `IF(G2; ${availCredit}; ${accBalance})`
+    formula = `IF(G1 > 0; ${formula}; " ")`
+
+    return formula
   }
 
   static expenses (mm) {

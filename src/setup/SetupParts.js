@@ -422,10 +422,10 @@ class SetupParts {
       formula = formulaBuild.expenses(i)
       sheet.getRange('B3').setFormula(formula)
 
-      // TODO
-      // formula = formulaBuild.balance(k, i)
-      // rangeOff.offset(0, 5 * k).setFormula(formula)
+      formula = formulaBuild.balance(i)
+      sheet.getRange('B2').setFormula(formula)
 
+      // TODO
       // formula = formulaBuild.report(k, i)
       // rangeOff.offset(-1, 2 + 5 * k).setFormula(formula)
 
