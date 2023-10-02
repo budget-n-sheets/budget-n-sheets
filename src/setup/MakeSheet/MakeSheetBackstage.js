@@ -25,10 +25,11 @@ class MakeSheetBackstage extends MakeSheet {
     const sheet = this.sheet
     const _w = TABLE_DIMENSION.width
 
+    // TODO
     const db_accounts = new AccountsService().getAll()
     for (const id in db_accounts) {
       const account = db_accounts[id]
-      this._sheet.getRange(1, 2 + _w + _w * account.index).setValue(account.name)
+      this._sheet.getRange(1, 2 + _w + _w * account.index).setValue(`\^${account.name}\$`)
     }
 
     if (this._consts.numberAccounts < 5) {
