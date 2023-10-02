@@ -21,10 +21,18 @@ class FormulaBuildTttHeader {
     return 'CONCAT("Balance "; TO_TEXT(_Backstage!' + balance + '))';
   }
 
-  static expenses (index, mm) {
-    const expenses = RangeUtils.rollA1Notation(4 + TABLE_DIMENSION.height * mm, 7 + TABLE_DIMENSION.width * index);
+  static expenses (mm) {
+    return `CONCAT("Expenses "; TO_TEXT(OFFSET('_Backstage'!B4; ${TABLE_DIMENSION.height * mm}; ${TABLE_DIMENSION.width} * G1)))`;
+  }
 
-    return 'CONCAT("Expenses "; TO_TEXT(_Backstage!' + expenses + '))';
+  static index (header) {
+    let formula;
+
+    formula = `FILTER(${header}; REGEXMATCH(${header}; "\\^"&B1&"\\$"))`
+    formula = `MATCH(${formula}; ${header}; 0)`
+    formula = `IFNA((${formula} - 1) / 5; 0)`
+
+    return formula;
   }
 
   static report (index, mm) {
