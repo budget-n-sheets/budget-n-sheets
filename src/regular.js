@@ -31,8 +31,7 @@ function treatLayout_ (yyyy, mm) {
   updateHideShowSheets(sheets, financial_year, yyyy, mm);
   updateTabsColors(sheets, financial_year, yyyy, mm);
 
-  // TODO
-  const formatAccs = new FormatTableAccounts(month);
-  formatAccs.indexes = [0, 1, 2, 3, 4, 5];
+  const formatAccs = new FormatTableTtt(month);
+  formatAccs.indexes = [0];
   formatAccs.format();
 }

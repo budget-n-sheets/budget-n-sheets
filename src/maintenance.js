@@ -76,13 +76,12 @@ function askResetSuggestions () {
     .setAllowInvalid(true)
     .build();
   let ruleTV = SpreadsheetApp.newDataValidation()
-    .requireValueInRange(sheetUnique.getRange('C:C'), false)
+    .requireValueInRange(sheetUnique.getRange('B:B'), false)
     .setAllowInvalid(true)
     .build();
 
   let i = -1;
   while (++i < 12) {
-    // TODO
     const sheetMm = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);
     if (!sheetMm) continue;
 
@@ -90,11 +89,11 @@ function askResetSuggestions () {
     if (height < 1) continue;
 
     for (let k = 0; k <= num_acc; k++) {
-      sheetMm.getRange(5, 2 + 5 * k, height, 1)
+      sheetMm.getRange(5, 4, height, 1)
         .clearDataValidations()
         .setDataValidation(ruleDV);
 
-      sheetMm.getRange(5, 4 + 5 * k, height, 1)
+      sheetMm.getRange(5, 6, height, 1)
         .clearDataValidations()
         .setDataValidation(ruleTV);
     }
@@ -108,20 +107,16 @@ function askResetProtection () {
   if (!lock.tryLock(200)) return;
 
   const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
-  let sheet, ranges, range;
+  let sheet, range;
   let protections, protection;
-  let n, i, j, k;
-
-  const number_accounts = SettingsConst.get('number_accounts');
+  let n, i, j;
 
   for (i = 0; i < 12; i++) {
-    // TODO
     sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);
     if (!sheet) continue;
 
     n = sheet.getMaxRows() - 4;
     if (n < 1) continue;
-    if (sheet.getMaxColumns() < 5 * (1 + number_accounts)) continue;
 
     protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
     for (j = 0; j < protections.length; j++) {
@@ -129,15 +124,11 @@ function askResetProtection () {
       if (protection.canEdit()) protection.remove();
     }
 
-    ranges = [];
-    const rangeOff = sheet.getRange(5, 1, n, 4);
-    for (k = 0; k < 1 + number_accounts; k++) {
-      range = rangeOff.offset(0, 5 * k);
-      ranges.push(range);
-    }
-
     sheet.protect()
-      .setUnprotectedRanges(ranges)
+      .setUnprotectedRanges([
+        sheet.getRange(1, 2, 1, 3),
+        sheet.getRange(5, 2, n, 6)
+      ])
       .setWarningOnly(true);
   }
 
