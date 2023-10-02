@@ -55,7 +55,8 @@ class CalendarUtils {
 
         translation: null,
         hasAtMute: true,
-        hasQcc: false
+        hasQcc: false,
+        hasIgn: false
       };
 
       metadata.hasWallet = description.indexOf('Wallet') !== -1;
@@ -84,6 +85,7 @@ class CalendarUtils {
 
       metadata.hasAtMute = /@(mute|ign)/.test(description);
       metadata.hasQcc = /#qcc/.test(description);
+      metadata.hasIgn = /#ign/.test(description);
       metadata.translation = Utils.getTranslation(description);
 
       matches = description.match(valueRegExp);

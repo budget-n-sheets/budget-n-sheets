@@ -50,12 +50,13 @@ class CalendarService {
       value = '=' + formater.localeSignal(value);
 
       if (evento.hasWallet) {
-        tableTtt[0].push([dd, evento.title, value, tags]);
+        tableTtt[0].push(['Wallet', dd, evento.title, value, tags, evento.hasIgn]);
       } else if (evento.account) {
         const index = db_accounts[evento.account].index;
-        tableTtt[1 + index].push([dd, evento.title, value, tags]);
+        const name = db_accounts[evento.account].name;
+        tableTtt[1 + index].push([name, dd, evento.title, value, tags, evento.hasIgn]);
       } else if (evento.card) {
-        tableCards.push([dd, evento.title, evento.card.code, value, tags]);
+        tableCards.push([evento.card.code, dd, evento.title, value, tags, evento.hasIgn]);
       }
     }
 
