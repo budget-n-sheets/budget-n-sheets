@@ -39,8 +39,8 @@ class TablesService {
     const db_accounts = new AccountsService().getAll()
     const db_cards = new CardsService().getAll()
 
-    const list = ['All', 'Accounts', 'Cards']
-    const names = []
+    const list = ['Wallet']
+    const names = ['Wallet']
 
     for (const id in db_accounts) {
       const acc = db_accounts[id]
