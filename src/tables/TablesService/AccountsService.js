@@ -52,7 +52,7 @@ class AccountsService extends TablesService {
         list[i - 1] = RangeUtils.rollA1Notation(2 + _h * i, col);
       }
 
-      rangeOff.setValue(acc.name);
+      rangeOff.setValue(`\^${acc.name}\$`);
       rangeOff.offset(1, 0).setFormula('0');
       backstage.getRangeList(list).setFormulaR1C1('R[-' + (_h - 1) + ']C');
       rangeOff.offset(1 + _h * acc.time_start, 0).setFormula('=' + this.formater.localeSignal(acc.balance));
