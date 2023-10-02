@@ -274,7 +274,7 @@ class FormulaBuildBackstageWallet {
 
     formula = 'NOT(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + ign + '; ' + bsblank + '; 1)); ';
     formula += `REGEXMATCH(ARRAY_CONSTRAIN(${month}!` + wall + '; ' + bsblank + '; 1); B1); ';
-    formula += 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1))); ';
+    formula += 'NOT(ISBLANK(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1)))';
     formula = 'FILTER(ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + value + '; ' + bsblank + '; 1); ' + formula + ')';
     formula = 'SUM(IFERROR(' + formula + '; 0))';
 
