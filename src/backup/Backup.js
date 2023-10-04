@@ -14,7 +14,6 @@ class Backup {
     this._backup = {
       metadata: {},
       ttt: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}, 11: {} },
-      cards: { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [] },
       tags: [],
       tags_categories: [],
       db_tables: {
@@ -27,19 +26,6 @@ class Backup {
       const_properties: {},
       class_version2: {}
     };
-  }
-
-  collectCards_ () {
-    const sheet = this._spreadsheet.getSheetByName('Cards');
-    if (!sheet) return;
-
-    const numRows = sheet.getLastRow() - 5;
-    if (numRows < 1) return;
-
-    const table = sheet.getRange(6, 1, numRows, 6 * 12).getValues();
-    for (let mm = 0; mm < 12; mm++) {
-      this._backup.cards[mm] = this.filterTable_(table.map(row => row.slice(6 * mm, 6 * mm + 5)));
-    }
   }
 
   collectDbAccounts_ () {
@@ -156,7 +142,6 @@ class Backup {
 
   makeBackup () {
     this.collectMonths_();
-    this.collectCards_();
     this.collectTags_();
     this.collectTagsCategories_();
 
