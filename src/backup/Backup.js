@@ -13,7 +13,7 @@ class Backup {
     this._spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
     this._backup = {
       metadata: {},
-      ttt: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}, 11: {} },
+      ttt: { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [] },
       tags: [],
       tags_categories: [],
       db_tables: {
@@ -60,8 +60,6 @@ class Backup {
   }
 
   collectMonths_ () {
-    const numTables = 1 + SettingsConst.get('number_accounts');
-
     for (let mm = 0; mm < 12; mm++) {
       const sheet = this._spreadsheet.getSheetByName(Consts.month_name.short[mm]);
       if (!sheet) continue;
@@ -69,10 +67,9 @@ class Backup {
       const numRows = sheet.getLastRow() - 4;
       if (numRows < 1) continue;
 
-      const table = sheet.getRange(5, 1, numRows, 5 * numTables).getValues();
-      for (let k = 0; k < numTables; k++) {
-        this._backup.ttt[mm][k] = this.filterTable_(table.map(row => row.slice(5 * k, 5 * k + 4)));
-      }
+      const table = sheet.getRange(5, 2, numRows, 6).getValues();
+
+      this._backup.ttt[mm] = this.filterTable_(table.map(row => row.slice(0, 6)));
     }
   }
 
