@@ -392,13 +392,7 @@ class SetupParts {
   }
 
   setupMonthSheet_ () {
-    const formulaBuild = FormulaBuild.ttt().header()
-
     const sheetTTT = SpreadsheetApp2.getActive().getSheetByName('TTT')
-
-    const name_acc = this._config.name_accounts
-    const num_acc = this._config.number_accounts
-    const isCard = `G1 > ${num_acc}`
 
     if (this._config.decimal_places !== 2) {
       const range = RangeUtils.rollA1Notation(5, 5, 400, 1)
@@ -410,32 +404,11 @@ class SetupParts {
     for (let i = 0; i < 12; i++) {
       const sheet = this._spreadsheet.insertSheet(Consts.month_name.short[i], 3 + i, { template: sheetTTT })
 
-      let formula
-
       sheet.getRange('B1').setValue('Wallet')
 
-      formula = formulaBuild.index(name_acc)
-      sheet.getRange('G1').setFormula(formula)
-      sheet.getRange('G2').setFormula(isCard)
-
-      formula = formulaBuild.expenses(i)
-      sheet.getRange('B3').setFormula(formula)
-
-      formula = formulaBuild.balance(i)
-      sheet.getRange('B2').setFormula(formula)
-
-      // TODO
-      // formula = formulaBuild.report(k, i)
-      // rangeOff.offset(-1, 2 + 5 * k).setFormula(formula)
-
-      sheet.getRange(4, 2, sheet.getMaxRows() - 3, 6).createFilter()
-
-      sheet.protect()
-        .setUnprotectedRanges([
-          sheet.getRange(1, 2, 1, 3),
-          sheet.getRange(5, 2, 400, 6)
-        ])
-        .setWarningOnly(true)
+      new SheetMonth(i).resetFormulas()
+        .resetProtection()
+        .resetFilter()
     }
 
     this._spreadsheet.deleteSheet(sheetTTT)

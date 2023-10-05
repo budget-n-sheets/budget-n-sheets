@@ -105,6 +105,10 @@ class SheetMonth extends ExtendedSheet {
     formula = formulaBuilder.expenses(this.mm)
     this.sheet.getRange('B3').setFormula(formula)
 
+    // TODO
+    // formula = formulaBuild.report(k, i)
+    // rangeOff.offset(-1, 2 + 5 * k).setFormula(formula)
+
     return this
   }
 
