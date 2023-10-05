@@ -410,10 +410,10 @@ class SetupParts {
         .resetProtection()
         .resetFilter()
         .resetConditionalFormat()
+        .resetSelectors()
     }
 
     this._spreadsheet.deleteSheet(sheetTTT)
-    TablesService.updateRules()
   }
 
   setupProperties_ () {

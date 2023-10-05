@@ -183,6 +183,7 @@ class SheetMonth extends ExtendedSheet {
       .resetFilter()
       .resetFormulas()
       .resetConditionalFormat()
+      .resetSelectors()
   }
 
   resetNumberFormat () {
@@ -209,6 +210,49 @@ class SheetMonth extends ExtendedSheet {
         )
       ])
       .setWarningOnly(true)
+
+    return this
+  }
+
+  resetSelectors () {
+    const names = ['Wallet']
+    const codes = ['Wallet']
+    let db, rule
+
+    db = new AccountsService().getAll()
+    for (const id in db) {
+      const acc = db[id]
+      names.push(acc.name)
+      codes.push(acc.name)
+    }
+
+    db = new CardsService().getAll()
+    for (const id in db) {
+      const card = db[id]
+      names.push(card.code)
+      codes.push(card.code)
+      codes.push(...card.aliases)
+    }
+
+    rule = SpreadsheetApp.newDataValidation()
+      .requireValueInList(names, true)
+      .setAllowInvalid(true)
+      .build()
+
+    this.sheet
+      .getRange(1, 2)
+      .clearDataValidations()
+      .setDataValidation(rule)
+
+    rule = SpreadsheetApp.newDataValidation()
+      .requireValueInList(codes, true)
+      .setAllowInvalid(true)
+      .build()
+
+    this.sheet
+      .getRange(this.specs.row, 1 + this.specs.columnOffset, this.numRows, 1)
+      .clearDataValidations()
+      .setDataValidation(rule)
 
     return this
   }

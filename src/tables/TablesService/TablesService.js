@@ -35,54 +35,6 @@ class TablesService {
     if (this.spreadsheet == null) this.spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
   }
 
-  static updateRules () {
-    const db_accounts = new AccountsService().getAll()
-    const db_cards = new CardsService().getAll()
-
-    const list = ['Wallet']
-    const names = ['Wallet']
-
-    for (const id in db_accounts) {
-      const acc = db_accounts[id]
-      list.push(acc.name)
-      names.push(acc.name)
-    }
-
-    for (const id in db_cards) {
-      const card = db_cards[id]
-      list.push(card.code)
-      names.push(card.code)
-      names.push(...card.aliases)
-    }
-
-    const rule1 = SpreadsheetApp.newDataValidation()
-      .requireValueInList(list, true)
-      .setAllowInvalid(true)
-      .build()
-
-    const rule2 = SpreadsheetApp.newDataValidation()
-      .requireValueInList(names, true)
-      .setAllowInvalid(true)
-      .build()
-
-    for (let i = 0; i < 12; i++) {
-      const sheet = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i])
-      if (!sheet) continue
-      const numRows = sheet.getMaxRows() - 4
-      if (numRows < 1) continue
-
-      sheet.getRange(1, 2)
-        .clearDataValidations()
-        .setDataValidation(rule1);
-
-      sheet.getRange(5, 2, numRows, 1)
-        .clearDataValidations()
-        .setDataValidation(rule2);
-    }
-
-    SpreadsheetApp.flush();
-  }
-
   getAll () {
     return Utils.deepCopy(this._db);
   }
