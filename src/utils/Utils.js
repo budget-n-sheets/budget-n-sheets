@@ -69,6 +69,17 @@ class Utils {
   static transpose (m) {
     return m[0].map((x, i) => m.map(x => x[i]));
   }
+
+  static sliceBlankRows (table) {
+    let n = table.length - 1
+
+    do {
+      if (table[n].findIndex(e => e !== '') > -1) break
+    } while (--n > -1)
+
+    n++
+    return n > 0 ? table.slice(0, n) : []
+  }
 }
 
 class MonthFactored extends Utils {

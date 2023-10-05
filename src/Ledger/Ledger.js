@@ -54,16 +54,13 @@ class Ledger {
     this._insertRows.insertRowsTo(height);
 
     if (lastRow >= this._specs.row) {
-      const snapshot = this._sheet.getRange(
-        this._specs.row, this._specs.column,
-        lastRow - this._specs.row + 1, this._specs.width)
-        .getValues();
-
-      row = snapshot.length - 1;
-      do {
-        if (snapshot[row].findIndex(e => e !== '') > -1) break;
-      } while (--row > -1);
-      row++;
+      row = Utils.sliceBlankRows(
+        this._sheet.getRange(
+          this._specs.row, this._specs.column,
+          lastRow - this._specs.row + 1, this._specs.width
+        )
+        .getValues()
+      ).length
     }
 
     this.lastRange = this._sheet.getRange(

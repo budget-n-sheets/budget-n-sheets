@@ -69,7 +69,7 @@ class Backup {
 
       const table = sheet.getRange(5, 2, numRows, 6).getValues();
 
-      this._backup.ttt[mm] = this.filterTable_(table.map(row => row.slice(0, 6)));
+      this._backup.ttt[mm] = Utils.sliceBlankRows(table.map(row => row.slice(0, 6)));
     }
   }
 
@@ -115,17 +115,6 @@ class Backup {
   collectTagsCategories_ () {
     const init = Consts.tags_categories;
     this._backup.tags_categories = TagsService.getCategories().filter(c => init.indexOf(c) === -1);
-  }
-
-  filterTable_ (table) {
-    let n = table.length - 1;
-
-    do {
-      if (table[n].findIndex(e => e !== '') > -1) break;
-    } while (--n > -1);
-
-    n++;
-    return n > 0 ? table.slice(0, n) : [];
   }
 
   setMeta_ () {
