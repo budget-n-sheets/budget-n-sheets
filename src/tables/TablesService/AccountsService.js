@@ -117,8 +117,7 @@ class AccountsService extends TablesService {
     this.initSpreadsheet_();
 
     this.updateMetadata_();
-    TablesService.updateRules()
-    TablesService.updateConditionalColor()
+    SheetAllMonths.resetConditionalFormat().resetSelectors()
     this.updateNames_();
     this.updateReferences_();
 
