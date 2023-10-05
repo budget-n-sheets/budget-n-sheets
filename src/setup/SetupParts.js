@@ -409,11 +409,11 @@ class SetupParts {
       new SheetMonth(i).resetFormulas()
         .resetProtection()
         .resetFilter()
+        .resetConditionalFormat()
     }
 
     this._spreadsheet.deleteSheet(sheetTTT)
     TablesService.updateRules()
-    TablesService.updateConditionalColor()
   }
 
   setupProperties_ () {

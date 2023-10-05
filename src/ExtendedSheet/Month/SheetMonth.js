@@ -54,6 +54,70 @@ class SheetMonth extends ExtendedSheet {
     return this
   }
 
+  resetConditionalFormat () {
+    const colors = Consts.color_palette
+    let db
+
+    for (const c in colors) {
+      colors[c] = []
+    }
+
+    db = new AccountsService().getAll()
+    for (const id in db) {
+      const acc = db[id]
+      colors[acc.color].push(acc.name)
+    }
+
+    db = new CardsService().getAll()
+    for (const id in db) {
+      const card = db[id]
+      colors[card.color].push(card.code)
+      colors[card.color] = colors[card.color].concat(card.aliases)
+    }
+
+    delete colors.whitesmoke
+
+    for (const c in colors) {
+      if (colors[c].length === 0) delete colors[c]
+      else colors[c] = colors[c].join('|')
+    }
+
+    const numRows = this.numRows
+    const rules = []
+    let range, rule
+
+    range = RangeUtils.rollA1Notation(this.specs.row, 5 + this.specs.columnOffset, 1, 1, 2)
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied(`=REGEXMATCH(${range}; "#(dp|wd|qcc|inc|trf)")`)
+      .setBackground('#d9d2e9')
+      .setRanges([this.sheet.getRange(this.specs.row, 2 + this.specs.columnOffset, numRows, this.specs.width - 1)])
+      .build()
+    rules.push(rule)
+
+    range = RangeUtils.rollA1Notation(this.specs.row, 6 + this.specs.columnOffset, 1, 1, 2)
+    rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied(`=${range}`)
+      .setFontColor('#999999')
+      .setRanges([this.sheet.getRange(this.specs.row, 1 + this.specs.columnOffset, numRows, this.specs.width)])
+      .build()
+    rules.push(rule)
+
+    for (const color in colors) {
+      const range = RangeUtils.rollA1Notation(this.specs.row, 1 + this.specs.columnOffset, 1, 1, 2)
+      const rule = SpreadsheetApp.newConditionalFormatRule()
+        .whenFormulaSatisfied(`=REGEXMATCH(${range}; "${colors[color]}")`)
+        .setRanges([this.sheet.getRange(this.specs.row, 1 + this.specs.columnOffset, numRows, 1)])
+        .setBold(true)
+      if (color !== 'black') rule.setFontColor(`#${Consts.color_palette[color]}`)
+      rules.push(rule.build())
+    }
+
+    this.sheet.clearConditionalFormatRules()
+    this.sheet.setConditionalFormatRules(rules)
+
+    return this
+  }
+
   resetDataValidation () {
     let rule
 
@@ -118,6 +182,7 @@ class SheetMonth extends ExtendedSheet {
       .resetDataValidation()
       .resetFilter()
       .resetFormulas()
+      .resetConditionalFormat()
   }
 
   resetNumberFormat () {
