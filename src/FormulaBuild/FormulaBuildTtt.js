@@ -18,10 +18,10 @@ class FormulaBuildTttHeader {
   static balance (mm) {
     let formula, accBalance, availCredit
 
-    accBalance = `OFFSET('_Backstage'!B3; ${TABLE_DIMENSION.height * mm}; ${TABLE_DIMENSION.width} * G1)`
+    accBalance = `OFFSET('_Backstage'!B3; ${TABLE_DIMENSION.height} * ${mm}; ${TABLE_DIMENSION.width} * G1)`
     accBalance = `CONCAT("Balance "; TO_TEXT(${accBalance}))`
 
-    availCredit = `OFFSET('_Backstage'!C6; ${TABLE_DIMENSION.height * mm}; ${TABLE_DIMENSION.width} * G1)`
+    availCredit = `OFFSET('_Backstage'!C6; ${TABLE_DIMENSION.height} * ${mm}; ${TABLE_DIMENSION.width} * G1)`
     availCredit = `CONCAT("AVAIL credit "; TO_TEXT(${availCredit}))`
 
     formula = `IF(G2; ${availCredit}; ${accBalance})`
@@ -31,17 +31,20 @@ class FormulaBuildTttHeader {
   }
 
   static expenses (mm) {
-    return `CONCAT("Expenses "; TO_TEXT(OFFSET('_Backstage'!B4; ${TABLE_DIMENSION.height * mm}; ${TABLE_DIMENSION.width} * G1)))`;
+    return `CONCAT("Expenses "; TO_TEXT(OFFSET('_Backstage'!B4; ${TABLE_DIMENSION.height} * ${mm}; ${TABLE_DIMENSION.width} * G1)))`;
   }
 
-  static index (header) {
-    let formula;
+  static index (numAccs) {
+    const _w = TABLE_DIMENSION.width
+    const header = `'_Backstage'!${RangeUtils.rollA1Notation(1, 2, 1, _w + _w * numAccs + _w * 11)}`
+
+    let formula
 
     formula = `FILTER(${header}; REGEXMATCH(${header}; "\\^"&B1&"\\$"))`
     formula = `MATCH(${formula}; ${header}; 0)`
     formula = `IFNA((${formula} - 1) / 5; 0)`
 
-    return formula;
+    return formula
   }
 
   static report (index, mm) {

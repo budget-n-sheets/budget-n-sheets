@@ -398,7 +398,6 @@ class SetupParts {
 
     const name_acc = this._config.name_accounts
     const num_acc = this._config.number_accounts
-    const header = `'_Backstage'!${RangeUtils.rollA1Notation(1, 2, 1, this._w + this._w * num_acc + this._w * 11)}`
     const isCard = `G1 > ${num_acc}`
 
     if (this._config.decimal_places !== 2) {
@@ -415,7 +414,7 @@ class SetupParts {
 
       sheet.getRange('B1').setValue('Wallet')
 
-      formula = formulaBuild.index(header)
+      formula = formulaBuild.index(name_acc)
       sheet.getRange('G1').setFormula(formula)
       sheet.getRange('G2').setFormula(isCard)
 
