@@ -14,6 +14,11 @@ const Info = Object.freeze({
       major: 0,
       minor: 50,
       patch: 4
+    },
+    eos_version: {
+      major: 0,
+      minor: 49,
+      patch: 0
     }
   },
 
@@ -32,6 +37,11 @@ const Info = Object.freeze({
       major: 0,
       minor: 14,
       patch: 2
+    },
+    eos_version: {
+      major: 0,
+      minor: 14,
+      patch: 0
     }
   }
 });

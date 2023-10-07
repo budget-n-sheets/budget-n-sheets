@@ -68,6 +68,7 @@ class UpdateService {
 
   static checkAndUpdate (isOnline) {
     if (!Addon.isInstalled()) return 1;
+    if (Addon.isEndOfSupport()) return 1
     if (Addon.isUpToDate()) return 0;
 
     isOnline = !!isOnline;

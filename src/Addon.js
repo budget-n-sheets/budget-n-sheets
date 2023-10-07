@@ -34,6 +34,10 @@ class Addon {
     return BnsScript.isUpToDate() && BnsTemplate.isUpToDate();
   }
 
+  static isEndOfSupport () {
+    return BnsScript.isEndOfSupport() || BnsTemplate.isEndOfSupport()
+  }
+
   static loadCache () {
     const cache = CacheService2.getDocumentCache();
     const isLoaded = cache.get('load_cache');

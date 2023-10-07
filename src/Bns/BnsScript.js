@@ -14,4 +14,10 @@ class BnsScript {
     const vA = Info.apps_script.version;
     return PatchThisUtils.isLatestVersion(v0, vA);
   }
+
+  static isEndOfSupport () {
+    const v0 = ClassVersion.get('script')
+    const vA = Info.apps_script.version
+    return !PatchThisUtils.isLatestVersion(v0, vA)
+  }
 }

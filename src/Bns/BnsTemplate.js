@@ -24,4 +24,10 @@ class BnsTemplate {
     const vA = Info.template.version;
     return PatchThisUtils.isLatestVersion(v0, vA);
   }
+
+  static isEndOfSupport () {
+    const v0 = ClassVersion.get('template')
+    const vA = Info.template.eos_version
+    return !PatchThisUtils.isLatestVersion(v0, vA)
+  }
 }
