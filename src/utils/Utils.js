@@ -71,11 +71,11 @@ class Utils {
   }
 
   static sliceBlankRows (table) {
-    let n = table.length - 1
+    let n = table.length
 
-    do {
+    while (--n > -1) {
       if (table[n].findIndex(e => e !== '') > -1) break
-    } while (--n > -1)
+    }
 
     n++
     return n > 0 ? table.slice(0, n) : []
