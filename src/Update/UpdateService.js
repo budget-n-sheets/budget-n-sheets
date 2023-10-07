@@ -51,8 +51,19 @@ class UpdateService {
   }
 
   static updateTemplate_ () {
-    const update = new UpdateTemplate().run();
-    return 0;
+    const update = new UpdateTemplate().run()
+
+    if (update.response === 0) {
+      return 0
+    }
+
+    if (update.response === 2) {
+      console.warn('Update: template: Failed at ', update.position)
+    } else if (update.response > 2) {
+      Addon.uninstall()
+    }
+
+    return update.response
   }
 
   static checkAndUpdate (isOnline) {
@@ -107,9 +118,13 @@ class UpdateService {
     }
 
     const rTemplate = this.updateTemplate_();
-    lock.releaseLock();
-    if (isOnline) this.showMessage_(rTemplate);
+    if (rTemplate > 1) {
+      if (isOnline) this.showMessage_(rTemplate)
+      lock.releaseLock()
+      return 1
+    }
 
+    lock.releaseLock()
     return rTemplate !== 0 ? 1 : 0;
   }
 }
