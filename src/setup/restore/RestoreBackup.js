@@ -84,31 +84,19 @@ class RestoreBackup {
 
   restoreTtt_ () {
     const ttt = this.backup.ttt;
+    const names = this.name_accounts.slice().map(a => a.name)
+    names.push('Wallet')
 
-    let mm = -1;
-    while (++mm < 12) {
-      const sheet = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[mm]);
-      const insertRows = new ToolInsertRowsMonth(mm);
-
-      if (ttt[mm][0] && ttt[mm][0].length > 0) {
-        insertRows.insertRowsTo(4 + ttt[mm][0].length, true);
-        sheet.getRange(5, 1, ttt[mm][0].length, 4).setValues(ttt[mm][0]);
-      }
-
-      this.name_accounts.forEach(e => {
-        const numRows = ttt[mm][1 + e.prevIndex]?.length || 0;
-        if (numRows > 0) {
-          insertRows.insertRowsTo(4 + numRows, true);
-          sheet.getRange(5, 1 + 5 * (1 + e.index), numRows, 4).setValues(ttt[mm][1 + e.prevIndex]);
-        }
-      });
+    for (let mm = 0; mm < 12; mm++) {
+      if (ttt[mm].length === 0) continue
+      const a = ttt[mm].filter(w => names.indexOf(w[0]) > -1)
+      new LedgerTtt(mm).mergeTransactions(a)
     }
   }
 
   restore () {
     this.restoreTables_();
     this.restoreTtt_();
-    this.restoreCards_();
     this.restoreTags_();
     this.restoreTagsCategories_();
     this.restoreSettings_();
