@@ -16,7 +16,8 @@ class BackupPatch extends PatchThis {
       [
         null,
         [null, 'patchV0m1p1_', 'v0m1p2_'],
-        ['v0m2p0_']
+        ['v0m2p0_'],
+        ['v0m3p0_']
       ]
     ];
 
@@ -27,6 +28,36 @@ class BackupPatch extends PatchThis {
 
   get payload () {
     return this._payload;
+  }
+
+  v0m3p0_ () {
+    const o = this._payload
+
+    const accs = ['Wallet', '', '', '', '', '']
+    for (const k in o.db_tables.accounts) {
+      const acc = o.db_tables.accounts[k]
+      accs[1 + (+k)] = acc.name
+    }
+
+    for (let mm = 0; mm < 12; mm++) {
+      let ttt = []
+      for (const k in o.ttt[mm]) {
+        const table = o.ttt[mm][k].map(r => [accs[k], ...r, /#ign/.test(r[3])])
+        ttt = ttt.concat(table)
+      }
+
+      const cards = o.cards[mm].map(r => {
+        const c = r.splice(2, 1)[0]
+        return [c, ...r, /#ign/.test(r[3])]
+      })
+      ttt = ttt.concat(cards)
+
+      delete o.ttt[mm]
+      o.ttt[mm] = ttt
+    }
+
+    delete o.cards
+    return 0
   }
 
   v0m2p0_ () {
