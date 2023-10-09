@@ -115,7 +115,7 @@ class BackupPatch extends PatchThis {
       return this;
     }
 
-    this.makeConfig().update();
+    this.update();
 
     this.setPosition_();
     return this;
