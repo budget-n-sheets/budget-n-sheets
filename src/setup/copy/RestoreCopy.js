@@ -22,8 +22,6 @@ class RestoreCopy extends SetupSuperCopy {
     const snapshot = source.getRange(6, 1, numRows, 6 * 12).getValues()
 
     for (let mm = 0; mm < 12; mm++) {
-      const ledger = new LedgerTtt(mm)
-
       let table = snapshot.map(row => row.slice(0 + 6 * mm, 5 + 6 * mm))
       table = Utils.sliceBlankRows(table)
         .map(row => {
@@ -31,7 +29,7 @@ class RestoreCopy extends SetupSuperCopy {
           return [code, ...row, /#ign/.test(row[3])]
         })
 
-      ledger.mergeTransactions(table)
+      new LedgerTtt(mm).mergeTransactions(table)
     }
   }
 
@@ -64,9 +62,7 @@ class RestoreCopy extends SetupSuperCopy {
       let values = source.getRange(5, 2, numRows, 6).getValues()
       values = Utils.sliceBlankRows(values).filter(r => names.indexOf(r[0]) > -1)
 
-      this.destination
-        .getSheetByName(Consts.month_name.short[mm])
-        .getRange(5, 2, numRows, 6).setValues(values)
+      new LedgerTtt(mm).mergeTransactions(values)
     }
   }
 
