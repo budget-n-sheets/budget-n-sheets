@@ -46,6 +46,20 @@ class SheetMonth extends ExtendedSheet {
     return this._specs
   }
 
+  getHeaderRange () {
+    if (this.sheet.getMaxRows() < this.specs.row - this.specs.rowOffset - 1) return null
+    return this._sheet.getRange(
+      1 + this.specs.rowOffset, this.specs.column,
+      this.specs.row - this.specs.rowOffset - 1, this.specs.width)
+  }
+
+  getTableRange () {
+    if (this.sheet.getMaxRows() < this.specs.row) return null
+    return this._sheet.getRange(
+      this.specs.row, this.specs.column,
+      this.numRows, this.specs.width)
+  }
+
   removeProtection () {
     const protections = this.sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET)
     for (const protection of protections) {
