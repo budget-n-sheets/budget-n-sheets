@@ -28,8 +28,6 @@ class FormatTableTtt extends FormatTable {
   }
 
   formatRange_ (range) {
-    const column = range.getColumn()
-
     range.trimWhitespace().sort([
       { column: 2, ascending: true },
       { column: 3, ascending: true },
@@ -45,7 +43,7 @@ class FormatTableTtt extends FormatTable {
       let i = snapshot.slice(p).findIndex(line => line[0] !== code || line[1] >= 0)
       if (i === -1) i = snapshot.length - p
 
-      if (i > 1) range.offset(p, 0, i, 6).sort({ column: column, ascending: false })
+      if (i > 1) range.offset(p, 0, i, 6).sort({ column: 3, ascending: false })
 
       p += i
       i = snapshot.slice(p).findIndex(line => line[0] !== code)
