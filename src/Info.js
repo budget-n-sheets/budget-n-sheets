@@ -35,8 +35,8 @@ const Info = Object.freeze({
     sheets: ['_Settings', '_Unique', 'Summary', 'TTT', 'Cash Flow', 'Tags', '_Backstage', '_About BnS'],
     version: {
       major: 0,
-      minor: 14,
-      patch: 2
+      minor: 15,
+      patch: 0
     },
     eos_version: {
       major: 0,
