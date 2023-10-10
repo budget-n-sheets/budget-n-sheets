@@ -25,8 +25,8 @@ class BnsTemplate {
     return PatchThisUtils.isLatestVersion(v0, vA);
   }
 
-  static isEndOfSupport () {
-    const v0 = ClassVersion.get('template')
+  static isEndOfSupport (v) {
+    const v0 = v || ClassVersion.get('template')
     const vA = Info.template.eos_version
     return !PatchThisUtils.isLatestVersion(v0, vA)
   }

@@ -15,8 +15,8 @@ class BnsScript {
     return PatchThisUtils.isLatestVersion(v0, vA);
   }
 
-  static isEndOfSupport () {
-    const v0 = ClassVersion.get('script')
+  static isEndOfSupport (v) {
+    const v0 = v || ClassVersion.get('script')
     const vA = Info.apps_script.version
     return !PatchThisUtils.isLatestVersion(v0, vA)
   }

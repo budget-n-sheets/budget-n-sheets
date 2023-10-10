@@ -66,6 +66,10 @@ class SettingsCandidate {
     const settings_candidate = {
       uuid: uuid,
       protocol: protocol,
+      version: {
+        script: {},
+        template: {}
+      },
       source: {
         file_id: fileId,
         file_url: spreadsheet.getUrl(),
@@ -84,6 +88,18 @@ class SettingsCandidate {
         tags: 0
       }
     };
+
+    property = JSON.parse(metadata.get('class_version2'))
+    if (!property) throw new Error('Property not found.')
+
+    let isEOS = BnsScript.isEndOfSupport(property.script)
+    if (isEOS) throw new Error('Version not supported.')
+
+    isEOS = BnsTemplate.isEndOfSupport(property.template)
+    if (isEOS) throw new Error('Version not supported.')
+
+    Object.assign(settings_candidate.version.script, property.script)
+    Object.assign(settings_candidate.version.template, property.template)
 
     property = JSON.parse(metadata.get('const_properties'));
     if (!property) throw new Error('Property not found.');
