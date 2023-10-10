@@ -24,12 +24,12 @@ class SheetUniqueFormulas {
       const sheet = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);
       if (!sheet) continue;
 
-      const num = sheet.getMaxRows() - 4;
+      const num = sheet.getMaxRows() - 5;
       if (num < 1) continue;
 
       n++;
 
-      ranges += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 6, num, 1) + '; ';
+      ranges += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(6, 6, num, 1) + '; ';
     }
 
     if (n === 0) return '';
@@ -49,12 +49,12 @@ class SheetUniqueFormulas {
     for (let i = 0; i < 12; i++) {
       const sheet = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);
       if (!sheet) continue;
-      const num = sheet.getMaxRows() - 4;
+      const num = sheet.getMaxRows() - 5;
       if (num < 1) continue;
 
       n++;
 
-      ranges += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(5, 4, num, 1) + '; ';
+      ranges += Consts.month_name.short[i] + '!' + RangeUtils.rollA1Notation(6, 4, num, 1) + '; ';
     }
 
     if (n === 0) return '';

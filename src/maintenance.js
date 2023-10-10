@@ -85,15 +85,15 @@ function askResetSuggestions () {
     const sheetMm = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);
     if (!sheetMm) continue;
 
-    const height = sheetMm.getMaxRows() - 4;
+    const height = sheetMm.getMaxRows() - 5;
     if (height < 1) continue;
 
     for (let k = 0; k <= num_acc; k++) {
-      sheetMm.getRange(5, 4, height, 1)
+      sheetMm.getRange(6, 4, height, 1)
         .clearDataValidations()
         .setDataValidation(ruleDV);
 
-      sheetMm.getRange(5, 6, height, 1)
+      sheetMm.getRange(6, 6, height, 1)
         .clearDataValidations()
         .setDataValidation(ruleTV);
     }
@@ -115,7 +115,7 @@ function askResetProtection () {
     sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);
     if (!sheet) continue;
 
-    n = sheet.getMaxRows() - 4;
+    n = sheet.getMaxRows() - 5;
     if (n < 1) continue;
 
     protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
@@ -127,7 +127,7 @@ function askResetProtection () {
     sheet.protect()
       .setUnprotectedRanges([
         sheet.getRange(1, 2, 1, 3),
-        sheet.getRange(5, 2, n, 6)
+        sheet.getRange(6, 2, n, 6)
       ])
       .setWarningOnly(true);
   }

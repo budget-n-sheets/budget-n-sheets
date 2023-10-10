@@ -38,10 +38,10 @@ function updateDecimalPlaces_ () {
     sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);
     if (!sheet) continue;
 
-    max = sheet.getMaxRows() - 4;
+    max = sheet.getMaxRows() - 5;
     if (max < 1) continue;
 
-    sheet.getRange(RangeUtils.rollA1Notation(5, 5, max, 1)).setNumberFormat(number_format);
+    sheet.getRange(RangeUtils.rollA1Notation(6, 5, max, 1)).setNumberFormat(number_format);
   }
 
   sheet = spreadsheet.getSheetByName('Cash Flow');

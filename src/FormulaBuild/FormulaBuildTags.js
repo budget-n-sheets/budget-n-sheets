@@ -61,8 +61,8 @@ class FormulaBuildTagsTable {
 
     const bsblank = RangeUtils.rollA1Notation(2 + _h * mm, 6);
 
-    const concat_tags = 'ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + RangeUtils.rollA1Notation(5, 6, numRowsMonth, 1) + '; _Backstage!' + bsblank + '; 1)';
-    const concat_value_tags = 'ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + RangeUtils.rollA1Notation(5, 5, numRowsMonth, 2) + '; _Backstage!' + bsblank + '; 2)';
+    const concat_tags = 'ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + RangeUtils.rollA1Notation(6, 6, numRowsMonth, 1) + '; _Backstage!' + bsblank + '; 1)';
+    const concat_value_tags = 'ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + RangeUtils.rollA1Notation(6, 5, numRowsMonth, 2) + '; _Backstage!' + bsblank + '; 2)';
 
     formula = 'IFERROR(FILTER(' + concat_value_tags + '; NOT(ISBLANK(' + concat_tags + '))); "")';
     formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';

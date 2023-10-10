@@ -25,8 +25,8 @@ class FormulaBuildBackstage {
 class FormulaBuildBackstageAccounts {
   static balance (regex, mm, numRows, balance, bsblank) {
     const month = Consts.month_name.short[mm]
-    const accs = RangeUtils.rollA1Notation(5, 2, numRows)
-    const value = RangeUtils.rollA1Notation(5, 5, numRows)
+    const accs = RangeUtils.rollA1Notation(6, 2, numRows)
+    const value = RangeUtils.rollA1Notation(6, 5, numRows)
 
     let formula;
 
@@ -40,9 +40,9 @@ class FormulaBuildBackstageAccounts {
 
   static income (regex, mm, numRows, bsblank) {
     const month = Consts.month_name.short[mm]
-    const accs = RangeUtils.rollA1Notation(5, 2, numRows)
-    const value = RangeUtils.rollA1Notation(5, 5, numRows)
-    const tags = RangeUtils.rollA1Notation(5, 6, numRows)
+    const accs = RangeUtils.rollA1Notation(6, 2, numRows)
+    const value = RangeUtils.rollA1Notation(6, 5, numRows)
+    const tags = RangeUtils.rollA1Notation(6, 6, numRows)
 
     let formula;
 
@@ -59,10 +59,10 @@ class FormulaBuildBackstageAccounts {
 
   static expensesIgn (regex, mm, numRows, bsblank) {
     const month = Consts.month_name.short[mm]
-    const accs = RangeUtils.rollA1Notation(5, 2, numRows)
-    const value = RangeUtils.rollA1Notation(5, 5, numRows)
-    const tags = RangeUtils.rollA1Notation(5, 6, numRows)
-    const ign = RangeUtils.rollA1Notation(5, 7, numRows)
+    const accs = RangeUtils.rollA1Notation(6, 2, numRows)
+    const value = RangeUtils.rollA1Notation(6, 5, numRows)
+    const tags = RangeUtils.rollA1Notation(6, 6, numRows)
+    const ign = RangeUtils.rollA1Notation(6, 7, numRows)
 
     let formula;
 
@@ -81,9 +81,9 @@ class FormulaBuildBackstageAccounts {
   }
 
   static reportTag (regex, tag, mm, numRows, bsblank) {
-    const accs = RangeUtils.rollA1Notation(5, 2, numRows)
-    const value = RangeUtils.rollA1Notation(5, 5, numRows)
-    const tags = RangeUtils.rollA1Notation(5, 6, numRows)
+    const accs = RangeUtils.rollA1Notation(6, 2, numRows)
+    const value = RangeUtils.rollA1Notation(6, 5, numRows)
+    const tags = RangeUtils.rollA1Notation(6, 6, numRows)
 
     const valueAddress = `ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${value}; ${bsblank}; 1)`;
     const tagsAddress = `ARRAY_CONSTRAIN(${Consts.month_name.short[mm]}!${tags}; ${bsblank}; 1)`;
@@ -127,8 +127,8 @@ class FormulaBuildBackstageCards {
 
   static credit (numRows, mm, regex, bsblank) {
     const month = Consts.month_name.short[mm]
-    const card = RangeUtils.rollA1Notation(5, 2, numRows);
-    const value = RangeUtils.rollA1Notation(5, 5, numRows);
+    const card = RangeUtils.rollA1Notation(6, 2, numRows);
+    const value = RangeUtils.rollA1Notation(6, 5, numRows);
 
     let formula;
 
@@ -145,8 +145,8 @@ class FormulaBuildBackstageCards {
 
   static expenses (numRows, mm, regex, bsblank) {
     const month = Consts.month_name.short[mm]
-    const card = RangeUtils.rollA1Notation(5, 2, numRows);
-    const value = RangeUtils.rollA1Notation(5, 5, numRows);
+    const card = RangeUtils.rollA1Notation(6, 2, numRows);
+    const value = RangeUtils.rollA1Notation(6, 5, numRows);
 
     let formula;
 
@@ -163,9 +163,9 @@ class FormulaBuildBackstageCards {
 
   static expensesIgn (numRows, mm, regex, bsblank) {
     const month = Consts.month_name.short[mm]
-    const card = RangeUtils.rollA1Notation(5, 2, numRows);
-    const value = RangeUtils.rollA1Notation(5, 5, numRows);
-    const ign = RangeUtils.rollA1Notation(5, 7, numRows, 1);
+    const card = RangeUtils.rollA1Notation(6, 2, numRows);
+    const value = RangeUtils.rollA1Notation(6, 5, numRows);
+    const ign = RangeUtils.rollA1Notation(6, 7, numRows, 1);
 
     let formula;
 
@@ -211,9 +211,9 @@ class FormulaBuildBackstageCards {
     this.load_();
 
     const month = Consts.month_name.short[mm]
-    const transaction = RangeUtils.rollA1Notation(5, 4, numRows);
-    const card = RangeUtils.rollA1Notation(5, 2, numRows);
-    const value = RangeUtils.rollA1Notation(5, 5, numRows);
+    const transaction = RangeUtils.rollA1Notation(6, 4, numRows);
+    const card = RangeUtils.rollA1Notation(6, 2, numRows);
+    const value = RangeUtils.rollA1Notation(6, 5, numRows);
 
     const dec_s = this._settings.decimal_separator ? ',' : '\\';
 
@@ -234,7 +234,7 @@ class FormulaBuildBackstageCards {
   }
 
   static bsblank (numRows, mm) {
-    const header = RangeUtils.rollA1Notation(5, 4 + 6 * mm);
+    const header = RangeUtils.rollA1Notation(6, 4 + 6 * mm);
     return 'MIN(ARRAYFORMULA(IF(ISBLANK(Cards!' + RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows, 1) + '); ROW(Cards!' + RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows, 1) + ') - ROW(Cards!' + header + '); FALSE)); ROWS(Cards!' + RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows, 1) + '))';
   }
 }
@@ -242,7 +242,7 @@ class FormulaBuildBackstageCards {
 class FormulaBuildBackstageWallet {
   static income (mm, value, tags, numRows, bsblank) {
     const month = Consts.month_name.short[mm]
-    const wall = RangeUtils.rollA1Notation(5, 2, numRows);
+    const wall = RangeUtils.rollA1Notation(6, 2, numRows);
 
     let formula
 
@@ -259,16 +259,16 @@ class FormulaBuildBackstageWallet {
 
   static bsblank (mm, numRows) {
     const header = 'E4'; // RangeUtils.rollA1Notation(4, 5);
-    const value = RangeUtils.rollA1Notation(5, 5, numRows)
+    const value = RangeUtils.rollA1Notation(6, 5, numRows)
 
     return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + Consts.month_name.short[mm] + '!' + value + '); ROW(' + Consts.month_name.short[mm] + '!' + value + ') - ROW(' + Consts.month_name.short[mm] + '!' + header + '); FALSE)); ROWS(' + Consts.month_name.short[mm] + '!' + value + '))';
   }
 
   static expensesIgn (numRows, mm, bsblank) {
     const month = Consts.month_name.short[mm]
-    const wall = RangeUtils.rollA1Notation(5, 2, numRows);
-    const value = RangeUtils.rollA1Notation(5, 5, numRows, 1);
-    const ign = RangeUtils.rollA1Notation(5, 7, numRows, 1);
+    const wall = RangeUtils.rollA1Notation(6, 2, numRows);
+    const value = RangeUtils.rollA1Notation(6, 5, numRows, 1);
+    const ign = RangeUtils.rollA1Notation(6, 7, numRows, 1);
 
     let formula;
 

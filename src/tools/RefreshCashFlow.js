@@ -28,11 +28,7 @@ class RefreshCashFlow {
         row: 4,
         width: 3
       },
-      ttt: {
-        nullSearch: 3,
-        row: 5,
-        width: 4
-      }
+      ttt: SheetMonth.specs
     });
   }
 
@@ -116,7 +112,10 @@ class RefreshCashFlow {
     const numRows = sheet.getLastRow() - this.specs.ttt.row + 1;
     if (numRows < 1) return;
 
-    const snapshot = sheet.getRange(this.specs.ttt.row, 2, numRows, 6).getValues()
+    const snapshot = sheet.getRange(
+        this.specs.ttt.row, this.specs.ttt.column,
+        numRows, this.specs.ttt.width)
+      .getValues()
 
     for (let i = 0; i < numRows; i++) {
       const line = snapshot[i]

@@ -395,7 +395,7 @@ class SetupParts {
     const sheetTTT = SpreadsheetApp2.getActive().getSheetByName('TTT')
 
     if (this._config.decimal_places !== 2) {
-      const range = RangeUtils.rollA1Notation(5, 5, 400, 1)
+      const range = RangeUtils.rollA1Notation(6, 5, 400, 1)
       sheetTTT.getRange(range).setNumberFormat(this._config.number_format)
     }
 

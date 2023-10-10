@@ -19,7 +19,7 @@ const SPREADSHEET_SPECS = Object.freeze({
     header: ['acc / card', 'day', 'transaction', 'value', 'tags', 'ign'],
     width: 6,
     column: 2,
-    row: 5
+    row: 6
   },
 
   cash_flow: {

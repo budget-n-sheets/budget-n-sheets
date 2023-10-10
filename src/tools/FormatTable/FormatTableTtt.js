@@ -19,12 +19,7 @@ class FormatTableTtt extends FormatTable {
     this.num_acc = SettingsConst.get('number_accounts')
     this.hasHideRows = (new Date(financial_year, mm + 1, 0) < Consts.date)
 
-    this.specs = Object.freeze({
-      columnOffset: 1,
-      nullSearch: 4,
-      row: 5,
-      width: 6
-    })
+    this.specs = Object.freeze(SheetMonth.specs)
   }
 
   formatRange_ (range) {
@@ -57,9 +52,8 @@ class FormatTableTtt extends FormatTable {
 
     const nill = this.specs.nullSearch - 1
     let lastRow = this.sheet.getRange(
-      this.specs.row, 2,
-      maxRows - this.specs.row + 1, this.specs.width
-    )
+        this.specs.row, 2,
+        maxRows - this.specs.row + 1, this.specs.width)
       .getValues()
       .findIndex(line => line[nill] === '')
 
@@ -83,7 +77,7 @@ class FormatTableTtt extends FormatTable {
     if (numRows < 1) return
 
     const range = this.sheet.getRange(
-      this.specs.row, 1 + this.specs.columnOffset,
+      this.specs.row, this.specs.column,
       numRows, this.specs.width)
 
     const nill = this.specs.nullSearch - 1

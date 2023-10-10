@@ -37,7 +37,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
       if (!month) continue;
 
       const maxRows = month.getMaxRows()
-      const numRows = maxRows - 4
+      const numRows = maxRows - 5
       if (numRows < 1) continue;
 
       const rowOffset = this._h * mm;
@@ -46,7 +46,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
 
       table[0 + offset][4] = formulas.bsblank(mm, numRows);
       table[2 + offset][0] = formulas.expensesIgn(numRows, mm, bsblank);
-      table[2 + offset][1] = formulas.income(mm, `E5:E${maxRows}`, `F5:F${maxRows}`, numRows, bsblank)
+      table[2 + offset][1] = formulas.income(mm, `E6:E${maxRows}`, `F6:F${maxRows}`, numRows, bsblank)
 
       let income = RangeUtils.rollA1Notation(4 + this._h * mm, 3)
       let expenses = '0';
@@ -86,7 +86,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
       if (!month) continue;
 
       const maxRows = month.getMaxRows();
-      const numRows = month.getMaxRows() - 4;
+      const numRows = month.getMaxRows() - 5;
       if (maxRows < 1) continue;
 
       const rowOffset = this._h * mm;
@@ -165,7 +165,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
     while (++mm < this.end) {
       const month = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[mm])
       if (!month) return
-      const numRows = month.getMaxRows() - 4
+      const numRows = month.getMaxRows() - 5
       if (numRows < 1) return
 
       const rowOffset = this._h * mm;
@@ -219,7 +219,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
       if (!month) continue;
 
       const maxRows = month.getMaxRows();
-      if (maxRows < 5) continue;
+      if (maxRows < 6) continue;
 
       const rowOffset = this._h * mm;
       const range = this._sheet.getRange(3 + rowOffset, 2 + this._w);

@@ -19,11 +19,12 @@ class SheetMonth extends ExtendedSheet {
 
   static get specs () {
     return {
-      columnOffset: 1,
+      row: 6,
+      column: 2,
       rowOffset: 0,
-      nullSearch: 4,
-      row: 5,
-      width: 6
+      columnOffset: 1,
+      width: 6,
+      nullSearch: 4
     }
   }
 

@@ -14,11 +14,6 @@ class LedgerTtt extends Ledger {
     super(name);
     this._category = 'ttt';
 
-    this._specs = Object.freeze({
-      nullSearch: 4,
-      column: 2,
-      row: 5,
-      width: 6
-    });
+    this._specs = Object.freeze(SheetMonth.specs)
   }
 }
