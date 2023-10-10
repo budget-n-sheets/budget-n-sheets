@@ -19,19 +19,15 @@ class Ledger {
   getLastRow_ () {
     const numRows = this._sheet.getMaxRows() - this._specs.row + 1
     const snapshot = this._sheet.getRange(
-      this._specs.row, this._specs.column,
-      numRows, this._specs.width
-    )
+        this._specs.row, this._specs.column,
+        numRows, this._specs.width - 1)
       .getValues()
 
-    const nill = this._specs.nullSearch - 1
-
-    let n = 0
-    do {
-      if (snapshot[n][nill] === '') break
-    } while (++n < numRows)
-
-    return this._specs.row + n - 1
+    let n = snapshot.length
+    while (--n > -1) {
+      if (snapshot[n].findIndex(e => e !== '') > -1) break
+    }
+    return ++n
   }
 
   initInsertRows_ () {
@@ -47,26 +43,13 @@ class Ledger {
     if (values.length === 0) return this;
     if (this._insertRows == null) this.initInsertRows_();
 
-    const lastRow = this.getLastRow_();
-    let row = 0;
-
-    const height = (lastRow < this._specs.row ? this._specs.row - 1 : lastRow) + values.length;
-    this._insertRows.insertRowsTo(height);
-
-    if (lastRow >= this._specs.row) {
-      row = Utils.sliceBlankRows(
-        this._sheet.getRange(
-          this._specs.row, this._specs.column,
-          lastRow - this._specs.row + 1, this._specs.width
-        )
-        .getValues()
-      ).length
-    }
+    const numRows = this.getLastRow_()
+    this._insertRows.insertRowsTo(this._specs.row + numRows + values.length)
 
     this.lastRange = this._sheet.getRange(
-      this._specs.row + row, this._specs.column,
-      values.length,
-      this._specs.width).setValues(values);
+        this._specs.row + numRows, this._specs.column,
+        values.length, this._specs.width)
+      .setValues(values)
 
     SpreadsheetApp.flush();
     return this;
@@ -105,29 +88,30 @@ class Ledger {
     if (values.length === 0) return this;
     if (this._insertRows == null) this.initInsertRows_();
 
-    const lastRow = this.getLastRow_();
-    const height = (lastRow < this._specs.row ? this._specs.row - 1 : lastRow) + values.length;
-
-    this._insertRows.insertRowsTo(height);
-
-    const offset = this._specs.column;
+    const numRows = this.getLastRow_()
+    this._insertRows.insertRowsTo(this._specs.row + numRows + values.length)
 
     let table = [];
-    if (lastRow >= this._specs.row) {
+    if (numRows > 0) {
       table = this._sheet.getRange(
-        this._specs.row, offset,
-        lastRow - this._specs.row + 1,
-        this._specs.width).getValues();
+          this._specs.row, this._specs.column,
+          numRows, this._specs.width)
+        .getValues()
     }
 
-    const nullSearch = this._specs.nullSearch - 1;
-    let n = table.findIndex(row => row[nullSearch] === '');
+    const nill = this._specs.nullSearch - 1;
+    let n = table.findIndex(row => row[nill] === '');
     if (n === -1) n = table.length;
 
     table.splice.apply(table, [n, 0].concat(values));
-    this._sheet.getRange(this._specs.row, offset, table.length, this._specs.width).setValues(table);
+    this._sheet.getRange(
+        this._specs.row, this._specs.column,
+        table.length, this._specs.width)
+      .setValues(table)
 
-    this.lastRange = this._sheet.getRange(this._specs.row + n, offset, values.length, this._specs.width);
+    this.lastRange = this._sheet.getRange(
+      this._specs.row + n, this._specs.column,
+      values.length, this._specs.width)
 
     SpreadsheetApp.flush();
     return this;
