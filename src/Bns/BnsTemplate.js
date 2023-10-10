@@ -30,4 +30,8 @@ class BnsTemplate {
     const vA = Info.template.eos_version
     return !PatchThisUtils.isLatestVersion(v0, vA)
   }
+
+  static isPre15 (v) {
+    return !PatchThisUtils.isLatestVersion(v, { major: 0, minor: 15, patch: 0 })
+  }
 }

@@ -15,6 +15,7 @@ class SetupConfig {
     if (candidate.protocol !== 'copy') throw new Error('Protocol does not match.');
 
     config.file_id = candidate.source.file_id;
+    config.isTemplatePre15 = BnsTemplate.isPre15(candidate.version.template)
 
     return config;
   }
@@ -26,6 +27,7 @@ class SetupConfig {
 
     config.file_id = candidate.source.file_id;
     config.financial_year = candidate.settings.financial_year + 1;
+    config.isTemplatePre15 = BnsTemplate.isPre15(candidate.version.template)
 
     return config;
   }

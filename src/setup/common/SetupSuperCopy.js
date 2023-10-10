@@ -19,6 +19,7 @@ class SetupSuperCopy {
 
     this.name_accounts = config.name_accounts.filter(e => e.require === 'copy')
     this.initial_month = Number(config.initial_month)
+    this.isTemplatePre15 = config.isTemplatePre15
   }
 
   copyCards_ () {

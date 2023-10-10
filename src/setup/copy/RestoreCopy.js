@@ -13,17 +13,26 @@ class RestoreCopy extends SetupSuperCopy {
     super(config)
   }
 
-  copyCardsData_ () {
-    const source = this.source.getSheetByName('Cards');
-    if (!source) return;
-    const numRows = source.getLastRow() - 5;
-    if (numRows < 1) return;
+  copyCardsDataPre15_ () {
+    const source = this.source.getSheetByName('Cards')
+    if (!source) return
+    const numRows = source.getLastRow() - 5
+    if (numRows < 1) return
 
-    const destination = this.destination.getSheetByName('Cards');
-    new ToolInsertRowsCards().insertRowsTo(5 + numRows, true);
+    const snapshot = source.getRange(6, 1, numRows, 6 * 12).getValues()
 
-    const values = source.getRange(6, 1, numRows, 6 * 12).getValues();
-    destination.getRange(6, 1, numRows, 6 * 12).setValues(values);
+    for (let mm = 0; mm < 12; mm++) {
+      const ledger = new LedgerTtt(mm)
+
+      let table = snapshot.map(row => row.slice(0 + 6 * mm, 5 + 6 * mm))
+      table = Utils.sliceBlankRows(table)
+        .map(row => {
+          const code = row.splice(2, 1)[0]
+          return [code, ...row, /#ign/.test(row[3])]
+        })
+
+      ledger.mergeTransactions(table)
+    }
   }
 
   copyTables_ () {
@@ -42,31 +51,60 @@ class RestoreCopy extends SetupSuperCopy {
   }
 
   copyTtt_ () {
-    let mm = -1;
-    while (++mm < 12) {
-      const source = this.source.getSheetByName(Consts.month_name.short[mm]);
-      if (!source) continue;
-      const numRows = source.getLastRow() - 4;
-      if (numRows < 1) continue;
+    const names = this.name_accounts.slice()
+    names.push('Wallet')
+    names.push('')
 
-      const sheet = this.destination.getSheetByName(Consts.month_name.short[mm]);
-      new ToolInsertRowsMonth(mm).insertRowsTo(4 + numRows, true);
+    for (let mm = 0; mm < 12; mm++) {
+      const source = this.source.getSheetByName(Consts.month_name.short[mm])
+      if (!source) continue
+      const numRows = source.getMaxRows() - 4
+      if (numRows < 1) continue
 
-      const values = source.getRange(5, 1, numRows, 4).getValues();
-      sheet.getRange(5, 1, numRows, 4).setValues(values);
+      let values = source.getRange(5, 2, numRows, 6).getValues()
+      values = Utils.sliceBlankRows(values).filter(r => names.indexOf(r[0]) > -1)
+
+      this.destination
+        .getSheetByName(Consts.month_name.short[mm])
+        .getRange(5, 2, numRows, 6).setValues(values)
+    }
+  }
+
+  copyTttPre15_ () {
+    for (let mm = 0; mm < 12; mm++) {
+      const source = this.source.getSheetByName(Consts.month_name.short[mm])
+      if (!source) continue
+      const numRows = source.getLastRow() - 4
+      if (numRows < 1) continue
+
+      const ledger = new LedgerTtt(mm)
+
+      let values = source.getRange(5, 1, numRows, 4).getValues()
+      values = Utils.sliceBlankRows(values)
+        .map(r => ['Wallet', ...r, /#ign/.test(r[3])])
+      ledger.mergeTransactions(values)
 
       this.name_accounts.forEach(e => {
-        const values = source.getRange(5, 1 + 5 * (1 + e.prevIndex), numRows, 4).getValues();
-        sheet.getRange(5, 1 + 5 * (1 + e.index), numRows, 4).setValues(values);
-      });
+        let values = source.getRange(5, 1 + 5 * (1 + e.prevIndex), numRows, 4)
+          .getValues()
+        values = Utils.sliceBlankRows(values)
+          .map(r => [e.name, ...r, /#ign/.test(r[3])])
+        ledger.mergeTransactions(values)
+      })
     }
   }
 
   copy () {
     this.copyTables_();
     this.copyCards_()
-    this.copyTtt_();
-    this.copyCardsData_();
+
+    if (this.isTemplatePre15) {
+      this.copyCardsDataPre15_()
+      this.copyTttPre15_()
+    } else {
+      this.copyTtt_()
+    }
+
     this.copyTags_();
     this.copySettings_();
   }
