@@ -183,6 +183,7 @@ class SheetMonth extends ExtendedSheet {
 
     formula = formulaBuilder.expenses(this.mm)
     this.sheet.getRange('B3').setFormula(formula)
+    this.sheet.getRange('B4').setFormula(`'Cash Flow'!${RangeUtils.rollA1Notation(2, 2 + 4 * this.mm)}`)
 
     // TODO
     // formula = formulaBuild.report(k, i)
