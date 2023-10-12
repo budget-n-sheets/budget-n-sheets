@@ -56,10 +56,10 @@ class Ledger {
   }
 
   fillInWithZeros () {
-    const numRows = this.getLastRow_() - this._specs.row + 1;
+    const numRows = this.getLastRow_()
     if (numRows < 1) return this;
 
-    const col = 5;
+    const col = 4 + this._specs.columnOffset;
     const table = this._sheet.getRange(this._specs.row, col, numRows, 1).getValues();
 
     const top = table.findIndex(row => row[0] === '') - 1;
