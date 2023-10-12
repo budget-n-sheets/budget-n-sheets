@@ -20,7 +20,7 @@ class DemoStatements extends QuickstartDemo {
     switch (num) {
       case 1:
         this.list = [
-          [[code, 7, 'Coffee shop', Noise.randomValueNegative(2, 2), '', false]]
+          [['Wallet', 7, 'Coffee shop', Noise.randomValueNegative(2, 2), '', false]]
         ];
         break;
       case 2:
@@ -45,7 +45,7 @@ class DemoStatements extends QuickstartDemo {
         const val = -Noise.randomInteger(20);
         this.list.push([
           [code, 7, 'Pizza, my share', val, '', false],
-          [code, 7, 'Pizza, others share (not accounted in expenses), add #ign tag', 3 * val, '', true]
+          [code, 7, 'Pizza, others share (not accounted in expenses)', 3 * val, '', true]
         ]);
         break;
       }

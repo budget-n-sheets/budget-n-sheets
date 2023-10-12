@@ -47,10 +47,11 @@ class DemoAccCards extends QuickstartDemo {
       ]);
     } else if (num === 4) {
       this.required = ['mm'];
+      const name = new AccountsService().getAny().name
 
       this.list = [
         [],
-        [[code, 7, code + ' bill payment', Noise.randomValueNegative(3, 2), '#qcc', false]]
+        [[name, 7, code + ' bill payment', Noise.randomValueNegative(3, 2), '#qcc', false]]
       ];
     } else {
       return;
