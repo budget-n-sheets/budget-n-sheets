@@ -39,21 +39,11 @@ class DemoAccCards extends QuickstartDemo {
         this.list.push([]);
       }
 
-      const val = Noise.randomValueNegative(2, 2);
-
       this.list.push([
-        [code, 7, 'Online shopping 1/3 (with instalments in d/d format)', val, '', false]
-      ]);
-
-      this.list.push([
-        [code, -7, 'Online shopping 2/3 (with instalments in d/d format)', val, '', false],
+        [code, -7, 'Online shopping 2/3 (with instalments in d/d format)', Noise.randomValueNegative(2, 2), '', false],
         [code, 3, 'Grocery shop', -10, '', false],
         [code, 5, 'Gas station', Noise.randomValueNegative(3, 2), '', false],
         [code, 5, 'Grocery shop refund', 10, '', false]
-      ]);
-
-      this.list.push([
-        [code, -7, 'Online shopping 3/3 (with instalments in d/d format)', val, '', false]
       ]);
     } else if (num === 4) {
       this.required = ['mm'];
