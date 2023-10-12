@@ -17,12 +17,7 @@ class ForwardInstallments {
     this.formater = new FormatNumber();
 
     this.rangeList = { indexes: [], ranges: [] };
-    this.specs = Object.freeze({
-      columnOffset: 1,
-      nullSearch: 4,
-      row: 5,
-      width: 6
-    });
+    this.specs = Object.freeze(SheetMonth.specs);
   }
 
   static pick (sheet) {
