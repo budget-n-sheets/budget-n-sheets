@@ -64,10 +64,10 @@ class Backup {
       const sheet = this._spreadsheet.getSheetByName(Consts.month_name.short[mm]);
       if (!sheet) continue;
 
-      const numRows = sheet.getLastRow() - 4;
+      const numRows = sheet.getLastRow() - 5;
       if (numRows < 1) continue;
 
-      const table = sheet.getRange(5, 2, numRows, 6).getValues();
+      const table = sheet.getRange(6, 2, numRows, 6).getValues();
 
       this._backup.ttt[mm] = Utils.sliceBlankRows(table.map(row => row.slice(0, 6)));
     }
