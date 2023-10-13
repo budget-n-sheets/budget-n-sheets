@@ -21,24 +21,25 @@ function BSSUMBYTAG (tag, range) {
   const pos = [];
 
   let cr = 0;
-  let regex = [];
+  // let regex = [];
   for (let i = 0; i < n; i++, cr++) {
     if (!/^\w+$/.test(tag[i])) continue;
 
-    regex[cr] = tag[i];
+    // regex[cr] = tag[i];
     pos[cr] = i;
 
     sum[i] = 0;
     tag[i] = '#' + tag[i];
   }
 
-  if (range === '' || regex.length === 0) return sum;
-  regex = new RegExp('#(' + regex.join('|') + ')');
+  if (range === ''/* || regex.length === 0*/) return sum;
 
-  range = range.filter(r => regex.test(r[1]));
+  // regex = new RegExp('#(' + regex.join('|') + ')');
+  // range = range.filter(r => regex.test(r[1]));
+
   for (const row of range) {
     for (let j = 0; j < cr; j++) {
-      if (row[1].indexOf(tag[pos[j]]) !== -1) {
+      if (row[1].indexOf(tag[pos[j]]) > -1) {
         sum[pos[j]] += Number(row[0]);
       }
     }

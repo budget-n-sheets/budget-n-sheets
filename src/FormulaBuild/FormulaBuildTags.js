@@ -56,15 +56,16 @@ class FormulaBuildTagsTable {
     this.load_();
 
     const _h = TABLE_DIMENSION.height;
+    const month = Consts.month_name.short[mm]
 
     let formula;
 
     const bsblank = RangeUtils.rollA1Notation(2 + _h * mm, 6);
 
-    const concat_tags = 'ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + RangeUtils.rollA1Notation(6, 6, numRowsMonth, 1) + '; _Backstage!' + bsblank + '; 1)';
-    const concat_value_tags = 'ARRAY_CONSTRAIN(' + Consts.month_name.short[mm] + '!' + RangeUtils.rollA1Notation(6, 5, numRowsMonth, 2) + '; _Backstage!' + bsblank + '; 2)';
+    const concat_tags = 'ARRAY_CONSTRAIN(' + month + '!' + RangeUtils.rollA1Notation(6, 6, numRowsMonth, 1) + '; _Backstage!' + bsblank + '; 1)';
+    const concat_value_tags = 'ARRAY_CONSTRAIN(' + month + '!' + RangeUtils.rollA1Notation(6, 5, numRowsMonth, 2) + '; _Backstage!' + bsblank + '; 2)';
 
-    formula = 'IFERROR(FILTER(' + concat_value_tags + '; NOT(ISBLANK(' + concat_tags + '))); "")';
+    formula = 'IFERROR(FILTER(' + concat_value_tags + '; REGEXMATCH(' + concat_tags + '; JOIN("|"; $E$2:$E))); "")';
     formula = 'BSSUMBYTAG(TRANSPOSE($E$1:$E); ' + formula + ')';
     formula = '{"' + Consts.month_name.long[mm].toLowerCase() + '"; IF(_Settings!$B$7 > 0; ' + formula + '; )}';
 
