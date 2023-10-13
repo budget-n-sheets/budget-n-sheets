@@ -17,7 +17,7 @@ class UpdateTemplate extends Update {
         null, [], [], [], [], [], [], [], [], [],
         [], [], [], [],
         ['', '', 'v0m14p2_'],
-        ['v0m15p0_']
+        ['v0m15p0_', '']
       ]
     ];
 
