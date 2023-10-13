@@ -228,7 +228,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
         rangeList.push(RangeUtils.rollA1Notation(2 + rowOffset, 2 + this._w + this._w * k));
 
         const bsblank = RangeUtils.rollA1Notation(2 + rowOffset, 11 + this._w * k);
-        const formula = formulas.balance(mm, this.fastA1.values[1 + k] + maxRows, this.fastA1.balance1[5 * mm + k], bsblank);
+        const formula = formulas.balance(mm, `E6:E${maxRows}`, this.fastA1.balance1[5 * mm + k], bsblank);
         range.offset(0, this._w * k).setFormula(formula);
       }
     }
