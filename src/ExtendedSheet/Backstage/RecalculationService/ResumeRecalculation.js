@@ -23,6 +23,14 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
     })
   }
 
+  xy2A1_ (index, mm, row, column, numRows = 1, numColumns = 1) {
+    return RangeUtils.rollA1Notation(
+      1 + row + this._h * mm,
+      1 + column + this._w * index,
+      numRows, numColumns
+    )
+  }
+
   resumeWallet_ () {
     const formulas = this.formulas.wallet()
 
