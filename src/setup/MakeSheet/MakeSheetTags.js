@@ -21,34 +21,9 @@ class MakeSheetTags extends MakeSheet {
     }
   }
 
-  setFormat_ () {
-    const sheet = this.sheet;
-
-    sheet.getRange('F2:S').setNumberFormat(this._consts.number_format);
-
-    sheet.protect()
-      .setUnprotectedRanges([sheet.getRange('A2:E')])
-      .setWarningOnly(true);
-    sheet.setTabColor('#e69138');
-  }
-
-  setFormulas_ () {
-    const formulaBuild = FormulaBuild.tags();
-
-    const formulas = Consts.month_name.short.map((m, i) => {
-      let numRowsMonth = (SpreadsheetApp2.getActive().getSheetByName(m)?.getMaxRows() || 4) - 4;
-      return formulaBuild.table().month(numRowsMonth < 1 ? 1 : numRowsMonth, i);
-    });
-
-    this.sheet.getRange('F1:Q1').setFormulas([formulas]);
-
-    this.sheet.getRange('R1').setFormula(formulaBuild.stats().average());
-    this.sheet.getRange('S1').setFormula(formulaBuild.stats().total());
-  }
-
   make () {
-    this.setFormat_();
-    this.setFormulas_();
+    new SheetTags().resetDefault()
+    this.sheet.setTabColor('#e69138')
 
     SpreadsheetApp.flush();
     this._spreadsheet.setActiveSheet(this.sheet);

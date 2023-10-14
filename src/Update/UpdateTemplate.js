@@ -45,7 +45,7 @@ class UpdateTemplate extends Update {
       Spreadsheet2.stampSheetWithFinder(sheets.new[name])
     }
 
-    new MakeSheetTags().makeConfig().setFormulas_()
+    new SheetTags().resetFormulas()
     treatLayout_(Consts.date.getFullYear(), Consts.date.getMonth())
     RecalculationService.resume(0, 12)
 
