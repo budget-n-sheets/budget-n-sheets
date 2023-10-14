@@ -17,8 +17,9 @@ class TablesUtils {
     let id = '';
 
     do {
-      id = Noise.randomString(7, 'lonum');
-    } while (accounts.hasId(id) && cards.hasId(id) && ++i < 99);
+      Utilities.sleep(40)
+      id = Utilities.getUuid()
+    } while (accounts.hasId(id) && cards.hasId(id) && ++i < 25);
 
     return (i < 99 ? id : null);
   }
