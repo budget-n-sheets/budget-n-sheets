@@ -203,12 +203,12 @@ class SheetMonth extends ExtendedSheet {
   }
 
   resetNumberFormat () {
+    const numberFormat = FormatNumberUtils.getNumberFormat()
     this.sheet
       .getRange(
         this.specs.row - 1, 1 + this.specs.columnOffset,
-        this.numRows, this.specs.width
-      )
-      .setNumberFormat(FormatNumberUtils.getNumberFormat())
+        this.numRows, this.specs.width)
+      .setNumberFormat(`${numberFormat};(${numberFormat})`)
 
     return this
   }
