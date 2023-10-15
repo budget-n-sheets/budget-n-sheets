@@ -206,8 +206,8 @@ class SheetMonth extends ExtendedSheet {
     const numberFormat = FormatNumberUtils.getNumberFormat()
     this.sheet
       .getRange(
-        this.specs.row - 1, 1 + this.specs.columnOffset,
-        this.numRows, this.specs.width)
+        this.specs.row, 4 + this.specs.columnOffset,
+        this.numRows, 1)
       .setNumberFormat(`${numberFormat};(${numberFormat})`)
 
     return this
