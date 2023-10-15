@@ -32,10 +32,6 @@ class SheetTags extends ExtendedSheet {
     return numRows
   }
 
-  get sheet () {
-    return this._sheet
-  }
-
   get specs () {
     return this._specs
   }
@@ -51,15 +47,6 @@ class SheetTags extends ExtendedSheet {
     return this._sheet.getRange(
       this.specs.row, this.specs.column + this.specs.width,
       this.numRows, 12 + 2)
-  }
-
-  removeProtection () {
-    const protections = this.sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET)
-    for (const protection of protections) {
-      if (protection.canEdit()) protection.remove()
-    }
-
-    return this
   }
 
   resetDefault () {

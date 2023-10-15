@@ -13,4 +13,16 @@ class ExtendedSheet {
     this._sheet = SpreadsheetApp2.getActive().getSheetByName(name);
     if (!this._sheet) throw new Error('Sheet not found.');
   }
+
+  get sheet () {
+    return this._sheet
+  }
+
+  removeProtection () {
+    const protections = this.sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET)
+    for (const protection of protections) {
+      if (protection.canEdit()) protection.remove()
+    }
+    return this
+  }
 }
