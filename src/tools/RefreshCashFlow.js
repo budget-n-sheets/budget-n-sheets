@@ -112,7 +112,7 @@ class RefreshCashFlow {
     const numRows = sheet.getLastRow() - this.specs.ttt.row + 1;
     if (numRows < 1) return;
 
-    const accs = new AccountService().getAll()
+    const accs = new AccountsService().getAll()
     const names = []
     for (const id in accs) {
       names.push(accs[id].name)
