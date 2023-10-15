@@ -15,9 +15,24 @@ class FormatNumberUtils {
     return new RegExp('-?\\$ ?\\d+' + (dec_p > 0 ? (dec_s ? '\\.' : ',') + '\\d{' + dec_p + '}' : ''));
   }
 
+  static getDecimalPlaceholder () {
+    const n = SettingsSpreadsheet.get('decimal_places')
+    return (n === 0 ? '0' : `0.${'0'.repeat(n)}`)
+  }
+
+  static getDecimalStep () {
+    const n = SettingsSpreadsheet.get('decimal_places')
+    return (n === 0 ? '1' : `0.${'0'.repeat(n - 1)}1`)
+  }
+
   static getNumberFormat () {
     const dec_p = SettingsSpreadsheet.get('decimal_places');
     const mantissa = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
     return '#,##0' + mantissa;
+  }
+
+  static getFinancialFormat () {
+    const f = this.getNumberFormat()
+    return `${f};(${f})`
   }
 }
