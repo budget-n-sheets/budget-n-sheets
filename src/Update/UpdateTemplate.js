@@ -269,6 +269,8 @@ class UpdateTemplate extends Update {
 
     r = this.v0m15p0s5_(sheets)
     if (r !== 0) return r
+
+    return 0
   }
 
   /**
