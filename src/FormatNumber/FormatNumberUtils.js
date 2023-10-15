@@ -9,25 +9,29 @@
  */
 
 class FormatNumberUtils {
+  static get decP () {
+    return SettingsSpreadsheet.get('decimal_places')
+  }
+
   static getCurrencyRegExp () {
-    const dec_p = SettingsSpreadsheet.get('decimal_places');
+    const n = this.decP
     const dec_s = SettingsSpreadsheet.get('decimal_separator');
-    return new RegExp('-?\\$ ?\\d+' + (dec_p > 0 ? (dec_s ? '\\.' : ',') + '\\d{' + dec_p + '}' : ''));
+    return new RegExp('-?\\$ ?\\d+' + (n > 0 ? (dec_s ? '\\.' : ',') + '\\d{' + n + '}' : ''));
   }
 
   static getDecimalPlaceholder () {
-    const n = SettingsSpreadsheet.get('decimal_places')
+    const n = this.decP
     return (n === 0 ? '0' : `0.${'0'.repeat(n)}`)
   }
 
   static getDecimalStep () {
-    const n = SettingsSpreadsheet.get('decimal_places')
+    const n = this.decP
     return (n === 0 ? '1' : `0.${'0'.repeat(n - 1)}1`)
   }
 
   static getNumberFormat () {
-    const dec_p = SettingsSpreadsheet.get('decimal_places');
-    const mantissa = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
+    const n = this.decP
+    const mantissa = (n > 0 ? '.' + '0'.repeat(n) : '');
     return '#,##0' + mantissa;
   }
 
