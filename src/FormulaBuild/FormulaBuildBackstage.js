@@ -258,7 +258,7 @@ class FormulaBuildBackstageWallet {
   }
 
   static bsblank (mm, numRows) {
-    const header = 'E4'; // RangeUtils.rollA1Notation(4, 5);
+    const header = 'E5'; // RangeUtils.rollA1Notation(4, 5);
     const value = RangeUtils.rollA1Notation(6, 5, numRows)
 
     return 'MIN(ARRAYFORMULA(IF(ISBLANK(' + Consts.month_name.short[mm] + '!' + value + '); ROW(' + Consts.month_name.short[mm] + '!' + value + ') - ROW(' + Consts.month_name.short[mm] + '!' + header + '); FALSE)); ROWS(' + Consts.month_name.short[mm] + '!' + value + '))';
