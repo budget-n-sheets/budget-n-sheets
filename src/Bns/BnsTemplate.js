@@ -32,6 +32,7 @@ class BnsTemplate {
   }
 
   static isPre15 (v) {
-    return !PatchThisUtils.isLatestVersion(v, { major: 0, minor: 15, patch: 0 })
+    const v0 = v || ClassVersion.get('template')
+    return !PatchThisUtils.isLatestVersion(v0, { major: 0, minor: 15, patch: 0 })
   }
 }
