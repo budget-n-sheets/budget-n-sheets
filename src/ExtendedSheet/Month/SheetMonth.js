@@ -195,7 +195,6 @@ class SheetMonth extends ExtendedSheet {
   resetDefault () {
     this.resetFormatting()
       .resetProtection()
-      .resetDataValidation()
       .resetFilter()
       .resetFormulas()
       .resetConditionalFormat()
@@ -203,33 +202,24 @@ class SheetMonth extends ExtendedSheet {
   }
 
   resetFormatting () {
-    const template = SpreadsheetApp.openById(Info.template.id).getSheetByName('TTT')
-    let formats
+    this.sheet.getRange('B1:F5').setNumberFormat('@')
+    this.sheet.getRange('G1:G5').setNumberFormats([
+      ['0'], ['@'], ['@'], ['@']
+    ])
 
-    formats = template.getRange(
-        1 + this.specs.rowOffset, 1 + this.specs.columnOffset,
-        this.specs.row - 1 - this.specs.rowOffset, this.specs.width)
-      .getNumberFormats()
-    this.sheet.getRange(
-        1 + this.specs.rowOffset, 1 + this.specs.columnOffset,
-        this.specs.row - 1 - this.specs.rowOffset, this.specs.width)
-      .setNumberFormat(formats)
-
-    formats = template.getRange(
-        this.specs.row + 1, 1 + this.specs.columnOffset,
-        1, this.specs.width)
-      .getNumberFormats()[0]
     const range = this.sheet
       .getRange(
         this.specs.row, 1 + this.specs.columnOffset,
         this.numRows, 1)
 
-    for (let i = 0; i < this.specs.width; i++) {
-      if (i === this.specs.nullSearch - 1) continue
-      range.offset(0, i).setNumberFormat(formats[i])
-    }
-
+    range.setNumberFormat('')
+    range.offset(0, 1).setNumberFormat('00')
+    range.offset(0, 2).setNumberFormat('@')
     this.resetNumberFormat()
+    range.offset(0, 4).setNumberFormat('@')
+    range.offset(0, 5).setNumberFormat('@')
+    this.resetDataValidation()
+
     return this
   }
 
