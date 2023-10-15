@@ -193,13 +193,44 @@ class SheetMonth extends ExtendedSheet {
   }
 
   resetDefault () {
-    this.resetNumberFormat()
+    this.resetFormatting()
       .resetProtection()
       .resetDataValidation()
       .resetFilter()
       .resetFormulas()
       .resetConditionalFormat()
       .resetSelectors()
+  }
+
+  resetFormatting () {
+    const template = SpreadsheetApp.openById(Info.template.id).getSheetByName('TTT')
+    let formats
+
+    formats = template.getRange(
+        1 + this.specs.rowOffset, 1 + this.specs.columnOffset,
+        this.specs.row - 1 - this.specs.rowOffset, this.specs.width)
+      .getNumberFormats()
+    this.sheet.getRange(
+        1 + this.specs.rowOffset, 1 + this.specs.columnOffset,
+        this.specs.row - 1 - this.specs.rowOffset, this.specs.width)
+      .setNumberFormat(formats)
+
+    formats = template.getRange(
+        this.specs.row + 1, 1 + this.specs.columnOffset,
+        1, this.specs.width)
+      .getNumberFormats()[0]
+    const range = this.sheet
+      .getRange(
+        this.specs.row, 1 + this.specs.columnOffset,
+        this.numRows, 1)
+
+    for (let i = 0; i < this.specs.width; i++) {
+      if (i === this.specs.nullSearch - 1) continue
+      range.offset(0, i).setNumberFormat(formats[i])
+    }
+
+    this.resetNumberFormat()
+    return this
   }
 
   resetNumberFormat () {
