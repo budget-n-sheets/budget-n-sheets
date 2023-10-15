@@ -112,6 +112,12 @@ class RefreshCashFlow {
     const numRows = sheet.getLastRow() - this.specs.ttt.row + 1;
     if (numRows < 1) return;
 
+    const accs = new AccountService().getAll()
+    const names = []
+    for (const id in accs) {
+      names.push(accs[id].name)
+    }
+
     const snapshot = sheet.getRange(
         this.specs.ttt.row, this.specs.ttt.column,
         numRows, this.specs.ttt.width)
@@ -120,6 +126,7 @@ class RefreshCashFlow {
     for (let i = 0; i < numRows; i++) {
       const line = snapshot[i]
       if (line[3] === '') break
+      if (names.indexOf(line[0]) === -1) continue
 
       // TODO
       // Filter tables
