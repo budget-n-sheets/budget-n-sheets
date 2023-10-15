@@ -21,7 +21,7 @@ class UpdateScript extends Update {
         [], [], [], [], [], [], [], [], [],
         ['', '', '', '', '', '', 'v0m49p6_', '', ''],
         ['', '', '', '', ''],
-        ['', '', '']
+        ['', '', '', '', 'v0m51p4_']
       ]
     ];
 
@@ -32,9 +32,9 @@ class UpdateScript extends Update {
   /**
    * Reset defaults on month sheet.
    *
-   * 0.51.3
+   * 0.51.4
    */
-  v0m51p3_ () {
+  v0m51p4_ () {
     if (BnsTemplate.isPre15()) return 0
     for (let mm = 0; mm < 12; mm++) {
       new SheetMonth(mm).resetFormatting()
