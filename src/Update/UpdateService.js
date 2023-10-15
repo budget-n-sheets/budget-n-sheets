@@ -66,9 +66,17 @@ class UpdateService {
     return update.response
   }
 
-  static checkAndUpdate (isOnline) {
+  static checkAndUpdate (isOnline = false) {
     if (!Addon.isInstalled()) return 1;
-    if (Addon.isEndOfSupport()) return 1
+    if (Addon.isEndOfSupport()) {
+      if (isOnline) {
+        SpreadsheetApp2.getUi().alert(
+          'End of Support',
+          'This budget sheet is using a version that is no longer supported.',
+          SpreadsheetApp2.getUi().ButtonSet.OK)
+      }
+      return 1
+    }
     if (Addon.isUpToDate()) return 0;
 
     isOnline = !!isOnline;
