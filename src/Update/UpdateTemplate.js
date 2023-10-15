@@ -247,6 +247,12 @@ class UpdateTemplate extends Update {
     const data = {}
     let r
 
+    r = SpreadsheetApp2.getActive().getSheetByFinder('Dec')
+    if (r) {
+      r = this.v0m15p0s5_()
+      return r
+    }
+
     this.v0m15p0s0_()
 
     r = this.v0m15p0s1_(sheets)
