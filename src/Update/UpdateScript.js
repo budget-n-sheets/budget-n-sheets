@@ -30,6 +30,19 @@ class UpdateScript extends Update {
   }
 
   /**
+   * Reset defaults on month sheet.
+   *
+   * 0.51.3
+   */
+  v0m51p3_ () {
+    if (BnsTemplate.isPre15()) return 0
+    for (let mm = 0; mm < 12; mm++) {
+      new SheetMonth(mm).resetFormatting()
+    }
+    return 0
+  }
+
+  /**
    * Stamp.
    *
    * 0.49.6
