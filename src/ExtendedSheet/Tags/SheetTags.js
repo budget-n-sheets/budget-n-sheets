@@ -9,7 +9,7 @@
  */
 
 class SheetTags extends ExtendedSheet {
-  constructor (mm) {
+  constructor () {
     super('Tags')
 
     this._specs = Object.freeze(SheetTags.specs)
@@ -79,6 +79,8 @@ class SheetTags extends ExtendedSheet {
 
     this.sheet.getRange('R1').setFormula(formulaBuilder.stats().average())
     this.sheet.getRange('S1').setFormula(formulaBuilder.stats().total())
+
+    return this
   }
 
   resetNumberFormat () {
