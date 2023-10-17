@@ -646,7 +646,7 @@ class SetupParts {
     this.setupTables_()
 
     this.setupSettings_()
-    this.setupMonthSheet_()
+    new MakeSheetTTT().install()
     new MakeSheetUnique().install()
     new MakeSheetBackstage().install()
     RecalculationService.resume(0, 12)
