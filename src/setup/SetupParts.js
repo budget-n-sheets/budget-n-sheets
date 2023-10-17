@@ -645,7 +645,7 @@ class SetupParts {
     this.setupProperties_()
     this.setupTables_()
 
-    this.setupSettings_()
+    new MakeSheetSettings().install()
     new MakeSheetTTT().install()
     new MakeSheetUnique().install()
     new MakeSheetBackstage().install()
