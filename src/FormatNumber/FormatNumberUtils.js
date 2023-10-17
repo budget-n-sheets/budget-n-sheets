@@ -29,10 +29,9 @@ class FormatNumberUtils {
     return (n === 0 ? '1' : `0.${'0'.repeat(n - 1)}1`)
   }
 
-  static getNumberFormat () {
+  static getNumberFormat (ts = true) {
     const n = this.decP
-    const mantissa = (n > 0 ? '.' + '0'.repeat(n) : '');
-    return '#,##0' + mantissa;
+    return `${ts ? '#,##' : ''}0${n === 0 ? '' : '.' + '0'.repeat(n)}`
   }
 
   static getFinancialFormat () {
