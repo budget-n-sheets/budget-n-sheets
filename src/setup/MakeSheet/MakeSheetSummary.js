@@ -15,7 +15,6 @@ class MakeSheetSummary extends MakeSheet {
 
   static get metadata () {
     return {
-      id: Info.template.id,
       name: 'Summary',
       requires: ['_Settings', '_Backstage']
     }

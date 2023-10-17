@@ -15,7 +15,6 @@ class MakeSheetBackstage extends MakeSheet {
 
   static get metadata () {
     return {
-      id: Info.template.id,
       name: '_Backstage',
       requires: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     }

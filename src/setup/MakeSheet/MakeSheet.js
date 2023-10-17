@@ -10,7 +10,7 @@
 
 class MakeSheet extends MirrorSheet {
   constructor (metadata) {
-    super(metadata);
+    super(Object.assign(metadata, { id: Info.template.id }));
   }
 
   install () {

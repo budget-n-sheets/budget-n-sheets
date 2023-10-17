@@ -15,7 +15,6 @@ class MakeSheetTags extends MakeSheet {
 
   static get metadata () {
     return {
-      id: Info.template.id,
       name: 'Tags',
       requires: ['TTT']
     }
