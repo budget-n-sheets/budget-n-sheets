@@ -63,14 +63,14 @@ class SheetSummary extends ExtendedSheet {
   }
 
   resetFormatting () {
+    const financial_year = SettingsConst.get('financial_year')
+
     this.sheet
       .getRange('B2')
-      .setValue(`${this._consts.financial_year} | Year Summary`)
+      .setValue(`${financial_year} | Year Summary`)
 
     this.resetNumberFormat()
-
     this.sheet.setTabColor('#e69138')
-    SpreadsheetApp2.getActive().spreadsheet.moveActiveSheet(1)
 
     return this
   }
