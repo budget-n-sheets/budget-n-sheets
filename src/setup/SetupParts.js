@@ -652,7 +652,7 @@ class SetupParts {
     RecalculationService.resume(0, 12)
     new MakeSheetSummary().install()
     new MakeSheetTags().install()
-    this.setupCashFlow_()
+    new MakeSheetCashFlow().install()
     this.setupWest_()
     this.setupEast_()
 
