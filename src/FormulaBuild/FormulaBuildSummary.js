@@ -19,6 +19,10 @@ class FormulaBuildSummary {
 }
 
 class FormulaBuildSummaryTable1 {
+  static load_ () {
+    this._settings = SettingsSpreadsheet.getAll()
+  }
+
   static income () {
     return 'IF(_Settings!B6 > 0;  {SUM(OFFSET(D8; _Settings!B4; 0; _Settings!B6; 1)); AVERAGE(OFFSET(D8; _Settings!B4; 0; _Settings!B6; 1))}; {0; 0})';
   }
@@ -33,6 +37,20 @@ class FormulaBuildSummaryTable1 {
     const formula = 'SUM(_Backstage!B' + (4 + _h * mm) + ':B' + (6 + _h * mm) + ')';
 
     return formula;
+  }
+
+  static sparklineBar () {
+    this.load_()
+
+    const s = this._settings.decimal_separator ? ',' : '\\'
+    let formula
+
+    formula = `{"charttype"${s} "bar"; "max"${s} MAX(0; RC[-6])}`
+    formula = `{MAX(0; -RC[-4])${s} MAX(0; RC[-2])}; ${formula}`
+    formula = `SPARKLINE(${formula})`
+    formula = `IF(AND(RC[-6] = 0; RC[-4] = 0); ""; ${formula})`
+
+    return formula
   }
 }
 
