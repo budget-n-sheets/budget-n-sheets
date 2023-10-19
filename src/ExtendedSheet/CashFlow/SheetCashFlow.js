@@ -27,10 +27,38 @@ class SheetCashFlow extends ExtendedSheet {
     return this._specs
   }
 
+  resetBalanceReference () {
+    const financial_year = SettingsConst.get('financial_year')
+
+    const _h = TABLE_DIMENSION.height
+    const _w = TABLE_DIMENSION.width
+    const w = 1 + this.specs.width
+
+    const formulas = ['0 + B4']
+    for (let mm = 1; mm < 12; mm++) {
+      const dd = new Date(financial_year, mm, 0).getDate() - 1
+      formulas.push(RangeUtils.rollA1Notation(this.specs.row + dd, 3 + w * mm - w) + ' + ' + RangeUtils.rollA1Notation(this.specs.row, 2 + w * mm))
+    }
+
+    const db = new AccountsService().getAll()
+    let index = 0
+    for (const id in db) {
+      const mm = db[id].time_start
+      formulas[mm] += ` + '_Backstage'!${RangeUtils.rollA1Notation(2 + _h * mm, 2 + _w * ++index)}`
+    }
+
+    const range = this.sheet.getRange('C4')
+    for (let mm = 0; mm < 12; mm++) {
+      range.offset(0, w * mm).setFormula(formulas[mm])
+    }
+
+    return this
+  }
+
   resetDefault () {
     this.resetProtection()
       .resetNumberFormat()
-      .resetFormulas()
+      .resetBalanceReference()
   }
 
   resetFormulas () {
@@ -65,8 +93,6 @@ class SheetCashFlow extends ExtendedSheet {
     this.sheet
       .getRangeList(ranges)
       .setFormulaR1C1('R[-1]C + RC[-1]')
-
-    this.sheet.getRange('C4').setFormula('0 + B4')
 
     return this
   }

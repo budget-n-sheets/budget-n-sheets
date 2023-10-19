@@ -21,10 +21,9 @@ class MakeSheetCashFlow extends MakeSheet {
   }
 
   make () {
-    new SheetCashFlow().resetDefault().resetWeekendColoring()
-    const service = new AccountsService()
-    service.initSpreadsheet_()
-    service.updateReferences_()
+    new SheetCashFlow().resetWeekendColoring()
+      .resetFormulas()
+      .resetDefault()
     SpreadsheetApp.flush()
   }
 
