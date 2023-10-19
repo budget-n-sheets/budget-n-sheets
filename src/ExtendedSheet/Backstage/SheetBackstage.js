@@ -47,6 +47,66 @@ class SheetBackstage extends ExtendedSheet {
       .resetNumberFormat()
   }
 
+  resetGroupData () {
+    const numberFormater = new FormatNumber()
+    const _h = this.specs.table.height
+    const _w = this.specs.table.width
+
+    const cellReference = this.sheet.getRange('B1')
+    let index = 0
+    let db
+
+    this.sheet.getRange(
+        1, 2, 1,
+        this.sheet.getMaxColumns() - 1)
+      .clearContent()
+
+    cellReference.setValue('\^Wallet\$')
+
+    db = new AccountsService().getAll()
+    for (const id in db) {
+      const acc = db[id]
+      const range = cellReference.offset(0, _w * ++index)
+      const column = range.getColumn()
+
+      range.setValue(`\^${acc.name}\$`)
+
+      range.offset(1, 0).setFormula('0')
+
+      const ranges = []
+      for (let i = 1; i < 12; i++) {
+        ranges.push(RangeUtils.rollA1Notation(2 + _h * i, column))
+      }
+      this.sheet
+        .getRangeList(ranges)
+        .setFormulaR1C1(`R[-${_h - 1}]C`)
+
+      range.offset(1 + _h * acc.time_start, 0)
+        .setFormula(numberFormater.localeSignal(acc.balance))
+    }
+
+    cellReference.offset(0, _w * ++index).setValue(`\^Cards\$`)
+
+    db = new CardsService().getAll()
+    for (const id in db) {
+      const card = db[id]
+      const range = cellReference.offset(0, _w * ++index)
+      const column = range.getColumn()
+
+      range.setValue(`\^${card.code}\$` + card.aliases.map(a => `|\^${a}\$`).join(''))
+
+      const ranges = []
+      for (let i = 0; i < 12; i++) {
+        ranges.push(RangeUtils.rollA1Notation(2 + _h * i, column))
+      }
+      this.sheet
+        .getRangeList(ranges)
+        .setValue(numberFormater.localeSignal(card.limit));
+    }
+
+    return this
+  }
+
   resetNumberFormat () {
     const numberFormat = FormatNumberUtils.getNumberFormat()
     this.sheet
