@@ -18,6 +18,13 @@ class ExtendedSheet {
     return this._sheet
   }
 
+  removeCharts () {
+    this.sheet
+      .getCharts()
+      .forEach(c => this.sheet.removeChart(c))
+    return this
+  }
+
   removeProtection () {
     const protections = this.sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET)
     for (const protection of protections) {
