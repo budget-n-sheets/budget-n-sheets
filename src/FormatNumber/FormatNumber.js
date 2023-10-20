@@ -62,7 +62,7 @@ class FormatNumber {
 
     const j = i.length;
 
-    return s + i.substr(0, j) + (this.dec_p > 0 ? this.dec_s + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
+    return s + i.substring(0, j) + (this.dec_p > 0 ? this.dec_s + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
   }
 
   calendarSignal (number) {
