@@ -28,10 +28,9 @@ class SheetCashFlow extends ExtendedSheet {
   }
 
   resetBalanceReference () {
+    const numberFormater = new FormatNumber()
     const financial_year = SettingsConst.get('financial_year')
 
-    const _h = TABLE_DIMENSION.height
-    const _w = TABLE_DIMENSION.width
     const w = 1 + this.specs.width
 
     const formulas = ['0 + B4']
@@ -41,10 +40,9 @@ class SheetCashFlow extends ExtendedSheet {
     }
 
     const db = new AccountsService().getAll()
-    let index = 0
     for (const id in db) {
       const mm = db[id].time_start
-      formulas[mm] += ` + '_Backstage'!${RangeUtils.rollA1Notation(2 + _h * mm, 2 + _w * ++index)}`
+      formulas[mm] += numberFormater.localeSignal(db[id].balance)
     }
 
     const range = this.sheet.getRange('C4')
