@@ -117,9 +117,9 @@ class AccountsService extends TablesService {
     this.initSpreadsheet_();
 
     this.updateMetadata_();
+    new SheetBackstage().resetGroupData()
+    new SheetCashFlow().resetBalanceReference()
     SheetAllMonths.resetConditionalFormat().resetSelectors()
-    this.updateNames_();
-    this.updateReferences_();
 
     SpreadsheetApp.flush();
     return this;

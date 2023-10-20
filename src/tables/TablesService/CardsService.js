@@ -124,7 +124,7 @@ class CardsService extends TablesService {
     this.initSpreadsheet_();
 
     this.updateMetadata_();
-    this.updateNames_();
+    new SheetBackstage().resetGroupData()
     SheetAllMonths.resetConditionalFormat().resetSelectors()
 
     SpreadsheetApp.flush();
