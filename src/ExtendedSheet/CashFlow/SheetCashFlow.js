@@ -98,7 +98,7 @@ class SheetCashFlow extends ExtendedSheet {
   }
 
   resetNumberFormat () {
-    const numberFormat = FormatNumberUtils.getNumberFormat()
+    const numberFormat = FormatNumberUtils.getFinancialFormat()
     const w = 1 + this.specs.width
 
     const ranges = []
