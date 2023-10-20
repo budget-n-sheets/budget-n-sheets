@@ -39,10 +39,7 @@ class MakeSheetBackstage extends MakeSheet {
   }
 
   makeConfig () {
-    const numberFormat = FormatNumberUtils.getNumberFormat()
-    this._consts.numberFormat = `${numberFormat};(${numberFormat})`
     this._consts.numberAccounts = SettingsConst.get('number_accounts')
-
     return this
   }
 }

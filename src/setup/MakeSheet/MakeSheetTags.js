@@ -29,9 +29,6 @@ class MakeSheetTags extends MakeSheet {
   }
 
   makeConfig () {
-    const numberFormat = FormatNumberUtils.getNumberFormat();
-    this._consts.number_format = `${numberFormat};(${numberFormat})`;
-
     return this;
   }
 }
