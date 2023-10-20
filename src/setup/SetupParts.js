@@ -203,7 +203,6 @@ class SetupParts {
     new MakeSheetTTT().install()
     new MakeSheetUnique().install()
     new MakeSheetBackstage().install()
-    RecalculationService.resume(0, 12)
     new MakeSheetSummary().install()
     new MakeSheetTags().install()
     new MakeSheetCashFlow().install()

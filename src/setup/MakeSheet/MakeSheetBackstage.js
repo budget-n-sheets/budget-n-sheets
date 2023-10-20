@@ -33,6 +33,7 @@ class MakeSheetBackstage extends MakeSheet {
 
   make () {
     this.setFormat_()
+    RecalculationService.resume(0, 12)
     new SheetBackstage().resetGroupData().resetDefault()
 
     SpreadsheetApp.flush()
