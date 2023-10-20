@@ -21,33 +21,19 @@ class MakeSheetBackstage extends MakeSheet {
   }
 
   setFormat_ () {
-    const sheet = this.sheet
     const _w = TABLE_DIMENSION.width
 
-    // TODO
-    const db_accounts = new AccountsService().getAll()
-    for (const id in db_accounts) {
-      const account = db_accounts[id]
-      this._sheet.getRange(1, 2 + _w + _w * account.index).setValue(`\^${account.name}\$`)
-    }
-
     if (this._consts.numberAccounts < 5) {
-      sheet.deleteColumns(7 + _w * this._consts.numberAccounts, _w * (5 - this._consts.numberAccounts))
+      this.sheet
+        .deleteColumns(
+          7 + _w * this._consts.numberAccounts,
+          _w * (5 - this._consts.numberAccounts))
     }
-
-    sheet.getRange(
-        2, 2,
-        sheet.getMaxRows() - 1,
-        sheet.getMaxColumns() - 1
-      )
-      .setNumberFormat(this._consts.numberFormat)
-
-    sheet.protect().setWarningOnly(true)
-    sheet.setTabColor('#cc0000').hideSheet()
   }
 
   make () {
     this.setFormat_()
+    new SheetBackstage().resetGroupData().resetDefault()
 
     SpreadsheetApp.flush()
   }
