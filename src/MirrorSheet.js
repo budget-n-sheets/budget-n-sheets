@@ -27,15 +27,16 @@ class MirrorSheet {
   }
 
   copyTemplate () {
-    const source = SpreadsheetApp.openById(this._template.id);
-    SpreadsheetApp2.getActive().copySheetsFrom(source, [this._name]);
+    const source = SpreadsheetApp2.openById(this._template.id).spreadsheet
+    SpreadsheetApp2.getActive().copySheetFrom(source, this._name, this._template.newName)
     SpreadsheetApp.flush();
     return this;
   }
 
   deleteTemplate () {
-    const sheet = SpreadsheetApp2.getActive().getSheetByName(this._name);
-    if (sheet) SpreadsheetApp2.getActive().deleteSheet(this.sheet);
+    const spreadsheet = SpreadsheetApp2.getActive()
+    const sheet = spreadsheet.getSheetByName(this._name)
+    if (sheet) spreadsheet.deleteSheet(sheet)
     this._sheet = null;
     SpreadsheetApp.flush();
     return this;
