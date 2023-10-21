@@ -9,44 +9,32 @@
  */
 
 class MakeSheetTTT extends MakeSheet {
-  constructor (mm) {
-    const name = Consts.month_name.short[mm]
+  constructor (name) {
+    const mm = Consts.month_name.short.indexOf(name)
+    if (mm === -1) throw new Error('Invalid month name.')
+
     const requires = ['_Backstage', '_Unique']
     super(name, requires, { name: 'TTT' })
+
+    this._mm = mm
   }
 
   make () {
-    const spreadsheet = SpreadsheetApp2.getActive()
+    this.sheet
+      .getRange('B1')
+      .setValue('Wallet')
 
-    for (let mm = 0; mm < 12; mm++) {
-      const name = Consts.month_name.short[mm]
-      if (spreadsheet.getSheetByName(name)) continue
+    new SheetMonth(this._mm).resetFormulas()
+      .resetProtection()
+      .resetNumberFormat()
+      .resetFilter()
+      .resetConditionalFormat()
+      .resetSelectors()
 
-      const sheet = this._spreadsheet.insertSheet(name, 1, { template: this.sheet })
-
-      sheet.getRange('B1').setValue('Wallet')
-
-      new SheetMonth(mm).resetFormulas()
-        .resetProtection()
-        .resetFilter()
-        .resetConditionalFormat()
-        .resetSelectors()
-    }
-
-    this._spreadsheet.deleteSheet(this.sheet)
     SpreadsheetApp.flush()
   }
 
   makeConfig () {
-    const decP = SettingsSpreadsheet.get('decimal_places')
-    if (decP !== 2) {
-      const range = RangeUtils.rollA1Notation(6, 5, 400, 1)
-      const numberFormat = FormatNumberUtils.getFinancialFormat()
-      this.sheet
-        .getRange(range)
-        .setNumberFormat(numberFormat)
-    }
-
     return this
   }
 }

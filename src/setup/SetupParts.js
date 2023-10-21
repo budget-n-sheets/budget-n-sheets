@@ -200,7 +200,9 @@ class SetupParts {
     this.setupTables_()
 
     new MakeSheetSettings().install()
-    new MakeSheetTTT().install()
+    for (let mm = 0; mm < 12; mm++) {
+      new MakeSheetTTT(mm).install()
+    }
     new MakeSheetUnique().install()
     new MakeSheetBackstage().install()
     new MakeSheetSummary().install()
