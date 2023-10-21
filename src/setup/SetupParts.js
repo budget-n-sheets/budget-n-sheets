@@ -70,7 +70,6 @@ class SetupParts {
     SpreadsheetApp2.getActive().getSheetByName('Cash Flow').setTabColor('#e69138')
     SpreadsheetApp2.getActive().getSheetByName('_Unique').setTabColor('#cc0000')
     SpreadsheetApp2.getActive().getSheetByName('_Settings').setTabColor('#cc0000')
-    SpreadsheetApp2.getActive().getSheetByName('_About BnS').setTabColor('#6aa84f')
 
     if (t) {
       for (i = 0; i < 12; i++) {
@@ -90,7 +89,6 @@ class SetupParts {
 
     SpreadsheetApp2.getActive().getSheetByName('_Unique').hideSheet()
     SpreadsheetApp2.getActive().getSheetByName('_Settings').hideSheet()
-    SpreadsheetApp2.getActive().getSheetByName('_About BnS').hideSheet()
 
     SpreadsheetApp.flush()
   }
@@ -187,23 +185,15 @@ class SetupParts {
     CachedProperties.withDocument().update('db_cards', {})
   }
 
-  setupWest_ () {
-    SpreadsheetApp2.getActive().getSheetByName('_About BnS')
-      .protect()
-      .setWarningOnly(true)
-
-    SpreadsheetApp.flush()
-  }
-
   run () {
     this.setupProperties_()
     this.setupTables_()
 
+    new MakeSheetAbout().install()
     new MakeSheetSummary().install()
     new MakeSheetTags().install()
     new MakeSheetCashFlow().install()
 
-    this.setupWest_()
     this.setupEast_()
 
     return this
