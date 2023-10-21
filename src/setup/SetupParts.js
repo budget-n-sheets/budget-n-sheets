@@ -186,10 +186,17 @@ class SetupParts {
   }
 
   run () {
+    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet
+    const sheets = spreadsheet.getSheets()
+
+    new MakeSheetAbout().install()
+
+    sheets.forEach(sheet => spreadsheet.deleteSheet(sheet))
+    SpreadsheetApp.flush()
+
     this.setupProperties_()
     this.setupTables_()
 
-    new MakeSheetAbout().install()
     new MakeSheetSummary().install()
     new MakeSheetTags().install()
     new MakeSheetCashFlow().install()

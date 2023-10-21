@@ -13,18 +13,6 @@ class SetupProgress {
     this._config = {};
   }
 
-  copyTemplate () {
-    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
-    const sheets = spreadsheet.getSheets();
-
-    const source = SpreadsheetApp.openById(Info.template.id);
-    SpreadsheetApp2.getActive().copySheetsFrom(source, Info.template.sheets);
-
-    sheets.forEach(sheet => spreadsheet.deleteSheet(sheet));
-    SpreadsheetApp.flush();
-    return this;
-  }
-
   makeClean () {
     CacheService2.getDocumentCache().removeAll(CACHE_KEYS);
     PropertiesService2.getDocumentProperties().deleteAllProperties();

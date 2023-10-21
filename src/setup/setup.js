@@ -38,7 +38,6 @@ function setupService (uuid, payload) {
 
   new SetupProgress().makeClean()
     .makeConfig(config)
-    .copyTemplate()
     .makeInstall();
 
   try {
