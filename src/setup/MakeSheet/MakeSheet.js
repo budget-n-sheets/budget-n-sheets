@@ -15,6 +15,6 @@ class MakeSheet extends MirrorSheet {
   }
 
   install () {
-    this.makeConfig().make();
+    this.unpack().make();
   }
 }

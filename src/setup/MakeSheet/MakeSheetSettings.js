@@ -17,7 +17,7 @@ class MakeSheetSettings extends MakeSheet {
     new SheetSettings().resetDefault()
   }
 
-  makeConfig () {
+  unpack () {
     return this
   }
 }

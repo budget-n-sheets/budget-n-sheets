@@ -23,7 +23,7 @@ class MakeSheetUnique extends MakeSheet {
     SpreadsheetApp.flush()
   }
 
-  makeConfig () {
+  unpack () {
     return this
   }
 }

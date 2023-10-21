@@ -26,7 +26,7 @@ class MakeSheetTags extends MakeSheet {
     this._spreadsheet.setActiveSheet(this.sheet);
   }
 
-  makeConfig () {
+  unpack () {
     return this;
   }
 }
