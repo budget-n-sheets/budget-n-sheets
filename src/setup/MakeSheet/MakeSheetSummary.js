@@ -10,14 +10,8 @@
 
 class MakeSheetSummary extends MakeSheet {
   constructor () {
-    super(MakeSheetSummary.metadata);
-  }
-
-  static get metadata () {
-    return {
-      name: 'Summary',
-      requires: ['_Settings', '_Backstage']
-    }
+    const requires = ['_Settings', '_Backstage']
+    super('Summary', requires)
   }
 
   make () {

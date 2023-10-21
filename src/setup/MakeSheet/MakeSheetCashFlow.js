@@ -10,14 +10,8 @@
 
 class MakeSheetCashFlow extends MakeSheet {
   constructor () {
-    super(MakeSheetCashFlow.metadata)
-  }
-
-  static get metadata () {
-    return {
-      name: 'Cash Flow',
-      requires: ['_Backstage']
-    }
+    const requires = ['_Backstage']
+    super('Cash Flow', requires)
   }
 
   make () {

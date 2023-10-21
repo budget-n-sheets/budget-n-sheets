@@ -10,14 +10,8 @@
 
 class MakeSheetBackstage extends MakeSheet {
   constructor () {
-    super(MakeSheetBackstage.metadata)
-  }
-
-  static get metadata () {
-    return {
-      name: '_Backstage',
-      requires: ['TTT']
-    }
+    const requires = ['TTT']
+    super('_Backstage', requires)
   }
 
   setFormat_ () {

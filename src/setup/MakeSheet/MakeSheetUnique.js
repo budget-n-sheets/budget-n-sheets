@@ -10,14 +10,8 @@
 
 class MakeSheetUnique extends MakeSheet {
   constructor () {
-    super(MakeSheetUnique.metadata)
-  }
-
-  static get metadata () {
-    return {
-      name: '_Unique',
-      requires: ['TTT']
-    }
+    const requires = ['TTT']
+    super('_Unique', requires)
   }
 
   make () {

@@ -9,8 +9,9 @@
  */
 
 class MakeSheet extends MirrorSheet {
-  constructor (metadata) {
-    super(Object.assign(metadata, { id: Info.template.id }));
+  constructor (name, requires = [], template = {}) {
+    Object.assign(template, { id: Info.template.id })
+    super(name, requires, template)
   }
 
   install () {

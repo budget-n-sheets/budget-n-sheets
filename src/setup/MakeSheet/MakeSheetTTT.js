@@ -9,15 +9,10 @@
  */
 
 class MakeSheetTTT extends MakeSheet {
-  constructor () {
-    super(MakeSheetTTT.metadata)
-  }
-
-  static get metadata () {
-    return {
-      name: 'TTT',
-      requires: ['_Backstage', '_Unique']
-    }
+  constructor (mm) {
+    const name = Consts.month_name.short[mm]
+    const requires = ['_Backstage', '_Unique']
+    super(name, requires, { name: 'TTT' })
   }
 
   make () {

@@ -10,14 +10,8 @@
 
 class MakeSheetTags extends MakeSheet {
   constructor () {
-    super(MakeSheetTags.metadata);
-  }
-
-  static get metadata () {
-    return {
-      name: 'Tags',
-      requires: ['_Settings', 'TTT']
-    }
+    const requires = ['_Settings', 'TTT']
+    super('Tags', requires)
   }
 
   make () {

@@ -10,14 +10,7 @@
 
 class MakeSheetSettings extends MakeSheet {
   constructor () {
-    super(MakeSheetSettings.metadata)
-  }
-
-  static get metadata () {
-    return {
-      name: '_Settings',
-      requires: []
-    }
+    super('_Settings')
   }
 
   make () {
