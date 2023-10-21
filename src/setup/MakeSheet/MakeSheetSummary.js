@@ -20,7 +20,7 @@ class MakeSheetSummary extends MakeSheet {
 
   make () {
     new SheetSummary().resetDefault()
-    SpreadsheetApp.flush();
+    SpreadsheetApp.flush()
   }
 
   unpack () {
