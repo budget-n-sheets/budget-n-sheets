@@ -17,9 +17,4 @@ class MakeSheet extends MirrorSheet {
   install () {
     this.makeConfig().make();
   }
-
-  reinstall () {
-    this.deleteTemplate().copyTemplate();
-    this.makeConfig().make();
-  }
 }
