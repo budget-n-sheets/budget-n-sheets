@@ -10,8 +10,12 @@
 
 class MakeSheetUnique extends MakeSheet {
   constructor () {
-    const requires = ['TTT']
+    const requires = MakeSheetUnique.requires
     super('_Unique', requires)
+  }
+
+  static get requires () {
+    return ['TTT']
   }
 
   make () {

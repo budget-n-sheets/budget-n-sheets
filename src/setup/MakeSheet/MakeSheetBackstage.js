@@ -10,8 +10,12 @@
 
 class MakeSheetBackstage extends MakeSheet {
   constructor () {
-    const requires = ['TTT']
+    const requires = MakeSheetBackstage.requires
     super('_Backstage', requires)
+  }
+
+  static get requires () {
+    return ['TTT']
   }
 
   setFormat_ () {

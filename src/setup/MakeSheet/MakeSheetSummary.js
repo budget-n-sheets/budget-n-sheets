@@ -10,8 +10,12 @@
 
 class MakeSheetSummary extends MakeSheet {
   constructor () {
-    const requires = ['_Settings', '_Backstage']
+    const requires = MakeSheetSummary.requires
     super('Summary', requires)
+  }
+
+  static get requires () {
+    return ['_Settings', '_Backstage']
   }
 
   make () {

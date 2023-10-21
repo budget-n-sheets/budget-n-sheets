@@ -10,8 +10,12 @@
 
 class MakeSheetTags extends MakeSheet {
   constructor () {
-    const requires = ['_Settings', 'TTT']
+    const requires = MakeSheetTags.requires
     super('Tags', requires)
+  }
+
+  static get requires () {
+    return ['_Settings', 'TTT']
   }
 
   make () {

@@ -13,10 +13,14 @@ class MakeSheetTTT extends MakeSheet {
     const mm = Consts.month_name.short.indexOf(name)
     if (mm === -1) throw new Error('Invalid month name.')
 
-    const requires = ['_Backstage', '_Unique']
+    const requires = MakeSheetTTT.requires
     super(name, requires, { name: 'TTT' })
 
     this._mm = mm
+  }
+
+  static get requires () {
+    return ['_Backstage', '_Unique']
   }
 
   make () {

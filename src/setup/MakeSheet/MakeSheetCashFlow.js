@@ -10,8 +10,12 @@
 
 class MakeSheetCashFlow extends MakeSheet {
   constructor () {
-    const requires = ['_Backstage']
+    const requires = MakeSheetCashFlow.requires
     super('Cash Flow', requires)
+  }
+
+  static get requires () {
+    return ['_Backstage']
   }
 
   make () {
