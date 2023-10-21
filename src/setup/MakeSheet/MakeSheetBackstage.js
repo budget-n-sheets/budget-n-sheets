@@ -15,7 +15,7 @@ class MakeSheetBackstage extends MakeSheet {
   }
 
   static get depends () {
-    return ['TTT']
+    return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   }
 
   setFormat_ () {

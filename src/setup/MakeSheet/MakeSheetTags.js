@@ -15,7 +15,7 @@ class MakeSheetTags extends MakeSheet {
   }
 
   static get depends () {
-    return ['_Settings', 'TTT']
+    return ['_Settings', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   }
 
   make () {
