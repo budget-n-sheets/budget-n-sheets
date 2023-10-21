@@ -9,14 +9,18 @@
  */
 
 class MirrorSheet {
-  constructor (name, requires, template) {
+  constructor (name, depends, template) {
     this._template = {
       id: template.id,
       name: template.name
     }
 
     this._name = name
-    this._requires = requires
+    this._depends = depends
+  }
+
+  get depends () {
+    return this._depends
   }
 
   get name () {

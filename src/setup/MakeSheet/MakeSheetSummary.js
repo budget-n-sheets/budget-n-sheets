@@ -10,11 +10,11 @@
 
 class MakeSheetSummary extends MakeSheet {
   constructor () {
-    const requires = MakeSheetSummary.requires
-    super('Summary', requires)
+    const depends = MakeSheetSummary.depends
+    super('Summary', depends)
   }
 
-  static get requires () {
+  static get depends () {
     return ['_Settings', '_Backstage']
   }
 

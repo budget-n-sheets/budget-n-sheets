@@ -10,11 +10,11 @@
 
 class MakeSheetUnique extends MakeSheet {
   constructor () {
-    const requires = MakeSheetUnique.requires
-    super('_Unique', requires)
+    const depends = MakeSheetUnique.depends
+    super('_Unique', depends)
   }
 
-  static get requires () {
+  static get depends () {
     return ['TTT']
   }
 

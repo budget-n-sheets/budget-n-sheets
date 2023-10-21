@@ -10,11 +10,11 @@
 
 class MakeSheetBackstage extends MakeSheet {
   constructor () {
-    const requires = MakeSheetBackstage.requires
-    super('_Backstage', requires)
+    const depends = MakeSheetBackstage.depends
+    super('_Backstage', depends)
   }
 
-  static get requires () {
+  static get depends () {
     return ['TTT']
   }
 
