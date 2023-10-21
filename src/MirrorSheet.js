@@ -10,8 +10,10 @@
 
 class MirrorSheet {
   constructor (name, requires, template) {
-    this._template = {}
-    Object.assign(this._template, template)
+    this._template = {
+      id: template.id,
+      name: template.name
+    }
 
     this._name = name
     this._requires = requires
@@ -28,7 +30,8 @@ class MirrorSheet {
 
   copyTemplate () {
     const source = SpreadsheetApp2.openById(this._template.id).spreadsheet
-    SpreadsheetApp2.getActive().copySheetFrom(source, this._name, this._template.newName)
+    const name = this._template.name || this._name
+    SpreadsheetApp2.getActive().copySheetFrom(source, name, this._name)
     SpreadsheetApp.flush();
     return this;
   }
