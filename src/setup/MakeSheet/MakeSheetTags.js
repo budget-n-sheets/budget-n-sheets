@@ -16,7 +16,7 @@ class MakeSheetTags extends MakeSheet {
   static get metadata () {
     return {
       name: 'Tags',
-      requires: ['TTT']
+      requires: ['_Settings', 'TTT']
     }
   }
 
