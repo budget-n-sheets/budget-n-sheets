@@ -10,7 +10,12 @@
 
 class MakeSheetSettings extends MakeSheet {
   constructor () {
-    super('_Settings')
+    const depends = MakeSheetSettings.depends
+    super('_Settings', depends)
+  }
+
+  static get depends () {
+    return ['Tags']
   }
 
   make () {

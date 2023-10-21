@@ -186,7 +186,6 @@ class SetupParts {
     this.setupTables_()
 
     new MakeSheetSummary().install()
-    new MakeSheetTags().install()
     new MakeSheetCashFlow().install()
     new MakeSheetAbout().install()
 
