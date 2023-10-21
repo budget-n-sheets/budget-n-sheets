@@ -21,7 +21,7 @@ class MakeSheetBackstage extends MakeSheet {
   make () {
     RecalculationService.resume(0, 12)
     new SheetBackstage().resetGroupData().resetDefault()
-
+    this.sheet.setTabColor('#cc0000').hideSheet()
     SpreadsheetApp.flush()
   }
 
@@ -34,6 +34,8 @@ class MakeSheetBackstage extends MakeSheet {
         7 + _w * numberAccounts,
         _w * (5 - numberAccounts))
     }
+
+    this.sheet.protect().setWarningOnly(true)
     return this
   }
 }

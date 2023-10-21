@@ -15,9 +15,12 @@ class MakeSheetSettings extends MakeSheet {
 
   make () {
     new SheetSettings().resetDefault()
+    this.sheet.setTabColor('#cc0000').hideSheet()
+    SpreadsheetApp.flush()
   }
 
   unpack () {
+    this.sheet.protect().setWarningOnly(true)
     return this
   }
 }

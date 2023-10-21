@@ -40,6 +40,7 @@ class MakeSheetTTT extends MakeSheet {
   }
 
   unpack () {
+    this.sheet.protect().setWarningOnly(true)
     return this
   }
 }

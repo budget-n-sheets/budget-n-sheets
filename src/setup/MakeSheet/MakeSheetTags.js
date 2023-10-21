@@ -20,10 +20,12 @@ class MakeSheetTags extends MakeSheet {
 
   make () {
     new SheetTags().resetDefault()
+    this.sheet.setTabColor('#e69138')
     SpreadsheetApp.flush()
   }
 
   unpack () {
+    this.sheet.protect().setWarningOnly(true)
     return this;
   }
 }

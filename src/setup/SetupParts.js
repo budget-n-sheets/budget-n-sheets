@@ -67,10 +67,6 @@ class SetupParts {
       sheets[this._date.mm].setTabColor('#6aa84f')
     }
 
-    SpreadsheetApp2.getActive().getSheetByName('Cash Flow').setTabColor('#e69138')
-    SpreadsheetApp2.getActive().getSheetByName('_Unique').setTabColor('#cc0000')
-    SpreadsheetApp2.getActive().getSheetByName('_Settings').setTabColor('#cc0000')
-
     if (t) {
       for (i = 0; i < 12; i++) {
         sheet = sheets[i]
@@ -86,9 +82,6 @@ class SetupParts {
         sheets[8].showSheet()
       }
     }
-
-    SpreadsheetApp2.getActive().getSheetByName('_Unique').hideSheet()
-    SpreadsheetApp2.getActive().getSheetByName('_Settings').hideSheet()
 
     SpreadsheetApp.flush()
   }
@@ -189,20 +182,18 @@ class SetupParts {
     const spreadsheet = SpreadsheetApp2.getActive().spreadsheet
     const sheets = spreadsheet.getSheets()
 
-    new MakeSheetAbout().install()
-
-    sheets.forEach(sheet => spreadsheet.deleteSheet(sheet))
-    SpreadsheetApp.flush()
-
     this.setupProperties_()
     this.setupTables_()
 
     new MakeSheetSummary().install()
     new MakeSheetTags().install()
     new MakeSheetCashFlow().install()
+    new MakeSheetAbout().install()
 
     this.setupEast_()
 
+    sheets.forEach(sheet => spreadsheet.deleteSheet(sheet))
+    SpreadsheetApp.flush()
     return this
   }
 }

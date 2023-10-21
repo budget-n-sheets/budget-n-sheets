@@ -20,10 +20,12 @@ class MakeSheetSummary extends MakeSheet {
 
   make () {
     new SheetSummary().resetDefault()
+    this.sheet.setTabColor('#e69138')
     SpreadsheetApp.flush()
   }
 
   unpack () {
+    this.sheet.protect().setWarningOnly(true)
     return this;
   }
 }

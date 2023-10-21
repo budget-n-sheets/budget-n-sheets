@@ -20,10 +20,12 @@ class MakeSheetUnique extends MakeSheet {
 
   make () {
     new SheetUnique().resetDefault()
+    this.sheet.setTabColor('#cc0000').hideSheet()
     SpreadsheetApp.flush()
   }
 
   unpack () {
+    this.sheet.protect().setWarningOnly(true)
     return this
   }
 }

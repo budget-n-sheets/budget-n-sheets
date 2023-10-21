@@ -22,10 +22,12 @@ class MakeSheetCashFlow extends MakeSheet {
     new SheetCashFlow().resetWeekendColoring()
       .resetFormulas()
       .resetDefault()
+    this.sheet.setTabColor('#e69138')
     SpreadsheetApp.flush()
   }
 
   unpack () {
+    this.sheet.protect().setWarningOnly(true)
     return this
   }
 }
