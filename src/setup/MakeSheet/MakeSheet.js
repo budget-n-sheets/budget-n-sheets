@@ -14,7 +14,40 @@ class MakeSheet extends MirrorSheet {
     super(name, depends, template)
   }
 
-  install () {
-    this.unpack().make();
+  static pickByName (name) {
+    const mm = Consts.month_name.short.indexOf(name)
+    if (mm > -1) return new MakeSheetTTT(name)
+
+    switch (name) {
+      case '_Backstage':
+        return new MakeSheetBackstage()
+      case 'Cash Flow':
+        return new MakeSheetCashFlow()
+      case '_Settings':
+        return new MakeSheetSettings()
+      case 'Summary':
+        return new MakeSheetSummary()
+      case 'Tags':
+        return new MakeSheetTags()
+      case '_Unique':
+        return new MakeSheetUnique()
+
+      default:
+        throw new Error('Make sheet not found.')
+    }
+  }
+
+  install (stack = []) {
+    stack.push(this.name)
+    if (!this.sheet) this.copyTemplate().unpack()
+
+    const spreadsheet = SpreadsheetApp2.getActive()
+    for (const name of this.depends) {
+      if (stack.indexOf(name) > -1) continue
+      if (spreadsheet.getSheetByName(name)) continue
+      MakeSheet.pickByName(name).install(stack)
+    }
+
+    this.make()
   }
 }
