@@ -14,6 +14,7 @@ class MakeSheetTTT extends MakeSheet {
     if (mm === -1) throw new Error('Invalid month name.')
 
     const depends = MakeSheetTTT.depends
+    if (mm > 0) depends.push(Consts.month_name.short[mm - 1])
     super(name, depends, { name: 'TTT' })
 
     this._mm = mm
