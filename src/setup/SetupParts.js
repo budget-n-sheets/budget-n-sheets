@@ -25,67 +25,6 @@ class SetupParts {
     this._metadata = SpreadsheetApp2.getActive().getMetadata()
   }
 
-  setupEast_ () {
-    let sheet
-    let md, t, i
-
-    const initial_month = this._config.initial_month
-
-    if (this._date.yyyy === this._config.financial_year) {
-      t = true
-      md = Utils.getMonthDelta(this._date.mm)
-    } else {
-      t = false
-    }
-
-    const sheets = []
-    for (i = 0; i < 12; i++) {
-      sheets[i] = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i])
-    }
-
-    for (i = 0; i < 12; i++) {
-      sheet = sheets[i]
-
-      if (i < initial_month) {
-        if (t && (i < this._date.mm + md[0] || i > this._date.mm + md[1])) {
-          sheet.setTabColor('#b7b7b7')
-        } else {
-          sheet.setTabColor('#b7b7b7')
-        }
-      } else if (t) {
-        if (i < this._date.mm + md[0] || i > this._date.mm + md[1]) {
-          sheet.setTabColor('#a4c2f4')
-        } else {
-          sheet.setTabColor('#3c78d8')
-        }
-      } else {
-        sheet.setTabColor('#a4c2f4')
-      }
-    }
-
-    if (t) {
-      sheets[this._date.mm].setTabColor('#6aa84f')
-    }
-
-    if (t) {
-      for (i = 0; i < 12; i++) {
-        sheet = sheets[i]
-
-        if (i < initial_month && (i < this._date.mm + md[0] || i > this._date.mm + md[1])) {
-          sheet.hideSheet()
-        } else if (i < this._date.mm + md[0] || i > this._date.mm + md[1]) {
-          sheet.hideSheet()
-        }
-      }
-
-      if (this._date.mm === 11) {
-        sheets[8].showSheet()
-      }
-    }
-
-    SpreadsheetApp.flush()
-  }
-
   setupProperties_ () {
     let properties, metadata
 
@@ -188,8 +127,6 @@ class SetupParts {
     new MakeSheetSummary().install()
     new MakeSheetCashFlow().install()
     new MakeSheetAbout().install()
-
-    this.setupEast_()
 
     sheets.forEach(sheet => spreadsheet.deleteSheet(sheet))
     SpreadsheetApp.flush()
