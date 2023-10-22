@@ -14,11 +14,11 @@ class MakeSheetAbout extends MakeSheet {
   }
 
   make () {
-    this.sheet.setTabColor('#6aa84f').hideSheet()
+    this.sheet.setTabColor('#6aa84f')
   }
 
   unpack () {
-    this.sheet.protect().setWarningOnly(true)
+    this.sheet.hideSheet().protect().setWarningOnly(true)
     return this
   }
 }
