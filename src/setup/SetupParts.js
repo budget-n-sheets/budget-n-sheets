@@ -191,7 +191,6 @@ class SetupParts {
     this.setupTables_()
 
     new MakeSheetSummary().install()
-    new MakeSheetCashFlow().install()
     new MakeSheetAbout().install()
 
     this.setupLayout_()
