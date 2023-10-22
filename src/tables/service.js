@@ -13,16 +13,18 @@ function accountsClientService (payload) {
   if (!lock.tryLock(1000)) return 1;
 
   switch (payload.job) {
-    case 'get':
-      return new AccountsService().getById(payload.id);
+    case 'get': {
+      const acc = new AccountsService().get(payload.id)
+      return Object.assign(acc.data, { id: acc.id })
+    }
     case 'list': {
-      const accs = new AccountsService().getAll();
-      return Object.keys(accs).map(key => Object.assign(accs[key], { id: key })).sort((a, b) => a.index - b.index);
+      const accs = new AccountsService().list()
+      return accs.map(acc => Object.assign(acc.data, { id: acc.id }))
     }
     case 'update': {
-      const service = new AccountsService();
-      service.update(payload.id, payload.metadata).save();
-      service.flush();
+      const service = new AccountsService()
+      service.update(payload.id, payload.metadata)
+      service.flush()
       break;
     }
 
@@ -40,20 +42,21 @@ function cardsClientService (payload) {
     case 'create': {
       const service = new CardsService();
       service.create(payload.metadata);
-      service.save();
       service.flush();
       onOpen();
       break;
     }
-    case 'get':
-      return new CardsService().getById(payload.id);
+    case 'get': {
+      const card = new CardsService().get(payload.id)
+      return Object.assign(card.data, { id: card.id })
+    }
     case 'list': {
-      const cards = new CardsService().getAll();
-      return Object.keys(cards).map(key => Object.assign(cards[key], { id: key })).sort((a, b) => b.index - a.index);
+      const cards = new CardsService().list()
+      return cards.map(card => Object.assign(card.data, { id: card.id }))
     }
     case 'update': {
       const service = new CardsService();
-      service.update(payload.id, payload.metadata).save();
+      service.update(payload.id, payload.metadata)
       service.flush();
       break;
     }
