@@ -52,7 +52,6 @@ class SetupFollowUp extends SetupSuperCopy {
       if (acc) accounts.update(acc.id, meta)
     })
 
-    accounts.save()
     accounts.flush()
   }
 

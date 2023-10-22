@@ -39,10 +39,10 @@ class SheetCashFlow extends ExtendedSheet {
       formulas.push(RangeUtils.rollA1Notation(this.specs.row + dd, 3 + w * mm - w) + ' + ' + RangeUtils.rollA1Notation(this.specs.row, 2 + w * mm))
     }
 
-    const db = new AccountsService().getAll()
-    for (const id in db) {
-      const mm = db[id].time_start
-      formulas[mm] += numberFormater.localeSignal(db[id].balance)
+    const accounts = new AccountsService().list()
+    for (const acc of accounts) {
+      const mm = acc.time_start
+      formulas[mm] += numberFormater.localeSignal(acc.balance)
     }
 
     const range = this.sheet.getRange('C4')

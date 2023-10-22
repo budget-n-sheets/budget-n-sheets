@@ -44,7 +44,6 @@ class RestoreCopy extends SetupSuperCopy {
       if (acc) accountsService.update(acc.id, metadata[e.prevIndex]);
     });
 
-    accountsService.save();
     accountsService.flush();
   }
 

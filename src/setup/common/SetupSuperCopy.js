@@ -31,7 +31,6 @@ class SetupSuperCopy {
       cards.create(metadata[k])
     }
 
-    cards.save()
     cards.flush()
   }
 

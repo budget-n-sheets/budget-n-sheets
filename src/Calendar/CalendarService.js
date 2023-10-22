@@ -22,11 +22,11 @@ class CalendarService {
 
     const formater = new FormatNumber();
 
-    const db_accounts = new AccountsService().getAll();
+    const accounts = new AccountsService().list()
 
     const cardsService = new CardsService();
-    const db_cards = cardsService.getAllBalances() || {};
-    const hasCards = cardsService.hasCards();
+    const db_cards = cardsService.getAllBalances() || {}; // TODO
+    const hasCards = cardsService.list().length > 0
 
     for (const evento of events) {
       if (evento.description === '') continue;
@@ -52,8 +52,9 @@ class CalendarService {
       if (evento.hasWallet) {
         tableTtt[0].push(['Wallet', dd, evento.title, value, tags, evento.hasIgn]);
       } else if (evento.account) {
-        const index = db_accounts[evento.account].index;
-        const name = db_accounts[evento.account].name;
+        const acc = accounts.find(acc => acc.id === evento.account)
+        const index = acc.index
+        const name = acc.name
         tableTtt[1 + index].push([name, dd, evento.title, value, tags, evento.hasIgn]);
       } else if (evento.card) {
         tableCards.push([evento.card.code, dd, evento.title, value, tags, evento.hasIgn]);

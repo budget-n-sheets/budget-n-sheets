@@ -244,9 +244,8 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
   resumeMisc_ () {
     const formater = new FormatNumber()
 
-    const db_accounts = new AccountsService().getAll()
-    for (const id in db_accounts) {
-      const account = db_accounts[id]
+    const accounts = new AccountsService().list()
+    for (const account of accounts) {
       if (account.time_start < this.start) continue
 
       const a1 = this.xy2A1_(1 + account.index, account.time_start, 1, 1)
@@ -254,12 +253,12 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
     }
 
     const col = 3 + this._w * (2 + this.num_acc)
-    const db_cards = new CardsService().getAll()
-    for (const id in db_cards) {
+    const cards = new CardsService().list()
+    for (const card in cards) {
       const rangeList = []
-      const formula = '=' + formater.localeSignal(db_cards[id].limit)
+      const formula = '=' + formater.localeSignal(card.limit)
 
-      const index = 1 + this.num_acc + 1 + db_cards[id].index
+      const index = 1 + this.num_acc + 1 + card.index
       for (let mm = this.start; mm < this.end; mm++) {
         rangeList.push(this.xy2A1_(index, mm, 1, 2))
       }

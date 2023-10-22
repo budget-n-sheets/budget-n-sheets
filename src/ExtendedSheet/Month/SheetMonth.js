@@ -58,21 +58,19 @@ class SheetMonth extends ExtendedSheet {
 
   resetConditionalFormat () {
     const colors = Consts.color_palette
-    let db
+    let list
 
     for (const c in colors) {
       colors[c] = []
     }
 
-    db = new AccountsService().getAll()
-    for (const id in db) {
-      const acc = db[id]
+    list = new AccountsService().list()
+    for (const acc of list) {
       colors[acc.color].push(acc.name)
     }
 
-    db = new CardsService().getAll()
-    for (const id in db) {
-      const card = db[id]
+    list = new CardsService().list()
+    for (const card of list) {
       colors[card.color].push(card.code)
       colors[card.color] = colors[card.color].concat(card.aliases)
     }
@@ -241,18 +239,16 @@ class SheetMonth extends ExtendedSheet {
   resetSelectors () {
     const names = ['Wallet']
     const codes = ['Wallet']
-    let db, rule
+    let list, rule
 
-    db = new AccountsService().getAll()
-    for (const id in db) {
-      const acc = db[id]
+    list = new AccountsService().list()
+    for (const acc of list) {
       names.push(acc.name)
       codes.push(acc.name)
     }
 
-    db = new CardsService().getAll()
-    for (const id in db) {
-      const card = db[id]
+    list = new CardsService().list()
+    for (const card of list) {
       names.push(card.code)
       codes.push(card.code)
       codes.push(...card.aliases)

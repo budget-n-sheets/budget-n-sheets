@@ -29,32 +29,21 @@ class Backup {
   }
 
   collectDbAccounts_ () {
-    const db_accounts = new AccountsService().getAll();
     let k = 0;
-    for (const id in db_accounts) {
-      const account = db_accounts[id];
-      this._backup.db_tables.accounts[k] = {
-        name: account.name,
-        balance: account.balance,
-        time_start: account.time_start,
-        color: account.color
-      };
+    const accounts = new AccountsService().list();
+    for (const acc of accounts) {
+      this._backup.db_tables.accounts[k] = acc.data
+      delete this._backup.db_tables.accounts[k].index
       k++;
     }
   }
 
   collectDbCards_ () {
-    const db_cards = new CardsService().getAll();
     let k = 0;
-    for (const id in db_cards) {
-      const card = db_cards[id];
-      this._backup.db_tables.cards[k] = {
-        name: card.name,
-        code: card.code,
-        limit: card.limit,
-        aliases: card.aliases,
-        color: card.color
-      };
+    const cards = new CardsService().list();
+    for (const card of cards) {
+      this._backup.db_tables.cards[k] = card.data
+      delete this._backup.db_tables.cards[k].index
       k++;
     }
   }

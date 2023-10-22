@@ -128,10 +128,9 @@ class UpdateTemplate extends Update {
     const spreadsheet = SpreadsheetApp2.getActive()
     const numAccs = SettingsConst.get('number_accounts')
 
-    const db = new AccountsService().getAll()
+    const accounts = new AccountsService().list()
     const accs = ['Wallet', '', '', '', '', '']
-    for (const id in db) {
-      const acc = db[id]
+    for (const acc of accounts) {
       accs[1 + acc.index] = acc.name
     }
 

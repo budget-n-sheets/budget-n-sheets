@@ -20,11 +20,11 @@ class CalendarUtils {
     const accountsService = new AccountsService();
     const cardsService = new CardsService();
 
-    const hasCards = cardsService.hasCards();
+    const hasCards = cardsService.list().length > 0;
 
     const regExp = {
       accounts: accountsService.getNamesRegExp(),
-      cards: cardsService.getCodesRegExp(true)
+      cards: cardsService.getCodesRegExp(true) // TODO
     };
 
     let i = -1;
@@ -73,7 +73,7 @@ class CalendarUtils {
       if (hasCards) {
         matches = description.match(regExp.cards) || [];
         for (const code of matches) {
-          const card = cardsService.getByCode(code);
+          const card = cardsService.getByCode(code); // TODO
           if (card) {
             metadata.card = { id: card.id, code: code };
             break;

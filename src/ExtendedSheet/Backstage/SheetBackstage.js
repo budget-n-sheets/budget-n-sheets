@@ -54,7 +54,7 @@ class SheetBackstage extends ExtendedSheet {
 
     const cellReference = this.sheet.getRange('B1')
     let index = 0
-    let db
+    let list
 
     this.sheet.getRange(
         1, 2, 1,
@@ -63,9 +63,8 @@ class SheetBackstage extends ExtendedSheet {
 
     cellReference.setValue('\^Wallet\$')
 
-    db = new AccountsService().getAll()
-    for (const id in db) {
-      const acc = db[id]
+    list = new AccountsService().list()
+    for (const acc of list) {
       const range = cellReference.offset(0, _w * ++index)
       const column = range.getColumn()
 
@@ -87,9 +86,8 @@ class SheetBackstage extends ExtendedSheet {
 
     cellReference.offset(0, _w * ++index).setValue(`\^Cards\$`)
 
-    db = new CardsService().getAll()
-    for (const id in db) {
-      const card = db[id]
+    list = new CardsService().list()
+    for (const card of list) {
       const range = cellReference.offset(0, _w * ++index)
       const column = range.getColumn()
 

@@ -18,8 +18,9 @@ class DemoTags extends QuickstartDemo {
   }
 
   makeConfig (num) {
-    this._accsService = new AccountsService()
-    const code = this._accsService.getAny().metadata.name
+    const accs = new AccountsService().list()
+    const ri = Noise.randomInteger(accs.length)
+    const code = accs[ri].name
 
     switch (num) {
       case 1:

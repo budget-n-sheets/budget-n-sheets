@@ -10,19 +10,25 @@
 
 class DemoAccCards extends QuickstartDemo {
   makeConfig (num) {
-    if (num === 1) this._accId = new AccountsService().getAny().id;
+    if (num === 1) {
+      const accs = new AccountsService().list()
+      const ri = Noise.randomInteger(accs.length);
+      this._accId = accs[ri].id;
+    }
     if (num < 3) {
       this.isReady = true;
       return;
     }
 
     this._cardsService = new CardsService();
-    if (!this._cardsService.hasCards()) {
+    const cards = this._cardsService.list()
+    if (!cards.length > 0) {
       this.isReady = true;
       return;
     }
 
-    const code = this._cardsService.getAny().metadata.code;
+    const ri = Noise.randomInteger(cards.length);
+    const code = cards[ri].code;
     let mm = 1;
 
     if (num === 3) {
@@ -47,7 +53,9 @@ class DemoAccCards extends QuickstartDemo {
       ]);
     } else if (num === 4) {
       this.required = ['mm'];
-      const name = new AccountsService().getAny().name
+      const accs = new AccountsService().list()
+      const ri = Noise.randomInteger(accs.length);
+      const name = accs[ri].name
 
       this.list = [
         [],
@@ -80,7 +88,7 @@ class DemoAccCards extends QuickstartDemo {
         return;
     }
 
-    if (!this._cardsService.hasCards()) {
+    if (!this._cardsService.list().length > 0) {
       showDialogAddCard();
       return;
     }

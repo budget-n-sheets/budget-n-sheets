@@ -55,7 +55,6 @@ class RestoreBackup {
         const acc = accountsService.getByName(e.name);
         if (acc) accountsService.update(acc.id, db_tables.accounts[e.prevIndex]);
       });
-      accountsService.save();
       accountsService.flush();
     }
 
@@ -64,7 +63,6 @@ class RestoreBackup {
       db_tables.cards[i].aliases = db_tables.cards[i].aliases.join(',');
       cardsService.create(db_tables.cards[i]);
     }
-    cardsService.save();
     cardsService.flush();
   }
 

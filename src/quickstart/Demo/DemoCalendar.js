@@ -158,8 +158,15 @@ class DemoCalendar extends QuickstartDemo {
       return;
     }
 
-    this.acc_name = new AccountsService().getAny().metadata.name;
-    this.card_code = new CardsService().getAny()?.metadata.code || '';
+    let list, ri
+
+    list = new AccountsService().list()
+    ri = Noise.randomInteger(list.length)
+    this.acc_name = list[ri].name
+
+    list = new CardsService().list()
+    ri = Noise.randomInteger(list.length)
+    this.card_code = list.lenght > 0 ? list[ri].code : ''
 
     this.getSheets_();
 
