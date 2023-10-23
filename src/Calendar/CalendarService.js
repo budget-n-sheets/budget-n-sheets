@@ -15,7 +15,7 @@ class CalendarService {
     if (events.length === 0) return;
 
     const tableCards = [];
-    const tableTtt = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [] };
+    const tableTtt = []
 
     const mm = date.getMonth();
     const dd = date.getDate();
@@ -50,24 +50,17 @@ class CalendarService {
       value = '=' + formater.localeSignal(value);
 
       if (evento.hasWallet) {
-        tableTtt[0].push(['Wallet', dd, evento.title, value, tags, evento.hasIgn]);
+        tableTtt.push(['Wallet', dd, evento.title, value, tags, evento.hasIgn]);
       } else if (evento.account) {
-        const acc = accounts.find(acc => acc.id === evento.account)
-        const index = acc.index
-        const name = acc.name
-        tableTtt[1 + index].push([name, dd, evento.title, value, tags, evento.hasIgn]);
+        const name = accounts.find(acc => acc.id === evento.account).name
+        tableTtt.push([name, dd, evento.title, value, tags, evento.hasIgn]);
       } else if (evento.card) {
         tableCards.push([evento.card.code, dd, evento.title, value, tags, evento.hasIgn]);
       }
     }
 
     const ledger = new LedgerTtt(mm)
-
     if (tableCards.length > 0) ledger.mergeTransactions(tableCards)
-
-    for (const k in tableTtt) {
-      if (tableTtt[k].length === 0) continue;
-      ledger.mergeTransactions(tableTtt[k]);
-    }
+    ledger.mergeTransactions(tableTtt)
   }
 }
