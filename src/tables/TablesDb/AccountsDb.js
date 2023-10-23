@@ -44,4 +44,17 @@ class AccountsDb extends TablesDb {
 
     return acc
   }
+
+  update (acc) {
+    if (!acc instanceof Account) throw new Error('Invalid item.')
+
+    const id = acc.id
+    if (!this._db[id]) throw new Error('Account not found.')
+
+    acc.index = -1
+    this._db[id] = acc.data
+    this.commit()
+
+    return acc
+  }
 }

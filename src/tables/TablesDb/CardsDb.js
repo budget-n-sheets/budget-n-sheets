@@ -44,4 +44,17 @@ class CardsDb extends TablesDb {
 
     return card
   }
+
+  update (card) {
+    if (!card instanceof Card) throw new Error('Invalid item.')
+
+    const id = card.id
+    if (!this._db[id]) throw new Error('Card not found.')
+
+    card.index = -1
+    this._db[id] = card.data
+    this.commit()
+
+    return card
+  }
 }

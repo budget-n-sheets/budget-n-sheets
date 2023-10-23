@@ -53,15 +53,4 @@ class TablesDb {
   list () {
     return this._ids.map(id => this.get(id))
   }
-
-  update (id, data) {
-    const item = this.get(id)
-
-    data.index = -1
-    item.data = data
-    this._db[id] = item.data
-    this.commit()
-
-    return item
-  }
 }
