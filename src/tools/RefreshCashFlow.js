@@ -17,7 +17,7 @@ class RefreshCashFlow {
     this.dec_p = SettingsSpreadsheet.get('decimal_separator');
     this.financial_year = SettingsConst.get('financial_year');
 
-    this.db_cards = new CardsService().getAllBalances() || {};
+    this.balances = new SheetBackstage().getCardsBalances() || {}
 
     this.values = {};
 
@@ -76,10 +76,7 @@ class RefreshCashFlow {
           if (!ev.card) continue;
           if (!ev.hasWallet && !ev.account) continue;
 
-          if (this.mm > 0) {
-            const card = this.db_cards[ev.card.id];
-            value = card.balances[this.mm - 1];
-          }
+          if (this.mm > 0) value = this.balances[ev.card.id][this.mm - 1]
         } else if (ev.translation && (ev.tags.length || ev.tagImportant)) {
           const tag = ev.tagImportant || ev.tags[0]
           if (!tagsStats[tag]) continue

@@ -21,12 +21,8 @@ class CalendarService {
     const dd = date.getDate();
 
     const formater = new FormatNumber();
-
     const accounts = new AccountsService().list()
-
-    const cardsService = new CardsService();
-    const db_cards = cardsService.getAllBalances() || {}; // TODO
-    const hasCards = cardsService.list().length > 0
+    const balances = new SheetBackstage().getCardsBalances()
 
     for (const evento of events) {
       if (evento.description === '') continue;
@@ -40,11 +36,7 @@ class CalendarService {
         if (!evento.hasQcc) continue;
         if (!evento.card) continue;
         if (!evento.hasWallet && !evento.account) continue;
-
-        if (mm > 0) {
-          const card = db_cards[evento.card.id];
-          value = card.balances[mm - 1];
-        }
+        if (mm > 0) value = balances[evento.card.id][mm - 1]
       }
 
       value = '=' + formater.localeSignal(value);

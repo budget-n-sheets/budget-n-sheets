@@ -30,6 +30,29 @@ class SheetBackstage extends ExtendedSheet {
     return this._specs
   }
 
+  getCardsBalances () {
+    const cards = new CardsService().list()
+    if (cards.length === 0) return null
+
+    const balances = {}
+    const _h = TABLE_DIMENSION.height
+    const _w = TABLE_DIMENSION.width
+
+    const snapshot = this.getGroupRange(0, 0, 12).getValues()
+
+    for (const card of cards) {
+      const id = card.id
+      const index = card.index
+
+      balances[id] = new Array(12).fill(0)
+      for (let mm = 0; mm < 12; mm++) {
+        balances[id][mm] = +snapshot[4 + _h * mm][_w * index]
+      }
+    }
+
+    return balances
+  }
+
   getGroupRange (monthOffset = 0, tableOffset = 0, numMonths, numTables) {
     if (!numMonths) numMonths = 12 - monthOffset;
     if (!numTables) numTables = 12 + this.num_acc - tableOffset;
