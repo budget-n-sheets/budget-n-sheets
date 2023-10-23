@@ -76,19 +76,19 @@ class SheetBackstage extends ExtendedSheet {
     const _w = this.specs.table.width
 
     const cellReference = this.sheet.getRange('B1')
-    let index = 0
-    let service
+    let list
 
     this.sheet.getRange(
         1, 2, 1,
         this.sheet.getMaxColumns() - 1)
       .clearContent()
-
     cellReference.setValue('\^Wallet\$')
 
-    service = new AccountsService()
-    for (const acc of service.list()) {
-      const range = cellReference.offset(0, _w * ++index)
+    list = new AccountsService().list()
+    const tablesOffset = list.length
+
+    for (const acc of list) {
+      const range = cellReference.offset(0, _w * (1 + acc.index))
       const column = range.getColumn()
 
       range.setValue(`\^${acc.name}\$`)
@@ -105,16 +105,13 @@ class SheetBackstage extends ExtendedSheet {
 
       range.offset(1 + _h * acc.time_start, 0)
         .setFormula(numberFormater.localeSignal(acc.balance))
-
-      acc.index = index
-      service.update(acc)
     }
 
-    cellReference.offset(0, _w * ++index).setValue(`\^Cards\$`)
+    cellReference.offset(0, _w * (1 + tablesOffset)).setValue(`\^Cards\$`)
 
-    service = new CardsService()
-    for (const card of service.list()) {
-      const range = cellReference.offset(0, _w * ++index)
+    list = new CardsService().list()
+    for (const card of list) {
+      const range = cellReference.offset(0, _w * (2 + tablesOffset + card.index))
       const column = range.getColumn()
 
       range.setValue(`\^${card.code}\$` + card.aliases.map(a => `|\^${a}\$`).join(''))
@@ -126,9 +123,6 @@ class SheetBackstage extends ExtendedSheet {
       this.sheet
         .getRangeList(ranges)
         .setFormula(numberFormater.localeSignal(card.limit));
-
-      card.index = index
-      service.update(card)
     }
 
     return this
