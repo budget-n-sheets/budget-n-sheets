@@ -125,7 +125,7 @@ class SheetBackstage extends ExtendedSheet {
       }
       this.sheet
         .getRangeList(ranges)
-        .setValue(numberFormater.localeSignal(card.limit));
+        .setFormula(numberFormater.localeSignal(card.limit));
 
       card.index = index
       service.update(card.id, card.data)
