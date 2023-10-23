@@ -80,41 +80,21 @@ class SetupParts {
     const name_acc = this._config.name_accounts
     const num_acc = this._config.number_accounts
 
-    const db_accounts = {}
-    const meta_accounts = {}
+    CachedProperties.withDocument().update('db_accounts', {})
+    CachedProperties.withDocument().update('db_cards', {})
 
-    const list_ids = []
+    const accountsService = new AccountsService()
+
     for (let k = 0; k < num_acc; k++) {
-      let i = 0
-      let id = ''
-
-      do {
-        id = Noise.randomString(7, 'lonum')
-      } while (list_ids.indexOf(id) !== -1 && ++i < 99)
-      if (i >= 99) throw new Error('Could not generate account IDs.')
-      list_ids.push(id)
-
       const account = {
-        index: k,
         name: name_acc[k].name,
         balance: 0,
         time_start: initial_month,
         color: 'whitesmoke'
       }
 
-      db_accounts[id] = {}
-      Object.assign(db_accounts[id], account)
-
-      delete account.index
-      meta_accounts[k] = {}
-      Object.assign(meta_accounts[k], account)
+      accountsService.create(account)
     }
-
-    this._metadata.set('db_accounts', meta_accounts)
-    CachedProperties.withDocument().update('db_accounts', db_accounts)
-
-    this._metadata.set('db_cards', {})
-    CachedProperties.withDocument().update('db_cards', {})
   }
 
   setupLayout_ () {
