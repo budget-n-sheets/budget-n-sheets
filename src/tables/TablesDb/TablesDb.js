@@ -12,8 +12,7 @@ class TablesDb {
   constructor (key) {
     this._key = key
     this._db = CachedProperties.withDocument().get(key)
-
-    this._ids = Object.keys(this._db)
+    this.refreshIds_()
   }
 
   getUuid_ () {
@@ -24,6 +23,16 @@ class TablesDb {
     }
 
     throw new Error('Service TablesDb failed to generate a UUID.')
+  }
+
+  indexOf_ (id) {
+    return this._ids.indexOf(id)
+  }
+
+  refreshIds_ () {
+    this._ids = Object.keys(this._db)
+    this._ids.sort()
+    this._ids.forEach((id, index) => this._db[id].index = index)
   }
 
   updateMetadata_ () {
@@ -45,8 +54,8 @@ class TablesDb {
   }
 
   commit () {
+    this.refreshIds_()
     CachedProperties.withDocument().update(this._key, this._db)
-    this._ids = Object.keys(this._db)
     this.updateMetadata_()
   }
 

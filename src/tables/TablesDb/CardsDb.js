@@ -27,6 +27,7 @@ class CardsDb extends TablesDb {
 
     this._db[id] = card.data
     this.commit()
+    card.index = this.indexOf_(id)
 
     return card
   }
@@ -54,6 +55,7 @@ class CardsDb extends TablesDb {
     card.index = -1
     this._db[id] = card.data
     this.commit()
+    card.index = this.indexOf_(id)
 
     return card
   }

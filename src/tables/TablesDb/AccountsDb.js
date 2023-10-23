@@ -27,6 +27,7 @@ class AccountsDb extends TablesDb {
 
     this._db[id] = acc.data
     this.commit()
+    acc.index = this.indexOf_(id)
 
     return acc
   }
@@ -54,6 +55,7 @@ class AccountsDb extends TablesDb {
     acc.index = -1
     this._db[id] = acc.data
     this.commit()
+    acc.index = this.indexOf_(id)
 
     return acc
   }
