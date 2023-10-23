@@ -12,6 +12,7 @@ class TablesDb {
   constructor (key) {
     this._key = key
     this._db = CachedProperties.withDocument().get(key)
+
     this._ids = Object.keys(this._db)
   }
 
@@ -40,12 +41,12 @@ class TablesDb {
 
   delete_ (id) {
     delete this._db[id]
-    this._ids.splice(this._ids.indexOf(id), 1)
     this.commit()
   }
 
   commit () {
     CachedProperties.withDocument().update(this._key, this._db)
+    this._ids = Object.keys(this._db)
     this.updateMetadata_()
   }
 
@@ -59,7 +60,6 @@ class TablesDb {
     data.index = -1
     item.data = data
     this._db[id] = item.data
-    this._ids.push(id)
     this.commit()
 
     return item

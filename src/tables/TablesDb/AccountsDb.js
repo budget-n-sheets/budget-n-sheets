@@ -26,7 +26,6 @@ class AccountsDb extends TablesDb {
     }
 
     this._db[id] = acc.data
-    this._ids.push(id)
     this.commit()
 
     return acc

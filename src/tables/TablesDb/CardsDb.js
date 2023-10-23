@@ -26,7 +26,6 @@ class CardsDb extends TablesDb {
     }
 
     this._db[id] = card.data
-    this._ids.push(id)
     this.commit()
 
     return card
