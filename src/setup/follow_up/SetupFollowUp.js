@@ -49,7 +49,10 @@ class SetupFollowUp extends SetupSuperCopy {
       meta.time_start = mm
 
       const acc = accounts.getByName(e.name)
-      if (acc) accounts.update(acc.id, meta)
+      if (acc) {
+        acc.data = meta
+        accounts.update(acc)
+      }
     })
 
     accounts.flush()

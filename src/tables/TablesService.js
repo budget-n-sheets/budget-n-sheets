@@ -35,9 +35,9 @@ class TablesService {
     return this._db.list()
   }
 
-  update (id, data) {
+  update (item) {
     try {
-      this._db.update(id, data)
+      this._db.update(item)
     } catch (e) {
       LogLog.error(e)
       return e.message

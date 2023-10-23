@@ -53,7 +53,10 @@ class RestoreBackup {
 
       this.name_accounts.forEach(e => {
         const acc = accountsService.getByName(e.name);
-        if (acc) accountsService.update(acc.id, db_tables.accounts[e.prevIndex]);
+        if (acc) {
+          acc.data = db_tables.accounts[e.prevIndex]
+          accountsService.update(acc)
+        }
       });
       accountsService.flush();
     }

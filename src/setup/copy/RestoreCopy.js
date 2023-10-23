@@ -41,7 +41,10 @@ class RestoreCopy extends SetupSuperCopy {
 
     this.name_accounts.forEach(e => {
       const acc = accountsService.getByName(e.name);
-      if (acc) accountsService.update(acc.id, metadata[e.prevIndex]);
+      if (acc) {
+        acc.data = metadata[e.prevIndex]
+        accountsService.update(acc)
+      }
     });
 
     accountsService.flush();

@@ -107,7 +107,7 @@ class SheetBackstage extends ExtendedSheet {
         .setFormula(numberFormater.localeSignal(acc.balance))
 
       acc.index = index
-      service.update(acc.id, acc.data)
+      service.update(acc)
     }
 
     cellReference.offset(0, _w * ++index).setValue(`\^Cards\$`)
@@ -128,7 +128,7 @@ class SheetBackstage extends ExtendedSheet {
         .setFormula(numberFormater.localeSignal(card.limit));
 
       card.index = index
-      service.update(card.id, card.data)
+      service.update(card)
     }
 
     return this

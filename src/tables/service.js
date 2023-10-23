@@ -23,7 +23,9 @@ function accountsClientService (payload) {
     }
     case 'update': {
       const service = new AccountsService()
-      service.update(payload.id, payload.metadata)
+      const acc = service.get(payload.id)
+      acc.data = payload.metadata
+      service.update(acc)
       service.flush()
       break;
     }
@@ -56,7 +58,9 @@ function cardsClientService (payload) {
     }
     case 'update': {
       const service = new CardsService();
-      service.update(payload.id, payload.metadata)
+      const card = service.get(payload.id)
+      card.data = payload.metadata
+      service.update(card)
       service.flush();
       break;
     }
