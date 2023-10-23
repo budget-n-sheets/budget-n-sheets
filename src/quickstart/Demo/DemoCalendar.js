@@ -158,15 +158,8 @@ class DemoCalendar extends QuickstartDemo {
       return;
     }
 
-    let list, ri
-
-    list = new AccountsService().list()
-    ri = Noise.randomInteger(list.length)
-    this.acc_name = list[ri].name
-
-    list = new CardsService().list()
-    ri = Noise.randomInteger(list.length)
-    this.card_code = list.lenght > 0 ? list[ri].code : ''
+    this.acc_name = QuickstartUtils.getRandomAccount().name
+    this.card_code = QuickstartUtils.getRandomCard()?.name || ''
 
     this.getSheets_();
 

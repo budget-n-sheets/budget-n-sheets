@@ -14,9 +14,7 @@ class DemoBlankValue extends QuickstartDemo {
   }
 
   makeConfig (num) {
-    const accs = new AccountsService().list()
-    const ri = Noise.randomInteger(accs.length)
-    const code = accs[ri].name
+    const code = QuickstartUtils.getRandomAccount().name
 
     switch (num) {
       case 1:

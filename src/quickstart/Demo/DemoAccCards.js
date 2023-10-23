@@ -10,11 +10,7 @@
 
 class DemoAccCards extends QuickstartDemo {
   makeConfig (num) {
-    if (num === 1) {
-      const accs = new AccountsService().list()
-      const ri = Noise.randomInteger(accs.length);
-      this._accId = accs[ri].id;
-    }
+    if (num === 1) this._accId = QuickstartUtils.getRandomAccount().id
     if (num < 3) {
       this.isReady = true;
       return;
@@ -27,8 +23,7 @@ class DemoAccCards extends QuickstartDemo {
       return;
     }
 
-    const ri = Noise.randomInteger(cards.length);
-    const code = cards[ri].code;
+    const code = QuickstartUtils.getRandomCard().code
     let mm = 1;
 
     if (num === 3) {
@@ -53,9 +48,7 @@ class DemoAccCards extends QuickstartDemo {
       ]);
     } else if (num === 4) {
       this.required = ['mm'];
-      const accs = new AccountsService().list()
-      const ri = Noise.randomInteger(accs.length);
-      const name = accs[ri].name
+      const name = QuickstartUtils.getRandomAccount().name
 
       this.list = [
         [],
