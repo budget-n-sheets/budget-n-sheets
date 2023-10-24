@@ -132,7 +132,7 @@ function updateTabsColors (sheets, financial_year, yyyy, mm) {
   const init_month = SettingsUser.get('initial_month');
 
   if (!sheets) {
-    date = Utils.getLocaleDate();
+    date = LocaleUtils.getDate();
     yyyy = date.getFullYear();
     mm = date.getMonth();
 

@@ -24,7 +24,7 @@ class TriggersService {
   }
 
   static installTimeBased_ () {
-    const yyyy = Utils.getLocaleDate().getFullYear();
+    const yyyy = LocaleUtils.getDate().getFullYear();
     const hour = 0;
     const minute = Noise.randomInteger(60);
 

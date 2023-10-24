@@ -55,7 +55,7 @@ function dailyHandler_ (e) {
   }
 
   if (SettingsUser.get('post_day_events')) {
-    const date = Utils.getLocaleDate();
+    const date = LocaleUtils.getDate();
     CalendarService.syncDayWithSpreadsheet(date);
   }
 }
