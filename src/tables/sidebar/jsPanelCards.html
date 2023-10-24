@@ -57,7 +57,7 @@
           $('<h3>').text(card.name),
           $('<div>').append([
             $('<strong>').text(card.code),
-            document.createTextNode(` | $ ${FormatNumber.financial(card.limit)}`)
+            document.createTextNode(` | $ ${NumberFormatter.financial(card.limit)}`)
           ])
         ]);
 

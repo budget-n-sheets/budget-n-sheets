@@ -20,7 +20,7 @@ class CalendarService {
     const mm = date.getMonth();
     const dd = date.getDate();
 
-    const formater = new FormatNumber();
+    const formater = new NumberFormatter();
     const accounts = new AccountsService().list()
     const balances = new SheetBackstage().getCardsBalances()
 

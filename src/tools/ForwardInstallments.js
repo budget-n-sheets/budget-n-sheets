@@ -14,7 +14,7 @@ class ForwardInstallments {
     this.mm = mm
     this.sheet = SpreadsheetApp2.getActive().getSheetByName(name)
 
-    this.formater = new FormatNumber();
+    this.formater = new NumberFormatter();
 
     this.rangeList = { indexes: [], ranges: [] };
     this.specs = Object.freeze(SheetMonth.specs);

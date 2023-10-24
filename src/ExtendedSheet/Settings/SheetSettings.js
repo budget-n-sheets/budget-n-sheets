@@ -20,7 +20,7 @@ class SheetSettings extends ExtendedSheet {
 
   resetFormulas () {
     const formulaBuilder = FormulaBuild.settings().formulas()
-    const formater = new FormatNumber()
+    const formater = new NumberFormatter()
     this.sheet
       .getRange(2, 2, 10, 1)
       .setFormulas([
@@ -39,7 +39,7 @@ class SheetSettings extends ExtendedSheet {
   }
 
   resetNumberFormat () {
-    const numberFormat = FormatNumberUtils.getNumberFormat(false)
+    const numberFormat = NumberFormatterUtils.getNumberFormat(false)
     this.sheet
       .getRange(8, 2)
       .setNumberFormat(numberFormat)

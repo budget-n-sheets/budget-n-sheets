@@ -28,7 +28,7 @@ class SheetCashFlow extends ExtendedSheet {
   }
 
   resetBalanceReference () {
-    const numberFormater = new FormatNumber()
+    const numberFormater = new NumberFormatter()
     const financial_year = SettingsConst.get('financial_year')
 
     const w = 1 + this.specs.width
@@ -96,7 +96,7 @@ class SheetCashFlow extends ExtendedSheet {
   }
 
   resetNumberFormat () {
-    const numberFormat = FormatNumberUtils.getFinancialFormat()
+    const numberFormat = NumberFormatterUtils.getFinancialFormat()
     const w = 1 + this.specs.width
 
     const ranges = []

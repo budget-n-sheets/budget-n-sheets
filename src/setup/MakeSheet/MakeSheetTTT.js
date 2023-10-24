@@ -43,7 +43,7 @@ class MakeSheetTTT extends MakeSheet {
     const decP = SettingsSpreadsheet.get('decimal_places')
 
     if (decP !== 2) {
-      const numberFormat = FormatNumberUtils.getFinancialFormat()
+      const numberFormat = NumberFormatterUtils.getFinancialFormat()
       const specs = SheetMonth.specs
       const numRows = 400 // this.sheet.getMaxRows() - specs.row + 1
       this.sheet

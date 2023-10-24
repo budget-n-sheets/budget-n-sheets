@@ -71,7 +71,7 @@ class SheetBackstage extends ExtendedSheet {
   }
 
   resetGroupData () {
-    const numberFormater = new FormatNumber()
+    const numberFormater = new NumberFormatter()
     const _h = this.specs.table.height
     const _w = this.specs.table.width
 
@@ -129,7 +129,7 @@ class SheetBackstage extends ExtendedSheet {
   }
 
   resetNumberFormat () {
-    const numberFormat = FormatNumberUtils.getNumberFormat()
+    const numberFormat = NumberFormatterUtils.getNumberFormat()
     this.sheet
       .getRange(
         this.specs.init.row,

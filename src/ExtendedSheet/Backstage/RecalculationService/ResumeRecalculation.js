@@ -242,7 +242,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
   }
 
   resumeMisc_ () {
-    const formater = new FormatNumber()
+    const formater = new NumberFormatter()
 
     const accounts = new AccountsService().list()
     for (const account of accounts) {

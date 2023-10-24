@@ -12,7 +12,7 @@ class RefreshCashFlow {
   constructor () {
     this.sheet = SpreadsheetApp2.getActive().getSheetByName('Cash Flow');
 
-    this.formater = new FormatNumber();
+    this.formater = new NumberFormatter();
 
     this.dec_p = SettingsSpreadsheet.get('decimal_separator');
     this.financial_year = SettingsConst.get('financial_year');

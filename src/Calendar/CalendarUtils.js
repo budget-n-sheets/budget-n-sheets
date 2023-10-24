@@ -15,7 +15,7 @@ class CalendarUtils {
     const dateOffset = Utils.getDateOffset();
     const dec_p = SettingsSpreadsheet.get('decimal_places');
     const dec_s = SettingsSpreadsheet.get('decimal_separator');
-    const valueRegExp = FormatNumberUtils.getCurrencyRegExp();
+    const valueRegExp = NumberFormatterUtils.getCurrencyRegExp();
 
     const accountsService = new AccountsService();
     const cardsService = new CardsService();

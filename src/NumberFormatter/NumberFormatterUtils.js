@@ -8,7 +8,7 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class FormatNumberUtils {
+class NumberFormatterUtils {
   static get decP () {
     return SettingsSpreadsheet.get('decimal_places')
   }

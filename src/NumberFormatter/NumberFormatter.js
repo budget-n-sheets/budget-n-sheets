@@ -8,7 +8,7 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class FormatNumber {
+class NumberFormatter {
   constructor () {
     const settings = SettingsSpreadsheet.getAll();
 

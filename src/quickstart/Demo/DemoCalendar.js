@@ -32,7 +32,7 @@ class DemoCalendar extends QuickstartDemo {
   }
 
   createEvents_ () {
-    const formater = new FormatNumber();
+    const formater = new NumberFormatter();
 
     this.eves.forEach(eve => {
       let description = eve.description;

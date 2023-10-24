@@ -119,7 +119,7 @@ class SheetSummary extends ExtendedSheet {
   }
 
   resetNumberFormat () {
-    const numberFormat = FormatNumberUtils.getFinancialFormat()
+    const numberFormat = NumberFormatterUtils.getFinancialFormat()
     this.sheet
       .getRangeList(['D6:I7', 'D9:I20', 'D24:I35'])
       .setNumberFormat(numberFormat)

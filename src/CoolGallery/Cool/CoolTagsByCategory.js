@@ -83,7 +83,7 @@ class CoolTagsByCategory extends CoolGallery {
   }
 
   makeConfig () {
-    this._consts.number_format = FormatNumberUtils.getNumberFormat();
+    this._consts.number_format = NumberFormatterUtils.getNumberFormat();
 
     return this;
   }

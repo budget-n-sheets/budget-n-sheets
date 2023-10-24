@@ -70,7 +70,7 @@ class UserSettings {
       if (sheet) {
         sheet.getRange('B4')
           .setFormula(
-            new FormatNumber().localeSignal(SettingsUser.get('initial_month') + 1)
+            new NumberFormatter().localeSignal(SettingsUser.get('initial_month') + 1)
           );
       }
 

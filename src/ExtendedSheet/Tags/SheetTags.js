@@ -71,7 +71,7 @@ class SheetTags extends ExtendedSheet {
   }
 
   resetNumberFormat () {
-    const numberFormat = FormatNumberUtils.getFinancialFormat()
+    const numberFormat = NumberFormatterUtils.getFinancialFormat()
     this.sheet
       .getRange(
         this.specs.row, 1 + this.specs.width,
