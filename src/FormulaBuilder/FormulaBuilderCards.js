@@ -48,7 +48,7 @@ class FormulaBuilderCardsHeader {
   static sparkline (index, card, reference) {
     this.load_();
 
-    const dec_s = this._settings.decimal_separator ? ',' : '\\';
+    const dec_s = LocaleUtils.getArrayColumnSeparator()
 
     let formula;
 

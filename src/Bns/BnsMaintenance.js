@@ -11,7 +11,7 @@
 class BnsMaintenance {
   static fixSpreadsheet () {
     const financialYear = SettingsConst.get('financial_year')
-    const date = Utils.getLocaleDate()
+    const date = LocaleUtils.getDate()
     const yyyy = date.getFullYear()
 
     let month = date.getMonth()

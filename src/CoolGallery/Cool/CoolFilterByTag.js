@@ -104,8 +104,7 @@ class CoolFilterByTag extends CoolGallery {
     this._consts.num_acc = SettingsConst.get('number_accounts');
     this._consts.number_format = NumberFormatterUtils.getNumberFormat();
 
-    this._settings.dec_s = SettingsSpreadsheet.get('decimal_separator');
-    this._settings.dec_p = (this._settings.dec_s ? ', ' : ' \\ ');
+    this._settings.dec_p = LocaleUtils.getArrayColumnSeparator() + ' '
 
     return this;
   }

@@ -47,7 +47,7 @@ function hideSheets_ (a) {
   let mm;
 
   if (a) {
-    mm = Utils.getLocaleDate().getMonth();
+    mm = LocaleUtils.getDate().getMonth();
   } else {
     sheet = SpreadsheetApp.getActiveSheet();
     mm = Consts.month_name.short.indexOf(sheet.getName());
