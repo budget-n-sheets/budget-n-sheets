@@ -64,21 +64,20 @@ class RangeUtils {
     str += posRow
 
     if (height === 1 && width === 0) return str
-    else {
-      str += ':'
-      posCol += width
 
-      m = mode2 % s_
-      str += ((m === 1 || m === 3) ? '$' : '')
+    str += ':'
+    posCol += width
 
-      c = (posCol - posCol % f_) / f_
-      str += (c ? String.fromCharCode(64 + c) : '')
-      str += String.fromCharCode(65 + posCol % f_)
+    m = mode2 % s_
+    str += ((m === 1 || m === 3) ? '$' : '')
 
-      if (height !== -1) {
-        str += (m >= 2 ? '$' : '')
-        str += posRow + height - 1
-      }
+    c = (posCol - posCol % f_) / f_
+    str += (c ? String.fromCharCode(64 + c) : '')
+    str += String.fromCharCode(65 + posCol % f_)
+
+    if (height !== -1) {
+      str += (m >= 2 ? '$' : '')
+      str += posRow + height - 1
     }
 
     return str
