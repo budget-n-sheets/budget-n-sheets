@@ -20,15 +20,15 @@ function toolForwardInstallments () {
   toolService_('forwardInstallments')
 }
 
-function toolInsertRows (sheet) {
-  toolService_('insertRows', sheet)
+function toolInsertRows () {
+  toolService_('insertRows')
 }
 
-function toolService_ (job, param) {
+function toolService_ (job) {
   const lock = LockService.getDocumentLock()
   if (!lock.tryLock(800)) return
 
-  const ranges = (param ? param.getActiveRangeList() : SpreadsheetApp.getActiveRangeList()).getRanges()
+  const ranges = SpreadsheetApp.getActiveRangeList().getRanges()
   const sheet = ranges[0].getSheet()
 
   switch (job) {
