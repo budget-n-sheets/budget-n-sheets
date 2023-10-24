@@ -23,12 +23,14 @@ class TriggersHandler {
     if (e.year > financialYear) {
       TriggersService.restart()
       BnsMaintenance.fixSpreadsheet()
+        .fixNumberFormat()
         .formatLastMonth()
       return
     }
 
     if (e['day-of-month'] === 1) {
       BnsMaintenance.fixSpreadsheet()
+        .fixNumberFormat()
         .formatLastMonth()
     }
 
@@ -46,6 +48,7 @@ class TriggersHandler {
 
     TriggersService.restart()
     BnsMaintenance.fixSpreadsheet()
+      .fixNumberFormat()
       .formatLastMonth()
   }
 
