@@ -9,21 +9,8 @@
  */
 
 class Utils {
-  static getDateOffset () {
-    return Utils.getLocaleDate() - Consts.date;
-  }
-
-  static getLocaleDate (date) {
-    let timezone = SpreadsheetApp2.getActive().spreadsheet.getSpreadsheetTimeZone();
-    if (typeof timezone !== 'string' || timezone === '') timezone = 'GMT';
-
-    const formatDate = Utilities.formatDate(date || Consts.date, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-    return new Date(formatDate);
-  }
-
   static getMonthDelta (mm) {
-    if (mm == null) mm = this.getLocaleDate().getMonth();
+    if (mm == null) mm = LocaleUtils.getDate().getMonth();
 
     switch (mm) {
       case 0:
@@ -84,7 +71,7 @@ class Utils {
 
 class MonthFactored extends Utils {
   static getActual () {
-    const date = this.getLocaleDate();
+    const date = LocaleUtils.getDate();
     const yyyy = date.getFullYear();
     const financial_year = SettingsConst.get('financial_year');
 
@@ -94,7 +81,7 @@ class MonthFactored extends Utils {
   }
 
   static getActive () {
-    const date = (this.date || this.getLocaleDate());
+    const date = (this.date || LocaleUtils.getDate());
     const yyyy = date.getFullYear();
     const financial_year = (this.financial_year || SettingsConst.get('financial_year'));
     const initial_month = SettingsUser.get('initial_month') + 1;
@@ -109,7 +96,7 @@ class MonthFactored extends Utils {
   }
 
   static getMFactor () {
-    const date = (this.date = this.getLocaleDate());
+    const date = (this.date = LocaleUtils.getDate());
     const yyyy = date.getFullYear();
     const financial_year = (this.financial_year = SettingsConst.get('financial_year'));
 

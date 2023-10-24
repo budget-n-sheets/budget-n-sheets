@@ -17,6 +17,19 @@ class LocaleUtils {
     return this.decS ? ',' : '\\'
   }
 
+  static getDate (date) {
+    let timezone = SpreadsheetApp2.getActive().spreadsheet.getSpreadsheetTimeZone();
+    if (typeof timezone !== 'string' || timezone === '') timezone = 'GMT';
+
+    const formatDate = Utilities.formatDate(date || Consts.date, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+    return new Date(formatDate);
+  }
+
+  static getDateOffset () {
+    return LocaleUtils.getDate() - Consts.date;
+  }
+
   static getNumberDecimalSeparator () {
     return this.decS ? '.' : ','
   }
