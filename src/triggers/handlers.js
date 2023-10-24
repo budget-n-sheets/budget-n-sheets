@@ -30,8 +30,8 @@ function weeklyHandler_ (e) {
   const financial_year = SettingsConst.get('financial_year');
   if (e.year < financial_year) return;
 
-  treatLayout_(e.year, e.month - 1);
   TriggersService.restart();
+  treatLayout_(e.year, e.month - 1);
 }
 
 function dailyHandler_ (e) {
@@ -45,8 +45,8 @@ function dailyHandler_ (e) {
   const mm = e.month - 1;
 
   if (financial_year < yyyy) {
-    treatLayout_(yyyy, mm);
     TriggersService.restart();
+    treatLayout_(yyyy, mm);
     return;
   }
 
