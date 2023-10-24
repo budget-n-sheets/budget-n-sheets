@@ -15,6 +15,8 @@ class SheetSettings extends ExtendedSheet {
 
   resetDefault () {
     this.resetProtection()
+      .resetNumberFormat()
+      .resetFormulas()
   }
 
   resetFormulas () {
