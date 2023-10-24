@@ -61,8 +61,7 @@ class SheetCashFlow extends ExtendedSheet {
 
   resetFormulas () {
     const financial_year = SettingsConst.get('financial_year')
-    const decS = SettingsSpreadsheet.get('decimal_separator')
-    const s = decS ? ',' : '\\'
+    const s = LocaleUtils.getArrayColumnSeparator()
     const w = 1 + this.specs.width
 
     const options = `{"charttype"${s} "column"; "color"${s} "#93c47d"; "negcolor"${s} "#e06666"; "empty"${s} "zero"; "nan"${s} "convert"}`

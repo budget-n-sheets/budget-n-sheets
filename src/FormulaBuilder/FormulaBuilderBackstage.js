@@ -189,7 +189,7 @@ class FormulaBuilderBackstageCards {
     const value = RangeUtils.rollA1Notation(6, 4 + 6 * mm, numRows);
     const tags = RangeUtils.rollA1Notation(6, 5 + 6 * mm, numRows);
 
-    const dec_s = this._settings.decimal_separator ? ',' : '\\';
+    const dec_s = LocaleUtils.getArrayColumnSeparator()
 
     let formula;
 
@@ -215,7 +215,7 @@ class FormulaBuilderBackstageCards {
     const card = RangeUtils.rollA1Notation(6, 2, numRows);
     const value = RangeUtils.rollA1Notation(6, 5, numRows);
 
-    const dec_s = this._settings.decimal_separator ? ',' : '\\';
+    const dec_s = LocaleUtils.getArrayColumnSeparator()
 
     let formula;
 

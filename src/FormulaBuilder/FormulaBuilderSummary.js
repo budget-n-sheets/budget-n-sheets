@@ -42,7 +42,7 @@ class FormulaBuilderSummaryTable1 {
   static sparklineBar () {
     this.load_()
 
-    const s = this._settings.decimal_separator ? ',' : '\\'
+    const s = LocaleUtils.getArrayColumnSeparator()
     let formula
 
     formula = `{"charttype"${s} "bar"; "max"${s} MAX(0; RC[-6])}`
@@ -62,7 +62,7 @@ class FormulaBuilderSummaryChart1 {
   static data (mm) {
     this.load_();
 
-    const dec_s = this._settings.decimal_separator ? ',' : '\\';
+    const dec_s = LocaleUtils.getArrayColumnSeparator()
 
     const income = RangeUtils.rollA1Notation(9 + mm, 4);
     const expenses = RangeUtils.rollA1Notation(9 + mm, 6);
