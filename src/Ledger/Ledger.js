@@ -10,17 +10,17 @@
 
 class Ledger {
   constructor (name) {
-    this._sheet = SpreadsheetApp2.getActive().getSheetByName(name);
-    this.lastRange = null;
+    this._sheet = SpreadsheetApp2.getActive().getSheetByName(name)
+    this.lastRange = null
 
-    this._insertRows = null;
+    this._insertRows = null
   }
 
   getLastRow_ () {
     const numRows = this._sheet.getMaxRows() - this._specs.row + 1
     const snapshot = this._sheet.getRange(
-        this._specs.row, this._specs.column,
-        numRows, this._specs.width - 1)
+      this._specs.row, this._specs.column,
+      numRows, this._specs.width - 1)
       .getValues()
 
     let n = snapshot.length
@@ -31,89 +31,89 @@ class Ledger {
   }
 
   initInsertRows_ () {
-    this._insertRows = InsertRows.pick(this._sheet);
+    this._insertRows = InsertRows.pick(this._sheet)
   }
 
   activate () {
-    SpreadsheetApp2.getActive().spreadsheet.setActiveSheet(this._sheet);
-    this.lastRange.activate();
+    SpreadsheetApp2.getActive().spreadsheet.setActiveSheet(this._sheet)
+    this.lastRange.activate()
   }
 
   appendTransactions (values) {
-    if (values.length === 0) return this;
-    if (this._insertRows == null) this.initInsertRows_();
+    if (values.length === 0) return this
+    if (this._insertRows == null) this.initInsertRows_()
 
     const numRows = this.getLastRow_()
     this._insertRows.insertRowsTo(this._specs.row + numRows + values.length)
 
     this.lastRange = this._sheet.getRange(
-        this._specs.row + numRows, this._specs.column,
-        values.length, this._specs.width)
+      this._specs.row + numRows, this._specs.column,
+      values.length, this._specs.width)
       .setValues(values)
 
-    SpreadsheetApp.flush();
-    return this;
+    SpreadsheetApp.flush()
+    return this
   }
 
   fillInWithZeros () {
     const numRows = this.getLastRow_()
-    if (numRows < 1) return this;
+    if (numRows < 1) return this
 
-    const col = 4 + this._specs.columnOffset;
-    const table = this._sheet.getRange(this._specs.row, col, numRows, 1).getValues();
+    const col = 4 + this._specs.columnOffset
+    const table = this._sheet.getRange(this._specs.row, col, numRows, 1).getValues()
 
-    const top = table.findIndex(row => row[0] === '') - 1;
-    if (top === -2) return this;
+    const top = table.findIndex(row => row[0] === '') - 1
+    if (top === -2) return this
 
-    let n = numRows - 1;
-    while (n > top && table[n][0] === '') { n--; }
+    let n = numRows - 1
+    while (n > top && table[n][0] === '') { n-- }
 
-    const listRanges = [];
+    const listRanges = []
     while (n > top) {
       if (table[n][0] === '') {
-        listRanges.push(RangeUtils.rollA1Notation(this._specs.row + n, col));
+        listRanges.push(RangeUtils.rollA1Notation(this._specs.row + n, col))
       }
 
-      n--;
+      n--
     }
 
     if (listRanges.length > 0) {
-      this._sheet.getRangeList(listRanges).setValue(0);
-      SpreadsheetApp.flush();
+      this._sheet.getRangeList(listRanges).setValue(0)
+      SpreadsheetApp.flush()
     }
-    return this;
+    return this
   }
 
   mergeTransactions (values) {
-    if (values.length === 0) return this;
-    if (this._insertRows == null) this.initInsertRows_();
+    if (values.length === 0) return this
+    if (this._insertRows == null) this.initInsertRows_()
 
     const numRows = this.getLastRow_()
     this._insertRows.insertRowsTo(this._specs.row + numRows + values.length)
 
-    let table = [];
+    let table = []
     if (numRows > 0) {
       table = this._sheet.getRange(
-          this._specs.row, this._specs.column,
-          numRows, this._specs.width)
+        this._specs.row, this._specs.column,
+        numRows, this._specs.width)
         .getValues()
     }
 
-    const nill = this._specs.nullSearch - 1;
-    let n = table.findIndex(row => row[nill] === '');
-    if (n === -1) n = table.length;
+    const nill = this._specs.nullSearch - 1
+    let n = table.findIndex(row => row[nill] === '')
+    if (n === -1) n = table.length
 
-    table.splice.apply(table, [n, 0].concat(values));
+    table.splice.apply(table, [n, 0].concat(values))
     this._sheet.getRange(
-        this._specs.row, this._specs.column,
-        table.length, this._specs.width)
+      this._specs.row, this._specs.column,
+      table.length, this._specs.width)
       .setValues(table)
 
     this.lastRange = this._sheet.getRange(
       this._specs.row + n, this._specs.column,
       values.length, this._specs.width)
 
-    SpreadsheetApp.flush();
-    return this;
+    SpreadsheetApp.flush()
+    return this
   }
 }

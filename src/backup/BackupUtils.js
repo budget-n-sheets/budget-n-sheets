@@ -10,25 +10,25 @@
 
 class BackupUtils {
   static checkPasswordPolicy (password) {
-    if (typeof password !== 'string') return false;
-    if (password.length < 8) return false;
+    if (typeof password !== 'string') return false
+    if (password.length < 8) return false
 
-    return true;
+    return true
   }
 
   static sendEmail (blob) {
-    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
+    const spreadsheet = SpreadsheetApp2.getActive().spreadsheet
     const scriptlet = {
       spreadsheet_url: spreadsheet.getUrl(),
       spreadsheet_name: spreadsheet.getName(),
       time: Consts.date
-    };
+    }
 
     const htmlMessage = HtmlService2.createTemplateFromFile('backup/htmlBackupEmail')
       .setScriptletValues(HtmlResources.href.reserved)
       .setScriptletValues(scriptlet)
       .evaluate()
-      .getContent();
+      .getContent()
 
     MailApp.sendEmail(
       Session.getEffectiveUser().getEmail(),
@@ -40,6 +40,6 @@ class BackupUtils {
         noReply: true,
         attachments: [blob]
       }
-    );
+    )
   }
 }

@@ -9,79 +9,79 @@
  */
 
 function cacheSettingsSummary_ (settings) {
-  SessionService.withUser().getSession(settings.uuid).setProperty(`settings/${settings.protocol}`, settings);
+  SessionService.withUser().getSession(settings.uuid).setProperty(`settings/${settings.protocol}`, settings)
 }
 
 function retrieveSettingsSummary (uuid, protocol) {
-  const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(1000)) return;
+  const lock = LockService.getDocumentLock()
+  if (!lock.tryLock(1000)) return
 
-  let settings;
+  let settings
   try {
-    settings = SessionService.withUser().getSession(uuid).getProperty(`settings/${protocol}`);
+    settings = SessionService.withUser().getSession(uuid).getProperty(`settings/${protocol}`)
   } catch (err) {
-    settings = null;
-    LogLog.error(err);
-    showSessionExpired();
+    settings = null
+    LogLog.error(err)
+    showSessionExpired()
   }
 
-  lock.releaseLock();
-  if (settings == null) return;
+  lock.releaseLock()
+  if (settings == null) return
 
   if (settings.settings.financial_calendar) {
-    let calendar = null;
+    let calendar = null
 
     if (protocol === 'copy' || protocol === 'follow_up') {
-      calendar = CalendarApp.getCalendarById(settings.settings.financial_calendar);
-      settings.settings.financial_calendar = calendar ? calendar.getName() : '';
+      calendar = CalendarApp.getCalendarById(settings.settings.financial_calendar)
+      settings.settings.financial_calendar = calendar ? calendar.getName() : ''
     } else if (protocol === 'restore') {
-      const calendars = Calendar.listAllCalendars();
-      calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, settings.settings.financial_calendar);
-      settings.settings.financial_calendar = calendar?.name || '';
+      const calendars = Calendar.listAllCalendars()
+      calendar = CalendarUtils.getMetaByHash('SHA_256', calendars, settings.settings.financial_calendar)
+      settings.settings.financial_calendar = calendar?.name || ''
     }
 
-    if (!calendar) settings.settings.financial_calendar = '<i>Google Calendar not found or you do not have permission to access it.</i>';
+    if (!calendar) settings.settings.financial_calendar = '<i>Google Calendar not found or you do not have permission to access it.</i>'
   }
 
-  settings.misc.cards = settings.misc.cards.length > 0 ? settings.misc.cards.join(', ') : '-';
-  settings.misc.tags = settings.misc.tags > 0 ? 'Up to ' + settings.misc.tags + ' tag(s) found.' : '-';
+  settings.misc.cards = settings.misc.cards.length > 0 ? settings.misc.cards.join(', ') : '-'
+  settings.misc.tags = settings.misc.tags > 0 ? 'Up to ' + settings.misc.tags + ' tag(s) found.' : '-'
 
-  return settings;
+  return settings
 }
 
 function requestValidateSpreadsheet_ (protocol, uuid, fileId) {
-  let session;
+  let session
   try {
-    session = SessionService.withUser().getSession(uuid);
+    session = SessionService.withUser().getSession(uuid)
   } catch (err) {
-    LogLog.error(err);
-    showSessionExpired();
-    return;
+    LogLog.error(err)
+    showSessionExpired()
+    return
   }
 
-  showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', true);
-  let status = 0;
+  showDialogMessage('Add-on restore', 'Verifying the spreadsheet...', true)
+  let status = 0
 
   try {
     if (!Stamp.verify(fileId)) throw new Error('Verification failed.')
   } catch (err) {
-    LogLog.error(err);
-    status = 1;
+    LogLog.error(err)
+    status = 1
   }
 
   if (status === 0) {
     try {
-      SettingsCandidate.processSpreadsheet(protocol, uuid, fileId);
+      SettingsCandidate.processSpreadsheet(protocol, uuid, fileId)
     } catch (err) {
-      LogLog.error(err);
-      status = 3;
+      LogLog.error(err)
+      status = 3
     }
   }
 
-  session.setProperty(`setup/${protocol}`, status);
+  session.setProperty(`setup/${protocol}`, status)
 
-  if (status === 0) CacheService2.getUserCache().put(uuid, true);
+  if (status === 0) CacheService2.getUserCache().put(uuid, true)
 
-  if (protocol === 'copy') showDialogSetupCopy(uuid);
-  else if (protocol === 'follow_up') showDialogSetupFollowUp(uuid);
+  if (protocol === 'copy') showDialogSetupCopy(uuid)
+  else if (protocol === 'follow_up') showDialogSetupFollowUp(uuid)
 }

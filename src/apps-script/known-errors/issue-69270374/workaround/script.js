@@ -16,14 +16,14 @@ function appsScriptIssue69270374WorkaroundFrame () {
   const htmlNotice = HtmlService2.createTemplateFromFile('apps-script/known-errors/issue-69270374/workaround/htmlNotice')
     .setScriptletValues(HtmlResources.href.reserved)
     .evaluate()
-    .getContent();
+    .getContent()
 
   return HtmlService2.createTemplateFromFile('apps-script/known-errors/issue-69270374/workaround/jsTest')
-    .setScriptletValues({ htmlNotice: htmlNotice })
+    .setScriptletValues({ htmlNotice })
     .evaluate()
-    .getContent();
+    .getContent()
 }
 
 function appsScriptIssue69270374WorkaroundTest () {
-  Session.getEffectiveUser().getEmail();
+  Session.getEffectiveUser().getEmail()
 }

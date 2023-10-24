@@ -16,7 +16,7 @@ class Stamp {
       .set('stamp', {
         date: new Date().getTime(),
         spreadsheet_id: spreadsheet.getId()
-      });
+      })
   }
 
   static verify (id = '') {

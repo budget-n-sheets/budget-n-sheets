@@ -10,33 +10,33 @@
 
 class Update extends PatchThis {
   constructor (source, reference, patches) {
-    super(source, reference, patches);
+    super(source, reference, patches)
 
-    this._key = null;
+    this._key = null
 
-    this.status = 0;
-    this.position = {};
+    this.status = 0
+    this.position = {}
   }
 
   setPosition_ () {
     ClassVersion.set(this._key, this.position).updateMetadata()
-    return this;
+    return this
   }
 
   run () {
-    this.status = 1;
+    this.status = 1
 
     if (PatchThisUtils.isLatestVersion(this.getPosition(), this._reference)) {
-      this.response = 0;
-      return this;
+      this.response = 0
+      return this
     }
 
-    this.update();
+    this.update()
 
-    this.position = this.getPosition();
-    this.status = 2;
+    this.position = this.getPosition()
+    this.status = 2
 
-    this.setPosition_();
-    return this;
+    this.setPosition_()
+    return this
   }
 }

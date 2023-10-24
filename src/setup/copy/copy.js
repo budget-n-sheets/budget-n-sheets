@@ -12,5 +12,5 @@ function showDialogPickerCopy (uuid) {
   new PickerService(uuid)
     .setCallbackFunction('requestValidateSpreadsheet_')
     .setFallbackFunction('showDialogSetupCopy')
-    .showDialog('copy', 'Select spreadsheet');
+    .showDialog('copy', 'Select spreadsheet')
 }

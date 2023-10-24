@@ -10,7 +10,7 @@
 
 class SheetSummary extends ExtendedSheet {
   constructor () {
-    super('Summary');
+    super('Summary')
   }
 
   resetCharts () {
@@ -24,7 +24,7 @@ class SheetSummary extends ExtendedSheet {
     let rule
 
     rule = SpreadsheetApp.newConditionalFormatRule()
-      .whenFormulaSatisfied(`=ROW() - 8 < INDIRECT("'_Settings'!B4")`)
+      .whenFormulaSatisfied('=ROW() - 8 < INDIRECT("\'_Settings\'!B4")')
       .setFontColor('#cccccc')
       .setRanges([range])
       .build()
@@ -42,7 +42,7 @@ class SheetSummary extends ExtendedSheet {
     rules.push(rule)
 
     rule = SpreadsheetApp.newConditionalFormatRule()
-      .whenFormulaSatisfied(`=ROW() - 8 > INDIRECT("'_Settings'!B4") - 1 + INDIRECT("'_Settings'!B6")`)
+      .whenFormulaSatisfied('=ROW() - 8 > INDIRECT("\'_Settings\'!B4") - 1 + INDIRECT("\'_Settings\'!B6")')
       .setFontColor('#999999')
       .setRanges([range])
       .build()
@@ -111,7 +111,7 @@ class SheetSummary extends ExtendedSheet {
     makeFormula = formulaBuilder.chart1()
     formulas = [[makeFormula.data(0).replace(/""/g, '0')]]
     for (let i = 1; i < 12; i++) {
-      formulas[i] = [makeFormula.data(i)];
+      formulas[i] = [makeFormula.data(i)]
     }
     this.sheet.getRange('D24:D35').setFormulas(formulas)
 

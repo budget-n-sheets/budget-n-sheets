@@ -16,7 +16,7 @@ class SjclService {
         blob.getDataAsString(),
         Utilities.Charset.UTF_8
       )
-    );
+    )
   }
 
   static encrypt (password, name, data) {
@@ -26,7 +26,7 @@ class SjclService {
       iter: 1010010,
       ts: 128,
       adata: name
-    });
+    })
 
     return Utilities.newBlob(
       Utilities.base64EncodeWebSafe(
@@ -35,6 +35,6 @@ class SjclService {
       ),
       'application/octet-stream',
       name
-    );
+    )
   }
 }

@@ -10,8 +10,8 @@
 
 class CoolGalleryService {
   constructor (id = '') {
-    this._cool = CoolGallery.getById(id);
-    if (!this._cool) throw new Error('Invalid BnS template ID.');
+    this._cool = CoolGallery.getById(id)
+    if (!this._cool) throw new Error('Invalid BnS template ID.')
   }
 
   static get templates () {
@@ -19,15 +19,15 @@ class CoolGalleryService {
       filter_by_tag: CoolFilterByTag.metadata,
       stats_for_tags: CoolStatsForTags.metadata,
       tags_by_category: CoolTagsByCategory.metadata
-    };
+    }
   }
 
   install () {
-    if (!this._cool.isSourceAvailable()) return;
-    if (!this._cool.checkDependencies()) this._cool.meetRequirements();
-    if (this._cool.isInstalled()) this._cool.deleteTemplate();
+    if (!this._cool.isSourceAvailable()) return
+    if (!this._cool.checkDependencies()) this._cool.meetRequirements()
+    if (this._cool.isInstalled()) this._cool.deleteTemplate()
 
-    this._cool.copyTemplate();
-    this._cool.makeConfig().make().flush();
+    this._cool.copyTemplate()
+    this._cool.makeConfig().make().flush()
   }
 }

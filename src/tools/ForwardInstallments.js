@@ -14,10 +14,10 @@ class ForwardInstallments {
     this.mm = mm
     this.sheet = SpreadsheetApp2.getActive().getSheetByName(name)
 
-    this.formater = new NumberFormatter();
+    this.formater = new NumberFormatter()
 
-    this.rangeList = { indexes: [], ranges: [] };
-    this.specs = Object.freeze(SheetMonth.specs);
+    this.rangeList = { indexes: [], ranges: [] }
+    this.specs = Object.freeze(SheetMonth.specs)
   }
 
   static pick (sheet) {
@@ -34,53 +34,53 @@ class ForwardInstallments {
     SpreadsheetApp2.getUi().alert(
       "Can't forward installments",
       'Select a month to forward installments.',
-      SpreadsheetApp2.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK)
   }
 
   get indexes () {
-    return this.rangeList.indexes;
+    return this.rangeList.indexes
   }
 
   set indexes (indexes) {
-    this.rangeList.indexes = this.rangeList.indexes.concat(indexes);
+    this.rangeList.indexes = this.rangeList.indexes.concat(indexes)
   }
 
   get ranges () {
-    return this.rangeList.ranges;
+    return this.rangeList.ranges
   }
 
   set ranges (ranges) {
-    this.rangeList.ranges = this.rangeList.ranges.concat(ranges);
+    this.rangeList.ranges = this.rangeList.ranges.concat(ranges)
   }
 
   forward_ (ranges, steps) {
-    if (steps == null) steps = 11;
-    if (steps < 1 || steps > 11) return;
+    if (steps == null) steps = 11
+    if (steps < 1 || steps > 11) return
 
     for (const range of ranges) {
       let mm = +this.mm
-      if (mm > 11) continue;
+      if (mm > 11) continue
 
-      const snapshot = range.getValues();
+      const snapshot = range.getValues()
 
-      const installments = this.filterInstallments(snapshot);
-      if (installments.length === 0) continue;
+      const installments = this.filterInstallments(snapshot)
+      if (installments.length === 0) continue
 
-      let end = mm + steps + 1;
-      if (end > 12) end = 12;
+      let end = mm + steps + 1
+      if (end > 12) end = 12
 
       while (++mm < end && installments.length > 0) {
-        const values = this.getNextInstallments(installments);
-        new LedgerTtt(mm).mergeTransactions(values);
+        const values = this.getNextInstallments(installments)
+        new LedgerTtt(mm).mergeTransactions(values)
       }
     }
   }
 
   forwardIndexes_ () {
-    const numRows = this.sheet.getMaxRows() - this.specs.row + 1;
-    if (numRows < 1) return;
+    const numRows = this.sheet.getMaxRows() - this.specs.row + 1
+    if (numRows < 1) return
 
-    const indexes = this.indexes.filter((v, i, s) => s.indexOf(v) === i).sort((a, b) => a - b);
+    const indexes = this.indexes.filter((v, i, s) => s.indexOf(v) === i).sort((a, b) => a - b)
 
     const range = this.sheet.getRange(
       this.specs.row, 1 + this.specs.columnOffset,
@@ -93,32 +93,32 @@ class ForwardInstallments {
   }
 
   filterInstallments (snapshot) {
-    const installments = [];
+    const installments = []
 
     for (let i = 0; i < snapshot.length; i++) {
-      const line = snapshot[i];
-      if (line[2] === '') continue;
+      const line = snapshot[i]
+      if (line[2] === '') continue
 
-      const match = line[2].match(/((\d+)\/(\d+))/);
-      if (!match) continue;
+      const match = line[2].match(/((\d+)\/(\d+))/)
+      if (!match) continue
 
-      const p1 = +match[2];
-      const p2 = +match[3];
-      if (p1 >= p2) continue;
+      const p1 = +match[2]
+      const p2 = +match[3]
+      if (p1 >= p2) continue
 
-      if (line[1] > 0) line[1] *= -1;
-      line[2] = line[2].trim();
-      line[3] = '=' + this.formater.localeSignal(line[3]);
+      if (line[1] > 0) line[1] *= -1
+      line[2] = line[2].trim()
+      line[3] = '=' + this.formater.localeSignal(line[3])
 
       installments.push({
-        line: line,
+        line,
         reg: match[1],
-        p1: p1,
-        p2: p2
-      });
+        p1,
+        p2
+      })
     }
 
-    return installments;
+    return installments
   }
 
   forward () {
@@ -138,24 +138,24 @@ class ForwardInstallments {
   }
 
   getNextInstallments (installments) {
-    const values = [];
+    const values = []
 
     for (let i = 0; i < installments.length; i++) {
-      const el = installments[i];
+      const el = installments[i]
 
-      el.p1++;
+      el.p1++
 
-      const line = el.line.slice();
-      line[2] = line[2].replace(el.reg, el.p1 + '/' + el.p2);
+      const line = el.line.slice()
+      line[2] = line[2].replace(el.reg, el.p1 + '/' + el.p2)
 
-      values.push(line);
+      values.push(line)
 
       if (el.p1 === el.p2) {
-        installments.splice(i, 1);
-        i--;
+        installments.splice(i, 1)
+        i--
       }
     }
 
-    return values;
+    return values
   }
 }

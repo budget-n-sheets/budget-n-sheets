@@ -26,6 +26,6 @@ class MakeSheetTags extends MakeSheet {
 
   unpack () {
     this.sheet.protect().setWarningOnly(true)
-    return this;
+    return this
   }
 }

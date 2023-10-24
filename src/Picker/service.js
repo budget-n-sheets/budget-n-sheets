@@ -19,65 +19,65 @@
  * @return {string} The user's OAuth 2.0 access token.
  */
 function getOAuthToken () {
-  DriveApp.getRootFolder();
-  return ScriptApp.getOAuthToken();
+  DriveApp.getRootFolder()
+  return ScriptApp.getOAuthToken()
 }
 
 function callbackToPicker (uuid, fileId, protocol) {
-  if (typeof fileId !== 'string') return;
+  if (typeof fileId !== 'string') return
 
-  let picker;
+  let picker
   try {
-    picker = SessionService.withUser().getSession(uuid);
+    picker = SessionService.withUser().getSession(uuid)
   } catch (err) {
-    LogLog.error(err);
-    showSessionExpired();
-    return;
+    LogLog.error(err)
+    showSessionExpired()
+    return
   }
 
-  const callbackFunction = picker.getProperty('callbackFunction');
-  const callbackUuid = picker.getProperty('callbackUuid');
-  const param = picker.getProperty('parameter');
-  picker.end();
+  const callbackFunction = picker.getProperty('callbackFunction')
+  const callbackUuid = picker.getProperty('callbackUuid')
+  const param = picker.getProperty('parameter')
+  picker.end()
 
   if (!this[callbackFunction]) {
-    LogLog.error(`callbackToPicker(): Callback function ${callbackFunction} is undefined.`);
-    showDialogErrorMessage();
-    return;
+    LogLog.error(`callbackToPicker(): Callback function ${callbackFunction} is undefined.`)
+    showDialogErrorMessage()
+    return
   }
 
   if (!callbackFunction || !callbackUuid) {
-    showSessionExpired();
-    return;
+    showSessionExpired()
+    return
   }
 
-  this[callbackFunction](protocol, callbackUuid, fileId, param);
+  this[callbackFunction](protocol, callbackUuid, fileId, param)
 }
 
 function fallbackToPicker (uuid) {
-  let picker;
+  let picker
   try {
-    picker = SessionService.withUser().getSession(uuid);
+    picker = SessionService.withUser().getSession(uuid)
   } catch (err) {
-    LogLog.error(err);
-    showSessionExpired();
-    return;
+    LogLog.error(err)
+    showSessionExpired()
+    return
   }
 
-  const fallbackFunction = picker.getProperty('fallbackFunction');
-  const callbackUuid = picker.getProperty('callbackUuid');
-  picker.end();
+  const fallbackFunction = picker.getProperty('fallbackFunction')
+  const callbackUuid = picker.getProperty('callbackUuid')
+  picker.end()
 
   if (!this[fallbackFunction]) {
-    LogLog.error(`fallbackToPicker(): Fallback function ${fallbackFunction} is undefined.`);
-    showDialogErrorMessage();
-    return;
+    LogLog.error(`fallbackToPicker(): Fallback function ${fallbackFunction} is undefined.`)
+    showDialogErrorMessage()
+    return
   }
 
   if (!fallbackFunction || !callbackUuid) {
-    showSessionExpired();
-    return;
+    showSessionExpired()
+    return
   }
 
-  this[fallbackFunction](callbackUuid);
+  this[fallbackFunction](callbackUuid)
 }

@@ -10,8 +10,8 @@
 
 class UpdateScript extends Update {
   constructor () {
-    const v0 = ClassVersion.get('script');
-    const vA = Info.apps_script.version;
+    const v0 = ClassVersion.get('script')
+    const vA = Info.apps_script.version
     const list = [
       [
         null, [], [], [], [], [], [], [], [], [],
@@ -23,10 +23,10 @@ class UpdateScript extends Update {
         ['', '', '', '', ''],
         ['', '', '', '', '', 'v0m51p5_', '', 'v0m51p7_', 'v0m51p8_']
       ]
-    ];
+    ]
 
-    super(v0, vA, list);
-    this._key = 'script';
+    super(v0, vA, list)
+    this._key = 'script'
   }
 
   /**
@@ -74,6 +74,6 @@ class UpdateScript extends Update {
    */
   v0m49p6_ () {
     Stamp.seal()
-    return 0;
+    return 0
   }
 }

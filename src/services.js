@@ -10,19 +10,19 @@
 
 function askDeactivation () {
   if (!Addon.isInstalled()) {
-    Addon.uninstall();
-    onOpen();
-    return true;
+    Addon.uninstall()
+    onOpen()
+    return true
   }
 
-  const ui = SpreadsheetApp2.getUi();
+  const ui = SpreadsheetApp2.getUi()
 
   if (!AddonUser.hasBaselinePermission()) {
     ui.alert(
       'Permission denied',
       "You don't have permission to deactivate the add-on.",
-      ui.ButtonSet.OK);
-    return;
+      ui.ButtonSet.OK)
+    return
   }
 
   const response1 = ui.alert(
@@ -42,55 +42,55 @@ function askDeactivation () {
 
     'For more information, visit the wiki.\n' +
     'Click OK to continue.',
-    ui.ButtonSet.OK_CANCEL);
-  if (response1 !== ui.Button.OK) return;
+    ui.ButtonSet.OK_CANCEL)
+  if (response1 !== ui.Button.OK) return
 
   const response2 = ui.alert(
     'Deactivate the add-on?',
     "You can't undo this action!",
-    ui.ButtonSet.YES_NO);
-  if (response2 !== ui.Button.YES) return;
+    ui.ButtonSet.YES_NO)
+  if (response2 !== ui.Button.YES) return
 
-  Addon.uninstall();
-  onOpen();
+  Addon.uninstall()
+  onOpen()
 
   ui.alert(
     'Deactivation complete',
     'The add-on was deactivated.',
-    ui.ButtonSet.OK);
+    ui.ButtonSet.OK)
 
-  return true;
+  return true
 }
 
 function askResetSuggestions () {
-  const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(200)) return;
+  const lock = LockService.getDocumentLock()
+  if (!lock.tryLock(200)) return
 
   BnsMaintenance.fixSuggestions()
 
-  lock.releaseLock();
+  lock.releaseLock()
 }
 
 function askResetProtection () {
-  const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(200)) return;
+  const lock = LockService.getDocumentLock()
+  if (!lock.tryLock(200)) return
 
   BnsMaintenance.fixProtection()
 
-  lock.releaseLock();
+  lock.releaseLock()
 }
 
 function askReinstallTriggersUi () {
   if (!AddonUser.hasBaselinePermission()) {
-    Triggers.deleteAllUserTriggers();
+    Triggers.deleteAllUserTriggers()
 
     SpreadsheetApp2.getUi().alert(
       'Permission denied',
       "You don't have permission to reinstall the triggers.",
-      SpreadsheetApp2.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK)
 
-    return 1;
+    return 1
   }
 
-  TriggersService.restart();
+  TriggersService.restart()
 }

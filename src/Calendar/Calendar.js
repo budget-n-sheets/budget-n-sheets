@@ -11,38 +11,38 @@
 class Calendar {
   static getAllCalendars () {
     try {
-      return CalendarApp.getAllCalendars();
+      return CalendarApp.getAllCalendars()
     } catch (err) {
-      LogLog.error(err);
+      LogLog.error(err)
     }
 
     try {
-      return CalendarApp.getAllOwnedCalendars();
+      return CalendarApp.getAllOwnedCalendars()
     } catch (err) {
-      LogLog.error(err);
+      LogLog.error(err)
     }
 
-    return [];
+    return []
   }
 
   static isEnabled () {
-    return this.getAllCalendars().length !== 0;
+    return this.getAllCalendars().length !== 0
   }
 
   static listAllCalendars () {
-    const cal = {};
+    const cal = {}
 
     this.getAllCalendars().forEach(calendar => {
-      const id = calendar.getId();
-      const sha1 = Utilities2.computeDigest('SHA_1', id, 'UTF_8').substring(0, 12);
+      const id = calendar.getId()
+      const sha1 = Utilities2.computeDigest('SHA_1', id, 'UTF_8').substring(0, 12)
 
       cal[sha1] = {
-        id: id,
+        id,
         name: calendar.getName(),
         isOwner: calendar.isOwnedByMe()
-      };
-    });
+      }
+    })
 
-    return cal;
+    return cal
   }
 }

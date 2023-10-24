@@ -12,32 +12,32 @@ class PickerService extends Pushback {
   constructor (uuid) {
     SessionService.withUser().getSession(uuid)
 
-    super();
-    this._session.setProperty('callbackUuid', uuid);
+    super()
+    this._session.setProperty('callbackUuid', uuid)
   }
 
   setFallbackFunction (fallbackFunctionName) {
-    this._fallbackFunction = fallbackFunctionName;
-    return this;
+    this._fallbackFunction = fallbackFunctionName
+    return this
   }
 
   showDialog (protocol, title) {
-    this.config_();
+    this.config_()
 
-    if (!this._fallbackFunction) throw new Error('Undefined fallback.');
-    this._session.setProperty('fallbackFunction', this._fallbackFunction);
+    if (!this._fallbackFunction) throw new Error('Undefined fallback.')
+    this._session.setProperty('fallbackFunction', this._fallbackFunction)
 
     const htmlOutput = HtmlService2.createTemplateFromFile('Picker/htmlPickerDialog')
       .setScriptletValues({
         locale: Session.getActiveUserLocale(),
         devKey: Bs.getDeveloperKey(),
         uuid: this._uuid,
-        protocol: protocol
+        protocol
       })
       .evaluate()
       .setWidth(617)
-      .setHeight(487);
+      .setHeight(487)
 
-    SpreadsheetApp2.getUi().showModalDialog(htmlOutput, title);
+    SpreadsheetApp2.getUi().showModalDialog(htmlOutput, title)
   }
 }

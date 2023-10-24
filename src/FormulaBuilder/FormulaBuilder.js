@@ -10,26 +10,26 @@
 
 class FormulaBuilder {
   static backstage () {
-    return FormulaBuilderBackstage;
+    return FormulaBuilderBackstage
   }
 
   static cards () {
-    return FormulaBuilderCards;
+    return FormulaBuilderCards
   }
 
   static settings () {
-    return FormulaBuilderSettings;
+    return FormulaBuilderSettings
   }
 
   static summary () {
-    return FormulaBuilderSummary;
+    return FormulaBuilderSummary
   }
 
   static tags () {
-    return FormulaBuilderTags;
+    return FormulaBuilderTags
   }
 
   static ttt () {
-    return FormulaBuilderTtt;
+    return FormulaBuilderTtt
   }
 }

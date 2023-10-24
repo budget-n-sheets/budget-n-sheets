@@ -36,18 +36,18 @@ class RestoreCopy extends SetupSuperCopy {
   copyTables_ () {
     if (this.name_accounts.length === 0) return
 
-    const metadata = JSON.parse(this.metadata.get('db_accounts'));
-    const accountsService = new AccountsService();
+    const metadata = JSON.parse(this.metadata.get('db_accounts'))
+    const accountsService = new AccountsService()
 
     this.name_accounts.forEach(e => {
-      const acc = accountsService.getByName(e.name);
+      const acc = accountsService.getByName(e.name)
       if (acc) {
         acc.data = metadata[e.prevIndex]
         accountsService.update(acc)
       }
-    });
+    })
 
-    accountsService.flush();
+    accountsService.flush()
   }
 
   copyTtt_ () {
@@ -93,7 +93,7 @@ class RestoreCopy extends SetupSuperCopy {
   }
 
   copy () {
-    this.copyTables_();
+    this.copyTables_()
     this.copyCards_()
 
     if (this.isTemplatePre15) {
@@ -103,7 +103,7 @@ class RestoreCopy extends SetupSuperCopy {
       this.copyTtt_()
     }
 
-    this.copyTags_();
-    this.copySettings_();
+    this.copyTags_()
+    this.copySettings_()
   }
 }

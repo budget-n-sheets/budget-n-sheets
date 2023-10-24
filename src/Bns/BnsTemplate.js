@@ -11,18 +11,18 @@
 class BnsTemplate {
   static isAvailable () {
     try {
-      SpreadsheetApp.openById(Info.template.id);
+      SpreadsheetApp.openById(Info.template.id)
     } catch (err) {
-      console.error('BnS template is not available!');
-      return false;
+      console.error('BnS template is not available!')
+      return false
     }
-    return true;
+    return true
   }
 
   static isUpToDate () {
-    const v0 = ClassVersion.get('template');
-    const vA = Info.template.version;
-    return PatchThisUtils.isLatestVersion(v0, vA);
+    const v0 = ClassVersion.get('template')
+    const vA = Info.template.version
+    return PatchThisUtils.isLatestVersion(v0, vA)
   }
 
   static isEndOfSupport (v) {

@@ -16,17 +16,17 @@ class FeatureFlag {
       case 'flags/feature/setup/restore':
       case 'flags/feature/setup/copy':
       case 'flags/feature/settings/backup':
-        break;
+        break
 
       default:
-        return false;
+        return false
     }
 
-    const c = CacheService.getScriptCache();
+    const c = CacheService.getScriptCache()
     return c.get(name) ?? ((c) => {
-      const v = ('true' === PropertiesService.getScriptProperties().getProperty(name))
-      c.put(name, v);
-      return v;
-    })(c);
+      const v = (PropertiesService.getScriptProperties().getProperty(name) === 'true')
+      c.put(name, v)
+      return v
+    })(c)
   }
 }

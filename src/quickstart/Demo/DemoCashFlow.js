@@ -10,34 +10,34 @@
 
 class DemoCashFlow extends QuickstartDemo {
   constructor () {
-    super(['mm', 'Cash Flow']);
+    super(['mm', 'Cash Flow'])
   }
 
   demo_ () {
-    const num_acc = 1 + SettingsConst.get('number_accounts');
+    const num_acc = 1 + SettingsConst.get('number_accounts')
 
-    const ledger = new LedgerTtt(this.mm);
+    const ledger = new LedgerTtt(this.mm)
 
-    ledger.fillInWithZeros();
+    ledger.fillInWithZeros()
 
-    const indexes = new Array(12).fill(false);
-    indexes[this.mm] = true;
+    const indexes = new Array(12).fill(false)
+    indexes[this.mm] = true
 
-    const tool = new RefreshCashFlow();
-    tool.indexes = indexes;
-    tool.refresh();
+    const tool = new RefreshCashFlow()
+    tool.indexes = indexes
+    tool.refresh()
 
-    this.sheets['Cash Flow'].getRange(1, 2 + 4 * this.mm, 1, 3).activate();
+    this.sheets['Cash Flow'].getRange(1, 2 + 4 * this.mm, 1, 3).activate()
   }
 
   makeConfig (num) {
-    this.getSheets_();
+    this.getSheets_()
 
-    this.isReady = true;
-    return this;
+    this.isReady = true
+    return this
   }
 
   play () {
-    this.demo_();
+    this.demo_()
   }
 }

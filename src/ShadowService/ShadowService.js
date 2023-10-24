@@ -12,19 +12,19 @@ class ShadowService extends Pushback {
   constructor (uuid) {
     SessionService.withUser().getSession(uuid)
 
-    super();
-    this._session.setProperty('callbackUuid', uuid);
+    super()
+    this._session.setProperty('callbackUuid', uuid)
   }
 
   showDialog () {
-    this.config_();
+    this.config_()
 
     const htmlOutput = HtmlService2.createTemplateFromFile('ShadowService/htmlShadowDialog')
       .setScriptletValues({ uuid: this._uuid })
       .evaluate()
       .setWidth(307)
-      .setHeight(89);
+      .setHeight(89)
 
-    SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Enter password');
+    SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Enter password')
   }
 }

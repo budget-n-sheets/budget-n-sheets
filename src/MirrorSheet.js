@@ -24,32 +24,32 @@ class MirrorSheet {
   }
 
   get name () {
-    return this._name;
+    return this._name
   }
 
   get sheet () {
     return this._sheet ||
-          (this._sheet = SpreadsheetApp2.getActive().getSheetByName(this._name));
+          (this._sheet = SpreadsheetApp2.getActive().getSheetByName(this._name))
   }
 
   copyTemplate () {
     const source = SpreadsheetApp2.openById(this._template.id).spreadsheet
     const name = this._template.name || this._name
     SpreadsheetApp2.getActive().copySheetFrom(source, name, this._name)
-    SpreadsheetApp.flush();
-    return this;
+    SpreadsheetApp.flush()
+    return this
   }
 
   deleteTemplate () {
     const spreadsheet = SpreadsheetApp2.getActive()
     const sheet = spreadsheet.getSheetByName(this._name)
     if (sheet) spreadsheet.deleteSheet(sheet)
-    this._sheet = null;
-    SpreadsheetApp.flush();
-    return this;
+    this._sheet = null
+    SpreadsheetApp.flush()
+    return this
   }
 
   isInstalled () {
-    return this.sheet != null;
+    return this.sheet != null
   }
 }

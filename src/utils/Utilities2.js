@@ -12,35 +12,35 @@ class Utilities2 {
   static getDigestAlgorithm (v) {
     switch (v) {
       case 'MD5':
-        return Utilities.DigestAlgorithm.MD5;
+        return Utilities.DigestAlgorithm.MD5
       case 'SHA_1':
-        return Utilities.DigestAlgorithm.SHA_1;
+        return Utilities.DigestAlgorithm.SHA_1
       case 'SHA_256':
-        return Utilities.DigestAlgorithm.SHA_256;
+        return Utilities.DigestAlgorithm.SHA_256
       case 'SHA_512':
-        return Utilities.DigestAlgorithm.SHA_512;
+        return Utilities.DigestAlgorithm.SHA_512
     }
   }
 
   static getMacAlgorithm (v) {
     switch (v) {
       case 'MD5':
-        return Utilities.MacAlgorithm.HMAC_MD5;
+        return Utilities.MacAlgorithm.HMAC_MD5
       case 'SHA_1':
-        return Utilities.MacAlgorithm.HMAC_SHA_1;
+        return Utilities.MacAlgorithm.HMAC_SHA_1
       case 'SHA_256':
-        return Utilities.MacAlgorithm.HMAC_SHA_256;
+        return Utilities.MacAlgorithm.HMAC_SHA_256
       case 'SHA_512':
-        return Utilities.MacAlgorithm.HMAC_SHA_512;
+        return Utilities.MacAlgorithm.HMAC_SHA_512
     }
   }
 
   static getCharset (v) {
     switch (v) {
       case 'US_ASCII':
-        return Utilities.Charset.US_ASCII;
+        return Utilities.Charset.US_ASCII
       case 'UTF_8':
-        return Utilities.Charset.UTF_8;
+        return Utilities.Charset.UTF_8
     }
   }
 
@@ -54,9 +54,9 @@ class Utilities2 {
    * @return {byte[]/string}     A byte[]/string representing the output signature.
    */
   static base64Decode (base64data, charset, byte) {
-    const c = this.getCharset(charset);
-    const d = Utilities.base64Decode(base64data, c);
-    return byte ? d : Utilities.newBlob(d).getDataAsString();
+    const c = this.getCharset(charset)
+    const d = Utilities.base64Decode(base64data, c)
+    return byte ? d : Utilities.newBlob(d).getDataAsString()
   }
 
   /**
@@ -69,9 +69,9 @@ class Utilities2 {
    * @return {byte[]/string}     A byte[]/string representing the output signature.
    */
   static base64DecodeWebSafe (base64data, charset, byte) {
-    const c = this.getCharset(charset);
-    const d = Utilities.base64DecodeWebSafe(base64data, c);
-    return byte ? d : Utilities.newBlob(d).getDataAsString();
+    const c = this.getCharset(charset)
+    const d = Utilities.base64DecodeWebSafe(base64data, c)
+    return byte ? d : Utilities.newBlob(d).getDataAsString()
   }
 
   /**
@@ -85,10 +85,10 @@ class Utilities2 {
    * @return {byte[]/string}    A byte[]/string representing the output signature.
    */
   static computeDigest (algorithm, value, charset, byte) {
-    const c = this.getCharset(charset);
-    const a = this.getDigestAlgorithm(algorithm);
-    const d = Utilities.computeDigest(a, value, c);
-    return byte ? d : Utils.toHexString(d);
+    const c = this.getCharset(charset)
+    const a = this.getDigestAlgorithm(algorithm)
+    const d = Utilities.computeDigest(a, value, c)
+    return byte ? d : Utils.toHexString(d)
   }
 
   /**
@@ -103,9 +103,9 @@ class Utilities2 {
    * @return {byte[]/string}    A byte[]/string representing the output signature.
    */
   static computeHmacSignature (algorithm, value, key, charset, byte) {
-    const c = this.getCharset(charset);
-    const a = this.getMacAlgorithm(algorithm);
-    const d = Utilities.computeHmacSignature(a, value, key, c);
-    return byte ? d : Utils.toHexString(d);
+    const c = this.getCharset(charset)
+    const a = this.getMacAlgorithm(algorithm)
+    const d = Utilities.computeHmacSignature(a, value, key, c)
+    return byte ? d : Utils.toHexString(d)
   }
 }

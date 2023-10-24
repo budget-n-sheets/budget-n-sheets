@@ -10,15 +10,15 @@
 
 class FormatTableTags extends FormatTable {
   constructor () {
-    super();
-    this.sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
+    super()
+    this.sheet = SpreadsheetApp2.getActive().getSheetByName('Tags')
 
     this.specs = Object.freeze({
       columnOffset: 0,
       nullSearch: 5,
       row: 2,
       width: 5
-    });
+    })
 
     this.sortSpec = {
       blank: [
@@ -32,12 +32,12 @@ class FormatTableTags extends FormatTable {
         { column: 2, ascending: true },
         { column: 1, ascending: true }
       ]
-    };
+    }
 
     this.rule = SpreadsheetApp.newDataValidation()
       .requireCheckbox()
       .setAllowInvalid(false)
-      .build();
+      .build()
   }
 
   formatRange_ (range) {
@@ -45,44 +45,44 @@ class FormatTableTags extends FormatTable {
       .sort(this.sortSpec.blank)
       .sort(5)
       .getValues()
-      .findIndex(line => line[4] === '');
-    if (last === 0) return;
+      .findIndex(line => line[4] === '')
+    if (last === 0) return
 
-    const numRows = (last === -1 ? range.getNumRows() : last);
+    const numRows = (last === -1 ? range.getNumRows() : last)
     const analytics = range.offset(0, 0, numRows, 5)
       .sort(this.sortSpec.fancy)
-      .offset(0, 3, range.getNumRows(), 1);
+      .offset(0, 3, range.getNumRows(), 1)
 
-    const values = analytics.getValues();
+    const values = analytics.getValues()
     values.forEach((b, i, a) => {
-      a[i][0] = (b[0] === true);
-    });
+      a[i][0] = (b[0] === true)
+    })
 
     analytics.clearDataValidations()
       .removeCheckboxes()
       .clearContent()
       .insertCheckboxes()
       .setDataValidation(this.rule)
-      .setValues(values);
+      .setValues(values)
   }
 
   format () {
-    if (!this.sheet) return;
+    if (!this.sheet) return
 
     if (this.indexes.length === 0) {
       for (const range of this.ranges) {
-        if (range.getNumRows() > 1) this.formatRange_(range);
+        if (range.getNumRows() > 1) this.formatRange_(range)
       }
-      return;
+      return
     }
 
-    const maxRows = this.sheet.getMaxRows() - this.specs.row + 1;
-    if (maxRows < 1) return;
+    const maxRows = this.sheet.getMaxRows() - this.specs.row + 1
+    if (maxRows < 1) return
 
-    const range = this.sheet.getRange(2, 1, maxRows, 5);
-    this.formatRange_(range);
+    const range = this.sheet.getRange(2, 1, maxRows, 5)
+    this.formatRange_(range)
 
-    this.rangeList = { indexes: [], ranges: [] };
-    return this;
+    this.rangeList = { indexes: [], ranges: [] }
+    return this
   }
 }

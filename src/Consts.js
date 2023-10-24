@@ -8,18 +8,18 @@
  * <https://www.gnu.org/licenses/>
  */
 
-const CONST_DATE = new Date();
+const CONST_DATE = new Date()
 
 class Consts {
   static get date () {
-    return CONST_DATE;
+    return CONST_DATE
   }
 
   static get month_name () {
     return {
       short: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       long: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    };
+    }
   }
 
   static get color_palette () {
@@ -36,10 +36,10 @@ class Consts {
       deeppink: 'ff1493',
       darkorange: 'ff8c00',
       goldenrod: 'daa520'
-    };
+    }
   }
 
   static get tags_categories () {
-    return ['Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling'];
+    return ['Food and supply', 'Shopping and clothing', 'Hobby', 'Leisure time', 'Home', 'Other', 'Health and insurance', 'Services', 'Transport', 'Traveling']
   }
 }

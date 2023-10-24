@@ -9,49 +9,49 @@
  */
 
 function setupService (uuid, payload) {
-  const lock = LockService.getDocumentLock();
+  const lock = LockService.getDocumentLock()
   if (!lock.tryLock(200)) {
     SpreadsheetApp2.getUi().alert(
       'Add-on setup in progress',
       'A budget spreadsheet setup is already in progress.',
-      SpreadsheetApp2.getUi().ButtonSet.OK);
-    return;
+      SpreadsheetApp2.getUi().ButtonSet.OK)
+    return
   }
 
-  let session;
+  let session
   try {
-    session = SessionService.withUser().getSession(uuid);
+    session = SessionService.withUser().getSession(uuid)
   } catch (err) {
-    LogLog.error(err);
-    showSessionExpired();
-    return;
+    LogLog.error(err)
+    showSessionExpired()
+    return
   }
 
-  if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.');
+  if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.')
 
-  const config = SetupConfig.digestConfig(uuid, payload);
-  session.end();
-  session = null;
+  const config = SetupConfig.digestConfig(uuid, payload)
+  session.end()
+  session = null
 
-  const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
-  spreadsheet.rename(config.spreadsheet_name);
+  const spreadsheet = SpreadsheetApp2.getActive().spreadsheet
+  spreadsheet.rename(config.spreadsheet_name)
 
   new SetupProgress().makeClean()
     .makeConfig(config)
-    .makeInstall();
+    .makeInstall()
 
   try {
-    if (payload.protocol === 'restore') new RestoreBackup(config).restore();
-    else if (payload.protocol === 'copy') new RestoreCopy(config).copy();
-    else if (payload.protocol === 'follow_up') new SetupFollowUp(config).copy();
+    if (payload.protocol === 'restore') new RestoreBackup(config).restore()
+    else if (payload.protocol === 'copy') new RestoreCopy(config).copy()
+    else if (payload.protocol === 'follow_up') new SetupFollowUp(config).copy()
   } catch (err) {
-    LogLog.error(err);
+    LogLog.error(err)
   }
 
   CachedProperties.withDocument().update('class_version2', {
     script: Info.apps_script.version,
     template: Info.template.version
-  });
+  })
   SpreadsheetApp2.getActive()
     .getMetadata()
     .set('class_version2', {
@@ -59,16 +59,16 @@ function setupService (uuid, payload) {
       template: Info.template.version
     })
 
-  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'));
-  PropertiesService2.getDocumentProperties().setProperty('is_installed', true);
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Summary'))
+  PropertiesService2.getDocumentProperties().setProperty('is_installed', true)
   Stamp.seal()
 
   try {
-    TriggersService.start();
+    TriggersService.start()
   } catch (err) {
-    LogLog.error(err);
+    LogLog.error(err)
   }
 
-  showDialogSetupEnd();
-  onOpen();
+  showDialogSetupEnd()
+  onOpen()
 }

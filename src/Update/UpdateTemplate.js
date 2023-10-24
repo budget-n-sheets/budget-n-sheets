@@ -10,8 +10,8 @@
 
 class UpdateTemplate extends Update {
   constructor () {
-    const v0 = ClassVersion.get('template');
-    const vA = Info.template.version;
+    const v0 = ClassVersion.get('template')
+    const vA = Info.template.version
     const list = [
       [
         null, [], [], [], [], [], [], [], [], [],
@@ -19,10 +19,10 @@ class UpdateTemplate extends Update {
         ['', '', 'v0m14p2_'],
         ['v0m15p0_', '']
       ]
-    ];
+    ]
 
-    super(v0, vA, list);
-    this._key = 'template';
+    super(v0, vA, list)
+    this._key = 'template'
   }
 
   v0m15p0s5_ (sheets) {
@@ -73,7 +73,7 @@ class UpdateTemplate extends Update {
     spreadsheet.getSheetByName('Cards')?.hideSheet()
     SpreadsheetApp.flush()
 
-    if (sheets.new['Dec'].getName() === 'Dec') return 0
+    if (sheets.new.Dec.getName() === 'Dec') return 0
 
     for (let mm = 0; mm < 12; mm++) {
       const name = Consts.month_name.short[mm]
@@ -185,7 +185,7 @@ class UpdateTemplate extends Update {
 
     sheet = spreadsheet.getSheetByFinder('new_Dec')
     if (sheet) {
-      sheets.new['Dec'] = sheet
+      sheets.new.Dec = sheet
       for (let mm = 0; mm < 11; mm++) {
         const name = Consts.month_name.short[mm]
         sheet = spreadsheet.getSheetByFinder(`new_${name}`)
@@ -208,7 +208,7 @@ class UpdateTemplate extends Update {
 
       sheets.new[name] = spreadsheet.spreadsheet.insertSheet(
           `new_${Noise.randomString(5, 'lonum')}`,
-          1 + mm,{ template: sheetTTT })
+          1 + mm, { template: sheetTTT })
         .hideSheet()
 
       Spreadsheet2.stampSheetWithFinder(sheets.new[name], `new_${name}`)
@@ -278,44 +278,44 @@ class UpdateTemplate extends Update {
    * 0.14.2
    */
   v0m14p2_ () {
-    const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags');
-    if (!sheet) return 0;
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags')
+    if (!sheet) return 0
 
-    const maxColumns = sheet.getMaxColumns();
-    if (maxColumns < 17) return 0;
-    else if (maxColumns > 19) sheet.deleteColumn(18);
-    else if (maxColumns < 19) sheet.insertColumnsAfter(17, 19 - maxColumns);
+    const maxColumns = sheet.getMaxColumns()
+    if (maxColumns < 17) return 0
+    else if (maxColumns > 19) sheet.deleteColumn(18)
+    else if (maxColumns < 19) sheet.insertColumnsAfter(17, 19 - maxColumns)
 
-    sheet.getRange('C1:C2').copyTo(sheet.getRange('R1:S2'), { formatOnly: true });
-    sheet.getRange('G2:G').copyTo(sheet.getRange('R2:S'), { formatOnly: true });
-    sheet.setColumnWidth(18, 127);
-    sheet.setColumnWidth(19, 127);
-    sheet.getRange('Q1:R').setBorder(null, null, null, null, true, null, '#000000', SpreadsheetApp.BorderStyle.DASHED);
+    sheet.getRange('C1:C2').copyTo(sheet.getRange('R1:S2'), { formatOnly: true })
+    sheet.getRange('G2:G').copyTo(sheet.getRange('R2:S'), { formatOnly: true })
+    sheet.setColumnWidth(18, 127)
+    sheet.setColumnWidth(19, 127)
+    sheet.getRange('Q1:R').setBorder(null, null, null, null, true, null, '#000000', SpreadsheetApp.BorderStyle.DASHED)
 
-    const range = sheet.getRange('F2:Q');
-    const rules = [];
+    const range = sheet.getRange('F2:Q')
+    const rules = []
 
-    let rule;
+    let rule
 
     rule = SpreadsheetApp.newConditionalFormatRule()
       .whenFormulaSatisfied('=COLUMN() - 5 < INDIRECT("_Settings!B4")')
       .setFontColor('#cccccc')
       .setRanges([range])
-      .build();
-    rules.push(rule);
+      .build()
+    rules.push(rule)
 
     rule = SpreadsheetApp.newConditionalFormatRule()
       .whenFormulaSatisfied('=COLUMN() - 5 > INDIRECT("_Settings!B4") - 1 + INDIRECT("_Settings!B6")')
       .setFontColor('#999999')
       .setRanges([range])
-      .build();
-    rules.push(rule);
+      .build()
+    rules.push(rule)
 
-    sheet.clearConditionalFormatRules();
-    sheet.setConditionalFormatRules(rules);
+    sheet.clearConditionalFormatRules()
+    sheet.setConditionalFormatRules(rules)
 
-    new MakeSheetTags().makeConfig().make();
+    new MakeSheetTags().makeConfig().make()
 
-    return 0;
+    return 0
   }
 }

@@ -10,8 +10,8 @@
 
 class BackupPatch extends PatchThis {
   constructor (payload) {
-    const source = (payload.metadata ?? payload.backup).version;
-    const reference = Object.freeze(Object.assign({}, Info.backup.version));
+    const source = (payload.metadata ?? payload.backup).version
+    const reference = Object.freeze(Object.assign({}, Info.backup.version))
     const patches = [
       [
         null,
@@ -19,15 +19,15 @@ class BackupPatch extends PatchThis {
         ['v0m2p0_'],
         ['v0m3p0_']
       ]
-    ];
+    ]
 
-    super(source, reference, patches);
-    this._payload = payload;
-    this.position = {};
+    super(source, reference, patches)
+    this._payload = payload
+    this.position = {}
   }
 
   get payload () {
-    return this._payload;
+    return this._payload
   }
 
   v0m3p0_ () {
@@ -61,63 +61,63 @@ class BackupPatch extends PatchThis {
   }
 
   v0m2p0_ () {
-    this._payload.tags_categories = Consts.tags_categories;
+    this._payload.tags_categories = Consts.tags_categories
 
-    return 0;
+    return 0
   }
 
   v0m1p2_ () {
-    const o = this._payload;
+    const o = this._payload
 
     for (const k in o.db_tables.accounts) {
-      const acc = o.db_tables.accounts[k];
-      Object.assign(acc, { color: 'whitesmoke' });
+      const acc = o.db_tables.accounts[k]
+      Object.assign(acc, { color: 'whitesmoke' })
     }
 
     for (const k in o.db_tables.cards) {
-      const card = o.db_tables.cards[k];
-      Object.assign(card, { color: 'whitesmoke' });
+      const card = o.db_tables.cards[k]
+      Object.assign(card, { color: 'whitesmoke' })
     }
 
-    return 0;
+    return 0
   }
 
   patchV0m1p1_ () {
-    const o = this._payload;
-    let sub;
+    const o = this._payload
+    let sub
 
-    delete Object.assign(o, { metadata: o.backup }).backup;
+    delete Object.assign(o, { metadata: o.backup }).backup
 
-    sub = o.metadata;
-    delete Object.assign(sub, { spreadsheet_name: sub.spreadsheet_title }).spreadsheet_title;
+    sub = o.metadata
+    delete Object.assign(sub, { spreadsheet_name: sub.spreadsheet_title }).spreadsheet_title
 
     for (const k in o.db_tables.accounts) {
-      const acc = o.db_tables.accounts[k];
-      delete Object.assign(acc, { time_start: acc.time_a }).time_a;
+      const acc = o.db_tables.accounts[k]
+      delete Object.assign(acc, { time_start: acc.time_a }).time_a
 
-      delete acc.time_z;
+      delete acc.time_z
     }
 
-    sub = o.user_settings;
-    delete Object.assign(sub, { financial_calendar: sub.sha256_financial_calendar }).sha256_financial_calendar;
+    sub = o.user_settings
+    delete Object.assign(sub, { financial_calendar: sub.sha256_financial_calendar }).sha256_financial_calendar
 
-    return 0;
+    return 0
   }
 
   setPosition_ () {
-    this._payload.metadata.version = this.getPosition();
-    return this;
+    this._payload.metadata.version = this.getPosition()
+    return this
   }
 
   run () {
     if (PatchThisUtils.isLatestVersion(this.getPosition(), this._reference)) {
-      this.response = 0;
-      return this;
+      this.response = 0
+      return this
     }
 
-    this.update();
+    this.update()
 
-    this.setPosition_();
-    return this;
+    this.setPosition_()
+    return this
   }
 }

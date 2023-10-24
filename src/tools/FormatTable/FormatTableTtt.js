@@ -10,7 +10,7 @@
 
 class FormatTableTtt extends FormatTable {
   constructor (mm) {
-    super();
+    super()
     const name = Consts.month_name.short[mm]
     this.sheet = SpreadsheetApp2.getActive().getSheetByName(name)
 
@@ -52,8 +52,8 @@ class FormatTableTtt extends FormatTable {
 
     const nill = this.specs.nullSearch - 1
     let lastRow = this.sheet.getRange(
-        this.specs.row, 2,
-        maxRows - this.specs.row + 1, this.specs.width)
+      this.specs.row, 2,
+      maxRows - this.specs.row + 1, this.specs.width)
       .getValues()
       .findIndex(line => line[nill] === '')
 

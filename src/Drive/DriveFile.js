@@ -10,21 +10,21 @@
 
 class DriveFile {
   constructor (fileId) {
-    this.file = DriveApp.getFileById(fileId);
+    this.file = DriveApp.getFileById(fileId)
     this.metadata = Object.seal(Drive.Files.get(fileId, { supportsAllDrives: true }))
   }
 
   asSpreadsheet () {
-    if (this.file.getMimeType() !== MimeType.GOOGLE_SHEETS) throw new Error('DriveFile: asSpreadsheet(): File is not a Google Sheet.');
-    return SpreadsheetApp.openById(this.metadata.id);
+    if (this.file.getMimeType() !== MimeType.GOOGLE_SHEETS) throw new Error('DriveFile: asSpreadsheet(): File is not a Google Sheet.')
+    return SpreadsheetApp.openById(this.metadata.id)
   }
 
   getId () {
-    return this.metadata.id;
+    return this.metadata.id
   }
 
   getName () {
-    return this.file.getName();
+    return this.file.getName()
   }
 
   getUserPermission () {

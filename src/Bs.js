@@ -10,15 +10,15 @@
 
 class Bs {
   static getDeveloperKey () {
-    const scriptCache = CacheService.getScriptCache();
+    const scriptCache = CacheService.getScriptCache()
 
-    let key = scriptCache.get('developer_key');
-    if (key) return key;
+    let key = scriptCache.get('developer_key')
+    if (key) return key
 
-    key = PropertiesService.getScriptProperties().getProperty('developer_key');
-    if (!key) throw new Error('Bs: getDeveloperKey(): Property "developer_key" not found');
+    key = PropertiesService.getScriptProperties().getProperty('developer_key')
+    if (!key) throw new Error('Bs: getDeveloperKey(): Property "developer_key" not found')
 
-    scriptCache.put('developer_key', key);
-    return key;
+    scriptCache.put('developer_key', key)
+    return key
   }
 }

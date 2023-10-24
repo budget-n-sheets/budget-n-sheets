@@ -10,7 +10,7 @@
 
 class DemoBlankValue extends QuickstartDemo {
   constructor () {
-    super(['mm']);
+    super(['mm'])
   }
 
   makeConfig (num) {
@@ -33,8 +33,8 @@ class DemoBlankValue extends QuickstartDemo {
             [code, 13, 'Deposit', Noise.randomValue(4, 2), '#dp', false],
             [code, 17, 'Transfer to Joe', Noise.randomValueNegative(3, 2), '#trf', false]
           ]
-        ];
-        break;
+        ]
+        break
       case 2:
         this.list = [
           [],
@@ -44,32 +44,32 @@ class DemoBlankValue extends QuickstartDemo {
             [code, 11, 'Some expenses', Noise.randomValueNegative(3, 2), '', false],
             [code, 13, 'Some expenses', Noise.randomValueNegative(3, 2), '', false]
           ]
-        ];
-        break;
+        ]
+        break
 
       default:
-        return;
+        return
     }
 
-    this.getSheets_();
+    this.getSheets_()
 
-    this.isReady = true;
-    return this;
+    this.isReady = true
+    return this
   }
 
   play (num) {
-    const ledger = new LedgerTtt(this.mm);
-    const rangeList = [];
+    const ledger = new LedgerTtt(this.mm)
+    const rangeList = []
 
     this.list.forEach((values, index) => {
-      if (values.length === 0) return;
+      if (values.length === 0) return
 
-      ledger.appendTransactions(values);
-      if (num === 2) ledger.fillInWithZeros();
+      ledger.appendTransactions(values)
+      if (num === 2) ledger.fillInWithZeros()
 
-      rangeList.push(ledger.lastRange.getA1Notation());
-    });
+      rangeList.push(ledger.lastRange.getA1Notation())
+    })
 
-    this.sheet.getRangeList(rangeList).activate();
+    this.sheet.getRangeList(rangeList).activate()
   }
 }

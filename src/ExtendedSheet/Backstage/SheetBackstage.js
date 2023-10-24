@@ -10,9 +10,9 @@
 
 class SheetBackstage extends ExtendedSheet {
   constructor () {
-    super('_Backstage');
+    super('_Backstage')
 
-    this.num_acc = SettingsConst.get('number_accounts');
+    this.num_acc = SettingsConst.get('number_accounts')
     this._specs = Object.freeze(SheetBackstage.specs)
   }
 
@@ -54,15 +54,15 @@ class SheetBackstage extends ExtendedSheet {
   }
 
   getGroupRange (monthOffset = 0, tableOffset = 0, numMonths, numTables) {
-    if (!numMonths) numMonths = 12 - monthOffset;
-    if (!numTables) numTables = 12 + this.num_acc - tableOffset;
+    if (!numMonths) numMonths = 12 - monthOffset
+    if (!numTables) numTables = 12 + this.num_acc - tableOffset
 
     return this._sheet.getRange(
       this.specs.init.row + this.specs.table.height * monthOffset,
       this.specs.init.column + this.specs.table.width * tableOffset,
       this.specs.table.height * numMonths,
       this.specs.table.width * numTables
-    );
+    )
   }
 
   resetDefault () {
@@ -79,8 +79,8 @@ class SheetBackstage extends ExtendedSheet {
     let list
 
     this.sheet.getRange(
-        1, 2, 1,
-        this.sheet.getMaxColumns() - 1)
+      1, 2, 1,
+      this.sheet.getMaxColumns() - 1)
       .clearContent()
     cellReference.setValue('\^Wallet\$')
 
@@ -107,7 +107,7 @@ class SheetBackstage extends ExtendedSheet {
         .setFormula(numberFormater.localeSignal(acc.balance))
     }
 
-    cellReference.offset(0, _w * (1 + tablesOffset)).setValue(`\^Cards\$`)
+    cellReference.offset(0, _w * (1 + tablesOffset)).setValue('\^Cards\$')
 
     list = new CardsService().list()
     for (const card of list) {
@@ -122,7 +122,7 @@ class SheetBackstage extends ExtendedSheet {
       }
       this.sheet
         .getRangeList(ranges)
-        .setFormula(numberFormater.localeSignal(card.limit));
+        .setFormula(numberFormater.localeSignal(card.limit))
     }
 
     return this

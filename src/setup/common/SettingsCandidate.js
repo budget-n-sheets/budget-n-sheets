@@ -10,10 +10,10 @@
 
 class SettingsCandidate {
   static processBackup (uuid, file, data) {
-    if (!FeatureFlag.getStatusOf('setup/restore')) throw new Error('Feature flagged.');
+    if (!FeatureFlag.getStatusOf('setup/restore')) throw new Error('Feature flagged.')
 
     const settings_candidate = {
-      uuid: uuid,
+      uuid,
       protocol: 'restore',
       source: {
         file_id: file.getId(),
@@ -34,7 +34,7 @@ class SettingsCandidate {
         cards: [],
         tags: 0
       }
-    };
+    }
 
     for (const k in data.db_tables.accounts) {
       settings_candidate.settings.accounts.push({
@@ -44,28 +44,28 @@ class SettingsCandidate {
         require: 'restore',
         index: +k,
         name: data.db_tables.accounts[k].name
-      });
+      })
     }
 
     for (const k in data.db_tables.cards) {
-      settings_candidate.misc.cards.push(data.db_tables.cards[k].name);
+      settings_candidate.misc.cards.push(data.db_tables.cards[k].name)
     }
 
-    PropertiesService2.getDocumentProperties().setProperty('settings_candidate', settings_candidate);
-    cacheSettingsSummary_(settings_candidate);
-    return 0;
+    PropertiesService2.getDocumentProperties().setProperty('settings_candidate', settings_candidate)
+    cacheSettingsSummary_(settings_candidate)
+    return 0
   }
 
   static processSpreadsheet (protocol, uuid, fileId) {
-    if (!FeatureFlag.getStatusOf(`setup/${protocol}`)) throw new Error('Feature flagged.');
+    if (!FeatureFlag.getStatusOf(`setup/${protocol}`)) throw new Error('Feature flagged.')
 
-    const spreadsheet = SpreadsheetApp.openById(fileId);
-    const metadata = new Metadata(spreadsheet);
-    let property;
+    const spreadsheet = SpreadsheetApp.openById(fileId)
+    const metadata = new Metadata(spreadsheet)
+    let property
 
     const settings_candidate = {
-      uuid: uuid,
-      protocol: protocol,
+      uuid,
+      protocol,
       version: {
         script: {},
         template: {}
@@ -87,7 +87,7 @@ class SettingsCandidate {
         cards: [],
         tags: 0
       }
-    };
+    }
 
     property = JSON.parse(metadata.get('class_version2'))
     if (!property) throw new Error('Property not found.')
@@ -101,20 +101,20 @@ class SettingsCandidate {
     Object.assign(settings_candidate.version.script, property.script)
     Object.assign(settings_candidate.version.template, property.template)
 
-    property = JSON.parse(metadata.get('const_properties'));
-    if (!property) throw new Error('Property not found.');
-    settings_candidate.settings.financial_year = property.financial_year;
+    property = JSON.parse(metadata.get('const_properties'))
+    if (!property) throw new Error('Property not found.')
+    settings_candidate.settings.financial_year = property.financial_year
 
-    property = JSON.parse(metadata.get('user_settings'));
-    if (!property) throw new Error('Property not found.');
-    settings_candidate.settings.initial_month = property.initial_month;
-    settings_candidate.settings.financial_calendar = property.financial_calendar;
+    property = JSON.parse(metadata.get('user_settings'))
+    if (!property) throw new Error('Property not found.')
+    settings_candidate.settings.initial_month = property.initial_month
+    settings_candidate.settings.financial_calendar = property.financial_calendar
 
-    property = JSON.parse(metadata.get('spreadsheet_settings'));
-    settings_candidate.settings.decimal_places = property?.decimal_places || 2;
+    property = JSON.parse(metadata.get('spreadsheet_settings'))
+    settings_candidate.settings.decimal_places = property?.decimal_places || 2
 
-    property = JSON.parse(metadata.get('db_accounts'));
-    if (!property) throw new Error('Property not found.');
+    property = JSON.parse(metadata.get('db_accounts'))
+    if (!property) throw new Error('Property not found.')
     for (const k in property) {
       settings_candidate.settings.accounts.push({
         id: 'acc_' + k,
@@ -123,19 +123,19 @@ class SettingsCandidate {
         require: 'copy',
         index: +k,
         name: property[k].name
-      });
+      })
     }
 
-    property = JSON.parse(metadata.get('db_cards'));
-    if (!property) throw new Error('Property not found.');
+    property = JSON.parse(metadata.get('db_cards'))
+    if (!property) throw new Error('Property not found.')
     for (const k in property) {
-      settings_candidate.misc.cards.push(property[k].name);
+      settings_candidate.misc.cards.push(property[k].name)
     }
 
-    const sheet = spreadsheet.getSheetByName('Tags');
-    if (sheet) settings_candidate.misc.tags = sheet.getLastRow() - 1;
+    const sheet = spreadsheet.getSheetByName('Tags')
+    if (sheet) settings_candidate.misc.tags = sheet.getLastRow() - 1
 
-    PropertiesService2.getDocumentProperties().setProperty('settings_candidate', settings_candidate);
-    cacheSettingsSummary_(settings_candidate);
+    PropertiesService2.getDocumentProperties().setProperty('settings_candidate', settings_candidate)
+    cacheSettingsSummary_(settings_candidate)
   }
 }

@@ -18,16 +18,16 @@ class LocaleUtils {
   }
 
   static getDate (date) {
-    let timezone = SpreadsheetApp2.getActive().spreadsheet.getSpreadsheetTimeZone();
-    if (typeof timezone !== 'string' || timezone === '') timezone = 'GMT';
+    let timezone = SpreadsheetApp2.getActive().spreadsheet.getSpreadsheetTimeZone()
+    if (typeof timezone !== 'string' || timezone === '') timezone = 'GMT'
 
-    const formatDate = Utilities.formatDate(date || Consts.date, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+    const formatDate = Utilities.formatDate(date || Consts.date, timezone, "yyyy-MM-dd'T'HH:mm:ss'Z'")
 
-    return new Date(formatDate);
+    return new Date(formatDate)
   }
 
   static getDateOffset () {
-    return LocaleUtils.getDate() - Consts.date;
+    return LocaleUtils.getDate() - Consts.date
   }
 
   static getNumberDecimalSeparator () {

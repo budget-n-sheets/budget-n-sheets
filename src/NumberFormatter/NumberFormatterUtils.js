@@ -15,8 +15,8 @@ class NumberFormatterUtils {
 
   static getCurrencyRegExp () {
     const n = this.decP
-    const dec_s = SettingsSpreadsheet.get('decimal_separator');
-    return new RegExp('-?\\$ ?\\d+' + (n > 0 ? (dec_s ? '\\.' : ',') + '\\d{' + n + '}' : ''));
+    const dec_s = SettingsSpreadsheet.get('decimal_separator')
+    return new RegExp('-?\\$ ?\\d+' + (n > 0 ? (dec_s ? '\\.' : ',') + '\\d{' + n + '}' : ''))
   }
 
   static getDecimalPlaceholder () {

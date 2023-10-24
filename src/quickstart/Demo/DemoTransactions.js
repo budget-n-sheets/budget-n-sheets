@@ -10,7 +10,7 @@
 
 class DemoTransactions extends QuickstartDemo {
   constructor () {
-    super(['mm']);
+    super(['mm'])
   }
 
   makeConfig (num) {
@@ -18,29 +18,29 @@ class DemoTransactions extends QuickstartDemo {
 
     switch (num) {
       case 1:
-        this.data = [[code, 7, 'Deposit (to my account #dp)', Noise.randomValue(3, 2), '#dp', false]];
-        break;
+        this.data = [[code, 7, 'Deposit (to my account #dp)', Noise.randomValue(3, 2), '#dp', false]]
+        break
       case 2:
-        this.data = [[code, 7, 'Transfer (from someone #trf)', Noise.randomValue(3, 2), '#trf', false]];
-        break;
+        this.data = [[code, 7, 'Transfer (from someone #trf)', Noise.randomValue(3, 2), '#trf', false]]
+        break
       case 3:
-        this.data = [[code, 7, 'Transfer (to someone #trf)', Noise.randomValueNegative(3, 2), '#trf', false]];
-        break;
+        this.data = [[code, 7, 'Transfer (to someone #trf)', Noise.randomValueNegative(3, 2), '#trf', false]]
+        break
       case 4:
-        this.data = [[code, 7, 'Withdrawal (cash dispenser #wd)', Noise.randomValueNegative(3, 2), '#wd', false]];
-        break;
+        this.data = [[code, 7, 'Withdrawal (cash dispenser #wd)', Noise.randomValueNegative(3, 2), '#wd', false]]
+        break
 
       default:
-        return;
+        return
     }
 
-    this.getSheets_();
+    this.getSheets_()
 
-    this.isReady = true;
-    return this;
+    this.isReady = true
+    return this
   }
 
   play () {
-    new LedgerTtt(this.mm).appendTransactions(this.data).fillInWithZeros().activate();
+    new LedgerTtt(this.mm).appendTransactions(this.data).fillInWithZeros().activate()
   }
 }

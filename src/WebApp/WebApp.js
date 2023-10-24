@@ -9,5 +9,5 @@
  */
 
 function doGet (e) {
-  return HtmlService.createHtmlOutput(e.queryString);
+  return HtmlService.createHtmlOutput(e.queryString)
 }

@@ -10,7 +10,7 @@
 
 class DemoStatements extends QuickstartDemo {
   constructor () {
-    super(['mm']);
+    super(['mm'])
   }
 
   makeConfig (num) {
@@ -20,14 +20,14 @@ class DemoStatements extends QuickstartDemo {
       case 1:
         this.list = [
           [['Wallet', 7, 'Coffee shop', Noise.randomValueNegative(2, 2), '', false]]
-        ];
-        break;
+        ]
+        break
       case 2:
         this.list = [
           [],
           [[code, 7, 'Grocery shop', Noise.randomValueNegative(2, 2), '', false]]
-        ];
-        break;
+        ]
+        break
       case 3:
         this.list = [
           [[code, 7, 'Income (in cash), add #inc tag', Noise.randomValue(3, 2), '#inc', false]],
@@ -35,38 +35,38 @@ class DemoStatements extends QuickstartDemo {
             [code, 7, 'Income (via transfer #trf), add #inc tag', Noise.randomValue(3, 2), '#trf #inc', false],
             [code, 7, 'Income (via deposit #dp), add #inc tag', Noise.randomValue(3, 2), '#dp #inc', false]
           ]
-        ];
-        break;
+        ]
+        break
       case 4: {
-        this.list = [];
-        if (Noise.randomInteger(2) === 1) this.list.push([]);
+        this.list = []
+        if (Noise.randomInteger(2) === 1) this.list.push([])
 
-        const val = -Noise.randomInteger(20);
+        const val = -Noise.randomInteger(20)
         this.list.push([
           [code, 7, 'Pizza, my share', val, '', false],
           [code, 7, 'Pizza, others share (not accounted in expenses)', 3 * val, '', true]
-        ]);
-        break;
+        ])
+        break
       }
     }
 
-    this.getSheets_();
+    this.getSheets_()
 
-    this.isReady = true;
-    return this;
+    this.isReady = true
+    return this
   }
 
   play () {
-    const ledger = new LedgerTtt(this.mm);
-    const rangeList = [];
+    const ledger = new LedgerTtt(this.mm)
+    const rangeList = []
 
     this.list.forEach((values, index) => {
-      if (values.length === 0) return;
+      if (values.length === 0) return
 
-      ledger.appendTransactions(values).fillInWithZeros();
-      rangeList.push(ledger.lastRange.getA1Notation());
-    });
+      ledger.appendTransactions(values).fillInWithZeros()
+      rangeList.push(ledger.lastRange.getA1Notation())
+    })
 
-    this.sheet.getRangeList(rangeList).activate();
+    this.sheet.getRangeList(rangeList).activate()
   }
 }

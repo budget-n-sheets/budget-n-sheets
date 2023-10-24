@@ -9,18 +9,18 @@
  */
 
 function coolGalleryService (job, id) {
-  const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(200)) return;
+  const lock = LockService.getDocumentLock()
+  if (!lock.tryLock(200)) return
 
   switch (job) {
     case 'get':
-      new CoolGalleryService(id).install();
-      break;
+      new CoolGalleryService(id).install()
+      break
     case 'list':
-      return CoolGalleryService.templates;
+      return CoolGalleryService.templates
 
     default:
-      console.error('coolGalleryService(): Switch case is default.');
-      break;
+      console.error('coolGalleryService(): Switch case is default.')
+      break
   }
 }

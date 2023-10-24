@@ -10,48 +10,48 @@
 
 class RestoreDialog extends HtmlTemplate2 {
   constructor (protocol, uuid, path) {
-    const htmlTemplate = HtmlService.createTemplateFromFile(path);
-    super(htmlTemplate);
+    const htmlTemplate = HtmlService.createTemplateFromFile(path)
+    super(htmlTemplate)
 
-    this.protocol = protocol;
+    this.protocol = protocol
     this._scriptlet = {
-      uuid: uuid,
+      uuid,
       isContinued: false,
       status_msg: ''
-    };
+    }
   }
 
   evalLastStatus_ () {
-    const lock = LockService.getDocumentLock();
+    const lock = LockService.getDocumentLock()
     if (!lock.tryLock(200)) {
-      this._scriptlet.status_msg = 'Sorry, something went wrong. Try again in a moment.';
-      return;
+      this._scriptlet.status_msg = 'Sorry, something went wrong. Try again in a moment.'
+      return
     }
 
-    const status = SessionService.withUser().getSession(this._scriptlet.uuid).getProperty(`setup/${this.protocol}`);
+    const status = SessionService.withUser().getSession(this._scriptlet.uuid).getProperty(`setup/${this.protocol}`)
 
-    lock.releaseLock();
+    lock.releaseLock()
 
-    if (status == null) return;
-    else if (status === 0) this._scriptlet.isContinued = true;
-    else this.evalStatus_(status);
+    if (status == null) return
+    else if (status === 0) this._scriptlet.isContinued = true
+    else this.evalStatus_(status)
   }
 
   loadCommon_ () {
-    const dialogCommon = new RestoreDialogCommon(this.protocol);
+    const dialogCommon = new RestoreDialogCommon(this.protocol)
 
-    this.htmlTemplate.htmlCommonDialog = dialogCommon.getHtmlContent();
-    this.htmlTemplate.jsCommonDialog = dialogCommon.getJsContent();
+    this.htmlTemplate.htmlCommonDialog = dialogCommon.getHtmlContent()
+    this.htmlTemplate.jsCommonDialog = dialogCommon.getJsContent()
   }
 
   build () {
-    this.evalLastStatus_();
-    this.loadCommon_();
+    this.evalLastStatus_()
+    this.loadCommon_()
 
     return this.setScriptletValues(HtmlResources.href.reserved)
       .setScriptletValues(this._scriptlet)
       .evaluate()
       .setWidth(353)
-      .setHeight(359);
+      .setHeight(359)
   }
 }

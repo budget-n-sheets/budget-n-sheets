@@ -10,19 +10,19 @@
 
 class QuickstartPl {
   static ay (name, num) {
-    const demo = QuickstartDemo.pick(name);
-    if (!demo) return;
+    const demo = QuickstartDemo.pick(name)
+    if (!demo) return
 
-    demo.makeConfig(num);
+    demo.makeConfig(num)
 
     if (demo.hasMissing()) {
-      demo.alertSheetMissing();
-      return;
+      demo.alertSheetMissing()
+      return
     }
 
-    if (!demo.isReady) return;
+    if (!demo.isReady) return
 
-    demo.play(num);
-    SpreadsheetApp2.getActive().spreadsheet.toast('Done.', 'Quickstart');
+    demo.play(num)
+    SpreadsheetApp2.getActive().spreadsheet.toast('Done.', 'Quickstart')
   }
 }

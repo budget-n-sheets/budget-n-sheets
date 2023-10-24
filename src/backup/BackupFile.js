@@ -10,12 +10,12 @@
 
 class BackupFile extends DriveFile {
   constructor (fileId) {
-    super(fileId);
+    super(fileId)
 
     const permission = this.getUserPermission()
     if (DriveRoles.getRoleLevel(permission.role) > 2) throw new Error("You don't have enough permission to access this file.")
 
-    this.data = this.file.getBlob().getDataAsString();
-    this.isLegacyFormat = /:[0-9a-fA-F]{40}$/.test(this.data);
+    this.data = this.file.getBlob().getDataAsString()
+    this.isLegacyFormat = /:[0-9a-fA-F]{40}$/.test(this.data)
   }
 }

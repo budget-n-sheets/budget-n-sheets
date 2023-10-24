@@ -9,17 +9,17 @@
  */
 
 function onOpenHandler_ (e) {
-  if (!Addon.isAuthorized(e)) return;
+  if (!Addon.isAuthorized(e)) return
 
   try {
-    Addon.loadCache();
+    Addon.loadCache()
   } catch (err) {
-    LogLog.error(err);
+    LogLog.error(err)
   }
 }
 
 function onEditHandler_ (e) {
-  if (!Addon.isAuthorized(e)) return;
+  if (!Addon.isAuthorized(e)) return
 }
 
 function dailyHandler_ (e) {

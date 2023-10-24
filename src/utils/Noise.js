@@ -15,7 +15,7 @@ class Noise {
    * @return {number}   Random integer.
    */
   static randomInteger (n) {
-    return Math.floor(Math.random() * Math.floor(n));
+    return Math.floor(Math.random() * Math.floor(n))
   }
 
   /**
@@ -24,7 +24,7 @@ class Noise {
    * @return {number}   Random number.
    */
   static randomNumber (p) {
-    return Math.random() * Math.pow(10, p);
+    return Math.random() * Math.pow(10, p)
   }
 
   /**
@@ -34,7 +34,7 @@ class Noise {
    * @return {number}   Random number.
    */
   static randomValue (p, d) {
-    return +this.randomNumber(p).toFixed(d);
+    return +this.randomNumber(p).toFixed(d)
   }
 
   /**
@@ -44,7 +44,7 @@ class Noise {
    * @return {number}   Random number.
    */
   static randomValueSign (p, d) {
-    return (Math.random() < 0.5 ? 1 : -1) * +this.randomNumber(p).toFixed(d);
+    return (Math.random() < 0.5 ? 1 : -1) * +this.randomNumber(p).toFixed(d)
   }
 
   /**
@@ -54,7 +54,7 @@ class Noise {
    * @return {number}   Random number.
    */
   static randomValueNegative (p, d) {
-    return -this.randomNumber(p).toFixed(d);
+    return -this.randomNumber(p).toFixed(d)
   }
 
   /**
@@ -64,43 +64,43 @@ class Noise {
    * @return {string}   Random string.
    */
   static randomString (n, p) {
-    let b = '';
+    let b = ''
     switch (p) {
       case 'digit':
-        b = '0123456789';
-        break;
+        b = '0123456789'
+        break
       case 'lower':
-        b = 'abcdefghijklmnopqrstuvwxyz';
-        break;
+        b = 'abcdefghijklmnopqrstuvwxyz'
+        break
       case 'upper':
-        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        break;
+        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        break
       case 'alpha':
-        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        break;
+        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+        break
       case 'lonum':
-        b = 'abcdefghijklmnopqrstuvwxyz0123456789';
-        break;
+        b = 'abcdefghijklmnopqrstuvwxyz0123456789'
+        break
       case 'upnum':
-        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        break;
+        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        break
       case 'alnum':
-        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        break;
+        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        break
       case 'word':
-        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_';
-        break;
+        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_'
+        break
 
       default:
-        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        break;
+        b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        break
     }
 
-    let s = '';
+    let s = ''
     for (let i = 0; i < n; i++) {
-      s += b.charAt(Math.floor(Math.random() * b.length));
+      s += b.charAt(Math.floor(Math.random() * b.length))
     }
 
-    return s;
+    return s
   }
 }

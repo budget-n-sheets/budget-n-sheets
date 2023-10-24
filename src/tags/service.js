@@ -11,12 +11,12 @@
 function tagsService (job, payload) {
   switch (job) {
     case 'get':
-      return TagsService.getCategories();
+      return TagsService.getCategories()
     case 'save':
-      TagsService.setCategories(payload);
-      break;
+      TagsService.setCategories(payload)
+      break
 
     default:
-      throw new Error('tagsService(): Switch case is default.');
+      throw new Error('tagsService(): Switch case is default.')
   }
 }

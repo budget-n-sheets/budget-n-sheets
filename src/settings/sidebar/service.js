@@ -10,10 +10,10 @@
 
 function getUserSettings () {
   if (!AddonUser.hasBaselinePermission()) return
-  return UserSettings.getSettings();
+  return UserSettings.getSettings()
 }
 
 function saveUserSettings (settings) {
   if (!AddonUser.hasBaselinePermission()) return 1
-  new UserSettings().saveSidebarSettings(settings).flush();
+  new UserSettings().saveSidebarSettings(settings).flush()
 }

@@ -10,44 +10,44 @@
 
 class CalendarService {
   static syncDayWithSpreadsheet (date) {
-    const finCalEvents = new FinCal().getEventsForDay(date);
-    const events = CalendarUtils.digestEvents(finCalEvents);
-    if (events.length === 0) return;
+    const finCalEvents = new FinCal().getEventsForDay(date)
+    const events = CalendarUtils.digestEvents(finCalEvents)
+    if (events.length === 0) return
 
-    const tableCards = [];
+    const tableCards = []
     const tableTtt = []
 
-    const mm = date.getMonth();
-    const dd = date.getDate();
+    const mm = date.getMonth()
+    const dd = date.getDate()
 
-    const formater = new NumberFormatter();
+    const formater = new NumberFormatter()
     const accounts = new AccountsService().list()
     const balances = new SheetBackstage().getCardsBalances()
 
     for (const evento of events) {
-      if (evento.description === '') continue;
-      if (evento.hasAtMute) continue;
+      if (evento.description === '') continue
+      if (evento.hasAtMute) continue
 
-      const tags = (evento.tags.length > 0 ? '#' + evento.tags.join(' #') : '');
+      const tags = (evento.tags.length > 0 ? '#' + evento.tags.join(' #') : '')
 
-      let value = evento.value || 0;
+      let value = evento.value || 0
 
       if (isNaN(evento.value)) {
-        if (!evento.hasQcc) continue;
-        if (!evento.card) continue;
-        if (!evento.hasWallet && !evento.account) continue;
+        if (!evento.hasQcc) continue
+        if (!evento.card) continue
+        if (!evento.hasWallet && !evento.account) continue
         if (mm > 0) value = balances[evento.card.id][mm - 1]
       }
 
-      value = '=' + formater.localeSignal(value);
+      value = '=' + formater.localeSignal(value)
 
       if (evento.hasWallet) {
-        tableTtt.push(['Wallet', dd, evento.title, value, tags, evento.hasIgn]);
+        tableTtt.push(['Wallet', dd, evento.title, value, tags, evento.hasIgn])
       } else if (evento.account) {
         const name = accounts.find(acc => acc.id === evento.account).name
-        tableTtt.push([name, dd, evento.title, value, tags, evento.hasIgn]);
+        tableTtt.push([name, dd, evento.title, value, tags, evento.hasIgn])
       } else if (evento.card) {
-        tableCards.push([evento.card.code, dd, evento.title, value, tags, evento.hasIgn]);
+        tableCards.push([evento.card.code, dd, evento.title, value, tags, evento.hasIgn])
       }
     }
 

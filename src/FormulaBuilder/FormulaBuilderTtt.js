@@ -10,7 +10,7 @@
 
 class FormulaBuilderTtt {
   static header () {
-    return FormulaBuilderTttHeader;
+    return FormulaBuilderTttHeader
   }
 }
 
@@ -31,7 +31,7 @@ class FormulaBuilderTttHeader {
   }
 
   static expenses (mm) {
-    return `CONCAT("Expenses "; TO_TEXT(OFFSET('_Backstage'!B4; ${TABLE_DIMENSION.height} * ${mm}; ${TABLE_DIMENSION.width} * G1)))`;
+    return `CONCAT("Expenses "; TO_TEXT(OFFSET('_Backstage'!B4; ${TABLE_DIMENSION.height} * ${mm}; ${TABLE_DIMENSION.width} * G1)))`
   }
 
   static index (numAccs) {
@@ -48,23 +48,23 @@ class FormulaBuilderTttHeader {
   }
 
   static report (index, mm) {
-    const _h = TABLE_DIMENSION.height;
-    const _w = TABLE_DIMENSION.width;
+    const _h = TABLE_DIMENSION.height
+    const _w = TABLE_DIMENSION.width
 
-    let part_1, part_2, part_3, part_4;
+    let part_1, part_2, part_3, part_4
 
-    part_1 = 'TO_TEXT(_Backstage!' + RangeUtils.rollA1Notation(2 + _h * mm, 8 + _w * index) + ')';
-    part_1 = '"Withdrawal: ["; _Backstage!' + RangeUtils.rollA1Notation(2 + _h * mm, 9 + _w * index) + '; "] "; ' + part_1 + '; "\n"; ';
+    part_1 = 'TO_TEXT(_Backstage!' + RangeUtils.rollA1Notation(2 + _h * mm, 8 + _w * index) + ')'
+    part_1 = '"Withdrawal: ["; _Backstage!' + RangeUtils.rollA1Notation(2 + _h * mm, 9 + _w * index) + '; "] "; ' + part_1 + '; "\n"; '
 
-    part_2 = 'TO_TEXT(_Backstage!' + RangeUtils.rollA1Notation(3 + _h * mm, 8 + _w * index) + ')';
-    part_2 = '"Deposit: ["; _Backstage!' + RangeUtils.rollA1Notation(3 + _h * mm, 9 + _w * index) + '; "] "; ' + part_2 + '; "\n"; ';
+    part_2 = 'TO_TEXT(_Backstage!' + RangeUtils.rollA1Notation(3 + _h * mm, 8 + _w * index) + ')'
+    part_2 = '"Deposit: ["; _Backstage!' + RangeUtils.rollA1Notation(3 + _h * mm, 9 + _w * index) + '; "] "; ' + part_2 + '; "\n"; '
 
-    part_3 = 'TO_TEXT(_Backstage!' + RangeUtils.rollA1Notation(4 + _h * mm, 8 + _w * index) + ')';
-    part_3 = '"Trf. in: ["; _Backstage!' + RangeUtils.rollA1Notation(4 + _h * mm, 9 + _w * index) + '; "] "; ' + part_3 + '; "\n"; ';
+    part_3 = 'TO_TEXT(_Backstage!' + RangeUtils.rollA1Notation(4 + _h * mm, 8 + _w * index) + ')'
+    part_3 = '"Trf. in: ["; _Backstage!' + RangeUtils.rollA1Notation(4 + _h * mm, 9 + _w * index) + '; "] "; ' + part_3 + '; "\n"; '
 
-    part_4 = 'TO_TEXT(_Backstage!' + RangeUtils.rollA1Notation(5 + _h * mm, 8 + _w * index) + ')';
-    part_4 = '"Trf. out: ["; _Backstage!' + RangeUtils.rollA1Notation(5 + _h * mm, 9 + _w * index) + '; "] "; ' + part_4;
+    part_4 = 'TO_TEXT(_Backstage!' + RangeUtils.rollA1Notation(5 + _h * mm, 8 + _w * index) + ')'
+    part_4 = '"Trf. out: ["; _Backstage!' + RangeUtils.rollA1Notation(5 + _h * mm, 9 + _w * index) + '; "] "; ' + part_4
 
-    return 'CONCATENATE(' + part_1 + part_2 + part_3 + part_4 + ')';
+    return 'CONCATENATE(' + part_1 + part_2 + part_3 + part_4 + ')'
   }
 }

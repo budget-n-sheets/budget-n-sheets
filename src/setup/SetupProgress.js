@@ -10,30 +10,30 @@
 
 class SetupProgress {
   constructor () {
-    this._config = {};
+    this._config = {}
   }
 
   makeClean () {
-    CacheService2.getDocumentCache().removeAll(CACHE_KEYS);
-    PropertiesService2.getDocumentProperties().deleteAllProperties();
+    CacheService2.getDocumentCache().removeAll(CACHE_KEYS)
+    PropertiesService2.getDocumentProperties().deleteAllProperties()
 
-    Triggers.deleteAllUserTriggers();
+    Triggers.deleteAllUserTriggers()
 
-    const spreadsheet = SpreadsheetApp2.getActive();
-    spreadsheet.deleteAllSheets();
-    spreadsheet.removeAllMetadata();
+    const spreadsheet = SpreadsheetApp2.getActive()
+    spreadsheet.deleteAllSheets()
+    spreadsheet.removeAllMetadata()
 
-    return this;
+    return this
   }
 
   makeConfig (config) {
-    const dec_p = Number(config.decimal_places);
-    const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '');
-    const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')';
+    const dec_p = Number(config.decimal_places)
+    const dec_c = (dec_p > 0 ? '.' + '0'.repeat(dec_p) : '')
+    const number_format = '#,##0' + dec_c + ';' + '(#,##0' + dec_c + ')'
 
     if (config.name_accounts.length > 5) {
-      config.name_accounts = config.name_accounts.slice(0, 5);
-      config.number_accounts = 5;
+      config.name_accounts = config.name_accounts.slice(0, 5)
+      config.number_accounts = 5
     }
 
     this._config = {
@@ -47,14 +47,14 @@ class SetupProgress {
 
       decimal_places: dec_p,
       decimal_separator: true,
-      number_format: number_format
-    };
+      number_format
+    }
 
-    return this;
+    return this
   }
 
   makeInstall () {
-    new SetupParts(this._config).run();
-    return this;
+    new SetupParts(this._config).run()
+    return this
   }
 }

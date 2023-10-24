@@ -10,28 +10,28 @@
 
 class Pushback {
   constructor () {
-    this._session = SessionService.withUser().startSession();
-    this._param = {};
+    this._session = SessionService.withUser().startSession()
+    this._param = {}
   }
 
   get _uuid () {
-    return this._session.getUuid();
+    return this._session.getUuid()
   }
 
   config_ () {
-    if (!this._callbackFunction) throw new Error('Undefined callback.');
+    if (!this._callbackFunction) throw new Error('Undefined callback.')
 
-    this._session.setProperty('callbackFunction', this._callbackFunction);
-    this._session.setProperty('parameter', this._param);
+    this._session.setProperty('callbackFunction', this._callbackFunction)
+    this._session.setProperty('parameter', this._param)
   }
 
   setCallbackFunction (callbackFunctionName) {
-    this._callbackFunction = callbackFunctionName;
-    return this;
+    this._callbackFunction = callbackFunctionName
+    return this
   }
 
   setParam (name, value) {
-    this._param[name] = value;
-    return this;
+    this._param[name] = value
+    return this
   }
 }

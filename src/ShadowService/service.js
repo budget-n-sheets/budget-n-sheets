@@ -9,32 +9,32 @@
  */
 
 function returnToShadow (uuid, password) {
-  if (typeof password !== 'string') return;
+  if (typeof password !== 'string') return
 
-  let shadow;
+  let shadow
   try {
-    shadow = SessionService.withUser().getSession(uuid);
+    shadow = SessionService.withUser().getSession(uuid)
   } catch (err) {
-    LogLog.error(err);
-    showSessionExpired();
-    return;
+    LogLog.error(err)
+    showSessionExpired()
+    return
   }
 
-  const callbackFunction = shadow.getProperty('callbackFunction');
-  const callbackUuid = shadow.getProperty('callbackUuid');
-  const param = shadow.getProperty('parameter');
-  shadow.end();
+  const callbackFunction = shadow.getProperty('callbackFunction')
+  const callbackUuid = shadow.getProperty('callbackUuid')
+  const param = shadow.getProperty('parameter')
+  shadow.end()
 
   if (!this[callbackFunction]) {
-    LogLog.error(`returnToShadow(): Callback function ${callbackFunction} is undefined.`);
-    showDialogErrorMessage();
-    return;
+    LogLog.error(`returnToShadow(): Callback function ${callbackFunction} is undefined.`)
+    showDialogErrorMessage()
+    return
   }
 
   if (!callbackFunction || !callbackUuid) {
-    showSessionExpired();
-    return;
+    showSessionExpired()
+    return
   }
 
-  this[callbackFunction](callbackUuid, password, param);
+  this[callbackFunction](callbackUuid, password, param)
 }

@@ -11,15 +11,15 @@
 class Addon {
   static isAuthorized (authMode) {
     if (authMode !== ScriptApp.AuthMode.FULL) return false
-    if (!PropertiesService) return false;
+    if (!PropertiesService) return false
 
     try {
-      PropertiesService.getUserProperties();
+      PropertiesService.getUserProperties()
     } catch (e) {
-      return false;
+      return false
     }
 
-    return ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL).getAuthorizationStatus() === ScriptApp.AuthorizationStatus.NOT_REQUIRED;
+    return ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL).getAuthorizationStatus() === ScriptApp.AuthorizationStatus.NOT_REQUIRED
   }
 
   static isInstalled () {
@@ -31,7 +31,7 @@ class Addon {
   }
 
   static isUpToDate () {
-    return BnsScript.isUpToDate() && BnsTemplate.isUpToDate();
+    return BnsScript.isUpToDate() && BnsTemplate.isUpToDate()
   }
 
   static isEndOfSupport () {
@@ -39,21 +39,21 @@ class Addon {
   }
 
   static loadCache () {
-    const cache = CacheService2.getDocumentCache();
-    const isLoaded = cache.get('load_cache');
-    if (isLoaded) return;
+    const cache = CacheService2.getDocumentCache()
+    const isLoaded = cache.get('load_cache')
+    if (isLoaded) return
 
-    const properties = PropertiesService2.getDocumentProperties();
-    const keys = ['class_version2', 'user_settings', 'spreadsheet_settings', 'const_properties'];
-    keys.forEach(key => cache.put(key, properties.getProperty(key)));
+    const properties = PropertiesService2.getDocumentProperties()
+    const keys = ['class_version2', 'user_settings', 'spreadsheet_settings', 'const_properties']
+    keys.forEach(key => cache.put(key, properties.getProperty(key)))
 
-    cache.put('load_cache', true);
+    cache.put('load_cache', true)
   }
 
   static uninstall () {
-    TriggersService.stop();
-    const lock = !!(this.isInstalled() || this.isLocked());
-    PropertiesService2.getDocumentProperties().setProperties({ lock_spreadsheet: lock }, true);
-    CacheService2.getDocumentCache().removeAll(CACHE_KEYS);
+    TriggersService.stop()
+    const lock = !!(this.isInstalled() || this.isLocked())
+    PropertiesService2.getDocumentProperties().setProperties({ lock_spreadsheet: lock }, true)
+    CacheService2.getDocumentCache().removeAll(CACHE_KEYS)
   }
 }

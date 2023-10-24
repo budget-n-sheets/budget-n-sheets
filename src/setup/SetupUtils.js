@@ -18,6 +18,6 @@ class SetupUtils {
       and try again.
 
       Learn more at budgetnsheets.com/notice-to-x-frame`,
-      SpreadsheetApp2.getUi().ButtonSet.OK);
+      SpreadsheetApp2.getUi().ButtonSet.OK)
   }
 }

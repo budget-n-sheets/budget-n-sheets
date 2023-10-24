@@ -9,10 +9,10 @@
  */
 
 function showPanelTables () {
-  if (UpdateService.checkAndUpdate(true)) return;
+  if (UpdateService.checkAndUpdate(true)) return
 
-  const htmlSidebar = new TablesSidebar().build();
-  SpreadsheetApp2.getUi().showSidebar(htmlSidebar);
+  const htmlSidebar = new TablesSidebar().build()
+  SpreadsheetApp2.getUi().showSidebar(htmlSidebar)
 }
 
 function showDialogEditAccount (id) {
@@ -20,15 +20,15 @@ function showDialogEditAccount (id) {
     account_id: id,
     step: NumberFormatterUtils.getDecimalStep(),
     placeholder: NumberFormatterUtils.getDecimalPlaceholder()
-  };
+  }
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlEditAccount')
     .setScriptletValues(scriptlet)
     .evaluate()
     .setWidth(300)
-    .setHeight(359);
+    .setHeight(359)
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Edit Account');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Edit Account')
 }
 
 function showDialogAddCard () {
@@ -36,15 +36,15 @@ function showDialogAddCard () {
     is_edit: false,
     step: NumberFormatterUtils.getDecimalStep(),
     placeholder: NumberFormatterUtils.getDecimalPlaceholder()
-  };
+  }
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlAddEditCard')
     .setScriptletValues(scriptlet)
     .evaluate()
     .setWidth(300)
-    .setHeight(359);
+    .setHeight(359)
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Add Card');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Add Card')
 }
 
 function showDialogEditCard (id) {
@@ -53,32 +53,32 @@ function showDialogEditCard (id) {
     card_id: id,
     step: NumberFormatterUtils.getDecimalStep(),
     placeholder: NumberFormatterUtils.getDecimalPlaceholder()
-  };
+  }
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlAddEditCard')
     .setScriptletValues(scriptlet)
     .evaluate()
     .setWidth(300)
-    .setHeight(359);
+    .setHeight(359)
 
-  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Edit Card');
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Edit Card')
 }
 
 function showDialogDeleteCard (id) {
-  const service = new CardsService();
-  const card = service.get(id);
-  if (!card) return 1;
+  const service = new CardsService()
+  const card = service.get(id)
+  if (!card) return 1
 
-  const ui = SpreadsheetApp2.getUi();
+  const ui = SpreadsheetApp2.getUi()
   const response = ui.alert(
     'Delete card',
     'Are you sure you want to delete ' + card.name + '?',
-    ui.ButtonSet.YES_NO);
+    ui.ButtonSet.YES_NO)
 
   if (response === ui.Button.YES) {
-    service.delete(id);
-    service.flush();
-    onOpen();
-    return 1;
+    service.delete(id)
+    service.flush()
+    onOpen()
+    return 1
   }
 }

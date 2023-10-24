@@ -44,4 +44,4 @@ const Info = Object.freeze({
       patch: 0
     }
   }
-});
+})

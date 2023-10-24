@@ -9,8 +9,8 @@
  */
 
 function accountsClientService (payload) {
-  const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(1000)) return 1;
+  const lock = LockService.getDocumentLock()
+  if (!lock.tryLock(1000)) return 1
 
   switch (payload.job) {
     case 'get': {
@@ -27,26 +27,26 @@ function accountsClientService (payload) {
       acc.data = payload.metadata
       service.update(acc)
       service.flush()
-      break;
+      break
     }
 
     default:
-      console.error('accountsClientService(): Switch case is default.', payload.job);
-      return 1;
+      console.error('accountsClientService(): Switch case is default.', payload.job)
+      return 1
   }
 }
 
 function cardsClientService (payload) {
-  const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(1000)) return 1;
+  const lock = LockService.getDocumentLock()
+  if (!lock.tryLock(1000)) return 1
 
   switch (payload.job) {
     case 'create': {
-      const service = new CardsService();
-      service.create(payload.metadata);
-      service.flush();
-      onOpen();
-      break;
+      const service = new CardsService()
+      service.create(payload.metadata)
+      service.flush()
+      onOpen()
+      break
     }
     case 'get': {
       const card = new CardsService().get(payload.id)
@@ -57,16 +57,16 @@ function cardsClientService (payload) {
       return cards.map(card => Object.assign(card.data, { id: card.id }))
     }
     case 'update': {
-      const service = new CardsService();
+      const service = new CardsService()
       const card = service.get(payload.id)
       card.data = payload.metadata
       service.update(card)
-      service.flush();
-      break;
+      service.flush()
+      break
     }
 
     default:
-      console.error('cardsClientService(): Switch case is default.', payload.job);
-      return 1;
+      console.error('cardsClientService(): Switch case is default.', payload.job)
+      return 1
   }
 }
