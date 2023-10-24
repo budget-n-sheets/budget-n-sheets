@@ -25,6 +25,11 @@ class BnsMaintenance {
     new SheetUnique().resetProtection()
   }
 
+  static fixSuggestions () {
+    new SheetUnique().resetFormulas()
+    SheetAllMonths.resetSelectors()
+  }
+
   static fixSpreadsheet () {
     const financialYear = SettingsConst.get('financial_year')
     const yyyy = LocaleUtils.getDate().getFullYear()
