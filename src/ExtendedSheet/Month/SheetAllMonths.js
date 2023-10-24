@@ -26,6 +26,11 @@ class SheetAllMonths {
     return this
   }
 
+  static resetProtection () {
+    this.call_('resetProtection')
+    return this
+  }
+
   static resetSelectors () {
     this.call_('resetSelectors')
     return this
