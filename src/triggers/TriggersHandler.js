@@ -23,11 +23,13 @@ class TriggersHandler {
     if (e.year > financialYear) {
       TriggersService.restart()
       BnsMaintenance.fixSpreadsheet()
+        .formatLastMonth()
       return
     }
 
     if (e['day-of-month'] === 1) {
       BnsMaintenance.fixSpreadsheet()
+        .formatLastMonth()
     }
 
     if (SettingsUser.get('post_day_events')) {
@@ -44,6 +46,7 @@ class TriggersHandler {
 
     TriggersService.restart()
     BnsMaintenance.fixSpreadsheet()
+      .formatLastMonth()
   }
 
   static monthlyTime (e) {
