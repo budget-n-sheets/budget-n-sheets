@@ -21,6 +21,11 @@ class SheetAllMonths {
     return this
   }
 
+  static resetNumberFormat () {
+    this.call_('resetNumberFormat')
+    return this
+  }
+
   static resetSelectors () {
     this.call_('resetSelectors')
     return this
