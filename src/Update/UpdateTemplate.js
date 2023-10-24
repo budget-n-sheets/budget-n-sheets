@@ -46,7 +46,7 @@ class UpdateTemplate extends Update {
     }
 
     new SheetTags().resetFormulas()
-    treatLayout_(Consts.date.getFullYear(), Consts.date.getMonth())
+    BnsMaintenance.fixSpreadsheet()
     RecalculationService.resume(0, 12)
 
     const unique = SpreadsheetApp2.getActive().getSheetByName('_Unique')

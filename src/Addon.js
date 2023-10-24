@@ -9,8 +9,8 @@
  */
 
 class Addon {
-  static isAuthorized (e) {
-    if (e && e.authMode !== ScriptApp.AuthMode.FULL) return false
+  static isAuthorized (authMode) {
+    if (authMode !== ScriptApp.AuthMode.FULL) return false
     if (!PropertiesService) return false;
 
     try {

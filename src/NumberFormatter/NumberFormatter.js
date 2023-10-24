@@ -13,8 +13,8 @@ class NumberFormatter {
     const settings = SettingsSpreadsheet.getAll();
 
     this.dec_p = settings.decimal_places;
-    this.dec_s = settings.decimal_separator ? '.' : ',';
-    this.dec_t = (this.dec_s === '.' ? ',' : '.');
+    this.decS = LocaleUtils.getNumberDecimalSeparator()
+    this.kT = LocaleUtils.getNumberKSeparator()
   }
 
   currency (number) {
@@ -29,7 +29,7 @@ class NumberFormatter {
     let j = i.length;
     j = j > 3 ? j % 3 : 0;
 
-    return s + (j ? i.substring(0, j) + this.dec_t : '') + i.substring(j).replace(/(\d{3})(?=\d)/g, '$1' + this.dec_t) + (this.dec_p > 0 ? this.dec_s + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
+    return s + (j ? i.substring(0, j) + this.kT : '') + i.substring(j).replace(/(\d{3})(?=\d)/g, '$1' + this.kT) + (this.dec_p > 0 ? this.decS + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
   }
 
   financial (number) {
@@ -44,7 +44,7 @@ class NumberFormatter {
     let j = i.length;
     j = j > 3 ? j % 3 : 0;
 
-    let a = (j ? i.substring(0, j) + this.dec_t : '') + i.substring(j).replace(/(\d{3})(?=\d)/g, '$1' + this.dec_t) + (this.dec_p > 0 ? this.dec_s + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
+    let a = (j ? i.substring(0, j) + this.kT : '') + i.substring(j).replace(/(\d{3})(?=\d)/g, '$1' + this.kT) + (this.dec_p > 0 ? this.decS + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
 
     if (s) a = '(' + a + ')';
 
@@ -62,7 +62,7 @@ class NumberFormatter {
 
     const j = i.length;
 
-    return s + i.substring(0, j) + (this.dec_p > 0 ? this.dec_s + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
+    return s + i.substring(0, j) + (this.dec_p > 0 ? this.decS + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
   }
 
   calendarSignal (number) {
@@ -76,6 +76,6 @@ class NumberFormatter {
 
     const j = i.length;
 
-    return s + i.substring(0, j) + (this.dec_p > 0 ? this.dec_s + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
+    return s + i.substring(0, j) + (this.dec_p > 0 ? this.decS + Math.abs(n - i).toFixed(this.dec_p).slice(2) : '');
   }
 }

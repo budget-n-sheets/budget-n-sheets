@@ -16,7 +16,7 @@ class FinCal {
 
     this.isOwner = this.calendar.isOwnedByMe();
 
-    this.dateOffset = Utils.getDateOffset();
+    this.dateOffset = LocaleUtils.getDateOffset();
     this.fin_year = SettingsConst.get('financial_year');
   }
 

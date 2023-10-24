@@ -22,46 +22,14 @@ function onEditHandler_ (e) {
   if (!Addon.isAuthorized(e)) return;
 }
 
-function weeklyHandler_ (e) {
-  if (!Addon.isAuthorized(e)) return;
-  if (!AddonUser.hasBaselinePermission()) return
-  if (UpdateService.checkAndUpdate()) return;
-
-  const financial_year = SettingsConst.get('financial_year');
-  if (e.year > financial_year) return;
-
-  treatLayout_(e.year, e.month - 1);
-  TriggersService.restart();
+function dailyHandler_ (e) {
+  TriggersHandler.dailyTime(e)
 }
 
-function dailyHandler_ (e) {
-  if (!Addon.isAuthorized(e)) return;
-  if (!AddonUser.hasBaselinePermission()) return
-  if (UpdateService.checkAndUpdate()) return;
-
-  const financial_year = SettingsConst.get('financial_year');
-
-  const yyyy = e.year;
-  const mm = e.month - 1;
-
-  if (financial_year < yyyy) {
-    treatLayout_(yyyy, mm);
-    TriggersService.restart();
-    return;
-  }
-
-  if (e['day-of-month'] === 1) {
-    treatLayout_(yyyy, mm);
-  }
-
-  if (SettingsUser.get('post_day_events')) {
-    const date = Utils.getLocaleDate();
-    CalendarService.syncDayWithSpreadsheet(date);
-  }
+function weeklyHandler_ (e) {
+  TriggersHandler.weeklyTime(e)
 }
 
 function monthlyHandler_ (e) {
-  if (!Addon.isAuthorized(e)) return;
-  if (!AddonUser.hasBaselinePermission()) return
-  if (UpdateService.checkAndUpdate()) return;
+  TriggersHandler.monthlyTime(e)
 }

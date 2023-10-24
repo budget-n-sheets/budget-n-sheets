@@ -12,7 +12,7 @@ class CalendarUtils {
   static digestEvents (events) {
     const output = [];
 
-    const dateOffset = Utils.getDateOffset();
+    const dateOffset = LocaleUtils.getDateOffset();
     const dec_p = SettingsSpreadsheet.get('decimal_places');
     const dec_s = SettingsSpreadsheet.get('decimal_separator');
     const valueRegExp = NumberFormatterUtils.getCurrencyRegExp();
