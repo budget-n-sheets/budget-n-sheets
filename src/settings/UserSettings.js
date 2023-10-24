@@ -74,7 +74,7 @@ class UserSettings {
           );
       }
 
-      if (this._flush.initial_month) updateTabsColors();
+      if (this._flush.initial_month) SpreadsheetMaintenance.setMonthsColoring()
     } catch (err) {
       LogLog.error(err);
     }
