@@ -184,7 +184,7 @@
           name: $('#card_name').val(),
           code : $('#card_code').val(),
           aliases: $('#card_aliases').val(),
-          limit: $('#card_limit').val(),
+          limit: +$('#card_limit').val(),
           color: $('.color-picker > .card.active').attr('id')
         }
       };

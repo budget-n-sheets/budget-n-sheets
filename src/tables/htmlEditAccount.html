@@ -154,8 +154,8 @@
         id: $('#account_id').val(),
         metadata: {
           name: $('#acc_name').val(),
-          time_start: $('#acc_time_start').val(),
-          balance: $('#acc_balance').val(),
+          time_start: Number.parseInt($('#acc_time_start').val()),
+          balance: +$('#acc_balance').val(),
           color: $('.color-picker > .card.active').attr('id')
         }
       };

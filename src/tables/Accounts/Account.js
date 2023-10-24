@@ -61,9 +61,8 @@ class Account {
   }
 
   set balance (v) {
-    const t = +v
-    if (isNaN(t)) throw new Error('Invalid account balance.')
-    this._balance = t
+    if (isNaN(v)) throw new Error('Invalid account balance.')
+    this._balance = v
   }
 
   set color (v) {
@@ -76,7 +75,8 @@ class Account {
   }
 
   set name (v) {
-    const t = v.trim().replace(/\s+/g, ' ').slice(0, 64)
+    if (typeof v !== 'string') throw new Error('Invalid account name.')
+    const t = `${v}`.trim().replace(/\s+/g, ' ').slice(0, 64)
     if (t === '') throw new Error('Invalid account name.')
     this._name = t
   }

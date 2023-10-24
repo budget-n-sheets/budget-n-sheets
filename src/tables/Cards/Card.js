@@ -67,20 +67,23 @@ class Card {
 
   set aliases (v) {
     const c = this.code
-    let t = v
-    if (!Array.isArray(v)) {
-      if (typeof v !== 'string') throw new Error('Invalid card aliases.')
-      t = v.trim()
+    let t = []
+    if (typeof v === 'string') {
+      t = `${v}`.trim()
         .replace(/\s/g, '')
         .split(',')
+    } else if (Array.isArray(v)) {
+      t = v.filter(a => /^\w{1,16}$/.test(a))
+        .filter(a => a !== c)
+        .slice(0, 16)
+    } else {
+      throw new Error('Invalid card aliases.')
     }
-    this._aliases = t.filter(a => /^\w{1,16}$/.test(a))
-      .filter(a => a !== c)
-      .slice(0, 16)
+    this._aliases = t
   }
 
   set code (v) {
-    const t = v.trim().replace(/\s+/g, '').slice(0, 16)
+    const t = `${v}`.trim().replace(/\s+/g, '').slice(0, 16)
     if (t === '') throw new Error('Invalid card code.')
     this._code = t
   }
@@ -95,13 +98,13 @@ class Card {
   }
 
   set limit (v) {
-    const t = +v
-    if (isNaN(t)) throw new Error('Invalid card limit.')
-    this._limit = t
+    if (typeof v !== 'number') throw new Error('Invalid card limit.')
+    if (isNaN(v)) throw new Error('Invalid card limit.')
+    this._limit = v
   }
 
   set name (v) {
-    const t = v.trim().replace(/\s+/g, ' ').slice(0, 64)
+    const t = `${v}`.trim().replace(/\s+/g, ' ').slice(0, 64)
     if (t === '') throw new Error('Invalid card name.')
     this._name = t
   }
