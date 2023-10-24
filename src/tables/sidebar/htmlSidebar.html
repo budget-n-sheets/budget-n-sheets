@@ -110,7 +110,7 @@
         let j = i.length;
         j = j > 3 ? j % 3 : 0;
 
-        let a = (j ? i.substr(0, j) + dec_t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + dec_t) + (dec_p > 0 ? dec_s + Math.abs(n - i).toFixed(dec_p).slice(2) : '');
+        let a = (j ? i.substring(0, j) + dec_t : '') + i.substring(j).replace(/(\d{3})(?=\d)/g, '$1' + dec_t) + (dec_p > 0 ? dec_s + Math.abs(n - i).toFixed(dec_p).slice(2) : '');
 
         if (s) a = '(' + a + ')';
 
