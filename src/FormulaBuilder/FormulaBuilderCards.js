@@ -8,13 +8,13 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class FormulaBuildCards {
+class FormulaBuilderCards {
   static header () {
-    return FormulaBuildCardsHeader;
+    return FormulaBuilderCardsHeader;
   }
 }
 
-class FormulaBuildCardsHeader {
+class FormulaBuilderCardsHeader {
   static load_ () {
     this._settings = SettingsSpreadsheet.getAll();
   }

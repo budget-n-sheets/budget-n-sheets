@@ -10,7 +10,7 @@
 
 class ViewModeNormal {
   static expandTtt_ () {
-    const formulas = FormulaBuildTtt.header();
+    const formulas = FormulaBuilderTtt.header();
 
     for (let i = 0; i < 12; i++) {
       const sheet = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);

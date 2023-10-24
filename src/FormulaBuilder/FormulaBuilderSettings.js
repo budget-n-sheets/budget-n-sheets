@@ -8,13 +8,13 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class FormulaBuildSettings {
+class FormulaBuilderSettings {
   static formulas () {
-    return FormulaBuildSettingsFormulas;
+    return FormulaBuilderSettingsFormulas;
   }
 }
 
-class FormulaBuildSettingsFormulas {
+class FormulaBuilderSettingsFormulas {
   static actualMonth () {
     return 'IF(YEAR(TODAY()) = $B2; MONTH(TODAY()); IF(YEAR(TODAY()) < $B2; 0; 12))';
   }

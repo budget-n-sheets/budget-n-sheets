@@ -8,21 +8,21 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class FormulaBuildBackstage {
+class FormulaBuilderBackstage {
   static accounts () {
-    return FormulaBuildBackstageAccounts;
+    return FormulaBuilderBackstageAccounts;
   }
 
   static cards () {
-    return FormulaBuildBackstageCards;
+    return FormulaBuilderBackstageCards;
   }
 
   static wallet () {
-    return FormulaBuildBackstageWallet;
+    return FormulaBuilderBackstageWallet;
   }
 }
 
-class FormulaBuildBackstageAccounts {
+class FormulaBuilderBackstageAccounts {
   static balance (regex, mm, numRows, balance, bsblank) {
     const month = Consts.month_name.short[mm]
     const accs = RangeUtils.rollA1Notation(6, 2, numRows)
@@ -120,7 +120,7 @@ class FormulaBuildBackstageAccounts {
   }
 }
 
-class FormulaBuildBackstageCards {
+class FormulaBuilderBackstageCards {
   static load_ () {
     this._settings = SettingsSpreadsheet.getAll();
   }
@@ -239,7 +239,7 @@ class FormulaBuildBackstageCards {
   }
 }
 
-class FormulaBuildBackstageWallet {
+class FormulaBuilderBackstageWallet {
   static income (mm, value, tags, numRows, bsblank) {
     const month = Consts.month_name.short[mm]
     const wall = RangeUtils.rollA1Notation(6, 2, numRows);

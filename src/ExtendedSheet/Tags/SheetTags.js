@@ -56,7 +56,7 @@ class SheetTags extends ExtendedSheet {
   }
 
   resetFormulas () {
-    const formulaBuilder = FormulaBuild.tags()
+    const formulaBuilder = FormulaBuilder.tags()
 
     const formulas = Consts.month_name.short.map((v, mm) => {
       const numRows = new SheetMonth(mm).numRows

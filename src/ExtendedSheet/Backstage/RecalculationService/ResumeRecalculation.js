@@ -12,7 +12,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
   constructor () {
     super()
 
-    this.formulas = FormulaBuild.backstage()
+    this.formulas = FormulaBuilder.backstage()
   }
 
   xy2A1_ (index, mm, row, column, numRows = 1, numColumns = 1) {

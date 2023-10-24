@@ -154,7 +154,7 @@ class SheetMonth extends ExtendedSheet {
   }
 
   resetFormulas () {
-    const formulaBuilder = FormulaBuild.ttt().header()
+    const formulaBuilder = FormulaBuilder.ttt().header()
     const numAccs = SettingsConst.get('number_accounts')
 
     let formula

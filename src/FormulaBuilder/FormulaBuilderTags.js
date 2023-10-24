@@ -8,17 +8,17 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class FormulaBuildTags {
+class FormulaBuilderTags {
   static stats () {
-    return FormulaBuildTagsStats;
+    return FormulaBuilderTagsStats;
   }
 
   static table () {
-    return FormulaBuildTagsTable;
+    return FormulaBuilderTagsTable;
   }
 }
 
-class FormulaBuildTagsStats {
+class FormulaBuilderTagsStats {
   static average () {
     let formula;
 
@@ -47,7 +47,7 @@ class FormulaBuildTagsStats {
   }
 }
 
-class FormulaBuildTagsTable {
+class FormulaBuilderTagsTable {
   static load_ () {
     this._settings = SettingsConst.getAll();
   }

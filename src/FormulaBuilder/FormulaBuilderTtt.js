@@ -8,13 +8,13 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class FormulaBuildTtt {
+class FormulaBuilderTtt {
   static header () {
-    return FormulaBuildTttHeader;
+    return FormulaBuilderTttHeader;
   }
 }
 
-class FormulaBuildTttHeader {
+class FormulaBuilderTttHeader {
   static balance (mm) {
     let formula, accBalance, availCredit
 

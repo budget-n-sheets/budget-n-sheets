@@ -8,28 +8,28 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class FormulaBuild {
+class FormulaBuilder {
   static backstage () {
-    return FormulaBuildBackstage;
+    return FormulaBuilderBackstage;
   }
 
   static cards () {
-    return FormulaBuildCards;
+    return FormulaBuilderCards;
   }
 
   static settings () {
-    return FormulaBuildSettings;
+    return FormulaBuilderSettings;
   }
 
   static summary () {
-    return FormulaBuildSummary;
+    return FormulaBuilderSummary;
   }
 
   static tags () {
-    return FormulaBuildTags;
+    return FormulaBuilderTags;
   }
 
   static ttt () {
-    return FormulaBuildTtt;
+    return FormulaBuilderTtt;
   }
 }

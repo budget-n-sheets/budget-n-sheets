@@ -76,7 +76,7 @@ class SheetSummary extends ExtendedSheet {
   }
 
   resetFormulas () {
-    const formulaBuilder = FormulaBuild.summary()
+    const formulaBuilder = FormulaBuilder.summary()
     const _h = TABLE_DIMENSION.height
 
     let makeFormula, formulas

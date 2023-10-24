@@ -8,17 +8,17 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class FormulaBuildSummary {
+class FormulaBuilderSummary {
   static table1 () {
-    return FormulaBuildSummaryTable1;
+    return FormulaBuilderSummaryTable1;
   }
 
   static chart1 () {
-    return FormulaBuildSummaryChart1;
+    return FormulaBuilderSummaryChart1;
   }
 }
 
-class FormulaBuildSummaryTable1 {
+class FormulaBuilderSummaryTable1 {
   static load_ () {
     this._settings = SettingsSpreadsheet.getAll()
   }
@@ -54,7 +54,7 @@ class FormulaBuildSummaryTable1 {
   }
 }
 
-class FormulaBuildSummaryChart1 {
+class FormulaBuilderSummaryChart1 {
   static load_ () {
     this._settings = SettingsSpreadsheet.getAll();
   }
