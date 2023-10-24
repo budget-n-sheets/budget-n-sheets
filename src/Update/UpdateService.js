@@ -116,7 +116,7 @@ class UpdateService {
     if (isOnline) showDialogMessage('Add-on update', 'Updating the add-on...', true);
 
     if (SettingsSpreadsheet.get('spreadsheet_locale') !== SpreadsheetApp2.getActive().spreadsheet.getSpreadsheetLocale()) {
-      updateDecimalSeparator_();
+      SpreadsheetSettings.updateDecimalSeparator()
     }
 
     const rScript = this.updateScript_();

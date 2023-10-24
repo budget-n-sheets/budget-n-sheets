@@ -9,27 +9,44 @@
  */
 
 class BnsMaintenance {
+  static fixNumberFormat () {
+    SpreadsheetSettings.updateDecimalSeparator()
+    SpreadsheetSettings.updateDecimalPlaces()
+    return this
+  }
+
   static fixSpreadsheet () {
+    const financialYear = SettingsConst.get('financial_year')
+    const yyyy = LocaleUtils.getDate().getFullYear()
+
+    if (yyyy < financialYear) {
+      return this
+    } else if (yyyy > financialYear) {
+      BnsSpreadsheet.showMonths()
+      BnsSpreadsheet.resetMonthsColoring()
+    } else {
+      SpreadsheetMaintenance.hideShowMonths()
+      SpreadsheetMaintenance.setMonthsColoring()
+    }
+
+    return this
+  }
+
+  static formatLastMonth () {
     const financialYear = SettingsConst.get('financial_year')
     const date = LocaleUtils.getDate()
     const yyyy = date.getFullYear()
 
     let month = date.getMonth()
 
-    if (yyyy < financialYear) {
-      return
-    } else if (yyyy > financialYear) {
-      month = 0
-      BnsSpreadsheet.showMonths()
-      BnsSpreadsheet.resetMonthsColoring()
-    } else {
-      if (month > 0) month--
-      SpreadsheetMaintenance.hideShowMonths()
-      SpreadsheetMaintenance.setMonthsColoring()
-    }
+    if (yyyy < financialYear) return this
+    else if (yyyy > financialYear) month = 0
+    else if (month > 0) mm--
 
     const format = new FormatTableTtt(month)
     format.indexes = 0
     format.format()
+
+    return this
   }
 }

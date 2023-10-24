@@ -44,14 +44,14 @@ class UserSettings {
 
     try {
       if (SettingsSpreadsheet.get('spreadsheet_locale') !== spreadsheet.getSpreadsheetLocale()) {
-        updateDecimalSeparator_();
+        SpreadsheetSettings.updateDecimalSeparator()
       }
     } catch (err) {
       LogLog.error(err);
     }
 
     try {
-      if (this._flush.decimal_places) updateDecimalPlaces_();
+      if (this._flush.decimal_places) SpreadsheetSettings.updateDecimalPlaces()
     } catch (err) {
       LogLog.error(err);
     }
@@ -74,7 +74,7 @@ class UserSettings {
           );
       }
 
-      if (this._flush.initial_month) updateTabsColors();
+      if (this._flush.initial_month) BnsMaintenance.fixSpreadsheet()
     } catch (err) {
       LogLog.error(err);
     }
