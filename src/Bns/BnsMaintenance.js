@@ -9,6 +9,12 @@
  */
 
 class BnsMaintenance {
+  static fixNumberFormat () {
+    SpreadsheetSettings.updateDecimalSeparator()
+    SpreadsheetSettings.updateDecimalPlaces()
+    return this
+  }
+
   static fixSpreadsheet () {
     const financialYear = SettingsConst.get('financial_year')
     const yyyy = LocaleUtils.getDate().getFullYear()
