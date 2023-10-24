@@ -28,7 +28,7 @@ function weeklyHandler_ (e) {
   if (UpdateService.checkAndUpdate()) return;
 
   const financial_year = SettingsConst.get('financial_year');
-  if (e.year > financial_year) return;
+  if (e.year < financial_year) return;
 
   treatLayout_(e.year, e.month - 1);
   TriggersService.restart();
