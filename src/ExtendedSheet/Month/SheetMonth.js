@@ -189,7 +189,7 @@ class SheetMonth extends ExtendedSheet {
   resetFormatting () {
     this.sheet.getRange('B1:F5').setNumberFormat('@')
     this.sheet.getRange('G1:G5').setNumberFormats([
-      ['0'], ['@'], ['@'], ['@']
+      ['0'], ['@'], ['@'], ['@'], ['@']
     ])
 
     const range = this.sheet
