@@ -15,7 +15,6 @@ class SheetSettings extends ExtendedSheet {
 
   resetDefault () {
     this.resetProtection()
-      .testDecimalSeparator()
   }
 
   resetFormulas () {
@@ -60,11 +59,6 @@ class SheetSettings extends ExtendedSheet {
       .setNumberFormat('0.0')
       .setValue(0.1)
     SpreadsheetApp.flush()
-    SettingsSpreadsheet.set(
-        'decimal_separator',
-        /\./.test(a.getDisplayValue()))
-      .updateMetadata()
-    this.resetNumberFormat().resetFormulas()
-    return this
+    return /\./.test(a.getDisplayValue())
   }
 }
