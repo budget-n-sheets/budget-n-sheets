@@ -74,7 +74,7 @@ class UserSettings {
           );
       }
 
-      if (this._flush.initial_month) SpreadsheetMaintenance.setMonthsColoring()
+      if (this._flush.initial_month) BnsMaintenance.fixSpreadsheet()
     } catch (err) {
       LogLog.error(err);
     }
