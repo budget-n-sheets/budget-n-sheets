@@ -36,7 +36,12 @@ class RangeUtils {
   static rollA1Notation (posRow, posCol,
                          height = 1, width = 1,
                          mode1 = 1, mode2 = 1) {
-    if (!posRow || !posCol) return
+    if (!Number.isInteger(posRow) || posRow < 1) throw new Error('Invalid posRow.')
+    if (!Number.isInteger(posCol) || posCol < 1) throw new Error('Invalid posCol.')
+    if (!Number.isInteger(height) || height < -1 || height === 0) throw new Error('Invalid height.')
+    if (!Number.isInteger(width) || width < 1) throw new Error('Invalid width.')
+    if (!Number.isInteger(mode1) || mode1 < 1) throw new Error('Invalid mode1.')
+    if (!Number.isInteger(mode2) || mode2 < 1) throw new Error('Invalid mode2.')
 
     posCol--
     width--
