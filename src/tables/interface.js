@@ -16,12 +16,10 @@ function showPanelTables () {
 }
 
 function showDialogEditAccount (id) {
-  const decimal_places = SettingsSpreadsheet.get('decimal_places');
-
   const scriptlet = {
     account_id: id,
-    step: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1'),
-    placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0')
+    step: NumberFormatterUtils.getDecimalStep(),
+    placeholder: NumberFormatterUtils.getDecimalPlaceholder()
   };
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlEditAccount')
@@ -34,12 +32,10 @@ function showDialogEditAccount (id) {
 }
 
 function showDialogAddCard () {
-  const decimal_places = SettingsSpreadsheet.get('decimal_places');
-
   const scriptlet = {
     is_edit: false,
-    step: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1'),
-    placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0')
+    step: NumberFormatterUtils.getDecimalStep(),
+    placeholder: NumberFormatterUtils.getDecimalPlaceholder()
   };
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlAddEditCard')
@@ -52,13 +48,11 @@ function showDialogAddCard () {
 }
 
 function showDialogEditCard (id) {
-  const decimal_places = SettingsSpreadsheet.get('decimal_places');
-
   const scriptlet = {
     is_edit: true,
     card_id: id,
-    step: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places - 1) + '1' : '1'),
-    placeholder: (decimal_places > 0 ? '0.' + '0'.repeat(decimal_places) : '0')
+    step: NumberFormatterUtils.getDecimalStep(),
+    placeholder: NumberFormatterUtils.getDecimalPlaceholder()
   };
 
   const htmlOutput = HtmlService2.createTemplateFromFile('tables/htmlAddEditCard')
