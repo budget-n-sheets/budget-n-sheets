@@ -21,12 +21,27 @@ class UpdateScript extends Update {
         [], [], [], [], [], [], [], [], [],
         ['', '', '', '', '', '', 'v0m49p6_', '', ''],
         ['', '', '', '', ''],
-        ['', '', '', '', '', 'v0m51p5_', '']
+        ['', '', '', '', '', 'v0m51p5_', '', 'v0m51p7_']
       ]
     ];
 
     super(v0, vA, list);
     this._key = 'script';
+  }
+
+  /**
+   * Reset defaults on month sheet.
+   * Flush Accounts and Cards changes.
+   *
+   * 0.51.7
+   */
+  v0m51p7_ () {
+    for (let mm = 0; mm < 12; mm++) {
+      new SheetMonth(mm).resetFormatting()
+    }
+    new AccountsService().flush()
+    new CardsService().flush()
+    return 0
   }
 
   /**
