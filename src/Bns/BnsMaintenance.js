@@ -15,6 +15,16 @@ class BnsMaintenance {
     return this
   }
 
+  static fixProtection () {
+    new SheetBackstage().resetProtection()
+    new SheetCashFlow().resetProtection()
+    SheetAllMonths.resetProtection()
+    new SheetSettings().resetProtection()
+    new SheetSummary().resetProtection()
+    new SheetTags().resetProtection()
+    new SheetUnique().resetProtection()
+  }
+
   static fixSpreadsheet () {
     const financialYear = SettingsConst.get('financial_year')
     const yyyy = LocaleUtils.getDate().getFullYear()
