@@ -33,12 +33,10 @@ class RangeUtils {
     return selected
   }
 
-  static rollA1Notation (posRow, posCol, height, width, mode1, mode2) {
+  static rollA1Notation (posRow, posCol,
+                         height = 1, width = 1,
+                         mode1 = 1, mode2 = 1) {
     if (!posRow || !posCol) return
-    if (!height) height = 1
-    if (!width) width = 1
-    if (!mode1) mode1 = 1
-    if (!mode2) mode2 = 1
 
     posCol--
     width--
