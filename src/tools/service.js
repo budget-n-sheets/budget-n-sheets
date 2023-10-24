@@ -32,21 +32,9 @@ function toolService_ (job) {
   const sheet = ranges[0].getSheet()
 
   switch (job) {
-    case 'cashFlow': {
-      if (!RefreshCashFlow.isCompatible(sheet)) {
-        RefreshCashFlow.showWarning()
-        break
-      }
-
-      const tool = new RefreshCashFlow()
-      if (!tool.sheet) {
-        RefreshCashFlow.showWarning()
-        break
-      }
-
-      tool.filterRanges(ranges).refresh()
+    case 'cashFlow':
+      RefreshCashFlowService.serve(sheet, ranges)
       break
-    }
     case 'formatTable': {
       const tool = FormatTable.pick(sheet)
       if (tool === 1) {
