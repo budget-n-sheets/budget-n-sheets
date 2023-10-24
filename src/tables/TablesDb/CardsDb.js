@@ -42,6 +42,7 @@ class CardsDb extends TablesDb {
 
     const card = new Card(id)
     card.data = this._db[id]
+    card.index = this._db[id].index
 
     return card
   }

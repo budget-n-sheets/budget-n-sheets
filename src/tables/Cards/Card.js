@@ -21,7 +21,7 @@ class Card {
   }
 
   static get fields () {
-    return ['code', 'aliases', 'color', 'index', 'limit', 'name']
+    return ['code', 'aliases', 'color', 'limit', 'name']
   }
 
   get data () {

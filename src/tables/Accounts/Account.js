@@ -20,7 +20,7 @@ class Account {
   }
 
   static get fields () {
-    return ['balance', 'color', 'index', 'name', 'time_start']
+    return ['balance', 'color', 'name', 'time_start']
   }
 
   get data () {

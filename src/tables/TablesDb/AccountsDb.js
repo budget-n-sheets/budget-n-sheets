@@ -42,6 +42,7 @@ class AccountsDb extends TablesDb {
 
     const acc = new Account(id)
     acc.data = this._db[id]
+    acc.index = this._db[id].index
 
     return acc
   }
