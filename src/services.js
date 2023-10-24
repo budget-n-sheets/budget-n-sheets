@@ -66,38 +66,7 @@ function askResetSuggestions () {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(200)) return;
 
-  const sheetUnique = SpreadsheetApp2.getActive().getSheetByName('_Unique');
-  if (!sheetUnique) return;
-
-  const num_acc = SettingsConst.get('number_accounts');
-
-  let ruleDV = SpreadsheetApp.newDataValidation()
-    .requireValueInRange(sheetUnique.getRange('A:A'), false)
-    .setAllowInvalid(true)
-    .build();
-  let ruleTV = SpreadsheetApp.newDataValidation()
-    .requireValueInRange(sheetUnique.getRange('B:B'), false)
-    .setAllowInvalid(true)
-    .build();
-
-  let i = -1;
-  while (++i < 12) {
-    const sheetMm = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[i]);
-    if (!sheetMm) continue;
-
-    const height = sheetMm.getMaxRows() - 5;
-    if (height < 1) continue;
-
-    for (let k = 0; k <= num_acc; k++) {
-      sheetMm.getRange(6, 4, height, 1)
-        .clearDataValidations()
-        .setDataValidation(ruleDV);
-
-      sheetMm.getRange(6, 6, height, 1)
-        .clearDataValidations()
-        .setDataValidation(ruleTV);
-    }
-  }
+  BnsMaintenance.fixSuggestions()
 
   lock.releaseLock();
 }
@@ -106,49 +75,7 @@ function askResetProtection () {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(200)) return;
 
-  const spreadsheet = SpreadsheetApp2.getActive().spreadsheet;
-  let sheet, range;
-  let protections, protection;
-  let n, i, j;
-
-  for (i = 0; i < 12; i++) {
-    sheet = spreadsheet.getSheetByName(Consts.month_name.short[i]);
-    if (!sheet) continue;
-
-    n = sheet.getMaxRows() - 5;
-    if (n < 1) continue;
-
-    protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
-    for (j = 0; j < protections.length; j++) {
-      protection = protections[j];
-      if (protection.canEdit()) protection.remove();
-    }
-
-    sheet.protect()
-      .setUnprotectedRanges([
-        sheet.getRange(1, 2, 1, 3),
-        sheet.getRange(6, 2, n, 6)
-      ])
-      .setWarningOnly(true);
-  }
-
-  sheet = spreadsheet.getSheetByName('Tags');
-
-  if (sheet) n = sheet.getMaxRows() - 1;
-  else n = -1;
-
-  if (n > 0) {
-    protections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
-    for (j = 0; j < protections.length; j++) {
-      protection = protections[j];
-      if (protection.canEdit()) protection.remove();
-    }
-
-    range = sheet.getRange(2, 1, n, 5);
-    sheet.protect()
-      .setUnprotectedRanges([range])
-      .setWarningOnly(true);
-  }
+  BnsMaintenance.fixProtection()
 
   lock.releaseLock();
 }
