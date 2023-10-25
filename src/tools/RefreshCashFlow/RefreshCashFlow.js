@@ -32,13 +32,6 @@ class RefreshCashFlow {
     })
   }
 
-  static isCompatible (sheet) {
-    const name = sheet.getName()
-
-    if (name === 'Cash Flow') return true
-    return Consts.month_name.short.indexOf(name) > -1
-  }
-
   static filterRanges (ranges) {
     const name = ranges[0].getSheet().getSheetName()
     const indexes = new Array(12).fill(false)
@@ -73,13 +66,6 @@ class RefreshCashFlow {
 
   set indexes (indexes) {
     this.arrayMm = indexes
-  }
-
-  static showWarning () {
-    SpreadsheetApp2.getUi().alert(
-      "Can't refresh cash flow",
-      'Select a month or Cash Flow to refresh the flow.',
-      SpreadsheetApp2.getUi().ButtonSet.OK)
   }
 
   readCalendarTransactions_ () {
