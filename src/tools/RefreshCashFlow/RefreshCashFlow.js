@@ -39,6 +39,34 @@ class RefreshCashFlow {
     return Consts.month_name.short.indexOf(name) > -1
   }
 
+  static filterRanges (ranges) {
+    const name = ranges[0].getSheet().getSheetName()
+    const indexes = new Array(12).fill(false)
+
+    if (name === 'Cash Flow') {
+      const specs = Object.freeze(SheetCashFlow.specs)
+      const width = specs.width + 1
+
+      for (const range of ranges) {
+        const column = range.getColumn() - 2
+        const last = range.getLastColumn() - 2
+
+        const start = (column - (column % width)) / width
+        let end = (last - (last % width)) / width + 1
+        if (end > 12) end = 12
+
+        for (let i = start; i < end; i++) {
+          indexes[i] = true
+        }
+      }
+    } else {
+      const mm = Consts.month_name.short.indexOf(name)
+      if (mm > -1) indexes[mm] = true
+    }
+
+    return indexes
+  }
+
   get indexes () {
     return this.arrayMm
   }
@@ -132,32 +160,6 @@ class RefreshCashFlow {
       this.values.flow[day] += this.formater.localeSignal(value)
       this.values.transactions[day] += '@' + line[2] + ' '
     }
-  }
-
-  filterRanges (ranges) {
-    const name = ranges[0].getSheet().getSheetName()
-
-    if (name === 'Cash Flow') {
-      const w = this.specs.cash_flow.width + 1
-
-      for (const range of ranges) {
-        const column = range.getColumn() - 2
-        const last = range.getLastColumn() - 2
-
-        const start = (column - (column % w)) / w
-        const end = (last - (last % w)) / w
-
-        for (let i = start; i <= end; i++) {
-          this.arrayMm[i] = true
-        }
-      }
-    } else {
-      const mm = Consts.month_name.short.indexOf(name)
-      if (mm === -1) return
-      this.arrayMm[mm] = true
-    }
-
-    return this
   }
 
   refresh () {

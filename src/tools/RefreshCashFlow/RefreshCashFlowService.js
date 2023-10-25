@@ -27,10 +27,7 @@ class RefreshCashFlowService {
     }
 
     const indexes = RefreshCashFlow.filterRanges(ranges)
-    if (indexes.length === 0) return
-
-    const tool = new RefreshCashFlow()
-    indexes.forEach(index => tool.refresh(index))
+    RefreshCashFlow.refresh(indexes)
   }
 
   static showMissing () {
