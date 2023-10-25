@@ -9,29 +9,6 @@
  */
 
 class RefreshCashFlow {
-  constructor () {
-    this.sheet = SpreadsheetApp2.getActive().getSheetByName('Cash Flow')
-
-    this.formater = new NumberFormatter()
-
-    this.dec_p = SettingsSpreadsheet.get('decimal_separator')
-    this.financial_year = SettingsConst.get('financial_year')
-
-    this.balances = new SheetBackstage().getCardsBalances() || {}
-
-    this.values = {}
-
-    this.arrayMm = new Array(12).fill(false)
-    this.specs = Object.freeze({
-      cash_flow: {
-        columnOffset: 1,
-        row: 4,
-        width: 3
-      },
-      ttt: SheetMonth.specs
-    })
-  }
-
   static filterRanges (ranges) {
     const name = ranges[0].getSheet().getSheetName()
     const indexes = new Array(12).fill(false)
@@ -60,42 +37,70 @@ class RefreshCashFlow {
     return indexes
   }
 
-  get indexes () {
-    return this.arrayMm
-  }
+  static refresh (indexes) {
+    if (!indexes.includes(true)) return
 
-  set indexes (indexes) {
-    this.arrayMm = indexes
-  }
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Cash Flow')
+    if (!sheet) return
 
-  readCalendarTransactions_ () {
     const finCal = new FinCal()
-    const upcoming = finCal.getUpcomingMonthEvents(this.mm)
-    const events = CalendarUtils.digestEvents(upcoming)
+    const accsNameRx = new AccountsService().getNamesRegExp()
+    const formatter = new NumberFormatter()
 
-    const tagsStats = TagsService.listTags()
+    const balances = new SheetBackstage().getCardsBalances() || {}
+    const yyyy = SettingsConst.get('financial_year')
 
-    const startDate = new Date(this.financial_year, this.mm, 1)
-    const endDate = new Date(this.financial_year, this.mm + 1, 1)
+    for (let mm = 0; mm < 12; mm++) {
+      if (!indexes[mm]) continue
 
-    for (const ev of events) {
+      const days = new Date(yyyy, mm + 1, 0).getDate()
+      const flow = new Array(days).fill('')
+      const transactions = new Array(days).fill('')
+      let response
+
+      response = this.readMonthTransactions_(accsNameRx, mm, days)
+      for (let d = 0; d < days; d++) {
+        flow[d] += response.flow[d].map(v => formatter.localeSignal(v)).join('')
+        transactions[d] += response.transactions[d]
+      }
+
+      const upcoming = finCal.getUpcomingMonthEvents(mm)
+      response = this.readCalendarTransactions_(
+        upcoming, balances,
+        yyyy, mm, days)
+      for (let d = 0; d < days; d++) {
+        flow[d] += response.flow[d].map(v => formatter.localeSignal(v)).join('')
+        transactions[d] += response.transactions[d]
+      }
+
+      sheet.getRange(4, 2 + 4 * mm, days, 1).setFormulas(Utils.transpose([flow]))
+      sheet.getRange(4, 4 + 4 * mm, days, 1).setValues(Utils.transpose([transactions]))
+    }
+
+    SpreadsheetApp.flush()
+  }
+
+  static readCalendarTransactions_ (upcoming, balances, yyyy, mm, days) {
+    const response = {
+      flow: new Array(days).fill(null).map(a => []),
+      transactions: new Array(days).fill('')
+    }
+
+    const eventos = CalendarUtils.digestEvents(upcoming)
+    if (eventos.length === 0) return response
+
+    const startDate = new Date(yyyy, mm, 1)
+    const endDate = new Date(yyyy, mm + 1, 1)
+
+    for (const ev of eventos) {
       if (ev.description === '') continue
       if (ev.hasAtMute) continue
 
       let value = ev.value || 0
 
-      // TODO: optimize this fucker
       if (isNaN(ev.value)) {
-        if (ev.hasQcc) {
-          if (!ev.card) continue
-          if (!ev.hasWallet && !ev.account) continue
-
-          if (this.mm > 0) value = this.balances[ev.card.id][this.mm - 1]
-        } else if (ev.translation && (ev.tags.length || ev.tagImportant)) {
-          const tag = ev.tagImportant || ev.tags[0]
-          if (!tagsStats[tag]) continue
-          if (ev.translation.type === 'Total') value = tagsStats[tag].total
-          else if (ev.translation.type === 'Avg') value = tagsStats[tag].average
+        if (ev.hasQcc && ev.card) {
+          if (mm > 0) value = balances[ev.card.id][mm - 1]
         } else {
           continue
         }
@@ -103,73 +108,40 @@ class RefreshCashFlow {
         continue
       }
 
-      value = this.formater.localeSignal(value)
-      const title = '@' + ev.title + ' '
-
+      const title = `@${ev.title} `
       const first = ev.startDate < startDate ? 0 : ev.startDate.getDate() - 1
-      const last = ev.endDate >= endDate ? this.dd : ev.endDate.getDate() - 1
+      const last = ev.endDate >= endDate ? days : ev.endDate.getDate() - 1
 
       for (let day = first; day < last; day++) {
-        this.values.flow[day] += value
-        this.values.transactions[day] += title
+        response.flow[day].push(value)
+        response.transactions[day] += title
       }
     }
+
+    return response
   }
 
-  readTttTransactions_ () {
-    const sheet = SpreadsheetApp2.getActive().getSheetByName(Consts.month_name.short[this.mm])
-    if (!sheet) return
+  static readMonthTransactions_ (names, mm, days) {
+    const response = {
+      flow: new Array(days).fill(null).map(a => []),
+      transactions: new Array(days).fill('')
+    }
 
-    const numRows = sheet.getLastRow() - this.specs.ttt.row + 1
-    if (numRows < 1) return
-
-    const names = new AccountsService().list().map(acc => acc.name)
-    const snapshot = sheet.getRange(
-      this.specs.ttt.row, this.specs.ttt.column,
-      numRows, this.specs.ttt.width)
-      .getValues()
+    const values = new SheetMonth(mm).getTableRange().getValues()
+    const numRows = MonthTableUtils.sliceBlankValue(values).length
 
     for (let i = 0; i < numRows; i++) {
-      const line = snapshot[i]
-      if (line[3] === '') break
-      if (names.indexOf(line[0]) === -1) continue
+      const line = values[i]
+      if (!names.test(line[0])) continue
 
-      // TODO
-      // Filter tables
+      if (!Number.isInteger(line[1])) continue
+      if (line[1] < 1 || line[1] > days) continue
 
-      let day = +line[1]
-      if (day < 1 || day > this.dd) continue
-
-      const value = line[3]
-
-      day--
-      this.values.flow[day] += this.formater.localeSignal(value)
-      this.values.transactions[day] += '@' + line[2] + ' '
-    }
-  }
-
-  refresh () {
-    for (let mm = 0; mm < this.arrayMm.length; mm++) {
-      if (!this.arrayMm[mm]) continue
-
-      this.dd = new Date(this.financial_year, mm + 1, 0).getDate()
-      this.mm = mm
-
-      this.values = {
-        flow: new Array(this.dd).fill(''),
-        transactions: new Array(this.dd).fill('')
-      }
-
-      this.readTttTransactions_()
-      this.readCalendarTransactions_()
-
-      this.sheet.getRange(4, 2 + 4 * mm, this.dd, 1).setFormulas(Utils.transpose([this.values.flow]))
-      this.sheet.getRange(4, 4 + 4 * mm, this.dd, 1).setValues(Utils.transpose([this.values.transactions]))
+      const day = line[1] - 1
+      response.flow[day].push(line[3])
+      response.transactions[day] += `@${line[2]} `
     }
 
-    SpreadsheetApp.flush()
-    this.arrayMm = new Array(12).fill(false)
-
-    return this
+    return response
   }
 }
