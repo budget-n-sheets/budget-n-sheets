@@ -70,9 +70,10 @@ class Utils {
 
   static sliceBlankRow (values, bol) {
     let n = values.length
+    const snapshot = Utils.deepCopy(values)
     while (--n > -1) {
-      values[n][bol] = values[n][bol] || ''
-      if (values[n].findIndex(e => e !== '') > -1) break
+      snapshot[n][bol] = snapshot[n][bol] || ''
+      if (snapshot[n].findIndex(e => e !== '') > -1) break
     }
     n++
     return n > 0 ? values.slice(0, n) : []
