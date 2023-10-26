@@ -24,7 +24,8 @@ class SheetMonth extends ExtendedSheet {
       rowOffset: 0,
       columnOffset: 1,
       width: 6,
-      nullSearch: 4
+      nullSearch: 4,
+      boolSearch: 6
     }
   }
 

@@ -22,7 +22,8 @@ class SheetTags extends ExtendedSheet {
       rowOffset: 0,
       columnOffset: 0,
       width: 5,
-      nullSearch: 5
+      nullSearch: 5,
+      boolSearch: 4
     }
   }
 
