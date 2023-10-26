@@ -69,19 +69,9 @@ function toolService_ (job) {
       tool.forward()
       break
     }
-    case 'insertRows': {
-      const tool = InsertRows.pick(sheet)
-      if (tool === 1) {
-        InsertRows.showWarning()
-        break
-      } else if (!tool.sheet) {
-        showDialogErrorMessage()
-        break
-      }
-
-      tool.insertRows()
+    case 'insertRows':
+      InsertRowsService.serve(sheet)
       break
-    }
 
     default:
       console.warn('toolService_(): Switch case is default.', job)
