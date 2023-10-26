@@ -16,21 +16,6 @@ class RestoreBackup {
     this.name_accounts = config.name_accounts.filter(e => e.require === 'restore')
   }
 
-  restoreCards_ () {
-    const cards = this.backup.cards
-
-    const sheet = SpreadsheetApp2.getActive().getSheetByName('Cards')
-    const insertRows = new ToolInsertRowsCards()
-
-    let mm = -1
-    while (++mm < 12) {
-      if (cards[mm].length === 0) continue
-
-      insertRows.insertRowsTo(5 + cards[mm].length, true)
-      sheet.getRange(6, 1 + 6 * mm, cards[mm].length, 5).setValues(cards[mm])
-    }
-  }
-
   restoreSettings_ () {
     const user_settings = this.backup.user_settings
     if (!user_settings.financial_calendar) return
