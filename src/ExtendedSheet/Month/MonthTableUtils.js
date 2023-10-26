@@ -11,7 +11,9 @@
 class MonthTableUtils {
   static sliceBlankRow (values) {
     let n = values.length
+    const bol = SheetMonth.specs.boolSearch - 1
     while (--n > -1) {
+      values[n][bol] = values[n][bol] || ''
       if (values[n].findIndex(e => e !== '') > -1) break
     }
     n++
