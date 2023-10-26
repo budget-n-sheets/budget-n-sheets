@@ -10,20 +10,12 @@
 
 class TagsDataUtils {
   static sliceBlankRow (values) {
-    let n = values.length
     const bol = SheetTags.specs.boolSearch - 1
-    while (--n > -1) {
-      values[n][bol] = values[n][bol] || ''
-      if (values[n].findIndex(e => e !== '') > -1) break
-    }
-    n++
-    return n > 0 ? values.slice(0, n) : []
+    return Utils.sliceBlankRow(values, bol)
   }
 
   static sliceBlankValue (values) {
     const nil = SheetTags.specs.nullSearch - 1
-    const n = values.findIndex(row => row[nil] === '')
-    if (n === -1) return values
-    return n > 0 ? values.slice(0, n) : []
+    return Utils.sliceBlankValue(values, nil)
   }
 }

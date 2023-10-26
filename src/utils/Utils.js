@@ -67,4 +67,20 @@ class Utils {
     n++
     return n > 0 ? table.slice(0, n) : []
   }
+
+  static sliceBlankRow (values, bol) {
+    let n = values.length
+    while (--n > -1) {
+      values[n][bol] = values[n][bol] || ''
+      if (values[n].findIndex(e => e !== '') > -1) break
+    }
+    n++
+    return n > 0 ? values.slice(0, n) : []
+  }
+
+  static sliceBlankValue (values, nil) {
+    const n = values.findIndex(row => row[nil] === '')
+    if (n === -1) return values
+    return n > 0 ? values.slice(0, n) : []
+  }
 }
