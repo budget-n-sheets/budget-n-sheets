@@ -55,7 +55,7 @@ class SetupSuperCopy {
     if (numRows < 1) return
 
     const destination = this.destination.getSheetByName('Tags')
-    new ToolInsertRowsTags().insertRowsTo(1 + numRows, true)
+    InsertRows.insertRowsTo(destination, 1 + numRows, true)
 
     const values = source.getRange(2, 1, numRows, 5).getValues()
     destination.getRange(2, 1, numRows, 5).setValues(values)

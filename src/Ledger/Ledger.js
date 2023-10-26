@@ -12,8 +12,6 @@ class Ledger {
   constructor (name) {
     this._sheet = SpreadsheetApp2.getActive().getSheetByName(name)
     this.lastRange = null
-
-    this._insertRows = null
   }
 
   getLastRow_ () {
@@ -30,10 +28,6 @@ class Ledger {
     return ++n
   }
 
-  initInsertRows_ () {
-    this._insertRows = InsertRows.pick(this._sheet)
-  }
-
   activate () {
     SpreadsheetApp2.getActive().spreadsheet.setActiveSheet(this._sheet)
     this.lastRange.activate()
@@ -41,10 +35,9 @@ class Ledger {
 
   appendTransactions (values) {
     if (values.length === 0) return this
-    if (this._insertRows == null) this.initInsertRows_()
 
     const numRows = this.getLastRow_()
-    this._insertRows.insertRowsTo(this._specs.row + numRows + values.length)
+    InsertRows.insertRowsTo(this._sheet, this._specs.row + numRows + values.length)
 
     this.lastRange = this._sheet.getRange(
       this._specs.row + numRows, this._specs.column,
@@ -86,10 +79,9 @@ class Ledger {
 
   mergeTransactions (values) {
     if (values.length === 0) return this
-    if (this._insertRows == null) this.initInsertRows_()
 
     const numRows = this.getLastRow_()
-    this._insertRows.insertRowsTo(this._specs.row + numRows + values.length)
+    InsertRows.insertRowsTo(this._sheet, this._specs.row + numRows + values.length)
 
     let table = []
     if (numRows > 0) {

@@ -57,10 +57,9 @@ class RestoreBackup {
   restoreTags_ () {
     if (this.backup.tags.length < 1) return
 
-    new ToolInsertRowsTags().insertRowsTo(1 + this.backup.tags.length, true)
-    SpreadsheetApp2.getActive().getSheetByName('Tags')
-      .getRange(2, 1, this.backup.tags.length, 5)
-      .setValues(this.backup.tags)
+    const sheet = SpreadsheetApp2.getActive().getSheetByName('Tags')
+    InsertRows.insertRowsTo(sheet, 1 + this.backup.tags.length, true)
+    sheet.getRange(2, 1, this.backup.tags.length, 5).setValues(this.backup.tags)
   }
 
   restoreTagsCategories_ () {
