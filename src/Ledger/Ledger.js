@@ -9,58 +9,48 @@
  */
 
 class Ledger {
-  constructor (name) {
+  constructor (name, specs) {
     this._sheet = SpreadsheetApp2.getActive().getSheetByName(name)
-    this.lastRange = null
+    this._specs = Object.freeze(specs)
+    this._top = this._sheet.getRange(
+      this._specs.row, this._specs.column,
+      1, this._specs.width)
   }
 
   getLastRow_ () {
     const numRows = this._sheet.getMaxRows() - this._specs.row + 1
-    const snapshot = this._sheet.getRange(
-      this._specs.row, this._specs.column,
-      numRows, this._specs.width - 1)
+    if (numRows < 1) throw new Error('Bad sheet structure.')
+    const snapshot = this._top
+      .offset(0, 0, numRows)
       .getValues()
-
-    let n = snapshot.length
-    while (--n > -1) {
-      if (snapshot[n].findIndex(e => e !== '') > -1) break
-    }
-    return ++n
-  }
-
-  activate () {
-    SpreadsheetApp2.getActive().spreadsheet.setActiveSheet(this._sheet)
-    this.lastRange.activate()
+    const bol = this._specs.boolSearch - 1
+    return Utils.sliceBlankRow(snapshot, bol).length
   }
 
   appendTransactions (values) {
-    if (values.length === 0) return this
+    if (values.length === 0) return
+    const lastRow = this.getLastRow_()
 
-    const numRows = this.getLastRow_()
-    InsertRows.insertRowsTo(this._sheet, this._specs.row + numRows + values.length)
+    InsertRows.insertRowsTo(this._sheet, lastRow + values.length)
 
-    this.lastRange = this._sheet.getRange(
-      this._specs.row + numRows, this._specs.column,
-      values.length, this._specs.width)
+    return this._top
+      .offset(lastRow, 0, values.length)
       .setValues(values)
-
-    SpreadsheetApp.flush()
-    return this
   }
 
   fillInWithZeros () {
-    const numRows = this.getLastRow_()
-    if (numRows < 1) return this
+    const lastRow = this.getLastRow_()
+    if (lastRow < 1) return this
 
-    const col = 4 + this._specs.columnOffset
-    const table = this._sheet.getRange(this._specs.row, col, numRows, 1).getValues()
+    const table = this._top.offset(0, 3, lastRow, 1).getValues()
 
     const top = table.findIndex(row => row[0] === '') - 1
     if (top === -2) return this
 
-    let n = numRows - 1
+    let n = lastRow - 1
     while (n > top && table[n][0] === '') { n-- }
 
+    const col = 4 + this._specs.columnOffset
     const listRanges = []
     while (n > top) {
       if (table[n][0] === '') {
@@ -74,38 +64,30 @@ class Ledger {
       this._sheet.getRangeList(listRanges).setValue(0)
       SpreadsheetApp.flush()
     }
+
     return this
   }
 
   mergeTransactions (values) {
-    if (values.length === 0) return this
+    if (values.length === 0) return
 
-    const numRows = this.getLastRow_()
-    InsertRows.insertRowsTo(this._sheet, this._specs.row + numRows + values.length)
+    const lastRow = this.getLastRow_()
 
     let table = []
-    if (numRows > 0) {
-      table = this._sheet.getRange(
-        this._specs.row, this._specs.column,
-        numRows, this._specs.width)
+    if (lastRow > 0) {
+      table = this._top
+        .offset(0, 0, lastRow)
         .getValues()
     }
 
-    const nill = this._specs.nullSearch - 1
-    let n = table.findIndex(row => row[nill] === '')
-    if (n === -1) n = table.length
+    const nil = this._specs.nullSearch - 1
+    const numRows = Utils.sliceBlankValue(table, nil).length
+    table.splice.apply(table, [numRows, 0].concat(values))
 
-    table.splice.apply(table, [n, 0].concat(values))
-    this._sheet.getRange(
-      this._specs.row, this._specs.column,
-      table.length, this._specs.width)
+    InsertRows.insertRowsTo(this._sheet, numRows + values.length)
+
+    return this._top
+      .offset(0, 0, table.length)
       .setValues(table)
-
-    this.lastRange = this._sheet.getRange(
-      this._specs.row + n, this._specs.column,
-      values.length, this._specs.width)
-
-    SpreadsheetApp.flush()
-    return this
   }
 }

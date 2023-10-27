@@ -10,10 +10,6 @@
 
 class LedgerTtt extends Ledger {
   constructor (mm) {
-    const name = (typeof mm === 'number' ? Consts.month_name.short[mm] : mm)
-    super(name)
-    this._category = 'ttt'
-
-    this._specs = Object.freeze(SheetMonth.specs)
+    super(Consts.month_name.short[mm], SheetMonth.specs)
   }
 }
