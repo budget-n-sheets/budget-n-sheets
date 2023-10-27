@@ -91,10 +91,9 @@ class DemoAccCards extends QuickstartDemo {
     this.list.forEach((values, index) => {
       if (values.length === 0) return
 
-      this._ledger.appendTransactions(values)
+      const lastRange = this._ledger.appendTransactions(values)
       if (num === 2) this._ledger.fillInWithZeros()
-
-      rangeList.push(this._ledger.lastRange.getA1Notation())
+      if (lastRange) rangeList.push(lastRange.getA1Notation())
     })
 
     this.sheet.getRangeList(rangeList).activate()

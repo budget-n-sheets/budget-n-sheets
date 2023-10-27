@@ -14,9 +14,7 @@ class CalendarService {
     const events = CalendarUtils.digestEvents(finCalEvents)
     if (events.length === 0) return
 
-    const tableCards = []
-    const tableTtt = []
-
+    const data = []
     const mm = date.getMonth()
     const dd = date.getDate()
 
@@ -42,17 +40,15 @@ class CalendarService {
       value = '=' + formater.localeSignal(value)
 
       if (evento.hasWallet) {
-        tableTtt.push(['Wallet', dd, evento.title, value, tags, evento.hasIgn])
+        data.push(['Wallet', dd, evento.title, value, tags, evento.hasIgn])
       } else if (evento.account) {
         const name = accounts.find(acc => acc.id === evento.account).name
-        tableTtt.push([name, dd, evento.title, value, tags, evento.hasIgn])
+        data.push([name, dd, evento.title, value, tags, evento.hasIgn])
       } else if (evento.card) {
-        tableCards.push([evento.card.code, dd, evento.title, value, tags, evento.hasIgn])
+        data.push([evento.card.code, dd, evento.title, value, tags, evento.hasIgn])
       }
     }
 
-    const ledger = new LedgerTtt(mm)
-    if (tableCards.length > 0) ledger.mergeTransactions(tableCards)
-    ledger.mergeTransactions(tableTtt)
+    new LedgerTtt(mm).mergeTransactions(data)
   }
 }

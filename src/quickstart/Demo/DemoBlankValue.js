@@ -64,10 +64,9 @@ class DemoBlankValue extends QuickstartDemo {
     this.list.forEach((values, index) => {
       if (values.length === 0) return
 
-      ledger.appendTransactions(values)
+      const lastRange = ledger.appendTransactions(values)
       if (num === 2) ledger.fillInWithZeros()
-
-      rangeList.push(ledger.lastRange.getA1Notation())
+      if (lastRange) rangeList.push(lastRange.getA1Notation())
     })
 
     this.sheet.getRangeList(rangeList).activate()

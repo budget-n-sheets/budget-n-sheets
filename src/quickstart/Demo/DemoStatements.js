@@ -63,8 +63,9 @@ class DemoStatements extends QuickstartDemo {
     this.list.forEach((values, index) => {
       if (values.length === 0) return
 
-      ledger.appendTransactions(values).fillInWithZeros()
-      rangeList.push(ledger.lastRange.getA1Notation())
+      const lastRange = ledger.appendTransactions(values)
+      ledger.fillInWithZeros()
+      if (lastRange) rangeList.push(lastRange.getA1Notation())
     })
 
     this.sheet.getRangeList(rangeList).activate()

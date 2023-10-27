@@ -41,6 +41,8 @@ class DemoTransactions extends QuickstartDemo {
   }
 
   play () {
-    new LedgerTtt(this.mm).appendTransactions(this.data).fillInWithZeros().activate()
+    const ledger = new LedgerTtt(this.mm)
+    ledger.appendTransactions(this.data).activate()
+    ledger.fillInWithZeros()
   }
 }
