@@ -43,11 +43,11 @@ class InsertRows {
   }
 
   static insertRowsTo (sheet, height, extras = false) {
-    const maxRows = sheet.getMaxRows() - this._specs.row + 1
+    const specs = this.getSheetSpecs_(sheet)
+    const maxRows = sheet.getMaxRows() - specs.row + 1
     if (maxRows >= height) return
     if (maxRows < 1) throw new Error('Bad sheet structure.')
 
-    const specs = this.getSheetSpecs_(sheet)
     this.insertNumRows_(sheet, specs, height - maxRows + (!!extras * 100))
   }
 }
