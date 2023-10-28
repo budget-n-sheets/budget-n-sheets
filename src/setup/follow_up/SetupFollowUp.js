@@ -19,11 +19,9 @@ class SetupFollowUp extends SetupSuperCopy {
     const numRows = cards.getLastRow() - 5
     if (numRows < 1) return
 
-    const tool = new ForwardInstallments()
-
     let values = cards.getRange(6, 1 + 6 * 11, numRows, 5).getValues()
-    values = tool.filterInstallments(values)
-    values = tool.getNextInstallments(values)
+    values = ForwardInstallments.filterInstallments(values)
+    values = ForwardInstallments.getNextInstallments(values)
     if (values.length === 0) return
 
     this.destination
