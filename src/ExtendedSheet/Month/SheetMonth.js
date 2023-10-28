@@ -190,7 +190,7 @@ class SheetMonth extends ExtendedSheet {
   resetFormatting () {
     this.sheet.getRange('B1:F5').setNumberFormat('@')
     this.sheet.getRange('G1:G5').setNumberFormats([
-      ['0'], ['@'], ['@'], ['@'], ['@']
+      ['0'], ['0'], ['@'], ['@'], ['@']
     ])
 
     const range = this.sheet
@@ -203,7 +203,9 @@ class SheetMonth extends ExtendedSheet {
     range.offset(0, 2).setNumberFormat('@')
     this.resetNumberFormat()
     range.offset(0, 4).setNumberFormat('@')
-    range.offset(0, 5).setNumberFormat('@')
+    range.offset(0, 5)
+      .setNumberFormat('0')
+      .insertCheckboxes()
     this.resetDataValidation()
 
     return this
