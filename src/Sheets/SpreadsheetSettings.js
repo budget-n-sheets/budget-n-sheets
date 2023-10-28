@@ -13,7 +13,7 @@ class SpreadsheetSettings {
     SheetAllMonths.resetNumberFormat()
     new SheetCashFlow().resetNumberFormat()
     new SheetBackstage().resetNumberFormat()
-    new SheetSettings().resetNumberFormat()
+    new SheetSettings().resetNumberFormat().resetFormulas()
     new SheetSummary().resetNumberFormat()
     new SheetTags().resetNumberFormat()
   }
