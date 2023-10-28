@@ -35,7 +35,7 @@ class CardsService extends TablesService {
 
   getCodesRegExp (withAliases = false) {
     const regExp = this.list()
-      .map(card => withAliases ? card.aliases.join([card.code]) : card.code)
+      .map(card => withAliases ? card.aliases.concat([card.code]) : card.code)
       .flat()
       .sort((a, b) => b.length - a.length)
       .map(e => e.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'))
