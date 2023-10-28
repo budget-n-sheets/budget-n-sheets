@@ -44,20 +44,12 @@ class Ledger {
 
     const table = this._top.offset(0, 3, lastRow, 1).getValues()
 
-    const top = table.findIndex(row => row[0] === '') - 1
-    if (top === -2) return this
-
-    let n = lastRow - 1
-    while (n > top && table[n][0] === '') { n-- }
-
     const col = 4 + this._specs.columnOffset
     const listRanges = []
-    while (n > top) {
-      if (table[n][0] === '') {
-        listRanges.push(RangeUtils.rollA1Notation(this._specs.row + n, col))
+    for (let i = 0; i < lastRow; i++) {
+      if (table[i][0] === '') {
+        listRanges.push(RangeUtils.rollA1Notation(this._specs.row + i, col))
       }
-
-      n--
     }
 
     if (listRanges.length > 0) {
