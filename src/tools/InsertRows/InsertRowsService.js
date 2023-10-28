@@ -24,10 +24,10 @@ class InsertRowsService {
     InsertRows.insertRows(sheet)
   }
 
-  static showMissing () {
+  static showWarning () {
     SpreadsheetApp2.getUi().alert(
       "Can't insert rows",
-      'Sheet Tags not found.',
+      'Select a month or Tags to insert rows.',
       SpreadsheetApp2.getUi().ButtonSet.OK)
   }
 }
