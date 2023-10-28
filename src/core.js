@@ -36,11 +36,8 @@ function onOpen (e) {
   } else {
     if (Addon.isInstalled()) {
       menu.addItem('Format table', 'toolFormatTable')
-
-      const hasCards = new CardsService().list().length > 0
-      if (hasCards) menu.addItem('Forward installments', 'toolForwardInstallments')
-
-      menu.addItem('Insert rows', 'toolInsertRows')
+        .addItem('Forward installments', 'toolForwardInstallments')
+        .addItem('Insert rows', 'toolInsertRows')
         .addItem('Refresh cash flow', 'toolRefreshCashFlow')
         .addSeparator()
         .addSubMenu(ui.createMenu('Open panel')
