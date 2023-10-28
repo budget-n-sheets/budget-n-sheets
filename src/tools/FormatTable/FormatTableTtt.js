@@ -17,7 +17,7 @@ class FormatTableTtt extends FormatTable {
     const financial_year = SettingsConst.get('financial_year')
 
     this.num_acc = SettingsConst.get('number_accounts')
-    this.hasHideRows = (new Date(financial_year, mm + 1, 0) < Consts.date)
+    this.hasHideRows = (new Date(financial_year, mm, 1) < LocaleUtils.getDate())
 
     this.specs = Object.freeze(SheetMonth.specs)
   }

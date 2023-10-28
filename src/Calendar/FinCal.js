@@ -36,13 +36,14 @@ class FinCal {
   getUpcomingMonthEvents (mm) {
     if (!this.calendar) return []
     if (mm == null) mm = Consts.date.getMonth()
+    const locale = LocaleUtils.getDate()
 
     const end = new Date(this.fin_year, mm + 1, 1)
-    if (end <= Consts.date) return []
+    if (end <= locale) return []
 
     let start = new Date(this.fin_year, mm, 1)
-    if (start <= Consts.date) {
-      start = new Date(this.fin_year, mm, Consts.date.getDate() + 1)
+    if (start <= locale) {
+      start = new Date(this.fin_year, mm, locale.getDate() + 1)
       if (start >= end) return []
     }
 

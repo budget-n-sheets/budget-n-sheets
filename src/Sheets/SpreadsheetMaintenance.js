@@ -11,7 +11,7 @@
 class SpreadsheetMaintenance {
   static hideShowMonths () {
     const spreadsheet2 = SpreadsheetApp2.getActive()
-    const month = Consts.date.getMonth()
+    const month = LocaleUtils.getDate().getMonth()
     const delta = Utils.getMonthDelta(month)
     const m0 = month + delta[0]
     const m1 = month + delta[1]
@@ -27,7 +27,7 @@ class SpreadsheetMaintenance {
 
   static setMonthsColoring () {
     const spreadsheet2 = SpreadsheetApp2.getActive()
-    const month = Consts.date.getMonth()
+    const month = LocaleUtils.getDate().getMonth()
     const delta = Utils.getMonthDelta(month)
     const m0 = month + delta[0]
     const m1 = month + delta[1]
@@ -40,7 +40,7 @@ class SpreadsheetMaintenance {
     }
 
     const financialYear = SettingsConst.get('financial_year')
-    const year = Consts.date.getFullYear()
+    const year = LocaleUtils.getDate().getFullYear()
     if (year === financialYear) {
       spreadsheet2.getSheetByName(Consts.month_name.short[month]).setTabColor('#6aa84f')
     }
