@@ -40,6 +40,6 @@ class CardsService extends TablesService {
       .sort((a, b) => b.length - a.length)
       .map(e => e.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'))
       .join('|')
-    return new RegExp(`(${regExp})`, 'g')
+    return new RegExp(`(${regExp})`)
   }
 }
