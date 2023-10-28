@@ -9,95 +9,39 @@
  */
 
 class ForwardInstallments {
-  constructor (mm) {
-    const name = Consts.month_name.short[mm]
-    this.mm = mm
-    this.sheet = SpreadsheetApp2.getActive().getSheetByName(name)
-
-    this.formater = new NumberFormatter()
-
-    this.rangeList = { indexes: [], ranges: [] }
-    this.specs = Object.freeze(SheetMonth.specs)
-  }
-
-  static pick (sheet) {
-    const mm = Consts.month_name.short.indexOf(sheet.getName())
-    if (mm === -1) return 1
-    return new ForwardInstallments(mm)
-  }
-
-  static isCompatible (sheet) {
-    return Consts.month_name.short.indexOf(sheet.getName()) > -1
-  }
-
-  static showWarning () {
-    SpreadsheetApp2.getUi().alert(
-      "Can't forward installments",
-      'Select a month to forward installments.',
-      SpreadsheetApp2.getUi().ButtonSet.OK)
-  }
-
-  get indexes () {
-    return this.rangeList.indexes
-  }
-
-  set indexes (indexes) {
-    this.rangeList.indexes = this.rangeList.indexes.concat(indexes)
-  }
-
-  get ranges () {
-    return this.rangeList.ranges
-  }
-
-  set ranges (ranges) {
-    this.rangeList.ranges = this.rangeList.ranges.concat(ranges)
-  }
-
-  forward_ (ranges, steps) {
-    if (steps == null) steps = 11
+  static forward_ (start, ranges, steps = 11) {
     if (steps < 1 || steps > 11) return
 
+    const formatter = new NumberFormatter()
+    const ledgers = new Array(12).fill(null)
+
     for (const range of ranges) {
-      let mm = +this.mm
-      if (mm > 11) continue
-
       const snapshot = range.getValues()
-
       const installments = this.filterInstallments(snapshot)
+        .map(line => {
+          line[3] = formatter.localeSignal(line[3])
+          return line
+        })
       if (installments.length === 0) continue
 
-      let end = mm + steps + 1
+      let mm = start
+      let end = start + steps + 1
       if (end > 12) end = 12
 
       while (++mm < end && installments.length > 0) {
         const values = this.getNextInstallments(installments)
-        new LedgerTtt(mm).mergeTransactions(values)
+        const ledger = ledgers[mm] || (ledgers[mm] = new LedgerTtt(mm))
+        ledger.mergeTransactions(values)
       }
     }
   }
 
-  forwardIndexes_ () {
-    const numRows = this.sheet.getMaxRows() - this.specs.row + 1
-    if (numRows < 1) return
-
-    const indexes = this.indexes.filter((v, i, s) => s.indexOf(v) === i).sort((a, b) => a - b)
-
-    const range = this.sheet.getRange(
-      this.specs.row, 1 + this.specs.columnOffset,
-      numRows, this.specs.width)
-
-    const nill = this.specs.nullSearch - 1
-    let row = range.getValues().findIndex(line => line[nill] === '')
-    if (row === -1) row = numRows
-    if (row > 0) this.forward_([range.offset(0, 0, row, this.specs.width)], 1)
-  }
-
-  filterInstallments (snapshot) {
+  static filterInstallments (snapshot) {
     const installments = []
 
     for (let i = 0; i < snapshot.length; i++) {
       const line = snapshot[i]
-      if (line[2] === '') continue
+      if (line[2] === '' || line[3] === '') continue
 
       const match = line[2].match(/((\d+)\/(\d+))/)
       if (!match) continue
@@ -108,7 +52,6 @@ class ForwardInstallments {
 
       if (line[1] > 0) line[1] *= -1
       line[2] = line[2].trim()
-      line[3] = '=' + this.formater.localeSignal(line[3])
 
       installments.push({
         line,
@@ -121,23 +64,35 @@ class ForwardInstallments {
     return installments
   }
 
-  forward () {
-    if (!this.sheet) return
+  static filterRanges (ranges) {
+    const specs = SheetMonth.specs
+    const right = specs.columnOffset + specs.width
 
-    if (this.indexes.length === 0) {
-      for (const range of this.ranges) {
-        this.forward_([range])
-      }
-      return
-    }
+    return ranges.map(range => {
+        if (range.getLastRow() < specs.row) return null
+        if (range.getColumn() !== specs.column) return null
+        if (range.getLastColumn() !== right) return null
 
-    this.forwardIndexes_()
-
-    this.rangeList = { indexes: [], ranges: [] }
-    return this
+        const l = range.getRow()
+        if (l >= specs.row) return range
+        const d = specs.row - l
+        return range.offset(d, 0, range.getNumRows() - d)
+      })
+      .filter(r => r)
   }
 
-  getNextInstallments (installments) {
+  static forwardIndex (mm) {
+    const range = new SheetMonth(mm).getTableRange()
+    const nil = SheetMonth.specs.nullSearch - 1
+    const numRows = Utils.sliceBlankValue(range.getValues(), nil).length
+    if (numRows > 0) this.forward_(mm, [range.offset(0, 0, numRows)], 1)
+  }
+
+  static forwardRanges (mm, ranges) {
+    this.forward_(mm, ranges)
+  }
+
+  static getNextInstallments (installments) {
     const values = []
 
     for (let i = 0; i < installments.length; i++) {
