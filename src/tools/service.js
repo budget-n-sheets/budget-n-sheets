@@ -52,23 +52,9 @@ function toolService_ (job) {
       tool.format()
       break
     }
-    case 'forwardInstallments': {
-      const tool = ForwardInstallments.pick(sheet)
-      if (tool === 1) {
-        ForwardInstallments.showWarning()
-        break
-      } else if (!tool.sheet) {
-        showDialogErrorMessage()
-        break
-      }
-
-      const filtered = RangeUtils.filterTableRanges(ranges, tool.specs)
-      tool.indexes = filtered.indexes
-      tool.ranges = filtered.ranges
-
-      tool.forward()
+    case 'forwardInstallments':
+      ForwardInstallmentsService.serve(sheet, ranges)
       break
-    }
     case 'insertRows':
       InsertRowsService.serve(sheet)
       break
