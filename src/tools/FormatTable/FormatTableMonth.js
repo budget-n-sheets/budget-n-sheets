@@ -54,7 +54,7 @@ class FormatTableMonth {
       this.formatRange_(month.getTableRange())
 
       const financialYear = SettingsConst.get('financial_year')
-      const isPast = new Date(financialYear, mm, 1) < LocaleUtils.getDate()
+      const isPast = new Date(financialYear, mm + 1, 1) < LocaleUtils.getDate()
       if (isPast) this.hideRows_(month)
     }
   }
