@@ -68,27 +68,30 @@ class DemoCalendar {
     const finCal = new FinCal()
     if (!this.getUserPermission(finCal)) return
 
+    const accName = QuickstartUtils.getRandomAccount().name
+    const cardCode = QuickstartUtils.getRandomCard()?.code || '[CARD]'
+
     const list = [
       [
         {
           day: 2,
           length: 1,
           title: 'The simplest event',
-          description: 'acc_name\nvalue\n---\nThis simple event has the name of an account and a number formatted.',
+          description: `${accName}\nvalue\n---\nThis simple event has the name of an account and a number formatted.`,
           value: -1.23
         },
         {
           day: 3,
           length: 1,
           title: 'Ignored event',
-          description: 'acc_name\nvalue\n\n@ignore\n---\nThis event has the "@ignore" - or "@ign" for short - indicator, so it is not included in cash flow, nor posted in the table.',
+          description: `${accName}\nvalue\n\n@ignore\n---\nThis event has the "@ignore" - or "@ign" for short - indicator, so it is not included in cash flow, nor posted in the table.`,
           value: -1.23
         },
         {
           day: 5,
           length: 1,
           title: 'Income',
-          description: 'acc_name\nvalue\n\n#trf #inc\n---\nSimilar to <b>The simplest event</b> but with a few tags. While the tags don\'t play any role in cash flow, they are posted in the table along with the other details.',
+          description: `${accName}\nvalue\n\n#trf #inc\n---\nSimilar to <b>The simplest event</b> but with a few tags. While the tags don\'t play any role in cash flow, they are posted in the table along with the other details.`,
           value: 1234.56
         }
       ],
@@ -97,14 +100,14 @@ class DemoCalendar {
           day: 2,
           length: 1,
           title: 'The simplest card event',
-          description: 'card_code\nvalue\n---\nThis simple event has the code of a card and a number formatted. This event is not synced with the cash flow.',
+          description: `${cardCode}\nvalue\n---\nThis simple event has the code of a card and a number formatted. This event is not synced with the cash flow.`,
           value: -1.23
         },
         {
           day: 7,
           length: 1,
           title: 'Card bill payment',
-          description: 'acc_name\ncard_code\n\n#qcc\n---\nThis event has the "#qcc" built-in tag and no number formatted. The add-on gets the card\'s balance of the previous month and puts it in the cash flow.'
+          description: `${accName}\n${cardCode}\n\n#qcc\n---\nThis event has the "#qcc" built-in tag and no number formatted. The add-on gets the card\'s balance of the previous month and puts it in the cash flow.`
         }
       ],
       [
@@ -112,7 +115,7 @@ class DemoCalendar {
           day: 11,
           length: 2,
           title: 'Two-days event',
-          description: 'acc_name\nvalue\n---\nMultiple-days events behave like a series of one-day event.',
+          description: `${accName}\nvalue\n---\nMultiple-days events behave like a series of one-day event.`,
           value: -1.23
         }
       ]
@@ -132,14 +135,9 @@ class DemoCalendar {
     }
 
     const formatter = new NumberFormatter()
-    const accName = QuickstartUtils.getRandomAccount().name
-    const cardCode = QuickstartUtils.getRandomCard().code
 
     for (const eventos of list) {
       for (const evento of eventos) {
-        evento.description = evento.description.replace('acc_name', accName)
-        evento.description = evento.description.replace('card_code', cardCode)
-
         const value = formatter.calendarSignal(evento.value)
         evento.description = evento.description.replace('value', value)
 
