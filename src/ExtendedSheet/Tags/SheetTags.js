@@ -50,10 +50,43 @@ class SheetTags extends ExtendedSheet {
       this.numRows, 12 + 2)
   }
 
+  resetDataValidation () {
+    const rule = SpreadsheetApp.newDataValidation()
+      .requireCheckbox()
+      .build()
+
+    this.sheet
+      .getRange(
+        this.specs.row, 3 + this.specs.column,
+        this.numRows, 1)
+      .clearDataValidations()
+      .setDataValidation(rule)
+
+    return this
+  }
+
   resetDefault () {
     this.resetFormulas()
       .resetNumberFormat()
       .resetProtection()
+  }
+
+  resetFormatting () {
+    const range = this.sheet
+      .getRange(
+        this.specs.row, this.specs.column,
+        this.numRows, 1)
+
+    range.setNumberFormat('@')
+    range.offset(0, 1).setNumberFormat('@')
+    range.offset(0, 2).setNumberFormat('@')
+    range.offset(0, 3)
+      .setNumberFormat('0')
+      .insertCheckboxes()
+    range.offset(0, 4).setNumberFormat('@')
+    this.resetDataValidation()
+
+    return this
   }
 
   resetFormulas () {
