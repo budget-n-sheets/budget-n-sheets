@@ -135,7 +135,11 @@ class RefreshCashFlow {
       if (!names.test(line[0])) continue
 
       if (!Number.isInteger(line[1])) continue
-      if (line[1] < 1 || line[1] > days) continue
+      if (line[1] < -31 || line[1] === 0 || line[1] > days) continue
+      if (line[1] < 0) {
+        if (line[1] < -days) line[1] = days
+        else line[1] *= -1
+      }
 
       const day = line[1] - 1
       response.flow[day].push(line[3])
