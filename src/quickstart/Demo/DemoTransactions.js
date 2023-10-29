@@ -8,41 +8,36 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class DemoTransactions extends QuickstartDemo {
-  constructor () {
-    super(['mm'])
+class DemoTransactions {
+  static play1 () {
+    const name = QuickstartUtils.getRandomAccount().name
+    const data = [[name, 7, 'Deposit (to my account #dp)', Noise.randomValue(3, 2), '#dp', false]]
+
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
   }
 
-  makeConfig (num) {
-    const code = QuickstartUtils.getRandomAccount().name
+  static play2 () {
+    const name = QuickstartUtils.getRandomAccount().name
+    const data = [[name, 7, 'Transfer (from someone #trf)', Noise.randomValue(3, 2), '#trf', false]]
 
-    switch (num) {
-      case 1:
-        this.data = [[code, 7, 'Deposit (to my account #dp)', Noise.randomValue(3, 2), '#dp', false]]
-        break
-      case 2:
-        this.data = [[code, 7, 'Transfer (from someone #trf)', Noise.randomValue(3, 2), '#trf', false]]
-        break
-      case 3:
-        this.data = [[code, 7, 'Transfer (to someone #trf)', Noise.randomValueNegative(3, 2), '#trf', false]]
-        break
-      case 4:
-        this.data = [[code, 7, 'Withdrawal (cash dispenser #wd)', Noise.randomValueNegative(3, 2), '#wd', false]]
-        break
-
-      default:
-        return
-    }
-
-    this.getSheets_()
-
-    this.isReady = true
-    return this
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
   }
 
-  play () {
-    const ledger = new LedgerTtt(this.mm)
-    ledger.appendTransactions(this.data).activate()
-    ledger.fillInWithZeros()
+  static play3 () {
+    const name = QuickstartUtils.getRandomAccount().name
+    const data = [[name, 7, 'Transfer (to someone #trf)', Noise.randomValueNegative(3, 2), '#trf', false]]
+
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
+  }
+
+  static play4 () {
+    const name = QuickstartUtils.getRandomAccount().name
+    const data = [[name, 7, 'Withdrawal (cash dispenser #wd)', Noise.randomValueNegative(3, 2), '#wd', false]]
+
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
   }
 }
