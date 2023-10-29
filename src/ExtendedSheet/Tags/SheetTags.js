@@ -38,13 +38,14 @@ class SheetTags extends ExtendedSheet {
   }
 
   getHeaderRange () {
-    if (this.sheet.getMaxRows() < this.specs.row - this.specs.rowOffset - 1) return null
+    if (this.sheet.getMaxRows() < this.specs.row) return null
     return this._sheet.getRange(
-      1 + this.specs.rowOffet, this.specs.column,
-      this.specs.row - this.specs.rowOffset - 1, this.specs.width)
+      this.specs.row, this.specs.column,
+      this.numRows, this.specs.width)
   }
 
   getTableRange () {
+    if (this.sheet.getMaxRows() < this.specs.row) return null
     return this._sheet.getRange(
       this.specs.row, this.specs.column + this.specs.width,
       this.numRows, 12 + 2)
