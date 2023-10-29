@@ -13,7 +13,7 @@ function playQuickstart (id) {
 
   const channel = id.match(/([a-z_]+)(\d+)/)
   if (!channel) {
-    console.warn('playQuickstart(): Now match found.', id)
+    console.warn('playQuickstart(): No match found.', id)
     return
   }
 
