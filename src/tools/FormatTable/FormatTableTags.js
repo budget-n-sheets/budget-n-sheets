@@ -8,81 +8,38 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class FormatTableTags extends FormatTable {
-  constructor () {
-    super()
-    this.sheet = SpreadsheetApp2.getActive().getSheetByName('Tags')
-
-    this.specs = Object.freeze({
-      columnOffset: 0,
-      nullSearch: 5,
-      row: 2,
-      width: 5
-    })
-
-    this.sortSpec = {
-      blank: [
+class FormatTableTags {
+  static formatRange_ (range) {
+    const last = range.trimWhitespace()
+      .sort([
         { column: 1, ascending: true },
         { column: 2, ascending: true },
         { column: 3, ascending: true },
         { column: 4, ascending: false },
         { column: 5, ascending: true }
-      ],
-      fancy: [
-        { column: 2, ascending: true },
-        { column: 1, ascending: true }
-      ]
-    }
-
-    this.rule = SpreadsheetApp.newDataValidation()
-      .requireCheckbox()
-      .setAllowInvalid(false)
-      .build()
-  }
-
-  formatRange_ (range) {
-    const last = range.trimWhitespace()
-      .sort(this.sortSpec.blank)
+      ])
       .sort(5)
       .getValues()
       .findIndex(line => line[4] === '')
     if (last === 0) return
 
     const numRows = (last === -1 ? range.getNumRows() : last)
-    const analytics = range.offset(0, 0, numRows, 5)
-      .sort(this.sortSpec.fancy)
-      .offset(0, 3, range.getNumRows(), 1)
-
-    const values = analytics.getValues()
-    values.forEach((b, i, a) => {
-      a[i][0] = (b[0] === true)
-    })
-
-    analytics.clearDataValidations()
-      .removeCheckboxes()
-      .clearContent()
-      .insertCheckboxes()
-      .setDataValidation(this.rule)
-      .setValues(values)
+    range.offset(0, 0, numRows, 5)
+      .sort([
+        { column: 2, ascending: true },
+        { column: 1, ascending: true }
+      ])
   }
 
-  format () {
-    if (!this.sheet) return
-
-    if (this.indexes.length === 0) {
-      for (const range of this.ranges) {
+  static format (ranges = []) {
+    if (ranges.length > 0) {
+      for (const range of ranges) {
         if (range.getNumRows() > 1) this.formatRange_(range)
       }
-      return
+    } else {
+      const range = new SheetTags().getHeaderRange()
+      this.formatRange_(range)
     }
-
-    const maxRows = this.sheet.getMaxRows() - this.specs.row + 1
-    if (maxRows < 1) return
-
-    const range = this.sheet.getRange(2, 1, maxRows, 5)
-    this.formatRange_(range)
-
-    this.rangeList = { indexes: [], ranges: [] }
-    return this
+    new SheetTags().resetFormatting()
   }
 }
