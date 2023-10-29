@@ -13,7 +13,7 @@ const Info = Object.freeze({
     version: {
       major: 0,
       minor: 51,
-      patch: 12
+      patch: 13
     },
     eos_version: {
       major: 0,
