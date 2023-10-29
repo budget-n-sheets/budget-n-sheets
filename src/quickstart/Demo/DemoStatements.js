@@ -10,7 +10,7 @@
 
 class DemoStatements {
   static play1 () {
-    const data = [['Wallet', 7, 'Coffee shop', Noise.randomValueNegative(2, 2), '', false]]
+    const data = [['Wallet', 3, 'Coffee shop', Noise.randomValueNegative(2, 2), '', false]]
 
     const mm = LocaleUtils.getDate().getMonth()
     new LedgerTtt(mm).mergeTransactions(data).activate()
@@ -19,7 +19,7 @@ class DemoStatements {
   static play2 () {
     const code = QuickstartUtils.getRandomAccount().name
 
-    const data = [[code, 7, 'Grocery shop', Noise.randomValueNegative(2, 2), '', false]]
+    const data = [[code, 5, 'Grocery shop', Noise.randomValueNegative(2, 2), '', false]]
 
     const mm = LocaleUtils.getDate().getMonth()
     new LedgerTtt(mm).mergeTransactions(data).activate()
@@ -29,9 +29,9 @@ class DemoStatements {
     const code = QuickstartUtils.getRandomAccount().name
 
     const data = [
-      [code, 7, 'Income (in cash), add #inc tag', Noise.randomValue(3, 2), '#inc', false],
-      [code, 7, 'Income (via transfer #trf), add #inc tag', Noise.randomValue(3, 2), '#trf #inc', false],
-      [code, 7, 'Income (via deposit #dp), add #inc tag', Noise.randomValue(3, 2), '#dp #inc', false]
+      ['Wallet', 7, 'Income (in cash), tag w/ #inc', Noise.randomValue(3, 2), '#inc', false],
+      [code, 7, 'Income (via transfer #trf), tag w/ #inc ', Noise.randomValue(3, 2), '#trf #inc', false],
+      [code, 7, 'Income (via deposit #dp), tag w/ #inc', Noise.randomValue(3, 2), '#dp #inc', false]
     ]
 
     const mm = LocaleUtils.getDate().getMonth()
@@ -43,8 +43,8 @@ class DemoStatements {
     const value = -Noise.randomInteger(20)
 
     const data = [
-      [code, 7, 'Pizza, my share', value, '', false],
-      [code, 7, 'Pizza, others share (not accounted in expenses)', 3 * value, '', true]
+      [code, 11, 'Pizza, my share', value, '', false],
+      [code, 11, 'Pizza, others share (not accounted in expenses)', 3 * value, '', true]
     ]
 
     const mm = LocaleUtils.getDate().getMonth()
