@@ -9,73 +9,115 @@
  */
 
 class QuickstartDemo {
-  constructor (required) {
-    this.spreadsheet = SpreadsheetApp2.getActive().spreadsheet
-    this.sheet = null
-
-    this.required = required || []
-    this.missing = ''
-    this.mm = -1
-
-    this.isReady = false
-  }
-
-  static pick (name) {
-    switch (name) {
-      case 'acc_cards':
-        return new DemoAccCards()
-      case 'blank_value':
-        return new DemoBlankValue()
-      case 'calendar':
-        return new DemoCalendar()
-      case 'cash_flow':
-        return new DemoCashFlow()
-      case 'statements':
-        return new DemoStatements()
-      case 'tags':
-        return new DemoTags()
-      case 'transactions':
-        return new DemoTransactions()
+  static accCards (num) {
+    switch (num) {
+      case 1:
+        DemoAccCards.play1()
+        break
+      case 2:
+        DemoAccCards.play2()
+        break
+      case 3:
+        DemoAccCards.play3()
+        break
+      case 4:
+        DemoAccCards.play4()
+        break
 
       default:
-        console.warn('QuickstartDemo: pick(): Switch case is default.', name)
-        break
+        throw new Error('Invalid demonstration number.')
     }
   }
 
-  getSheets_ () {
-    const c = this.required.indexOf('mm')
-    if (c !== -1) {
-      this.mm = SettingsConst.get('financial_year') === Consts.date.getFullYear() ? Consts.date.getMonth() : 0
-      this.required[c] = Consts.month_name.short[this.mm]
-    }
-
-    this.sheets = {}
-    for (let i = 0; i < this.required.length; i++) {
-      const name = this.required[i]
-      if (this.sheets[name]) continue
-
-      this.sheets[name] = this.spreadsheet.getSheetByName(name)
-      if (!this.sheets[name]) {
-        this.missing = name
+  static calendar (num) {
+    switch (num) {
+      case 1:
+        DemoCalendar.play1()
         break
-      }
+      case 2:
+        DemoCalendar.play2()
+        break
+
+      default:
+        throw new Error('Invalid demonstration number.')
     }
-
-    if (this.required.length === 1) this.sheet = this.sheets[this.required[0]]
-
-    return this
   }
 
-  alertSheetMissing () {
+  static cashFlow (num) {
+    switch (num) {
+      case 1:
+        DemoCashFlow.play1()
+        break
+
+      default:
+        throw new Error('Invalid demonstration number.')
+    }
+  }
+
+  static statements (num) {
+    switch (num) {
+      case 1:
+        DemoStatements.play1()
+        break
+      case 2:
+        DemoStatements.play2()
+        break
+      case 3:
+        DemoStatements.play3()
+        break
+      case 4:
+        DemoStatements.play4()
+        break
+
+      default:
+        throw new Error('Invalid demonstration number.')
+    }
+  }
+
+  static tags (num) {
+    switch (num) {
+      case 1:
+        DemoTags.play1()
+        break
+      case 2:
+        DemoTags.play2()
+        break
+      case 3:
+        DemoTags.play3()
+        break
+      case 4:
+        DemoTags.play4()
+        break
+
+      default:
+        throw new Error('Invalid demonstration number.')
+    }
+  }
+
+  static transactions (num) {
+    switch (num) {
+      case 1:
+        DemoTransactions.play1()
+        break
+      case 2:
+        DemoTransactions.play2()
+        break
+      case 3:
+        DemoTransactions.play3()
+        break
+      case 4:
+        DemoTransactions.play4()
+        break
+
+      default:
+        throw new Error('Invalid demonstration number.')
+    }
+  }
+
+  static alertSheetMissing (name) {
     SpreadsheetApp2.getUi().alert(
-      "Can't show example",
-      'Sheet "' + this.missing + "\" couldn't be found.",
+      "Can't show demonstration",
+      `Sheet ${name} could not be found.`,
       SpreadsheetApp2.getUi().ButtonSet.OK)
-    return this
-  }
-
-  hasMissing () {
-    return this.required.length > 0 && this.missing !== ''
   }
 }
