@@ -54,7 +54,7 @@ class DemoCalendar {
 
     const response = ui.alert(
       'Permission Required',
-      'Allow add-on "Budget n Sheets" to create calendar events?\nExplanaion: this one-time "create" permission allows the add-on to create examples of how to write financial events in your selected calendar.',
+      'Allow add-on "Budget n Sheets" to create calendar events?\nExplanation: this one-time "create" permission allows the add-on to create examples of how to write financial events in your selected calendar.',
       ui.ButtonSet.YES_NO)
 
     return response === ui.Button.YES
