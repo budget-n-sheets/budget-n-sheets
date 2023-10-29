@@ -58,9 +58,9 @@ class BnsMaintenance {
     else if (yyyy > financialYear) month = 0
     else if (month > 0) mm--
 
-    const format = new FormatTableTtt(month)
-    format.indexes = 0
-    format.format()
+    month = Consts.month_name.short[mm]
+    month = SpreadsheetApp2.getActive().getSheetByName(month)
+    FormatTableMonth.format(month)
 
     return this
   }
