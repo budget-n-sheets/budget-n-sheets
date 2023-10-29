@@ -8,66 +8,46 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class DemoStatements extends QuickstartDemo {
-  constructor () {
-    super(['mm'])
+class DemoStatements {
+  static play1 () {
+    const data = [['Wallet', 3, 'Coffee shop', Noise.randomValueNegative(2, 2), '', false]]
+
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
   }
 
-  makeConfig (num) {
+  static play2 () {
     const code = QuickstartUtils.getRandomAccount().name
 
-    switch (num) {
-      case 1:
-        this.list = [
-          [['Wallet', 7, 'Coffee shop', Noise.randomValueNegative(2, 2), '', false]]
-        ]
-        break
-      case 2:
-        this.list = [
-          [],
-          [[code, 7, 'Grocery shop', Noise.randomValueNegative(2, 2), '', false]]
-        ]
-        break
-      case 3:
-        this.list = [
-          [[code, 7, 'Income (in cash), add #inc tag', Noise.randomValue(3, 2), '#inc', false]],
-          [
-            [code, 7, 'Income (via transfer #trf), add #inc tag', Noise.randomValue(3, 2), '#trf #inc', false],
-            [code, 7, 'Income (via deposit #dp), add #inc tag', Noise.randomValue(3, 2), '#dp #inc', false]
-          ]
-        ]
-        break
-      case 4: {
-        this.list = []
-        if (Noise.randomInteger(2) === 1) this.list.push([])
+    const data = [[code, 5, 'Grocery shop', Noise.randomValueNegative(2, 2), '', false]]
 
-        const val = -Noise.randomInteger(20)
-        this.list.push([
-          [code, 7, 'Pizza, my share', val, '', false],
-          [code, 7, 'Pizza, others share (not accounted in expenses)', 3 * val, '', true]
-        ])
-        break
-      }
-    }
-
-    this.getSheets_()
-
-    this.isReady = true
-    return this
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
   }
 
-  play () {
-    const ledger = new LedgerTtt(this.mm)
-    const rangeList = []
+  static play3 () {
+    const code = QuickstartUtils.getRandomAccount().name
 
-    this.list.forEach((values, index) => {
-      if (values.length === 0) return
+    const data = [
+      ['Wallet', 7, 'Income (in cash), tag w/ #inc', Noise.randomValue(3, 2), '#inc', false],
+      [code, 7, 'Income (via transfer #trf), tag w/ #inc ', Noise.randomValue(3, 2), '#trf #inc', false],
+      [code, 7, 'Income (via deposit #dp), tag w/ #inc', Noise.randomValue(3, 2), '#dp #inc', false]
+    ]
 
-      const lastRange = ledger.appendTransactions(values)
-      ledger.fillInWithZeros()
-      if (lastRange) rangeList.push(lastRange.getA1Notation())
-    })
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
+  }
 
-    this.sheet.getRangeList(rangeList).activate()
+  static play4 () {
+    const code = QuickstartUtils.getRandomAccount().name
+    const value = -Noise.randomInteger(20)
+
+    const data = [
+      [code, 11, 'Pizza, my share', value, '', false],
+      [code, 11, 'Pizza, others share (not accounted in expenses)', 3 * value, '', true]
+    ]
+
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
   }
 }

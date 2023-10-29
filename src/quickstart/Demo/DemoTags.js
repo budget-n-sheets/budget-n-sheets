@@ -8,70 +8,39 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class DemoTags extends QuickstartDemo {
-  demo1_ () {
-    new LedgerTags().mergeTransactions(this.data).activate()
+class DemoTags {
+  static play1 () {
+    const data = [['Coffee', 'Food and supply', 'My coffee addiction tracker', true, 'coffee']]
+
+    new LedgerTags().mergeTransactions(data).activate()
   }
 
-  demo2_ () {
-    const ledger = new LedgerTtt(this.mm)
-    ledger.fillInWithZeros()
-    ledger.appendTransactions(this.data).activate()
-  }
-
-  makeConfig (num) {
+  static play2 () {
     const code = QuickstartUtils.getRandomAccount().name
 
-    switch (num) {
-      case 1:
-        this.required = ['Tags']
-        this.data = [['Coffee', 'Food and supply', 'My coffee addiction tracker', 'TRUE', 'coffee']]
-        break
-      case 2:
-        this.required = ['mm']
-        this.data = [
-          [code, 3, 'Bus to Abc', Noise.randomValueNegative(2, 2), '#trip1', false],
-          [code, 3, 'Abc Pizza, lunch', Noise.randomValueNegative(2, 2), '#trip1', false],
-          [code, 4, 'Coffee Abc', Noise.randomValueNegative(2, 2), '#trip1 #coffee', false],
-          [code, 7, 'Flight to Def', Noise.randomValueNegative(2, 2), '#trip2', false],
-          [code, 8, 'Tower Def', Noise.randomValueNegative(2, 2), '#trip2', false]
-        ]
-        break
-      case 3:
-        this.required = ['Tags']
-        this.data = [
-          ['All trips', 'Traveling', 'Accounts statements with #trip, #trip1 or #trip2 tag', 'TRUE', 'trip'],
-          ['Trip to Abc', 'Traveling', 'Accounts statements with #trip1 tag', 'FALSE', 'trip1'],
-          ['Trip to Def', 'Traveling', 'Accounts statements with #trip1 tag', 'FALSE', 'trip2']
-        ]
-        break
-      case 4:
-        break
+    const data = [
+      [code, 3, 'Bus to Abc', Noise.randomValueNegative(2, 2), '#trip1', false],
+      [code, 3, 'Abc Pizza, lunch', Noise.randomValueNegative(2, 2), '#trip1', false],
+      [code, 4, 'Coffee Abc', Noise.randomValueNegative(2, 2), '#trip1 #coffee', false],
+      [code, 7, 'Flight to Def', Noise.randomValueNegative(2, 2), '#trip2', false],
+      [code, 8, 'Tower Def', Noise.randomValueNegative(2, 2), '#trip2', false]
+    ]
 
-      default:
-        return
-    }
-
-    this.getSheets_()
-
-    this.isReady = true
-    return this
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
   }
 
-  play (num) {
-    switch (num) {
-      case 1:
-        this.demo1_()
-        break
-      case 2:
-        this.demo2_()
-        break
-      case 3:
-        this.demo1_()
-        break
-      case 4:
-        showPanelAnalytics()
-        break
-    }
+  static play3 () {
+    const data = [
+      ['All trips', 'Traveling', 'Accounts statements with #trip, #trip1 or #trip2 tag', true, 'trip'],
+      ['Trip to Abc', 'Traveling', 'Accounts statements with #trip1 tag', false, 'trip1'],
+      ['Trip to Def', 'Traveling', 'Accounts statements with #trip1 tag', false, 'trip2']
+    ]
+
+    new LedgerTags().mergeTransactions(data).activate()
+  }
+
+  static play4 () {
+    showPanelAnalytics()
   }
 }

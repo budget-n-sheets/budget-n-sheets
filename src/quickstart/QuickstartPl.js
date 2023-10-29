@@ -10,19 +10,34 @@
 
 class QuickstartPl {
   static ay (name, num) {
-    const demo = QuickstartDemo.pick(name)
-    if (!demo) return
+    switch (name) {
+      case 'acc_cards':
+        QuickstartDemo.accCards(num)
+        break
+      case 'blank_value':
+        QuickstartDemo.blankValue(num)
+        break
+      case 'calendar':
+        QuickstartDemo.calendar(num)
+        break
+      case 'cash_flow':
+        QuickstartDemo.cashFlow(num)
+        break
+      case 'statements':
+        QuickstartDemo.statements(num)
+        break
+      case 'tags':
+        QuickstartDemo.tags(num)
+        break
+      case 'transactions':
+        QuickstartDemo.transactions(num)
+        break
 
-    demo.makeConfig(num)
-
-    if (demo.hasMissing()) {
-      demo.alertSheetMissing()
-      return
+      default:
+        console.warn('Switch case is default.', name)
+        return
     }
 
-    if (!demo.isReady) return
-
-    demo.play(num)
     SpreadsheetApp2.getActive().spreadsheet.toast('Done.', 'Quickstart')
   }
 }

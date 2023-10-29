@@ -8,34 +8,19 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class DemoCashFlow extends QuickstartDemo {
-  constructor () {
-    super(['mm', 'Cash Flow'])
-  }
-
-  demo_ () {
-    const num_acc = 1 + SettingsConst.get('number_accounts')
-
-    new LedgerTtt(this.mm).fillInWithZeros()
-
+class DemoCashFlow {
+  static play1 () {
     const indexes = new Array(12).fill(false)
-    indexes[this.mm] = true
+    const mm = LocaleUtils.getDate().getMonth()
 
-    const tool = new RefreshCashFlow()
-    tool.indexes = indexes
-    tool.refresh()
+    indexes[mm] = true
+    RefreshCashFlow.refresh(indexes)
 
-    this.sheets['Cash Flow'].getRange(1, 2 + 4 * this.mm, 1, 3).activate()
-  }
-
-  makeConfig (num) {
-    this.getSheets_()
-
-    this.isReady = true
-    return this
-  }
-
-  play () {
-    this.demo_()
+    SpreadsheetApp.flush()
+    SpreadsheetApp2.getActive()
+      .getSheetByName('Cash Flow')
+      .getRange('B2:D2')
+      .offset(0, 4 * mm)
+      .activate()
   }
 }

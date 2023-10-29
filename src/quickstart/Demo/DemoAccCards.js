@@ -8,94 +8,49 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class DemoAccCards extends QuickstartDemo {
-  makeConfig (num) {
-    if (num === 1) this._accId = QuickstartUtils.getRandomAccount().id
-    if (num < 3) {
-      this.isReady = true
-      return
-    }
-
-    this._cardsService = new CardsService()
-    const cards = this._cardsService.list()
-    if (!cards.length > 0) {
-      this.isReady = true
-      return
-    }
-
-    const code = QuickstartUtils.getRandomCard().code
-    let mm = 1
-
-    if (num === 3) {
-      if (SettingsConst.get('financial_year') === Consts.date.getFullYear()) {
-        mm = Consts.date.getMonth()
-        if (mm === 0) mm = 1
-        else if (mm === 11) mm = 10
-      }
-
-      this.required = ['mm']
-
-      this.list = []
-      for (let i = 0; i < mm - 1; i++) {
-        this.list.push([])
-      }
-
-      this.list.push([
-        [code, -7, 'Online shopping 2/3 (with instalments in d/d format)', Noise.randomValueNegative(2, 2), '', false],
-        [code, 3, 'Grocery shop', -10, '', false],
-        [code, 5, 'Gas station', Noise.randomValueNegative(3, 2), '', false],
-        [code, 5, 'Grocery shop refund', 10, '', false]
-      ])
-    } else if (num === 4) {
-      this.required = ['mm']
-      const name = QuickstartUtils.getRandomAccount().name
-
-      this.list = [
-        [],
-        [[name, 7, code + ' bill payment', Noise.randomValueNegative(3, 2), '#qcc', false]]
-      ]
-    } else {
-      return
-    }
-
-    this.getSheets_()
-
-    switch (num) {
-      case 3:
-      case 4:
-        this._ledger = new LedgerTtt(this.mm)
-        break
-    }
-
-    this.isReady = true
-    return this
+class DemoAccCards {
+  static play1 () {
+    const id = QuickstartUtils.getRandomAccount().id
+    showDialogEditAccount(id)
   }
 
-  play (num) {
-    switch (num) {
-      case 1:
-        showDialogEditAccount(this._accId)
-        return
-      case 2:
-        showDialogAddCard()
-        return
-    }
+  static play2 () {
+    showDialogAddCard()
+  }
 
-    if (!this._cardsService.list().length > 0) {
+  static play3 () {
+    const cardsService = new CardsService()
+    if (cardsService.list().length === 0) {
       showDialogAddCard()
       return
     }
 
-    const rangeList = []
+    const code = QuickstartUtils.getRandomCard().code
 
-    this.list.forEach((values, index) => {
-      if (values.length === 0) return
+    const data = [
+      [code, -7, 'Online shopping 2/3 (with instalments in d/d format)', Noise.randomValueNegative(2, 2), '', false],
+      [code, 3, 'Grocery shop', -10, '', false],
+      [code, 5, 'Gas station', Noise.randomValueNegative(3, 2), '', false],
+      [code, 5, 'Grocery shop refund', 10, '', false]
+    ]
 
-      const lastRange = this._ledger.appendTransactions(values)
-      if (num === 2) this._ledger.fillInWithZeros()
-      if (lastRange) rangeList.push(lastRange.getA1Notation())
-    })
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
+  }
 
-    this.sheet.getRangeList(rangeList).activate()
+  static play4 () {
+    const cardsService = new CardsService()
+    if (cardsService.list().length === 0) {
+      showDialogAddCard()
+      return
+    }
+
+    const name = QuickstartUtils.getRandomAccount().name
+    const code = QuickstartUtils.getRandomCard().code
+
+    const data = [[name, 7, `Card ${code} bill payment`, Noise.randomValueNegative(3, 2), '#qcc', false]]
+
+    const mm = LocaleUtils.getDate().getMonth()
+    new LedgerTtt(mm).mergeTransactions(data).activate()
   }
 }
