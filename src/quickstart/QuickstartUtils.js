@@ -17,7 +17,7 @@ class QuickstartUtils {
   }
 
   static getRandomCard () {
-    const cards = new AccountsService().list()
+    const cards = new CardsService().list()
     if (cards.length === 0) return null
     const r = Noise.randomInteger(cards.length)
     return cards[r]
