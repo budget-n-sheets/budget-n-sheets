@@ -21,12 +21,25 @@ class UpdateScript extends Update {
         [], [], [], [], [], [], [], [], [],
         ['', '', '', '', '', '', 'v0m49p6_', '', ''],
         ['', '', '', '', ''],
-        ['', '', '', '', '', 'v0m51p5_', '', 'v0m51p7_', 'v0m51p8_', '', '', '', '']
+        ['', '', '', '', '', 'v0m51p5_', '', 'v0m51p7_', 'v0m51p8_', '', '', '', '', 'v0m51p13_']
       ]
     ]
 
     super(v0, vA, list)
     this._key = 'script'
+  }
+
+  /**
+   * Reset months formatting.
+   *
+   * 0.51.13
+   */
+  v0m51p13_ () {
+    for (let mm = 0; mm < 12; mm++) {
+      new SheetMonth(mm).resetFormatting()
+    }
+
+    return 0
   }
 
   /**
