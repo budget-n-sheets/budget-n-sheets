@@ -35,23 +35,9 @@ function toolService_ (job) {
     case 'cashFlow':
       RefreshCashFlowService.serve(sheet, ranges)
       break
-    case 'formatTable': {
-      const tool = FormatTable.pick(sheet)
-      if (tool === 1) {
-        FormatTable.showWarning()
-        break
-      } else if (!tool.sheet) {
-        showDialogErrorMessage()
-        break
-      }
-
-      const selected = RangeUtils.filterTableRanges(ranges, tool.specs)
-      tool.indexes = selected.indexes
-      tool.ranges = selected.ranges
-
-      tool.format()
+    case 'formatTable':
+      FormatTableService.serve(sheet, ranges)
       break
-    }
     case 'forwardInstallments':
       ForwardInstallmentsService.serve(sheet, ranges)
       break

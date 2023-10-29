@@ -9,45 +9,29 @@
  */
 
 class FormatTable {
-  constructor () {
-    this.rangeList = { indexes: [], ranges: [] }
+  static filterRanges (ranges, specs) {
+    const right = specs.columnOffset + specs.width
+
+    return ranges.map(range => {
+        if (range.getLastRow() < specs.row) return null
+        if (range.getColumn() !== specs.column) return null
+        if (range.getLastColumn() !== right) return null
+
+        const l = range.getRow()
+        if (l >= specs.row) return range
+        const d = specs.row - l
+        return range.offset(d, 0, range.getNumRows() - d)
+      })
+      .filter(r => r)
   }
 
-  static pick (sheet) {
-    const name = sheet.getName()
-    switch (name) {
-      case 'Tags':
-        return new FormatTableTags()
-
-      default:
-        break
+  static format (sheet, ranges = []) {
+    if (ranges.length > 0) {
+      for (const range of this.ranges) {
+        if (range.getNumRows() > 1) this.formatRange_(range)
+      }
+    } else {
+      this.formatTable_(sheet)
     }
-
-    const mm = Consts.month_name.short.indexOf(name)
-    if (mm === -1) return 1
-    return new FormatTableTtt(mm)
-  }
-
-  static showWarning () {
-    SpreadsheetApp2.getUi().alert(
-      "Can't format table",
-      'Select a month or Tags to format the table.',
-      SpreadsheetApp2.getUi().ButtonSet.OK)
-  }
-
-  get indexes () {
-    return this.rangeList.indexes
-  }
-
-  set indexes (indexes) {
-    this.rangeList.indexes = this.rangeList.indexes.concat(indexes)
-  }
-
-  get ranges () {
-    return this.rangeList.ranges
-  }
-
-  set ranges (ranges) {
-    this.rangeList.ranges = this.rangeList.ranges.concat(ranges)
   }
 }
