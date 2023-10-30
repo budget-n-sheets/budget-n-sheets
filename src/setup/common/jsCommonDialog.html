@@ -62,19 +62,8 @@
     }
     $td2.append($el);
 
-    const $td3 = $('<td>');
-    $('<span>').attr({
-        class: 'material-icons handle'
-      })
-      .css({
-        cursor: 'grabbing'
-      })
-      .text('drag_handle')
-      .appendTo($td3);
-
     $td1.appendTo($tr);
     $td2.appendTo($tr);
-    $td3.appendTo($tr);
 
     $('#tr-acc-listed').append($tr);
     Glob.num_acc++;

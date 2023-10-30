@@ -80,12 +80,6 @@
       <? if (isContinued) { ?>
       $('#b-Select').prop('disabled', true);
 
-      $('#tr-acc-listed').sortable({
-        axis: 'y',
-        handle: '.handle',
-        opacity: 0.71
-      });
-
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
