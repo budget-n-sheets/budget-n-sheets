@@ -42,7 +42,7 @@ function onOpen (e) {
         .addSeparator()
         .addSubMenu(ui.createMenu('Open panel')
           .addItem('Accounts & Cards', 'showPanelTables')
-          .addItem('BnS Gallery', 'showPanelAnalytics')
+          // .addItem('BnS Gallery', 'showPanelAnalytics')
           .addItem('Tagging', 'showPanelTagging'))
         .addSubMenu(ui.createMenu('Pages view')
           .addItem('Collapse', 'toolHideSheets_')
