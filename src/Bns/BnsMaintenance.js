@@ -56,9 +56,9 @@ class BnsMaintenance {
 
     if (yyyy < financialYear) return this
     else if (yyyy > financialYear) month = 0
-    else if (month > 0) mm--
+    else if (month > 0) month--
 
-    month = Consts.month_name.short[mm]
+    month = Consts.month_name.short[month]
     month = SpreadsheetApp2.getActive().getSheetByName(month)
     FormatTableMonth.format(month)
 
