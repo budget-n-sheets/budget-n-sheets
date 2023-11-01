@@ -38,7 +38,8 @@ class SheetBackstage extends ExtendedSheet {
     const _h = TABLE_DIMENSION.height
     const _w = TABLE_DIMENSION.width
 
-    const snapshot = this.getGroupRange(0, 0, 12).getValues()
+    const numAccs = SettingsConst.get('number_accounts')
+    const snapshot = this.getGroupRange(0, 2 + numAccs, 12).getValues()
 
     for (const card of cards) {
       const id = card.id
