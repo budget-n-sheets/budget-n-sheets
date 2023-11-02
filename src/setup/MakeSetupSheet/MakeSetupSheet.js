@@ -8,7 +8,7 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class MakeSheet extends MirrorSheet {
+class MakeSetupSheet extends MakeSheet {
   constructor (name, depends = [], template = {}) {
     Object.assign(template, { id: Info.template.id })
     super(name, depends, template)
@@ -35,19 +35,5 @@ class MakeSheet extends MirrorSheet {
       default:
         throw new Error('Make sheet not found.')
     }
-  }
-
-  install (stack = []) {
-    stack.push(this.name)
-    if (!this.sheet) this.copyTemplate().unpack()
-
-    const spreadsheet = SpreadsheetApp2.getActive()
-    for (const name of this.depends) {
-      if (stack.indexOf(name) > -1) continue
-      if (spreadsheet.getSheetByName(name)) continue
-      MakeSheet.pickByName(name).install(stack)
-    }
-
-    this.make()
   }
 }

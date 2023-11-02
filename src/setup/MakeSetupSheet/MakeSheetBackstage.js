@@ -8,7 +8,7 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class MakeSheetBackstage extends MakeSheet {
+class MakeSheetBackstage extends MakeSetupSheet {
   constructor () {
     const depends = MakeSheetBackstage.depends
     super('_Backstage', depends)

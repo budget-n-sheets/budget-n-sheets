@@ -8,7 +8,7 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class MakeSheetTags extends MakeSheet {
+class MakeSheetTags extends MakeSetupSheet {
   constructor () {
     const depends = MakeSheetTags.depends
     super('Tags', depends)

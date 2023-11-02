@@ -8,24 +8,24 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class MakeSheetSettings extends MakeSheet {
+class MakeSheetSummary extends MakeSetupSheet {
   constructor () {
-    const depends = MakeSheetSettings.depends
-    super('_Settings', depends)
+    const depends = MakeSheetSummary.depends
+    super('Summary', depends)
   }
 
   static get depends () {
-    return ['Tags']
+    return ['_Settings', '_Backstage']
   }
 
   make () {
-    new SheetSettings().resetDefault()
-    this.sheet.setTabColor('#cc0000')
+    new SheetSummary().resetDefault()
+    this.sheet.setTabColor('#e69138')
     SpreadsheetApp.flush()
   }
 
   unpack () {
-    this.sheet.hideSheet().protect().setWarningOnly(true)
+    this.sheet.protect().setWarningOnly(true)
     return this
   }
 }

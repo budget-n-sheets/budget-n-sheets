@@ -8,7 +8,7 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class MakeSheetUnique extends MakeSheet {
+class MakeSheetUnique extends MakeSetupSheet {
   constructor () {
     const depends = MakeSheetUnique.depends
     super('_Unique', depends)

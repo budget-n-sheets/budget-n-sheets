@@ -8,7 +8,7 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class MakeSheetTTT extends MakeSheet {
+class MakeSheetTTT extends MakeSetupSheet {
   constructor (name) {
     const mm = Consts.month_name.short.indexOf(name)
     if (mm === -1) throw new Error('Invalid month name.')

@@ -8,21 +8,24 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class MakeSheetCashFlow extends MakeSheet {
+class MakeSheetSettings extends MakeSetupSheet {
   constructor () {
-    super('Cash Flow')
+    const depends = MakeSheetSettings.depends
+    super('_Settings', depends)
+  }
+
+  static get depends () {
+    return ['Tags']
   }
 
   make () {
-    new SheetCashFlow().resetWeekendColoring()
-      .resetFormulas()
-      .resetDefault()
-    this.sheet.setTabColor('#e69138')
+    new SheetSettings().resetDefault()
+    this.sheet.setTabColor('#cc0000')
     SpreadsheetApp.flush()
   }
 
   unpack () {
-    this.sheet.protect().setWarningOnly(true)
+    this.sheet.hideSheet().protect().setWarningOnly(true)
     return this
   }
 }

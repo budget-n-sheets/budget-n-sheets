@@ -8,17 +8,21 @@
  * <https://www.gnu.org/licenses/>
  */
 
-class MakeSheetAbout extends MakeSheet {
+class MakeSheetCashFlow extends MakeSetupSheet {
   constructor () {
-    super('_About BnS')
+    super('Cash Flow')
   }
 
   make () {
-    this.sheet.setTabColor('#6aa84f')
+    new SheetCashFlow().resetWeekendColoring()
+      .resetFormulas()
+      .resetDefault()
+    this.sheet.setTabColor('#e69138')
+    SpreadsheetApp.flush()
   }
 
   unpack () {
-    this.sheet.hideSheet().protect().setWarningOnly(true)
+    this.sheet.protect().setWarningOnly(true)
     return this
   }
 }
