@@ -48,8 +48,4 @@ class MirrorSheet {
     SpreadsheetApp.flush()
     return this
   }
-
-  isInstalled () {
-    return this.sheet != null
-  }
 }
