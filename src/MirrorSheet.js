@@ -48,4 +48,14 @@ class MirrorSheet {
     SpreadsheetApp.flush()
     return this
   }
+
+  isSourceAvailable () {
+    try {
+      SpreadsheetApp.openById(this._template.id)
+    } catch (err) {
+      LogLog.error(err)
+      return false
+    }
+    return true
+  }
 }
