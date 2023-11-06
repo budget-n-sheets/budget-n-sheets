@@ -21,7 +21,7 @@ class MakeSheet extends MirrorSheet {
     for (const name of this.depends) {
       if (stack.indexOf(name) > -1) continue
       if (spreadsheet.getSheetByName(name)) continue
-      MakeSheet.pickByName(name).install(stack)
+      this.pickByName(name).install(stack)
     }
 
     this.make()

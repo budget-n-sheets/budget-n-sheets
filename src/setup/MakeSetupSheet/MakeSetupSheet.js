@@ -36,4 +36,8 @@ class MakeSetupSheet extends MakeSheet {
         throw new Error('Make sheet not found.')
     }
   }
+
+  pickByName (name) {
+    return MakeSetupSheet.pickByName(name)
+  }
 }
