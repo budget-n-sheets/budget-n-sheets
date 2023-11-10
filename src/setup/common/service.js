@@ -53,7 +53,7 @@ function retrieveSettingsSummary (uuid, protocol) {
   return settings
 }
 
-function requestValidateSpreadsheet_ (protocol, uuid, fileId) {
+function requestValidateSpreadsheet_ (uuid, fileId) {
   const session = SessionService.withUser()
     .trySession(uuid)
     ?.getContext('addon-setup-service')
@@ -75,7 +75,7 @@ function requestValidateSpreadsheet_ (protocol, uuid, fileId) {
 
   if (status === 0) {
     try {
-      SettingsCandidate.processSpreadsheet(protocol, uuid, fileId)
+      SettingsCandidate.processSpreadsheet(uuid, fileId)
     } catch (err) {
       LogLog.error(err)
       status = 3

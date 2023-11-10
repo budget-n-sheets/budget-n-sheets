@@ -43,42 +43,42 @@ class SetupConfig {
     return config
   }
 
-  static digestConfig (uuid, payload) {
-    let config = {}
+  static digestConfig (protocol, uuid, config) {
+    let digest = {}
 
-    switch (payload.protocol) {
+    switch (protocol) {
       case 'copy':
-        config = this.configCopy_(uuid, payload.config)
+        digest = this.configCopy_(uuid, config)
         break
       case 'follow_up':
-        config = this.configFollowUp_(uuid, payload.config)
+        digest = this.configFollowUp_(uuid, config)
         break
       case 'new':
-        config = Utils.deepCopy(payload.config)
-        config.name_accounts = config.name_accounts.filter(e => e.require === 'new')
+        digest = Utils.deepCopy(config)
+        digest.name_accounts = digest.name_accounts.filter(e => e.require === 'new')
         break
       case 'restore':
-        config = this.configRestore_(uuid, payload.config)
+        digest = this.configRestore_(uuid, config)
         break
 
       default:
         throw new Error('SetupConfig: digestConfig(): Switch case is default.')
     }
 
-    config.setup_channel = payload.protocol
+    digest.setup_channel = protocol
 
-    config.spreadsheet_name = config.spreadsheet_name.trim().replace(/\s+/g, ' ').slice(0, 128)
-    if (config.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.')
+    digest.spreadsheet_name = digest.spreadsheet_name.trim().replace(/\s+/g, ' ').slice(0, 128)
+    if (digest.spreadsheet_name === '') throw new Error('Invalid spreadsheet name.')
 
-    config.name_accounts.forEach((e, i, a) => {
+    digest.name_accounts.forEach((e, i, a) => {
       a[i].name = e.name.trim().replace(/\s+/g, ' ').slice(0, 64)
       if (a[i].name === '') throw new Error('Invalid account name.')
     })
-    config.name_accounts.sort((a, b) => a.index - b.index)
+    digest.name_accounts.sort((a, b) => a.index - b.index)
 
-    config.number_accounts = config.name_accounts.length
-    if (config.number_accounts < 1) throw new Error('Invalid number of accounts.')
+    digest.number_accounts = digest.name_accounts.length
+    if (digest.number_accounts < 1) throw new Error('Invalid number of accounts.')
 
-    return config
+    return digest
   }
 }

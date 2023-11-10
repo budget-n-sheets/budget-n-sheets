@@ -8,7 +8,7 @@
  * <https://www.gnu.org/licenses/>
  */
 
-function setupService (uuid, payload) {
+function setupService (uuid, config) {
   const lock = LockService.getDocumentLock()
   if (!lock.tryLock(200)) {
     SpreadsheetApp2.getUi().alert(
@@ -29,7 +29,8 @@ function setupService (uuid, payload) {
 
   if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.')
 
-  const config = SetupConfig.digestConfig(uuid, payload)
+  const protocol = session.getProperty('procotol')
+  const config = SetupConfig.digestConfig(protocol, uuid, config)
   session.end()
 
   const spreadsheet = SpreadsheetApp2.getActive().spreadsheet
@@ -40,9 +41,9 @@ function setupService (uuid, payload) {
     .makeInstall()
 
   try {
-    if (payload.protocol === 'restore') new RestoreBackup(config).restore()
-    else if (payload.protocol === 'copy') new RestoreCopy(config).copy()
-    else if (payload.protocol === 'follow_up') new SetupFollowUp(config).copy()
+    if (protocol === 'restore') new RestoreBackup(config).restore()
+    else if (protocol === 'copy') new RestoreCopy(config).copy()
+    else if (protocol === 'follow_up') new SetupFollowUp(config).copy()
   } catch (err) {
     LogLog.error(err)
   }

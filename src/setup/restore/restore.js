@@ -15,7 +15,7 @@ function showDialogPickerRestore (uuid) {
     .showDialog('restore', 'Select backup')
 }
 
-function requestValidateBackup_ (protocol, uuid, fileId) {
+function requestValidateBackup_ (uuid, fileId) {
   const session = SessionService.withUser()
     .trySession(uuid)
     ?.getContext('addon-setup-service')

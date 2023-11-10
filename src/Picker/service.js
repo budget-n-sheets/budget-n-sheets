@@ -23,7 +23,7 @@ function getOAuthToken () {
   return ScriptApp.getOAuthToken()
 }
 
-function callbackToPicker (uuid, fileId, protocol) {
+function callbackToPicker (uuid, fileId) {
   if (typeof fileId !== 'string') return
 
   const picker = SessionService.withUser().trySession(uuid)
@@ -48,7 +48,7 @@ function callbackToPicker (uuid, fileId, protocol) {
     return
   }
 
-  this[callbackFunction](protocol, callbackUuid, fileId, param)
+  this[callbackFunction](callbackUuid, fileId, param)
 }
 
 function fallbackToPicker (uuid) {

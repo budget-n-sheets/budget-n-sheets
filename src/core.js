@@ -223,7 +223,7 @@ function showDialogSetupAddon_ () {
   }
 
   const session = SessionService.withUser().startSession()
-  session.getContext('addon-setup-service')
+  session.getContext('addon-setup-service').setProperty('protocol', 'none')
 
   const scriptlet = {
     uuid: session.getUuid(),
@@ -240,6 +240,15 @@ function showDialogSetupAddon_ () {
     .setHeight(359)
 
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Start budget spreadsheet')
+}
+
+function showDialogSetupNew (uuid) {
+  const session = SessionService.withUser()
+    .getSession(uuid)
+    .getContext('addon-setup-service')
+
+  if (session.getProperty('protocol') === 'none') session.setProperty('protocol', 'new')
+  else throw new Error('Protocol is already defined.')
 }
 
 function showDialogSetupFollowUp (uuid) {

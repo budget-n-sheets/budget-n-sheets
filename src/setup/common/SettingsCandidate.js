@@ -56,7 +56,7 @@ class SettingsCandidate {
     return 0
   }
 
-  static processSpreadsheet (protocol, uuid, fileId) {
+  static processSpreadsheet (uuid, fileId) {
     if (!FeatureFlag.getStatusOf(`setup/${protocol}`)) throw new Error('Feature flagged.')
 
     const spreadsheet = SpreadsheetApp.openById(fileId)

@@ -311,7 +311,7 @@
 
     function setupOption () {
       $('.restore-button').off('click');
-      if (this.id === 'setup-new') clickNext();
+      if (this.id === 'setup-new') showNew()
       <? if (setup_follow_up) { ?>
       if (this.id === 'setup-follow_up') showFollowUp();
       <? } ?>
@@ -353,6 +353,14 @@
       if (Glob.num_acc > 1) $('.m-remove-acc').show();
 
       $tr.find('input').focus();
+    }
+
+    function showNew () {
+      $('#panel-restore').fadeOut()
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(clickNext)
+        .showDialogSetupNew(Glob.uuid)
     }
 
     <? if (setup_follow_up) { ?>
@@ -432,15 +440,12 @@
         });
       });
 
-      const payload = {
-        protocol: 'new',
-        config: {
-          name_accounts: accounts,
-          spreadsheet_name: $('#spreadsheet_name').val(),
-          decimal_places: $('#decimal_places').val(),
-          financial_year: $('#financial_year').val(),
-          initial_month: $('#initial_month').val()
-        }
+      const config = {
+        name_accounts: accounts,
+        spreadsheet_name: $('#spreadsheet_name').val(),
+        decimal_places: $('#decimal_places').val(),
+        financial_year: $('#financial_year').val(),
+        initial_month: $('#initial_month').val()
       };
 
       setTimeout(function() {
@@ -457,7 +462,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(null)
-        .setupService(Glob.uuid, payload);
+        .setupService(Glob.uuid, config);
     }
   </script>
 </body>
