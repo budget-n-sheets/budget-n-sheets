@@ -18,11 +18,8 @@ function setupService (uuid, payload) {
     return
   }
 
-  let session
-  try {
-    session = SessionService.withUser().getSession(uuid)
-  } catch (err) {
-    LogLog.error(err)
+  const session = SessionService.withUser().trySession(uuid)
+  if (!session) {
     showSessionExpired()
     return
   }
@@ -31,7 +28,6 @@ function setupService (uuid, payload) {
 
   const config = SetupConfig.digestConfig(uuid, payload)
   session.end()
-  session = null
 
   const spreadsheet = SpreadsheetApp2.getActive().spreadsheet
   spreadsheet.rename(config.spreadsheet_name)

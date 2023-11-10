@@ -11,11 +11,8 @@
 function returnToShadow (uuid, password) {
   if (typeof password !== 'string') return
 
-  let shadow
-  try {
-    shadow = SessionService.withUser().getSession(uuid)
-  } catch (err) {
-    LogLog.error(err)
+  const shadow = SessionService.withUser().trySession(uuid)
+  if (!shadow) {
     showSessionExpired()
     return
   }

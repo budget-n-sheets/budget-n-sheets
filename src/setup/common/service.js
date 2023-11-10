@@ -16,11 +16,11 @@ function retrieveSettingsSummary (uuid, protocol) {
   const lock = LockService.getDocumentLock()
   if (!lock.tryLock(1000)) return
 
-  let settings
-  try {
-    settings = SessionService.withUser().getSession(uuid).getProperty(`settings/${protocol}`)
-  } catch (err) {
-    settings = null
+  const settings = SessionService.withUser()
+    .trySession(uuid)
+    ?.getProperty(`settings/${protocol}`)
+
+  if (!settings) {
     LogLog.error(err)
     showSessionExpired()
   }
@@ -50,11 +50,8 @@ function retrieveSettingsSummary (uuid, protocol) {
 }
 
 function requestValidateSpreadsheet_ (protocol, uuid, fileId) {
-  let session
-  try {
-    session = SessionService.withUser().getSession(uuid)
-  } catch (err) {
-    LogLog.error(err)
+  const session = SessionService.withUser().trySession(uuid)
+  if (!session) {
     showSessionExpired()
     return
   }

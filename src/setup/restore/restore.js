@@ -16,11 +16,8 @@ function showDialogPickerRestore (uuid) {
 }
 
 function requestValidateBackup_ (protocol, uuid, fileId) {
-  let session
-  try {
-    session = SessionService.withUser().getSession(uuid)
-  } catch (err) {
-    LogLog.error(err)
+  const session = SessionService.withUser().trySession(uuid)
+  if (!session) {
     showSessionExpired()
     return
   }
@@ -43,11 +40,8 @@ function requestValidateBackup_ (protocol, uuid, fileId) {
 }
 
 function continuedValidateBackup_ (uuid, password, param) {
-  let session
-  try {
-    session = SessionService.withUser().getSession(uuid)
-  } catch (err) {
-    LogLog.error(err)
+  const session = SessionService.withUser().trySession(uuid)
+  if (!session) {
     showSessionExpired()
     return
   }
@@ -83,14 +77,12 @@ function unwrapBackup_ (uuid, file_id) {
     return patched
   }
 
-  let password = ''
-  try {
-    password = SessionService.withUser()
-      .getSession(uuid)
-      .getContext([file_id, SpreadsheetApp2.getActive().getId()].join('/'))
-      .getProperty('password')
-  } catch (err) {
-    LogLog.error(err)
+  const password = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext([file_id, SpreadsheetApp2.getActive().getId()].join('/'))
+    .getProperty('password')
+
+  if (!password) {
     showSessionExpired()
     return
   }
