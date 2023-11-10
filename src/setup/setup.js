@@ -18,7 +18,10 @@ function setupService (uuid, payload) {
     return
   }
 
-  const session = SessionService.withUser().trySession(uuid)
+  const session = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext('addon-setup-service')
+
   if (!session) {
     showSessionExpired()
     return

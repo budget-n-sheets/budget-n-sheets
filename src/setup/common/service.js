@@ -9,7 +9,10 @@
  */
 
 function cacheSettingsSummary_ (settings) {
-  SessionService.withUser().getSession(settings.uuid).setProperty(`settings/${settings.protocol}`, settings)
+  SessionService.withUser()
+    .getSession(settings.uuid)
+    .getContext('addon-setup-service')
+    .setProperty(`settings/${settings.protocol}`, settings)
 }
 
 function retrieveSettingsSummary (uuid, protocol) {
@@ -18,7 +21,8 @@ function retrieveSettingsSummary (uuid, protocol) {
 
   const settings = SessionService.withUser()
     .trySession(uuid)
-    ?.getProperty(`settings/${protocol}`)
+    ?.getContext('addon-setup-service')
+    .getProperty(`settings/${protocol}`)
 
   if (!settings) {
     LogLog.error(err)
@@ -50,7 +54,10 @@ function retrieveSettingsSummary (uuid, protocol) {
 }
 
 function requestValidateSpreadsheet_ (protocol, uuid, fileId) {
-  const session = SessionService.withUser().trySession(uuid)
+  const session = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext('addon-setup-service')
+
   if (!session) {
     showSessionExpired()
     return

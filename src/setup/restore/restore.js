@@ -16,7 +16,10 @@ function showDialogPickerRestore (uuid) {
 }
 
 function requestValidateBackup_ (protocol, uuid, fileId) {
-  const session = SessionService.withUser().trySession(uuid)
+  const session = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext('addon-setup-service')
+
   if (!session) {
     showSessionExpired()
     return
@@ -40,7 +43,10 @@ function requestValidateBackup_ (protocol, uuid, fileId) {
 }
 
 function continuedValidateBackup_ (uuid, password, param) {
-  const session = SessionService.withUser().trySession(uuid)
+  const session = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext('addon-setup-service')
+
   if (!session) {
     showSessionExpired()
     return
@@ -79,6 +85,7 @@ function unwrapBackup_ (uuid, file_id) {
 
   const password = SessionService.withUser()
     .trySession(uuid)
+    ?.getContext('addon-setup-service')
     ?.getContext([file_id, SpreadsheetApp2.getActive().getId()].join('/'))
     .getProperty('password')
 
