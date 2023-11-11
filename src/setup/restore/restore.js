@@ -12,7 +12,7 @@ function showDialogPickerRestore (uuid) {
   new PickerService(uuid)
     .setCallbackFunction('requestValidateBackup_')
     .setFallbackFunction('showDialogSetupRestore')
-    .showDialog('restore', 'Select backup')
+    .showDialog('Select backup')
 }
 
 function requestValidateBackup_ (uuid, fileId) {

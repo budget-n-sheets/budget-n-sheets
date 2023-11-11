@@ -10,6 +10,13 @@
 
 class BackupValidation {
   constructor (uuid, fileId) {
+    const protocol = SessionService.withUser()
+      .getSession(uuid)
+      .getContext('addon-setup-service')
+      .getProperty('protocol')
+
+    if (protocol !== 'restore') throw new Error('Invalid session protocol.')
+
     this._uuid = uuid
     this._backup = new BackupFile(fileId)
   }
