@@ -12,7 +12,7 @@ function cacheSettingsSummary_ (settings) {
   SessionService.withUser()
     .getSession(settings.uuid)
     .getContext('addon-setup-service')
-    .setProperty(`settings/${settings.protocol}`, settings)
+    .setProperty('settings', settings)
 }
 
 function retrieveSettingsSummary (uuid, protocol) {
@@ -22,7 +22,7 @@ function retrieveSettingsSummary (uuid, protocol) {
   const settings = SessionService.withUser()
     .trySession(uuid)
     ?.getContext('addon-setup-service')
-    .getProperty(`settings/${protocol}`)
+    .getProperty('settings')
 
   if (!settings) {
     LogLog.error(err)
@@ -82,7 +82,7 @@ function requestValidateSpreadsheet_ (uuid, fileId) {
     }
   }
 
-  session.setProperty(`setup/${protocol}`, status)
+  session.setProperty('status', status)
 
   if (status === 0) CacheService2.getUserCache().put(uuid, true)
 

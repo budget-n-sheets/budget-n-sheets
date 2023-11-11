@@ -38,7 +38,7 @@ function requestValidateBackup_ (uuid, fileId) {
   if (status === 0) return
   if (status === 100) status = 0
 
-  session.setProperty(`setup/${protocol}`, status)
+  session.setProperty('status', status)
   showDialogSetupRestore(uuid)
 }
 
@@ -62,7 +62,7 @@ function continuedValidateBackup_ (uuid, password, param) {
     status = 3
   }
 
-  session.setProperty('setup/restore', status)
+  session.setProperty('status', status)
   showDialogSetupRestore(uuid)
 }
 

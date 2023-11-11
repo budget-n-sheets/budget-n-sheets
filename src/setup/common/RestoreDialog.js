@@ -38,7 +38,7 @@ class RestoreDialog extends HtmlTemplate2 {
     const status = SessionService.withUser()
       .getSession(this._scriptlet.uuid)
       ?.getContext('addon-setup-service')
-      .getProperty(`setup/${this.protocol}`)
+      .getProperty('status')
 
     lock.releaseLock()
 
