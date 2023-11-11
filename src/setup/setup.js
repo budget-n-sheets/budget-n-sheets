@@ -29,21 +29,20 @@ function setupService (uuid, config) {
 
   if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.')
 
-  const protocol = session.getProperty('procotol')
-  const config = SetupConfig.digestConfig(protocol, uuid, config)
-  session.end()
+  const protocol = session.getProperty('protocol')
+  const digest = SetupConfig.digestConfig(protocol, uuid, config)
 
   const spreadsheet = SpreadsheetApp2.getActive().spreadsheet
-  spreadsheet.rename(config.spreadsheet_name)
+  spreadsheet.rename(digest.spreadsheet_name)
 
   new SetupProgress().makeClean()
-    .makeConfig(config)
+    .makeConfig(digest)
     .makeInstall()
 
   try {
-    if (protocol === 'restore') new RestoreBackup(config).restore()
-    else if (protocol === 'copy') new RestoreCopy(config).copy()
-    else if (protocol === 'follow_up') new SetupFollowUp(config).copy()
+    if (protocol === 'restore') new RestoreBackup(digest).restore()
+    else if (protocol === 'copy') new RestoreCopy(digest).copy()
+    else if (protocol === 'follow_up') new SetupFollowUp(digest).copy()
   } catch (err) {
     LogLog.error(err)
   }

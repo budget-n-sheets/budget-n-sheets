@@ -1,0 +1,247 @@
+<!-- Budget n Sheets | (c) Guilherme T Maeoka | budgetnsheets.com/license -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= HtmlService2.include('html/resources/styles') ?>
+  <?!= HtmlService2.include('html/resources/material-icons') ?>
+  <?!= HtmlService2.include('html/resources/animation-processing') ?>
+  <?!= HtmlService2.include('setup/common/cssCommonDialog') ?>
+  <style>
+    #panel-form table:not(:first-child) {
+      margin-top: 1.3em;
+    }
+
+    .panel-form-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .m-help {
+      padding: 5px;
+      border-radius: 50%;
+    }
+
+    .m-help:hover {
+      background: #f3f3f3;
+    }
+
+    .m-remove-acc {
+      color: #f44336;
+      padding: 0 3px;
+    }
+
+    .table-accounts {
+      counter-reset: tr-count;
+    }
+
+    .table-accounts tr.tr-acc {
+      counter-increment: tr-count;
+    }
+
+    .table-accounts input {
+      width: 100%;
+    }
+
+    .tr-acc-counter:after {
+      content: ' ' counter(tr-count);
+    }
+  </style>
+  <script>
+    class Goldfish {
+      static get uuid () {
+        return <?= uuid ?>
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div class="panel" id="panel-restore">
+    <div class="panel-form-header">
+      <h2>Spreadsheet specs</h2>
+      <div>
+        <a href="<?= home_wiki ?>/Getting-Started#2-start-a-budget-sheet" target="_blank"><span class="material-icons md-24 md-click m-help">help_outline</span></a>
+      </div>
+    </div>
+
+    <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm()">
+      <table class="form">
+        <tr>
+          <td><label for="spreadsheet_name">Spreadsheet title</label></td>
+          <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
+        </tr>
+        <tr>
+          <td><label for="decimal_places">Decimal places</label></td>
+          <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
+        </tr>
+      </table>
+      <table class="form">
+        <tr>
+          <th colspan="2"><span class="material-icons-outlined">calendar_today</span> Calendar</th>
+        </tr>
+        <tr>
+          <td><label for="financial_year">Financial year</label></td>
+          <td><input type="number" id="financial_year" min="1889" max="2111" step="1" required></td>
+        </tr>
+        <tr>
+          <td><label for="initial_month">Initial month</label></td>
+          <td>
+            <select id="initial_month">
+              <option value="0" selected>January</option>
+              <option value="1">February</option>
+              <option value="2">March</option>
+              <option value="3">April</option>
+              <option value="4">May</option>
+              <option value="5">June</option>
+              <option value="6">July</option>
+              <option value="7">August</option>
+              <option value="8">September</option>
+              <option value="9">October</option>
+              <option value="10">November</option>
+              <option value="11">December</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+      <table class="table-accounts">
+        <tr>
+          <th colspan="2"><span class="material-icons-outlined">account_balance</span> Accounts</th>
+        </tr>
+        <tr class="tr-acc">
+          <td>
+            <span class="material-icons md-18 md-click m-remove-acc" style="display: none;">remove_circle</span>
+            <label class="tr-acc-counter">Account</label>
+          </td>
+          <td>
+            <input type="text" name="acc-name" maxlength="64" placeholder="Name" required>
+          </td>
+        </tr>
+        <tr id="tr-add-acc">
+          <td></td>
+          <td>
+            <input type="text" id="m-add-acc" placeholder="Add account" readonly>
+          </td>
+        </tr>
+      </table>
+
+      <div class="footer">
+        <button class="create" id="b-New" type="submit" form="the_form">Create</button>
+        <button onclick="closeHost()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="panel" id="panel-setup">
+    <div id="notice">
+      <h2>Assembling your spreadsheet</h2>
+      <div class="animation-processing-wrapper">
+        <div class="animation-processing-bar"></div>
+      </div>
+      <p class="text">This process takes up to three minutes. Do not make changes to the spreadsheet until it is finished.</p>
+    </div>
+    <div id="timeout">
+      <p>The setup is taking too long... You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.</p>
+      <button onclick="closeHost()">Close</button>
+    </div>
+  </div>
+
+  <?!= HtmlService2.include('html/resources/javascript') ?>
+  <?!= appsScriptIssue69270374WorkaroundFrame() ?>
+  <script>
+    $(document).ready(function() {
+      $('#m-add-acc').on('click, focus', addAccInput)
+      $('#panel-restore').fadeIn('fast')
+    })
+
+    function addAccInput () {
+      let countAccs = $('input[name="acc-name"]').length
+      if (countAccs > 4) return
+
+      const $tr = $('<tr>').attr({ class: 'tr-acc' })
+
+      const $td1 = $('<td>').append([
+        $('<span>').attr({ class: 'material-icons md-18 md-click m-remove-acc' }).text('remove_circle'),
+        $('<label>').attr({ class: 'tr-acc-counter' }).text('Account')
+      ])
+
+      const $td2 = $('<td>').append([
+        $('<input>').attr({
+          type: 'text',
+          name: 'acc-name',
+          placeholder: 'Name',
+          required: true,
+          maxlength: 64
+        })
+      ])
+
+      $td1.appendTo($tr)
+      $td2.appendTo($tr)
+
+      $('#tr-add-acc').before($tr)
+      countAccs++
+
+      if (countAccs > 4) $('#tr-add-acc').hide()
+      if (countAccs > 1) $('.m-remove-acc').show()
+
+      $tr.find('input').focus()
+    }
+
+    $(document).on('click', '.m-remove-acc', function() {
+      let countAccs = $('input[name="acc-name"]').length
+      if (countAccs === 1) return
+
+      $(this).closest('tr').remove()
+      countAccs--
+
+      if (countAccs < 5) $('#tr-add-acc').show()
+      if (countAccs === 1) $('.m-remove-acc').hide()
+    })
+  </script>
+  <script>
+    $(document).ready(function() {
+      const date = new Date()
+      $('#financial_year').val(date.getFullYear())
+      if (date.getMonth() > 1) $('#initial_month').val(date.getMonth() - 1)
+    })
+
+    function submitForm () {
+      $('.panel').hide()
+      google.script.host.setHeight(181)
+      window.scrollTo(0, 0)
+      $('#panel-setup').fadeIn('fast')
+
+      setTimeout(function() {
+        google.script.host.setHeight(271)
+        $('#timeout').fadeIn('fast')
+      }, 240000)
+
+      const accounts = []
+      $('input[name="acc-name"]').each(function(index) {
+        accounts.push({
+          index,
+          require: 'new',
+          name: $(this).val()
+        })
+      })
+
+      const config = {
+        name_accounts: accounts,
+        spreadsheet_name: $('#spreadsheet_name').val(),
+        decimal_places: $('#decimal_places').val(),
+        financial_year: $('#financial_year').val(),
+        initial_month: $('#initial_month').val()
+      }
+
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(null)
+        .setupService(Goldfish.uuid, config)
+    }
+  </script>
+</body>
+
+</html>
