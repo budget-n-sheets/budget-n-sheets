@@ -8,9 +8,9 @@
  * <https://www.gnu.org/licenses/>
  */
 
-function cacheSettingsSummary_ (settings) {
+function cacheSettingsSummary_ (uuid, settings) {
   SessionService.withUser()
-    .getSession(settings.uuid)
+    .getSession(uuid)
     .getContext('addon-setup-service')
     .setProperty('settings', settings)
 }

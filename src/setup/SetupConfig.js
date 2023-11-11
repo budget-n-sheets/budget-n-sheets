@@ -10,9 +10,12 @@
 
 class SetupConfig {
   static configCopy_ (uuid, config) {
-    const candidate = PropertiesService2.getDocumentProperties().getProperty('settings_candidate')
-    if (candidate.uuid !== uuid) throw new Error('UUID does not match.')
-    if (candidate.protocol !== 'copy') throw new Error('Protocol does not match.')
+    const session = SessionService.withUser()
+      .getSession(uuid)
+      .getContext('addon-setup-service')
+
+    if (session.getProperty('protocol') !== 'copy') throw new Error('Protocol does not match.')
+    const candidate = session.getProperty('settings')
 
     config.file_id = candidate.source.file_id
     config.isTemplatePre15 = BnsTemplate.isPre15(candidate.version.template)
@@ -21,9 +24,12 @@ class SetupConfig {
   }
 
   static configFollowUp_ (uuid, config) {
-    const candidate = PropertiesService2.getDocumentProperties().getProperty('settings_candidate')
-    if (candidate.uuid !== uuid) throw new Error('UUID does not match.')
-    if (candidate.protocol !== 'follow_up') throw new Error('Protocol does not match.')
+    const session = SessionService.withUser()
+      .getSession(uuid)
+      .getContext('addon-setup-service')
+
+    if (session.getProperty('protocol') !== 'follow_up') throw new Error('Protocol does not match.')
+    const candidate = session.getProperty('settings')
 
     config.file_id = candidate.source.file_id
     config.financial_year = candidate.settings.financial_year + 1
@@ -33,9 +39,12 @@ class SetupConfig {
   }
 
   static configRestore_ (uuid, config) {
-    const candidate = PropertiesService2.getDocumentProperties().getProperty('settings_candidate')
-    if (candidate.uuid !== uuid) throw new Error('UUID does not match.')
-    if (candidate.protocol !== 'restore') throw new Error('Protocol does not match.')
+    const session = SessionService.withUser()
+      .getSession(uuid)
+      .getContext('addon-setup-service')
+
+    if (session.getProperty('protocol') !== 'restore') throw new Error('Protocol does not match.')
+    const candidate = session.getProperty('settings')
 
     config.backup = unwrapBackup_(uuid, candidate.source.file_id)
     if (config.backup == null) return
