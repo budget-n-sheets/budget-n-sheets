@@ -17,8 +17,9 @@ class SetupNewDialog extends HtmlTemplate2 {
       .getSession(uuid)
       .getContext('addon-setup-service')
 
-    if (session.getProperty('protocol') === 'none') session.setProperty('protocol', 'new')
-    else throw new Error('Protocol is already defined.')
+    v = session.getProperty('protocol')
+    if (v === 'none') session.setProperty('protocol', 'new')
+    else if (v !== 'new') throw new Error('Protocol is already defined.')
 
     this._uuid = uuid
   }

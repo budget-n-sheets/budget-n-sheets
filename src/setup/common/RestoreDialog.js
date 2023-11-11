@@ -14,8 +14,9 @@ class RestoreDialog extends HtmlTemplate2 {
       .getSession(uuid)
       .getContext('addon-setup-service')
 
-    if (session.getProperty('protocol') === 'none') session.setProperty('protocol', protocol)
-    else throw new Error('Protocol is already defined.')
+    const v = session.getProperty('protocol')
+    if (v === 'none') session.setProperty('protocol', protocol)
+    else if(v !== protocol) throw new Error('Protocol is already defined.')
 
     const htmlTemplate = HtmlService.createTemplateFromFile(path)
     super(htmlTemplate)
