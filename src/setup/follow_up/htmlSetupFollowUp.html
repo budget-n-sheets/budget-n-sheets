@@ -83,7 +83,7 @@
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
-        .retrieveSettingsSummary(Glob.uuid, 'follow_up');
+        .retrieveSettingsSummary(Glob.uuid);
       <? } ?>
       $('#panel-restore').fadeIn('fast');
     });

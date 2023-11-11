@@ -15,19 +15,21 @@ function cacheSettingsSummary_ (uuid, settings) {
     .setProperty('settings', settings)
 }
 
-function retrieveSettingsSummary (uuid, protocol) {
+function retrieveSettingsSummary (uuid) {
   const lock = LockService.getDocumentLock()
   if (!lock.tryLock(1000)) return
 
-  const settings = SessionService.withUser()
+  const session = SessionService.withUser()
     .trySession(uuid)
     ?.getContext('addon-setup-service')
-    .getProperty('settings')
 
-  if (!settings) {
+  if (!session) {
     LogLog.error(err)
     showSessionExpired()
   }
+
+  const protocol = session.getProperty('protocol')
+  const settings = session.getProperty('settings')
 
   lock.releaseLock()
   if (settings == null) return
