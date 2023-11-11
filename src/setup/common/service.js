@@ -86,8 +86,6 @@ function requestValidateSpreadsheet_ (uuid, fileId) {
 
   session.setProperty('status', status)
 
-  if (status === 0) CacheService2.getUserCache().put(uuid, true)
-
   if (protocol === 'copy') showDialogSetupCopy(uuid)
   else if (protocol === 'follow_up') showDialogSetupFollowUp(uuid)
 }
