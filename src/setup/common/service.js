@@ -8,22 +8,28 @@
  * <https://www.gnu.org/licenses/>
  */
 
-function cacheSettingsSummary_ (settings) {
-  SessionService.withUser().getSession(settings.uuid).setProperty(`settings/${settings.protocol}`, settings)
+function cacheSettingsSummary_ (uuid, settings) {
+  SessionService.withUser()
+    .getSession(uuid)
+    .getContext('addon-setup-service')
+    .setProperty('settings', settings)
 }
 
-function retrieveSettingsSummary (uuid, protocol) {
+function retrieveSettingsSummary (uuid) {
   const lock = LockService.getDocumentLock()
   if (!lock.tryLock(1000)) return
 
-  let settings
-  try {
-    settings = SessionService.withUser().getSession(uuid).getProperty(`settings/${protocol}`)
-  } catch (err) {
-    settings = null
+  const session = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext('addon-setup-service')
+
+  if (!session) {
     LogLog.error(err)
     showSessionExpired()
   }
+
+  const protocol = session.getProperty('protocol')
+  const settings = session.getProperty('settings')
 
   lock.releaseLock()
   if (settings == null) return
@@ -49,12 +55,12 @@ function retrieveSettingsSummary (uuid, protocol) {
   return settings
 }
 
-function requestValidateSpreadsheet_ (protocol, uuid, fileId) {
-  let session
-  try {
-    session = SessionService.withUser().getSession(uuid)
-  } catch (err) {
-    LogLog.error(err)
+function requestValidateSpreadsheet_ (uuid, fileId) {
+  const session = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext('addon-setup-service')
+
+  if (!session) {
     showSessionExpired()
     return
   }
@@ -71,14 +77,14 @@ function requestValidateSpreadsheet_ (protocol, uuid, fileId) {
 
   if (status === 0) {
     try {
-      SettingsCandidate.processSpreadsheet(protocol, uuid, fileId)
+      SettingsCandidate.processSpreadsheet(uuid, fileId)
     } catch (err) {
       LogLog.error(err)
       status = 3
     }
   }
 
-  session.setProperty(`setup/${protocol}`, status)
+  session.setProperty('status', status)
 
   if (protocol === 'copy') showDialogSetupCopy(uuid)
   else if (protocol === 'follow_up') showDialogSetupFollowUp(uuid)

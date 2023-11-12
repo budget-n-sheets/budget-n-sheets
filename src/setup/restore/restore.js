@@ -12,15 +12,15 @@ function showDialogPickerRestore (uuid) {
   new PickerService(uuid)
     .setCallbackFunction('requestValidateBackup_')
     .setFallbackFunction('showDialogSetupRestore')
-    .showDialog('restore', 'Select backup')
+    .showDialog('Select backup')
 }
 
-function requestValidateBackup_ (protocol, uuid, fileId) {
-  let session
-  try {
-    session = SessionService.withUser().getSession(uuid)
-  } catch (err) {
-    LogLog.error(err)
+function requestValidateBackup_ (uuid, fileId) {
+  const session = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext('addon-setup-service')
+
+  if (!session) {
     showSessionExpired()
     return
   }
@@ -38,16 +38,16 @@ function requestValidateBackup_ (protocol, uuid, fileId) {
   if (status === 0) return
   if (status === 100) status = 0
 
-  session.setProperty(`setup/${protocol}`, status)
+  session.setProperty('status', status)
   showDialogSetupRestore(uuid)
 }
 
 function continuedValidateBackup_ (uuid, password, param) {
-  let session
-  try {
-    session = SessionService.withUser().getSession(uuid)
-  } catch (err) {
-    LogLog.error(err)
+  const session = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext('addon-setup-service')
+
+  if (!session) {
     showSessionExpired()
     return
   }
@@ -62,7 +62,7 @@ function continuedValidateBackup_ (uuid, password, param) {
     status = 3
   }
 
-  session.setProperty('setup/restore', status)
+  session.setProperty('status', status)
   showDialogSetupRestore(uuid)
 }
 
@@ -83,14 +83,13 @@ function unwrapBackup_ (uuid, file_id) {
     return patched
   }
 
-  let password = ''
-  try {
-    password = SessionService.withUser()
-      .getSession(uuid)
-      .getContext([file_id, SpreadsheetApp2.getActive().getId()].join('/'))
-      .getProperty('password')
-  } catch (err) {
-    LogLog.error(err)
+  const password = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext('addon-setup-service')
+    ?.getContext([file_id, SpreadsheetApp2.getActive().getId()].join('/'))
+    .getProperty('password')
+
+  if (!password) {
     showSessionExpired()
     return
   }

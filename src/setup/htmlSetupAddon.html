@@ -8,7 +8,6 @@
   <?!= HtmlService2.include("html/resources/styles"); ?>
   <?!= HtmlService2.include("html/resources/containers"); ?>
   <?!= HtmlService2.include("html/resources/material-icons"); ?>
-  <?!= HtmlService2.include("html/resources/animation-processing"); ?>
   <style>
     .content-container > div {
       display: none;
@@ -41,90 +40,6 @@
 
     table.start-options td {
       padding: 11px 3px;
-    }
-  </style>
-  <style>
-    #panel-form table:not(:first-child) {
-      margin-top: 1.3em;
-    }
-
-    .panel-form-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .m-help {
-      padding: 5px;
-      border-radius: 50%;
-    }
-
-    .m-help:hover {
-      background: #f3f3f3;
-    }
-
-    .m-remove-acc {
-      color: #f44336;
-      padding: 0 3px;
-    }
-
-    .table-accounts {
-      counter-reset: tr-count;
-    }
-
-    .table-accounts tr.tr-acc {
-      counter-increment: tr-count;
-    }
-
-    .table-accounts input {
-      width: 100%;
-    }
-
-    .tr-acc-counter:after {
-      content: ' ' counter(tr-count);
-    }
-  </style>
-  <style>
-    .text {
-      width: 23em;
-      text-align: center;
-    }
-
-    #panel-setup #notice {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-evenly;
-    }
-
-    #panel-setup #notice > * {
-      margin: 1em 0;
-    }
-
-    #panel-setup #timeout {
-      display: none;
-    }
-  </style>
-  <style>
-    .animation-processing-wrapper {
-      margin-top: 0;
-      width: 190px;
-    }
-
-    .animation-processing-bar {
-      width: 113px;
-      animation-duration: 1493ms;
-      animation-name: animateProcessingBar;
-    }
-
-    @keyframes animateProcessingBar {
-      from {
-        left: -257px;
-      }
-
-      to {
-        left: 257px;
-      }
     }
   </style>
 </head>
@@ -190,90 +105,6 @@
         <? } ?>
       </table>
     </div>
-
-    <div class="panel" id="panel-form">
-      <div class="panel-form-header">
-        <h2>Spreadsheet specs</h2>
-        <div>
-          <a href="<?= home_wiki ?>/Getting-Started#2-start-a-budget-sheet" target="_blank"><span class="material-icons md-24 md-click m-help">help_outline</span></a>
-        </div>
-      </div>
-
-      <form accept-charset="UTF-8" id="the_form" onsubmit="submitForm()">
-        <table class="form">
-          <tr>
-            <td><label for="spreadsheet_name">Spreadsheet title</label></td>
-            <td><input type="text" id="spreadsheet_name" maxlength="128" required></td>
-          </tr>
-          <tr>
-            <td><label for="decimal_places">Decimal places</label></td>
-            <td><input id="decimal_places" type="number" value="2" min="0" max="16" step="1" placeholder="0" required></td>
-          </tr>
-        </table>
-        <table class="form">
-          <tr>
-            <th colspan="2"><span class="material-icons-outlined">calendar_today</span> Calendar</th>
-          </tr>
-          <tr>
-            <td><label for="financial_year">Financial year</label></td>
-            <td><input type="number" id="financial_year" min="1889" max="2111" step="1" required></td>
-          </tr>
-          <tr>
-            <td><label for="initial_month">Initial month</label></td>
-            <td>
-              <select id="initial_month">
-                <option value="0" selected>January</option>
-                <option value="1">February</option>
-                <option value="2">March</option>
-                <option value="3">April</option>
-                <option value="4">May</option>
-                <option value="5">June</option>
-                <option value="6">July</option>
-                <option value="7">August</option>
-                <option value="8">September</option>
-                <option value="9">October</option>
-                <option value="10">November</option>
-                <option value="11">December</option>
-              </select>
-            </td>
-          </tr>
-        </table>
-        <table class="table-accounts">
-          <tr>
-            <th colspan="2"><span class="material-icons-outlined">account_balance</span> Accounts</th>
-          </tr>
-          <tr class="tr-acc">
-            <td>
-              <span class="material-icons md-18 md-click m-remove-acc" style="display: none;">remove_circle</span>
-              <label class="tr-acc-counter">Account</label>
-            </td>
-            <td>
-              <input type="text" name="acc-name" maxlength="64" placeholder="Name" required>
-            </td>
-          </tr>
-          <tr id="tr-add-acc">
-            <td></td>
-            <td>
-              <input type="text" id="m-add-acc" placeholder="Add account" readonly>
-            </td>
-          </tr>
-        </table>
-      </form>
-    </div>
-
-    <div class="panel" id="panel-setup">
-      <div id="notice">
-        <h2>Assembling your spreadsheet</h2>
-        <div class="animation-processing-wrapper">
-          <div class="animation-processing-bar"></div>
-        </div>
-        <p class="text">This process takes up to three minutes. Do not make changes to the spreadsheet until it is finished.</p>
-      </div>
-      <div id="timeout">
-        <p>The setup is taking too long... You can try again or <a href="<?= send_feedback ?>" target="_blank">report a problem</a>.</p>
-        <button onclick="closeHost()">Close</button>
-      </div>
-    </div>
   </div>
 
   <div class="footer-container">
@@ -283,35 +114,17 @@
   <?!= appsScriptIssue69270374WorkaroundFrame(); ?>
   <script>
     const Glob = {
-      uuid: <?= uuid ?>,
-      num_acc: 1
+      uuid: <?= uuid ?>
     };
 
     $(document).ready(function() {
-      $('.restore-button').one('click', setupOption);
-
-      const date = new Date();
-      $('#financial_year').val(date.getFullYear());
-      if (date.getMonth() > 1) $('#initial_month').val(date.getMonth() - 1);
-
-      $('#panel-main').hide().fadeIn('slow');
-    });
-
-    $('#m-add-acc').on('click, focus', addAccInput);
-
-    $(document).on('click', '.m-remove-acc', function() {
-      if (Glob.num_acc === 1) return;
-
-      $(this).closest('tr').remove();
-      Glob.num_acc--;
-
-      if (Glob.num_acc < 5) $('#tr-add-acc').show();
-      if (Glob.num_acc === 1) $('.m-remove-acc').hide();
+      $('.restore-button').one('click', setupOption)
+      $('#panel-main').hide().fadeIn('slow')
     });
 
     function setupOption () {
       $('.restore-button').off('click');
-      if (this.id === 'setup-new') clickNext();
+      if (this.id === 'setup-new') showNew()
       <? if (setup_follow_up) { ?>
       if (this.id === 'setup-follow_up') showFollowUp();
       <? } ?>
@@ -323,36 +136,12 @@
       <? } ?>
     }
 
-    function addAccInput () {
-      if (Glob.num_acc > 4) return;
-
-      const $tr = $('<tr>').attr({ class: 'tr-acc' });
-
-      const $td1 = $('<td>').append([
-        $('<span>').attr({ class: 'material-icons md-18 md-click m-remove-acc' }).text('remove_circle'),
-        $('<label>').attr({ class: 'tr-acc-counter' }).text('Account')
-      ]);
-
-      const $td2 = $('<td>').append([
-        $('<input>').attr({
-            type: 'text',
-            name: 'acc-name',
-            placeholder: 'Name',
-            required: true,
-            maxlength: 64
-          })
-      ]);
-
-      $td1.appendTo($tr);
-      $td2.appendTo($tr);
-
-      $('#tr-add-acc').before($tr);
-      Glob.num_acc++;
-
-      if (Glob.num_acc > 4) $('#tr-add-acc').hide();
-      if (Glob.num_acc > 1) $('.m-remove-acc').show();
-
-      $tr.find('input').focus();
+    function showNew () {
+      $('#panel-restore').fadeOut()
+      google.script.run
+        .withFailureHandler(showError)
+        .withSuccessHandler(closeHost)
+        .showDialogSetupNew(Glob.uuid)
     }
 
     <? if (setup_follow_up) { ?>
@@ -403,61 +192,13 @@
         case 'panel-note':
           panel = 'panel-restore';
           break;
-        case 'panel-restore':
-          panel = 'panel-form';
-          $('.footer-container').append([
-            $('<button>').attr({
-              class: 'create',
-              type: 'submit',
-              form: 'the_form'
-            }).text('Build')
-          ]);
-          break;
 
         default:
-          panel = 'panel-main';
+          showError()
           break;
       }
 
       $(`#${panel}`).fadeIn('fast').addClass('active');
-    }
-
-    function submitForm () {
-      const accounts = [];
-      $('input[name="acc-name"]').each(function(index) {
-        accounts.push({
-          require: 'new',
-          index: index,
-          name: $(this).val()
-        });
-      });
-
-      const payload = {
-        protocol: 'new',
-        config: {
-          name_accounts: accounts,
-          spreadsheet_name: $('#spreadsheet_name').val(),
-          decimal_places: $('#decimal_places').val(),
-          financial_year: $('#financial_year').val(),
-          initial_month: $('#initial_month').val()
-        }
-      };
-
-      setTimeout(function() {
-        google.script.host.setHeight(271);
-        $('#timeout').fadeIn('fast');
-      }, 240000);
-
-      $('.panel').hide();
-      $('.footer-container button').remove();
-      window.scrollTo(0, 0);
-      google.script.host.setHeight(181);
-      $('#panel-setup').fadeIn('fast');
-
-      google.script.run
-        .withFailureHandler(showError)
-        .withSuccessHandler(null)
-        .setupService(Glob.uuid, payload);
     }
   </script>
 </body>

@@ -222,8 +222,11 @@ function showDialogSetupAddon_ () {
     return
   }
 
+  const session = SessionService.withUser().startSession()
+  session.getContext('addon-setup-service').setProperty('protocol', 'none')
+
   const scriptlet = {
-    uuid: SessionService.withUser().startSession().getUuid(),
+    uuid: session.getUuid(),
     setup_follow_up: FeatureFlag.getStatusOf('setup/follow_up'),
     setup_restore: FeatureFlag.getStatusOf('setup/restore'),
     setup_copy: FeatureFlag.getStatusOf('setup/copy')
@@ -237,6 +240,11 @@ function showDialogSetupAddon_ () {
     .setHeight(359)
 
   SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'Start budget spreadsheet')
+}
+
+function showDialogSetupNew (uuid) {
+  const htmlOutput = new SetupNewDialog(uuid).build()
+  SpreadsheetApp2.getUi().showModalDialog(htmlOutput, 'New budget sheet')
 }
 
 function showDialogSetupFollowUp (uuid) {

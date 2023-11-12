@@ -8,7 +8,7 @@
  * <https://www.gnu.org/licenses/>
  */
 
-function setupService (uuid, payload) {
+function setupService (uuid, config) {
   const lock = LockService.getDocumentLock()
   if (!lock.tryLock(200)) {
     SpreadsheetApp2.getUi().alert(
@@ -18,32 +18,31 @@ function setupService (uuid, payload) {
     return
   }
 
-  let session
-  try {
-    session = SessionService.withUser().getSession(uuid)
-  } catch (err) {
-    LogLog.error(err)
+  const session = SessionService.withUser()
+    .trySession(uuid)
+    ?.getContext('addon-setup-service')
+
+  if (!session) {
     showSessionExpired()
     return
   }
 
   if (SetupService.checkRequirements() !== 0) throw new Error('Failed to pass requirements check.')
 
-  const config = SetupConfig.digestConfig(uuid, payload)
-  session.end()
-  session = null
+  const protocol = session.getProperty('protocol')
+  const digest = SetupConfig.digestConfig(protocol, uuid, config)
 
   const spreadsheet = SpreadsheetApp2.getActive().spreadsheet
-  spreadsheet.rename(config.spreadsheet_name)
+  spreadsheet.rename(digest.spreadsheet_name)
 
   new SetupProgress().makeClean()
-    .makeConfig(config)
+    .makeConfig(digest)
     .makeInstall()
 
   try {
-    if (payload.protocol === 'restore') new RestoreBackup(config).restore()
-    else if (payload.protocol === 'copy') new RestoreCopy(config).copy()
-    else if (payload.protocol === 'follow_up') new SetupFollowUp(config).copy()
+    if (protocol === 'restore') new RestoreBackup(digest).restore()
+    else if (protocol === 'copy') new RestoreCopy(digest).copy()
+    else if (protocol === 'follow_up') new SetupFollowUp(digest).copy()
   } catch (err) {
     LogLog.error(err)
   }

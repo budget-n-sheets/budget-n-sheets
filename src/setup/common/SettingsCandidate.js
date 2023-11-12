@@ -13,7 +13,6 @@ class SettingsCandidate {
     if (!FeatureFlag.getStatusOf('setup/restore')) throw new Error('Feature flagged.')
 
     const settings_candidate = {
-      uuid,
       protocol: 'restore',
       source: {
         file_id: file.getId(),
@@ -51,12 +50,11 @@ class SettingsCandidate {
       settings_candidate.misc.cards.push(data.db_tables.cards[k].name)
     }
 
-    PropertiesService2.getDocumentProperties().setProperty('settings_candidate', settings_candidate)
-    cacheSettingsSummary_(settings_candidate)
+    cacheSettingsSummary_(uuid, settings_candidate)
     return 0
   }
 
-  static processSpreadsheet (protocol, uuid, fileId) {
+  static processSpreadsheet (uuid, fileId) {
     if (!FeatureFlag.getStatusOf(`setup/${protocol}`)) throw new Error('Feature flagged.')
 
     const spreadsheet = SpreadsheetApp.openById(fileId)
@@ -64,7 +62,6 @@ class SettingsCandidate {
     let property
 
     const settings_candidate = {
-      uuid,
       protocol,
       version: {
         script: {},
@@ -135,7 +132,6 @@ class SettingsCandidate {
     const sheet = spreadsheet.getSheetByName('Tags')
     if (sheet) settings_candidate.misc.tags = sheet.getLastRow() - 1
 
-    PropertiesService2.getDocumentProperties().setProperty('settings_candidate', settings_candidate)
-    cacheSettingsSummary_(settings_candidate)
+    cacheSettingsSummary_(uuid, settings_candidate)
   }
 }

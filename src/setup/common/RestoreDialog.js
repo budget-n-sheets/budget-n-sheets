@@ -10,6 +10,14 @@
 
 class RestoreDialog extends HtmlTemplate2 {
   constructor (protocol, uuid, path) {
+    const session = SessionService.withUser()
+      .getSession(uuid)
+      .getContext('addon-setup-service')
+
+    const v = session.getProperty('protocol')
+    if (v === 'none') session.setProperty('protocol', protocol)
+    else if(v !== protocol) throw new Error('Protocol is already defined.')
+
     const htmlTemplate = HtmlService.createTemplateFromFile(path)
     super(htmlTemplate)
 
@@ -28,7 +36,10 @@ class RestoreDialog extends HtmlTemplate2 {
       return
     }
 
-    const status = SessionService.withUser().getSession(this._scriptlet.uuid).getProperty(`setup/${this.protocol}`)
+    const status = SessionService.withUser()
+      .getSession(this._scriptlet.uuid)
+      ?.getContext('addon-setup-service')
+      .getProperty('status')
 
     lock.releaseLock()
 

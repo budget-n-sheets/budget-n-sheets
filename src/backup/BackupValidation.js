@@ -10,6 +10,13 @@
 
 class BackupValidation {
   constructor (uuid, fileId) {
+    const protocol = SessionService.withUser()
+      .getSession(uuid)
+      .getContext('addon-setup-service')
+      .getProperty('protocol')
+
+    if (protocol !== 'restore') throw new Error('Invalid session protocol.')
+
     this._uuid = uuid
     this._backup = new BackupFile(fileId)
   }
@@ -49,7 +56,9 @@ class BackupValidation {
     if (patched == null) throw new Error('Update failed.')
 
     SettingsCandidate.processBackup(this._uuid, this._backup, patched)
-    SessionService.withUser().getSession(this._uuid)
+    SessionService.withUser()
+      .getSession(this._uuid)
+      ?.getContext('addon-setup-service')
       .getContext(
         [this._backup.getId(), SpreadsheetApp2.getActive().getId()].join('/'),
         180)

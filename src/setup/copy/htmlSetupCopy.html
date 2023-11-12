@@ -80,16 +80,10 @@
       <? if (isContinued) { ?>
       $('#b-Select').prop('disabled', true);
 
-      $('#tr-acc-listed').sortable({
-        axis: 'y',
-        handle: '.handle',
-        opacity: 0.71
-      });
-
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(refreshInfo)
-        .retrieveSettingsSummary(Glob.uuid, 'copy');
+        .retrieveSettingsSummary(Glob.uuid);
       <? } ?>
       $('#panel-restore').fadeIn('fast');
     });
@@ -149,21 +143,18 @@
         }
       });
 
-      const payload = {
-        protocol: 'copy',
-        config: {
-          name_accounts: accounts,
-          spreadsheet_name: $('#spreadsheet_name').val(),
-          decimal_places: $('#decimal_places').val(),
-          financial_year: $('#financial_year').val(),
-          initial_month: $('#initial_month').val()
-        }
+      const config = {
+        name_accounts: accounts,
+        spreadsheet_name: $('#spreadsheet_name').val(),
+        decimal_places: $('#decimal_places').val(),
+        financial_year: $('#financial_year').val(),
+        initial_month: $('#initial_month').val()
       };
 
       google.script.run
         .withFailureHandler(showError)
         .withSuccessHandler(null)
-        .setupService(Glob.uuid, payload);
+        .setupService(Glob.uuid, config);
     }
     <? } ?>
 

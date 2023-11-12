@@ -10,9 +10,13 @@
 
 class PickerService extends Pushback {
   constructor (uuid) {
-    SessionService.withUser().getSession(uuid)
+    const protocol = SessionService.withUser()
+      .getSession(uuid)
+      .getContext('addon-setup-service')
+      .getProperty('protocol')
 
     super()
+    this._protocol = protocol
     this._session.setProperty('callbackUuid', uuid)
   }
 
@@ -21,7 +25,7 @@ class PickerService extends Pushback {
     return this
   }
 
-  showDialog (protocol, title) {
+  showDialog (title) {
     this.config_()
 
     if (!this._fallbackFunction) throw new Error('Undefined fallback.')
@@ -32,7 +36,7 @@ class PickerService extends Pushback {
         locale: Session.getActiveUserLocale(),
         devKey: Bs.getDeveloperKey(),
         uuid: this._uuid,
-        protocol
+        protocol: this._protocol
       })
       .evaluate()
       .setWidth(617)
