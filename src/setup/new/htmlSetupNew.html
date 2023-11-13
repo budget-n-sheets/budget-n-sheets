@@ -220,10 +220,9 @@
       }, 240000)
 
       const accounts = []
-      $('input[name="acc-name"]').each(function(index) {
+      $('input[name="acc-name"]').each(function() {
         accounts.push({
-          index,
-          require: 'new',
+          command: 'new',
           name: $(this).val()
         })
       })

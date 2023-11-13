@@ -45,6 +45,14 @@ class SetupConfig {
 
     if (session.getProperty('protocol') !== 'restore') throw new Error('Protocol does not match.')
     const candidate = session.getProperty('settings')
+    const ids = candidate.settings.accounts.map(acc => acc.id)
+
+    config.accounts = config.name_accounts.filter(acc => {
+      return ids.indexOf(acc.id) > -1
+    })
+    config.name_accounts = config.name_accounts.filter(acc => {
+      return acc.command === 'new' || (acc.command === 'pick' && ids.indexOf(acc.id) > -1)
+    })
 
     config.backup = unwrapBackup_(uuid, candidate.source.file_id)
     if (config.backup == null) return
@@ -64,7 +72,7 @@ class SetupConfig {
         break
       case 'new':
         digest = Utils.deepCopy(config)
-        digest.name_accounts = digest.name_accounts.filter(e => e.require === 'new')
+        digest.name_accounts = digest.name_accounts.filter(e => e.command === 'new')
         break
       case 'restore':
         digest = this.configRestore_(uuid, config)
@@ -83,7 +91,6 @@ class SetupConfig {
       a[i].name = e.name.trim().replace(/\s+/g, ' ').slice(0, 64)
       if (a[i].name === '') throw new Error('Invalid account name.')
     })
-    digest.name_accounts.sort((a, b) => a.index - b.index)
 
     digest.number_accounts = digest.name_accounts.length
     if (digest.number_accounts < 1) throw new Error('Invalid number of accounts.')

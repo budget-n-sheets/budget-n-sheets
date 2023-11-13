@@ -35,13 +35,12 @@ class SettingsCandidate {
       }
     }
 
+    const ids = Noise.listUuid(5)
     for (const k in data.db_tables.accounts) {
       settings_candidate.settings.accounts.push({
-        id: 'acc_' + k,
-        prevIndex: +k,
-
-        require: 'restore',
-        index: +k,
+        id: ids.pop(),
+        key: k,
+        command: 'pick',
         name: data.db_tables.accounts[k].name
       })
     }

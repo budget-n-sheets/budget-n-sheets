@@ -13,7 +13,10 @@ class RestoreBackup {
     this.backup = config.backup
     this.spreadsheet = SpreadsheetApp2.getActive().spreadsheet
 
-    this.name_accounts = config.name_accounts.filter(e => e.require === 'restore')
+    this.name_accounts = config.name_accounts
+    this.dropAccounts = config.accounts
+      .filter(e => e.command === 'drop')
+      .map(acc => acc.name)
   }
 
   restoreSettings_ () {
@@ -39,7 +42,7 @@ class RestoreBackup {
       this.name_accounts.forEach(e => {
         const acc = accountsService.getByName(e.name)
         if (acc) {
-          acc.data = db_tables.accounts[e.prevIndex]
+          acc.data = db_tables.accounts[e.key]
           accountsService.update(acc)
         }
       })
@@ -69,12 +72,10 @@ class RestoreBackup {
 
   restoreTtt_ () {
     const ttt = this.backup.ttt
-    const names = this.name_accounts.slice().map(a => a.name)
-    names.push('Wallet')
 
     for (let mm = 0; mm < 12; mm++) {
       if (ttt[mm].length === 0) continue
-      const a = ttt[mm].filter(w => names.indexOf(w[0]) > -1)
+      const a = ttt[mm].filter(w => this.dropAccounts.indexOf(w[0]) === -1)
       new LedgerTtt(mm).mergeTransactions(a)
     }
   }
