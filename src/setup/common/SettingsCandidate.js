@@ -54,6 +54,10 @@ class SettingsCandidate {
   }
 
   static processSpreadsheet (uuid, fileId) {
+    const protocol = SessionService.withUser()
+      .trySession(uuid)
+      ?.getContext('addon-setup-service')
+      .getProperty('protocol')
     if (!FeatureFlag.getStatusOf(`setup/${protocol}`)) throw new Error('Feature flagged.')
 
     const spreadsheet = SpreadsheetApp.openById(fileId)

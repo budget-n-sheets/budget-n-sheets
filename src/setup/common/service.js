@@ -86,6 +86,8 @@ function requestValidateSpreadsheet_ (uuid, fileId) {
 
   session.setProperty('status', status)
 
+  const protocol = session.getProperty('protocol')
   if (protocol === 'copy') showDialogSetupCopy(uuid)
   else if (protocol === 'follow_up') showDialogSetupFollowUp(uuid)
+  else throw new Error('Invalid protocol.')
 }
