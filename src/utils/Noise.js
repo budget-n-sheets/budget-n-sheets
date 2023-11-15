@@ -58,6 +58,20 @@ class Noise {
   }
 
   /**
+   * Generates a list of n UUIDs.
+   * @param  {number} n Upper limit.
+   * @return {array}
+   */
+  static listUuid (n) {
+    const a = []
+    do {
+      const v = Utilities.getUuid()
+      if (a.indexOf(v) === -1) a.push(v)
+    } while (a.length < n)
+    return a
+  }
+
+  /**
    * Generates a random string.
    * @param  {number} n Length of string.
    * @param  {string} p Class of characters.

@@ -8,9 +8,11 @@
       return;
     };
 
-    const key = $(this).attr('id');
-    $(this).closest('tr').remove();
+    const $tr = $(this).closest('tr');
+    const key = $tr.attr('id');
+    $tr.remove();
     addAccInput(key);
+    Glob.accounts[key].command = 'pick'
   });
 
   $(document).on('click', '.m-delist-acc', function() {
@@ -19,7 +21,10 @@
 
     const $tr = $(this).closest('tr');
     const key = $tr.attr('id');
-    if (key) deselectAcc(key);
+    if (key) {
+      deselectAcc(key);
+      Glob.accounts[key].command = 'drop'
+    }
 
     $tr.remove();
     Glob.num_acc--;
@@ -76,11 +81,11 @@
 
   function deselectAcc (key) {
     const $tr = $('<tr>');
+    $tr.attr('id', key)
 
     const $td1 = $('<td>');
     $('<span>').attr({
-        class: 'material-icons md-18 md-click m-list-acc',
-        id: key
+        class: 'material-icons md-18 md-click m-list-acc'
       })
       .text('add_circle')
       .appendTo($td1);
@@ -88,6 +93,7 @@
     const $td2 = $('<td>');
     $('<input>').attr({
         type: 'text',
+        name: 'account_name',
         value: Glob.accounts[key].name,
         disabled: true,
         readonly: true
