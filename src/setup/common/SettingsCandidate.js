@@ -54,6 +54,10 @@ class SettingsCandidate {
   }
 
   static processSpreadsheet (uuid, fileId) {
+    const protocol = SessionService.withUser()
+      .trySession(uuid)
+      ?.getContext('addon-setup-service')
+      .getProperty('protocol')
     if (!FeatureFlag.getStatusOf(`setup/${protocol}`)) throw new Error('Feature flagged.')
 
     const spreadsheet = SpreadsheetApp.openById(fileId)
@@ -109,15 +113,14 @@ class SettingsCandidate {
     property = JSON.parse(metadata.get('spreadsheet_settings'))
     settings_candidate.settings.decimal_places = property?.decimal_places || 2
 
+    const ids = Noise.listUuid(5)
     property = JSON.parse(metadata.get('db_accounts'))
     if (!property) throw new Error('Property not found.')
     for (const k in property) {
       settings_candidate.settings.accounts.push({
-        id: 'acc_' + k,
-        prevIndex: +k,
-
-        require: 'copy',
-        index: +k,
+        id: ids.pop(),
+        key: k,
+        command: 'pick',
         name: property[k].name
       })
     }

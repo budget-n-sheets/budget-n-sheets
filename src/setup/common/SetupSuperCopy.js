@@ -17,7 +17,10 @@ class SetupSuperCopy {
 
     this.metadata = new Metadata(this.source)
 
-    this.name_accounts = config.name_accounts.filter(e => e.require === 'copy')
+    this.name_accounts = config.name_accounts
+    this.dropAccounts = config.accounts
+      .filter(e => e.command === 'drop')
+      .map(acc => acc.name)
     this.initial_month = Number(config.initial_month)
     this.isTemplatePre15 = config.isTemplatePre15
   }
