@@ -51,13 +51,14 @@ class RestoreCopy extends SetupSuperCopy {
   }
 
   copyTtt_ () {
+    const specs = SheetMonth.specs
     for (let mm = 0; mm < 12; mm++) {
       const source = this.source.getSheetByName(Consts.month_name.short[mm])
       if (!source) continue
-      const numRows = source.getMaxRows() - 4
+      const numRows = source.getMaxRows() - specs.row + 1
       if (numRows < 1) continue
 
-      let values = source.getRange(5, 2, numRows, 6).getValues()
+      let values = source.getRange(specs.row, specs.column, numRows, specs.width).getValues()
       values = Utils.sliceBlankRows(values)
         .filter(r => this.dropAccounts.indexOf(r[0]) === -1)
 
@@ -80,7 +81,7 @@ class RestoreCopy extends SetupSuperCopy {
       ledger.mergeTransactions(values)
 
       this.name_accounts.forEach(e => {
-        let values = source.getRange(5, 1 + 5 * (1 + e.prevIndex), numRows, 4)
+        let values = source.getRange(5, 1 + 5 * (1 + (+e.key)), numRows, 4)
           .getValues()
         values = Utils.sliceBlankRows(values)
           .map(r => [e.name, ...r, /#ign/.test(r[3])])
