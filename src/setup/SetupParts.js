@@ -38,6 +38,14 @@ class SetupParts {
     }
     CachedProperties.withDocument().update('user_settings', properties)
 
+    metadata = {
+      initial_month: this._config.initial_month,
+      financial_calendar: '',
+      post_day_events: false,
+      cash_flow_events: false
+    }
+    this._metadata.set('user_settings', metadata)
+
     properties = {
       automatic_backup: false
     }
