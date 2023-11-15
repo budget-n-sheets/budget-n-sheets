@@ -129,15 +129,13 @@
       }, 360000);
 
       const accounts = [];
-      $('input[name="account_name"]').each(function(index) {
+      $('input[name="account_name"]').each(function() {
         const key = $(this).closest('tr').attr('id');
         if (key) {
-          Glob.accounts[key].index = index;
           accounts.push(Glob.accounts[key]);
         } else {
           accounts.push({
-            require: 'new',
-            index: index,
+            command: 'new',
             name: $(this).val()
           });
         }

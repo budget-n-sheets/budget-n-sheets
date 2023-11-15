@@ -42,7 +42,7 @@ class RestoreCopy extends SetupSuperCopy {
     this.name_accounts.forEach(e => {
       const acc = accountsService.getByName(e.name)
       if (acc) {
-        acc.data = metadata[e.prevIndex]
+        acc.data = metadata[e.key]
         accountsService.update(acc)
       }
     })
@@ -51,10 +51,6 @@ class RestoreCopy extends SetupSuperCopy {
   }
 
   copyTtt_ () {
-    const names = this.name_accounts.slice()
-    names.push('Wallet')
-    names.push('')
-
     for (let mm = 0; mm < 12; mm++) {
       const source = this.source.getSheetByName(Consts.month_name.short[mm])
       if (!source) continue
@@ -62,7 +58,8 @@ class RestoreCopy extends SetupSuperCopy {
       if (numRows < 1) continue
 
       let values = source.getRange(5, 2, numRows, 6).getValues()
-      values = Utils.sliceBlankRows(values).filter(r => names.indexOf(r[0]) > -1)
+      values = Utils.sliceBlankRows(values)
+        .filter(r => this.dropAccounts.indexOf(r[0]) === -1)
 
       new LedgerTtt(mm).mergeTransactions(values)
     }

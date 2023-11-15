@@ -16,6 +16,14 @@ class SetupConfig {
 
     if (session.getProperty('protocol') !== 'copy') throw new Error('Protocol does not match.')
     const candidate = session.getProperty('settings')
+    const ids = candidate.settings.accounts.map(acc => acc.id)
+
+    config.accounts = config.name_accounts.filter(acc => {
+      return ids.indexOf(acc.id) > -1
+    })
+    config.name_accounts = config.name_accounts.filter(acc => {
+      return acc.command === 'new' || (acc.command === 'pick' && ids.indexOf(acc.id) > -1)
+    })
 
     config.file_id = candidate.source.file_id
     config.isTemplatePre15 = BnsTemplate.isPre15(candidate.version.template)
