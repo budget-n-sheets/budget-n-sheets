@@ -17,7 +17,7 @@ const HtmlResources = Object.freeze({
     material_icons: 'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined'
   },
   js: {
-    jquery_min: 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js',
+    jquery_min: 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js',
     jquery_ui_min: 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js'
   },
   href: {
