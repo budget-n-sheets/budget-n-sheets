@@ -4,15 +4,13 @@
    * https://www.budgetnsheets.com/support/known-issues/apps-script-issue-69270374
    */
 
-  window.addEventListener('load', (e) => {
+  window.onload = (e) => {
     google.script.run
-      .withSuccessHandler((e, o) => console.log('apps-script/issue-69270374: ok'))
-      .withFailureHandler(appsScriptIssue6927037WorkaroundNotice)
-      .appsScriptIssue69270374WorkaroundTest();
-  });
-
-  function appsScriptIssue6927037WorkaroundNotice (e, o) {
-    console.log('apps-script/issue-69270374: fail');
-    document.getElementsByTagName('body')[0].innerHTML = <?= htmlNotice ?>;
+      .withSuccessHandler((e, o) => console.log('apps-script/issue-69270374: pass'))
+      .withFailureHandler((e, o) => {
+        console.log('apps-script/issue-69270374: fail')
+        document.getElementsByTagName('body')[0].innerHTML = <?= htmlNotice ?>
+      })
+      .appsScriptIssue69270374WorkaroundTest()
   }
 </script>

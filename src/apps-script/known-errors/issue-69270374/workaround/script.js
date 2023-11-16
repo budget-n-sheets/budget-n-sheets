@@ -13,15 +13,18 @@
  */
 
 function appsScriptIssue69270374WorkaroundFrame () {
-  const htmlNotice = HtmlService2.createTemplateFromFile('apps-script/known-errors/issue-69270374/workaround/htmlNotice')
-    .setScriptletValues(HtmlResources.href.reserved)
-    .evaluate()
-    .getContent()
-
-  return HtmlService2.createTemplateFromFile('apps-script/known-errors/issue-69270374/workaround/jsTest')
-    .setScriptletValues({ htmlNotice })
-    .evaluate()
-    .getContent()
+  const k = 'apps-script-issue-69270374'
+  const s = CacheService.getScriptCache()
+  return s.get(k) ??
+    (function(s, k) {
+      const p = 'apps-script/known-errors/issue-69270374/workaround'
+      const h = HtmlService.createHtmlOutputFromFile(`${p}/htmlNotice`).getContent()
+      const t = HtmlService.createTemplateFromFile(`${p}/jsTest`)
+      t.htmlNotice = h
+      const c = t.evaluate().getContent()
+      s.put(k, c)
+      return c
+    })(s, k)
 }
 
 function appsScriptIssue69270374WorkaroundTest () {
