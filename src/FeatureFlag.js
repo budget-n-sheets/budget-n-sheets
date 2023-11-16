@@ -10,8 +10,8 @@
 
 class FeatureFlag {
   static getStatusOf (key) {
-    const name = `flags/feature/${key}`
-    switch (name) {
+    const n = `flags/feature/${key}`
+    switch (n) {
       case 'flags/feature/setup/follow_up':
       case 'flags/feature/setup/restore':
       case 'flags/feature/setup/copy':
@@ -22,11 +22,12 @@ class FeatureFlag {
         return false
     }
 
-    const c = CacheService.getScriptCache()
-    return c.get(name) ?? ((c) => {
-      const v = (PropertiesService.getScriptProperties().getProperty(name) === 'true')
-      c.put(name, v)
-      return v
-    })(c)
+    const s = CacheService.getScriptCache()
+    return s.get(n) ??
+      ((s, n) => {
+        const v = (PropertiesService.getScriptProperties().getProperty(n) === 'true')
+        s.put(n, v ? 'true' : 'false')
+        return v
+      })(s, n)
   }
 }
