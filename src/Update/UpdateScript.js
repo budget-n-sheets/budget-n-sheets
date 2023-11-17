@@ -21,12 +21,26 @@ class UpdateScript extends Update {
         [], [], [], [], [], [], [], [], [],
         ['', '', '', '', '', '', 'v0m49p6_', '', ''],
         ['', '', '', '', ''],
-        ['', '', '', '', '', 'v0m51p5_', '', 'v0m51p7_', 'v0m51p8_', '', '', '', '', 'v0m51p13_', '', '', '', '']
+        ['', '', '', '', '', 'v0m51p5_', '', 'v0m51p7_', 'v0m51p8_', '', '', '', '', 'v0m51p13_', '', '', '', '', 'v0m51p18_']
       ]
     ]
 
     super(v0, vA, list)
     this._key = 'script'
+  }
+
+  /**
+   * Reset formulas.
+   *
+   * 0.51.18
+   */
+  v0m51p18_ () {
+    SpreadsheetSettings.updateDecimalSeparator()
+    new SheetSettings().resetFormulas()
+    new SheetSummary().resetFormulas()
+    new SheetCashFlow().resetFormulas()
+    RecalculationService.resume(0, 12)
+    return 0
   }
 
   /**
