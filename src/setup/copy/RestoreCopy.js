@@ -40,6 +40,7 @@ class RestoreCopy extends SetupSuperCopy {
     const accountsService = new AccountsService()
 
     this.name_accounts.forEach(e => {
+      if (e.command !== 'pick') return
       const acc = accountsService.getByName(e.name)
       if (acc) {
         acc.data = metadata[e.key]
