@@ -25,5 +25,6 @@ class SpreadsheetSettings {
     SettingsSpreadsheet.set('decimal_separator', decS)
       .set('spreadsheet_locale', spreadsheet.getSpreadsheetLocale())
       .updateMetadata()
+    return decS
   }
 }
