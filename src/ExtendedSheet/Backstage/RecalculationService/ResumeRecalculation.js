@@ -254,7 +254,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
 
     const col = 3 + this._w * (2 + this.num_acc)
     const cards = new CardsService().list()
-    for (const card in cards) {
+    for (const card of cards) {
       const rangeList = []
       const formula = '=' + formater.localeSignal(card.limit)
 
