@@ -19,6 +19,7 @@ class MakeSheetSettings extends MakeSetupSheet {
   }
 
   make () {
+    SpreadsheetSettings.updateDecimalSeparator()
     new SheetSettings().resetDefault()
     this.sheet.setTabColor('#cc0000')
     SpreadsheetApp.flush()
