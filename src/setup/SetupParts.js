@@ -178,7 +178,7 @@ class SetupParts {
     this.setupProperties_()
     this.setupTables_()
 
-    new MakeSheetTags().install()
+    new MakeSheetUnique().install()
     new MakeSheetSummary().install()
     new MakeSheetAbout().install()
 
