@@ -21,12 +21,23 @@ class UpdateScript extends Update {
         [], [], [], [], [], [], [], [], [],
         ['', '', '', '', '', '', 'v0m49p6_', '', ''],
         ['', '', '', '', ''],
-        ['', '', '', '', '', 'v0m51p5_', '', 'v0m51p7_', 'v0m51p8_', '', '', '', '', 'v0m51p13_', '', '', '', '', 'v0m51p18_', '']
+        ['', '', '', '', '', 'v0m51p5_', '', 'v0m51p7_', 'v0m51p8_', '', '', '', '', 'v0m51p13_', '', '', '', '', 'v0m51p18_', '', 'v0m51p20_']
       ]
     ]
 
     super(v0, vA, list)
     this._key = 'script'
+  }
+
+  /**
+   * Fix transaction and tags suggestions to Jan and Feb.
+   *
+   * 0.51.20
+   */
+  v0m51p18_ () {
+    new SheetMonth(0).resetUniqueSuggestions()
+    new SheetMonth(1).resetUniqueSuggestions()
+    return 0
   }
 
   /**
