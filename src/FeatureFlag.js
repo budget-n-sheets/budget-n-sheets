@@ -23,11 +23,13 @@ class FeatureFlag {
     }
 
     const s = CacheService.getScriptCache()
-    return s.get(n) ??
+    const b = s.get(n) ??
       ((s, n) => {
         const v = (PropertiesService.getScriptProperties().getProperty(n) === 'true')
-        s.put(n, v ? 'true' : 'false')
-        return v
+        const t = v ? 'true' : 'false'
+        s.put(n, t)
+        return t
       })(s, n)
+    return b === 'true'
   }
 }
