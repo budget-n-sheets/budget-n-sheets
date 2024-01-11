@@ -21,7 +21,7 @@ class UpdateScript extends Update {
         [], [], [], [], [], [], [], [], [],
         ['', '', '', '', '', '', 'v0m49p6_', '', ''],
         ['', '', '', '', ''],
-        ['', '', '', '', '', 'v0m51p5_', '', 'v0m51p7_', 'v0m51p8_', '', '', '', '', 'v0m51p13_', '', '', '', '', 'v0m51p18_', '', 'v0m51p20_']
+        ['', '', '', '', '', 'v0m51p5_', '', 'v0m51p7_', 'v0m51p8_', '', '', '', '', 'v0m51p13_', '', '', '', '', 'v0m51p18_', '', '', 'v0m51p21_']
       ]
     ]
 
@@ -32,9 +32,9 @@ class UpdateScript extends Update {
   /**
    * Fix transaction and tags suggestions to Jan and Feb.
    *
-   * 0.51.20
+   * 0.51.21
    */
-  v0m51p18_ () {
+  v0m51p21_ () {
     new SheetMonth(0).resetUniqueSuggestions()
     new SheetMonth(1).resetUniqueSuggestions()
     return 0
