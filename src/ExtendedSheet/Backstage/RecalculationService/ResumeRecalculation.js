@@ -260,7 +260,7 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
 
       const index = 1 + this.num_acc + 1 + card.index
       for (let mm = this.start; mm < this.end; mm++) {
-        rangeList.push(this.xy2A1_(index, mm, 1, 2))
+        rangeList.push(this.xy2A1_(index, mm, 1, 1))
       }
 
       this._sheet.getRangeList(rangeList).setFormula(formula)
