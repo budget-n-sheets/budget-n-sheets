@@ -205,8 +205,8 @@ class ResumeRecalculation extends SheetBackstageRecalculation {
     this.getGroupRange(this.start, 2 + this.num_acc, this.end - this.start, 10).clearContent().setFormulas(table)
 
     this._sheet.getRangeList(listRange1).setFormulaR1C1('R[-1]C + R[-3]C')
-    this._sheet.getRangeList(listRange2).setFormulaR1C1('R[-1]C + R[-4]C + RC[-1]')
-    this._sheet.getRangeList(listRange3).setFormulaR1C1('MIN(R[-1]C; R[-1]C - R[3]C)')
+    this._sheet.getRangeList(listRange2).setFormulaR1C1('R[-1]C + R[-4]C[-1] + RC[-1]')
+    this._sheet.getRangeList(listRange3).setFormulaR1C1('MIN(R[-1]C[-1]; R[-1]C[-1] - R[3]C)')
     this._sheet.getRangeList(listRange5).setFormulaR1C1('RC[-1] + R[-1]C[-1]')
   }
 
